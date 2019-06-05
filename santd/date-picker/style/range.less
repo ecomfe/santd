@@ -1,0 +1,130 @@
+@range-prefix-cls: ~"@{ant-prefix}-range-picker";
+
+.@{range-prefix-cls} {
+    display: inline-block;
+    font-size: 12px;
+    cursor: pointer;
+    padding: 2px 34px 2px 12px;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    user-select: none;
+    transition: all .3s;
+    position: relative;
+    &:hover {
+        border-color: #40a9ff;
+    }
+
+    .@{range-prefix-cls}-text {
+        display: inline-block;
+        vertical-align: middle;
+        font-size: 14px;
+        color: rgba(0,0,0,.65);
+    }
+    .@{range-prefix-cls}-default {
+        line-height: 26px;
+        height: 26px;
+    }
+    .@{range-prefix-cls}-lg {
+        line-height: 34px;
+        height: 34px;
+    }
+    .@{range-prefix-cls}-sm {
+        line-height: 18px;
+        height: 18px;
+    }
+    .sanicon-calendar {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 16px;
+        color: rgba(0, 0, 0, .25);
+    }
+}
+
+// 选择日期的浮层
+.@{range-prefix-cls}-layer {
+    padding: 20px;
+    background: #fff;
+    box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.2);
+    &-hidden {
+        display: none;
+    }
+
+    .@{range-prefix-cls}-shortcut {
+        font-size: 14px;
+        height: 20px;
+        line-height: 20px;
+    }
+
+    .@{range-prefix-cls}-shortcut-item {
+        color: #666666;
+        margin-left: 20px;
+        cursor: pointer;
+        &:hover {
+            color: #40a9ff;
+        }
+
+        &-selected {
+            cursor: default;
+            color: #40a9ff;
+            text-decoration: none;
+        }
+    }
+
+    .@{range-prefix-cls}-begin,
+    .@{range-prefix-cls}-end {
+        float: left;
+        width: 210px;
+    }
+
+    .@{range-prefix-cls}-begin {
+        margin-right: 20px;
+    }
+
+    .@{range-prefix-cls}-label {
+        font-size: 12px;
+        height: 10px;
+        overflow: hidden;
+        zoom: 1;
+        h3 {
+            float: left;
+            font-size: 12px;
+            line-height: 18px;
+            margin: 0;
+            display: none;
+        }
+        .@{ant-prefix}-checkbox {
+            float: right;
+            input {
+                vertical-align: text-bottom;
+                *margin-bottom: -3px;
+            }
+            line-height: 18px;
+        }
+    }
+
+    .@{range-prefix-cls}-foot {
+        clear: both;
+        padding-top: 8px;
+        text-align: right;
+        .@{ant-prefix}-button {
+            margin-right: 5px;
+        }
+    }
+}
+
+.@{range-prefix-cls}-disabled,
+.@{range-prefix-cls}-read-only {
+    color: #999;
+    background: #efefef;
+
+    &:hover {
+        background: #efefef;
+    }
+}
+
+/** 关闭layer按钮 */
+.skin-layerClose-button {
+    display: none;
+}

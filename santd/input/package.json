@@ -1,0 +1,10 @@
+{
+  "name": "input",
+  "version": "1.0.0",
+  "description": "input component",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "mayihui <mayihui@baidu.com>"
+}

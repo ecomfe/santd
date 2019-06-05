@@ -1,0 +1,30 @@
+@import "santd/core/styles/themes/default";
+@import "santd/core/styles/mixins/index";
+@import "./mixin";
+
+// Input styles
+.@{ant-prefix}-input {
+  .reset-component;
+  .input;
+}
+
+.@{ant-prefix}-input-group {
+  .reset-component;
+  .input-group(~"@{ant-prefix}-input");
+  &-wrapper {
+    display: inline-block;
+    vertical-align: top;
+    width: 100%;
+  }
+}
+
+.@{ant-prefix}-input-affix-wrapper {
+  .reset-component;
+  .input-affix-wrapper(~"@{ant-prefix}-input");
+
+  .@{ant-prefix}-input {
+    min-height: 100%;
+  }
+}
+
+@import "./search-input";

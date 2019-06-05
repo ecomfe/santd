@@ -1,0 +1,125 @@
+@import "../example/theme/static/index.less";
+// @import "santd/core/styles/themes/default.less";
+// @import "santd/core/styles/v2-compatible-reset.less";
+
+.markdown pre code {
+    display: block;
+    padding: 16px 32px;
+    font-family: "Lucida Console", Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+    font-size: 14px;
+    line-height: 2;
+    white-space: pre;
+    color: #314659;
+    border-radius: 2px;
+    background: white;
+}
+.site {
+    display: flex;
+    flex-direction: column;
+    .nav {
+        width: 200px;
+    }
+    .content {
+        flex: 1;
+    }
+    .main-wrapper {
+        display: flex;
+
+        flex: 1;
+    }
+}
+
+.api-container table {
+    width: 100%;
+    margin: 8px 0 16px;
+    border: 1px solid @site-border-color-split;
+    empty-cells: show;
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+
+.api-container table th {
+    font-weight: 500;
+    white-space: nowrap;
+    color: #5c6b77;
+    background: rgba(0, 0, 0, .02);
+}
+.api-container pre code {
+    overflow: auto;
+    padding: 12px 20px;
+}
+
+.api-container table th,
+.api-container table td {
+    padding: 16px 24px;
+    border: 1px solid @site-border-color-split;
+    text-align: left;
+}
+.code-box .highlight-wrapper {
+    display: block;
+}
+.code-box-meta > h4 {
+    position: absolute;
+    top: -14px;
+    width: auto;
+    margin-left: -8px;
+    padding: 1px 8px;
+    font-size: 14px;
+    color: #777;
+    border-radius: 2px 2px 0 0;
+    background: #fff;
+}
+.code-box-code-copy {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    opacity: 1;
+}
+#search-box {
+    .ant-select-focused,
+    .ant-select-selection,
+    .ant-select-selection:focus,
+    .ant-select-selection:active {
+        border: none;
+        box-shadow: none;
+    }
+}
+#iframe-page {
+    .code-box {
+        margin: 0;
+        border: none;
+    }
+    .code-box > * {
+        display: none;
+    }
+    .code-box > .code-box-demo {
+        display: block;
+        padding: 0;
+        border: none;
+    }
+}
+.toc-affix .ant-affix {
+    overflow: visible;
+}
+.main-wrapper {
+    margin-top: 64px;
+}
+.demo-anchor {
+    .ant-anchor-link-title {
+        font-size: 12px;
+    }
+}
+.site-sidebar {
+    z-index: 1;
+}
+
+.markdown pre{
+    background: white;
+}
+.code-box .code-box-meta {
+    border-radius: 0;
+    border-bottom: 1px dashed #ebedf0;
+}
+.markdown-section pre>code{
+    border: 0 none;
+}
