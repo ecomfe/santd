@@ -1,0 +1,80 @@
+@transition-drop: ~"@{ant-prefix}-transition-drop";
+// Animation
+@animation-time         : .3s;
+@transition-time        : .2s;
+@ease-in-out            : ease-in-out;
+@select: ~"@{ant-prefix}-select";
+
+.@{transition-drop} {
+    width: 100%;
+    position: absolute;
+    z-index: 999;
+    overflow-y: scroll;
+}
+.@{select} {
+  &-dropShow {
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    background-clip: padding-box;
+    opacity: 1;
+  }
+  &-dropHide {
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+.motion-common() {
+    animation-duration: @animation-time;
+    animation-fill-mode: both;
+}
+.make-motion(@className, @keyframeName) {
+    .@{className}-enter-active, .@{className}-appear {
+        .motion-common();
+        animation-play-state: paused;
+    }
+    .@{className}-leave-active {
+        .motion-common();
+        animation-play-state: paused;
+    }
+    .@{className}-enter-active, .@{className}-appear {
+        animation-name: ~"@{keyframeName}In";
+        animation-play-state: running;
+    }
+    .@{className}-leave-active {
+        animation-name: ~"@{keyframeName}Out";
+        animation-play-state: running;
+    }
+}
+
+.make-motion(@transition-drop,ivuTransitionDrop);
+.@{transition-drop}-enter-active, .@{transition-drop}-appear {
+  opacity: 0;
+  animation-timing-function: @ease-in-out;
+}
+.@{transition-drop}-leave-active {
+    opacity: 0;
+  animation-timing-function: @ease-in-out;
+}
+@keyframes ivuTransitionDropIn {
+    0% {
+        opacity: 0;
+        transform: scaleY(0.8);
+    }
+    100% {
+        opacity: 1;
+        transform: scaleY(1);
+    }
+}
+
+@keyframes ivuTransitionDropOut {
+    0% {
+        opacity: 1;
+        transform: scaleY(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scaleY(0.8);
+    }
+}

@@ -1,0 +1,10 @@
+{
+  "name": "divider",
+  "version": "1.0.0",
+  "description": "divider component",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "wangyongqing01 <wangyongqing01@baidu.com>"
+}

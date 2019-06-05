@@ -1,0 +1,10 @@
+{
+  "name": "back-top",
+  "version": "1.0.0",
+  "description": "back-top component",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "raowenjuan <raowenjuan@baidu.com>"
+}

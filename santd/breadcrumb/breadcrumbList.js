@@ -1,0 +1,60 @@
+/**
+* @file 面包屑组件的每一项
+* @author fuqiangqiang@baidu.com
+*/
+
+import san, {DataTypes} from 'san';
+import Icon from 'santd/icon';
+import {classCreator} from 'santd/core/util';
+import classNames from 'classnames';
+import {findComponentUpward} from 'santd/core/util/findCompont';
+const brCrumb = classCreator('breadcrumb');
+const prefixCls = brCrumb();
+
+const DefaultItem = function () {
+    return san.defineComponent({
+        template: `
+            <span>
+                <span s-if="route.index === route.allLen-1">{{route.breadcrumbName}}</span>
+                <a s-else href="#{{route.path}}">{{route.breadcrumbName}}</a>
+            </span>
+        `
+    });
+};
+
+export default san.defineComponent({
+    dataTypes: {
+        href: DataTypes.string,
+        route: DataTypes.instanceOf(Object),
+        index: DataTypes.number,
+        params: DataTypes.instanceOf(Object)
+    },
+    attached() {
+        let itemRender = this.data.get('itemRender');
+        const {route, index, params, allLen} = this.data.get();
+        let renderer;
+        itemRender = itemRender ? itemRender : DefaultItem;
+        if (route && itemRender) {
+            if (params) {
+                route.path = route.path || '';
+                let path = route.path.replace(/^\//, '');
+                Object.keys(params).forEach(key => {
+                    path = path.replace(`:${key}`, params[key]);
+                });
+                route.path = path;
+            }
+            let Renderer = itemRender();
+            renderer = new Renderer({
+                data: {
+                    route: Object.assign({}, route, {index, allLen})
+                }
+            });
+            renderer.attach(this.el);
+        }
+    },
+    template: `
+        <span>
+
+        </span>
+    `
+});

@@ -1,0 +1,16 @@
+output/
+.svn
+.DS_Store
+.idea
+*.bak
+node_modules/
+**/node_modules/
+dist/
+build/
+npm-debug.log
+package-lock.json
+coverage/
+lerna-debug.log
+
+santd/core/_util/
+yarn.lock

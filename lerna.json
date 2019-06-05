@@ -1,0 +1,6 @@
+{
+  "packages": [
+    "santd/*"
+  ],
+  "version": "independent"
+}

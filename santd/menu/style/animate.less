@@ -1,0 +1,61 @@
+@transition-drop: ~"@{ant-prefix}-transition-drop";
+// Animation
+@animation-time         : .3s;
+@transition-time        : .2s;
+@ease-in-out            : ease-in-out;
+
+.motion-common() {
+    animation-duration: @animation-time;
+    animation-fill-mode: both;
+}
+.make-motion(@className, @keyframeName) {
+    .@{className}-enter-active, .@{className}-appear {
+        .motion-common();
+        animation-play-state: paused;
+    }
+    .@{className}-leave-active {
+        .motion-common();
+        animation-play-state: paused;
+    }
+    .@{className}-enter-active, .@{className}-appear {
+        animation-name: ~"@{keyframeName}In";
+        animation-play-state: running;
+    }
+    .@{className}-leave-active {
+        animation-name: ~"@{keyframeName}Out";
+        animation-play-state: running;
+    }
+}
+
+.make-motion(@transition-drop,transitionDrop);
+.@{transition-drop}-enter-active {
+  opacity: 0;
+  animation-timing-function: @ease-in-out;
+}
+.@{transition-drop}-leave-active {
+    opacity: 0;
+  animation-timing-function: @ease-in-out;
+}
+@keyframes transitionDropIn {
+    0% {
+        opacity: 0;
+        height: 0;
+        transform: scaleY(0.6);
+    }
+    100% {
+        opacity: 1;
+        transform: scaleY(1);
+    }
+}
+
+@keyframes transitionDropOut {
+    0% {
+        opacity: 1;
+        transform: scaleY(1);
+    }
+    100% {
+        opacity: 0;
+        height: 0;
+        transform: scaleY(0.6);
+    }
+}
