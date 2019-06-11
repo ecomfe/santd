@@ -52,11 +52,16 @@ export default san.defineComponent({
     attached() {
         // 将menuItemGroup 传到menu
         this.dispatch('itemGroupRender', this);
+        const key = this.data.get('key') || '';
         const title = this.data.get('title');
-        // 处理传入组件Icon
+        // 处理传入的组件
         if (title && typeof title === 'function') {
             const TitleIcon = title();
-            const renderer = new TitleIcon();
+            const renderer = new TitleIcon({
+                data: {
+                    key
+                }
+            });
             renderer.attach(this.ref('itemGroupTitle'));
             renderer.parentComponent = this;
         }

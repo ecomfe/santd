@@ -123,7 +123,7 @@ export default san.defineComponent({
                         disabled="{{item.disabled}}"
                         class="{{item.className}}"
                     >
-                        {{item.label}}
+                        {{item.label | raw}}
                         <span
                             s-if="allData.mode === 'multiple' || allData.mode === 'tags'"
                             class="san-select-selected-icon"
@@ -140,7 +140,7 @@ export default san.defineComponent({
                     disabled="{{item.disabled}}"
                     class="{{item.className}}"
                 >
-                    {{item.label}}
+                    {{item.label | raw}}
                     <span
                         s-if="allData.mode === 'multiple' || allData.mode === 'tags'"
                         class="san-select-selected-icon"

@@ -1,6 +1,6 @@
 <cn>
-#### 基本使用
-基本使用。通过 dataSource 设置自动完成的数据源
+#### 自定义输入组件
+自定义输入组件
 </cn>
 
 ```html
@@ -11,8 +11,15 @@
         on-select="handleSelect"
         dataSource="{{dataSource}}"
         style="width: 200px;"
-        placeholder="input some"
+        value="{{value}}"
     >
+        <s-textarea
+            slot="custom"
+            placeholder="input here"
+            style="height: 50px"
+            value="{{value}}"
+            on-inputChange="textareaChange"
+        ></s-textarea>
     </s-auto-complete>
   </div>
 </template>
@@ -23,11 +30,13 @@ import input from 'santd/input';
 export default {
     components: {
         's-auto-complete': autoComplete,
-        's-input': input
+        's-input': input,
+        's-textarea': input.TextArea
     },
     initData() {
         return {
-            dataSource: []
+            dataSource: [],
+            value: ''
         };
     },
     handleSearch(value) {
@@ -42,7 +51,10 @@ export default {
         }
     },
     handleSelect(value) {
-        console.log('handle select', value);
+        this.data.set('value', value);
+    },
+    textareaChange(val) {
+        this.handleSearch(val);;
     }
 }
 </script>

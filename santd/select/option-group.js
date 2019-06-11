@@ -9,10 +9,6 @@ import classNames from 'classnames';
 const pagin = classCreator('select');
 const prefixCls = pagin();
 export default san.defineComponent({
-    dataTypes: {
-        label: DataTypes.string,
-        key: DataTypes.string
-    },
     initData() {
         return {
             componentPropName: 's-select-option-group'
