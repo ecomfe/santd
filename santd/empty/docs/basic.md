@@ -5,15 +5,15 @@
 
 ```html
 <template>
-  <div>
-  	<s-empty/>
-  </div>
+    <div>
+        <s-empty/>
+    </div>
 </template>
 <script>
-import empty from 'santd/empty';
+import Empty from 'santd/empty';
 export default {
     components: {
-        's-empty': empty
+        's-empty': Empty
     }
 }
 </script>
