@@ -34,5 +34,5 @@ export function defaultFilterFn(input, child) {
         return false;
     }
     const optionValue = child.value;
-    return optionValue.toLowerCase().indexOf(input.toString().toLowerCase()) > -1;
+    return optionValue ? optionValue.toLowerCase().indexOf(input.toString().toLowerCase()) > -1 : false;
 }

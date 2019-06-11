@@ -58,7 +58,9 @@ const SingleHeadComponent = san.defineComponent({
             Object.keys(optionsInfo).forEach(opt => {
                 resValue.forEach(v => {
                     if (v.value === optionsInfo[opt].value) {
-                        let title = optionsInfo[opt].title ? optionsInfo[opt].title : optionsInfo[opt].label;
+                        let title = optionsInfo[opt].title
+                            ? optionsInfo[opt].title.trim()
+                            : optionsInfo[opt].label.trim();
                         targetTitle.push(title);
                     }
                 });
@@ -86,6 +88,12 @@ const SingleHeadComponent = san.defineComponent({
             hideTag: false
         };
     },
+    compiled() {
+        const inputElement = this.parentComponent.data.get('inputElement');
+        if (inputElement) {
+            this.components.inputelement = inputElement;
+        }
+    },
     created() {
         this.watch('allData._open', value => {
             const showSearch = this.data.get('allData.showSearch');
@@ -100,16 +108,24 @@ const SingleHeadComponent = san.defineComponent({
         });
     },
     attached() {
-        const autoFocus = this.data.get('allData.autoFocus');
+        const autoFocus = this.data.get('autoFocus');
         if (autoFocus) {
-            this.ref('sigleInput').focus;
+            this.maybeFocus();
         }
+        setTimeout(() => {
+            // 默认处理autocomplete中的value
+            const sigleInput = this.ref('sigleInput');
+            const isAutoComplete = this.data.get('isAutoComplete');
+            if (isAutoComplete && sigleInput) {
+                sigleInput.value = this.data.get('titles');
+            }
+        }, 0);
     },
     maybeFocus() {
-        this.nextTick(() => {
+        setTimeout(() => {
             const sigleInput = this.ref('sigleInput');
             sigleInput && sigleInput.focus();
-        });
+        }, 0);
     },
     onInput(e) {
         const value = e.target.value;
@@ -117,8 +133,12 @@ const SingleHeadComponent = san.defineComponent({
         this.dispatch('queryInput', {value, event: e});
     },
     onInputBlur(e) {
-        e.target.value = '';
+        const isAutoComplete = this.data.get('isAutoComplete');
+        if (!isAutoComplete) {
+            e.target.value = '';
+        }
         this.data.set('hideTag', false);
+        this.dispatch('inputOnBlur', e.target.value);
     },
     inputOnFocus(e) {
         this.dispatch('inputOnFocus', e);
@@ -132,10 +152,11 @@ const SingleHeadComponent = san.defineComponent({
         >{{allData.placeholder}}</div>
         <div
             class="${prefixCls}-selection-selected-value"
+            s-if="!isAutoComplete"
             title="{{setTitle}}"
             style="{{opacityStyle}}"
             >
-            {{titles}}
+            {{titles | raw}}
         </div>
         <div
             s-if="allData.showSearch"
@@ -143,13 +164,15 @@ const SingleHeadComponent = san.defineComponent({
         >
             <div class="${prefixCls}-search__field__wrap">
                 <input
+                    s-if="!getInputElement"
                     s-ref="sigleInput"
                     autoComplete="off"
-                    class="${prefixCls}-search__field"
+                    class="san-input ${prefixCls}-search__field"
                     on-input="onInput($event)"
                     on-blur="onInputBlur($event)"
                     on-focus="inputOnFocus($event)"
                 />
+                <inputelement s-else value="{{allData._inputValue}}"></inputelement>
                 <span class="${prefixCls}-search__field__mirror"></span>
             </div>
         </div>
@@ -241,7 +264,7 @@ const MultagsComponent = san.defineComponent({
         });
     },
     attached() {
-        const autoFocus = this.data.get('allData.autoFocus');
+        const autoFocus = this.data.get('autoFocus');
         const resValue = this.data.get('allData._value');
         if (autoFocus) {
             this.ref('importInput').focus;
@@ -295,7 +318,7 @@ const MultagsComponent = san.defineComponent({
     <ul>
         <li s-for="content, index in headData" class="{{classes}}" style="user-select: none;">
             <div class="${prefixCls}-selection__choice__content">
-                {{content}}
+                {{content | raw}}
             </div>
             <span
                 s-if="!allData.disabled && index < allData.maxTagCount"
@@ -348,8 +371,16 @@ export default san.defineComponent({
                 s-ref="multagsRef"
                 allData="{{allData}}"
                 removeIcon="{{removeIcon}}"
+                autoFocus="{{autoFocus}}"
             ></s-multags>
-            <s-singlehead s-ref="singleRef" s-else allData="{{allData}}"></s-singlehead>
+            <s-singlehead
+                s-else
+                s-ref="singleRef"
+                isAutoComplete="{{isAutoComplete}}"
+                allData="{{allData}}"
+                getInputElement="{{inputElement}}"
+                autoFocus="{{autoFocus}}"
+            ></s-singlehead>
         </div>
     `
 });

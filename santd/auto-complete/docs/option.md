@@ -8,7 +8,9 @@
   <div>
   	<s-auto-complete
         on-search="handleSearch"
-        style="width: 200px;">
+        on-select="onSelect"
+        style="width: 200px;"
+    >
         <s-select-option
             s-for="item in list"
             value="{{item}}"
@@ -39,6 +41,9 @@ export default {
           list = ['gmail.com', '163.com', 'qq.com'].map(domain => `${value}@${domain}`);
         }
         this.data.set('list', list);
+    },
+    onSelect(val) {
+        console.log('select-', val);
     }
 }
 </script>

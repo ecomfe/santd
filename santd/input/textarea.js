@@ -25,6 +25,11 @@ export default san.defineComponent({
                 [`${prefixCls}`]: true,
                 [`${prefixCls}-disabled`]: disabled
             });
+        },
+        stateValue() {
+            const defaultValue = this.data.get('defaultValue');
+            const value = this.data.get('value');
+            return value ? value : (defaultValue ? defaultValue : '');
         }
     },
     initData() {
@@ -42,10 +47,6 @@ export default san.defineComponent({
         this.getBaseData();
     },
     getBaseData() {
-        const defaultValue = this.data.get('defaultValue');
-        const value = this.data.get('value');
-        const stateValue = value ? value : (defaultValue ? defaultValue : '');
-        this.data.set('stateValue', stateValue);
         this.resizeTextarea();
     },
     resizeTextarea() {
@@ -90,6 +91,7 @@ export default san.defineComponent({
         this.nextTick(() => {
             this.resizeTextarea();
         });
+        this.fire('inputChange', e.target.value);
     },
     handleBlur(e) {
         this.fire('textareaBlur', e.target.value);

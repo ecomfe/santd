@@ -82,7 +82,9 @@ export default san.defineComponent({
             const open = this.data.get('createdData._open');
             const disabled = this.data.get('disabled');
             const size = this.data.get('sizeMap')[this.data.get('size')];
+            const dyClass = this.data.get('classNames');
             return classNames({
+                [`${prefixCls}-${dyClass}`]: true,
                 [`${prefixCls}`]: true,
                 [`${prefixCls}-open`]: open,
                 [`${prefixCls}-disabled`]: disabled,
@@ -125,7 +127,7 @@ export default san.defineComponent({
         return {
             popupMenu: CreateMenu,
             loading: false,
-            showArrow: false,
+            showArrow: true,
             defaultActiveFirstOption: true,
             autoClearSearchValue: true,
             dropdownMatchSelectWidth: true,
@@ -144,8 +146,8 @@ export default san.defineComponent({
     },
     created() {
         const mode = this.data.get('mode');
-        if (!this.data.get('showArrow') && mode !== 'multiple' && mode !== 'tags') {
-            this.data.set('showArrow', true);
+        if (mode === 'multiple' || mode === 'tags') {
+            this.data.set('showArrow', false);
         }
         this.watch('notFoundContent', content => {
 
@@ -226,6 +228,9 @@ export default san.defineComponent({
             this.data.set('width', width);
         }, 0);
     },
+    removeJsComments(code) {
+        return code.replace(/<!--[\w\W\r\n]*?-->/gmi, '');
+    },
 
     /**
     * 将select-option组件中数据处理，放入对象。
@@ -243,7 +248,7 @@ export default san.defineComponent({
             optionsInfo[getMapKey(singleValue)] = {
                 option: compo,
                 value: singleValue,
-                label: compo.el && compo.el.innerText || null,
+                label: compo.el && this.removeJsComments(compo.el.innerHTML) || null,
                 title: title,
                 disabled: disabled,
                 className: className || '',
@@ -342,7 +347,10 @@ export default san.defineComponent({
         function loopOptionItem(children) {
             if (children) {
                 for (let i = 0; i < children.length; i++) {
-                    if (children[i].data && children[i].data.get('componentPropName') === propsName) {
+                    if (
+                        children[i].data
+                        && children[i].data.get('componentPropName') === propsName
+                    ) {
                         arr.push(children[i]);
                     } else if (children[i].children) {
                         loopOptionItem(children[i].children);
@@ -461,6 +469,7 @@ export default san.defineComponent({
             } = this.data.get('createdData');
             const mode = this.data.get('mode');
             const disabled = this.data.get('disabled');
+            const isAutoComplete = this.data.get('isAutoComplete');
             let fireChangeValue;
             let maxTagContent;
             if (disabled) {
@@ -529,7 +538,11 @@ export default san.defineComponent({
             } else {
                 // 如果是单选，则进行替换
                 this.setSelectData('_value', [{value: selectedValue, label: tarLabel}]);
-                this.setSelectData('_inputValue', '');
+                if (isAutoComplete) {
+                    this.setSelectData('_inputValue', selectedValue);
+                } else {
+                    this.setSelectData('_inputValue', '');
+                }
                 if (labelInValue) {
                     selectedValue = this.getLabelBySingleValue(addTagsOptions, selectedValue)[0];
                 }
@@ -604,6 +617,7 @@ export default san.defineComponent({
             const mode = this.data.get('mode');
             let options = {};
             let res;
+            this.fire('search', query);
             // 如果内容是空，直接把把已有内容显示
             if (query === '') {
                 this.data.set('createdData._innerOptions', addOptions);
@@ -1053,6 +1067,9 @@ export default san.defineComponent({
                                 allData="{{createdData}}"
                                 removeIcon="{{removeIcon}}"
                                 mode="{{mode}}"
+                                isAutoComplete="{{isAutoComplete}}"
+                                inputElement="{{inputElement}}"
+                                autoFocus="{{autoFocus}}"
                             ></s-head>
                         </div>
                         <span
