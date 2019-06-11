@@ -68,11 +68,15 @@ export default san.defineComponent({
         if (this.data.get('disabled')) {
             return;
         }
-        this.data.set('checked', e.target.checked);
+        let checked = e.target.checked;
+        if (checked === this.data.get('checked')) {
+            checked = !checked;
+        }
+        this.data.set('checked', checked);
         this.fire('change', {
             target: {
                 ...this.data.get(),
-                checked: e.target.checked
+                checked
             },
             stopPropagation() {
                 e.stopPropagation();
@@ -89,6 +93,7 @@ export default san.defineComponent({
                 name="{{name}}"
                 id="{{id}}"
                 type="{{type}}"
+                checked="{{checked}}"
                 readonly="{{readOnly}}"
                 disabled="{{disabled}}"
                 tabindex="{{tabIndex}}"

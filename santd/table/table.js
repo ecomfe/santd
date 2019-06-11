@@ -406,6 +406,7 @@ export default san.defineComponent({
         total() {
             const pagination = this.data.get('pagination');
             const instance = this.data.get('instance');
+            const dataSource = this.data.get('dataSource');
             const total = instance && instance.getLocalData().length;
             return pagination.total || total;
         },

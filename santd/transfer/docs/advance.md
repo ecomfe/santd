@@ -5,75 +5,75 @@
 
 ```html
 <template>
-  <div>
-    <s-transfer
-        disabled="{{disabled}}"
-        dataSource="{{mockData}}"
-        targetKeys="{{targetKeys}}"
-        render="{{render}}"
-        on-selectChange="handleSelectChange"
-        on-change="handleChange"
-        on-search="handleSearch"
-        operations="{{['to Right', 'to Left']}}"
-        listStyle="{{listStyle}}"
-        filterOption="{{filterOption}}"
-        showSearch>
-        <div slot="footer">
-            <s-button type="default" size="small" style="float: right;margin: 5px">Reload</s-button>
-        </div>   
-    </s-transfer>
-  </div>
+    <div>
+        <s-transfer
+            dataSource="{{mockData}}"
+            targetKeys="{{targetKeys}}"
+            render="{{render}}"
+            on-change="handleChange"
+            operations="{{['to Right', 'to Left']}}"
+            listStyle="{{listStyle}}"
+            footer="{{footer}}"
+            showSearch
+        />
+    </div>
 </template>
 <script>
-
-const mockData = [];
-for (let i = 0; i < 20; i++) {
-  mockData.push({
-    key: i.toString(),
-    title: `content${i + 1}`,
-    description: `description of content${i + 1}`,
-    disabled: i % 3 < 1,
-  });
-}
-
-const oriTargetKeys = mockData
-  .filter(item => +item.key % 3 > 1)
-  .map(item => item.key);
-
-import transfer from 'santd/transfer';
-import button from 'santd/button';
+import Transfer from 'santd/transfer';
+import Button from 'santd/button';
 import san from 'san';
+
 export default {
     initData() {
+        const that = this;
         return {
-            mockData: mockData,
-            targetKeys: oriTargetKeys,
-            render: san.defineComponent({
-                template: `
-                    <span>
-                        {{title}} - {{description}}
-                    </span>
-                `
-            }),
-            listStyle: {
-                width: '300px',
-                height: '300px'
+            mockData: [],
+            targetKeys: [],
+            render(item) {
+                return item.title + '-' + item.description;
             },
-            filterOption: (inputValue, option) => option.description.indexOf(inputValue) > -1
+            listStyle: 'width: 250px; height: 300px;',
+            footer() {
+                return san.defineComponent({
+                    components: {
+                        's-button': Button
+                    },
+                    handleClick: that.getMock.bind(that),
+                    template: `<span>
+                        <s-button size="small" style="float: right; margin: 5px;" on-click="handleClick">
+                            reload
+                        </s-button>
+                    </span>`
+                });
+            }
         };
     },
+    attached() {
+        this.getMock();
+    },
+    getMock() {
+        const targetKeys = [];
+        const mockData = [];
+        for (let i = 0; i < 20; i++) {
+            const data = {
+                key: i.toString(),
+                title: `content${i + 1}`,
+                description: `description of content${i + 1}`,
+                chosen: Math.random() * 2 > 1
+            };
+            if (data.chosen) {
+                targetKeys.push(data.key);
+            }
+            mockData.push(data);
+        }
+        this.data.set('mockData', mockData);
+        this.data.set('targetKeys', targetKeys);
+    },
     components: {
-        's-transfer': transfer,
-        's-button': button
+        's-transfer': Transfer
     },
-    handleChange(param) {
-        console.log('on-change', param);
-    },
-    handleSearch(param) {
-        console.log('on-search', param);
-    },
-    handleSelectChange(param) {
-        console.log('on-selectChange', param);
+    handleChange({targetKeys}) {
+        this.data.set('targetKeys', targetKeys);
     }
 }
 </script>
