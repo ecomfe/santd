@@ -4,16 +4,14 @@
  */
 
 import '../style/index.less';
-import san from 'san';
+import san, {DataTypes} from 'san';
 import Icon from 'santd/icon';
 import Nav from './nav';
 import classNames from 'classnames';
 import toStyle from 'to-style';
 
-// 注意公共方法提取到 util，送人玫瑰手有余香~
 import {classCreator} from 'santd/core/util';
 
-// cc()就是 prefix class，cc('xxx')返回 prefixClass-xxx
 const cc = classCreator('suggestions');
 const prefixCls = cc();
 // 复用san-dropdown-menu样式
@@ -21,20 +19,16 @@ const ccdrop = classCreator('dropdown');
 const prefixDropCls = ccdrop();
 
 export default san.defineComponent({
-    template: `<div className="${prefixCls}-wrapper" style="{{innerStyle}}">
-            <div className="${prefixCls}-content ${prefixDropCls}-menu">
-                <template s-if="{{length}}">
-                    <s-nav s-for="item in suggestions" classes="${prefixDropCls}-menu-item">{{item}}</s-nav>
-                </template>
-                <s-icon s-else-if="{{loading}}" type="loading"></s-icon>
-                <div s-else className="${prefixCls}-notfound">{{notFoundContent}}</div>
-            </div>
-        </div>`,
+    dataTypes: {
+        placement: DataTypes.string,
+        position: DataTypes.object,
+        isShowSug: DataTypes.bool,
+        loading: DataTypes.bool
+    },
     components: {
         's-icon': Icon,
         's-nav': Nav
     },
-
     computed: {
         length() {
             return this.data.get('suggestions') && this.data.get('suggestions').length > 0;
@@ -52,6 +46,14 @@ export default san.defineComponent({
             };
         }
     },
+    compiled() {
+        const parentSuggestion = this.parentComponent.data.get('suggestions');
+        if (typeof parentSuggestion === 'function') {
+            this.components.newsuggestion = parentSuggestion;
+        } else {
+            this.components.newsuggestion = null;
+        }
+    },
     initData() {
         return {
             position: {
@@ -60,7 +62,32 @@ export default san.defineComponent({
                 height: 0
             },
             display: 'none',
-            loading: false
+            loading: false,
+            newsuggestion: this.components.newsuggestion
         };
-    }
+    },
+    created() {
+        let renderer;
+        this.watch('suggestions', val => {
+            const navRef= this.ref('nav-area');
+            if (navRef && typeof val === 'function') {
+                navRef.innerHTML = '';
+                renderer = new val();
+                renderer.attach(navRef);
+                renderer.parentComponent = this;
+            }
+        });
+    },
+    template: `
+        <div className="${prefixCls}-wrapper" style="{{innerStyle}}">
+            <div className="${prefixCls}-content ${prefixDropCls}-menu" s-ref="nav-area">
+                <newsuggestion s-if="newsuggestion"></newsuggestion>
+                <template s-else>
+                    <s-nav s-if="{{length}}" s-for="item in suggestions">{{item}}</s-nav>
+                    <s-icon s-else-if="{{loading}}" type="loading" style="display:block;margin:0 auto;"></s-icon>
+                    <div s-else className="${prefixCls}-notfound">{{notFoundContent}}</div>
+                </template>
+            </div>
+        </div>
+        `
 });

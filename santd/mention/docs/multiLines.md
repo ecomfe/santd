@@ -8,8 +8,9 @@
   <div>
     <s-mention
         style="width: 100%; height: 100px;"
+        baseStyle="{{{width: '100%', height: '100px'}}}"
         multiLines
-        defaultSuggestions="{{ ['liyanhong666', 'mayun', 'mahuateng', 'zhouhongyi', 'leijun666', 'ww233'] }}"
+        defaultSuggestions="{{suggestions}}"
     />
   </div>
 </template>
@@ -18,6 +19,11 @@ import mention from 'santd/mention';
 export default {
     components: {
         's-mention': mention
+    },
+    initData() {
+        return {
+            suggestions: ['wangyongqing', 'mayihui', 'fuqiangqiang', 'zhangtingting', 'raowenjuan']
+        };
     }
 }
 </script>

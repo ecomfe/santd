@@ -9,11 +9,8 @@ import classNames from 'classnames';
 import PlaceHolder from './placeHolder';
 import Suggestions from './suggestions';
 import {getRegExp, insertString, setCursorPosition, getSearchWordPos} from '../utils/index';
-
-// 注意公共方法提取到 util，送人玫瑰手有余香~
 import {classCreator} from 'santd/core/util';
 
-// cc()就是 prefix class，cc('xxx')返回 prefixClass-xxx
 const cc = classCreator('mention');
 const prefixCls = cc();
 
@@ -25,7 +22,7 @@ export default san.defineComponent({
     dataTypes: {
         autoFocus: DataTypes.bool,
         defaultValue: DataTypes.string,
-        defaultSuggestions: DataTypes.array,
+        defaultSuggestions: DataTypes.any,
         disabled: DataTypes.bool,
         loading: DataTypes.bool,
         multiLines: DataTypes.bool,
@@ -37,7 +34,7 @@ export default san.defineComponent({
             DataTypes.array
         ]),
         readOnly: DataTypes.bool,
-        suggestions: DataTypes.array,
+        suggestions: DataTypes.any,
         suggestionStyle: DataTypes.string,
         value: DataTypes.string
     },
@@ -82,7 +79,8 @@ export default san.defineComponent({
         },
         editorStyle() {
             let multiLines = !!this.data.get('multiLines');
-            return multiLines ? this.data.get('style') : '';
+            const baseStyle = multiLines ? this.data.get('baseStyle') : {};
+            return {...baseStyle, outline: 'none', 'white-space': 'pre-wrap', 'overflow-wrap': 'break-word'}
         }
     },
     messages: {
@@ -93,6 +91,7 @@ export default san.defineComponent({
             this.setInputValue(newInputValue);
             setCursorPosition(this.ref('mention-editor'), newInputValue.length);
             this.fire('select', e.value);
+            this.fire('change', newInputValue);
         }
     },
     inited() {
@@ -101,13 +100,18 @@ export default san.defineComponent({
         const initSuggestions = defaultSuggestions && defaultSuggestions.length > 0 && suggestions.length === 0
             ? defaultSuggestions : suggestions;
         this.data.set('value', initValue);
-        this.data.set('filteredSuggestions', initSuggestions);
         this.data.set('suggestions', initSuggestions);
     },
     attached() {
         const {value, autoFocus} = this.data.get();
         this.setInputValue(value);
         autoFocus && setCursorPosition(this.ref('mention-editor'), 0);
+        this.watch('value', val => {
+            const refs = this.ref('mention-editor');
+            if (refs && val === '') {
+                refs.innerText = val;
+            }
+        });
     },
     setInputValue(val) {
         this.data.set('value', val);
@@ -115,7 +119,6 @@ export default san.defineComponent({
     },
     onFocus(e) {
         this.fire('focus', e);
-        this.showList(e);
     },
     onBlur(e) {
         let $this = this;
@@ -123,13 +126,28 @@ export default san.defineComponent({
         setTimeout(function () {
             $this.hideSug();
         }, 300);
+        this.dispatch('UI:form-item-interact', {fieldValue: e.target.textContent, type: 'blur'});
         this.fire('blur', e);
     },
     onInput(e) {
-        this.fire('change', e);
-    },
-    onKeyUp(e) {
+        // 如果只是回车
+        if (this.multilDown) {
+            return null;
+        }
         this.showList(e);
+        this.fire('change', e.target.textContent);
+        this.dispatch('UI:form-item-interact', {fieldValue: e.target.textContent, type: 'change'});
+    },
+    onKeydown(e) {
+        const keyCode = e.keyCode;
+        const multiLines = this.data.get('multiLines');
+        if (keyCode === 13 && multiLines) {
+            this.multilDown = true;
+        } else if (keyCode === 13 && !multiLines) {
+            e.preventDefault();
+        } else {
+            this.multilDown = false;
+        }
     },
     showList(e) {
         this.data.set('value', e.target.textContent);
@@ -145,7 +163,12 @@ export default san.defineComponent({
     buildSugList() {
         // 获取检索词（光标左右非空白符的文字）
         const {value, prefix} = this.data.get();
-        const anchorOffset = window.getSelection().anchorOffset; // 光标位置
+        // 需要先获取到上面行的字符数，而且，如果是同一行，不能加，只能在回车后的第一次才能加上
+        const preLineOffset = this.ref('mention-editor').innerText.length;
+        let anchorOffset = window.getSelection().anchorOffset; // 光标位置
+        if (anchorOffset ===1) {
+            anchorOffset += preLineOffset;
+        }
         const startPos = value.slice(0, anchorOffset).search(/\S+$/);
         const endPos = value.slice(anchorOffset).search(/(\s|$)/);
         this.data.set('start', startPos + 1);
@@ -166,19 +189,17 @@ export default san.defineComponent({
         this.onSearchChange(matchArr[3], matchArr[2]);
     },
     onSearchChange(value, trigger) {
-        if (this.listeners.searchChange) {
-            return this.fire('searchChange', {
-                value,
-                trigger
-            });
-        }
         const searchValue = value.toLowerCase();
         const filteredSuggestions = (this.data.get('defaultSuggestions') || []).filter(
             suggestion => (
                 suggestion.toLowerCase().indexOf(searchValue) !== -1
             )
         );
-        this.data.set('filteredSuggestions', filteredSuggestions);
+        this.fire('searchChange', {
+            value,
+            trigger
+        });
+        this.data.set('suggestions', filteredSuggestions);
     },
     focus() {
         this.ref('mention-editor').focus();
@@ -194,18 +215,18 @@ export default san.defineComponent({
                     style="{{editorStyle}}"
                     className="${prefixCls}-editor-wrapper"
                     contenteditable="{{contenteditable}}"
-                    on-focus="onFocus"
-                    on-blur="onBlur"
-                    on-keyup="onKeyUp"
-                    on-input="onInput"
-                    on-keydown="onKeyDown"
+                    on-focus="onFocus($event)"
+                    on-blur="onBlur($event)"
+                    on-keydown="onKeydown($event)"
+                    on-input="onInput($event)"
                 >
                 </div>
+
             </div>
             <s-suggestions
                 isShowSug="{{isShowSug}}"
                 loading="{{loading}}"
-                suggestions="{{suggestions || filteredSuggestions}}"
+                suggestions="{{suggestions}}"
                 style="{{suggestionStyle}}"
                 placement="{{placement}}"
                 position="{{position}}"

@@ -2,17 +2,14 @@
 
 提及组件，用于在输入中提及某事或某人
 
-todo:
-    暂不支持多行模式换行@，待优化
-    不支持自定义项（Nav）
-
 详细属性：
 
 | 属性 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | autoFocus | 自动获取焦点 | boolean | false | |
 | disabled | 是否禁用状态. | boolean | false | |
-| loading | 加载中 | boolean | false | |
+| loading | 加载中 | boolean | false | - |
+| baseStyle | 输入位置的样式 | object | - |
 | multiLines | 多行模式 | boolean | false |
 | notFoundContent | 未找到时的内容 | string | '无匹配结果，轻敲空格完成输入' |
 | placeholder | 输入框默认文字 | string | null |
