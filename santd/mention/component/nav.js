@@ -7,12 +7,12 @@ import san from 'san';
 
 export default san.defineComponent({
     handleClick() {
-        this.dispatch('itemSelect', this.el.innerText);
+        const value = this.data.get('value');
+        const dispatchData = value ? value : this.el.innerText;
+        this.dispatch('itemSelect', dispatchData);
     },
-    // attached() {
-    //     console.log(this.data.get('classes'));
-    // },
-    template: `<div className="{{classes}}" on-click="handleClick">
+
+    template: `<div class="san-dropdown-menu-item" on-click="handleClick">
             <slot></slot>
         </div>`
 });

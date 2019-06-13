@@ -69,10 +69,10 @@ export const setCursorPosition = (selector, pos) => {
 export const getSearchWordPos = el => {
     let range = window.getSelection().getRangeAt(0).cloneRange();
     let rects = range.getClientRects();
-    // let rect = rects[0];
+    if (!rects[0]) {
+        return {};
+    }
     let {left, top} = rects[0];
-    // let x = rect.left;
-    // let y = rect.top;
     let clientRect = el.getBoundingClientRect();
     let computedStyle = getComputedStyle(el);
     return {

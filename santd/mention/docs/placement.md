@@ -1,17 +1,20 @@
 <cn>
-#### 基本使用
-基本使用
+#### 向上展开
+向上展开建议
 </cn>
 
 ```html
 <template>
   <div>
     <s-mention
-        defaultValue="@afc163"
+        defaultVaule="@afc163"
         defaultSuggestions="{{suggestions}}"
         placeholder="this is default Mention"
+        placement="top"
         on-select="onSelect"
         on-change="onChange"
+        on-focus="onFocus"
+        on-blur="onBlur"
     />
   </div>
 </template>
@@ -28,6 +31,12 @@ export default {
     },
     onSelect(suggestion) {
         console.log('onSelect', suggestion);
+    },
+    onFocus(e) {
+        console.log('onFocus', e);
+    },
+    onBlur(e) {
+        console.log('onBlur', e);
     },
     onChange(suggestionsList) {
         console.log('onChange', suggestionsList)
