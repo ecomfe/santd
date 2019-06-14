@@ -1,6 +1,6 @@
 <cn>
-#### 带搜索框
-带搜索框的穿梭框，可以自定义搜索函数。
+#### 自定义渲染行数据
+自定义渲染每一个 Transfer Item，可用于渲染复杂数据。
 </cn>
 
 ```html
@@ -8,27 +8,33 @@
     <div>
         <s-transfer
             dataSource="{{mockData}}"
+            listStyle="{{listStyle}}"
             targetKeys="{{targetKeys}}"
             render="{{render}}"
-            filterOption="{{filterOption}}"
-            showSearch
             on-change="handleChange"
-            on-search="handleSearch"
         />
     </div>
 </template>
 <script>
+import Transfer from 'santd/transfer';
+import san from 'san';
 
-import transfer from 'santd/transfer';
 export default {
     initData() {
         return {
             mockData: [],
             targetKeys: [],
             render(item) {
-                return item.title;
+                const customLabel = san.defineComponent({
+                    template: `<span class="custom-item">{{item.title}} - {{item.description}}</span>`
+                });
+
+                return {
+                    label: customLabel,
+                    value: item.title
+                };
             },
-            filterOption: (inputValue, option) => option.description.indexOf(inputValue) > -1
+            listStyle: 'width: 250px; height: 300px;',
         };
     },
     attached() {
@@ -53,13 +59,10 @@ export default {
         this.data.set('targetKeys', targetKeys);
     },
     components: {
-        's-transfer': transfer
+        's-transfer': Transfer
     },
     handleChange({targetKeys}) {
         this.data.set('targetKeys', targetKeys);
-    },
-    handleSearch({direction, value}) {
-        console.log('search: ', direction, value);
     }
 }
 </script>

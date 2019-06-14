@@ -4,38 +4,85 @@
  */
 
 import './style/index.less';
-import san from 'san';
+import san, {DataTypes} from 'san';
 import {classCreator} from 'santd/core/util';
 import classNames from 'classnames';
-import emptyImg from './empty.svg';
+import defaultEmptyImg from './empty.svg';
+import simpleEmptyImg from './simple.svg';
 
-const cc = classCreator('empty');
-const prefix = cc();
+const prefixCls = classCreator('empty')();
 
-export default san.defineComponent({
-    template: `
-        <div class="${prefix}">
-            <div class="${prefix}-image">
-                <img alt="暂无数据" src="{{imageSrc}}">
-            </div>
-            <p class="${prefix}-description">
-                <slot name="description" s-if="isCustomDes"/>
-                <template s-else>暂无数据</template>
-            </p>
-            <div class="${prefix}-footer" s-if="isCustomFooter">
-                <slot name="footer"/>  
-            </div>
-        </div>
-    `,
+const Empty = san.defineComponent({
+    dataTypes: {
+        prefixCls: DataTypes.string,
+        className: DataTypes.string,
+        imageStyle: DataTypes.oneOfType([DataTypes.string, DataTypes.object]),
+        image: DataTypes.oneOfType([DataTypes.string, DataTypes.func]),
+        description: DataTypes.oneOfType([DataTypes.string, DataTypes.func])
+    },
+    initData() {
+        return {
+            prefixCls,
+            image: defaultEmptyImg,
+            simpleEmptyImg
+        };
+    },
     computed: {
-        imageSrc() {
-            let image = this.data.get('image');
-            return image ? image : emptyImg;
+        classes() {
+            const className = this.data.get('className');
+            const image = this.data.get('image') || defaultEmptyImg;
+
+            return classNames(prefixCls, {
+                [`${prefixCls}-normal`]: image === simpleEmptyImg
+            }, className);
+        },
+        alt() {
+            const des = this.data.get('desc');
+
+            return typeof des === 'string' ? des : 'empty';
+        },
+        desc() {
+            const description = this.data.get('description') || '暂无数据';
+            return description;
+        },
+        injectImageNode() {
+            const image = this.data.get('image');
+            const instance = this.data.get('instance');
+
+            if (typeof image !== 'string') {
+                instance && (instance.components.imagenode = image);
+                return image;
+            }
+        },
+        injectDescription() {
+            const instance = this.data.get('instance');
+            const description = this.data.get('desc');
+
+            if (typeof description !== 'string') {
+                instance && (instance.components.description = description);
+                return description;
+            }
         }
     },
     inited() {
-        let {description, footer} = this.sourceSlots.named;
-        description && this.data.set('isCustomDes', true);
-        footer && this.data.set('isCustomFooter', true);
-    }
+        this.data.set('instance', this);
+    },
+    template: `
+        <div class="{{classes}}">
+            <div class="{{prefixCls}}-image" style="{{imageStyle}}">
+                <imagenode s-if="injectImageNode" />
+                <img s-else src="{{image}}" alt="{{alt}}" />
+            </div>
+            <p class="{{prefixCls}}-description">
+                <description s-if="injectDescription" />
+                <template s-else>{{description || '暂无数据'}}</template>
+            </p>
+            <div class="{{prefixCls}}-footer"><slot /></div>
+        </div>
+    `
 });
+
+Empty.PRESENTED_IMAGE_DFEAULT = defaultEmptyImg;
+Empty.PRESENTED_IMAGE_SIMPLE = simpleEmptyImg;
+
+export default Empty;

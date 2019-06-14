@@ -2,169 +2,246 @@
  * @file 组件 transfer
  * @author chenkai13 <chenkai13@baidu.com>
  */
-// TODO: empty组件没有 目前直接用的base64图片
 import './style/index.less';
 import san, {DataTypes} from 'san';
 import {classCreator} from 'santd/core/util';
+import renderEmpty from 'santd/core/util/renderEmpty';
 import classNames from 'classnames';
-import checkbox from 'santd/checkbox';
-import button from 'santd/button';
-import icon from 'santd/icon';
-import transList from './transList';
+import List from './list';
+import Operation from './operation';
 
-const cc = classCreator('transfer');
-const prefix = cc();
+const prefixCls = classCreator('transfer')();
+
 export default san.defineComponent({
-    dataTypes: {
-        className: DataTypes.string,
-        dataSource: DataTypes.arrayOf(DataTypes.object),
-        disabled: DataTypes.bool,
-        filterOption: DataTypes.func,
-        listStyle: DataTypes.object,
-        operations: DataTypes.arrayOf(DataTypes.string),
-        render: DataTypes.func,
-        selectedKeys: DataTypes.arrayOf(DataTypes.string),
-        showSearch: DataTypes.bool,
-        targetKeys: DataTypes.arrayOf(DataTypes.string),
-        titles: DataTypes.arrayOf(DataTypes.string)
-    },
-    template: `
-        <div class="{{cls}}">
-            <s-translist
-                title="{{titles[0]}}"
-                direction="left"
-                sourceList="{{sourceList}}"
-                disabled="{{disabled}}"
-                showFooter="{{showFooter}}"
-                listStyle="{{listStyle}}"
-                showSearch="{{showSearch}}"
-                filterOption="{{filterOption}}"
-                render="{{render}}">
-                <slot name="footer" slot="footer"/>
-            </s-translist>
-            <div class="${prefix}-operation">
-                <s-button type="primary" size="small"
-                    on-click="handleTrans('right')" disabled="{{rightDisabled}}">
-                    <s-icon type="right"/> {{operations[0]}}
-                </s-button>
-                <s-button type="primary" size="small"
-                    on-click="handleTrans('left')" disabled="{{leftDisabled}}">
-                    <s-icon type="left"/> {{operations[1]}}
-                </s-button>
-            </div>
-            <s-translist
-                title="{{titles[1]}}"
-                sourceList="{{targetList}}"
-                direction="right"
-                disabled="{{disabled}}"
-                showFooter="{{showFooter}}"
-                listStyle="{{listStyle}}"
-                showSearch="{{showSearch}}"
-                filterOption="{{filterOption}}"
-                render="{{render}}">
-                <slot name="footer" slot="footer"/>
-            </s-translist>
-        </div>
-    `,
-    initData() {
-        return {
-            titles: ['', ''],
-            rightDisabled: true,
-            leftDisabled: true,
-            operations: ['', ''],
-            disabled: false,
-            render: item => item.title
-        };
-    },
-    components: {
-        's-checkbox': checkbox,
-        's-button': button,
-        's-icon': icon,
-        's-translist': transList
-    },
     computed: {
-        cls() {
+        classes() {
             const className = this.data.get('className');
             const disabled = this.data.get('disabled');
-            return classNames(prefix, className, {
-                [`${prefix}-disabled`]: disabled
+            const renderList = this.data.get('renderList');
+
+            return classNames(prefixCls, className, {
+                [`${prefixCls}-disabled`]: disabled,
+                [`${prefixCls}-customize-list`]: !!renderList
             });
         },
-        sourceList() {
-            const source = this.data.get('dataSource');
-            const targetKeys = this.data.get('targetKeys');
-            return source.filter(item => !targetKeys.includes(item.key));
+        getTitles() {
+            const titles = this.data.get('titles');
+            return titles || ['', ''];
         },
-        targetList() {
-            const source = this.data.get('dataSource');
-            const targetKeys = this.data.get('targetKeys');
-            return source.filter(item => targetKeys.includes(item.key));
-        },
-        rightDisabled() {
-            const leftSelect = this.data.get('left') || [];
-            return leftSelect.length === 0;
-        },
-        leftDisabled() {
-            const rightSelect = this.data.get('right') || [];
-            return rightSelect.length === 0;
-        }
-    },
-    messages: {
-        'UI:select-list-item'(arg) {
-            const {dir, selectKeys} = arg.value;
-            this.data.set(dir, selectKeys);
-            this.fire('selectChange', {
-                source: this.data.get('left') || [],
-                target: this.data.get('right') || []
+        separateDataSource() {
+            const dataSource = this.data.get('dataSource');
+            const rowKey = this.data.get('rowKey');
+            const targetKeys = this.data.get('targetKeys') || [];
+            const leftDataSource = [];
+            const rightDataSource = new Array(targetKeys.length);
+
+            dataSource.forEach(record => {
+                if (rowKey) {
+                    record.key = rowKey(record);
+                }
+
+                const indexOfKey = targetKeys.indexOf(record.key);
+                if (indexOfKey !== -1) {
+                    rightDataSource[indexOfKey] = record;
+                }
+                else {
+                    leftDataSource.push(record);
+                }
             });
+
+            return {
+                leftDataSource,
+                rightDataSource
+            };
         },
-        'UI:input-search'(arg) {
-            this.fire('search', arg.value);
+        leftActive() {
+            const targetSelectedKeys = this.data.get('targetSelectedKeys');
+            return targetSelectedKeys.length > 0;
         },
-        'UI:list-scroll'(arg) {
-            this.fire('scroll', arg.value);
+        rightActive() {
+            const sourceSelectedKeys = this.data.get('sourceSelectedKeys');
+            return sourceSelectedKeys.length > 0;
         }
     },
-    handleTrans(dir) {
-        let {targetKeys, dataSource} = this.data.get();
-        const frm = dir === 'left' ? 'right' : 'left';
-        const frmList = this.data.get(frm);
-        if (!frmList) {
-            return;
-        }
-        if (dir === 'right') {
-            targetKeys = frmList.concat(targetKeys);
-        } else {
-            targetKeys = targetKeys.filter(key => !frmList.includes(key));
-        }
-        dataSource.forEach(item => {
-            if (frmList.includes(item.key)) {
-                item.checked = false;
-            }
-        });
-        // 清空来源选中列表
-        this.data.set(frm, []);
-        this.data.set('dataSource', dataSource);
-        this.data.set('targetKeys', targetKeys);
-        this.fire('change', {
-            targetKeys,
-            moveKeys: frmList,
-            direction: dir
-        });
+    initData() {
+        return {
+            prefixCls,
+            showSelectAll: true,
+            notFoundContent: renderEmpty('Transfer'),
+            sourceSelectedKeys: [],
+            targetSelectedKeys: [],
+            operations: []
+        };
     },
     inited() {
-        if (this.sourceSlots.named.footer) {
-            this.data.set('showFooter', true);
+        this.data.set('instance', this);
+    },
+    getSelectedKeysName(direction) {
+        return direction === 'left' ? 'sourceSelectedKeys' : 'targetSelectedKeys';
+    },
+    handleSelectChange(direction, holder) {
+        const sourceSelectedKeys = this.data.get('sourceSelectedKeys');
+        const targetSelectedKeys = this.data.get('targetSelectedKeys');
+
+        if (direction === 'left') {
+            this.fire('selectChange', {sourceSelectedKeys: holder, targetSelectedKeys});
         }
-        const selectedKeys = this.data.get('selectedKeys') || [];
-        const targetKeys = this.data.get('targetKeys');
-        this.data.set('left', selectedKeys.filter(key => !targetKeys.includes(key)));
-        this.data.set('right', selectedKeys.filter(key => targetKeys.includes(key)));
-        this.data.apply('dataSource', source => {
-            return source.map(item => {
-                item.checked = selectedKeys.includes(item.key);
-                return item;
-            });
-        });
-    }
+        else {
+            this.fire('selectChange', {targetSelectedKeys: holder, sourceSelectedKeys});
+        }
+    },
+    handleItemSelect(direction, selectedKey, checked) {
+        const sourceSelectedKeys = this.data.get('sourceSelectedKeys');
+        const targetSelectedKeys = this.data.get('targetSelectedKeys');
+
+        const holder = direction === 'left' ? [...sourceSelectedKeys] : [...targetSelectedKeys];
+        const index = holder.indexOf(selectedKey);
+        if (index > -1) {
+            holder.splice(index, 1);
+        }
+        if (checked) {
+            holder.push(selectedKey);
+        }
+        this.handleSelectChange(direction, holder);
+
+        this.data.set(this.getSelectedKeysName(direction), holder);
+    },
+    handleLeftItemSelectAll(params) {
+        this.handleItemSelectAll('left', params.selectedKeys, params.checkAll);
+    },
+    handleRightItemSelectAll(params) {
+        this.handleItemSelectAll('right', params.selectedKeys, params.checkAll);
+    },
+    handleItemSelectAll(direction, selectedKeys, checkAll) {
+        const originalSelectedKeys = this.data.get(this.getSelectedKeysName(direction)) || [];
+
+        let mergedCheckedKeys = [];
+        if (checkAll) {
+            // Merge current keys with origin key
+            mergedCheckedKeys = Array.from(new Set([...originalSelectedKeys, ...selectedKeys]));
+        }
+        else {
+            // Remove current keys from origin keys
+            mergedCheckedKeys = originalSelectedKeys.filter(
+                key => selectedKeys.indexOf(key) === -1,
+            );
+        }
+
+        this.handleSelectChange(direction, mergedCheckedKeys);
+
+        this.data.set(this.getSelectedKeysName(direction), mergedCheckedKeys);
+    },
+    handleLeftItemSelect({selectedKey, checked}) {
+        this.handleItemSelect('left', selectedKey, checked);
+    },
+    handleRightItemSelect({selectedKey, checked}) {
+        this.handleItemSelect('right', selectedKey, checked);
+    },
+    handleMoveTo(direction) {
+        const targetKeys = this.data.get('targetKeys') || [];
+        const dataSource = this.data.get('dataSource') || [];
+        const sourceSelectedKeys = this.data.get('sourceSelectedKeys');
+        const targetSelectedKeys = this.data.get('targetSelectedKeys');
+        const moveKeys = direction === 'right' ? sourceSelectedKeys : targetSelectedKeys;
+        // filter the disabled options
+        const newMoveKeys = moveKeys.filter(
+            key => !dataSource.some(data => !!(key === data.key && data.disabled))
+        );
+        // move items to target box
+        const newTargetKeys = direction === 'right'
+            ? newMoveKeys.concat(targetKeys)
+            : targetKeys.filter(targetKey => newMoveKeys.indexOf(targetKey) === -1);
+
+        // empty checked keys
+        const oppositeDirection = direction === 'right' ? 'left' : 'right';
+        this.data.set(this.getSelectedKeysName(oppositeDirection), []);
+
+        this.handleSelectChange(oppositeDirection, []);
+        this.fire('change', {targetKeys: newTargetKeys, direction, moveKeys: newMoveKeys});
+    },
+    handleScroll(direction, e) {
+        this.fire('scroll', {direction, e});
+    },
+    handleLeftFilter(value) {
+        this.handleFilter('left', value);
+    },
+    handleRightFilter(value) {
+        this.handleFilter('left', value);
+    },
+    handleFilter(direction, value) {
+        this.fire('searchChange', {direction, value});
+        this.fire('search', {direction, value});
+    },
+    handleLeftClear() {
+        this.handleClear('left');
+    },
+    handleRightClear() {
+        this.handleClear('right');
+    },
+    handleClear(direction) {
+        this.fire('search', {direction, value: ''});
+    },
+    components: {
+        's-list': List,
+        's-operation': Operation
+    },
+    template: `<div class="{{classes}}">
+        <s-list
+            prefixCls="{{prefixCls}}-list"
+            titleText="{{getTitles[0]}}"
+            dataSource="{{separateDataSource.leftDataSource}}"
+            filterOption="{{filterOption}}"
+            style="{{listStyle}}"
+            checkedKeys="{{sourceSelectedKeys}}"
+            targetKeys="{{targetKeys}}"
+            render="{{render}}"
+            showSearch="{{showSearch}}"
+            body="{{body}}"
+            renderList="{{renderList}}"
+            footer="{{footer}}"
+            disabled="{{disabled}}"
+            direction="left"
+            showSelectAll="{{showSelectAll}}"
+            notFoundContent="{{notFoundContent}}"
+            on-itemSelect="handleLeftItemSelect"
+            on-itemSelectAll="handleLeftItemSelectAll"
+            on-scroll="handleScroll('left', $event)"
+            on-filter="handleLeftFilter"
+            on-clear="handleLeftClear"
+        />
+        <s-operation
+            className="{{prefixCls}}-operation"
+            rightActive="{{rightActive}}"
+            rightArrowText="{{operations[0]}}"
+            leftActive="{{leftActive}}"
+            leftArrowText="{{operations[1]}}"
+            style="{{operationStyle}}"
+            disabled="{{disabled}}"
+            on-moveToLeft="handleMoveTo('left')"
+            on-moveToRight="handleMoveTo('right')"
+        />
+        <s-list
+            prefixCls="{{prefixCls}}-list"
+            titleText="{{getTitles[1]}}"
+            dataSource="{{separateDataSource.rightDataSource}}"
+            filterOption="{{filterOption}}"
+            style="{{listStyle}}"
+            checkedKeys="{{targetSelectedKeys}}"
+            targetKeys="{{targetKeys}}"
+            render="{{render}}"
+            showSearch="{{showSearch}}"
+            body="{{body}}"
+            footer="{{footer}}"
+            renderList="{{renderList}}"
+            disabled="{{disabled}}"
+            direction="right"
+            showSelectAll="{{showSelectAll}}"
+            notFoundContent="{{notFoundContent}}"
+            on-itemSelect="handleRightItemSelect"
+            on-itemSelectAll="handleRightItemSelectAll"
+            on-scroll="handleScroll('right', $event)"
+            on-filter="handleRightFilter"
+            on-clear="handleRightClear"
+        />
+    </div>`
 });
