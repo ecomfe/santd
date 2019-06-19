@@ -1,57 +1,35 @@
 <cn>
 #### 基本使用
-最简单的用法，在浮层中选择日期。
+最简单的用法，在浮层中可以选择或者输入日期。
 </cn>
 
 ```html
 <template>
     <div>
         <div>
-            <s-date-picker value="{=datePicker.value=}" range="{{datePicker.range}}" size="large"/>
-            <span>
-                Value is: {{datePicker.value | datetime('YYYY-MM-DD')}}
-            </span>
-        </div>
-        <br>
-        <div>
-            <s-range-picker value="{=rangePicker.value=}" />
-            <span>
-                Value is: {{rangePicker.value.begin | datetime('YYYY-MM-DD')}} - {{rangePicker.value.end | datetime('YYYY-MM-DD')}}
-            </span>
+            <s-datepicker on-change="handleChange" />
+            <br /><br />
+            <s-monthpicker placeholder="Select month" on-change="handleChange"/>
+            <br /><br />
+            <s-rangepicker on-change="handleChange" />
+            <br /><br />
+            <s-weekpicker placeholder="Select week" on-change="handleChange" />
         </div>
     </div>
 </template>
 
-
 <script>
-import {DatePicker, RangePicker} from 'santd/date-picker';
-import format from 'date-fns/format';
+import DatePicker from 'santd/date-picker';
+
 export default {
     components: {
-        's-date-picker': DatePicker,
-        's-range-picker': RangePicker
+        's-datepicker': DatePicker,
+        's-monthpicker': DatePicker.MonthPicker,
+        's-weekpicker': DatePicker.WeekPicker,
+        's-rangepicker': DatePicker.RangePicker
     },
-    filters: {
-        datetime(value, f = 'YYYY-MM-DD HH:mm:ss') {
-            return format(value, f);
-        }
-    },
-    initData() {
-        return {
-            datePicker: {
-                value: new Date(),
-                range: {
-                    begin: new Date(2014, 4, 1),
-                    end: new Date()
-                }
-            },
-            rangePicker: {
-                value: {
-                    begin: new Date(2017, 9, 10),
-                    end: new Date(2018, 11, 12)
-                }
-            }
-        };
+    handleChange({date, dateString}) {
+        console.log(date, dateString);
     }
 }
 </script>

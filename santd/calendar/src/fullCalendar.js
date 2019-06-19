@@ -91,6 +91,7 @@ export default inherits(san.defineComponent({
                 on-typeChange="setType"
                 on-valueChange="setValue"
             />
+            <div key="calendar-body" class="{{prefixCls}}-calendar-body">
             <s-datetable
                 s-if="type === 'date'"
                 dateRender="{{dateCellRender}}"
@@ -112,6 +113,7 @@ export default inherits(san.defineComponent({
                 disabledDate="{{disabledDate}}"
                 on-select="handleMonthSelect"
             />
+            </div>
         </div>
     `
 }), Base);

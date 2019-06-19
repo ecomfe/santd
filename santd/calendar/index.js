@@ -3,13 +3,13 @@
  * @author chenkai13 <chenkai13@baidu.com>
  */
 import san, {DataTypes} from 'san';
-import './style/index.less';
 import moment from 'moment';
 import {classCreator} from 'santd/core/util';
 import Radio from 'santd/radio';
 import Select from 'santd/select';
 import classNames from 'classnames';
 import Calendar from './src/fullCalendar';
+import './style/index.less';
 const prefixCls = classCreator('fullcalendar')();
 
 moment.locale('zh-cn');

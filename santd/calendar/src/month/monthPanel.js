@@ -23,7 +23,15 @@ export default san.defineComponent({
         },
         year() {
             const value = this.data.get('value');
-            return value.year();
+            return value && value.year();
+        },
+        injectFooter() {
+            const renderFooter = this.data.get('renderFooter');
+            const instance = this.data.get('instance');
+
+            if (instance && renderFooter) {
+                instance.components.footer = renderFooter;
+            }
         }
     },
     inited() {
@@ -31,6 +39,7 @@ export default san.defineComponent({
         const defaultValue = this.data.get('defaultValue');
 
         this.data.set('value', value || defaultValue);
+        this.data.set('instance', this);
     },
     handlePreviousYear() {
         this.fire('changeYear', -1);
@@ -49,7 +58,8 @@ export default san.defineComponent({
         's-monthtable': MonthTable
     },
     template: `
-        <div class="{{preifxCls}}">
+        <div class="{{prefixCls}}">
+            <div>
             <div class="{{prefixCls}}-header">
                 <a
                     class="{{prefixCls}}-prev-year-btn"
@@ -84,11 +94,13 @@ export default san.defineComponent({
                     cellRender="{{cellRender}}"
                     contentRender="{{contentRender}}"
                     prefixCls="{{prefixCls}}"
+                    rootPrefixCls="{{rootPrefixCls}}"
                     on-select="setAndSelectValue"
                 />
             </div>
-            <div class="{{prefixCls}}-footer" s-if="hasFooter">
-                <s-footer></s-footer>
+            <div class="{{prefixCls}}-footer" s-if="renderFooter">
+                <footer />
+            </div>
             </div>
         </div>
     `

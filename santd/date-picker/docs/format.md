@@ -7,39 +7,40 @@
 <template>
     <div>
         <div>
-            <s-date-picker value="{=datePicker.value=}" range="{{datePicker.range}}" format="YYYY/MM/DD"/>
-        </div>
-        <br>
-        <div>
-            <s-range-picker value="{=rangePicker.value=}" format="YYYY/MM/DD"/>
+            <s-datepicker defaultValue="{{value1}}" format="{{dateFormat}}" />
+            <br /><br />
+            <s-datepicker defaultValue="{{value2}}" format="{{dateFormatList[0]}}" />
+            <br /><br />
+            <s-monthpicker defaultValue="{{value3}}" format="{{monthFormat}}" />
+            <br /><br />
+            <s-rangepicker defaultValue="{{value4}}" format="{{dateFormat}}">
         </div>
     </div>
 </template>
 
-
 <script>
-import {DatePicker, RangePicker} from 'santd/date-picker';
-import format from 'date-fns/format';
+import DatePicker from 'santd/date-picker';
+import moment from 'moment';
+
+const dateFormat = 'YYYY/MM/DD';
+const monthFormat = 'YYYY/MM';
+const dateFormatList = ['DD/MM/YYYY', 'DD/MM/YY'];
+
 export default {
     components: {
-        's-date-picker': DatePicker,
-        's-range-picker': RangePicker
+        's-datepicker': DatePicker,
+        's-monthpicker': DatePicker.MonthPicker,
+        's-rangepicker': DatePicker.RangePicker
     },
     initData() {
         return {
-            datePicker: {
-                value: new Date(),
-                range: {
-                    begin: new Date(2014, 4, 1),
-                    end: new Date()
-                }
-            },
-            rangePicker: {
-                value: {
-                    begin: new Date(2017, 9, 10),
-                    end: new Date(2018, 11, 12)
-                }
-            }
+            dateFormat,
+            monthFormat,
+            dateFormatList,
+            value1: moment('2019/01/01', dateFormat),
+            value2: moment('01/01/2019', dateFormatList[0]),
+            value3: moment('2019/01/01', monthFormat),
+            value4: [moment('2019/06/06', dateFormat), moment('2019/06/06', dateFormat)]
         };
     }
 }

@@ -51,7 +51,7 @@ export default san.defineComponent({
             const value = this.data.get('value') || this.data.get('defaultOpenValue');
             const hour = value.hour();
             const hourOptions = this.data.get('hourOptions');
-            const disabledHours = this.data.get('disabledHours');
+            const disabledHours = this.data.get('disabledHours') || function () {};
             const showHour = this.data.get('showHour');
             const use12Hours = this.data.get('use12Hours');
             const refresh = this.data.get('refresh');
@@ -82,7 +82,7 @@ export default san.defineComponent({
             const value = this.data.get('value') || this.data.get('defaultOpenValue');
             const minute = value.minute();
             const minuteOptions = this.data.get('minuteOptions');
-            const disabledMinutes = this.data.get('disabledMinutes');
+            const disabledMinutes = this.data.get('disabledMinutes') || function () {};
             const showMinute = this.data.get('showMinute');
             const refresh = this.data.get('refresh');
 
@@ -101,7 +101,7 @@ export default san.defineComponent({
             const value = this.data.get('value') || this.data.get('defaultOpenValue');
             const second = value.second();
             const secondOptions = this.data.get('secondOptions');
-            const disabledSeconds = this.data.get('disabledSeconds');
+            const disabledSeconds = this.data.get('disabledSeconds') || function () {};
             const showSecond = this.data.get('showSecond');
             const refresh = this.data.get('refresh');
 

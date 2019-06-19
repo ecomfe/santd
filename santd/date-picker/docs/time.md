@@ -1,41 +1,44 @@
 <cn>
-#### Todo: 显示时间
-通过添加time属性，可以增加时间的设置
+#### 日期时间选择
+增加选择时间功能，当 `showTime` 为一个对象时，其属性会传递给内建的 `TimePicker`。
 </cn>
 
 ```html
 <template>
     <div>
-        <s-date-picker time value="{=datePicker.value=}" range="{{datePicker.range}}"/>
-        <span>
-            Value is: {{datePicker.value | datetime('YYYY-MM-DD HH:mm:ss')}}
-        </span>
+        <s-datepicker showTime placeholder="Select Time" on-change="handleChange" on-ok="handleOk"/>
+        <br /><br />
+        <s-rangepicker
+            showTime="{{showTime}}"
+            format="YYYY-MM-DD HH:mm"
+            placeholder="{{['Start Time', 'End Time']}}"
+            on-change="handleChange"
+            on-ok="handleOk"
+        />
     </div>
 </template>
 
-
 <script>
 import DatePicker from 'santd/date-picker';
-import format from 'date-fns/format';
+
 export default {
     components: {
-        's-date-picker': DatePicker
-    },
-    filters: {
-        datetime(value, f = 'YYYY-MM-DD HH:mm:ss') {
-            return format(value, f);
-        }
+        's-datepicker': DatePicker,
+        's-rangepicker': DatePicker.RangePicker
     },
     initData() {
         return {
-            datePicker: {
-                value: new Date(),
-                range: {
-                    begin: new Date(2014, 4, 1),
-                    end: new Date()
-                }
+            showTime: {
+                format: 'HH:mm'
             }
         };
+    },
+    handleChange({date, dateString}) {
+        console.log('Selected Time: ', date);
+        console.log('Formatted Selected Time: ', dateString);
+    },
+    handleOk(value) {
+        console.log('onOk: ', value);
     }
 }
 </script>

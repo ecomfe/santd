@@ -6,6 +6,7 @@
 import san, {DataTypes} from 'san';
 import classNames from 'classnames';
 import locale from './locale/zh_CN';
+import {isAllowedDate} from '../src/util/index';
 
 export default san.defineComponent({
     dataTypes: {
@@ -17,7 +18,7 @@ export default san.defineComponent({
     initData() {
         return {
             visible: true,
-            prefixCls: 'san-fullcalendar',
+            prefixCls: 'calendar',
             className: '',
             locale: locale
         };
@@ -44,6 +45,7 @@ export default san.defineComponent({
             }
             return locale.dateFormat;
         }
+        return format;
     },
     focus() {
         if (this.ref('focusEl')) {
@@ -66,5 +68,11 @@ export default san.defineComponent({
     setValue(value) {
         this.data.set('value', value);
         this.fire('change', value);
+        this.dispatch('change', value);
+    },
+    isAllowedDate(value) {
+        const disabledDate = this.data.get('disabledDate');
+        const disabledTime = this.data.get('disabledTime');
+        return isAllowedDate(value, disabledDate, disabledTime);
     }
 });

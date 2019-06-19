@@ -48,7 +48,7 @@ export default san.defineComponent({
         const prefixCls = this.data.get('prefixCls');
 
         return classNames(`${prefixCls}-cell`, {
-            [`${prefixCls}-selected-cell`]: yearData.value === currentYear,
+            [`${prefixCls}-selected-cell`]: yearData.year === currentYear,
             [`${prefixCls}-last-decade-cell`]: yearData.year < startYear,
             [`${prefixCls}-next-decade-cell`]: yearData.year > endYear
         });

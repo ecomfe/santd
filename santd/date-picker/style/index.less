@@ -1,68 +1,17 @@
-@prefix-cls: ~"@{ant-prefix}-date-picker";
 @import "santd/core/styles/themes/default";
 @import "santd/core/styles/mixins/index";
+@import '../../input/style/mixin';
+@import '../../button/style/mixin';
 
-@import "./MonthView.less";
-@import "./range.less";
+@calendar-prefix-cls: ~'@{ant-prefix}-calendar';
+@calendar-timepicker-prefix-cls: ~'@{ant-prefix}-calendar-time-picker';
 
-.@{prefix-cls}{
-  display: block;
-  font-size: 12px;
-  cursor:pointer;
-  padding: 2px 12px;;
-  width: 230px;
-  border: 1px solid #d9d9d9;
-  border-radius: 4px;
-  user-select: none;
-  transition: all .3s;
-  position: relative;
-  &:hover {
-    border-color: #40a9ff;
-  }
-
-  .@{prefix-cls}-text {
-    display: block;
-    vertical-align: middle;
-    font-size: 14px;
-    color: rgba(0,0,0,.65);
-  }
-
-  .@{prefix-cls}-default {
-      height: 26px;
-      line-height: 26px;
-  }
-
-  .@{prefix-cls}-lg {
-      height: 36px;
-      line-height: 36px;
-  }
-  .@{prefix-cls}-sm {
-      height: 20px;
-      line-height: 20px;
-  }
-  .sanicon-calendar {
-      position: absolute;
-      right: 10px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 16px;
-      color: rgba(0, 0, 0, .25);
-  }
-}
-
-.@{prefix-cls}-layer {
-  padding: 10px;
-  background: #fff;
-  box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.2);
-
-  &-hidden {
-    display: none;
-  }
-}
-
-.@{prefix-cls}-disabled,
-.@{prefix-cls}-read-only {
-  color: #999;
-  border-color: #d8d8d8 !important;
-  background: #efefef;
-}
+@import './picker';
+@import './calendar';
+@import './monthPanel';
+@import './yearPanel';
+@import './decadePanel';
+@import './monthPicker';
+@import './rangePicker';
+@import './timePicker';
+@import './weekPicker';

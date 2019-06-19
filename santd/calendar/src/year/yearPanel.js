@@ -18,8 +18,13 @@ export default san.defineComponent({
         const defaultValue = this.data.get('defaultValue');
 
         this.data.set('value', value || defaultValue);
+        this.data.set('instance', this);
     },
     computed: {
+        prefixCls() {
+            const rootPrefixCls = this.data.get('rootPrefixCls');
+            return rootPrefixCls + '-year-panel';
+        },
         startYear() {
             const value = this.data.get('value');
             const currentYear = value.year();
@@ -28,13 +33,21 @@ export default san.defineComponent({
         endYear() {
             const startYear = this.data.get('startYear');
             return startYear + 9;
+        },
+        injectFooter() {
+            const renderFooter = this.data.get('renderFooter');
+            const instance = this.data.get('instance');
+
+            if (instance && renderFooter) {
+                instance.components.footer = renderFooter;
+            }
         }
     },
     handlePreviousDecade() {
         this.goYear(-10);
     },
     handleDecadePanelShow() {
-        this.fire('decaePanelShow');
+        this.fire('decadePanelShow');
     },
     handleNextDecade() {
         this.goYear(10);
@@ -52,7 +65,8 @@ export default san.defineComponent({
         's-yeartable': YearTable
     },
     template: `
-        <div class="{{preifxCls}}">
+        <div class="{{prefixCls}}">
+            <div>
             <div class="{{prefixCls}}-header">
                 <a
                     class="{{prefixCls}}-prev-decade-btn"
@@ -86,13 +100,15 @@ export default san.defineComponent({
                     cellRender="{{cellRender}}"
                     contentRender="{{contentRender}}"
                     prefixCls="{{prefixCls}}"
+                    rootPrefixCls="{{rootPrefixCls}}"
                     startYear="{{startYear}}"
                     endYear="{{endYear}}"
                     on-select="setAndSelectValue"
                 />
             </div>
-            <div class="{{prefixCls}}-footer" s-if="hasFooter">
-                <s-footer></s-footer>
+            <div class="{{prefixCls}}-footer" s-if="renderFooter">
+                <footer />
+            </div>
             </div>
         </div>
     `
