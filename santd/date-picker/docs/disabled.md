@@ -6,32 +6,32 @@
 ```html
 <template>
     <div>
-        <s-date-picker disabled value="{=datePicker.value=}" range="{{datePicker.range}}"/>
+        <s-datepicker disabled defaultValue="{{dateDefaultValue}}"/>
+        <br /><br />
+        <s-monthpicker disabled defaultValue="{{monthDefaultValue}}"/>
+        <br /><br />
+        <s-rangepicker disabled defaultValue="{{rangeDefaultValue}}" />
     </div>
 </template>
 
 
 <script>
 import DatePicker from 'santd/date-picker';
-import format from 'date-fns/format';
+import moment from 'moment';
+
+const dateFormat = 'YYYY-MM-DD';
+
 export default {
     components: {
-        's-date-picker': DatePicker
-    },
-    filters: {
-        datetime(value, f = 'YYYY-MM-DD HH:mm:ss') {
-            return format(value, f);
-        }
+        's-datepicker': DatePicker,
+        's-monthpicker': DatePicker.MonthPicker,
+        's-rangepicker': DatePicker.RangePicker
     },
     initData() {
         return {
-            datePicker: {
-                value: new Date(),
-                range: {
-                    begin: new Date(2014, 4, 1),
-                    end: new Date()
-                }
-            }
+            dateDefaultValue: moment('2019-06-06', 'YYYY-MM-DD'),
+            monthDefaultValue: moment('2019-06', 'YYYY-MM'),
+            rangeDefaultValue: [moment('2019-06-06', 'YYYY-MM-DD'), moment('2019-06-06', 'YYYY-MM-DD')]
         };
     }
 }

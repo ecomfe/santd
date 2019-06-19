@@ -68,6 +68,7 @@ export default san.defineComponent({
                         current.add(passed, 'days');
                     }
                     dataTable[i].current.push({data: current});
+                    dataTable[i].week = current.week();
 
                     // 开始处理各种样式
                     let next = null;
@@ -170,7 +171,6 @@ export default san.defineComponent({
                     passed++;
                 }
             };
-
             return dataTable;
         },
         weeks() {
@@ -207,7 +207,12 @@ export default san.defineComponent({
                 }
                 else {
                     content = san.defineComponent({
-                        template: '<span>{{value}}</span>'
+                        computed: {
+                            date() {
+                                return this.data.get('value').date();
+                            }
+                        },
+                        template: '<span>{{date}}</span>'
                     });
                 }
                 instance && (instance.components.daterender = san.defineComponent({
@@ -292,6 +297,14 @@ export default san.defineComponent({
                     role="row"
                     class="{{getTrClassName(date)}}"
                 >
+                    <td
+                        s-if="showWeekNumber"
+                        key="{{date.week}}"
+                        role="gridcell"
+                        class="{{prefixCls}}-week-number-cell"
+                    >
+                        {{date.week}}
+                    </td>
                     <td
                         s-for="current in date.current"
                         role="gridcell"

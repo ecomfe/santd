@@ -48,7 +48,7 @@ export default san.defineComponent({
         },
         disabledHourOptions() {
             const use12Hours = this.data.get('use12Hours');
-            const disabledHours = this.data.get('disabledHours');
+            const disabledHours = this.data.get('disabledHours') || function () {};
 
             let disabledOptions = disabledHours();
             if (use12Hours && Array.isArray(disabledOptions)) {
@@ -69,7 +69,7 @@ export default san.defineComponent({
         },
         minuteOptions() {
             const value = this.data.get('value');
-            const disabledMinutes = this.data.get('disabledMinutes');
+            const disabledMinutes = this.data.get('disabledMinutes') || function () {};
             const disabledMinuteOptions = disabledMinutes(value ? value.hour() : null);
             const hideDisabledOptions = this.data.get('hideDisabledOptions');
             const minuteStep = this.data.get('minuteStep');
@@ -78,7 +78,7 @@ export default san.defineComponent({
         },
         secondOptions() {
             const value = this.data.get('value');
-            const disabledSeconds = this.data.get('disabledSeconds');
+            const disabledSeconds = this.data.get('disabledSeconds') || function () {};
             const disabledSecondOptions = disabledSeconds(value ? value.hour() : null, value ? value.minute() : null);
             const hideDisabledOptions = this.data.get('hideDisabledOptions');
             const secondStep = this.data.get('secondStep');
@@ -91,7 +91,7 @@ export default san.defineComponent({
             const minuteOptions = this.data.get('minuteOptions');
             const secondOptions = this.data.get('secondOptions');
 
-            return toNearestValidTime(defaultOpenValue, hourOptions, minuteOptions, secondOptions);
+            return defaultOpenValue && toNearestValidTime(defaultOpenValue, hourOptions, minuteOptions, secondOptions);
         },
         injectAddon() {
             const addon = this.data.get('addon');

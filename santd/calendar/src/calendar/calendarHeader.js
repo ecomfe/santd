@@ -36,11 +36,11 @@ export default san.defineComponent({
         displayMonth() {
             const value = this.data.get('value');
             const locale = this.data.get('locale');
-            const localeData = value.localeData();
+            const localeData = value && value.localeData();
 
             return locale.monthFormat
-                ? value.format(locale.monthFormat)
-                : localeData.monthsShort(value);
+                ? value && value.format(locale.monthFormat)
+                : localeData && localeData.monthsShort(value);
         },
         displayDay() {
             const value = this.data.get('value');
@@ -82,6 +82,22 @@ export default san.defineComponent({
     },
     showDecadePanel() {
         this.fire('panelChange', {value: null, mode: 'decade'});
+    },
+    handleMonthSelect(value) {
+        this.fire('panelChange', {value, mode: 'date'});
+        this.fire('monthSelect', value);
+        this.fire('valueChange', value);
+    },
+    goYear(direction) {
+        const next = this.data.get('value').clone();
+        next.add(direction, 'years');
+        this.fire('valueChange', next);
+    },
+    handleYearSelect(value) {
+        const referer = this.data.get('yearPanelReferer');
+        this.data.set('yearPanelReferer', '');
+        this.fire('panelChange', {value, mode: referer});
+        this.fire('valueChange', value);
     },
     components: {
         's-monthpanel': MonthPanel,
@@ -144,7 +160,7 @@ export default san.defineComponent({
                 />
             </div>
             <s-monthpanel
-                s-if="mode === month"
+                s-if="mode === 'month'"
                 locale="{{locale}}"
                 value="{{value}}"
                 rootPrefixCls="{{prefixCls}}"
@@ -154,19 +170,20 @@ export default san.defineComponent({
                 cellRender="{{monthCellRender}}"
                 contentRender="{{monthCellContentRender}}"
                 renderFooter="{{renderFooter}}"
-                on-changeYear="handleChangeYear"
+                on-changeYear="goYear"
             />
             <s-yearpanel
-                s-if="mode === year"
+                s-if="mode === 'year'"
                 locale="{{locale}}"
                 defaultValue="{{value}}"
                 value="{{value}}"
                 rootPrefixCls="{{prefixCls}}"
+                renderFooter="{{renderFooter}}"
                 on-select="handleYearSelect"
                 on-decadePanelShow="showDecadePanel"
             />
             <s-decadepanel
-                s-if="mode === decade"
+                s-if="mode === 'decade'"
                 locale="{{locale}}"
                 defaultValue="{{value}}"
                 value="{{value}}"

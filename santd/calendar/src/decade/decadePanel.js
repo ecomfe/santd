@@ -18,8 +18,13 @@ export default san.defineComponent({
         const defaultValue = this.data.get('defaultValue');
 
         this.data.set('value', value || defaultValue);
+        this.data.set('instance', this);
     },
     computed: {
+        prefixCls() {
+            const rootPrefixCls = this.data.get('rootPrefixCls');
+            return rootPrefixCls + '-decade-panel';
+        },
         startYear() {
             const value = this.data.get('value');
             const currentYear = value.year();
@@ -28,6 +33,14 @@ export default san.defineComponent({
         endYear() {
             const startYear = this.data.get('startYear');
             return startYear + 99;
+        },
+        injectFooter() {
+            const renderFooter = this.data.get('renderFooter');
+            const instance = this.data.get('instance');
+
+            if (instance && renderFooter) {
+                instance.components.footer = renderFooter;
+            }
         }
     },
     handlePreviousCentury() {
@@ -52,7 +65,8 @@ export default san.defineComponent({
         's-centurytable': DecadeTable
     },
     template: `
-        <div class="{{preifxCls}}">
+        <div class="{{prefixCls}}">
+            <div>
             <div class="{{prefixCls}}-header">
                 <a
                     class="{{prefixCls}}-prev-century-btn"
@@ -85,8 +99,9 @@ export default san.defineComponent({
                     on-select="setAndSelectValue"
                 />
             </div>
-            <div class="{{prefixCls}}-footer" s-if="hasFooter">
-                <s-footer></s-footer>
+            <div class="{{prefixCls}}-footer" s-if="renderFooter">
+                <footer />
+            </div>
             </div>
         </div>
     `

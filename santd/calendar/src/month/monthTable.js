@@ -58,7 +58,12 @@ export default san.defineComponent({
                 }
                 else {
                     content = san.defineComponent({
-                        template: '<span>{{value}}</span>'
+                        computed: {
+                            date() {
+                                return getMonthName(this.data.get('value'));
+                            }
+                        },
+                        template: '<span>{{date}}</span>'
                     });
                 }
                 instance && (instance.components.cell = san.defineComponent({
