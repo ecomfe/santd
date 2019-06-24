@@ -3,16 +3,20 @@
  * @author chenkai13 <chenkai13@baidu.com>
  */
 
-import './style/index.less';
-import san, {DataTypes} from 'san';
-import {classCreator, guid} from 'santd/core/util';
-import classNames from 'classnames';
-import uploader from './uploader';
+import san from 'san';
+import Upload from './upload';
+import inherits from 'santd/core/util/inherits';
 
-const cc = classCreator('upload');
-const prefix = cc('');
+export default inherits(san.defineComponent({
+    initData() {
+        return {
+            type: 'drag'
+        };
+    }
+}), Upload);
 
-export default san.defineComponent({
+
+/*export default san.defineComponent({
     template: `
         <template>
             <s-uploader
@@ -52,4 +56,4 @@ export default san.defineComponent({
     onRemove(arg) {
         this.fire('remove', arg);
     },
-});
+});*/

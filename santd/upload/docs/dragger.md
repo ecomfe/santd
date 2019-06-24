@@ -9,36 +9,32 @@
     <div>
         <s-dragger
             name="file"
-            multiple="{{true}}"
-            action="http://localhost:3000/upload"
+            multiple
+            action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
             on-change="handleChange"
         >
-            <p className="san-upload-drag-icon">
-              <s-icon type="inbox"/>
+            <p class="san-upload-drag-icon">
+                <s-icon type="inbox" />
             </p>
-            <p className="san-upload-text">Click or drag file to this area to upload</p>
-            <p className="san-upload-hint">Support for a single or bulk upload. Strictly prohibit from uploading company data or other band files</p>
+            <p class="san-upload-text">Click or drag file to this area to upload</p>
+            <p class="san-upload-hint">Support for a single or bulk upload. Strictly prohibit from uploading company data or other band files</p>
         </s-dragger>
     </div>
 </template>
 <script>
-import upload from 'santd/upload';
-import button from 'santd/button';
-import icon from 'santd/icon';
+import Upload from 'santd/upload';
+import Button from 'santd/button';
+import Icon from 'santd/icon';
 
-const Dragger = upload.Dragger
+const Dragger = Upload.Dragger;
+
 export default {
     components: {
         's-dragger': Dragger,
-        's-button': button,
-        's-icon': icon
+        's-button': Button,
+        's-icon': Icon
     },
-    initData() {
-        return {
-        };
-    },
-    handleChange(param) {
-        console.log('-----------handleChange', param);
+    handleChange(info) {
     }
 }
 </script>
