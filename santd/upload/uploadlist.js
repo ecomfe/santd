@@ -3,73 +3,85 @@
  * @author chenkai13 <chenkai13@baidu.com>
  */
 
-import './style/index.less';
 import san, {DataTypes} from 'san';
-import {classCreator, guid} from 'santd/core/util';
+import {previewImage, isImageUrl} from './utils';
 import classNames from 'classnames';
-import progress from 'santd/progress';
-import icon from 'santd/icon';
-import tooltip from 'santd/tooltip';
-import preview from './preview';
-import uploadicon from './icon';
+import Progress from 'santd/progress';
+import Icon from 'santd/icon';
+import Tooltip from 'santd/tooltip';
+import {classCreator} from 'santd/core/util';
 
-const cc = classCreator('upload');
-const prefix = cc('');
+const prefixCls = classCreator('upload')();
 
+const FileIcon = san.defineComponent({
+    computed: {
+        isImage() {
+            const file = this.data.get('file');
+            return isImageUrl(file);
+        }
+    },
+    components: {
+        's-icon': Icon
+    },
+    handlePreview(file, e) {
+        this.fire('preview', {file, e});
+    },
+    template: `<span>
+        <template s-if="listType === 'picture' || listType === 'picture-card'">
+            <div
+                s-if="listType === 'picture-card' && file.status === 'uploading'"
+                class="{{prefixCls}}-list-item-uploading-text"
+            >上传中...</div>
+            <s-icon
+                s-else-if="!file.thumbUrl && !file.url"
+                class="{{prefixCls}}-list-item-thumbnail"
+                type="picture"
+                theme="twoTone"
+            />
+            <a
+                s-else
+                class="{{prefixCls}}-list-item-thumbnail"
+                href="{{file.url || file.thumUrl}}"
+                target="_blank"
+                rel="noopener noreferrer"
+                on-click="handlePreview(file, $event)"
+            >
+                <img src="{{file.thumbUrl || file.url}}" alt="{{file.name}}" s-if="isImage && (file.thumbUrl || file.url)" />
+                <s-icon type="file" class="{{prefixCls}}-list-item-icon" theme="twoTone" s-else />
+            </a>
+        </template>
+        <s-icon s-else type="{{file.status === 'uploading' ? 'loading' : 'paper-clip'}}" />
+    </span>`
+});
 
 export default san.defineComponent({
-    template: `
-        <div class="{{cls}}">
-            <div
-                s-for="file in items"
-                class="${prefix}-list-item ${prefix}-list-item-{{file.status}}"
-            >
-                <div class="${prefix}-list-item-info">
-                    <!--iconAndPreview-->
-                    <s-tooltip
-                        s-if="{{file.status === 'error'}}"
-                        title="{{getErrMsg(file)}}">
-                        <s-uploadicon file="{{file}}" listType="{{listType}}"/>
-                        <s-preview file="{{file}}"/>
-                    </s-tooltip>
-                    <span s-else>
-                        <s-uploadicon file="{{file}}" listType="{{listType}}"/>
-                        <s-preview file="{{file}}"/>
-                    </span>
-                    <!--iconAndPreview-->
-                </div>
-                <span
-                    s-if="{{listType === 'picture-card' && file.status !== 'uploading'}}"
-                    class="${prefix}-list-item-actions"
-                >
-                    <a
-                        s-if="showPreviewIcon"
-                        href="{{file.url || file.thumbUrl}}" target="_blank" rel="noopener noreferrer"
-                        style="{{(file.url || file.thumbUrl) ? '' : 'pointer-events:none;opacity:0.5'}}"
-                        on-click="handlePreview({e:$event, file})"
-                        title="预览文件"
-                    >
-                        <s-icon type="eye"  theme="twoTone" twoToneColor="#fff"/>
-                        <!--<s-icon type="eye-o"/>-->
-                    </a>
-                    <s-icon s-if="showRemoveIcon" type="delete" on-click="handleClose($event, file)" title="删除文件"/>
-                </span>
-                <s-icon s-else="showRemoveIcon" type="close" on-click="handleClose($event, file)" title="删除文件"/>
-                <div  s-if="{{file.status === 'uploading'}}" class="${prefix}-list-item-progress">
-                    <s-progress s-if="{{'percent' in file}}" type="line" percent="{{file.percent}}"/>
-                </div>
-            </div>
-        </div>
-    `,
-    components: {
-        's-icon': icon,
-        's-progress': progress,
-        's-tooltip': tooltip,
-        's-preview': preview,
-        's-uploadicon': uploadicon
+    dataTypes: {
+        listType: DataTypes.string,
+        progressAttr: DataTypes.object,
+        showRemoveIcon: DataTypes.bool,
+        showPreviewIcon: DataTypes.bool,
+        previewFile: DataTypes.func
+    },
+    computed: {
+        items() {
+            const fileList = this.data.get('fileList');
+
+            return fileList.map(file => {
+                if (file.response && typeof file.response === 'string') {
+                    file.message = file.response;
+                }
+                else {
+                    file.message = (file.error && file.error.statusText) || '上传失败';
+                }
+                return {
+                    ...file
+                };
+            });
+        }
     },
     initData() {
         return {
+            prefixCls,
             listType: 'text',
             progressAttr: {
                 strokeWidth: 2,
@@ -77,41 +89,134 @@ export default san.defineComponent({
             },
             showRemoveIcon: true,
             showPreviewIcon: true,
-            items: []
+            previewFile: previewImage
         };
     },
-    computed: {
-        cls() {
-            let listType = this.data.get('listType');
-            return classNames(prefix, {
-                [`${prefix}-list`]: true,
-                [`${prefix}-list-${listType}`]: true
-            });
+    updated() {
+        const {
+            listType,
+            previewFile,
+            fileList
+        } = this.data.get();
+
+        if (listType !== 'picture' && listType !== 'picture-card') {
+            return;
         }
-    },
-    messages: {
-        'iconPreview': function(param) {
-            this.handlePreview(param);
-        }
-    },
-    inited() {
-    },
-    getErrMsg(file) {
-        let message = '上传错误';
-        if (file.response && typeof file.response === 'string') {
-            message = file.response;
-        } else if (file.error && file.error.statusText){
-            message = statusText;
-        }
-        return message;
-    },
-    handlePreview(param) {
-        this.dispatch('preview', param);
-    },
-    handleClose(e, file) {
-        this.dispatch('UI:upload-item-close', {
-            e,
-            file
+
+        fileList.forEach((file, index) => {
+            if (
+                typeof document === 'undefined' || typeof window === 'undefined'
+                || !window.FileReader || !window.File
+                || !(file.originFileObj instanceof File) || file.thumbUrl !== undefined
+            ) {
+                return;
+            }
+            file.thumbUrl = '';
+            if (previewFile) {
+                previewFile(file.originFileObj).then(previewDataUrl => {
+                    file.thumbUrl = previewDataUrl || '';
+                    this.data.set('fileList[' + index + ']', file);
+                });
+            }
         });
-    }
+    },
+    handleClose(file) {
+        this.fire('remove', file);
+    },
+    handlePreview({file, e}) {
+        if (!this.parentComponent.listeners.preview) {
+            return;
+        }
+        e.preventDefault();
+        this.fire('preview', file);
+    },
+    components: {
+        's-tooltip': Tooltip,
+        's-fileicon': FileIcon,
+        's-progress': Progress,
+        's-icon': Icon
+    },
+    template: `
+        <div class="{{prefixCls}}-list {{prefixCls}}-list-{{listType}}">
+            <div
+                s-for="file in items trackBy file.uid"
+                key="{{file.uid}}"
+                class="{{prefixCls}}-list-item {{prefixCls}}-list-item-{{file.status}}"
+            >
+                <div class="{{prefixCls}}-list-item-info">
+                    <s-tooltip title="{{file.message}}" s-if="file.status === 'error'">
+                        <s-fileicon
+                            prefixCls="{{prefixCls}}"
+                            file="{{file}}"
+                            listType="{{listType}}"
+                            on-preview="handlePreview"
+                        />
+                        <a
+                            s-if="file.url"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="{{prefixCls}}-list-item-name"
+                            title="{{title.name}}"
+                            href="{{file.url}}"
+                            on-click="handlePreview({file, e: $event})"
+                        >{{file.name}}</a>
+                        <span
+                            s-else
+                            class="{{prefixCls}}-list-item-name"
+                            title="{{file.name}}"
+                            on-click="handlePreview({file, e: $event})"
+                        >
+                            {{file.name}}
+                        </span>
+                    </s-tooltip>
+                    <span s-else>
+                        <s-fileicon
+                            prefixCls="{{prefixCls}}"
+                            file="{{file}}"
+                            listType="{{listType}}"
+                            on-preview="handlePreview"
+                        />
+                        <a
+                            s-if="file.url"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="{{prefixCls}}-list-item-name"
+                            title="{{title.name}}"
+                            href="{{file.url}}"
+                            on-click="handlePreview({file, e: $event})"
+                        >{{file.name}}</a>
+                        <span
+                            s-else
+                            class="{{prefixCls}}-list-item-name"
+                            title="{{file.name}}"
+                            on-click="handlePreview({file, e: $event})"
+                        >
+                            {{file.name}}
+                        </span>
+                    </span>
+                </div>
+                <span
+                    s-if="listType === 'picture-card' && file.status !== 'uploading'"
+                    class="{{prefixCls}}-list-item-actions"
+                >
+                    <a
+                        s-if="showPreviewIcon"
+                        href="{{file.url || file.thumbUrl}}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style="{{file.url || file.thumbUrl ? '' : style}}"
+                        title="预览图片"
+                        on-click="handlePreview({file, e: $event})"
+                    >
+                        <s-icon type="eye-o" />
+                    </a>
+                    <s-icon s-if="showRemoveIcon" type="delete" title="删除图片" on-click="handleClose(file)" />
+                </span>
+                <s-icon s-else-if="showRemoveIcon" type="close" title="删除图片" on-click="handleClose(file)" />
+                <div class="{{prefixCls}}-list-item-progress" key="progress" s-if="file.status === 'uploading'">
+                    <s-progress s-if="file.percent" type="line" s-bind="{{progressAttr}}" percent="{{file.percent}}" />
+                </div>
+            </div>
+        </div>
+    `
 });
