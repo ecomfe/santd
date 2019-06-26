@@ -176,7 +176,8 @@ export default san.defineComponent({
                         transitionName: popupTransitionName,
                         maskAnimation,
                         maskTransitionName,
-                        getTransitionName
+                        getTransitionName,
+                        popup
                     };
                 }
             }), Popup);
@@ -237,7 +238,9 @@ export default san.defineComponent({
         },
         getRootDomNode() {
             const instance = this.data.get('instance');
-            return instance && instance.el;
+            const rootDomNode = this.data.get('rootDomNode');
+
+            return rootDomNode || instance && instance.el;
         }
     },
     created() {

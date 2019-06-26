@@ -29,6 +29,7 @@ export default inherits(san.defineComponent({
             const prefixCls = this.data.get('prefixCls');
             const arrowContent = this.data.get('arrowContent');
             const tooltipPopup = this.data.get('tooltipPopup');
+            const title = this.data.get('title');
 
             return san.defineComponent({
                 components: {
@@ -36,12 +37,17 @@ export default inherits(san.defineComponent({
                     arrowcontent: arrowContent,
                     popup: tooltipPopup
                 },
+                initData() {
+                    return {
+                        title
+                    };
+                },
                 template: `<div>
                     <div class="${prefixCls}-arrow" key="arrow">
                         <arrowcontent />
                     </div>
                     <content key="content" prefixCls="${prefixCls}">
-                        <popup></popup>
+                        <popup title="{{title}}"></popup>
                     </content>
                 </div>`
             });

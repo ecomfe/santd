@@ -1,39 +1,29 @@
 <cn>
 #### 事件
-当 Slider 的值发生改变时，会触发 `onChange` 事件，并把改变后的值作为参数传入。在 `onmouseup` 时，会触发 `onAfterChange` 事件，并把当前值作为参数传入。
+当 Slider 的值发生改变时，会触发 `on-change` 事件，并把改变后的值作为参数传入。在 `on-mouseup` 时，会触发 `on-afterChange` 事件，并把当前值作为参数传入。
 </cn>
 
 ```html
 <template>
-  <div>
-  	<s-slider value="{{sliderValue}}" on-change="onChange"/>
-    <s-input-number min="0" max="100" value="{{sliderValue}}" on-change="onIptChange"></s-input-number>
-    <s-slider range value="{{[10,20]}}" on-afterChange="onAfterChange"/>
-  </div>
+    <div>
+        <s-slider defaultValue="{{30}}" on-change="handleChange" on-afterChange="handleAfterChange" />
+        <s-slider range step="{{10}}" defaultValue="{{[20, 50]}}" on-change="handleChange" on-afterChange="handleAfterChange" />
+    </div>
 </template>
 <script>
-import slider from 'santd/slider';
-import InputNumber from 'santd/input-number';
+import Slider from 'santd/slider';
+import Switch from 'santd/switch';
 export default {
     components: {
-        's-input-number': InputNumber,
-        's-slider': slider
+        's-slider': Slider,
+        's-switch': Switch
     },
-    initData() {
-        return {
-            sliderValue: 88
-        }
+    handleChange(value)  {
+        console.log('on-change: ', value);
     },
-    onIptChange(value) {
-        this.data.set('sliderValue', value);
-    },
-    onChange(value) {
-        console.log('onchange', value);
-        this.data.set('sliderValue', value);
-    },
-    onAfterChange(value) {
-        console.log('onAfterChange', value);
-    },
+    handleAfterChange(value) {
+        console.log('on-afterChange: ', value);
+    }
 }
 </script>
 ```

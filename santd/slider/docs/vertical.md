@@ -1,26 +1,30 @@
 <cn>
-#### slider
-A AntDesign-San Component
+#### 垂直
+垂直方向的 Slider。
 </cn>
 
 ```html
 <template>
-  <div>
     <div style="height: 300px;">
-  	    <s-slider value="{{88}}" marks="{{marks}}" vertical step="{{novalue}}" style="float: left;height: 300px"/>
-        <s-slider range value="{{[10,50]}}" tipFormatter="__value__%" step="{{10}}" vertical style="float: left;height:300px;margin-left: 100px"/>
+        <div style="height: 300px; float: left; margin-left: 70px;">
+            <s-slider vertical defaultValue="{{30}}" />
+        </div>
+        <div style="height: 300px; float: left; margin-left: 70px;">
+            <s-slider vertical range defaultValue="{{[20,50]}}" step="{{10}}" />
+        </div>
+        <div style="height: 300px; float: left; margin-left: 70px;">
+            <s-slider vertical range defaultValue="{{[26, 37]}}" marks="{{marks}}" />
+        </div>
     </div>
-  </div>
 </template>
 <script>
-import slider from 'santd/slider';
+import Slider from 'santd/slider';
 export default {
     components: {
-        's-slider': slider
+        's-slider': Slider
     },
     initData() {
         return {
-            novalue: null,
             marks: {
                 0: '0°C',
                 26: '26°C',
