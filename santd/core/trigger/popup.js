@@ -31,6 +31,9 @@ export default san.defineComponent({
                 this.data.set('currentAlignClassName', '');
             }
         });
+        this.watch('getRootDomNode', val => {
+            this.data.set('refresh', Math.random(), {force: true});
+        });
     },
     computed: {
         getAlignTarget() {
@@ -38,7 +41,6 @@ export default san.defineComponent({
             if (point) {
                 return point;
             }
-
             return this.data.get('getRootDomNode');
         },
         newStyle() {
@@ -122,6 +124,7 @@ export default san.defineComponent({
                     s-if="visible"
                 >
                     <s-popupinner
+                        refresh="{{refresh}}"
                         target="{{getAlignTarget}}"
                         key="popup"
                         monitorWindowResize="{{monitorWindowResize}}"
@@ -146,6 +149,7 @@ export default san.defineComponent({
                 s-else
             >
                 <s-popupinner
+                    refresh="{{refresh}}"
                     target="{{getAlignTarget}}"
                     key="popup"
                     monitorWindowResize="{{monitorWindowResize}}"

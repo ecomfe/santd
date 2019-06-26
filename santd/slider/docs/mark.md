@@ -5,10 +5,17 @@
 
 ```html
 <template>
-  <div>
-  	<s-slider value="88" marks="{{marks}}"/>
-    <s-slider range value="{{[10,30]}}" marks="{{marks}}" step="{{novalue}}"/>
-  </div>
+    <div>
+        <h4>included=true</h4>
+        <s-slider marks="{{marks}}" defaultValue="{{37}}" />
+        <s-slider range marks="{{marks}}" defaultValue="{{[26, 37]}}" />
+        <h4>included=false</h4>
+        <s-slider marks="{{marks}}" included="{{false}}" defaultValue="{{37}}" />
+        <h4>marks & step</h4>
+        <s-slider marks="{{marks}}" step="{{10}}" defaultValue="{{37}}" />
+        <h4>step=null</h4>
+        <s-slider marks="{{marks}}" step="{{noStep}}" defaultValue="{{37}}" />
+    </div>
 </template>
 <script>
 import slider from 'santd/slider';
@@ -18,7 +25,7 @@ export default {
     },
     initData() {
         return {
-            novalue: null,
+            noStep: null,
             marks: {
                 0: '0°C',
                 26: '26°C',

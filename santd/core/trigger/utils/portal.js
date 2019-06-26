@@ -24,7 +24,7 @@ export default san.defineComponent({
             const instance = this.data.get('instance');
             const popupData = popup.prototype.initData && popup.prototype.initData.bind(popup)() || {};
             for (const key in initData) {
-                instance && instance.data.set(key, initData[key]);
+                instance && instance.data.set(key, initData[key], {force: true});
             }
             for (const key in popupData) {
                 // 解决popupInstance不存在的问题

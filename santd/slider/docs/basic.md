@@ -5,23 +5,21 @@
 
 ```html
 <template>
-  <div>
-  	<s-slider value="{{88}}" disabled="{{disabled}}"/>
-    <s-slider range value="{{[10,30]}}" disabled="{{disabled}}" step="{{5}}"/>
-    Disabled <s-switch on-change='onChange'/>
-  </div>
+    <div>
+        <s-slider defaultValue="{{30}}" disabled="{{disabled}}" />
+        <s-slider range defaultValue="{{[20, 50]}}" disabled="{{disabled}}" />
+        Disabled <s-switch size="small" checked="{{disabled}}" on-change='handleDisabledChange'/>
+    </div>
 </template>
 <script>
-import slider from 'santd/slider';
+import Slider from 'santd/slider';
 import Switch from 'santd/switch';
 export default {
     components: {
-        's-slider': slider,
+        's-slider': Slider,
         's-switch': Switch
     },
-    initData() {
-    },
-    onChange(checked)  {
+    handleDisabledChange(checked)  {
         this.data.set('disabled', checked);
     }
 }

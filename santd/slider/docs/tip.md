@@ -1,24 +1,27 @@
 <cn>
 #### 自定义提示
-使用 `tipFormatter` 可以格式化 `Tooltip` 的内容，设置 `tipFormatter={{null}}`，则隐藏 Tooltip。
+使用 `tipFormatter` 可以格式化 `Tooltip` 的内容，设置 `tipFormatter` 为 `null`，则隐藏 Tooltip。
 </cn>
 
 ```html
 <template>
-  <div>
-  	<s-slider value="{{88}}" tipFormatter="__value__%"/>
-    <s-slider range value="{{[10,20]}}" tipFormatter="{{novalue}}"/>
-  </div>
+    <div>
+        <s-slider tipFormatter="{{tipFormatter}}" />
+        <s-slider tipFormatter="{{noTip}}" />
+    </div>
 </template>
 <script>
-import slider from 'santd/slider';
+import Slider from 'santd/slider';
 export default {
     components: {
-        's-slider': slider
+        's-slider': Slider
     },
     initData() {
         return {
-            novalue: null
+            tipFormatter(value) {
+                return `${value}%`;
+            },
+            noTip: null
         };
     }
 }
