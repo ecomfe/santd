@@ -147,6 +147,7 @@ export default san.defineComponent({
                 this.subMenu.forEach(item => item.data.set('selected', false));
             }
             this.fire('click', clickData);
+            this.dispatch('menuClick');
         },
         subMenuClick(data) {
             const key = data.value;

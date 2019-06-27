@@ -37,6 +37,7 @@ export default inherits(san.defineComponent({
             return inherits(san.defineComponent({
                 initData() {
                     return {
+                        selectable: false,
                         overlayPrefixCls: prefixCls
                     };
                 },

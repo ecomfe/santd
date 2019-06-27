@@ -98,6 +98,36 @@ export default san.defineComponent({
             return classNames({
                 [`${prefixCls}-selection-select-all-custom`]: hasCustomSelections
             });
+        },
+        menu() {
+            const newSelections = this.data.get('newSelections');
+
+            return san.defineComponent({
+                components: {
+                    's-menu': Menu,
+                    's-item': Menu.Item
+                },
+                initData() {
+                    return {
+                        newSelections
+                    };
+                },
+                handleClick(key, index, onSelect) {
+                    this.dispatch('selectionsClick', {key, index, onSelect});
+                },
+                template: `<div>
+                    <s-menu prefixCls="san-dropdown" selectedKeys="{{[]}}">
+                        <s-item
+                            s-for="selection, index in newSelections"
+                            key="{{selection.key || index}}"
+                        >
+                            <div on-click="handleClick(selection.key, index, selection.onSelect)">
+                                {{selection.text}}
+                            </div>
+                        </s-item>
+                    </s-menu>
+                </div>`
+            });
         }
     },
     checkSelection(data, type, byDefaultChecked) {
@@ -113,10 +143,7 @@ export default san.defineComponent({
     },
     components: {
         's-checkbox': Checkbox,
-        's-menu': Menu,
         's-dropdown': DropDown,
-        's-dropdownmenu': DropDown.DropDownMenu,
-        's-dropdownitem': DropDown.DropDownItem,
         's-icon': Icon
     },
     handleSelectAllChange(e) {
@@ -134,6 +161,15 @@ export default san.defineComponent({
             onSelectFunc: onSelect
         });
     },
+    messages: {
+        selectionsClick(payload) {
+            this.handleDropDownClick(
+                payload.value.key,
+                payload.value.index,
+                payload.value.onSelect
+            );
+        }
+    },
     template: `
         <div class="{{selectionPrefixCls}}">
             <s-checkbox
@@ -143,6 +179,11 @@ export default san.defineComponent({
                 on-change="handleSelectAllChange($event)"
                 disabled="{{disabled}}"
             ></s-checkbox>
+            <s-dropdown s-if="hasCustomSelections" overlay="{{menu}}">
+                <div class="{{selectionPrefixCls}}-down">
+                    <s-icon type="down" />
+                </div>
+            </s-dropdown>
             <!--<s-dropdown
                 s-if="hasCustomSelections"
                 trigger="click"
