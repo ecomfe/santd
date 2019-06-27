@@ -1045,8 +1045,7 @@ export default san.defineComponent({
         this.fire('dropdownVisibleChange', visible);
     },
     template: `
-        <div class="${prefixCls}-wrapper ${prefixCls}-display">
-            <slot></slot>
+        <div class="{{classes}}">
             <s-trigger
                 builtinPlacements="{{placements}}"
                 popupPlacement="bottomLeft"
@@ -1059,34 +1058,33 @@ export default san.defineComponent({
                 popupVisible="{{popupVisible || createdData._open}}"
                 on-visibleChange="popupVisibleChange"
             >
-                <div class="{{classes}}" style="width: 100%">
-                    <div class="{{containerClass}}" on-click="onHeadClick($event)">
-                        <div class="${prefixCls}-selection__rendered" on-click="handleOpenState($event)">
-                            <s-head
-                                s-ref="selectHead"
-                                allData="{{createdData}}"
-                                removeIcon="{{removeIcon}}"
-                                mode="{{mode}}"
-                                isAutoComplete="{{isAutoComplete}}"
-                                inputElement="{{inputElement}}"
-                                autoFocus="{{autoFocus}}"
-                            ></s-head>
-                        </div>
-                        <span
-                            s-if="allowClear && createdData._value"
-                            s-ref="clearIconRef"
-                            class="${prefixCls}-selection__clear"
-                            style="user-select:none;"
-                            on-click="onClearSelection($event)"
-                        >
-                            <s-icon type="close-circle" theme="filled"></s-icon>
-                        </span>
-                        <span s-if="showArrow" class="${prefixCls}-arrow">
-                            <span s-ref="suffixIconRef" class="${prefixCls}-arrow-icon">
-                                <s-icon type="{{loadingIcon || 'down'}}"></s-icon>
-                            </span>
-                        </span>
+            <slot/>
+                <div class="{{containerClass}}" on-click="onHeadClick($event)">
+                    <div class="${prefixCls}-selection__rendered" on-click="handleOpenState($event)">
+                        <s-head
+                            s-ref="selectHead"
+                            allData="{{createdData}}"
+                            removeIcon="{{removeIcon}}"
+                            mode="{{mode}}"
+                            isAutoComplete="{{isAutoComplete}}"
+                            inputElement="{{inputElement}}"
+                            autoFocus="{{autoFocus}}"
+                        ></s-head>
                     </div>
+                    <span
+                        s-if="allowClear && createdData._value"
+                        s-ref="clearIconRef"
+                        class="${prefixCls}-selection__clear"
+                        style="user-select:none;"
+                        on-click="onClearSelection($event)"
+                    >
+                        <s-icon type="close-circle" theme="filled"></s-icon>
+                    </span>
+                    <span s-if="showArrow" class="${prefixCls}-arrow">
+                        <span s-ref="suffixIconRef" class="${prefixCls}-arrow-icon">
+                            <s-icon type="{{loadingIcon || 'down'}}"></s-icon>
+                        </span>
+                    </span>
                 </div>
             </s-trigger>
         </div>
