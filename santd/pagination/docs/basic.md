@@ -5,9 +5,9 @@
 
 ```html
 <template>
-  <div>
-    <s-pagination total="{{50}}" defaultCurrent="{{1}}"></s-pagination>
-  </div>
+    <div>
+        <s-pagination total="{{50}}" defaultCurrent="{{1}}"></s-pagination>
+    </div>
 </template>
 <script>
 import Pagination from 'santd/pagination';

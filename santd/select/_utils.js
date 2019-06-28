@@ -33,6 +33,6 @@ export function defaultFilterFn(input, child) {
     if (child.disabled) {
         return false;
     }
-    const optionValue = child.value;
+    const optionValue = child.value.toString();
     return optionValue ? optionValue.toLowerCase().indexOf(input.toString().toLowerCase()) > -1 : false;
 }

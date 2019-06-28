@@ -47,16 +47,20 @@ export default san.defineComponent({
                 size="{{size}}"
                 on-change="handleChangeSize"
             >
-                <s-option s-for="pageSize in pageSizeOptions" value="{{pageSize}}">{{pageSize}}条 / 页</s-option>
+                <s-option s-for="pageSize in pageSizeOptions" value="{{pageSize}}" locale="{{locale}}">
+                    {{pageSize}} {{locale.items_per_page}}
+                </s-option>
             </s-select>
             <div
                 s-if="quickGo"
                 class="{{rootPrefixCls}}-options-quick-jumper"
             >
-                跳至
+                {{locale.jump_to}}
                 <input type="text" value="{{goInputText}}" on-change="handleChange" on-keyup="handleGo"/>
-                页
-                <button s-if="goButton === true" on-click="handleGo" on-keyup="handleGo">确认</button>
+                {{locale.page}}
+                <button s-if="goButton === true" on-click="handleGo" on-keyup="handleGo">
+                    {{locale.jump_to_confirm}}
+                </button>
                 <span s-else on-click="handleGo" on-keyup="handleGo">{{goButton}}</span>
             </div>
         </li>

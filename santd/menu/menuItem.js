@@ -16,7 +16,7 @@ const prefixCls = pagin();
 export default san.defineComponent({
     dataTypes: {
         disabled: DataTypes.bool,
-        key: DataTypes.string,
+        key: DataTypes.oneOfType([DataTypes.string, DataTypes.number]),
         title: DataTypes.string,
         multiple: DataTypes.bool,
         selectable: DataTypes.bool

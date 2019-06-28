@@ -11,7 +11,7 @@ import Options from './options';
 
 const prevTemplate = `
     <li
-        title="{{showTitle ? '上一页' : ''}}"
+        title="{{showTitle ? locale.prev_page : ''}}"
         on-click="handlePrev"
         on-keypress="runIfEnterPrev"
         tabIndex="{{hasPrev ? 0 : ''}}"
@@ -24,7 +24,7 @@ const prevTemplate = `
 
 const nextTemplate = `
     <li
-        title="{{showTitle ? '下一页' : ''}}"
+        title="{{showTitle ? locale.next_page : ''}}"
         on-click="handleNext"
         on-keypress="runIfEnterNext"
         tabIndex="{{hasNext ? 0 : ''}}"
@@ -55,7 +55,7 @@ const simpleTemplate = `
     ${nextTemplate}
     <li
         s-if="showQuickJumper && showQuickJumper.goButton"
-        title="{{showTitle ? '跳转' + current + '/' + allPages : ''}}"
+        title="{{showTitle ? locale.jump_to + current + '/' + allPages : ''}}"
         class="{{prefixCls + '-simple-pager'}}"
     >
         <button
@@ -63,7 +63,7 @@ const simpleTemplate = `
             type="button"
             on-click="handleGoTo"
             on-keyup="handleGoTo"
-        >跳转</button>
+        >{{locale.jump_to_confirm}}</button>
         <span s-else on-click="handleGoTo" on-keyup="handleGoTo">{{showQuickJumper.goButton}}</span>
     </li>
 
@@ -395,6 +395,7 @@ export default san.defineComponent({
                 active="{{current === item.page}}"
                 rootPrefixCls="{{prefixCls}}"
                 showTitle="{{showTitle}}"
+                locale="{{locale}}"
                 on-click="handleChange"
                 on-keyPress="runIfEnter"
             ></s-pager>
@@ -431,6 +432,7 @@ export default san.defineComponent({
                 pageSizeOptions="{{pageSizeOptions}}"
                 quickGo="{{shouldDisplayQuickJumper}}"
                 goButton="{{showQuickJumper.goButton}}"
+                locale="{{locale}}"
                 on-changeSize="handleChangeSize"
                 on-quickGo="handleChange"
             >
@@ -438,3 +440,14 @@ export default san.defineComponent({
         </template>
     </ul>`
 });
+
+/*const Locale = inherits(san.defineComponent({
+    initData() {
+        return {
+            componentName: 'Pagination',
+            defaultLocale: enUS
+        };
+    }
+}), LocaleReceiver);
+
+export default inherits(Pagination, Locale);*/
