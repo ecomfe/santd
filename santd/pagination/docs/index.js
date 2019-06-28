@@ -26,7 +26,7 @@ export default san.defineComponent({
         totalnum: TotalNum,
         simple: Simple,
         itemrender: ItemRender,
-        Desc: Desc
+        desc: Desc
     },
     template: `
         <div>

@@ -7,6 +7,9 @@ import Icon from 'santd/icon';
 import {classCreator} from 'santd/core/util';
 import './style/index';
 import pagination from './pagination';
+import LocaleReceiver from '../localeprovider/localereceiver';
+import enUS from './locale/en_US';
+import inherits from 'santd/core/util/inherits';
 
 const prefixCls = classCreator('pagination')();
 
@@ -52,7 +55,7 @@ const jumpNextIcon = san.defineComponent({
       </a>`
 });
 
-export default san.defineComponent({
+const Pagination = san.defineComponent({
     components: {
         pagination
     },
@@ -91,9 +94,21 @@ export default san.defineComponent({
                 size="{{size}}"
                 showTotal="{{showTotal}}"
                 itemRender="{{itemRender}}"
+                locale="{{locale}}"
                 on-showSizeChange="handleShowSizeChange"
                 on-change="handleChange"
             />
         </div>
     `
 });
+
+const Locale = inherits(san.defineComponent({
+    initData() {
+        return {
+            componentName: 'Pagination',
+            defaultLocale: enUS
+        };
+    }
+}), LocaleReceiver);
+
+export default inherits(Pagination, Locale);

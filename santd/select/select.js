@@ -446,6 +446,9 @@ export default san.defineComponent({
                 this.setSelectData('_addTagsOptions', allOptionsData);
                 this.setSelectData('_innerOptions', allOptionsData);
                 this.updateMenuData();
+
+                const initValues = this.getValueFromData(this, allOptionsData);
+                this.setSelectData('_value', initValues);
             }
 
         },

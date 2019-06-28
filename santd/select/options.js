@@ -8,7 +8,7 @@ import san, {DataTypes} from 'san';
 export default san.defineComponent({
     dataTypes: {
         value: DataTypes.oneOfType([DataTypes.string, DataTypes.number]),
-        key: DataTypes.string,
+        key: DataTypes.oneOfType([DataTypes.string, DataTypes.number]),
         title: DataTypes.string,
         disabled: DataTypes.bool,
         className: DataTypes.string
@@ -20,7 +20,6 @@ export default san.defineComponent({
     },
     updated() {
         this.dispatch('watchOptionValueChange');
-
     },
     attached() {
         this.dispatch('watchOptionValueChange');
