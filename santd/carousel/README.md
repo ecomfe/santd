@@ -6,8 +6,8 @@
 | autoplay | 是否自动切换 | boolean | false |
 | on-beforeChange | 切换面板的回调 | function(param) | 无 |
 | dots | 是否显示面板指示点 | boolean | `true` |
-| easing | 动画效果 | string | ease |
-| vertical | 垂直显示 | boolean | `false` |
+| easing | 动画效果 | string | linear |
+| dotPosition | 位置 可选 `top` `bottom` `left` `right` | string | `bottom` |
 
 ## 方法
 

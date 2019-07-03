@@ -5,8 +5,9 @@
 
 import './style/index.less';
 import san from 'san';
-import {classCreator, getComponentChildren} from 'santd/core/util';
+import {classCreator} from 'santd/core/util';
 import classNames from 'classnames';
+import Track from './src/track';
 
 const cc = classCreator('carousel');
 const prefix = cc();
@@ -17,13 +18,22 @@ export default san.defineComponent({
             <div class="{{slickCls}}" style="{{showCompo ? 'opacity: 1' : 'opacity: 0'}}">
                 <div class="slick-list"
                     style="{{listStyle}}">
-                    <div class="slick-track" style="{{trackStyle}}" s-ref="track">
-                    </div>
+                    <s-track
+                        clientWidth="{{clientWidth}}"
+                        vertical="{{vertical}}"
+                        slickIndex="{{slickIndex}}"
+                        speed="{{speed}}"
+                        easing="{{easing}}"
+                        animating="{{animating}}"
+                        on-init="handleInit"
+                        on-transitionend="animationEnd"
+                    ><slot></slot>
+                    </s-track>
                 </div>
-                <ul class="slick-dots" style="display: block;" s-if="dots">
+                <ul class="{{dotsStyle}}" style="display: block;" s-if="dots">
                     <li class="" s-for="dot, index in slickDots"
-                        class="{{index === curIndex ? 'slick-active' : ''}}">
-                        <button on-click="handleChange(index)">{{dot}}</button>
+                        class="{{dot === curIndex ? 'slick-active' : ''}}">
+                        <button on-click="handleChange(dot)">{{dot}}</button>
                     </li>
                 </ul>
             </div>
@@ -34,12 +44,23 @@ export default san.defineComponent({
             clientWidth: 0,
             clientHeight: 0,
             curIndex: 0,
+            slickIndex: 1,
             slickDots: [],
-            vertical: false,
+            slickTracks: [],
+            dontAnimate: false,
+            animating: false,
+            // vertical: false,
             dots: true,
-            easing: 'ease',
-            autoplay: false
+            easing: 'linear',
+            dotPosition: 'bottom',
+            effect: 'scrollx',
+            autoplay: false,
+            autoplaySpeed: 3000,
+            speed: 500
         };
+    },
+    components: {
+        's-track': Track
     },
     computed: {
         cls() {
@@ -51,14 +72,9 @@ export default san.defineComponent({
         listStyle() {
             let vertical = this.data.get('vertical');
             let clientHeight = this.data.get('clientHeight');
-            if (vertical && clientHeight) {
-                let slickDots = this.data.get('slickDots');
-                let count = slickDots.length;
-                return {
-                    height: `${clientHeight / count}px`
-                };
-            }
-            return '';
+            return (vertical && clientHeight) ? {
+                height: `${clientHeight}px`
+            } : '';
         },
         slickCls() {
             let vertical = this.data.get('vertical');
@@ -67,54 +83,16 @@ export default san.defineComponent({
                 'slick-vertical': vertical
             });
         },
-        trackStyle() {
-            let vertical = this.data.get('vertical');
-            let slickDots = this.data.get('slickDots');
-            let easing = this.data.get('easing');
-            let count = slickDots.length;
-            if (vertical) {
-                let clientHeight = this.data.get('clientHeight');
-                if (clientHeight) {
-                    let curIndex = this.data.get('curIndex');
-                    return {
-                        opacity: 1,
-                        transform: `translate3d(0px, -${clientHeight / count * curIndex}px, 0px)`,
-                        transition: `transform 500ms ${easing} 0s`
-                    };
-                }
-                return '';
-            } else {
-                let clientWidth = this.data.get('clientWidth');
-                let curIndex = this.data.get('curIndex');
-                return {
-                    width: `${clientWidth * count}px`,
-                    opacity: 1,
-                    transform: `translate3d(-${clientWidth * curIndex}px, 0px, 0px)`,
-                    transition: `transform 500ms ${easing} 0s`
-                };
-            }
+        vertical() {
+            const dotPosition = this.data.get('dotPosition');
+            return dotPosition === 'left' || dotPosition === 'right';
+        },
+        dotsStyle() {
+            let dotPosition = this.data.get('dotPosition');
+            return classNames('slick-dots', {
+                [`slick-dots-${dotPosition}`]: true
+            });
         }
-    },
-    getSlotDom(node) {
-        let res = '';
-        if (node.tagName && node.hotspot.sourceNode) {
-            res = node.hotspot.sourceNode;
-            if (node.children) {
-                node.children.forEach(child => {
-                    let cdom = this.getSlotDom(child);
-                    if (res && cdom) {
-                        if (cdom instanceof HTMLElement) {
-                            res.appendChild(cdom);
-                        } else {
-                            res.innerHTML += cdom;
-                        }
-                    }
-                });
-            }
-        } else if (node.textExpr && node.textExpr.value) {
-            res = node.textExpr.value;
-        }
-        return res;
     },
     next() {
         let {curIndex, slickDots} = this.data.get();
@@ -128,46 +106,66 @@ export default san.defineComponent({
         this.handleChange(curIndex);
     },
     goTo(slideNumber = 0) {
-        this.handleChange(slideNumber);
+        const len = this.data.get('slickDots').length;
+        const index = Math.min(Math.max(0, slideNumber), len - 1);
+        this.handleChange(index);
+    },
+    inited() {
+        this.autoplayTimer = null;
+    },
+    handleInit(e) {
+        this.data.set('slickDots', e.slickDots);
+        this.data.set('slickTracks', e.slickTracks);
+        setTimeout(() => {
+            this.data.set('clientHeight', e.clientHeight);
+            this.data.set('showCompo', true);
+        }, 0);
     },
     attached() {
         let clientWidth = this.el.clientWidth;
         this.data.set('clientWidth', clientWidth);
-        let slist = getComponentChildren(this.sourceSlots.noname,
-            item => item.tagName, 1);
-        let slickDots = [];
-        slist.forEach((item, index) => {
-            let node = this.getSlotDom(item);
-            let wrapper = document.createElement('div');
-            wrapper.style = `outline: none; width: ${clientWidth}px;`;
-            wrapper.className = 'slick-slide';
-            node.style = 'width: 100%; display: inline-block;';
-            wrapper.appendChild(node);
-            this.ref('track').appendChild(wrapper);
-            slickDots.push(index);
-        });
-        this.data.set('slickDots', slickDots);
-        setTimeout(() => {
-            this.data.set('clientHeight', this.el.clientHeight);
-            this.data.set('showCompo', true);
-        }, 0);
 
         const autoplay = this.data.get('autoplay');
-        if (autoplay) {
-            window.setInterval(() => {
+        console.log(autoplay);
+        const autoplaySpeed = this.data.get('autoplaySpeed');
+        if (autoplay && !this.autoplayTimer) {
+            this.autoplayTimer = window.setInterval(() => {
                 let curIndex = this.data.get('curIndex');
+                let isLastOne = false;
                 ++curIndex;
                 if (curIndex >= this.data.get('slickDots').length) {
                     curIndex = 0;
+                    isLastOne = true;
                 }
-                this.handleChange.bind(this)(curIndex);
-            }, 3000);
+                this.handleChange.bind(this)(curIndex, isLastOne);
+            }, autoplaySpeed);
         }
     },
-    handleChange(index) {
-        let curIndex = this.data.get('curIndex');
+    detached() {
+        this.autoplayTimer && clearInterval(this.autoplayTimer);
+        this.autoplayTimer = null;
+    },
+    handleChange(index, isLastOne = false) {
+        const curIndex = this.data.get('curIndex');
         this.fire('beforeChange', {from: curIndex, to: index});
         this.data.set('curIndex', index);
         this.fire('afterChange', index);
+        this.data.set('animating', true);
+        this.setSlickIndex(isLastOne);
+    },
+    animationEnd() {
+        this.data.set('animating', false);
+    },
+    setSlickIndex(isLastOne) {
+        const curIndex = this.data.get('curIndex');
+        let sindex = curIndex + 1;
+        if (isLastOne) {
+            const {speed, slickDots} = this.data.get();
+            setTimeout(() => {
+                this.data.set('slickIndex', curIndex + 1);
+            }, speed * 2);
+            sindex = slickDots.length + 1;
+        }
+        this.data.set('slickIndex', sindex);
     }
 });

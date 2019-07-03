@@ -6,7 +6,7 @@
 ```html
 <template>
     <div style="width: 600px">
-        <s-carousel on-afterChange="handleAfter" on-beforeChange="handleBefore" vertical easing="linear">
+        <s-carousel on-afterChange="handleAfter" on-beforeChange="handleBefore" vertical="true" easing="linear">
             <div><h3>1</h3></div>
             <div><h3>2</h3></div>
             <div><h3>3</h3></div>
