@@ -5,7 +5,7 @@
 import san from 'san';
 import Readme from '../README.md';
 import Basic from './basic.md';
-import Vertical from './vertical.md';
+import Position from './position.md';
 import Head from './head.md';
 import Autoplay from './autoplay.md';
 
@@ -13,7 +13,7 @@ export default san.defineComponent({
     components: {
         readme: Readme,
         basic: Basic,
-        vertical: Vertical,
+        position: Position,
         head: Head,
         autoplay: Autoplay
     },
@@ -21,7 +21,7 @@ export default san.defineComponent({
         <div>
             <head/>
             <basic/>
-            <vertical/>
+            <position/>
             <autoplay/>
             <readme/>
         </div>
