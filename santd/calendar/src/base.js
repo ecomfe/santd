@@ -5,7 +5,7 @@
 
 import san, {DataTypes} from 'san';
 import classNames from 'classnames';
-import locale from './locale/zh_CN';
+import locale from './locale/en_US';
 import {isAllowedDate} from '../src/util/index';
 
 export default san.defineComponent({
@@ -66,9 +66,13 @@ export default san.defineComponent({
         this.fire('select', {selectedValue, cause});
     },
     setValue(value) {
+        const originalValue = this.data.get('value');
+
         this.data.set('value', value);
-        this.fire('change', value);
-        this.dispatch('change', value);
+        if (originalValue && value && !originalValue.isSame(value) || (!originalValue && value) || (originalValue && !value)) {
+            this.fire('change', value);
+            // this.dispatch('change', value);
+        }
     },
     isAllowedDate(value) {
         const disabledDate = this.data.get('disabledDate');

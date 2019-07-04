@@ -9,10 +9,21 @@ import {classCreator} from 'santd/core/util';
 import classNames from 'classnames';
 import defaultEmptyImg from './empty.svg';
 import simpleEmptyImg from './simple.svg';
+import LocaleReceiver from 'santd/localeprovider/localereceiver';
+import inherits from 'santd/core/util/inherits';
 
 const prefixCls = classCreator('empty')();
 
-const Empty = san.defineComponent({
+const Locale = san.defineComponent({
+    initData() {
+        return {
+            componentName: 'Empty'
+        };
+    }
+}, LocaleReceiver);
+
+
+const Empty = inherits(Locale, san.defineComponent({
     dataTypes: {
         prefixCls: DataTypes.string,
         className: DataTypes.string,
@@ -75,12 +86,12 @@ const Empty = san.defineComponent({
             </div>
             <p class="{{prefixCls}}-description">
                 <description s-if="injectDescription" />
-                <template s-else>{{description || '暂无数据'}}</template>
+                <template s-else>{{description || locale.description}}</template>
             </p>
             <div class="{{prefixCls}}-footer"><slot /></div>
         </div>
     `
-});
+}));
 
 Empty.PRESENTED_IMAGE_DFEAULT = defaultEmptyImg;
 Empty.PRESENTED_IMAGE_SIMPLE = simpleEmptyImg;

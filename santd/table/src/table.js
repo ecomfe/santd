@@ -17,6 +17,18 @@ const innerTable = san.defineComponent({
         's-headtable': HeadTable,
         's-bodytable': BodyTable
     },
+    computed: {
+        inject() {
+            const innertable = this.data.get('innertable');
+            const notFoundContent = this.data.get('notFoundContent');
+            if (innertable && notFoundContent) {
+                innertable.components.notfoundcontent = notFoundContent;
+            }
+        }
+    },
+    inited() {
+        this.data.set('innertable', this);
+    },
     handleBodyScroll(e) {
         this.fire('handleBodyScroll', e);
     },
@@ -101,7 +113,7 @@ const innerTable = san.defineComponent({
                 class="{{prefixCls}}-placeholder"
                 s-if="{{!data.length}}"
             >
-                暂无数据
+                <notfoundcontent />
             </div>
         </div>
     `
@@ -376,6 +388,7 @@ export default san.defineComponent({
                 defaultExpandAllRows="{{defaultExpandAllRows}}"
                 defaultExpandedRowKeys="{{defaultExpandedRowKeys}}"
                 expandedRowKeys="{{expandedRowKeys}}"
+                notFoundContent="{{notFoundContent}}"
             ></s-innertable>
             <div
                 s-if="hasLeftFixed"
@@ -407,6 +420,7 @@ export default san.defineComponent({
                     defaultExpandAllRows="{{defaultExpandAllRows}}"
                     defaultExpandedRowKeys="{{defaultExpandedRowKeys}}"
                     expandedRowKeys="{{expandedRowKeys}}"
+                    notFoundContent="{{notFoundContent}}"
                 ></s-innertable>
             </div>
             <div
@@ -437,6 +451,7 @@ export default san.defineComponent({
                     defaultExpandAllRows="{{defaultExpandAllRows}}"
                     defaultExpandedRowKeys="{{defaultExpandedRowKeys}}"
                     expandedRowKeys="{{expandedRowKeys}}"
+                    notFoundContent="{{notFoundContent}}"
                 ></s-innertable>
             </div>
         </div>

@@ -171,6 +171,9 @@ export default san.defineComponent({
         this.watch('value', value => {
             this.setBindData();
         });
+        this.watch('placeholder', value => {
+            this.setBindData();
+        });
     },
     created() {
         const defaultValue = this.data.get('defaultValue');

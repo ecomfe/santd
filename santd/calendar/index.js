@@ -10,9 +10,12 @@ import Select from 'santd/select';
 import classNames from 'classnames';
 import Calendar from './src/fullCalendar';
 import './style/index.less';
+import LocaleReceiver from '../localeprovider/localereceiver';
+import inherits from 'santd/core/util/inherits';
+import enUS from './locale/en_US';
 const prefixCls = classCreator('fullcalendar')();
 
-moment.locale('zh-cn');
+// moment.locale('zh-cn');
 
 function getMonthsLocale(value) {
     const current = value.clone();
@@ -33,7 +36,7 @@ const sanNoop = san.defineComponent({
     template: '<span></span>'
 });
 
-export default san.defineComponent({
+const exportCalendar = san.defineComponent({
     initData() {
         return {
             prefixCls,
@@ -92,6 +95,7 @@ export default san.defineComponent({
             const yearSelectTotal = this.data.get('yearSelectTotal');
             const yearSelectOffset = this.data.get('yearSelectOffset');
             const validRange = this.data.get('validRange');
+            const locale = this.data.get('locale').lang;
 
             let start = year - yearSelectOffset;
             let end = start + yearSelectTotal;
@@ -103,7 +107,7 @@ export default san.defineComponent({
             const options = [];
 
             for (let index = start; index < end; index++) {
-                options.push({label: index + '年', value: String(index)});
+                options.push({label: index + (locale.year === '年' ? '年' : ''), value: String(index)});
             }
             return options;
         },
@@ -147,10 +151,10 @@ export default san.defineComponent({
                 components: {
                     monthcellrender: monthCellRender
                 },
-                template: `<div class="{{prefixCls}}-month">
-                    <div class="{{prefixCls}}-value">{{month}}</div>
-                    <div class="{{prefixCls}}-content">
-                        <monthcellrender value="{{value}}" prefixCls="{{prefixCls}}" />
+                template: `<div class="{{rootPrefixCls}}-month">
+                    <div class="{{rootPrefixCls}}-value">{{month}}</div>
+                    <div class="{{rootPrefixCls}}-content">
+                        <monthcellrender value="{{value}}" prefixCls="{{rootPrefixCls}}" />
                     </div>
                 </div>`
             });
@@ -193,6 +197,11 @@ export default san.defineComponent({
 
         this.data.set('value', value || defaultValue || moment());
         this.data.set('instance', this);
+        this.watch('localeCode', val => {
+            moment.locale(val);
+            const value = this.data.get('value').locale(val);
+            this.data.set('value', value, {force: true});
+        });
     },
     components: {
         's-calendar': Calendar,
@@ -234,6 +243,7 @@ export default san.defineComponent({
                 s-if="injectHeader"
                 type="{{mode}}"
                 value="{{value}}"
+                locale="{{locale.lang}}"
                 on-typeChange="handleHeaderTypeChange"
                 on-yearChange="handleYearChange"
                 on-monthChange="handleMonthChange"
@@ -247,7 +257,9 @@ export default san.defineComponent({
                     style="display:inline-block; min-width: 80px;"
                     on-change="handleYearChange"
                 >
-                    <s-selectoption s-for="year in years" value="{{year.value}}">{{year.label}}</s-selectoption>
+                    <s-selectoption s-for="year in years" value="{{year.value}}" locale="{{locale}}">
+                        {{year.label}}
+                    </s-selectoption>
                 </s-select>
                 <s-select
                     s-if="mode !== 'year'"
@@ -258,15 +270,17 @@ export default san.defineComponent({
                     style="display:inline-block; min-width: 80px;"
                     on-change="handleMonthChange"
                 >
-                    <s-selectoption s-for="month in months" value="{{month.value}}">{{month.label}}</s-selectoption>
+                    <s-selectoption s-for="month in months" value="{{month.value}}" locale="{{locale}}">
+                        {{month.label}}
+                    </s-selectoption>
                 </s-select>
                 <s-radiogroup
                     value="{{mode}}"
                     size="{{fullscreen ? 'default' : 'small'}}"
                     on-change="handleHeaderTypeChange"
                 >
-                    <s-radiobutton value="month">月</s-radiobutton>
-                    <s-radiobutton value="year">年</s-radiobutton>
+                    <s-radiobutton value="month">{{locale.lang.month}}</s-radiobutton>
+                    <s-radiobutton value="year">{{locale.lang.year}}</s-radiobutton>
                 </s-radiogroup>
             </div>
             <s-calendar
@@ -275,6 +289,7 @@ export default san.defineComponent({
                 prefixCls="{{prefixCls}}"
                 showHeader="{{false}}"
                 value="{{value}}"
+                locale="{{locale.lang}}"
                 monthCellRender="{{monthFullCellRender || customMonthCellRender}}"
                 dateCellRender="{{dateFullCellRender || customDateCellRender}}"
                 fullscreen="{{fullscreen}}"
@@ -283,3 +298,13 @@ export default san.defineComponent({
         </div>
     `
 });
+
+const Locale = inherits(san.defineComponent({
+    initData() {
+        return {
+            componentName: 'Calendar'
+        };
+    }
+}), LocaleReceiver);
+
+export default inherits(Locale, exportCalendar);

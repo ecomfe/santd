@@ -9,6 +9,7 @@ import moment from 'moment';
 import inherits from 'santd/core/util/inherits';
 import {classCreator} from 'santd/core/util/index';
 import TimePickerPanel from '../timepicker/src/panel';
+import LocalReceiver from '../localeprovider/localereceiver';
 
 const prefixCls = classCreator('calendar')();
 const inputPrefixCls = classCreator('input')();
@@ -26,6 +27,14 @@ const LOCALE_FORMAT_MAPPING = {
     week: 'weekFormat',
     month: 'monthFormat'
 };
+
+const Locale = inherits(san.defineComponent({
+    initData() {
+        return {
+            componentName: 'DatePicker'
+        };
+    }
+}), LocalReceiver);
 
 export default function (Picker, pickerType) {
     return inherits(san.defineComponent({
@@ -127,5 +136,5 @@ export default function (Picker, pickerType) {
                 this.focus();
             }
         }
-    }), Picker);
+    }), inherits(Picker, Locale));
 }

@@ -59,7 +59,6 @@ export default san.defineComponent({
             let precision = this.data.get('precision');
             let decimalSeparator = this.data.get('decimalSeparator');
             if (formatter && typeof formatter === 'function') {
-                console.log('had formatter');
                 return {
                     int: formatter(value)
                 };

@@ -106,7 +106,7 @@ export default class ColumnManager {
     }
 
     normalize(nodes) {
-        console.log(nodes);
+        return nodes;
     }
 
     cache(name, fn) {

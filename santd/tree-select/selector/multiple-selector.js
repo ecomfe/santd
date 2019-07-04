@@ -51,7 +51,6 @@ export default san.defineComponent({
                 });
                 defaultMaxTag.push(maxTagContent);
             }
-            console.log('defaultMaxTag', defaultMaxTag);
             return defaultMaxTag;
         }
     },

@@ -3,13 +3,16 @@
  **/
 
 import Pagination from '../pagination/locale/zh_CN';
+import DatePicker from '../date-picker/locale/zh_CN';
+import TimePicker from '../timepicker/locale/zh_CN';
+import Calendar from '../calendar/locale/zh_CN';
 
 export default {
     locale: 'zh-cn',
     Pagination,
-    /*DatePicker,
+    DatePicker,
     TimePicker,
-    Calendar,*/
+    Calendar,
     // locales for all comoponents
     global: {
         placeholder: '请选择'

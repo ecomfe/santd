@@ -11,8 +11,18 @@ import Tooltip from 'santd/tooltip';
 import Button from 'santd/button';
 import Icon from 'santd/icon';
 import inherits from 'santd/core/util/inherits';
+import LocaleReceiver from 'santd/localeprovider/localereceiver';
 
 const prefixCls = classCreator('popover')();
+
+const Locale = inherits(san.defineComponent({
+    initData() {
+        return {
+            componentName: 'Popconfirm'
+        };
+    }
+}), LocaleReceiver);
+
 export default inherits(san.defineComponent({
     initData() {
         return {
@@ -27,9 +37,10 @@ export default inherits(san.defineComponent({
         tooltipPopup() {
             const icon = this.data.get('icon');
             const title = this.data.get('title');
-            const cancelText = this.data.get('cancelText');
+            const locale = this.data.get('locale');
+            const cancelText = this.data.get('cancelText') || locale.cancelText;
             const okType = this.data.get('okType');
-            const okText = this.data.get('okText');
+            const okText = this.data.get('okText') || locale.okText;
             const instance = this.data.get('instance');
 
             const Title = (typeof title === 'string')
@@ -96,4 +107,4 @@ export default inherits(san.defineComponent({
             return (trigger && [trigger]) || ['click'];
         }
     }
-}), Tooltip);
+}), inherits(Locale, Tooltip));

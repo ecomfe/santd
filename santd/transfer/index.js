@@ -9,15 +9,18 @@ import renderEmpty from 'santd/core/util/renderEmpty';
 import classNames from 'classnames';
 import List from './list';
 import Operation from './operation';
+import inherits from 'santd/core/util/inherits';
+import LocaleReceiver from 'santd/localeprovider/localereceiver';
 
 const prefixCls = classCreator('transfer')();
 
-export default san.defineComponent({
+const Transfer = san.defineComponent({
     computed: {
         classes() {
             const className = this.data.get('className');
             const disabled = this.data.get('disabled');
             const renderList = this.data.get('renderList');
+            const prefixCls = this.data.get('prefixCls');
 
             return classNames(prefixCls, className, {
                 [`${prefixCls}-disabled`]: disabled,
@@ -25,7 +28,8 @@ export default san.defineComponent({
             });
         },
         getTitles() {
-            const titles = this.data.get('titles');
+            const locale = this.data.get('locale');
+            const titles = this.data.get('titles') || (locale && locale.titles);
             return titles || ['', ''];
         },
         separateDataSource() {
@@ -203,6 +207,9 @@ export default san.defineComponent({
             direction="left"
             showSelectAll="{{showSelectAll}}"
             notFoundContent="{{notFoundContent}}"
+            searchPlaceholder="{{locale.searchPlaceholder}}"
+            itemUnit="{{locale.itemUnit}}"
+            itemsUnit="{{locale.itemsUnit}}"
             on-itemSelect="handleLeftItemSelect"
             on-itemSelectAll="handleLeftItemSelectAll"
             on-scroll="handleScroll('left', $event)"
@@ -237,6 +244,9 @@ export default san.defineComponent({
             direction="right"
             showSelectAll="{{showSelectAll}}"
             notFoundContent="{{notFoundContent}}"
+            searchPlaceholder="{{locale.searchPlaceholder}}"
+            itemUnit="{{locale.itemUnit}}"
+            itemsUnit="{{locale.itemsUnit}}"
             on-itemSelect="handleRightItemSelect"
             on-itemSelectAll="handleRightItemSelectAll"
             on-scroll="handleScroll('right', $event)"
@@ -245,3 +255,21 @@ export default san.defineComponent({
         />
     </div>`
 });
+
+const Locale = inherits(san.defineComponent({
+    initData() {
+        return {
+            componentName: 'Transfer'
+        };
+    }
+}), LocaleReceiver);
+
+export default inherits(Locale, Transfer);
+
+/*export default inherits(san.defineComponent({
+    initData() {
+        return {
+            componentName: 'Transfer'
+        };
+    }
+}), Transfer);*/

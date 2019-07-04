@@ -10,8 +10,6 @@ import RangePicker from './rangePicker';
 import createPicker from './createPicker';
 import wrapPicker from './wrapPicker';
 import WeekPicker from './weekPicker';
-import moment from 'moment';
-moment.locale('zh-cn');
 
 const DatePicker = wrapPicker(createPicker(Calendar), 'date');
 

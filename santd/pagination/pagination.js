@@ -123,13 +123,7 @@ export default san.defineComponent({
         this.data.set('current', current);
         this.data.set('currentInputValue', current);
         this.data.set('pageSize', pageSize);
-    },
-    compiled() {
-        const itemRender = this.parentComponent.data.get('itemRender') || defaultItemRender;
-        this.components.previcon = itemRender('prev', this.parentComponent.data.get('prevIcon'));
-        this.components.nexticon = itemRender('next', this.parentComponent.data.get('nextIcon'));
-        this.components.jumpprevicon = itemRender('jump-prev', this.parentComponent.data.get('jumpPrevIcon'));
-        this.components.jumpnexticon = itemRender('jump-next', this.parentComponent.data.get('jumpNextIcon'));
+        this.data.set('instance', this);
     },
     components: {
         's-input': Input,
@@ -137,6 +131,21 @@ export default san.defineComponent({
         's-options': Options
     },
     computed: {
+        injectComponents() {
+            const instance = this.data.get('instance');
+            const itemRender = this.data.get('itemRender') || defaultItemRender;
+            const prevIcon = this.data.get('prevIcon');
+            const nextIcon = this.data.get('nextIcon');
+            const jumpPrevIcon = this.data.get('jumpPrevIcon');
+            const jumpNextIcon = this.data.get('jumpNextIcon');
+
+            if (instance) {
+                instance.components.previcon = itemRender('prev', prevIcon);
+                instance.components.nexticon = itemRender('next', nextIcon);
+                instance.components.jumpprevicon = itemRender('jump-prev', jumpPrevIcon);
+                instance.components.jumpnexticon = itemRender('jump-next', jumpNextIcon);
+            }
+        },
         classes() {
             const simple = this.data.get('simple');
             const prefixCls = this.data.get('prefixCls');

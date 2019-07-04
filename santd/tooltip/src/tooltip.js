@@ -39,7 +39,8 @@ export default inherits(san.defineComponent({
                 },
                 initData() {
                     return {
-                        title
+                        title,
+                        ...tooltipPopup.prototype.initData()
                     };
                 },
                 template: `<div>
@@ -47,7 +48,7 @@ export default inherits(san.defineComponent({
                         <arrowcontent />
                     </div>
                     <content key="content" prefixCls="${prefixCls}">
-                        <popup title="{{title}}"></popup>
+                        <popup title="{{title}}" okText="{{okText}}" cancelText="{{cancelText}}" s-ref="pop"></popup>
                     </content>
                 </div>`
             });

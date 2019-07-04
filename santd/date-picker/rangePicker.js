@@ -125,17 +125,27 @@ export default san.defineComponent({
                 [`${prefixCls}-time`]: showTime,
                 [`${prefixCls}-range-with-ranges`]: ranges
             });
+            const locale = this.data.get('locale');
             const renderFooter = this.data.get('renderFooter');
             const timePicker = this.data.get('timePicker');
             const disabledDate = this.data.get('disabledDate');
             const disabledTime = this.data.get('disabledTime');
             const placeholder = this.data.get('placeholder');
-            const dateInputPlaceholder = [placeholder[0], placeholder[1]];
+            const rangePlaceholder = locale && locale.lang.rangePlaceholder;
+            const dateInputPlaceholder = [
+                placeholder && placeholder[0] || rangePlaceholder[0],
+                placeholder && placeholder[1] || rangePlaceholder[1]
+            ];
             const dateRender = this.data.get('dateRender');
             const showDate = this.data.get('showDate');
             const showToday = this.data.get('showToday');
             const hoverValue = this.data.get('hoverValue');
             const mode = this.data.get('mode');
+            const localeCode = this.data.get('localeCode');
+            if (localeCode) {
+                showDate[0].locale(localeCode);
+                showDate[1].locale(localeCode);
+            }
 
             return inherits(san.defineComponent({
                 initData() {
@@ -153,7 +163,8 @@ export default san.defineComponent({
                         value: showDate,
                         showToday,
                         hoverValue,
-                        propMode: mode
+                        propMode: mode,
+                        locale: locale.lang
                     };
                 }
             }), RangeCalendar);
@@ -195,7 +206,6 @@ export default san.defineComponent({
             allowClear: true,
             showToday: false,
             separator: '~',
-            placeholder: ['开始日期', '结束日期'],
             hoverValue: [],
             disabledTime() {}
         };
@@ -309,7 +319,7 @@ export default san.defineComponent({
                         disabled="{{disabled}}"
                         readOnly
                         value="{{displayStartValue}}"
-                        placeholder="{{placeholder[0]}}"
+                        placeholder="{{placeholder && placeholder[0] || locale.lang.rangePlaceholder[0]}}"
                         className="{{prefixCls}}-range-picker-input"
                         tabIndex="-1"
                         style="{{inputStyle}}"
@@ -319,7 +329,7 @@ export default san.defineComponent({
                         disabled="{{disabled}}"
                         readOnly
                         value="{{displayEndValue}}"
-                        placeholder="{{placeholder[1]}}"
+                        placeholder="{{placeholder && placeholder[1] || locale.lang.rangePlaceholder[1]}}"
                         className="{{prefixCls}}-range-picker-input"
                         tabIndex="-1"
                         style="{{inputStyle}}"

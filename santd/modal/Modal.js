@@ -9,16 +9,21 @@ import classNames from 'classnames';
 import {classCreator} from 'santd/core/util';
 import Dialog from './Dialog';
 import button from 'santd/button';
+import inherits from 'santd/core/util/inherits';
+import LocaleReceiver from 'santd/localeprovider/localereceiver';
 
 const cc = classCreator('modal');
 const prefixCls = cc();
-const locale = {
-    okText: '确定',
-    cancelText: '取消',
-    justOkText: '知道了'
-};
 
-export default san.defineComponent({
+const Locale = inherits(san.defineComponent({
+    initData() {
+        return {
+            componentName: 'Modal'
+        };
+    }
+}), LocaleReceiver);
+
+export default inherits(Locale, san.defineComponent({
     dataTypes: {
         prefixCls: DataTypes.string,
         okText: DataTypes.string,
@@ -51,8 +56,7 @@ export default san.defineComponent({
             maskTransitionName: 'fade',
             confirmLoading: false,
             visible: false,
-            okType: 'primary',
-            locale
+            okType: 'primary'
         };
     },
     attached() {
@@ -96,5 +100,6 @@ export default san.defineComponent({
     },
     afterClose() {
         this.fire('afterClose');
-    }
-});
+    },
+    template: '<div />'
+}));

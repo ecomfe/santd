@@ -20,6 +20,7 @@ export default san.defineComponent({
     },
     computed: {
         months() {
+            const locale = this.data.get('locale');
             const refresh = this.data.get('refresh');
             const value = this.data.get('value');
 
@@ -139,7 +140,7 @@ export default san.defineComponent({
                         class="{{getContentClass(monthData)}}"
                         on-click="handleChooseMonth(monthData)"
                     >
-                        <cell value="{{monthData.current}}" prefixCls="{{rootPrefixCls}}" />
+                        <cell value="{{monthData.current}}" prefixCls="{{prefixCls}}" rootPrefixCls="{{rootPrefixCls}}" locale="{{locale}}"/>
                     </td>
                 </tr>
             </tbody>

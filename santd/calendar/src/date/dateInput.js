@@ -133,7 +133,7 @@ export default san.defineComponent({
                     inputMode="{{inputMode}}"
                     s-ref="input"
                 />
-                <a role="button" title="{{locale.title}} on-click="handleClear" s-if="showClear">
+                <a role="button" title="{{locale.clear}} on-click="handleClear" s-if="showClear">
                     <span class="{{prefixCls}}-clear-btn"></span>
                 </a>
             </div>

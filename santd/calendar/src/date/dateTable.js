@@ -40,6 +40,7 @@ export default san.defineComponent({
     computed: {
         dates() {
             const prefixCls = this.data.get('prefixCls');
+            const locale = this.data.get('locale');
             const value = this.data.get('value');
             const today = getTodayTime(value);
             const selectedValue = this.data.get('selectedValue');
@@ -108,16 +109,16 @@ export default san.defineComponent({
                                     dataTable[i].isActiveWeek = true;
                                     className += ` ${prefixCls}-selected-end-date`;
                                 }
-                                else if ((startValue === null || startValue === undefined) &&
-                                    current.isBefore(endValue, 'day')) {
+                                else if ((startValue === null || startValue === undefined)
+                                    && current.isBefore(endValue, 'day')) {
                                     className += ` ${prefixCls}-in-range-cell`;
                                 }
-                                else if ((endValue === null || endValue === undefined) &&
-                                    current.isAfter(startValue, 'day')) {
+                                else if ((endValue === null || endValue === undefined)
+                                    && current.isAfter(startValue, 'day')) {
                                     className += ` ${prefixCls}-in-range-cell`;
                                 }
-                                else if (current.isAfter(startValue, 'day') &&
-                                    current.isBefore(endValue, 'day')) {
+                                else if (current.isAfter(startValue, 'day')
+                                    && current.isBefore(endValue, 'day')) {
                                     className += ` ${prefixCls}-in-range-cell`;
                                 }
                             }
@@ -174,6 +175,7 @@ export default san.defineComponent({
             return dataTable;
         },
         weeks() {
+            const locale = this.data.get('locale');
             const value = this.data.get('value');
             const localeData = value.localeData();
             const firstDayOfWeek = localeData.firstDayOfWeek();

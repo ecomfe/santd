@@ -10,8 +10,19 @@ import classNames from 'classnames';
 import Icon from 'santd/icon';
 import TimePicker from './src/timepicker';
 import inherits from 'santd/core/util/inherits';
+import enUS from './locale/en_US';
+import LocaleReceiver from '../localeprovider/localereceiver';
 
 const prefixCls = classCreator('time-picker')();
+
+const Locale = inherits(san.defineComponent({
+    initData() {
+        return {
+            componentName: 'TimePicker',
+            defaultLocale: enUS
+        };
+    }
+}), LocaleReceiver);
 
 export default inherits(san.defineComponent({
     initData() {
@@ -20,11 +31,15 @@ export default inherits(san.defineComponent({
                 offset: [0, -2]
             },
             prefixCls,
-            placeholder: '请选择时间',
             transitionName: 'slide-up'
         };
     },
     computed: {
+        timePlaceholder() {
+            const locale = this.data.get('locale');
+            const placeholder = this.data.get('placeholder');
+            return placeholder || locale.placeholder;
+        },
         pickerClassName() {
             const className = this.data.get('className');
             const size = this.data.get('size');
@@ -132,4 +147,4 @@ export default inherits(san.defineComponent({
         this.data.set('open', open);
         this.fire('openChange', open);
     }
-}), TimePicker);
+}), inherits(TimePicker, Locale));

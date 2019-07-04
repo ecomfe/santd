@@ -105,10 +105,9 @@ const Pagination = san.defineComponent({
 const Locale = inherits(san.defineComponent({
     initData() {
         return {
-            componentName: 'Pagination',
-            defaultLocale: enUS
+            componentName: 'Pagination'
         };
     }
 }), LocaleReceiver);
 
-export default inherits(Pagination, Locale);
+export default inherits(Locale, Pagination);

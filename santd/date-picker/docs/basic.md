@@ -6,15 +6,13 @@
 ```html
 <template>
     <div>
-        <div>
-            <s-datepicker on-change="handleChange" />
-            <br /><br />
-            <s-monthpicker placeholder="Select month" on-change="handleChange"/>
-            <br /><br />
-            <s-rangepicker on-change="handleChange" />
-            <br /><br />
-            <s-weekpicker placeholder="Select week" on-change="handleChange" />
-        </div>
+        <s-datepicker on-change="handleChange" />
+        <br /><br />
+        <s-monthpicker placeholder="Select month" on-change="handleChange"/>
+        <br /><br />
+        <s-rangepicker on-change="handleChange" />
+        <br /><br />
+        <s-weekpicker placeholder="Select week" on-change="handleChange" />
     </div>
 </template>
 

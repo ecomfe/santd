@@ -17,30 +17,30 @@ function extend(target, source) {
 }
 
 export default function (subClass, superClass) {
-    const subClassProto = subClass.prototype;
+    /*const subClassProto = subClass.prototype;
 
     let F = new Function();
     F.prototype = superClass.prototype;
     subClass.prototype = new F();
     subClass.prototype.constructor = subClass;
-    extend(subClass.prototype, subClassProto);
+    extend(subClass.prototype, subClassProto);*/
 
     const newSubClassProto = subClass.prototype;
-    for (let i in newSubClassProto) {
-        if (newSubClassProto.hasOwnProperty(i) && i !== 'constructor') {
+    for (let i in superClass.prototype) {
+        if (superClass.prototype.hasOwnProperty(i) && i !== 'constructor') {
             const newProto = newSubClassProto[i];
             const superProto = superClass.prototype[i];
-            if (typeof newProto === 'function') {
+            if (typeof superProto === 'function') {
                 newSubClassProto[i] = function (...args) {
-                    const superProtoValue = superProto && superProto.bind(this)(...args) || {};
-                    const newProtoValue = newProto.bind(this)(...args);
-                    if (Object.prototype.toString.call(newProtoValue) === '[object Object]') {
+                    const superProtoValue = superProto && superProto.bind(this)(...args);
+                    const newProtoValue = newProto && newProto.bind(this)(...args);
+                    if (Object.prototype.toString.call(superProtoValue) === '[object Object]') {
                         return {
                             ...superProtoValue,
                             ...newProtoValue
                         };
                     }
-                    return newProtoValue;
+                    return newProtoValue || superProtoValue;
                 };
             }
             else if (typeof newProto === 'object') {
@@ -48,6 +48,9 @@ export default function (subClass, superClass) {
                     ...superProto,
                     ...newProto
                 };
+            }
+            else {
+                newSubClassProto[i] = superProto;
             }
         }
     }

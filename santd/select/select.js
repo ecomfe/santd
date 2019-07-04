@@ -447,7 +447,7 @@ export default san.defineComponent({
                 this.setSelectData('_innerOptions', allOptionsData);
                 this.updateMenuData();
 
-                const initValues = this.getValueFromData(this, allOptionsData);
+                const initValues = this.getValueFromData(this, {...allOptionsData});
                 this.setSelectData('_value', initValues);
             }
 
@@ -909,10 +909,9 @@ export default san.defineComponent({
         Object.keys(options).forEach(opt => {
             value.forEach(v => {
                 if (options[opt].value === v) {
-                    label = options[opt].label.trim();
                     newLabelArray.push({
                         value: v,
-                        label: label
+                        label: options[opt].label
                     });
                 }
             });

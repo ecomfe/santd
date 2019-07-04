@@ -29,7 +29,7 @@ export default san.defineComponent({
         popupPlacement: DataTypes.string,
         transitionName: DataTypes.string,
         getPopupContainer: DataTypes.func,
-        placeholder: DataTypes.string,
+        timePlaceholder: DataTypes.string,
         format: DataTypes.string,
         showHour: DataTypes.bool,
         showMinute: DataTypes.bool,
@@ -90,7 +90,7 @@ export default san.defineComponent({
         },
         popup() {
             const prefixCls = this.data.get('prefixCls');
-            const placeholder = this.data.get('placeholder');
+            const placeholder = this.data.get('timePlaceholder');
             const disabledHours = this.data.get('disabledHours');
             const disabledMinutes = this.data.get('disabledMinutes');
             const disabledSeconds = this.data.get('disabledSeconds');
@@ -283,7 +283,7 @@ export default san.defineComponent({
                 <input
                     class="{{prefixCls}}-input"
                     type="text"
-                    placeholder="{{placeholder}}"
+                    placeholder="{{timePlaceholder}}"
                     name="{{name}}"
                     value="{{displayValue}}"
                     disabled="{{disabled}}"

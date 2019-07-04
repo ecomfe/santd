@@ -102,7 +102,6 @@ export default san.defineComponent({
             if (value && value.length && this.data.get('checkable')) {
                 value.forEach(item => {
                     if (this.data.get('data').key === item) {
-                        console.log(this);
                         // 如果对应上了，则执行click逻辑,
                         this.nextTick(() => {
                             this.checkboxClick();

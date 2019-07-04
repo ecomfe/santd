@@ -24,25 +24,6 @@ export default inherits(san.defineComponent({
             autoAdjustOverflow: true
         };
     },
-    inited() {
-        /*const title = this.data.get('title');
-        console.log(title);
-        let tooltipPopup;
-        if (typeof title === 'string' || typeof title === 'number') {
-            tooltipPopup = san.defineComponent({
-                template: `<span>${title}</span>`
-            });
-        }
-        else if (typeof title === 'function') {
-            tooltipPopup = title;
-        }
-        console.log(tooltipPopup);
-        this.data.set('tooltipPopup', tooltipPopup);
-
-        this.watch('title', val => {
-            console.log(val);
-        });*/
-    },
     computed: {
         builtinPlacements() {
             const builtinPlacements = this.data.get('placements');

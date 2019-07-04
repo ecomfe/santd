@@ -12,7 +12,6 @@ import DateInput from './date/dateInput';
 import inherits from 'santd/core/util/inherits';
 import moment from 'moment';
 import {getTimeConfig, getTodayTime, syncTime} from './util';
-moment.locale('zh-cn');
 
 export default inherits(san.defineComponent({
     components: {
@@ -57,6 +56,14 @@ export default inherits(san.defineComponent({
         this.data.set('value', value || defaultValue || moment());
         this.data.set('selectedValue', selectedValue || defaultSelectedValue);
         this.data.set('instance', this);
+
+        this.watch('selectedValue', val => {
+            this.data.set('value', val);
+        });
+
+        this.watch('localeCode', val => {
+            this.data.set('value', this.data.get('value').locale(val).clone());
+        });
     },
     handleDateTableSelect(value) {
         const selectedValue = this.data.get('selectedValue');
@@ -142,7 +149,7 @@ export default inherits(san.defineComponent({
                     <s-calendarheader
                         locale="{{locale}}"
                         mode="{{mode}}"
-                        value="{{selectedValue || defaultValue}}"
+                        value="{{value || defaultValue}}"
                         on-valueChange="setValue"
                         on-panelChange="handlePanelChange"
                         renderFooter="{{renderFooter}}"
@@ -152,7 +159,7 @@ export default inherits(san.defineComponent({
                     <div class="{{prefixCls}}-time-picker" s-if="timePicker && showTimePicker">
                         <div class="{{prefixCls}}-time-picker-panel">
                             <timepicker
-                                value="{{selectedValue}}"
+                                value="{{value}}"
                                 disabledHours="{{getTimeConfig(selectedValue, disabledTime, 'disabledHours')}}"
                                 disabledMinutes="{{getTimeConfig(selectedValue, disabledTime, 'disabledMinutes')}}"
                                 disabledSeconds="{{getTimeConfig(selectedValue, disabledTime, 'disabledSeconds')}}"

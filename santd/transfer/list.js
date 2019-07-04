@@ -194,7 +194,7 @@ export default san.defineComponent({
             <span class="{{prefixCls}}-header-selected">
                 <span>
                     {{checkedKeys.length > 0 ? checkedKeys.length + '/' : ''}}
-                    {{getFilteredItems.filteredItems.length}} 项
+                    {{getFilteredItems.filteredItems.length}} {{dataSource.length > 1 ? itemsUnit : itemUnit}}
                 </span>
                 <span class="{{prefixCls}}-header-title">{{titleText}}</span>
             </span>

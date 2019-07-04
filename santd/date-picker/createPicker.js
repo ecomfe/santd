@@ -23,11 +23,20 @@ export default function (theCalendar) {
                 return classNames(className, pickerClass);
             },
             calendar() {
+                const locale = this.data.get('locale');
+                const localeCode = this.data.get('localeCode');
+                const value = this.data.get('value');
+                if (localeCode) {
+                    moment.locale(localeCode);
+                }
+                if (value && localeCode) {
+                    value.locale(localeCode);
+                }
                 const disabledDate = this.data.get('disabledDate');
                 const disabledTime = this.data.get('disabledTime');
                 const timePicker = this.data.get('timePicker');
                 const defaultValue = this.data.get('defaultValue') || moment();
-                const dateInputPlaceholder = this.data.get('placeholder');
+                const dateInputPlaceholder = this.data.get('placeholder') || locale.lang.placeholder;
                 const prefixCls = this.data.get('prefixCls');
                 const dateRender = this.data.get('dateRender');
                 const format = this.data.get('format');
@@ -61,6 +70,8 @@ export default function (theCalendar) {
                             monthCellContentRender,
                             renderFooter,
                             showTime,
+                            locale: locale.lang,
+                            localeCode,
                             ...calendarProps
                         };
                     }
@@ -122,8 +133,7 @@ export default function (theCalendar) {
             return {
                 prefixCls,
                 allowClear: true,
-                showToday: true,
-                placeholder: '请选择日期'
+                showToday: true
             };
         },
         inited() {
@@ -137,7 +147,7 @@ export default function (theCalendar) {
         handleChange(value) {
             const format = this.data.get('format');
             this.data.set('value', value, {force: false});
-            // this.fire('change', {date: value, dateString: value && value.format(format)});
+            this.fire('change', {date: value, dateString: value && value.format(format)});
         },
         handleOpenChange(open) {
             this.fire('openChange', open);
@@ -178,6 +188,7 @@ export default function (theCalendar) {
                 on-ok="handleOk"
                 disabled="{{disabled}}"
                 open="{{open}}"
+                localeCode="{{localeCode}}"
                 dropdownClassName="{{dropdownClassName}}"
                 getCalendarContainer="{{getCalendarContainer}}"
                 s-ref="picker"
@@ -187,7 +198,7 @@ export default function (theCalendar) {
                         disabled="{{disabled}}"
                         readOnly
                         value="{{displayValue}}"
-                        placeholder="{{placeholder}}"
+                        placeholder="{{placeholder || locale.lang.placeholder}}"
                         className="{{pickerInputClass}}"
                         tabIndex="{{tabIndex}}"
                         name="{{name}}"

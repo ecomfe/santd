@@ -9,16 +9,20 @@ import {classCreator} from 'santd/core/util';
 import icon from 'santd/icon';
 import Dialog from './Dialog';
 import ActionButton from './ActionButton';
+import inherits from 'santd/core/util/inherits';
+import LocaleReceiver from 'santd/localeprovider/localereceiver';
+
+const Locale = inherits(san.defineComponent({
+    initData() {
+        return {
+            componentName: 'Modal'
+        };
+    }
+}), LocaleReceiver);
 
 const cc = classCreator('modal');
 const prefixCls = cc();
 const contentPrefixCls = `${prefixCls}-confirm`;
-
-const locale = {
-    okText: '确定',
-    cancelText: '取消',
-    justOkText: '知道了'
-};
 
 // 判断是否SanComponent, 可能会随着san的版本迭代变更，参考依据如下：
 // https://github.com/baidu/san/blob/36085399ab3d84df3ff8b741bb2f57c483b59acb/src/view/node-type.js
@@ -37,7 +41,7 @@ const contentLoader = san.createComponentLoader(() => new Promise((resolve, reje
     contentFun = {resolve, reject};
 }));
 
-export default san.defineComponent({
+export default inherits(san.defineComponent({
     template: `<template>
         <s-dialog
             prefixCls="{{prefixCls}}"
@@ -69,6 +73,7 @@ export default san.defineComponent({
                     </div>
                 </div>
                 <div class="${contentPrefixCls}-btns">
+                {{locale.okText}}
                     <s-button
                         s-if="okCancel"
                         actionFn="{{onCancel}}"
@@ -133,8 +138,7 @@ export default san.defineComponent({
             maskClosable: false,
             okCancel: true,
             okType: 'primary',
-            width: 416,
-            locale
+            width: 416
         };
     },
     attached() {
@@ -143,4 +147,4 @@ export default san.defineComponent({
         const contentIsComponent = this.data.get('contentIsComponent');
         contentIsComponent && contentFun.resolve(content);
     }
-});
+}), Locale);

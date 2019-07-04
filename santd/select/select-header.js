@@ -59,8 +59,8 @@ const SingleHeadComponent = san.defineComponent({
                 resValue.forEach(v => {
                     if (v.value === optionsInfo[opt].value) {
                         let title = optionsInfo[opt].title
-                            ? optionsInfo[opt].title.trim()
-                            : optionsInfo[opt].label.trim();
+                            ? optionsInfo[opt].title
+                            : optionsInfo[opt].label;
                         targetTitle.push(title);
                     }
                 });

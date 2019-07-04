@@ -14,6 +14,7 @@ import classNames from 'classnames';
 import SelectionBox from './SelectionBox';
 import SelectionCheckboxAll from './SelectionCheckboxAll';
 import FilterDropdown from './filterDropdown';
+import renderEmpty from 'santd/core/util/renderEmpty';
 import './style/index';
 
 const prefixCls = classCreator('table')();
@@ -100,7 +101,8 @@ export default san.defineComponent({
             pagination: {
                 current: 1,
                 pageSize: 10
-            }
+            },
+            notFoundContent: renderEmpty('Table')
         };
     },
     created() {
@@ -345,7 +347,7 @@ export default san.defineComponent({
                                 }
                             },
                             handleConfirm(payload) {
-                                console.log(payload);
+                                // console.log(payload);
                             },
                             template: `<div>
                                 <div key="title" class="{{sorter ? prefixCls + '-column-sorters' : ''}}">
@@ -437,7 +439,7 @@ export default san.defineComponent({
         }
 
         if (e.shiftKey && pivot !== undefined && realIndex !== pivot) {
-            console.log(e.shiftKey); // 多选模式
+            // console.log(e.shiftKey); // 多选模式
         }
         else {
             if (checked) {
@@ -887,6 +889,7 @@ export default san.defineComponent({
                     defaultExpandAllRows="{{defaultExpandAllRows}}"
                     defaultExpandedRowKeys="{{defaultExpandedRowKeys}}"
                     expandedRowKeys="{{expandedRowKeys}}"
+                    notFoundContent="{{notFoundContent}}"
                 ></s-table>
                 <s-pagination
                     s-if="hasPagination"

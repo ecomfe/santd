@@ -127,6 +127,7 @@ export default san.defineComponent({
                         <div class="{{prefixCls}}-time-picker-panel">
                             <timepicker
                                 value="{{dateInputValue(selectedValue)}}"
+                                locale="{{locale}}"
                                 disabledHours="{{getTimeConfig(selectedValue, disabledTime, 'disabledHours')}}"
                                 disabledMinutes="{{getTimeConfig(selectedValue, disabledTime, 'disabledMinutes')}}"
                                 disabledSeconds="{{getTimeConfig(selectedValue, disabledTime, 'disabledSeconds')}}"

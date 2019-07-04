@@ -23,19 +23,20 @@ export default san.defineComponent({
         },
         calendar() {
             const disabledDate = this.data.get('disabledDate');
-            const disabledTime = this.data.get('disabledTime');
-            const timePicker = this.data.get('timePicker');
             const defaultValue = this.data.get('defaultPickerValue') || moment();
-            const dateInputPlaceholder = this.data.get('placeholder');
             const prefixCls = this.data.get('prefixCls');
-            const dateRender = this.data.get('dateRender');
             const format = this.data.get('format');
-            const showToday = this.data.get('showToday');
-            const monthCellContentRender = this.data.get('monthCellContentRender');
             const renderFooter = this.data.get('renderFooter');
             const value = this.data.get('value');
-            const showTime = this.data.get('showTime');
             const instance = this.data.get('instance');
+            const locale = this.data.get('locale');
+            const localeCode = this.data.get('localeCode');
+            if (localeCode) {
+                moment.locale(localeCode);
+            }
+            if (value && localeCode) {
+                value.locale(localeCode);
+            }
 
             return inherits(san.defineComponent({
                 initData() {
@@ -47,7 +48,8 @@ export default san.defineComponent({
                         showToday: false,
                         disabledDate,
                         renderFooter,
-                        value: value || defaultValue
+                        value: value || defaultValue,
+                        locale: locale.lang
                     };
                 },
                 onChange(value) {
@@ -92,8 +94,8 @@ export default san.defineComponent({
         return {
             prefixCls,
             allowClear: true,
-            format: 'gggg-wo',
-            placeholder: '请选择日期'
+            format: 'gggg-wo'
+            // placeholder: '请选择日期'
         };
     },
     inited() {
@@ -145,7 +147,7 @@ export default san.defineComponent({
                         disabled="{{disabled}}"
                         readOnly
                         value="{{displayValue}}"
-                        placeholder="{{placeholder}}"
+                        placeholder="{{placeholder || locale.lang.placeholder}}"
                         className="{{pickerInputClass}}"
                         tabIndex="{{tabIndex}}"
                         name="{{name}}"

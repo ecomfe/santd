@@ -40,9 +40,6 @@ export default san.defineComponent({
             currentActiveKey = activeKey;
         }
         this.data.set('activeKey', toArray(currentActiveKey));
-        this.watch('activeKey', val => {
-            console.log(val);
-        });
     },
     computed: {
         classes() {

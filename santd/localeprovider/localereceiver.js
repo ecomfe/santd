@@ -16,15 +16,16 @@ export default san.defineComponent({
         locale() {
             const componentName = this.data.get('componentName');
             const defaultLocale = this.data.get('defaultLocale');
-            const locale = defaultLocale || defaultLocale[componentName || 'global'];
+            const locale = defaultLocale || defaultLocaleData[componentName || 'global'];
 
             const sanLocale = this.data.get('localeContext');
             const localeFromContext = componentName && sanLocale ? sanLocale[componentName] : {};
 
-            return {
+            const result = {
                 ...locale,
                 ...localeFromContext
             };
+            return result;
         },
         localeCode() {
             const sanLocale = this.data.get('localeContext');
@@ -35,7 +36,7 @@ export default san.defineComponent({
             return localeCode;
         }
     },
-    attached() {
+    inited() {
         this.dispatch('addLocaleReceiver', this);
     }
 });

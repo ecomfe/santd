@@ -8,7 +8,6 @@ import Base from './base';
 import CalendarHeader from './calendar/calendarHeader';
 import inherits from 'santd/core/util/inherits';
 import moment from 'moment';
-import classNames from 'classnames';
 
 export default inherits(san.defineComponent({
     initData() {
@@ -22,13 +21,17 @@ export default inherits(san.defineComponent({
         const selectedValue = this.data.get('selectedValue');
         const defaultSelectedValue = this.data.get('defaultSelectedValue');
 
-        this.data.set('value', value || defaultValue || moment());
+        this.data.set('value', value || selectedValue || defaultValue || moment());
         this.data.set('selectedValue', selectedValue || defaultSelectedValue);
         this.data.set('instance', this);
         this.data.set('mode', 'month');
+
+        this.watch('selectedValue', val => {
+            this.data.set('value', val);
+        });
     },
     handleMonthSelect(value) {
-        this.data.set('value', value);
+        // this.data.set('value', value);
         this.fire('select', value);
         this.dispatch('select', {value: value, cause: null});
     },
