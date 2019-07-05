@@ -11,6 +11,8 @@ import findIndex from 'lodash/findIndex';
 import {classCreator} from 'santd/core/util';
 import {fileToObject, genPercentAdd, getFileItem, removeFileItem} from './utils';
 import classNames from 'classnames';
+import LocaleReceiver from 'santd/localeprovider/localereceiver';
+import inherits from 'santd/core/util/inherits';
 
 const prefixCls = classCreator('upload')();
 
@@ -66,7 +68,15 @@ const UploadButton = san.defineComponent({
     </div>`
 });
 
-export default san.defineComponent({
+const Locale = inherits(san.defineComponent({
+    initData() {
+        return {
+            componentName: 'Upload'
+        };
+    }
+}), LocaleReceiver);
+
+export default inherits(Locale, san.defineComponent({
     updated() {
         const instance = this.data.get('instance');
         const slotChildren = instance && instance.slotChildren || [];
@@ -329,6 +339,7 @@ export default san.defineComponent({
             previewFile="{{previewFile}}"
             showRemoveIcon="{{!disabled && showRemoveIcon}}"
             showPreviewIcon="{{showPreviewIcon}}"
+            locale="{{locale}}"
             on-remove="handleManualRemove"
             on-preview="handlePreview"
         />
@@ -341,6 +352,7 @@ export default san.defineComponent({
             previewFile="{{previewFile}}"
             showRemoveIcon="{{!disabled && showRemoveIcon}}"
             showPreviewIcon="{{showPreviewIcon}}"
+            locale="{{locale}}"
             on-remove="handleManualRemove"
             on-preview="handlePreview"
         />
@@ -395,9 +407,10 @@ export default san.defineComponent({
             previewFile="{{previewFile}}"
             showRemoveIcon="{{!disabled && showRemoveIcon}}"
             showPreviewIcon="{{showPreviewIcon}}"
+            locale="{{locale}}"
             on-remove="handleManualRemove"
             on-preview="handlePreview"
         />
         </template>
     </span>`
-});
+}));

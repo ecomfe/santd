@@ -30,6 +30,7 @@ export default inherits(san.defineComponent({
             const arrowContent = this.data.get('arrowContent');
             const tooltipPopup = this.data.get('tooltipPopup');
             const title = this.data.get('title');
+            const initData = tooltipPopup.prototype.initData && tooltipPopup.prototype.initData() || {};
 
             return san.defineComponent({
                 components: {
@@ -40,7 +41,7 @@ export default inherits(san.defineComponent({
                 initData() {
                     return {
                         title,
-                        ...tooltipPopup.prototype.initData()
+                        ...initData
                     };
                 },
                 template: `<div>

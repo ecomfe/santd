@@ -10,6 +10,8 @@ import icon from 'santd/icon';
 import tooltip from 'santd/tooltip';
 import copy from 'copy-to-clipboard';
 import {classCreator, getComponentChildren} from 'santd/core/util';
+import inherits from 'santd/core/util/inherits';
+import LocaleReceiver from 'santd/localeprovider/localereceiver';
 
 const prefix = classCreator('typography')();
 
@@ -23,6 +25,14 @@ const isStyleSupport = function (styleName) {
     return false;
 };
 
+const Locale = inherits(san.defineComponent({
+    initData() {
+        return {
+            componentName: 'Text'
+        };
+    }
+}), LocaleReceiver);
+
 const create = function (tag) {
     const content = `
         <strong s-if="strong"><slot/></strong>
@@ -31,7 +41,7 @@ const create = function (tag) {
         <code s-elif="code"><slot/></code>
         <mark s-elif="mark"><slot/></mark>
         <slot s-else/>
-        <s-tooltip title="{{copied ? copiedStr : copyStr}}" s-if="{{copyable}}">
+        <s-tooltip title="{{copied ? locale.copied : locale.copy}}" s-if="{{copyable}}">
             <button
                 class="${prefix}-copy"
                 style="border: 0px; background: transparent; padding: 0px; line-height: inherit;"
@@ -57,8 +67,6 @@ const create = function (tag) {
         template: template.join(''),
         initData() {
             return {
-                copiedStr: '复制成功',
-                copyStr: '复制',
                 clientRendered: false
             };
         },
@@ -139,8 +147,7 @@ const create = function (tag) {
             }, 3000);
         }
     });
-
-    return base;
+    return inherits(base, Locale);
 };
 
 const base = create();

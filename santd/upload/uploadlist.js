@@ -31,7 +31,7 @@ const FileIcon = san.defineComponent({
             <div
                 s-if="listType === 'picture-card' && file.status === 'uploading'"
                 class="{{prefixCls}}-list-item-uploading-text"
-            >上传中...</div>
+            >{{locale.uploading}}</div>
             <s-icon
                 s-else-if="!file.thumbUrl && !file.url"
                 class="{{prefixCls}}-list-item-thumbnail"
@@ -65,13 +65,14 @@ export default san.defineComponent({
     computed: {
         items() {
             const fileList = this.data.get('fileList');
+            const locale = this.data.get('locale');
 
             return fileList.map(file => {
                 if (file.response && typeof file.response === 'string') {
                     file.message = file.response;
                 }
                 else {
-                    file.message = (file.error && file.error.statusText) || '上传失败';
+                    file.message = (file.error && file.error.statusText) || locale.uploadError;
                 }
                 return {
                     ...file
@@ -205,14 +206,14 @@ export default san.defineComponent({
                         target="_blank"
                         rel="noopener noreferrer"
                         style="{{file.url || file.thumbUrl ? '' : style}}"
-                        title="预览图片"
+                        title="{{locale.previewFile}}"
                         on-click="handlePreview({file, e: $event})"
                     >
                         <s-icon type="eye-o" />
                     </a>
-                    <s-icon s-if="showRemoveIcon" type="delete" title="删除图片" on-click="handleClose(file)" />
+                    <s-icon s-if="showRemoveIcon" type="delete" title="{{locale.removeFile}}" on-click="handleClose(file)" />
                 </span>
-                <s-icon s-else-if="showRemoveIcon" type="close" title="删除图片" on-click="handleClose(file)" />
+                <s-icon s-else-if="showRemoveIcon" type="close" title="{{locale.removeFile}}" on-click="handleClose(file)" />
                 <div class="{{prefixCls}}-list-item-progress" key="progress" s-if="file.status === 'uploading'">
                     <s-progress s-if="file.percent" type="line" s-bind="{{progressAttr}}" percent="{{file.percent}}" />
                 </div>
