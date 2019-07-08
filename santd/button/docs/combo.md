@@ -32,10 +32,10 @@ const menu = san.defineComponent({
     },
     template: `
         <div>
-            <s-menu on-click="handleMenuClick" prefixCls="dropdown">
-                <s-menuitem key="1" prefixCls="dropdown">1st item</s-menuitem>
-                <s-menuitem key="2" prefixCls="dropdown">2nd item</s-menuitem>
-                <s-menuitem key="3" prefixCls="dropdown">3rd item</s-menuitem>
+            <s-menu on-click="handleMenuClick" prefixCls="san-dropdown">
+                <s-menuitem key="1">1st item</s-menuitem>
+                <s-menuitem key="2">2nd item</s-menuitem>
+                <s-menuitem key="3">3rd item</s-menuitem>
             </s-menu>
         </div>
     `

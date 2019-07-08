@@ -73,7 +73,6 @@ export default inherits(san.defineComponent({
                     </div>
                 </div>
                 <div class="${contentPrefixCls}-btns">
-                {{locale.okText}}
                     <s-button
                         s-if="okCancel"
                         actionFn="{{onCancel}}"

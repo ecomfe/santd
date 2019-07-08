@@ -69,7 +69,8 @@ export default san.defineComponent({
             return;
         }
         let checked = e.target.checked;
-        if (checked === this.data.get('checked')) {
+        const type = this.data.get('type');
+        if (checked === this.data.get('checked') && type !== 'radio') {
             checked = !checked;
         }
         this.data.set('checked', checked);
@@ -93,7 +94,6 @@ export default san.defineComponent({
                 name="{{name}}"
                 id="{{id}}"
                 type="{{type}}"
-                checked="{{checked}}"
                 readonly="{{readOnly}}"
                 disabled="{{disabled}}"
                 tabindex="{{tabIndex}}"

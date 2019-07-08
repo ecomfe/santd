@@ -138,6 +138,7 @@ export default inherits(san.defineComponent({
                     });
                 };
             }
+            return null;
         },
         popupTransitionName() {
             return this.data.get('transitionName');

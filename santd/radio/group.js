@@ -53,7 +53,9 @@ export default san.defineComponent({
                 option.key = option.value.toString();
                 option.disabled = 'disabled' in option ? option.disabled : this.data.get('disabled');
                 option.checked = (value === option.value);
-                return option;
+                return {
+                    ...option
+                };
             });
         },
         groupName() {

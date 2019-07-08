@@ -94,9 +94,9 @@ export default san.defineComponent({
             return defaultOpenValue && toNearestValidTime(defaultOpenValue, hourOptions, minuteOptions, secondOptions);
         },
         injectAddon() {
-            const addon = this.data.get('addon');
+            const addon = this.data.get('addon') || function () {};
             const instance = this.data.get('instance');
-            if (instance && addon) {
+            if (instance) {
                 instance.components.addon = addon(instance);
             }
         }

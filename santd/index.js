@@ -59,3 +59,4 @@ export {default as TimePicker} from './timepicker';
 export {default as Timeline} from './timeline';
 export {default as Tooltip} from './tooltip';
 export {default as Upload} from './upload';
+export {default as LocaleProvider} from './localeprovider';

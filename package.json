@@ -1,6 +1,6 @@
 {
     "name": "@baidu/santd",
-    "version": "1.0.0-alpha.37",
+    "version": "1.0.0-alpha.38",
     "description": "san UI dedign",
     "homepage": "http://icode.baidu.com/repos/baidu/hulk/santd",
     "scripts": {
@@ -88,7 +88,7 @@
         "resize-observer-polyfill": "^1.5.1",
         "rimraf": "^2.6.3",
         "rucksack-css": "^1.0.2",
-        "san": "^3.7.6",
+        "san": "3.7.6",
         "san-hot-reload-api": "^1.0.1",
         "san-router": "^1.2.0",
         "string-replace-webpack-plugin": "^0.1.3",

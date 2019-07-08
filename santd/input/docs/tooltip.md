@@ -9,12 +9,8 @@
     <s-tooltip
         trigger="click"
         placement="topLeft"
-        getTooltipContainer="{{getTooltipContainer()}}"
+        title="{{value || 'Input a number'}}"
     >
-        <template slot="title">
-            <span s-if="{{value}}">{{value}}</span>
-            <span s-else>Input a number</span>
-        </template>
         <s-input
             placeholder="base useage"
             on-change="onChange"
@@ -34,11 +30,6 @@ export default {
     },
     onChange(value) {
         this.data.set('value', value);
-    },
-    getTooltipContainer() {
-        return trigger => {
-            return trigger.parentElement
-        }
     }
 }
 </script>

@@ -88,6 +88,7 @@ export default san.defineComponent({
         >
             <s-checkbox
                 prefixCls="{{prefixCls}}"
+                type="{{type}}"
                 class="{{checkboxClass}}"
                 checked="{{checked}}"
                 disabled="{{disabled}}"

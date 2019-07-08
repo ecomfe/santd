@@ -42,7 +42,7 @@
     <br/>
     <s-input-group compact>
         <s-input style="width: 50%" defaultValue="input content"/>
-        <s-datepicker style="width: 50%" />
+        <s-datepicker />
     </s-input-group>
     <br/>
     <s-input-group compact>
