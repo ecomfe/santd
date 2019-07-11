@@ -1,5 +1,5 @@
 /**
- * @file Santd avatar docs file
+ * @file Santd result docs file
  **/
 
 import san from 'san';

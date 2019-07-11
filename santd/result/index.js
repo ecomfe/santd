@@ -1,6 +1,6 @@
 /**
- * @file 组件 avatar
- * @author wangyongqing01 <wangyongqing01@baidu.com>
+ * @file Santd result component file
+ * @author mayihui@baidu.com
  */
 
 import './style/index.less';
