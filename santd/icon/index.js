@@ -70,7 +70,17 @@ const icon = san.defineComponent({
                 innerSvgProps.computedType = computedType;
             }
             return innerSvgProps;
+        },
+        injectComponent() {
+            const instance = this.data.get('instance');
+            const component = this.data.get('component');
+            if (instance && component) {
+                instance.components.iconcomponent = component;
+            }
         }
+    },
+    inited() {
+        this.data.set('instance', this);
     },
     handleClick(e) {
         this.fire('click', e);
@@ -81,7 +91,11 @@ const icon = san.defineComponent({
         on-click="handleClick"
         class="{{classes}}"
     >
+        <template s-if="component">
+            <iconcomponent />
+        </template>
         <s-icon
+            s-else
             style="{{innerSvgProps.style}}"
             class="{{innerSvgProps.class}}"
             type="{{innerSvgProps.computedType}}"

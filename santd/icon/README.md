@@ -7,6 +7,7 @@
 | theme | 图标主题风格。可选实心、描线、双色等主题风格，适用于官方图标 | 'filled' \| 'outlined' \| 'twoTone' | `outlined` |
 | spin | 是否有旋转动画 | boolean | false |
 | rotate | 图标旋转角度 | number | - |
+| component | 控制如何渲染图标，通常是一个渲染根标签为 <svg> 的 San 组件，会使 type 属性失效 | SanNode | - |
 | loading | 显示loading图标 | boolean | false |
 | twoToneColor | 双色icon。设置双色图标的主要颜色 | string(十六进制颜色) | - |
 
