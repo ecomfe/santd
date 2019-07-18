@@ -77,7 +77,7 @@ export default san.defineComponent({
         starsProps() {
             const data = this.data;
             let hoverValue = data.get('hoverValue');
-            let sValue = data.get('sValue');
+            let sValue = data.get('sValue') || data.get('value');
             let starsProps = [];
             for (let i = 0; i < data.get('count'); i++) {
                 let starProps = {

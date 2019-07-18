@@ -58,7 +58,7 @@ export default san.defineComponent({
     },
     updated() {
         const childs = this.data.get('childs');
-        const value = this.data.get('value');
+        const value = this.data.get('value') || [];
         childs.length && childs.forEach(child => {
             child.data.set('checked', value.indexOf(child.data.get('value')) !== -1);
             child.data.set('disabled', 'disabled' in child.data.get()
@@ -69,14 +69,15 @@ export default san.defineComponent({
     messages: {
         toggleOption(payload) {
             const option = payload.value;
-            const optionIndex = this.data.get('value').indexOf(option.value);
+            const value = this.data.get('value') || [];
+            const optionIndex = value.indexOf(option.value);
             if (optionIndex === -1) {
-                this.data.push('value', option.value);
+                value.push(option.value);
             }
             else {
-                this.data.splice('value', [optionIndex, 1]);
+                value.splice('value', optionIndex, 1);
             }
-            const value = this.data.get('value');
+            this.data.set('value', value);
             this.fire('change', value);
             this.dispatch('UI:form-item-interact', {fieldValue: value, type: 'change'});
         },

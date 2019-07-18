@@ -263,6 +263,7 @@ export default inherits(Locale, san.defineComponent({
     handleChange(info) {
         this.data.set('fileList', [...info.fileList]);
         this.fire('change', info);
+        this.dispatch('UI:form-item-interact', {fieldValue: info, type: 'change'});
     },
     handleRemove(file) {
         const status = file.status;

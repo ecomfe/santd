@@ -139,7 +139,7 @@ export default function (options = {}, mixins = []) {
                 fieldMeta.originalProps[action](...args);
             }
             const value = fieldMeta.getValueFromEvent
-                ? fieldMeta.getValueFromEvent(...args)
+                ? fieldMeta.getValueFromEvent(args[2].value)
                 : args[2].value;
             if (onValuesChange && value !== fieldsStore.getFieldValue(name)) {
                 const valuesAll = fieldsStore.getAllValues();

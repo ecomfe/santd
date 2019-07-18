@@ -63,9 +63,18 @@
             <s-rate decorator="{{rateDecorator}}"></s-rate>
         </s-formitem>
         <s-formitem label="Upload" extra="longgggggggggggggggggggggggggg">
-            <s-upload decorator="{{uploadDecorator}}" name="logo" action="/upload" listType="picture">
+            <s-upload decorator="{{uploadDecorator}}" name="logo" action="https://www.mocky.io/v2/5cc8019d300000980a055e76" listType="picture">
                 <s-button><s-icon type="upload">Click to upload</s-icon></s-button>
             </s-upload>
+        </s-formitem>
+        <s-formitem label="Dragger">
+            <s-dragger decorator="{{draggerDecorator}}" name="files" action="https://www.mocky.io/v2/5cc8019d300000980a055e76">
+                <p class="san-upload-drag-icon">
+                  <s-icon type="inbox" />
+                </p>
+                <p class="san-upload-text">Click or drag file to this area to upload</p>
+                <p class="san-upload-hint">Support for a single or bulk upload.</p>
+            </s-dragger>
         </s-formitem>
         <s-formitem wrapperCol="{{{span: 12, offset: 6}}}">
             <s-button type="primary" htmlType="submit">Submit</s-button>
@@ -106,6 +115,7 @@ export default Form.create({name: 'validate_other'})({
         's-checkbox': Checkbox,
         's-checkboxgroup': Checkbox.Group,
         's-upload': Upload,
+        's-dragger': Upload.Dragger,
         's-row': Row,
         's-col': Col
     },
@@ -150,10 +160,15 @@ export default Form.create({name: 'validate_other'})({
             },
             rateDecorator: {
                 name: 'rate',
-                initialValue: 3.5
+                initialValue: 3
             },
             uploadDecorator: {
                 name: 'upload',
+                valuePropName: 'fileList',
+                getValueFromEvent: this.normFile
+            },
+            draggerDecorator: {
+                name: 'dragger',
                 valuePropName: 'fileList',
                 getValueFromEvent: this.normFile
             }

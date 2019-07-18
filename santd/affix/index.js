@@ -10,48 +10,6 @@ import classNames from 'classnames';
 import './style/index';
 const prefixCls = classCreator('affix')();
 
-/*function getDefaultTarget() {
-    return typeof window !== 'undefined' ? window : null;
-}
-
-export default san.defineComponent({
-    dataTypes: {
-        offsetTop: DataTypes.number,
-        offset: DataTypes.number,
-        offsetBottom: DataTypes.number,
-        target: DataTypes.func,
-        prefixCls: DataTypes.string,
-        className: DataTypes.string
-    },
-    initData() {
-        return {
-            target: getDefaultTarget
-        };
-    },
-    computed: {
-        mergedPlaceholderStyle() {
-            const status = this.data.get('status');
-            const placeholderStyle = this.data.get('placeholderStyle');
-
-            return {
-                ...(status === 'None' ? placeholderStyle : null),
-                ...toStyle.object(this.data.get('bodyStyle'))
-            };
-        }
-    },
-    inited() {
-        this.data.set('bodyStyle', this.data.get('style'));
-        this.data.set('style', {});
-    },
-    template: `
-        <div style="{{mergedPlaceholderStyle}}">
-            <div class="{{className}}" style="{{affixStyle}}">
-                <slot></slot>
-            </div>
-        </div>
-    `
-});*/
-
 export default san.defineComponent({
     dataTypes: {
         offsetTop: DataTypes.oneOfType([DataTypes.string, DataTypes.number]),
