@@ -104,11 +104,11 @@ export default inherits(san.defineComponent({
             }
         },
         hasSelectedValue() {
-            const selectedValue = this.data.get('selectedValue');
+            const selectedValue = this.data.get('selectedValue') || [];
             return !!selectedValue[1] && !!selectedValue[0];
         },
         isAllowedDateAndTime() {
-            const selectedValue = this.data.get('selectedValue');
+            const selectedValue = this.data.get('selectedValue') || [];
             const disabledDate = this.data.get('disabledDate');
             const disabledStartTime = this.data.get('disabledStartTime');
             const disabledEndTime = this.data.get('disabledEndTime');
@@ -153,7 +153,7 @@ export default inherits(san.defineComponent({
             };
         },
         getStartValue() {
-            const selectedValue = this.data.get('selectedValue');
+            const selectedValue = this.data.get('selectedValue') || [];
             const showTimePicker = this.data.get('showTimePicker');
             const value = this.data.get('value');
             const mode = this.data.get('mode');
@@ -180,7 +180,7 @@ export default inherits(san.defineComponent({
             return startValue;
         },
         getEndValue() {
-            const selectedValue = this.data.get('selectedValue');
+            const selectedValue = this.data.get('selectedValue') || [];
             const showTimePicker = this.data.get('showTimePicker');
             const value = this.data.get('value');
             const mode = this.data.get('mode');
@@ -304,6 +304,7 @@ export default inherits(san.defineComponent({
             prevSelectedValue,
             firstSelectedValue
         } = this.data.get();
+        console.log(prevSelectedValue)
 
         let nextSelectedValue;
         if (type === 'both') {

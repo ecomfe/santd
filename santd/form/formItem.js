@@ -238,7 +238,7 @@ export default san.defineComponent({
                 if ('checked' in props) {
                     component.data.set('checked', props['checked']);
                 }
-                else if ('value' in props) {
+                else if ('value' in props && props['value']) {
                     component.data.set('value', props['value']);
                 }
             }
@@ -252,7 +252,7 @@ export default san.defineComponent({
             const fieldsStore = form && form.data.get('fieldsStore');
             if (name && fieldsStore) {
                 const value = fieldsStore.getFieldValue(name);
-                if (value !== prevValue) {
+                if (value !== prevValue && value) {
                     decoratorInstance.data.set('value', value);
                 }
             }

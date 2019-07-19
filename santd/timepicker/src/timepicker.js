@@ -244,12 +244,14 @@ export default san.defineComponent({
         this.fire('click');
         this.setValue(null);
         this.setOpen(false);
+        this.dispatch('UI:form-item-interact', {fieldValue: '', type: 'change'});
     },
     handleChange(value) {
         this.data.set('value', value);
         const format = this.data.get('format') || 'HH:mm:ss';
 
         this.fire('change', {time: value, timeString: value && value.format(format) || ''});
+        this.dispatch('UI:form-item-interact', {fieldValue: value, type: 'change'});
     },
     messages: {
         change(payload) {

@@ -103,6 +103,9 @@ export default {
     border-radius: 6px;
 }
 
+.san-advanced-search-form .san-form-item .san-row {
+    display: flex;
+}
 
 .search-result-list {
     margin-top: 16px;

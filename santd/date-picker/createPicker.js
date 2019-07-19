@@ -141,13 +141,12 @@ export default function (theCalendar) {
             const value = this.data.get('value');
             const defaultValue = this.data.get('defaultValue');
             this.data.set('value', value || defaultValue);
-            this.data.set('inputStyle', this.data.get('style'));
-            this.data.set('style', {});
         },
         handleChange(value) {
             const format = this.data.get('format');
             this.data.set('value', value, {force: false});
             this.fire('change', {date: value, dateString: value && value.format(format)});
+            this.dispatch('UI:form-item-interact', {fieldValue: value, type: 'change'});
         },
         handleOpenChange(open) {
             this.fire('openChange', open);
@@ -158,6 +157,7 @@ export default function (theCalendar) {
 
             this.data.set('value', null);
             this.fire('change', {date: null, dateString: null});
+            this.dispatch('UI:form-item-interact', {fieldValue: '', type: 'change'});
         },
         handleOk(value) {
             this.fire('ok', value);
@@ -176,6 +176,7 @@ export default function (theCalendar) {
         template: `<span
             id="{{id}}"
             class="{{classes}}"
+            style="{{style}} {{!showTime && 'min-width:195px;'}}"
         >
             <s-picker
                 calendar="{{calendar}}"
@@ -202,7 +203,7 @@ export default function (theCalendar) {
                         className="{{pickerInputClass}}"
                         tabIndex="{{tabIndex}}"
                         name="{{name}}"
-                        style="{{inputStyle}}"
+                        autocomplete="off"
                         s-ref="input"
                     />
                     <s-icon

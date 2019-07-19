@@ -240,6 +240,7 @@ export default san.defineComponent({
 
         this.data.set('value', []);
         this.handleChange([]);
+        this.dispatch('UI:form-item-interact', {fieldValue: '', type: 'change'});
     },
     handleChange(value) {
         this.data.set('value', value);
@@ -251,6 +252,7 @@ export default san.defineComponent({
             date: value,
             dateString: [start && start.format(format) || '', end && end.format(format) || '']
         });
+        this.dispatch('UI:form-item-interact', {fieldValue: value, type: 'change'});
     },
     setValue(value, hidePanel) {
         this.handleChange(value);

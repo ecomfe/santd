@@ -77,7 +77,7 @@ export default san.defineComponent({
     handleDateInputClear() {
         this.fire('clear');
     },
-    dateInputValue(selectedValue) {
+    dateInputValue(selectedValue = []) {
         const direction = this.data.get('direction');
         const value = selectedValue[direction === 'left' ? 0 : 1];
         return value && value.clone();

@@ -19,6 +19,7 @@ import Coordinated from './coordinated.md';
 import Layout from './layout.md';
 import DynamicRule from './dynamic-rule.md';
 import Validate from './validate.md';
+import Date from './date.md';
 
 export default san.defineComponent({
     components: {
@@ -37,7 +38,8 @@ export default san.defineComponent({
         coordinated: Coordinated,
         layout: Layout,
         dynamicrule: DynamicRule,
-        validate: Validate
+        validate: Validate,
+        date: Date
     },
     template: `
         <div>
@@ -48,6 +50,7 @@ export default san.defineComponent({
             <search/>
             <modal/>
             <dynamic/>
+            <date/>
             <customform/>
             <data/>
             <customdata/>
