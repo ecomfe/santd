@@ -241,6 +241,16 @@ export default san.defineComponent({
             const rootDomNode = this.data.get('rootDomNode');
 
             return rootDomNode || instance && instance.el;
+        },
+        handlePortalUpdate() {
+            const prevPopupVisible = this.data.get('prevPopupVisible');
+            const popupVisible = this.data.get('popupVisible');
+            const afterPopupVisibleChange = this.data.get('afterPopupVisibleChange');
+            return function () {
+                if (prevPopupVisible !== popupVisible) {
+                    afterPopupVisibleChange && afterPopupVisibleChange(popupVisible);
+                }
+            };
         }
     },
     created() {
@@ -474,6 +484,7 @@ export default san.defineComponent({
             getContainer="{{getContainer}}"
             s-if="popupVisible || popupComponent || forceRender"
             getComponent="{{getComponent}}"
+            didUpdate="{{handlePortalUpdate}}"
         ></s-portal>
     </span>`
 });

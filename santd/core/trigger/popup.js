@@ -75,8 +75,7 @@ export default san.defineComponent({
     },
     getPopupDomNode() {
         const popupDomNode = this.ref('popupInstance');
-
-        return popupDomNode && popupDomNode.el;
+        return popupDomNode && popupDomNode.el.querySelector('div');
     },
     getClassName(currentAlignClassName) {
         const prefixCls = this.data.get('prefixCls');
@@ -121,6 +120,7 @@ export default san.defineComponent({
                     exclusive
                     transitionAppear
                     transitionName="{{transitionName || getTransitionName}}"
+                    s-ref="popupInstance"
                     s-if="visible"
                 >
                     <s-popupinner
@@ -146,6 +146,7 @@ export default san.defineComponent({
                 exclusive
                 transitionAppear
                 transitionName="{{transitionName || getTransitionName}}"
+                s-ref="popupInstance"
                 s-else
             >
                 <s-popupinner

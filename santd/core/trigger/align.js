@@ -92,7 +92,7 @@ export default san.defineComponent({
 
             // this.fire('align', {source, result});
         }
-    },
+    }
     /*template: `
         <div style="position: absolute;" class="{{className}}">
             <slot></slot>

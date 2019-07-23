@@ -56,6 +56,25 @@ export default inherits(san.defineComponent({
         },
         popupVisible() {
             return this.data.get('visible');
+        },
+        getMinOverlayWidthMatchTrigger() {
+            const minOverlayWidthMatchTrigger = this.data.get('minOverlayWidthMatchTrigger');
+            const alignPoint = this.data.get('alignPoint');
+            return minOverlayWidthMatchTrigger || !alignPoint;
+        },
+        afterPopupVisibleChange() {
+            const getMinOverlayWidthMatchTrigger = this.data.get('getMinOverlayWidthMatchTrigger');
+            const instance = this.data.get('instance');
+            return function (visible) {
+                if (visible && getMinOverlayWidthMatchTrigger) {
+                    instance.data.set('rootDomNode', instance.el.children[0]);
+                    const overlayNode = instance.getPopupDomNode();
+                    const rootNode = instance.el.children[0];
+                    if (rootNode && overlayNode && rootNode.offsetWidth > overlayNode.offsetWidth) {
+                        overlayNode.style.minWidth = `${rootNode.offsetWidth}px`;
+                    }
+                }
+            };
         }
     }
 }), Trigger);
