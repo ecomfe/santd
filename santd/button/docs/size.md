@@ -17,6 +17,7 @@
         <s-button size="{{size}}">Normal</s-button>
         <s-button type="dashed" size="{{size}}">Dashed</s-button>
         <s-button type="danger" size="{{size}}">Danger</s-button>
+        <s-button type="link" size="{{size}}">Link</s-button>
         <br />
         <s-button type="primary" shape="circle" icon="download" size="{{size}}" />
         <s-button type="primary" shape="round" icon="download" size="{{size}}">Download</s-button>

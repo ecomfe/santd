@@ -18,6 +18,9 @@
         <s-button type="dashed">Dashed</s-button>
         <s-button type="dashed" disabled>Dashed(disabled)</s-button>
         <br />
+        <s-button type="link">Link</s-button>
+        <s-button type="link" disabled>Link(disabled)</s-button>
+        <br />
         <div style="padding: 8px 8px 0 8px; background: rgb(190, 200, 200)">
             <s-button ghost>Ghost</s-button>
             <s-button ghost disabled>Ghost(disabled)</s-button>

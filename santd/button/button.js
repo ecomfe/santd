@@ -23,7 +23,7 @@ export default san.defineComponent({
         shape: DataTypes.oneOf(['circle', 'circle-outline', 'round']),
         size: DataTypes.oneOf(['small', 'default', 'large']),
         target: DataTypes.string,
-        type: DataTypes.oneOf(['default', 'primary', 'ghost', 'dashed', 'danger']),
+        type: DataTypes.oneOf(['default', 'primary', 'ghost', 'dashed', 'danger', 'link']),
         block: DataTypes.bool,
         className: DataTypes.string,
         noWave: DataTypes.bool
@@ -44,7 +44,6 @@ export default san.defineComponent({
             const ghost = data.get('ghost');
             const className = data.get('className');
             const instance = this.data.get('instance');
-            const icon = this.data.get('icon');
             return classNames({
                 [`${prefixCls}`]: true,
                 [`${prefixCls}-${typei}`]: !!typei,
@@ -145,7 +144,7 @@ export default san.defineComponent({
                 <s-icon s-if="{{icon && !isLoading}}" type="{{icon}}"></s-icon>
                 <slot s-if="!isCircle"></slot>
             </span>
-            <s-wave s-if="!noWave"></s-wave>
+            <s-wave s-if="!noWave && type !== 'link'"></s-wave>
         </button>
     `
 });

@@ -131,40 +131,45 @@
 @shadow-color-inverse   : #fff;
 
 // Buttons
-@btn-font-weight        : 400;
-@btn-border-radius-base : @border-radius-base;
-@btn-border-radius-sm   : @border-radius-base;
+@btn-font-weight: 400;
+@btn-border-radius-base: @border-radius-base;
+@btn-border-radius-sm: @border-radius-base;
+@btn-border-width: @border-width-base;
+@btn-border-style: @border-style-base;
+@btn-shadow: 0 2px 0 rgba(0, 0, 0, 0.015);
+@btn-primary-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
+@btn-text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
 
-@btn-primary-color      : #fff;
-@btn-primary-bg         : @primary-color;
+@btn-primary-color: #fff;
+@btn-primary-bg: @primary-color;
 
-@btn-default-color      : @text-color;
-@btn-default-bg         : #fff;
-@btn-default-border     : @border-color-base;
+@btn-default-color: @text-color;
+@btn-default-bg: @component-background;
+@btn-default-border: @border-color-base;
 
-@btn-danger-color       : @error-color;
-@btn-danger-bg          : @background-color-base;
-@btn-danger-border      : @border-color-base;
+@btn-danger-color: #fff;
+@btn-danger-bg: color(~`colorPalette('@{error-color}', 5) `);
+@btn-danger-border: color(~`colorPalette('@{error-color}', 5) `);
 
-@btn-disable-color      : @disabled-color;
-@btn-disable-bg         : @disabled-bg;
-@btn-disable-border     : @border-color-base;
+@btn-disable-color: @disabled-color;
+@btn-disable-bg: @disabled-bg;
+@btn-disable-border: @border-color-base;
 
-@btn-padding-base       : 0 @padding-md - 1px;
-@btn-font-size-lg       : @font-size-lg;
-@btn-font-size-sm       : @font-size-base;
-@btn-padding-lg         : @btn-padding-base;
-@btn-padding-sm         : 0 @padding-xs - 1px;
+@btn-padding-base: 0 @padding-md - 1px;
+@btn-font-size-lg: @font-size-lg;
+@btn-font-size-sm: @font-size-base;
+@btn-padding-lg: @btn-padding-base;
+@btn-padding-sm: 0 @padding-xs - 1px;
 
-@btn-height-base        : 32px;
-@btn-height-lg          : 40px;
-@btn-height-sm          : 24px;
+@btn-height-base: 32px;
+@btn-height-lg: 40px;
+@btn-height-sm: 24px;
 
-@btn-circle-size        : @btn-height-base;
-@btn-circle-size-lg     : @btn-height-lg;
-@btn-circle-size-sm     : @btn-height-sm;
+@btn-circle-size: @btn-height-base;
+@btn-circle-size-lg: @btn-height-lg;
+@btn-circle-size-sm: @btn-height-sm;
 
-@btn-group-border       : @primary-5;
+@btn-group-border: @primary-5;
 
 // Checkbox
 @checkbox-size          : 16px;

@@ -10,6 +10,7 @@
     <s-button type="default" ghost>Default</s-button>
     <s-button type="danger" ghost>Danger</s-button>
     <s-button type="dashed" ghost>Dashed</s-button>
+    <s-button type="link" ghost>Link</s-button>
   </div>
 </template>
 <script>
