@@ -7,21 +7,58 @@
 <template>
     <div>
         <s-steps current="2">
-            <s-step title="Login"><s-icon type="user" slot="icon" /></s-step>
-            <s-step title="Verification"><s-icon type="solution" slot="icon" /></s-step>
-            <s-step title="Play"><s-icon type="loading" slot="icon" /></s-step>
-            <s-step title="Done"><s-icon type="smile-o" slot="icon" /></s-step>
+            <s-step title="Login" icon="{{user}}" />
+            <s-step title="Verification" icon="{{solution}}" />
+            <s-step title="Play" icon="{{loading}}" />
+            <s-step title="Done" icon="{{smile}}" />
       </s-steps>
     </div>
 </template>
 <script>
+import san from 'san';
 import Steps from 'santd/steps';
 import Icon from 'santd/icon';
+
+const user = san.defineComponent({
+    components: {
+        's-icon': Icon
+    },
+    template: `<span><s-icon type="user" /></span>`
+});
+
+const solution = san.defineComponent({
+    components: {
+        's-icon': Icon
+    },
+    template: `<span><s-icon type="solution" /></span>`
+});
+
+const loading = san.defineComponent({
+    components: {
+        's-icon': Icon
+    },
+    template: `<span><s-icon type="loading" /></span>`
+});
+
+const smile = san.defineComponent({
+    components: {
+        's-icon': Icon
+    },
+    template: `<span><s-icon type="smile-o" /></span>`
+});
+
 export default {
+    initData() { 
+        return { 
+            user,
+            solution,
+            loading,
+            smile
+        };
+    },
     components: {
         's-steps': Steps,
-        's-step': Steps.Step,
-        's-icon': Icon
+        's-step': Steps.Step
     }
 }
 </script>

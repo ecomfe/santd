@@ -7,76 +7,86 @@ import san from 'san';
 import classNames from 'classnames';
 import Icon from 'santd/icon';
 
-const Dot = san.defineComponent({
-    computed: {
-        prefix() {
-            return this.data.get('prefixCls') || 'san-steps';
-        }
-    },
-    template: `
-        <span class="{{prefix}}-icon-dot"></span>
-    `
-});
-
 export default san.defineComponent({
-    components: {
-        's-icon': Icon
-    },
     computed: {
         classes() {
             const prefixCls = this.data.get('prefixCls');
-            // 获取状态
-            const status = this.data.get('status') || 'wait';
-            // 获取失败状态
-            const nextError = this.data.get('nextError');
-            return classNames({
-                [`${prefixCls}-item`]: true,
-                [`${prefixCls}-item-${status}`]: true,
-                [`${prefixCls}-next-error`]: nextError
+            const status = this.data.get('status') || this.data.get('parentStatus');
+            const icon = this.data.get('icon');
+            const className = this.data.get('className');
+
+            return classNames(`${prefixCls}-item`, `${prefixCls}-item-${status}`, className, {
+                [`${prefixCls}-item-custom`]: icon
             });
+        },
+        iconClasses() {
+            const prefixCls = this.data.get('prefixCls');
+            return classNames(`${prefixCls}-icon`);
+        },
+        injectProgressDot() {
+            const instance = this.data.get('instance');
+            if (instance) {
+                const progressDot = this.data.get('progressDot');
+                const prefixCls = this.data.get('prefixCls');
+                const iconDot = san.defineComponent({
+                    initData() {
+                        return {
+                            prefixCls
+                        };
+                    },
+                    template: '<span class="{{prefixCls}}-icon-dot" />'
+                });
+                if (typeof progressDot === 'function') {
+                    instance.components.progressdot = progressDot(iconDot);
+                }
+                else if (progressDot === true) {
+                    instance.components.progressdot = iconDot;
+                }
+            }
+        },
+        injectIcon() {
+            const icon = this.data.get('icon');
+            const instance = this.data.get('instance');
+            if (instance && icon && typeof icon === 'function') {
+                instance.components.icon = icon;
+                return true;
+            }
         }
     },
-    compiled() {
-        const parent = this.parentComponent;
-        const progressDot = parent.data.get('progressDot');
-        this.components['s-dot'] = typeof progressDot === 'function'
-            ? progressDot(Dot)
-            : Dot;
-    },
-    initData() {
-        return {
-            stepNumber: 0,
-            nextError: false
-        };
+    inited() {
+        this.data.set('instance', this);
+        const parentData = this.parentComponent.data.get();
+        ['progressDot', 'status', 'prefixCls', 'size', 'icons'].forEach(key => {
+            this.data.set(key === 'status' ? 'parentStatus' : key, parentData[key]);
+        });
     },
     attached() {
         this.dispatch('addStep', this);
     },
-    template: `
-        <div class="{{classes}}">
-            <div class="{{prefixCls}}-item-tail"></div>
-            <div class="{{prefixCls}}-item-icon">
-                <span class="{{prefixCls}}-icon">
-                    <slot name="icon">
-                        <s-dot s-if="{{progressDot}}" prefixCls="{{prefixCls}}"></s-dot>
-                        <s-icon type="check" s-else-if="{{status==='finish'}}"></s-icon>
-                        <s-icon type="close" s-else-if="{{status==='error'}}"></s-icon>
-                        <span s-else-if="{{stepNumber}}">{{stepNumber}}</span>
-                    </slot>
-                </span>
-            </div>
-            <div class="{{prefixCls}}-item-content">
-                <div class="{{prefixCls}}-item-title">
-                    <slot name="title">
-                        {{title}}
-                    </slot>
-                </div>
-                <div class="{{prefixCls}}-item-description">
-                    <slot name="description">
-                        {{description}}
-                    </slot>
-                </div>
-            </div>
+    components: {
+        's-icon': Icon
+    },
+    template: `<div class="{{classes}}">{{status}}
+        <div class="{{prefixCls}}-item-tail">{{tailContent}}</div>
+        <div class="{{prefixCls}}-item-icon">
+            <span class="{{prefixCls}}-icon" s-if="progressDot">
+                <progressdot status="{{status}}" index="{{stepNumber}}"/>
+            </span>
+            <span class="{{prefixCls}}-icon" s-else-if="injectIcon"><icon /></span>
+            <span class="{{prefixCls}}-icon" s-else-if="!icon && status === 'finish'">
+                <s-icon type="check" className="{{prefixCls}}-finish-icon" />
+            </span>
+            <span class="{{prefixCls}}-icon" s-else-if="!icon && status === 'error'">
+                <s-icon type="close" className="{{prefixCls}}-error-icon" />
+            </span>
+            <span class="{{iconClasses}}" s-else-if="icon || status === 'finish' || status === 'error'" />
+            <span class="{{prefixCls}}-icon" s-else>{{stepNumber}}</span>
         </div>
-    `
+        <div class="{{prefixCls}}-item-content">
+            <div class="{{prefixCls}}-item-title">
+                {{title}}
+            </div>
+            <div class="{{prefixCls}}-item-description" s-if="description">{{description}}</div>
+        </div>
+    </div>`
 });

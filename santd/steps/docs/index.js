@@ -12,6 +12,7 @@ import Vertical from './vertical.md';
 import verSmall from './vertical_small.md';
 import Errors from './error.md';
 import Progress from './progressDot.md';
+import CustomDot from './customDot.md';
 
 export default san.defineComponent({
     components: {
@@ -24,7 +25,8 @@ export default san.defineComponent({
         vertical: Vertical,
         versmall: verSmall,
         error: Errors,
-        progess: Progress
+        progess: Progress,
+        customdot: CustomDot
     },
     template: `
         <div>
@@ -37,6 +39,7 @@ export default san.defineComponent({
             <versmall/>
             <error/>
             <progess/>
+            <customdot/>
             <readme/>
         </div>
     `

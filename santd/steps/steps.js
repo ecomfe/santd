@@ -8,82 +8,70 @@ import {classCreator} from 'santd/core/util';
 import classNames from 'classnames';
 import './style/index.less';
 
-const pagin = classCreator('steps');
-const prefixCls = pagin();
+const prefixCls = classCreator('steps')();
 
 export default san.defineComponent({
-    dataTypes: {
-        className: DataTypes.string,
-        current: DataTypes.oneOfType([DataTypes.string, DataTypes.number]),
-        direction: DataTypes.oneOf(['horizontal', 'vertical']),
-        progressDot: DataTypes.oneOfType([DataTypes.bool, DataTypes.func]),
-        size: DataTypes.oneOf(['default', 'small']),
-        status: DataTypes.oneOf(['wait', 'process', 'finish', 'error'])
+    initData() {
+        return {
+            prefixCls,
+            iconPrefix: 'san',
+            direction: 'horizontal',
+            labelPlacement: 'horizontal',
+            initial: 0,
+            current: 0,
+            status: 'process',
+            size: '',
+            progressDot: false,
+            flexSupported: true,
+            lastStepOffsetWidth: 0,
+            children: []
+        };
     },
     computed: {
         classes() {
-            // 展现方向，默认是horizontal
-            const direction = this.data.get('direction') || 'horizontal';
+            const direction = this.data.get('direction');
+            const className = this.data.get('className');
             const size = this.data.get('size');
+            const labelPlacement = this.data.get('labelPlacement');
             const progressDot = this.data.get('progressDot');
-            // labelPlacement如果没有传，默认横向
-            const labelPlacement = this.data.get('labelPlacement') || 'horizontal';
-            // 如果传入progressDot，则强制纵向
-            const adjustedlabelPlacement = progressDot ? 'vertical' : labelPlacement;
-            return classNames({
-                [`${prefixCls}`]: true,
-                [`${prefixCls}-${direction}`]: true,
+            const adjustedlabelPlacement = !!progressDot ? 'vertical' : labelPlacement;
+            const flexSupported = this.data.get('flexSupported');
+
+            return classNames(prefixCls, `${prefixCls}-${direction}`, className, {
                 [`${prefixCls}-${size}`]: size,
                 [`${prefixCls}-label-${adjustedlabelPlacement}`]: direction === 'horizontal',
-                [`${prefixCls}-dot`]: !!progressDot
-            }, this.data.get('className'));
+                [`${prefixCls}-dot`]: !!progressDot,
+                [`${prefixCls}-flex-not-supported`]: !flexSupported
+            });
         }
     },
-    initData() {
-        return {
-            componentPropName: 's-steps',
-            steps: []
-        };
-    },
-    attached() {
-        this.updateCurrent();
-    },
     updated() {
-        this.updateCurrent();
+        const children = this.data.get('children');
+        const status = this.data.get('status');
+        const current = this.data.get('current');
+        children.forEach((child, index) => {
+            child.data.set('stepNumber', index + 1);
+            child.data.set('stepIndex', index);
+            if (status === 'error' && index === current - 1) {
+                child.data.set('className', `${prefixCls}-next-error`);
+            }
+            if (index === Number(current)) {
+                child.data.set('status', status);
+            }
+            else if (index < current) {
+                child.data.set('status', 'finish');
+            }
+            else {
+                child.data.set('status', 'wait');
+            }
+        });
     },
     messages: {
         addStep(payload) {
-            const status = this.data.get('status');
-            const progressDot = this.data.get('progressDot');
-            this.data.push('steps', payload.value);
-            payload.value.data.set('status', status);
-            payload.value.data.set('progressDot', progressDot);
-            payload.value.data.set('prefixCls', prefixCls);
+            this.data.push('children', payload.value);
         }
     },
-    updateCurrent() {
-        const current = +this.data.get('current');
-        const defaultStatus = this.data.get('status');
-        const steps = this.data.get('steps');
-        steps.forEach((child, index) => {
-            if (index === current) {
-                if (defaultStatus) {
-                    child.data.set('status', defaultStatus);
-                    steps[index - 1].data.set('nextError', true);
-                } else {
-                    child.data.set('status', 'process');
-                }
-            } else if (index < current) {
-                child.data.set('status', 'finish');
-            } else {
-                child.data.set('status', 'wait');
-            }
-            child.data.set('stepNumber', index + 1);
-        });
-    },
-    template: `
-        <div class="{{classes}}">
-            <slot></slot>
-        </div>
-    `
+    template: `<div class="{{classes}}">
+        <slot />
+    </div>`
 });

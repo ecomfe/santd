@@ -28,7 +28,7 @@
 
 | 参数           | 说明                                                                          | 类型      | 默认值     |
 | ---            | ---                                                                           | ---       | ---        |
-| description    | 步骤的详情描述，可选                                                          | string\|slot           | - |
-| icon        |  步骤图标的类型，可选| string\|slot    | -          |
+| description    | 步骤的详情描述，可选                                                          | string           | - |
+| icon        |  步骤图标的类型，可选| SanNode    | -          |
 | status         | 指定状态。当不配置该属性时，会使用 Steps 的 `current` 来自动置顶状态。可选 `wait` `process` `finish` `error`                    | string    | wait    |
-| title    | 标题                                                          | string\|slot           | - |
+| title    | 标题                                                          | string           | - |
