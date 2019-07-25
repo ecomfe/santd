@@ -56,8 +56,18 @@ export default san.defineComponent({
     inited() {
         this.data.set('instance', this);
         const parentData = this.parentComponent.data.get();
-        ['progressDot', 'status', 'prefixCls', 'size', 'icons'].forEach(key => {
+        ['progressDot', 'status', 'prefixCls', 'size', 'icons', 'hasChange'].forEach(key => {
             this.data.set(key === 'status' ? 'parentStatus' : key, parentData[key]);
+        });
+
+        this.watch('hasChange', val => {
+            if (val) {
+                const accessibilityProps = {
+                    role: 'button',
+                    tabIndex: 0
+                };
+                this.data.set('accessibilityProps', accessibilityProps);
+            }
         });
     },
     attached() {
@@ -66,7 +76,16 @@ export default san.defineComponent({
     components: {
         's-icon': Icon
     },
-    template: `<div class="{{classes}}">{{status}}
+    handleClick() {
+        const stepIndex = this.data.get('stepIndex');
+        this.dispatch('clickStep', stepIndex);
+    },
+    template: `<div
+        class="{{classes}}"
+        on-click="handleClick"
+        role="{{accessibilityProps.role}}"
+        tabindex="{{accessibilityProps.tabIndex}}"
+    >
         <div class="{{prefixCls}}-item-tail">{{tailContent}}</div>
         <div class="{{prefixCls}}-item-icon">
             <span class="{{prefixCls}}-icon" s-if="progressDot">

@@ -49,6 +49,7 @@ export default san.defineComponent({
         const children = this.data.get('children');
         const status = this.data.get('status');
         const current = this.data.get('current');
+        const hasChange = !!this.listeners.change;
         children.forEach((child, index) => {
             child.data.set('stepNumber', index + 1);
             child.data.set('stepIndex', index);
@@ -64,11 +65,18 @@ export default san.defineComponent({
             else {
                 child.data.set('status', 'wait');
             }
+            child.data.set('hasChange', hasChange);
         });
     },
     messages: {
         addStep(payload) {
             this.data.push('children', payload.value);
+        },
+        clickStep(payload) {
+            const current = this.data.get('current');
+            if (current !== payload.value) {
+                this.fire('change', payload.value);
+            }
         }
     },
     template: `<div class="{{classes}}">
