@@ -7,9 +7,10 @@
 <template>
     <div>
         <s-steps progressDot="{{customDot}}" current="1">
-            <s-step title="Finished" description="This is a description." />
-            <s-step title="In Progress" description="This is a description." />
-            <s-step title="Waiting" description="This is a description." />
+            <s-step title="Finished" description="You can hover on the dot." />
+            <s-step title="In Progress" description="You can hover on the dot." />
+            <s-step title="Waiting" description="You can hover on the dot." />
+            <s-step title="Waiting" description="You can hover on the dot." />
       </s-steps>
     </div>
 </template>

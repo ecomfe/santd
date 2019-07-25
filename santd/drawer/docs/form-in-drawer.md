@@ -55,7 +55,7 @@
                     </s-col>
                     <s-col span="12">
                         <s-item label="DateTime">
-                            <s-input placeholder="Please input the date time" decorator="{{datetimeDecorator}}"></s-input>
+                            <s-rangepicker decorator="{{datetimeDecorator}}"></s-rangepicker>
                         </s-item>
                     </s-col>
                 </s-row>
@@ -83,6 +83,7 @@ import form from 'santd/form';
 import grid from 'santd/grid';
 import input from 'santd/input';
 import select from 'santd/select';
+import datepicker from 'santd/date-picker';
 
 export default form.create({})({
     components: {
@@ -96,7 +97,8 @@ export default form.create({})({
         's-input': input,
         's-select': select,
         's-option': select.Option,
-        's-textarea': input.TextArea
+        's-textarea': input.TextArea,
+        's-rangepicker': datepicker.RangePicker
     },
     initData() {
         return {

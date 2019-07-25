@@ -151,11 +151,16 @@ export default san.defineComponent({
             const prefixCls = this.data.get('prefixCls');
             const className = this.data.get('className');
             const size = this.data.get('size');
+            const disabled = this.data.get('disabled');
 
             if (simple) {
-                return classNames(prefixCls, prefixCls + '-simple', className);
+                return classNames(prefixCls, prefixCls + '-simple', className, {
+                    [`${prefixCls}-disabled`]: disabled
+                });
             }
-            return classNames(prefixCls, size === 'small' ? 'mini' : '');
+            return classNames(prefixCls, size === 'small' ? 'mini' : '', {
+                [`${prefixCls}-disabled`]: disabled
+            });
         },
         hasPrev() {
             return this.data.get('current') > 1;
@@ -349,7 +354,8 @@ export default san.defineComponent({
         this.runIfEnter(e, this.jumpNext);
     },
     handleChange(page) {
-        if (this.isValid(page)) {
+        const disabled = this.data.get('disabled');
+        if (this.isValid(page) && !disabled) {
             const allPages = this.data.get('allPages');
             if (page > allPages) {
                 page = allPages;
@@ -442,6 +448,7 @@ export default san.defineComponent({
                 quickGo="{{shouldDisplayQuickJumper}}"
                 goButton="{{showQuickJumper.goButton}}"
                 locale="{{locale}}"
+                disabled="{{disabled}}"
                 on-changeSize="handleChangeSize"
                 on-quickGo="handleChange"
             >

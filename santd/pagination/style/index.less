@@ -1,7 +1,6 @@
-@import "santd/core/styles/index";
 @import "santd/core/styles/themes/default";
 @import "santd/core/styles/mixins/index";
-@import "./input";
+@import "santd/input/style/mixin";
 
 @pagination-prefix-cls: ~"@{ant-prefix}-pagination";
 @san-select: ~"san-select";
@@ -406,6 +405,56 @@
       input {
         .input-sm;
         width: 44px;
+      }
+    }
+  }
+
+  // ============================ Disabled ============================
+  &&-disabled {
+    cursor: not-allowed;
+
+    .@{pagination-prefix-cls}-item {
+      background: @disabled-bg;
+      border-color: @border-color-base;
+      cursor: not-allowed;
+
+      a {
+        color: @disabled-color;
+        background: transparent;
+        border: none;
+        cursor: not-allowed;
+      }
+
+      &-active {
+        background: darken(@disabled-bg, 10%);
+        border-color: transparent;
+        a {
+          color: #fff;
+        }
+      }
+    }
+
+    .@{pagination-prefix-cls}-item-link {
+      &,
+      &:hover,
+      &:focus {
+        color: @text-color-secondary;
+        background: @disabled-bg;
+        border-color: @border-color-base;
+        cursor: not-allowed;
+      }
+    }
+
+    .@{pagination-prefix-cls}-jump-prev,
+    .@{pagination-prefix-cls}-jump-next {
+      &:focus,
+      &:hover {
+        .@{pagination-prefix-cls}-item-link-icon {
+          opacity: 0;
+        }
+        .@{pagination-prefix-cls}-item-ellipsis {
+          opacity: 1;
+        }
       }
     }
   }

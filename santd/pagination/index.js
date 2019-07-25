@@ -95,6 +95,7 @@ const Pagination = san.defineComponent({
                 showTotal="{{showTotal}}"
                 itemRender="{{itemRender}}"
                 locale="{{locale}}"
+                disabled="{{disabled}}"
                 on-showSizeChange="handleShowSizeChange"
                 on-change="handleChange"
             />

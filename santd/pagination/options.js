@@ -45,6 +45,7 @@ export default san.defineComponent({
                 optionLabelProp="children"
                 defaultValue="{{value}}"
                 size="{{size}}"
+                disabled="{{disabled}}"
                 on-change="handleChangeSize"
             >
                 <s-option s-for="pageSize in pageSizeOptions" value="{{pageSize}}" locale="{{locale}}">
@@ -56,9 +57,9 @@ export default san.defineComponent({
                 class="{{rootPrefixCls}}-options-quick-jumper"
             >
                 {{locale.jump_to}}
-                <input type="text" value="{{goInputText}}" on-change="handleChange" on-keyup="handleGo"/>
+                <input type="text" value="{{goInputText}}" on-change="handleChange" on-keyup="handleGo" disabled="{{disabled}}"/>
                 {{locale.page}}
-                <button s-if="goButton === true" on-click="handleGo" on-keyup="handleGo">
+                <button s-if="goButton === true" on-click="handleGo" on-keyup="handleGo" disabled="{{disabled}}">
                     {{locale.jump_to_confirm}}
                 </button>
                 <span s-else on-click="handleGo" on-keyup="handleGo">{{goButton}}</span>

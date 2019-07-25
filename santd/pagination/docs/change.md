@@ -7,6 +7,8 @@
 <template>
     <div>
         <s-pagination total="{{500}}" showSizeChanger defaultCurrent="{{3}}" on-showSizeChange="handleShowSizeChange"></s-pagination>
+        <br/>
+        <s-pagination total="{{500}}" showSizeChanger defaultCurrent="{{3}}" on-showSizeChange="handleShowSizeChange" disabled></s-pagination>
     </div>
 </template>
 <script>

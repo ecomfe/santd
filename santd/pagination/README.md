@@ -6,6 +6,7 @@
 | current | 当前页数 | number | - |
 | defaultCurrent | 默认的当前页数 | number | 1 |
 | defaultPageSize | 默认的每页条数 | number | 10 |
+| disabled | 禁用分页 | boolean | - |
 | hideOnSinglePage | 只有一页时是否隐藏分页器 | boolean | false |
 | itemRender | 用于自定义页码的结构，可用于优化 SEO | (type: 'page' | 'prev' | 'next', originalElement) => SanNode | - |
 | pageSize | 每页条数 | number | - |
