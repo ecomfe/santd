@@ -8,8 +8,7 @@ import Wave from 'santd/core/util/wave';
 import {classCreator} from 'santd/core/util';
 import './style/index';
 
-const cc = classCreator('btn');
-const prefixCls = cc();
+const PREFIX_CLASS = classCreator('btn')();
 
 export default san.defineComponent({
     dataTypes: {
@@ -36,21 +35,21 @@ export default san.defineComponent({
     computed: {
         classes() {
             // 处理class
-            const data = this.data;
-            const typei = data.get('type');
-            const shapei = data.get('shape');
-            const sizei = data.get('sizeMap')[data.get('size')];
-            const className = data.get('className');
+            let data = this.data;
+            let typei = data.get('type');
+            let shapei = data.get('shape');
+            let sizei = data.get('sizeMap')[data.get('size')];
+            let className = data.get('className');
 
 
-            const clazz = [prefixCls];
-            typei && clazz.push(`${prefixCls}-${typei}`);
-            shapei && clazz.push(`${prefixCls}-${shapei}`);
-            sizei && clazz.push(`${prefixCls}-${sizei}`);
-            !data.get('shape') && clazz.push(`${prefixCls}-icon-only`);
-            (data.get('loading') === true) && clazz.push(`${prefixCls}-loading`);
-            data.get('block') && clazz.push(`${prefixCls}-block`);
-            data.get('ghost') && clazz.push(`${prefixCls}-background-ghost`);
+            let clazz = [PREFIX_CLASS];
+            typei && clazz.push(`${PREFIX_CLASS}-${typei}`);
+            shapei && clazz.push(`${PREFIX_CLASS}-${shapei}`);
+            sizei && clazz.push(`${PREFIX_CLASS}-${sizei}`);
+            !data.get('shape') && clazz.push(`${PREFIX_CLASS}-icon-only`);
+            (data.get('loading') === true) && clazz.push(`${PREFIX_CLASS}-loading`);
+            data.get('block') && clazz.push(`${PREFIX_CLASS}-block`);
+            data.get('ghost') && clazz.push(`${PREFIX_CLASS}-background-ghost`);
             className && clazz.push(className);
 
             return clazz;
@@ -71,7 +70,7 @@ export default san.defineComponent({
     },
 
     updated() {
-        const loading = this.data.get('loading');
+        let loading = this.data.get('loading');
         if (loading && loading.delay) {
             this.delayTimeout = window.setTimeout(
                 () => this.data.set('loading', true), 
@@ -87,9 +86,9 @@ export default san.defineComponent({
 
 
         // 模拟a的动作
-        const href = this.data.get('href');
+        let href = this.data.get('href');
         if (href) {
-            const node = document.createElement('a');
+            let node = document.createElement('a');
             node.href = href;
             node.target = this.data.get('target') || '_self';
             node.click();
