@@ -28,7 +28,7 @@ export default san.defineComponent({
         className: DataTypes.string,
         noWave: DataTypes.bool
     },
-    
+
     components: {
         's-icon': Icon,
         's-wave': Wave
@@ -92,7 +92,10 @@ export default san.defineComponent({
     updated() {
         const loading = this.data.get('loading');
         if (loading && typeof loading !== 'boolean' && loading.delay) {
-            this.delayTimeout = window.setTimeout(() => this.data.set('loading', true), loading.delay);
+            this.delayTimeout = window.setTimeout(
+                () => this.data.set('loading', true), 
+                loading.delay
+            );
         }
         else {
             this.data.set('loading', loading);
@@ -150,7 +153,7 @@ export default san.defineComponent({
         >
             <span>
                 <s-icon s-if="isLoading" type="loading" />
-                <s-icon s-if="icon && !isLoading" type="{{icon}}" />
+                <s-icon s-elif="icon" type="{{icon}}" />
                 <slot s-if="!isCircle" /></slot>
             </span>
             <s-wave s-if="!noWave && type !== 'link'" />
