@@ -6,7 +6,6 @@ import san, {DataTypes} from 'san';
 import Icon from 'santd/icon';
 import Wave from 'santd/core/util/wave';
 import {classCreator} from 'santd/core/util';
-import classNames from 'classnames';
 import './style/index';
 
 const cc = classCreator('btn');
@@ -38,6 +37,8 @@ export default san.defineComponent({
         classes() {
             // 处理class
             const data = this.data;
+
+
             const typei = data.get('type');
             const shapei = data.get('shape');
             const sizei = data.get('sizeMap')[data.get('size')];
@@ -46,19 +47,21 @@ export default san.defineComponent({
             const ghost = data.get('ghost');
             const className = data.get('className');
             const instance = this.data.get('instance');
-            return classNames({
-                [`${prefixCls}`]: true,
-                [`${prefixCls}-${typei}`]: !!typei,
-                [`${prefixCls}-${shapei}`]: !!shapei,
-                [`${prefixCls}-${sizei}`]: !!sizei,
-                [`${prefixCls}-icon-only`]: instance
+
+
+            const clazz = [prefixCls];
+            typei && clazz.push(`${prefixCls}-${typei}`);
+            shapei && clazz.push(`${prefixCls}-${shapei}`);
+            sizei && clazz.push(`${prefixCls}-${sizei}`);
+            instance
                     && instance.slotChildren.length
-                    && !instance.slotChildren[0].children.length,
-                [`${prefixCls}-loading`]: isLoading,
-                [`${prefixCls}-block`]: !!block,
-                [`${prefixCls}-background-ghost`]: ghost,
-                [`${className}`]: !!className
-            });
+                    && !instance.slotChildren[0].children.length && clazz.push(`${prefixCls}-icon-only`);
+            isLoading && clazz.push(`${prefixCls}-loading`);
+            block && clazz.push(`${prefixCls}-block`);
+            ghost && clazz.push(`${prefixCls}-background-ghost`);
+            className && clazz.push(className);
+
+            return clazz;
         },
         isLoading() {
             const loading = this.data.get('loading');
