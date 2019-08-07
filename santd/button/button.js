@@ -61,16 +61,11 @@ export default san.defineComponent({
 
             return clazz;
         },
-        
+
         isLoading() {
             const loading = this.data.get('loading');
             return loading !== false && typeof loading === 'boolean';
         }
-    },
-
-    attached() {
-        // eslint-disable-next-line
-        new Wave();
     },
 
     initData() {
