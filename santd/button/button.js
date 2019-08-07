@@ -46,16 +46,14 @@ export default san.defineComponent({
             const block = data.get('block');
             const ghost = data.get('ghost');
             const className = data.get('className');
-            const instance = this.data.get('instance');
+            const shape = this.data.get('shape');
 
 
             const clazz = [prefixCls];
             typei && clazz.push(`${prefixCls}-${typei}`);
             shapei && clazz.push(`${prefixCls}-${shapei}`);
             sizei && clazz.push(`${prefixCls}-${sizei}`);
-            instance
-                    && instance.slotChildren.length
-                    && !instance.slotChildren[0].children.length && clazz.push(`${prefixCls}-icon-only`);
+            !shape && clazz.push(`${prefixCls}-icon-only`);
             isLoading && clazz.push(`${prefixCls}-loading`);
             block && clazz.push(`${prefixCls}-block`);
             ghost && clazz.push(`${prefixCls}-background-ghost`);
@@ -63,6 +61,7 @@ export default san.defineComponent({
 
             return clazz;
         },
+        
         isLoading() {
             const loading = this.data.get('loading');
             return loading !== false && typeof loading === 'boolean';
@@ -70,7 +69,6 @@ export default san.defineComponent({
     },
 
     attached() {
-        this.data.set('instance', this);
         // eslint-disable-next-line
         new Wave();
     },
