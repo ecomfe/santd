@@ -63,9 +63,6 @@ export default san.defineComponent({
         isLoading() {
             const loading = this.data.get('loading');
             return loading !== false && typeof loading === 'boolean';
-        },
-        isCircle() {
-            return !!this.data.get('shape');
         }
     },
 
@@ -80,7 +77,6 @@ export default san.defineComponent({
             disabled: false,
             icons: null,
             loading: false,
-            isCircle: false,
             sizeMap: {
                 large: 'lg',
                 small: 'sm'
@@ -151,7 +147,7 @@ export default san.defineComponent({
             <span>
                 <s-icon s-if="isLoading" type="loading" />
                 <s-icon s-elif="icon" type="{{icon}}" />
-                <slot s-if="!isCircle" /></slot>
+                <slot s-if="!shape" />
             </span>
             <s-wave s-if="!noWave && type !== 'link'" />
         </button>
