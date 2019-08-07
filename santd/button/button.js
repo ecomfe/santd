@@ -40,7 +40,6 @@ export default san.defineComponent({
             const typei = data.get('type');
             const shapei = data.get('shape');
             const sizei = data.get('sizeMap')[data.get('size')];
-            const isLoading = data.get('isLoading');
             const className = data.get('className');
 
 
@@ -49,17 +48,12 @@ export default san.defineComponent({
             shapei && clazz.push(`${prefixCls}-${shapei}`);
             sizei && clazz.push(`${prefixCls}-${sizei}`);
             !data.get('shape') && clazz.push(`${prefixCls}-icon-only`);
-            isLoading && clazz.push(`${prefixCls}-loading`);
+            (data.get('loading') === true) && clazz.push(`${prefixCls}-loading`);
             data.get('block') && clazz.push(`${prefixCls}-block`);
             data.get('ghost') && clazz.push(`${prefixCls}-background-ghost`);
             className && clazz.push(className);
 
             return clazz;
-        },
-
-        isLoading() {
-            const loading = this.data.get('loading');
-            return loading !== false && typeof loading === 'boolean';
         }
     },
 
@@ -136,7 +130,7 @@ export default san.defineComponent({
             on-blur="handleBlur"
         >
             <span>
-                <s-icon s-if="isLoading" type="loading" />
+                <s-icon s-if="loading === true" type="loading" />
                 <s-icon s-elif="icon" type="{{icon}}" />
                 <slot s-if="!shape" />
             </span>
