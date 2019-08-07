@@ -37,26 +37,21 @@ export default san.defineComponent({
         classes() {
             // 处理class
             const data = this.data;
-
-
             const typei = data.get('type');
             const shapei = data.get('shape');
             const sizei = data.get('sizeMap')[data.get('size')];
             const isLoading = data.get('isLoading');
-            const block = data.get('block');
-            const ghost = data.get('ghost');
             const className = data.get('className');
-            const shape = this.data.get('shape');
 
 
             const clazz = [prefixCls];
             typei && clazz.push(`${prefixCls}-${typei}`);
             shapei && clazz.push(`${prefixCls}-${shapei}`);
             sizei && clazz.push(`${prefixCls}-${sizei}`);
-            !shape && clazz.push(`${prefixCls}-icon-only`);
+            !data.get('shape') && clazz.push(`${prefixCls}-icon-only`);
             isLoading && clazz.push(`${prefixCls}-loading`);
-            block && clazz.push(`${prefixCls}-block`);
-            ghost && clazz.push(`${prefixCls}-background-ghost`);
+            data.get('block') && clazz.push(`${prefixCls}-block`);
+            data.get('ghost') && clazz.push(`${prefixCls}-background-ghost`);
             className && clazz.push(className);
 
             return clazz;
