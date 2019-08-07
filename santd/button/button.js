@@ -72,7 +72,7 @@ export default san.defineComponent({
 
     updated() {
         const loading = this.data.get('loading');
-        if (loading && typeof loading !== 'boolean' && loading.delay) {
+        if (loading && loading.delay) {
             this.delayTimeout = window.setTimeout(
                 () => this.data.set('loading', true), 
                 loading.delay
