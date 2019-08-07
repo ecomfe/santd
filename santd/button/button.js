@@ -140,11 +140,11 @@ export default san.defineComponent({
             on-blur="handleBlur"
         >
             <span>
-                <s-icon s-if="{{isLoading}}" type="loading"></s-icon>
-                <s-icon s-if="{{icon && !isLoading}}" type="{{icon}}"></s-icon>
-                <slot s-if="!isCircle"></slot>
+                <s-icon s-if="isLoading" type="loading" />
+                <s-icon s-if="icon && !isLoading" type="{{icon}}" />
+                <slot s-if="!isCircle" /></slot>
             </span>
-            <s-wave s-if="!noWave && type !== 'link'"></s-wave>
+            <s-wave s-if="!noWave && type !== 'link'" />
         </button>
     `
 });
