@@ -97,9 +97,6 @@ export default san.defineComponent({
                 loading.delay
             );
         }
-        else {
-            this.data.set('loading', loading);
-        }
     },
 
     btnClick(e) {
