@@ -28,10 +28,12 @@ export default san.defineComponent({
         className: DataTypes.string,
         noWave: DataTypes.bool
     },
+    
     components: {
         's-icon': Icon,
         's-wave': Wave
     },
+
     computed: {
         classes() {
             // 处理class
@@ -66,11 +68,13 @@ export default san.defineComponent({
             return !!this.data.get('shape');
         }
     },
+
     attached() {
         this.data.set('instance', this);
         // eslint-disable-next-line
         new Wave();
     },
+
     initData() {
         return {
             disabled: false,
@@ -84,6 +88,7 @@ export default san.defineComponent({
             noWave: false
         };
     },
+
     updated() {
         const loading = this.data.get('loading');
         if (loading && typeof loading !== 'boolean' && loading.delay) {
@@ -93,33 +98,37 @@ export default san.defineComponent({
             this.data.set('loading', loading);
         }
     },
+
     btnClick(e) {
-        const href = this.data.get('href');
-        const loading = this.data.get('loading');
-        const target = this.data.get('target');
-        if (!!loading) {
+        if (this.data.get('loading')) {
             return;
         }
 
+
         // 模拟a的动作
+        const href = this.data.get('href');
         if (href) {
             const node = document.createElement('a');
             node.href = href;
-            node.target = target || '_self';
+            node.target = this.data.get('target') || '_self';
             node.click();
         }
+
         this.fire('click', e);
     },
+
     handleFocus(e) {
         this.dispatch('handleTrigger', {
             action: 'handleFocus', e
         });
     },
+
     handleBlur(e) {
         this.dispatch('handleTrigger', {
             action: 'handleBlur', e
         });
     },
+
     template: `
         <button
             autofocus="{{autofocus}}"
