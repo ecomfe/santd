@@ -4,7 +4,7 @@
  */
 
 import san from 'san';
-import {classCreator} from 'santd/core/util';
+import {classCreator} from '../core/util';
 import classNames from 'classnames';
 import Collapse from './src/index';
 

@@ -8,7 +8,7 @@ import Base from './base';
 import DateTable from './date/dateTable';
 import MonthTable from './month/monthTable';
 import CalendarHeader from './fullCalendarHeader';
-import inherits from 'santd/core/util/inherits';
+import inherits from '../../core/util/inherits';
 import moment from 'moment';
 import classNames from 'classnames';
 

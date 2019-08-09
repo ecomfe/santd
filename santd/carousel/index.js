@@ -5,12 +5,11 @@
 
 import './style/index.less';
 import san from 'san';
-import {classCreator} from 'santd/core/util';
+import {classCreator} from '../core/util';
 import classNames from 'classnames';
 import Track from './src/track';
 
-const cc = classCreator('carousel');
-const prefix = cc();
+const prefix = classCreator('carousel')();
 
 export default san.defineComponent({
     template: `
@@ -126,7 +125,6 @@ export default san.defineComponent({
         this.data.set('clientWidth', clientWidth);
 
         const autoplay = this.data.get('autoplay');
-        console.log(autoplay);
         const autoplaySpeed = this.data.get('autoplaySpeed');
         if (autoplay && !this.autoplayTimer) {
             this.autoplayTimer = window.setInterval(() => {

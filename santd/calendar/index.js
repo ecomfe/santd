@@ -4,18 +4,15 @@
  */
 import san, {DataTypes} from 'san';
 import moment from 'moment';
-import {classCreator} from 'santd/core/util';
-import Radio from 'santd/radio';
-import Select from 'santd/select';
+import {classCreator} from '../core/util';
+import Radio from '../radio';
+import Select from '../select';
 import classNames from 'classnames';
 import Calendar from './src/fullCalendar';
 import './style/index.less';
 import LocaleReceiver from '../localeprovider/localereceiver';
-import inherits from 'santd/core/util/inherits';
-import enUS from './locale/en_US';
+import inherits from '../core/util/inherits';
 const prefixCls = classCreator('fullcalendar')();
-
-// moment.locale('zh-cn');
 
 function getMonthsLocale(value) {
     const current = value.clone();

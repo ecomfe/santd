@@ -8,9 +8,9 @@ import Portal from './utils/portal';
 import Popup from './popup';
 import PopupInner from './popupInner';
 import Align from './align';
-import Animate from 'santd/core/util/animate';
-import inherits from 'santd/core/util/inherits';
-import {contains} from 'santd/core/util/dom';
+import Animate from '../util/animate';
+import inherits from '../util/inherits';
+import {contains} from '../util/dom';
 import './style/index';
 
 function isPointsEq(a1, a2, isAlignPoint) {

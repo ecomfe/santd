@@ -4,11 +4,11 @@
 */
 
 import san, {DataTypes} from 'san';
-import {classCreator} from 'santd/core/util';
+import {classCreator} from '../core/util';
 import classNames from 'classnames';
 import Cascader from './src/cascader';
-import Input from 'santd/input';
-import Icon from 'santd/icon';
+import Input from '../input';
+import Icon from '../icon';
 import arrayTreeFilter from './src/arraytreefilter';
 import './style/index';
 
