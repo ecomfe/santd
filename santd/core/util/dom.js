@@ -5,26 +5,24 @@
 const {documentElement, body, compatMode} = document;
 const viewRoot = compatMode === 'BackCompat' ? body : documentElement;
 
-export const hasClass = (elements, cName) => {
-    return (
-        elements.className &&
-        typeof elements.className === 'string' &&
-        !!elements.className.match(new RegExp('(\\s|^)' + cName + '(\\s|$)'))
-    );
-};
+export function hasClass(elements, cName)  {
+    return elements.className
+        && typeof elements.className === 'string'
+        && elements.className.match(new RegExp('(\\s|^)' + cName + '(\\s|$)'));
+}
 
-export const addClass = (ele, cls) => {
+export function addClass(ele, cls) {
     if (!hasClass(ele, cls)) {
         ele.className += ' ' + cls;
     }
-};
+}
 
-export const removeClass = (ele, cls) => {
+export function removeClass(ele, cls) {
     if (hasClass(ele, cls)) {
         const reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');
         ele.className = ele.className.replace(reg, ' ');
     }
-};
+}
 
 /**
  * 获取元素在页面中的位置和尺寸信息
@@ -33,7 +31,7 @@ export const removeClass = (ele, cls) => {
  * @return {Object} 元素的尺寸和位置信息，
  * 包含`top`、`right`、`bottom`、`left`、`width`和`height`属性
  */
-export const getOffset = element => {
+export function getOffset(element) {
     if (!element) {
         return {
             top: 0,
@@ -70,28 +68,30 @@ export const getOffset = element => {
  *
  * @return {number} 页面宽度
  */
-export const getPageWidth = () =>
-    Math.max(
+export function getPageWidth() {
+    return Math.max(
         documentElement ? documentElement.scrollWidth : 0,
         body ? body.scrollWidth : 0,
         viewRoot ? viewRoot.clientWidth : 0,
         0
     );
+}
 
 /**
  * 获取页面高度
  *
  * @return {number} 页面高度
  */
-export const getPageHeight = () =>
-    Math.max(
+export function getPageHeight() {
+    return Math.max(
         documentElement ? documentElement.scrollHeight : 0,
         body ? body.scrollHeight : 0,
         viewRoot ? viewRoot.clientHeight : 0,
         0
     );
+}
 
-export const getScroll = (target, top) => {
+export function getScroll(target, top) {
     if (typeof window === 'undefined') {
         return 0;
     }
@@ -107,72 +107,78 @@ export const getScroll = (target, top) => {
     }
 
     return ret;
-};
+}
 
 /**
  * 获取页面视觉区域宽度
  *
  * @return {number} 页面视觉区域宽度
  */
-export const getViewWidth = () => (viewRoot ? viewRoot.clientWidth : 0);
+export function getViewWidth() {
+    return viewRoot ? viewRoot.clientWidth : 0;
+}
 
 /**
  * 获取页面视觉区域高度
  *
  * @return {number} 页面视觉区域高度
  */
-export const getViewHeight = () => (viewRoot ? viewRoot.clientHeight : 0);
+export function getViewHeight() {
+    return viewRoot ? viewRoot.clientHeight : 0
+}
 
 /**
  * 获取纵向滚动量
  *
  * @return {number} 纵向滚动量
  */
-export const getScrollTop = () =>
-    window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+export function getScrollTop() {
+    return window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+}
 
 /**
  * 获取横向滚动量
  *
  * @return {number} 横向滚动量
  */
-export const getScrollLeft = () =>
-    window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft || 0;
+export function getScrollLeft() {
+    return window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft || 0;
+}
 
 /**
  * 获取页面纵向坐标
  *
  * @return {number}
  */
-export const getClientTop = () => document.documentElement.clientTop || document.body.clientTop || 0;
+export function getClientTop() {
+    return document.documentElement.clientTop || document.body.clientTop || 0;
+}
 
 /**
  * 获取页面横向坐标
  *
  * @return {number}
  */
-export const getClientLeft = () => document.documentElement.clientLeft || document.body.clientLeft || 0;
+export function getClientLeft() {
+    return document.documentElement.clientLeft || document.body.clientLeft || 0;
+}
 
 /**
  * 封装addEventListener
  *
  * @return {function}
  */
-export const on = (function() {
-    if (document.addEventListener) {
-        return function(element, event, handler) {
-            if (element && event && handler) {
-                element.addEventListener(event, handler, false);
-            }
-        };
-    } else {
-        return function(element, event, handler) {
-            if (element && event && handler) {
-                element.attachEvent('on' + event, handler);
-            }
-        };
+export let on = document.addEventListener
+    ? function(element, event, handler) {
+        if (element && event && handler) {
+            element.addEventListener(event, handler, false);
+        }
     }
-})();
+    : function(element, event, handler) {
+        if (element && event && handler) {
+            element.attachEvent('on' + event, handler);
+        }
+    };
 
 /**
  * 封装removeEventListener
@@ -180,21 +186,17 @@ export const on = (function() {
  * @return {function}
  */
 
-export const off = (function() {
-    if (document.removeEventListener) {
-        return function(element, event, handler) {
-            if (element && event) {
-                element.removeEventListener(event, handler, false);
-            }
-        };
-    } else {
-        return function(element, event, handler) {
-            if (element && event) {
-                element.detachEvent('on' + event, handler);
-            }
-        };
+export let off = document.removeEventListener
+    ? function(element, event, handler) {
+        if (element && event) {
+            element.removeEventListener(event, handler, false);
+        }
     }
-})();
+    : function(element, event, handler) {
+        if (element && event) {
+            element.detachEvent('on' + event, handler);
+        }
+    };
 
 /**
  * 判断某个元素是否在外层元素中
@@ -204,7 +206,7 @@ export const off = (function() {
  * @return {boolean}
  */
 
-export const contains = (root, n) => {
+export function contains(root, n) {
     let node = n;
     while (node) {
         if (node === root) {
@@ -213,4 +215,4 @@ export const contains = (root, n) => {
         node = node.parentNode;
     }
     return false;
-};
+}
