@@ -7,7 +7,6 @@ import './style/index.less';
 import san, {DataTypes, NodeType} from 'san';
 // 注意公共方法提取到 util，送人玫瑰手有余香~
 import {classCreator} from '../core/util';
-import classNames from 'classnames';
 import LoadingBlock from './loadingBlock';
 import Grid from './grid';
 import Tabs from '../tabs';
@@ -80,18 +79,17 @@ export default san.defineComponent({
             if (noHovering !== undefined) {
                 hoverable = !noHovering || hoverable;
             }
-
-            return classNames(prefix, selfClass, {
-                [`${prefix}-loading`]: loading,
-                [`${prefix}-bordered`]: bordered,
-                [`${prefix}-hoverable`]: hoverable,
-                [`${prefix}-wider-padding`]: widerPadding,
-                [`${prefix}-padding-transition`]: updateWiderPaddingCalled,
-                [`${prefix}-contain-grid`]: isContainGrid,
-                [`${prefix}-contain-tabs`]: tabList && tabList.length,
-                [`${prefix}-type-${type}`]: !!type,
-                [`${prefix}-${size}`]: !!size
-            });
+            let classArr = [prefix, selfClass];
+            loading && classArr.push(`${prefix}-loading`);
+            bordered && classArr.push(`${prefix}-bordered`);
+            hoverable && classArr.push(`${prefix}-hoverable`);
+            widerPadding && classArr.push(`${prefix}-wider-padding`);
+            updateWiderPaddingCalled && classArr.push(`${prefix}-padding-transition`);
+            isContainGrid && classArr.push(`${prefix}-contain-grid`);
+            tabList && tabList.length && classArr.push(`${prefix}-contain-tabs`);
+            !!type && classArr.push(`${prefix}-type-${type}`);
+            !!size && classArr.push(`${prefix}-${size}`);
+            return classArr;
         }
     },
     inited() {

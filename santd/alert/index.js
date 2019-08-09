@@ -6,7 +6,6 @@
 
 import './style/index.less';
 import san, {DataTypes} from 'san';
-import classNames from 'classnames';
 import {classCreator} from '../core/util';
 import {addClass} from '../core/util/dom';
 import Icon from '../icon';
@@ -55,17 +54,13 @@ export default san.defineComponent({
             const description = data.get('description');
             const showIcon = data.get('showIcon');
             const banner = data.get('banner');
-
-            return classNames({
-                [prefixCls]: true,
-                [`${prefixCls}-${type}`]: true,
-                [`${prefixCls}-close`]: !closing,
-                [`${prefixCls}-slide-up-leave`]: !closing,
-                [`${prefixCls}-with-description`]: !!description,
-                [`${prefixCls}-no-icon`]: !showIcon,
-                [`${prefixCls}-banner`]: !!banner,
-                [`${prefixCls}-closable`]: closable
-            });
+            let klass = [prefixCls, `${prefixCls}-${type}`];
+            !closing && klass.push(`${prefixCls}-close`, `${prefixCls}-slide-up-leave`);
+            description && klass.push(`${prefixCls}-with-description`);
+            !showIcon && klass.push(`${prefixCls}-no-icon`);
+            banner && klass.push(`${prefixCls}-banner`);
+            closable && klass.push(`${prefixCls}-closable`)
+            return klass;
         },
         iconType() {
             const data = this.data;

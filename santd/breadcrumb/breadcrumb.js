@@ -4,7 +4,6 @@
 */
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
-import classNames from 'classnames';
 import breadcrumbList from './breadcrumbList';
 import './style/index';
 const prefixCls = classCreator('breadcrumb')();
@@ -18,11 +17,6 @@ export default san.defineComponent({
         routes: DataTypes.instanceOf(Array)
     },
     computed: {
-        classes() {
-            return classNames({
-                [`${prefixCls}`]: true
-            });
-        },
         newRouteComponts() {
             const itemRender = this.data.get('itemRender');
             const routes = this.data.get('routes');
@@ -41,7 +35,7 @@ export default san.defineComponent({
         }
     },
     template: `
-        <div class="{{classes}}">
+        <div class="${prefixCls}">
             <span s-if="routes" s-for="route,index in routes">
                 <s-breadcrumb-list
                     index="{{index}}"

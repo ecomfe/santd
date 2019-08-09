@@ -5,7 +5,6 @@
 
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
-import classNames from 'classnames';
 
 const prefixCls = classCreator('anchor')();
 
@@ -25,18 +24,15 @@ export default san.defineComponent({
             const href = this.data.get('href');
             const active = this.data.get('activeLink') === href;
             const className = this.data.get('className');
-
-            return classNames(className, `${prefixCls}-link`, {
-                [`${prefixCls}-link-active`]: active
-            });
+            let classArr = [className, `${prefixCls}-link`];
+            active && classArr.push(`${prefixCls}-link-active`);
+            return classArr;
         },
         titleClasses() {
-            const href = this.data.get('href');
-            const active = this.data.get('activeLink') === href;
-
-            return classNames(`${prefixCls}-link-title`, {
-                [`${prefixCls}-link-title-active`]: active
-            });
+            const active = this.data.get('activeLink') === this.data.get('href');
+            let classArr = [`${prefixCls}-link-title`];
+            active && classArr.push(`${prefixCls}-link-title-active`);
+            return classArr;
         }
     },
     inited() {

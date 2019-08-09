@@ -6,7 +6,6 @@
 import './style/index.less';
 import san from 'san';
 import {classCreator} from '../core/util';
-import classNames from 'classnames';
 
 const prefixCls = classCreator('card')();
 
@@ -18,7 +17,7 @@ export default san.defineComponent({
     `,
     computed: {
         cls() {
-            return classNames(`${prefixCls}-grid`, this.data.get('className'));
+            return [`${prefixCls}-grid`, this.data.get('className')];
         }
     }
 });
