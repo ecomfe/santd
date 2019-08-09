@@ -5,14 +5,14 @@
 
 import './style/index.less';
 import san, {DataTypes} from 'san';
-import Icon from 'santd/icon';
+import Icon from '../icon';
 
 // 注意公共方法提取到 util，送人玫瑰手有余香~
 import {
     classCreator,
     guid,
     type
-} from 'santd/core/util';
+} from '../core/util';
 import classnames from 'classnames';
 
 // cc()就是 prefix class，cc('xxx')返回 prefixClass-xxx

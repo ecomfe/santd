@@ -7,12 +7,11 @@
 import './style/index.less';
 import san, {DataTypes} from 'san';
 import classNames from 'classnames';
-import {classCreator} from 'santd/core/util';
-import {addClass} from 'santd/core/util/dom';
-import Icon from 'santd/icon';
+import {classCreator} from '../core/util';
+import {addClass} from '../core/util/dom';
+import Icon from '../icon';
 
-const cc = classCreator('alert');
-const prefixCls = cc();
+const prefixCls = classCreator('alert')();
 const iconMap = {
     success: 'check-circle',
     info: 'info-circle',

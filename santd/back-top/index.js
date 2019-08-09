@@ -5,7 +5,7 @@
 
 import './style/index.less';
 import san, {DataTypes} from 'san';
-import {classCreator} from 'santd/core/util';
+import {classCreator} from '../core/util';
 
 const cc = classCreator('back-top');
 export default san.defineComponent({

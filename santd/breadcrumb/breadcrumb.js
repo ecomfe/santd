@@ -3,12 +3,11 @@
 * @author fuqiangqiang@baidu.com
 */
 import san, {DataTypes} from 'san';
-import {classCreator} from 'santd/core/util';
+import {classCreator} from '../core/util';
 import classNames from 'classnames';
 import breadcrumbList from './breadcrumbList';
 import './style/index';
-const pagin = classCreator('breadcrumb');
-const prefixCls = pagin();
+const prefixCls = classCreator('breadcrumb')();
 
 export default san.defineComponent({
     components: {
@@ -56,5 +55,4 @@ export default san.defineComponent({
             <slot s-else></slot>
         </div>
     `
-
 });

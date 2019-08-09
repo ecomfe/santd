@@ -4,12 +4,8 @@
 */
 
 import san, {DataTypes} from 'san';
-import Icon from 'santd/icon';
-import {classCreator} from 'santd/core/util';
-import classNames from 'classnames';
-import {findComponentUpward} from 'santd/core/util/findCompont';
-const brCrumb = classCreator('breadcrumb');
-const prefixCls = brCrumb();
+import {classCreator} from '../core/util';
+const prefixCls = classCreator('breadcrumb')();
 export default san.defineComponent({
     dataTypes: {
         href: DataTypes.string

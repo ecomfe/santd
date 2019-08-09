@@ -4,14 +4,8 @@
 */
 
 import san, {DataTypes} from 'san';
-import Icon from 'santd/icon';
-import {classCreator} from 'santd/core/util';
-import classNames from 'classnames';
-import {findComponentUpward} from 'santd/core/util/findCompont';
-const brCrumb = classCreator('breadcrumb');
-const prefixCls = brCrumb();
 
-const DefaultItem = function () {
+const defaultItem = function () {
     return san.defineComponent({
         template: `
             <span>
@@ -33,7 +27,7 @@ export default san.defineComponent({
         let itemRender = this.data.get('itemRender');
         const {route, index, params, allLen} = this.data.get();
         let renderer;
-        itemRender = itemRender ? itemRender : DefaultItem;
+        itemRender = itemRender ? itemRender : defaultItem;
         if (route && itemRender) {
             if (params) {
                 route.path = route.path || '';
@@ -53,8 +47,6 @@ export default san.defineComponent({
         }
     },
     template: `
-        <span>
-
-        </span>
+        <span></span>
     `
 });
