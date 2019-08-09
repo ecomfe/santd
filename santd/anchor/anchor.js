@@ -4,11 +4,11 @@
  **/
 
 import san, {DataTypes} from 'san';
-import {classCreator} from 'santd/core/util';
-import {getScroll} from 'santd/core/util/dom';
-import Affix from 'santd/affix';
-import addEventListener from 'santd/core/util/addEventListener';
-import getRequestAnimationFrame from 'santd/core/util/getRequestAnimationFrame';
+import {classCreator} from '../core/util/index';
+import {getScroll} from '../core/util/dom';
+import Affix from '../affix';
+import addDOMEventListener from 'add-dom-event-listener';
+import getRequestAnimationFrame from '../core/util/getRequestAnimationFrame';
 import classNames from 'classnames';
 import toStyle from 'to-style';
 import './style/index';
@@ -155,7 +155,7 @@ export default san.defineComponent({
     },
     attached() {
         const getContainer = this.data.get('getContainer');
-        this.scrollEvent = addEventListener(getContainer(), 'scroll', this.handleScroll.bind(this));
+        this.scrollEvent = addDOMEventListener(getContainer(), 'scroll', this.handleScroll.bind(this));
         this.handleScroll();
     },
     handleScroll() {
