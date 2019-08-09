@@ -3,6 +3,7 @@
  * @author fuqiangqiang@baidu.com
  */
 import san, {DataTypes} from 'san';
+import {classCreator} from '../core/util/index';
 const PREFIX_CLASS = classCreator('btn-group')();
 
 export default san.defineComponent({
