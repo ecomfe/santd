@@ -6,15 +6,13 @@
 import './style/index.less';
 import san, {DataTypes, NodeType} from 'san';
 // 注意公共方法提取到 util，送人玫瑰手有余香~
-import {classCreator} from 'santd/core/util';
+import {classCreator} from '../core/util';
 import classNames from 'classnames';
 import LoadingBlock from './loadingBlock';
 import Grid from './grid';
-import Tabs from 'santd/tabs';
+import Tabs from '../tabs';
 
-// cc()就是 prefix class，cc('xxx')返回 prefixClass-xxx
-const cc = classCreator('card');
-const prefix = cc();
+const prefix = classCreator('card')();
 export default san.defineComponent({
     template: `
     	<div class="{{cls}}">

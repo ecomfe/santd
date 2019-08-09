@@ -6,7 +6,7 @@
 import san, {DataTypes} from 'san';
 import Base from './base';
 import CalendarHeader from './calendar/calendarHeader';
-import inherits from 'santd/core/util/inherits';
+import inherits from '../../core/util/inherits';
 import moment from 'moment';
 
 export default inherits(san.defineComponent({

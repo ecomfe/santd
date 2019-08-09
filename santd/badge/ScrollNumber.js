@@ -6,23 +6,7 @@
 import './style/index.less';
 import san, {DataTypes} from 'san';
 // 注意公共方法提取到 util，送人玫瑰手有余香~
-import {classCreator} from 'santd/core/util';
 import classNames from 'classnames';
-
-const cc = classCreator('badge');
-
-function getNumberArray(num) {
-    return num
-        ? num
-        .toString()
-        .split('')
-        .reverse()
-        .map(i => {
-            const current = Number(i);
-            return isNaN(current) ? i : current;
-        })
-        : [];
-}
 
 export default san.defineComponent({
     dataTypes: {
@@ -127,23 +111,6 @@ export default san.defineComponent({
     },
     updateStyle() {
         if (!this.animated) {
-            /*let posArray = this.data.get('posArray');
-            let styleArr = [];
-            let lastArr = this.lastCount ? this.lastCount.toString().split('').map(i => Number(i)) : [];
-            let count = +this.data.get('count');
-            for (let i in posArray) {
-                let curDig = this.data.get('numberArray')[i];
-                let lastDig = lastArr[i];
-                if (curDig === lastDig) {
-                    break;
-                }
-                let dir = count > this.lastCount ? -1 : 1;
-                let pos = posArray[i];
-                let style = `transition: none;transform: translateY(${(pos + dir) * -100}%);`;
-                styleArr.push(style);
-            }
-            this.data.set('styleArr', styleArr);
-            this.animated = false;*/
             this.nextTick(() => {
                 requestAnimationFrame(() => {
                     this.data.set('styleArr', this.getStyleArr());

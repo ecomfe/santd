@@ -4,8 +4,8 @@
  */
 
 import san, {DataTypes} from 'san';
-import {classCreator} from 'santd/core/util';
-import {on, off, getScrollTop, getOffset} from 'santd/core/util/dom';
+import {classCreator} from '../core/util';
+import {on, off, getScrollTop, getOffset} from '../core/util/dom';
 import classNames from 'classnames';
 import './style/index';
 const prefixCls = classCreator('affix')();

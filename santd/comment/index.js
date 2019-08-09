@@ -5,10 +5,9 @@
 
 import './style/index.less';
 import san from 'san';
-import {classCreator} from 'santd/core/util';
+import {classCreator} from '../core/util';
 
-const cc = classCreator('comment');
-const prefix = cc();
+const prefix = classCreator('comment')();
 
 export default san.defineComponent({
     template: `

@@ -12,7 +12,7 @@ import RangePanel from './range/rangePanel';
 import TodayButton from './calendar/todayButton';
 import OkButton from './calendar/okButton';
 import TimePickerButton from './calendar/timepickerButton';
-import inherits from 'santd/core/util/inherits';
+import inherits from '../../core/util/inherits';
 import moment from 'moment';
 import classNames from 'classnames';
 import {syncTime, getTodayTime, isAllowedDate} from './util';

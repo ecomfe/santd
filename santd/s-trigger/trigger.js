@@ -8,7 +8,7 @@ import {classCreator} from 'santd/core/util';
 import classNames from 'classnames';
 import {alignElement, alignPoint} from 'dom-align';
 import {addClass, contains} from 'santd/core/util/dom';
-import addEventListener from 'santd/core/util/addEventListener';
+import addDOMEventListener from 'add-dom-event-listener';
 import {requestAnimationTimeout, cancelAnimationTimeout} from 'santd/core/util/requestAnimationTimeout';
 import {getAlignPopupClassName, getAlignFromPlacement} from './_utils';
 import Popup from './popup';
@@ -121,7 +121,7 @@ export default san.defineComponent({
         // 绑定点击docuement区域隐藏事件
         if (this.data.get('currentVisible')) {
             if (!this.clickOutsideHandler && (this.isClickToHide() || this.isContextmenuToShow())) {
-                this.clickOutsideHandler = addEventListener(document, 'mousedown', this.onDocumentClick.bind(this));
+                this.clickOutsideHandler = addDOMEventListener(document, 'mousedown', this.onDocumentClick.bind(this));
             }
         } else {
             this.clearOutsideHandler();

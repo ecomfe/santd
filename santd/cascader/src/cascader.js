@@ -5,11 +5,11 @@
 
 
 import san from 'san';
-import inherits from 'santd/core/util/inherits';
-import Trigger from 'santd/core/trigger/index';
+import inherits from '../../core/util/inherits';
+import Trigger from '../../core/trigger/index';
 import placements from './placements';
 import Menus from './menus';
-import {classCreator} from 'santd/core/util';
+import {classCreator} from '../../core/util';
 import arrayTreeFilter from './arraytreefilter';
 
 const prefixCls = classCreator('cascader')();
@@ -146,11 +146,9 @@ export default inherits(san.defineComponent({
             return;
         }
 
-        let value;
         const children = targetOption[this.getFieldName('children')];
         if (!children || !children.length) {
             this.handleChange(activeOptions, {visible: false}, e);
-            // value = activeValue;
         }
         else if (changeOnSelect && (e.type === 'click' || e.type === 'keydown')) {
             if (expandTrigger === 'hover') {
@@ -159,10 +157,8 @@ export default inherits(san.defineComponent({
             else {
                 this.handleChange(activeOptions, {visible: true}, e);
             }
-            // value = activeValue;
         }
         this.data.set('activeValue', activeValue);
-        // this.data.set('value', value);
     },
     messages: {
         menuClick(payload) {

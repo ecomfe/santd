@@ -6,9 +6,8 @@
 import './style/index.less';
 import san, {DataTypes} from 'san';
 // 注意公共方法提取到 util，送人玫瑰手有余香~
-import {classCreator} from 'santd/core/util';
-import classNames from 'classnames';
-import {Col, Row} from 'santd/grid';
+import {classCreator} from '../core/util';
+import {Col, Row} from '../grid';
 
 // cc()就是 prefix class，cc('xxx')返回 prefixClass-xxx
 const cc = classCreator('card');

@@ -5,7 +5,7 @@
 
 import san, {DataTypes} from 'san';
 import {getMonthName} from './util/index';
-import Select from 'santd/select';
+import Select from '../../select';
 
 export default san.defineComponent({
     dataTypes: {

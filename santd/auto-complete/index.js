@@ -4,9 +4,8 @@
 */
 
 import AutoComplete from './auto-complete';
-import Option from './option';
-import Group from './option-group';
+import Select from '../select';
 
-AutoComplete.Option = Option;
-AutoComplete.Group = Group;
+AutoComplete.Option = Select.Option;
+AutoComplete.Group = Select.Group;
 export default AutoComplete;

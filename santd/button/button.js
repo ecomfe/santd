@@ -3,9 +3,9 @@
  * @author fuqiangqiang@baidu.com
  */
 import san, {DataTypes} from 'san';
-import Icon from 'santd/icon';
-import Wave from 'santd/core/util/wave';
-import {classCreator} from 'santd/core/util';
+import Icon from '../icon';
+import Wave from '../core/util/wave';
+import {classCreator} from '../core/util';
 import './style/index';
 
 const PREFIX_CLASS = classCreator('btn')();
@@ -73,7 +73,7 @@ export default san.defineComponent({
         let loading = this.data.get('loading');
         if (loading && loading.delay) {
             this.delayTimeout = window.setTimeout(
-                () => this.data.set('loading', true), 
+                () => this.data.set('loading', true),
                 loading.delay
             );
         }

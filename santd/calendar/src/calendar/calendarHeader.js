@@ -4,7 +4,7 @@
  **/
 
 import san, {DataTypes} from 'san';
-import inherits from 'santd/core/util/inherits';
+import inherits from '../../../core/util/inherits';
 import MonthPanel from '../month/monthPanel';
 import YearPanel from '../year/yearPanel';
 import DecadePanel from '../decade/decadePanel';

@@ -9,7 +9,7 @@ import CalendarHeader from './calendar/calendarHeader';
 import CalendarFooter from './calendar/calendarFooter';
 import DateTable from './date/dateTable';
 import DateInput from './date/dateInput';
-import inherits from 'santd/core/util/inherits';
+import inherits from '../../core/util/inherits';
 import moment from 'moment';
 import {getTimeConfig, getTodayTime, syncTime} from './util';
 

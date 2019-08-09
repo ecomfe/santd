@@ -4,14 +4,8 @@
  */
 
 import san, {DataTypes} from 'san';
-import {classCreator} from 'santd/core/util';
-import classNames from 'classnames';
-import Select from 'santd/select';
-import Input from 'santd/input';
+import Select from '../select';
 import './style/index.less';
-
-const pagin = classCreator('auto-complete');
-const prefixCls = pagin();
 
 export default san.defineComponent({
     components: {
@@ -36,7 +30,6 @@ export default san.defineComponent({
         if (Object.keys(slots).length) {
             this.sourceSlots.named = [];
             const source = this.source;
-            const scope = this.scope;
             const owner = this.owner;
             const that = this;
             this.components.injectslot = san.defineComponent({
@@ -52,7 +45,8 @@ export default san.defineComponent({
                         <slot name="custom" s-bind="{{{value}}}"></slot>
                     </span>`
             });
-        } else {
+        }
+        else {
             this.components.injectslot = null;
         }
     },

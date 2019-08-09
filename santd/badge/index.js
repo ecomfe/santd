@@ -6,7 +6,7 @@
 import './style/index.less';
 import san, {DataTypes} from 'san';
 // 注意公共方法提取到 util，送人玫瑰手有余香~
-import {classCreator} from 'santd/core/util';
+import {classCreator} from '../core/util';
 import classNames from 'classnames';
 import ScrollNumber from './ScrollNumber';
 const prefixCls = classCreator('badge')();
@@ -51,7 +51,6 @@ export default san.defineComponent({
         this.data.set('style', {});
     },
     attached() {
-        const prefixCls = this.data.get('prefixCls');
         const scrollNumberPrefixCls = this.data.get('scrollNumberPrefixCls');
         let hasChild = false;
         this.slotChildren.forEach(slot => {

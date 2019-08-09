@@ -6,7 +6,7 @@
 import san, {DataTypes} from 'san';
 import moment from 'moment';
 import {formatDate} from '../util/index';
-import KeyCode from 'santd/core/util/keyCode';
+import KeyCode from '../../../core/util/keyCode';
 
 export default san.defineComponent({
     dataTypes: {
