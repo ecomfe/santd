@@ -5,10 +5,10 @@
 const {documentElement, body, compatMode} = document;
 const viewRoot = compatMode === 'BackCompat' ? body : documentElement;
 
-export function hasClass(elements, cName)  {
+export function hasClass(elements, cls)  {
     return elements.className
         && typeof elements.className === 'string'
-        && elements.className.match(new RegExp('(\\s|^)' + cName + '(\\s|$)'));
+        && elements.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'));
 }
 
 export function addClass(ele, cls) {
