@@ -9,7 +9,6 @@ import {getScroll} from '../core/util/dom';
 import Affix from '../affix';
 import addDOMEventListener from 'add-dom-event-listener';
 import getRequestAnimationFrame from '../core/util/getRequestAnimationFrame';
-import classNames from 'classnames';
 import toStyle from 'to-style';
 import './style/index';
 
@@ -114,16 +113,15 @@ export default san.defineComponent({
     },
     computed: {
         classes() {
-            const className = this.data.get('className');
-            return classNames(className, `${prefixCls}-wrapper`);
+            let classArr = [this.data.get('className'), `${prefixCls}-wrapper`];
+            return classArr;
         },
         anchorClasses() {
             const affix = this.data.get('affix');
             const showInkInFixed = this.data.get('showInkInFixed');
-
-            return classNames(prefixCls, {
-                fixed: !affix && !showInkInFixed
-            });
+            let classArr = [prefixCls];
+            !affix && !showInkInFixed && classArr.push('fixed');
+            return classArr;
         },
         wrapperStyle() {
             const offsetTop = this.data.get('offsetTop');
@@ -134,10 +132,9 @@ export default san.defineComponent({
         },
         inkClasses() {
             const activeLink = this.data.get('activeLink');
-
-            return classNames(`${prefixCls}-ink-ball`, {
-                visible: activeLink
-            });
+            let classArr = [`${prefixCls}-ink-ball`];
+            activeLink && classArr.push('visible');
+            return classArr;
         }
     },
     inited() {

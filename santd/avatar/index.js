@@ -13,7 +13,6 @@ import {
     guid,
     type
 } from '../core/util';
-import classnames from 'classnames';
 
 // cc()就是 prefix class，cc('xxx')返回 prefixClass-xxx
 const cc = classCreator('avatar');
@@ -47,16 +46,13 @@ export default san.defineComponent({
             const size = data.get('size');
             const shape = data.get('shape');
             const icon = data.get('icon');
-
-            const classString = {
-                [prefixCls]: true,
-                [`${prefixCls}-lg`]: size === 'large',
-                [`${prefixCls}-sm`]: size === 'small',
-                [`${prefixCls}-${shape}`]: shape,
-                [`${prefixCls}-image`]: src && isImgExist,
-                [`${prefixCls}-icon`]: icon
-            };
-            return classnames(classString);
+            let classArr = [prefixCls];
+            size === 'large' && classArr.push(`${prefixCls}-lg`);
+            size === 'small' && classArr.push(`${prefixCls}-sm`);
+            shape && classArr.push(`${prefixCls}-${shape}`);
+            src && isImgExist && classArr.push(`${prefixCls}-image`);
+            icon && classArr.push(`${prefixCls}-icon`);
+            return classArr;
         },
         styles() {
             const data = this.data;

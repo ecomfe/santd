@@ -6,7 +6,6 @@
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
 import {on, off, getScrollTop, getOffset} from '../core/util/dom';
-import classNames from 'classnames';
 import './style/index';
 const prefixCls = classCreator('affix')();
 
@@ -14,14 +13,6 @@ export default san.defineComponent({
     dataTypes: {
         offsetTop: DataTypes.oneOfType([DataTypes.string, DataTypes.number]),
         offsetBottom: DataTypes.oneOfType([DataTypes.string, DataTypes.number])
-    },
-    computed: {
-        classes() {
-            const styles = !(JSON.stringify(this.data.get('styles')) === '{}');
-            return classNames({
-                [`${prefixCls}`]: styles
-            });
-        }
     },
     initData() {
         return {
@@ -107,7 +98,7 @@ export default san.defineComponent({
     },
     template: `
         <div class="san-affix-outer" style="{{pointStyles}}">
-            <div class="{{classes}}" style="{{styles}}" s-ref="point">
+            <div class="${prefixCls}" style="{{styles}}" s-ref="point">
                 <slot></slot>
             </div>
         </div>

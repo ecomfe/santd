@@ -7,7 +7,6 @@ import moment from 'moment';
 import {classCreator} from '../core/util';
 import Radio from '../radio';
 import Select from '../select';
-import classNames from 'classnames';
 import Calendar from './src/fullCalendar';
 import './style/index.less';
 import LocaleReceiver from '../localeprovider/localereceiver';
@@ -49,10 +48,9 @@ const exportCalendar = san.defineComponent({
         classes() {
             const className = this.data.get('className');
             const fullscreen = this.data.get('fullscreen');
-
-            return classNames(prefixCls, className, {
-                [`${prefixCls}-fullscreen`]: fullscreen
-            });
+            let classArr = [prefixCls, className];
+            fullscreen && classArr.push(`${prefixCls}-fullscreen`);
+            return classArr;
         },
         month() {
             const value = this.data.get('value');

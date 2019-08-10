@@ -7,7 +7,6 @@ import './style/index.less';
 import san, {DataTypes} from 'san';
 // 注意公共方法提取到 util，送人玫瑰手有余香~
 import {classCreator} from '../core/util';
-import classNames from 'classnames';
 import ScrollNumber from './ScrollNumber';
 const prefixCls = classCreator('badge')();
 const scrollNumberPrefixCls = classCreator('scroll-number')();
@@ -70,11 +69,12 @@ export default san.defineComponent({
             const prefixCls = this.data.get('prefixCls');
             const className = this.data.get('className');
             const hasStatus = this.data.get('hasStatus');
-
-            return classNames(className, prefixCls, {
-                [`${prefixCls}-status`]: hasStatus,
-                [`${prefixCls}-not-a-wrapper`]: !this.data.get('hasChild')
-            });
+            const hasChild = this.data.get('hasChild');
+            let classArr = [className, prefixCls];
+            hasStatus && classArr.push(`${prefixCls}-status`);
+            !hasChild && classArr.push(`${prefixCls}-not-a-wrapper`);
+            return classArr;
+            
         },
         hasStatus() {
             const status = this.data.get('status');
@@ -99,12 +99,11 @@ export default san.defineComponent({
             const hasStatus = this.data.get('hasStatus');
             const status = this.data.get('status');
             const color = this.data.get('color');
-
-            return classNames({
-                [`${prefixCls}-status-dot`]: hasStatus,
-                [`${prefixCls}-status-${status}`]: !!status,
-                [`${prefixCls}-status-${color}`]: presetColorTypes.indexOf(color) !== -1
-            });
+            let classArr = [];
+            hasStatus && classArr.push(`${prefixCls}-status-dot`);
+            status && classArr.push(`${prefixCls}-status-${status}`);
+            (presetColorTypes.indexOf(color) !== -1) && classArr.push(`${prefixCls}-status-${color}`);
+            return classArr;
         },
         getNumberedDispayCount() {
             const count = this.data.get('count');
@@ -141,14 +140,11 @@ export default san.defineComponent({
             const isDot = this.data.get('isDot');
             const prefixCls = this.data.get('prefixCls');
             const count = this.data.get('count');
-            const hasStatus = this.data.get('hasStatus');
-
-            return classNames({
-                [`${prefixCls}-dot`]: isDot,
-                [`${prefixCls}-count`]: !isDot,
-                [`${prefixCls}-multiple-words`]: !isDot && count && count.toString && count.toString().length > 1,
-                [`${prefixCls}-status-${status}`]: hasStatus
-            });
+            let classArr =[];
+            isDot && classArr.push(`${prefixCls}-dot`);
+            !isDot && classArr.push(`${prefixCls}-count`);
+            (!isDot && count && count.toString && count.toString().length > 1) && classArr.push(`${prefixCls}-status-${status}`);
+            return classArr.join(' ');
         },
         getScrollNumberTitle() {
             const title = this.data.get('title');
