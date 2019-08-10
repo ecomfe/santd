@@ -2,8 +2,12 @@
  * @file DOM相关基础库
  */
 
-const {documentElement, body, compatMode} = document;
-const viewRoot = compatMode === 'BackCompat' ? body : documentElement;
+
+const isCompatMode = document.compatMode === 'BackCompat';
+
+function getViewRoot() {
+    return isCompatMode ? document.body : document.documentElement;
+}
 
 export function hasClass(elements, cls)  {
     return elements.className
@@ -69,9 +73,11 @@ export function getOffset(element) {
  * @return {number} 页面宽度
  */
 export function getPageWidth() {
+    let viewRoot = getViewRoot();
+
     return Math.max(
-        documentElement ? documentElement.scrollWidth : 0,
-        body ? body.scrollWidth : 0,
+        document.documentElement.scrollWidth : 0,
+        document.body ? document.body.scrollWidth : 0,
         viewRoot ? viewRoot.clientWidth : 0,
         0
     );
@@ -83,9 +89,11 @@ export function getPageWidth() {
  * @return {number} 页面高度
  */
 export function getPageHeight() {
+    let viewRoot = getViewRoot();
+
     return Math.max(
-        documentElement ? documentElement.scrollHeight : 0,
-        body ? body.scrollHeight : 0,
+        document.documentElement.scrollHeight : 0,
+        document.body ? document.body.scrollHeight : 0,
         viewRoot ? viewRoot.clientHeight : 0,
         0
     );
@@ -115,6 +123,7 @@ export function getScroll(target, top) {
  * @return {number} 页面视觉区域宽度
  */
 export function getViewWidth() {
+    let viewRoot = getViewRoot();
     return viewRoot ? viewRoot.clientWidth : 0;
 }
 
@@ -124,6 +133,7 @@ export function getViewWidth() {
  * @return {number} 页面视觉区域高度
  */
 export function getViewHeight() {
+    let viewRoot = getViewRoot();
     return viewRoot ? viewRoot.clientHeight : 0
 }
 
