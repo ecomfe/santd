@@ -6,11 +6,11 @@
 import './style/index.less';
 import san, {DataTypes} from 'san';
 import classNames from 'classnames';
-import KeyCode from 'santd/core/util/keyCode';
-import {classCreator} from 'santd/core/util';
-import {getOffset} from 'santd/core/util/dom';
-import icon from 'santd/icon';
-import tooltip from 'santd/tooltip';
+import KeyCode from '../core/util/keyCode';
+import {classCreator} from '../core/util';
+import {getOffset} from '../core/util/dom';
+import icon from '../icon';
+import tooltip from '../tooltip';
 import star from './star';
 
 const prefixCls = classCreator('rate')();

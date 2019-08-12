@@ -3,9 +3,6 @@
  * @author chenkai13 <chenkai13@baidu.com>
  */
 
-export function isDev() {
-    return (process.env.NODE_ENV !== 'production');
-}
 export function isValueOutOfRange(value, {min, max}) {
     return value < min || value > max;
 }

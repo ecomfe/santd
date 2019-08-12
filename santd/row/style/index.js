@@ -1,4 +1,5 @@
 /**
  * @file 组件样式入口
  */
-import './index.less';
+import '../../core/styles/index';
+import '../../grid/style';

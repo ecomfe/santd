@@ -4,12 +4,11 @@
 */
 
 import san, {DataTypes} from 'san';
-import {classCreator} from 'santd/core/util';
+import {classCreator} from '../core/util';
 import classNames from 'classnames';
-import KEYCODE from 'santd/core/util/keyCode';
-import Icon from 'santd/icon';
-const pagin = classCreator('select');
-const prefixCls = pagin();
+import KEYCODE from '../core/util/keyCode';
+import Icon from '../icon';
+const prefixCls = classCreator('select')();
 
 const SingleHeadComponent = san.defineComponent({
     dataTypes: {

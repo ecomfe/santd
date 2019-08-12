@@ -5,14 +5,11 @@
 /* eslint-disable fecs-camelcase */
 
 import san, {DataTypes} from 'san';
-import {classCreator} from 'santd/core/util';
-import {loopComponentList} from 'santd/core/util/findCompont';
+import {classCreator} from '../core/util';
 import classNames from 'classnames';
-import {deepEq, deepCopy} from 'santd/core/util';
-import Icon from 'santd/icon';
-import Trigger from 'santd/core/trigger/index';
+import Icon from '../icon';
+import Trigger from '../core/trigger/index';
 import CreateMenu from './createMenu';
-import Options from './options';
 import Header from './select-header';
 import {
     getMapKey,
@@ -21,8 +18,7 @@ import {
     defaultFilterFn
 } from './_utils';
 import './style/index';
-const pagin = classCreator('select');
-const prefixCls = pagin();
+const prefixCls = classCreator('select')();
 
 const BUILT_IN_PLACEMENTS = {
     bottomLeft: {

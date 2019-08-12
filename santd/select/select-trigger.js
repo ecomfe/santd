@@ -4,12 +4,9 @@
 */
 
 import san, {DataTypes} from 'san';
-import {classCreator} from 'santd/core/util';
-import classNames from 'classnames';
-import Icon from 'santd/icon';
+import {classCreator} from '../core/util';
 import Trigger from '../s-trigger';
-const pagin = classCreator('select');
-const prefixCls = pagin();
+const prefixCls = classCreator('select')();
 
 const BUILT_IN_PLACEMENTS = {
     bottomLeft: {

@@ -5,7 +5,7 @@
 
 import san from 'san';
 import classNames from 'classnames';
-import Icon from 'santd/icon';
+import Icon from '../icon';
 
 export default san.defineComponent({
     computed: {

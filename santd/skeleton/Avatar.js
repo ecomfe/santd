@@ -6,10 +6,9 @@
 
 import san, {DataTypes} from 'san';
 import classNames from 'classnames';
-import {classCreator} from 'santd/core/util';
+import {classCreator} from '../core/util';
 
-const cc = classCreator('skeleton');
-const prefixCls = cc('avatar');
+const prefixCls = classCreator('skeleton')('avatar');
 
 export const SkeletonAvatarProps = DataTypes.oneOfType([
     DataTypes.bool,

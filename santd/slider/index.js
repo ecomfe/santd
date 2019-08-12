@@ -5,8 +5,8 @@
 
 import './style/index.less';
 import san from 'san';
-import {classCreator} from 'santd/core/util';
-import Tooltip from 'santd/tooltip';
+import {classCreator} from '../core/util';
+import Tooltip from '../tooltip';
 import classNames from 'classnames';
 import * as utils from './utils';
 import Slider from './src/slider';

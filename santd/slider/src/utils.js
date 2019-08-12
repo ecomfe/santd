@@ -1,7 +1,7 @@
 /**
  * @file Santd slider utils file
  **/
-import keyCode from 'santd/core/util/keyCode';
+import keyCode from '../../core/util/keyCode';
 
 function findDOMNode(instance) {
     return instance && instance.el || null;

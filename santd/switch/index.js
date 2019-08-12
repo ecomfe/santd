@@ -5,8 +5,8 @@
 
 import san, {DataTypes} from 'san';
 import classNames from 'classnames';
-import Icon from 'santd/icon';
-import {classCreator} from 'santd/core/util';
+import Icon from '../icon';
+import {classCreator} from '../core/util';
 import './style/index.less';
 const prefixCls = classCreator('switch')();
 

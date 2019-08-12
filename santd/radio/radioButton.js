@@ -5,7 +5,7 @@
 
 import './style/index.less';
 import san from 'san';
-import {classCreator} from 'santd/core/util';
+import {classCreator} from '../core/util';
 import Radio from './radio';
 const prefixCls = classCreator('radio-button')();
 

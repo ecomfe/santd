@@ -5,10 +5,9 @@
  */
 
 import san, {DataTypes} from 'san';
-import {classCreator} from 'santd/core/util';
+import {classCreator} from '../core/util';
 
-const cc = classCreator('skeleton');
-const prefixCls = cc();
+const prefixCls = classCreator('skeleton')();
 const widthUnit = DataTypes.oneOfType([DataTypes.number, DataTypes.string]);
 
 export const SkeletonTitleProps = DataTypes.oneOfType([

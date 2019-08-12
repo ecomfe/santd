@@ -4,16 +4,14 @@
 */
 
 import san, {DataTypes} from 'san';
-import {classCreator} from 'santd/core/util';
-import classNames from 'classnames';
+import {classCreator} from '../core/util';
 import {alignElement, alignPoint} from 'dom-align';
-import {addClass, contains} from 'santd/core/util/dom';
+import {addClass, contains} from '../core/util/dom';
 import addDOMEventListener from 'add-dom-event-listener';
-import {requestAnimationTimeout, cancelAnimationTimeout} from 'santd/core/util/requestAnimationTimeout';
+import {requestAnimationTimeout, cancelAnimationTimeout} from '../core/util/requestAnimationTimeout';
 import {getAlignPopupClassName, getAlignFromPlacement} from './_utils';
 import Popup from './popup';
-const pagin = classCreator('dropdown');
-const prefixCls = pagin();
+const prefixCls = classCreator('dropdown')();
 
 function getPoint(point) {
     if (typeof point !== 'object' || !point) {

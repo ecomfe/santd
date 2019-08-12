@@ -4,15 +4,13 @@
 */
 
 import san, {DataTypes} from 'san';
-import {classCreator} from 'santd/core/util';
+import {classCreator} from '../core/util';
 
 import classNames from 'classnames';
-import animate from 'santd/core/util/css-animation';
-// import Popper from 'popper.js/dist/umd/popper';
-import Menu from 'santd/menu';
-import Icon from 'santd/icon';
-const pagin = classCreator('dropdown');
-const prefixCls = pagin();
+import animate from '../core/util/css-animation';
+import Menu from '../menu';
+import Icon from '../icon';
+const prefixCls = classCreator('dropdown')();
 const transitionName = 'slide-up';
 
 const loadingComponent = san.defineComponent({

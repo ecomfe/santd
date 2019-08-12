@@ -5,8 +5,8 @@
 
 import './style/index.less';
 import san, {DataTypes} from 'san';
-import Icon from 'santd/icon';
-import {classCreator} from 'santd/core/util';
+import Icon from '../icon';
+import {classCreator} from '../core/util';
 import classNames from 'classnames';
 import noFound from './noFound';
 import serverError from './serverError';

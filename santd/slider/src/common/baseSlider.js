@@ -9,7 +9,7 @@ import Steps from './steps';
 import Marks from './marks';
 import Handle from '../handle';
 import * as utils from '../utils';
-import inherits from 'santd/core/util/inherits';
+import inherits from '../../../core/util/inherits';
 
 export default san.defineComponent({
     dataTypes: {

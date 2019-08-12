@@ -5,11 +5,9 @@
 
 import './style/index.less';
 import san from 'san';
-import {classCreator} from 'santd/core/util';
-import classNames from 'classnames';
+import {classCreator} from '../core/util';
 
-const cc = classCreator('statistic');
-const prefix = cc();
+const prefix = classCreator('statistic')();
 
 const padEnd = (string, length, chars) => {
     string = string.toString();
@@ -44,7 +42,7 @@ export default san.defineComponent({
             </div>
         </div>
     `,
-    initData()  {
+    initData() {
         return {
             groupSeparator: ',',
             value: 0,

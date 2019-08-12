@@ -4,10 +4,6 @@
 */
 
 import san, {DataTypes} from 'san';
-import {classCreator} from 'santd/core/util';
-import classNames from 'classnames';
-const pagin = classCreator('select');
-const prefixCls = pagin();
 export default san.defineComponent({
     initData() {
         return {

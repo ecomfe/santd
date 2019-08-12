@@ -6,7 +6,7 @@
 import san, {DataTypes} from 'san';
 import classNames from 'classnames';
 import BaseSlider from './common/baseSlider';
-import inherits from 'santd/core/util/inherits';
+import inherits from '../../core/util/inherits';
 import Track from './common/track';
 import * as utils from './utils';
 

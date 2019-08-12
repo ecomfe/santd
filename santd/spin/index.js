@@ -9,10 +9,9 @@
 import './style/index.less';
 import san, {DataTypes} from 'san';
 import classNames from 'classnames';
-import {classCreator} from 'santd/core/util';
+import {classCreator} from '../core/util';
 
-const cc = classCreator('spin');
-const prefixCls = cc();
+const prefixCls = classCreator('spin')();
 
 // 默认加载器指示符
 let defaultIndicator = null;

@@ -1,15 +1,11 @@
-/*
-* @file createMenu 将数据创建成Menu组件
-* @author fuqiangqiang@baidu.com
-*/
+/**
+ * @file createMenu 将数据创建成Menu组件
+ * @author fuqiangqiang@baidu.com
+ **/
 
 import san from 'san';
-import Menu from 'santd/menu';
-import {classCreator} from 'santd/core/util';
-import classNames from 'classnames';
-import Icon from 'santd/icon';
-const pagin = classCreator('select-dropdown');
-const prefixCls = pagin();
+import Menu from '../menu';
+import Icon from '../icon';
 
 const loadingComponent = san.defineComponent({
     attached() {

@@ -7,14 +7,13 @@
 import './style/index.less';
 import san, {DataTypes} from 'san';
 import classNames from 'classnames';
-import {classCreator} from 'santd/core/util';
+import {classCreator} from '../core/util';
 
 import Avatar, {SkeletonAvatarProps} from './Avatar';
 import Title, {SkeletonTitleProps} from './Title';
 import Paragraph, {SkeletonParagraphProps} from './Paragraph';
 
-const cc = classCreator('skeleton');
-const prefixCls = cc();
+const prefixCls = classCreator('skeleton')();
 
 function getComponentProps(prop) {
     if (prop && typeof prop === 'object') {
