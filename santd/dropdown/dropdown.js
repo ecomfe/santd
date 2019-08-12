@@ -4,9 +4,9 @@
 */
 
 import san, {DataTypes} from 'san';
-import {classCreator} from 'santd/core/util';
+import {classCreator} from '../core/util';
 import classNames from 'classnames';
-import inherits from 'santd/core/util/inherits';
+import inherits from '../core/util/inherits';
 import DropDown from './src/dropdown';
 import './style/index';
 

@@ -5,12 +5,12 @@
 
 import './style/index.less';
 import san, {DataTypes} from 'san';
-import {classCreator} from 'santd/core/util';
+import {classCreator} from '../core/util';
 import classNames from 'classnames';
 import defaultEmptyImg from './empty.svg';
 import simpleEmptyImg from './simple.svg';
-import LocaleReceiver from 'santd/localeprovider/localereceiver';
-import inherits from 'santd/core/util/inherits';
+import LocaleReceiver from '../localeprovider/localereceiver';
+import inherits from '../core/util/inherits';
 
 const prefixCls = classCreator('empty')();
 

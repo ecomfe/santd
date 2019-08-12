@@ -4,9 +4,9 @@
 */
 import san, {DataTypes} from 'san';
 import Dropdown from './dropdown';
-import {classCreator} from 'santd/core/util';
-import Icon from 'santd/icon';
-import Button from 'santd/button';
+import {classCreator} from '../core/util';
+import Icon from '../icon';
+import Button from '../button';
 import classNames from 'classnames';
 const prefixCls = classCreator('dropdown-button')();
 

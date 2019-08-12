@@ -5,9 +5,9 @@
 
 import './style/index.less';
 import san, {DataTypes} from 'san';
-import {classCreator} from 'santd/core/util';
+import {classCreator} from '../core/util';
 import classNames from 'classnames';
-import ResponsiveObserve, {responsiveArray} from 'santd/core/util/responsiveObserve';
+import ResponsiveObserve, {responsiveArray} from '../core/util/responsiveObserve';
 const prefixCls = classCreator('descriptions')();
 
 const defaultColumnMap = {
@@ -88,9 +88,9 @@ const Descriptions = san.defineComponent({
             const column = this.data.get('getColumn');
 
             if (instance) {
-                const slots = instance.sourceSlots.noname || [];
+                let slots = instance.sourceSlots.noname || [];
                 let totalRowSpan = 0;
-                const childrenArray = [];
+                let childrenArray = [];
                 let columnArray = [];
                 slots.filter(slot => slot.tagName).forEach(slot => {
                     const labelIndex = slot.hotspot.props.label;

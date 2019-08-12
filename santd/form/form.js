@@ -4,7 +4,7 @@
 */
 
 import san, {DataTypes} from 'san';
-import {classCreator} from 'santd/core/util';
+import {classCreator} from '../core/util';
 import classNames from 'classnames';
 import createDOMForm from './src/createDOMForm';
 import createFormField from './src/createFormField';

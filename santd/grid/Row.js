@@ -1,7 +1,10 @@
+/**
+ * @file Santd row file
+ **/
 import san, {DataTypes} from 'san';
 
 import Col from './Col.js';
-import {classCreator, type} from 'santd/core/util';
+import {classCreator, type} from '../core/util';
 import {parse} from 'path';
 
 const cc = classCreator('row');

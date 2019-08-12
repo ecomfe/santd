@@ -6,8 +6,8 @@
 import san from 'san';
 import classNames from 'classnames';
 import moment from 'moment';
-import inherits from 'santd/core/util/inherits';
-import {classCreator} from 'santd/core/util/index';
+import inherits from '../core/util/inherits';
+import {classCreator} from '../core/util/index';
 import TimePickerPanel from '../timepicker/src/panel';
 import LocalReceiver from '../localeprovider/localereceiver';
 

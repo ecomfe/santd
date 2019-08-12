@@ -4,8 +4,8 @@
  **/
 
 import san from 'san';
-import inherits from 'santd/core/util/inherits';
-import Trigger from 'santd/core/trigger/index';
+import inherits from '../../core/util/inherits';
+import Trigger from '../../core/trigger/index';
 import placements from './placements';
 
 export default inherits(san.defineComponent({

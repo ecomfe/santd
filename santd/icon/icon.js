@@ -4,7 +4,7 @@
  **/
 
 import san from 'san';
-import {getSecondaryColor, isIconDefinition, log, MiniMap, withSuffix} from './utils';
+import {getSecondaryColor, isIconDefinition, MiniMap, withSuffix} from './utils';
 
 const definitions = new MiniMap();
 const twoToneColorPalette = {

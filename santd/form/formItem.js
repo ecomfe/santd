@@ -4,14 +4,12 @@
 */
 
 import san, {DataTypes} from 'san';
-import {classCreator} from 'santd/core/util';
+import {classCreator} from '../core/util';
 import classNames from 'classnames';
-import Row from 'santd/row';
-import Col from 'santd/col';
-import Icon from 'santd/icon';
-import {findComponentUpward} from 'santd/core/util/findCompont';
+import Row from '../row';
+import Col from '../col';
+import Icon from '../icon';
 const pagin = classCreator('form');
-// const prefixCls = pagin();
 
 export default san.defineComponent({
     dataTypes: {

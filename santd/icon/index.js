@@ -4,9 +4,9 @@
 */
 import san, {DataTypes} from 'san';
 import './style/index.less';
-import * as allIcons from 'santd/core/svgIcons/lib/dist';
+import * as allIcons from '../core/svgIcons/lib/dist';
 import classNames from 'classnames';
-import {classCreator} from 'santd/core/util';
+import {classCreator} from '../core/util';
 import sanicon from './icon';
 import iconFont from './iconfont';
 import {svgBaseProps, withThemeSuffix, removeTypeTheme, alias} from './utils';

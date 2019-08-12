@@ -7,9 +7,9 @@ import Picker from '../calendar/src/picker';
 import Calendar from '../calendar/src/calendar';
 import classNames from 'classnames';
 import moment from 'moment';
-import {classCreator} from 'santd/core/util';
-import inherits from 'santd/core/util/inherits';
-import Icon from 'santd/icon';
+import {classCreator} from '../core/util';
+import inherits from '../core/util/inherits';
+import Icon from '../icon';
 
 const prefixCls = classCreator('calendar')();
 

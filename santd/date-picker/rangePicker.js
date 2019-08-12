@@ -7,10 +7,10 @@ import Picker from '../calendar/src/picker';
 import RangeCalendar from '../calendar/src/rangeCalendar';
 import classNames from 'classnames';
 import moment from 'moment';
-import {classCreator} from 'santd/core/util';
-import inherits from 'santd/core/util/inherits';
-import Icon from 'santd/icon';
-import Tag from 'santd/tag';
+import {classCreator} from '../core/util';
+import inherits from '../core/util/inherits';
+import Icon from '../icon';
+import Tag from '../tag';
 
 const prefixCls = classCreator('calendar')();
 const tagPrefixCls = classCreator('tag')();

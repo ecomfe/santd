@@ -76,7 +76,7 @@ export function getPageWidth() {
     let viewRoot = getViewRoot();
 
     return Math.max(
-        document.documentElement.scrollWidth : 0,
+        document.documentElement ? document.documentElement.scrollWidth : 0,
         document.body ? document.body.scrollWidth : 0,
         viewRoot ? viewRoot.clientWidth : 0,
         0
@@ -92,7 +92,7 @@ export function getPageHeight() {
     let viewRoot = getViewRoot();
 
     return Math.max(
-        document.documentElement.scrollHeight : 0,
+        document.documentElement ? document.documentElement.scrollHeight : 0,
         document.body ? document.body.scrollHeight : 0,
         viewRoot ? viewRoot.clientHeight : 0,
         0

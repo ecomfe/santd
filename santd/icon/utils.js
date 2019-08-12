@@ -4,12 +4,6 @@
  **/
 import generate from './generate';
 
-export function log(message) {
-    if (!(process && process.env && process.env.NODE_ENV === 'production')) {
-        console.error(`[@santd/icons]: ${message}.`);
-    }
-}
-
 export function isIconDefinition(target) {
     return (
         typeof target === 'object'

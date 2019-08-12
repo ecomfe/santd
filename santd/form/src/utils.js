@@ -7,12 +7,6 @@ function getDisplayName(WrappedComponent) {
     return WrappedComponent.displayName || WrappedComponent.name || 'WrappedComponent';
 }
 
-export function argumentContainer(Container, WrappedComponent) {
-    // Container.displayName = `Form(${getDisplayName(WrappedComponent)})`;
-    // Container.WrappedComponent = WrappedComponent;
-    // return hoistStatics(Container, WrappedComponent);
-}
-
 export function identity(obj) {
     return obj;
 }
@@ -25,9 +19,6 @@ export function treeTraverse(path = '', tree, isLeafNode, errorMessage, callback
     if (isLeafNode(path, tree)) {
         callback(path, tree);
     }
-    else if (tree === undefined || tree === null) {
-        // Do nothing
-    }
     else if (Array.isArray(tree)) {
         tree.forEach((subTree, index) => treeTraverse(
             `${path}[${index}]`,
@@ -39,7 +30,6 @@ export function treeTraverse(path = '', tree, isLeafNode, errorMessage, callback
     }
     else { // It's object and not a leaf node
         if (typeof tree !== 'object') {
-            // warning(false, errorMessage);
             return;
         }
         Object.keys(tree).forEach(subTreeKey => {
