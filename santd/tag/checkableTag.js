@@ -4,10 +4,10 @@
 */
 
 import san, {DataTypes} from 'san';
-import {classCreator} from 'santd/core/util';
+import {classCreator} from '../core/util';
 import classNames from 'classnames';
-const pagin = classCreator('tag');
-const prefixCls = pagin();
+const prefixCls = classCreator('tag')();
+
 export default san.defineComponent({
     dataTypes: {
         checked: DataTypes.bool

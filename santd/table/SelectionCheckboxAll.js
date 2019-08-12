@@ -5,10 +5,10 @@
 
 import san, {DataTypes} from 'san';
 import classNames from 'classnames';
-import Checkbox from 'santd/checkbox';
-import Menu from 'santd/menu';
-import DropDown from 'santd/dropdown';
-import Icon from 'santd/icon';
+import Checkbox from '../checkbox';
+import Menu from '../menu';
+import DropDown from '../dropdown';
+import Icon from '../icon';
 
 export default san.defineComponent({
     dataTypes: {

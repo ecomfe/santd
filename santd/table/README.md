@@ -85,14 +85,3 @@ table组件
 | key | San 需要的 key，建议设置 | string | - |
 | text | 选择项显示的文字| string | - |
 | onSelect | 选择项点击回调 | Function(changeableRowKeys) | - |
-
-### 注意
-
-在 Table 中，`dataSource` 和 `columns` 里的数据值都需要指定 key 值。对于 `dataSource` 默认将每列数据的 `key` 属性作为唯一的标识。
-
-如果你的数据没有这个属性，务必使用 `rowKey` 来指定数据列的主键。若没有指定，控制台会出现缺少key的提示，表格组件也会出现各类奇怪的错误。
-
-```
-// 比如你的数据主键是 uid
-return <Table rowKey="uid" />;
-```

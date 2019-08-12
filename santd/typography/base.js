@@ -6,12 +6,12 @@
 import './style/index.less';
 import san, {NodeType} from 'san';
 import classNames from 'classnames';
-import icon from 'santd/icon';
-import tooltip from 'santd/tooltip';
+import icon from '../icon';
+import tooltip from '../tooltip';
 import copy from 'copy-to-clipboard';
-import {classCreator, getComponentChildren} from 'santd/core/util';
-import inherits from 'santd/core/util/inherits';
-import LocaleReceiver from 'santd/localeprovider/localereceiver';
+import {classCreator, getComponentChildren} from '../core/util';
+import inherits from '../core/util/inherits';
+import LocaleReceiver from '../localeprovider/localereceiver';
 
 const prefix = classCreator('typography')();
 

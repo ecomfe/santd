@@ -3,8 +3,8 @@
  * @author mayihui@baidu.com
  **/
 import san from 'san';
-import Icon from 'santd/icon';
-import Input from 'santd/input';
+import Icon from '../icon';
+import Input from '../input';
 
 export default san.defineComponent({
     initData() {

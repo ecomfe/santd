@@ -5,11 +5,10 @@
 
 import './style/index.less';
 import san, {DataTypes} from 'san';
-import {classCreator} from 'santd/core/util';
-import classNames from 'classnames';
+import {classCreator} from '../core/util';
 import baseTooltip from './src/tooltip';
 import getPlacements from './placements';
-import inherits from 'santd/core/util/inherits';
+import inherits from '../core/util/inherits';
 
 const prefixCls = classCreator('tooltip')();
 

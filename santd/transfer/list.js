@@ -4,7 +4,7 @@
  */
 import san, {DataTypes} from 'san';
 import classNames from 'classnames';
-import Checkbox from 'santd/checkbox';
+import Checkbox from '../checkbox';
 import defaultRenderList from './renderListBody';
 import Search from './search';
 

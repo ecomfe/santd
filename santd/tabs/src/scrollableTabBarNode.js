@@ -8,7 +8,7 @@ import classNames from 'classnames';
 import debounce from 'lodash/debounce';
 import ResizeObserver from 'resize-observer-polyfill';
 import {setTransform, isTransform3dSupported} from './utils';
-import Icon from 'santd/icon';
+import Icon from '../../icon';
 
 export default san.defineComponent({
     dataTypes: {

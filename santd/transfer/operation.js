@@ -3,7 +3,7 @@
  * @author mayihui@baidu.com
  **/
 import san from 'san';
-import Button from 'santd/button';
+import Button from '../button';
 
 export default san.defineComponent({
     handleMoveToRight() {

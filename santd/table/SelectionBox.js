@@ -4,8 +4,8 @@
  **/
 
 import san from 'san';
-import Radio from 'santd/radio';
-import Checkbox from 'santd/checkbox';
+import Radio from '../radio';
+import Checkbox from '../checkbox';
 
 export default san.defineComponent({
     computed: {

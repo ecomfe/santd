@@ -5,7 +5,7 @@
 
 import san, {DataTypes} from 'san';
 import classNames from 'classnames';
-import getRequestAnimationFrame from 'santd/core/util/getRequestAnimationFrame';
+import getRequestAnimationFrame from '../../core/util/getRequestAnimationFrame';
 
 const raf = getRequestAnimationFrame();
 

@@ -4,12 +4,10 @@
 */
 
 import san, {DataTypes} from 'san';
-import {classCreator} from 'santd/core/util';
-import {loopMenuItem, loopComponentList} from 'santd/core/util/findCompont';
+import {classCreator} from '../core/util';
 import classNames from 'classnames';
-import Icon from 'santd/icon';
-const pagin = classCreator('tree');
-const prefixCls = pagin();
+import Icon from '../icon';
+const prefixCls = classCreator('tree')();
 
 const getComputedKeys = (targetKeys = [], key) => {
     let keysFlag = false;

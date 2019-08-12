@@ -4,10 +4,10 @@
  **/
 
 import san from 'san';
-import Trigger from 'santd/core/trigger/index';
+import Trigger from '../../core/trigger/index';
 import Placement from './placements';
 import Content from './content';
-import inherits from 'santd/core/util/inherits';
+import inherits from '../../core/util/inherits';
 
 export default inherits(san.defineComponent({
     initData() {

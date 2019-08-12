@@ -4,13 +4,12 @@
 */
 
 import san, {DataTypes} from 'san';
-import {classCreator} from 'santd/core/util';
-import {loopMenuItem, loopComponentList, recursiveAllComponents} from 'santd/core/util/findCompont';
+import {classCreator} from '../core/util';
+import {loopComponentList, recursiveAllComponents} from '../core/util/findCompont';
 import classNames from 'classnames';
 import './style/index';
 import treeNode from './treeNode';
-const pagin = classCreator('tree');
-const prefixCls = pagin();
+const prefixCls = classCreator('tree')();
 
 export default san.defineComponent({
     components: {

@@ -5,10 +5,10 @@
 
 import './style/index.less';
 import san, {DataTypes} from 'san';
-import {classCreator} from 'santd/core/util';
+import {classCreator} from '../core/util';
 import classNames from 'classnames';
 import Item from './item';
-import Icon from 'santd/icon';
+import Icon from '../icon';
 
 const prefixCls = classCreator('timeline')();
 

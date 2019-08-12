@@ -8,11 +8,11 @@ import Upload from './src/ajaxUploader';
 import UploadList from './uploadList';
 import uniqBy from 'lodash/uniqBy';
 import findIndex from 'lodash/findIndex';
-import {classCreator} from 'santd/core/util';
+import {classCreator} from '../core/util';
 import {fileToObject, genPercentAdd, getFileItem, removeFileItem} from './utils';
 import classNames from 'classnames';
-import LocaleReceiver from 'santd/localeprovider/localereceiver';
-import inherits from 'santd/core/util/inherits';
+import LocaleReceiver from '../localeprovider/localereceiver';
+import inherits from '../core/util/inherits';
 
 const prefixCls = classCreator('upload')();
 

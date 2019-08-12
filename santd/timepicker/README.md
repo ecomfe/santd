@@ -4,7 +4,6 @@
 | --- | --- | --- | --- |
 | addon | 选择框底部显示自定义的内容 | function | 无 |
 | allowClear | 是否展示清除按钮 | boolean | `true` |
-| autoFocus | 自动获取焦点 | boolean | `false` |
 | className | 选择器类名 | string | 无 |
 | defaultOpenValue | 当 defaultValue/value 不存在时，可以设置面板打开时默认选中的值 | [moment](http://momentjs.com/) | moment() |
 | defaultValue | 默认时间 | [moment](http://momentjs.com/) | 无 |

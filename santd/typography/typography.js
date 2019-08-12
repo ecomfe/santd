@@ -5,11 +5,10 @@
 
 import './style/index.less';
 import san from 'san';
-import {classCreator} from 'santd/core/util';
+import {classCreator} from '../core/util';
 import classNames from 'classnames';
 
-const cc = classCreator('typography');
-const prefix = cc();
+const prefix = classCreator('typography')();
 
 export default san.defineComponent({
     template: `

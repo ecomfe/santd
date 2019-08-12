@@ -5,11 +5,10 @@
 
 import san, {DataTypes} from 'san';
 import {previewImage, isImageUrl} from './utils';
-import classNames from 'classnames';
-import Progress from 'santd/progress';
-import Icon from 'santd/icon';
-import Tooltip from 'santd/tooltip';
-import {classCreator} from 'santd/core/util';
+import Progress from '../progress';
+import Icon from '../icon';
+import Tooltip from '../tooltip';
+import {classCreator} from '../core/util';
 
 const prefixCls = classCreator('upload')();
 

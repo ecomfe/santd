@@ -5,7 +5,7 @@
 
 import san from 'san';
 import Upload from './upload';
-import inherits from 'santd/core/util/inherits';
+import inherits from '../core/util/inherits';
 
 export default inherits(san.defineComponent({
     initData() {

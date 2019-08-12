@@ -6,9 +6,9 @@
 import san, {DataTypes} from 'san';
 import CheckableTag from './checkableTag';
 import classNames from 'classnames';
-import {classCreator} from 'santd/core/util';
-import Wave from 'santd/core/util/wave';
-import Icon from 'santd/icon';
+import {classCreator} from '../core/util';
+import Wave from '../core/util/wave';
+import Icon from '../icon';
 import toStyle from 'to-style';
 import './style/index.js';
 

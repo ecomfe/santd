@@ -5,18 +5,15 @@
 /* eslint-disable fecs-camelcase */
 
 import san, {DataTypes} from 'san';
-import {classCreator} from 'santd/core/util';
+import {classCreator} from '../core/util';
 import classNames from 'classnames';
-import Checkbox from 'santd/checkbox';
-import popover from 'santd/popover';
-import button from 'santd/button';
-import Icon from 'santd/icon';
-import Divider from 'santd/divider';
-
-import Dropdown from 'santd/dropdown';
-import Menu from 'santd/menu';
-const pagin = classCreator('table');
-const prefixCls = pagin();
+import Checkbox from '../checkbox';
+import button from '../button';
+import Icon from '../icon';
+import Divider from '../divider';
+import Dropdown from '../dropdown';
+import Menu from '../menu';
+const prefixCls = classCreator('table')();
 
 const generateValueMaps = (items, maps = {}) => {
     (items || []).forEach(item => {

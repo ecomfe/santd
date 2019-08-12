@@ -4,11 +4,11 @@
  **/
 
 import san, {DataTypes} from 'san';
-import Trigger from 'santd/core/trigger';
+import Trigger from '../../core/trigger';
 import Placement from './placements';
 import classNames from 'classnames';
 import moment from 'moment';
-import inherits from 'santd/core/util/inherits';
+import inherits from '../../core/util/inherits';
 import Panel from './panel';
 
 const noop = function () {};
@@ -290,7 +290,6 @@ export default san.defineComponent({
                     value="{{displayValue}}"
                     disabled="{{disabled}}"
                     autoComplete="{{autoComplete}}"
-                    autoFocus="{{autoFocus}}"
                     readOnly="{{!!inputReadOnly}}"
                     id="{{id}}"
                     on-keydown="handleKeyDown"

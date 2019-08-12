@@ -4,13 +4,13 @@
  */
 import './style/index.less';
 import san, {DataTypes} from 'san';
-import {classCreator} from 'santd/core/util';
-import renderEmpty from 'santd/core/util/renderEmpty';
+import {classCreator} from '../core/util';
+import renderEmpty from '../core/util/renderEmpty';
 import classNames from 'classnames';
 import List from './list';
 import Operation from './operation';
-import inherits from 'santd/core/util/inherits';
-import LocaleReceiver from 'santd/localeprovider/localereceiver';
+import inherits from '../core/util/inherits';
+import LocaleReceiver from '../localeprovider/localereceiver';
 
 const prefixCls = classCreator('transfer')();
 
@@ -265,11 +265,3 @@ const Locale = inherits(san.defineComponent({
 }), LocaleReceiver);
 
 export default inherits(Locale, Transfer);
-
-/*export default inherits(san.defineComponent({
-    initData() {
-        return {
-            componentName: 'Transfer'
-        };
-    }
-}), Transfer);*/

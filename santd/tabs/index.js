@@ -5,8 +5,8 @@
 
 import san, {DataTypes} from 'san';
 import classNames from 'classnames';
-import Icon from 'santd/icon';
-import {classCreator} from 'santd/core/util';
+import Icon from '../icon';
+import {classCreator} from '../core/util';
 import tabs, {TabPane, TabContent} from './src/index';
 import scrollableInkTabBar from './src/scrollableInkTabBar';
 import './style/index.less';

@@ -4,14 +4,9 @@
 */
 
 import san, {DataTypes} from 'san';
-import {classCreator} from 'santd/core/util';
-import {recursiveAllComponents} from 'santd/core/util/findCompont';
-import classNames from 'classnames';
 import Tree from './newTree';
-import Icon from 'santd/icon';
+import Icon from '../icon';
 import './style/index';
-const pagin = classCreator('tree');
-const prefixCls = pagin();
 
 const dirIcon = san.defineComponent({
     components: {

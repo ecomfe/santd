@@ -4,16 +4,15 @@
 */
 
 import san, {DataTypes} from 'san';
-import {classCreator} from 'santd/core/util';
+import {classCreator} from '../core/util';
 import classNames from 'classnames';
 import {
     findComponentUpward,
     recursiveAllComponents,
     findAllCompUpward
-} from 'santd/core/util/findCompont';
-import Icon from 'santd/icon';
-const pagin = classCreator('tree');
-const prefixCls = pagin();
+} from '../core/util/findCompont';
+import Icon from '../icon';
+const prefixCls = classCreator('tree')();
 
 export default san.defineComponent({
     dataTypes: {
@@ -40,7 +39,7 @@ export default san.defineComponent({
                 [`${prefixCls}-treenode-checkbox-checked`]: checked,
                 [`${prefixCls}-treenode-checkbox-indeterminate`]: halfChecked,
                 [`${prefixCls}-treenode-selected`]: selected,
-                [`${prefixCls}-treenode-loading`]: loading,
+                [`${prefixCls}-treenode-loading`]: loading
             });
         },
         leafone() {
@@ -228,7 +227,7 @@ export default san.defineComponent({
                         if (item.data.get('checked') && !item.data.get('data').disabled) {
                             checkNum++;
                         }
-                        if (item.data.get('data').disabled ) {
+                        if (item.data.get('data').disabled) {
                             disableNum++;
                         }
                     });
@@ -244,7 +243,7 @@ export default san.defineComponent({
                     }
                     // 把顶层的数据push
                     if (parent.data.get('checked')) {
-                        selectData.push(parent.data.get('data').key)
+                        selectData.push(parent.data.get('data').key);
                     }
                 }
             });

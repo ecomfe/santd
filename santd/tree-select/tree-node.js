@@ -3,6 +3,6 @@
  * @author fuqiangqiang <fuqiangqiang@baidu.com>
  */
 
-import Tree from 'santd/tree';
+import Tree from '../tree';
 
 export default Tree.TreeNode;

@@ -6,7 +6,7 @@
 import san, {DataTypes} from 'san';
 import classNames from 'classnames';
 import TabPane from './tabPane';
-import KeyCode from 'santd/core/util/keyCode';
+import KeyCode from '../../core/util/keyCode';
 
 const Tabs = san.defineComponent({
     dataTypes: {

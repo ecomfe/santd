@@ -5,16 +5,16 @@
 
 import san, {DataTypes} from 'san';
 import Table from './src/table';
-import Icon from 'santd/icon';
-import Spin from 'santd/spin';
-import Pagination from 'santd/pagination';
-import {classCreator} from 'santd/core/util';
+import Icon from '../icon';
+import Spin from '../spin';
+import Pagination from '../pagination';
+import {classCreator} from '../core/util';
 import shallowEqual from 'shallowequal';
 import classNames from 'classnames';
 import SelectionBox from './SelectionBox';
 import SelectionCheckboxAll from './SelectionCheckboxAll';
 import FilterDropdown from './filterDropdown';
-import renderEmpty from 'santd/core/util/renderEmpty';
+import renderEmpty from '../core/util/renderEmpty';
 import './style/index';
 
 const prefixCls = classCreator('table')();

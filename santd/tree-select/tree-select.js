@@ -4,16 +4,15 @@
  */
 
 import san, {DataTypes} from 'san';
-import {classCreator} from 'santd/core/util';
+import {classCreator} from '../core/util';
 import classNames from 'classnames';
-import Icon from 'santd/icon';
-import Tree from 'santd/tree';
+import Icon from '../icon';
+import Tree from '../tree';
 import SingleSelector from './selector/single-selector';
 import MultipleSelector from './selector/multiple-selector';
 import SelectTrigger from './select-trigger';
 import './style/index';
-const pagin = classCreator('select');
-const prefixCls = pagin();
+const prefixCls = classCreator('select')();
 let tmpCount = 0;
 
 export default san.defineComponent({

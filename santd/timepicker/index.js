@@ -5,11 +5,11 @@
 
 import './style/index.less';
 import san, {DataTypes} from 'san';
-import {classCreator} from 'santd/core/util';
+import {classCreator} from '../core/util';
 import classNames from 'classnames';
-import Icon from 'santd/icon';
+import Icon from '../icon';
 import TimePicker from './src/timepicker';
-import inherits from 'santd/core/util/inherits';
+import inherits from '../core/util/inherits';
 import enUS from './locale/en_US';
 import LocaleReceiver from '../localeprovider/localereceiver';
 
