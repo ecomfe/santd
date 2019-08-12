@@ -26,13 +26,15 @@ export default san.defineComponent({
         on(window, 'scroll', this.handleScroll.bind(this));
         on(window, 'resize', this.handleScroll.bind(this));
     },
+
     offsetType() {
-        let type = 'top';
         if (+this.data.get('offsetBottom') >= 0) {
-            type = 'bottom';
+            return 'bottom';
         }
-        return type;
+
+        return 'top';
     },
+    
     handleScroll() {
         const elOffset = getOffset(this.el);
         const scrollTop = getScrollTop();
