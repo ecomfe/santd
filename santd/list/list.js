@@ -4,14 +4,13 @@
 */
 
 import san, {DataTypes} from 'san';
-import {classCreator} from 'santd/core/util';
+import {classCreator} from '../core/util';
 import classNames from 'classnames';
-import Spin from 'santd/spin';
-import Row from 'santd/row';
-import Button from 'santd/button';
+import Spin from '../spin';
+import Row from '../row';
+import Button from '../button';
 import './style/index';
-const pagin = classCreator('list');
-const prefixCls = pagin();
+const prefixCls = classCreator('list')();
 
 export default san.defineComponent({
     components: {

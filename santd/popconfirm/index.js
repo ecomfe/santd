@@ -3,15 +3,14 @@
  * @author chenkai13 <chenkai13@baidu.com>
  */
 
-import './style/index.less';
+import './style/index';
 import san, {DataTypes} from 'san';
-// 注意公共方法提取到 util，送人玫瑰手有余香~
-import {classCreator} from 'santd/core/util';
-import Tooltip from 'santd/tooltip';
-import Button from 'santd/button';
-import Icon from 'santd/icon';
-import inherits from 'santd/core/util/inherits';
-import LocaleReceiver from 'santd/localeprovider/localereceiver';
+import {classCreator} from '../core/util';
+import Tooltip from '../tooltip';
+import Button from '../button';
+import Icon from '../icon';
+import inherits from '../core/util/inherits';
+import LocaleReceiver from '../localeprovider/localereceiver';
 
 const prefixCls = classCreator('popover')();
 

@@ -6,9 +6,6 @@ import '../style/index.less';
 import san from 'san';
 import classNames from 'classnames';
 
-// 注意公共方法提取到 util，送人玫瑰手有余香~
-// import {classCreator} from 'santd/core/util';
-
 export default san.defineComponent({
     computed: {
         className() {

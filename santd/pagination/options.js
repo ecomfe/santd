@@ -3,8 +3,8 @@
  **/
 
 import san from 'san';
-import Select from 'santd/select';
-import KEYCODE from 'santd/core/util/keyCode';
+import Select from '../select';
+import KEYCODE from '../core/util/keyCode';
 
 export default san.defineComponent({
     components: {

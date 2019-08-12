@@ -7,11 +7,10 @@
 import './style/index.less';
 import san, {DataTypes} from 'san';
 import classNames from 'classnames';
-import {classCreator} from 'santd/core/util';
-import Icon from 'santd/icon';
+import {classCreator} from '../core/util';
+import Icon from '../icon';
 
-const cc = classCreator('progress');
-const prefixCls = cc();
+const prefixCls = classCreator('progress')();
 
 const validProgress = progress => {
     if (!progress || progress < 0) {

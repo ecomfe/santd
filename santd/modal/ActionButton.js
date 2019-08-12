@@ -5,7 +5,7 @@
  */
 
 import san, {DataTypes} from 'san';
-import button from 'santd/button';
+import button from '../button';
 
 export default san.defineComponent({
     template: `

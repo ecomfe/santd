@@ -5,8 +5,8 @@
  */
 
 import './style/index.less';
-import {classCreator, type} from 'santd/core/util';
-import Notification from 'santd/notification/Notification';
+import {classCreator, type} from '../core/util';
+import Notification from '../notification/Notification';
 
 const noop = () => {}; // empty function
 const cc = classCreator('message');

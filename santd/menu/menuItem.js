@@ -4,14 +4,10 @@
 */
 
 import san, {DataTypes} from 'san';
-import {classCreator} from 'santd/core/util';
+import {classCreator} from '../core/util';
 import classNames from 'classnames';
-import {
-    findComponentUpward,
-    findComponentsLevel
-} from 'santd/core/util/findCompont';
-const pagin = classCreator('menu-item');
-const prefixCls = pagin();
+import {findComponentsLevel} from '../core/util/findCompont';
+const prefixCls = classCreator('menu-item')();
 
 export default san.defineComponent({
     dataTypes: {
@@ -61,12 +57,6 @@ export default san.defineComponent({
             multiple: false,
             selectable: true
         };
-    },
-    inited() {
-
-    },
-    created() {
-
     },
     attached() {
         // 把menuItem组件传到 Menu 保存

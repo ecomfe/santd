@@ -5,10 +5,9 @@
 
 import san, {DataTypes} from 'san';
 import classNames from 'classnames';
-import {classCreator} from 'santd/core/util';
-import {findComponentsLevel, findComponentUpward} from 'santd/core/util/findCompont';
-const pagin = classCreator('menu-item-group');
-const prefixCls = pagin();
+import {classCreator} from '../core/util';
+const prefixCls = classCreator('menu-item-group')();
+
 export default san.defineComponent({
     dataTypes: {
         title: DataTypes.any

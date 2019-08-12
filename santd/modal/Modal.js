@@ -6,11 +6,11 @@
 
 import san, {DataTypes} from 'san';
 import classNames from 'classnames';
-import {classCreator} from 'santd/core/util';
+import {classCreator} from '../core/util';
 import Dialog from './Dialog';
-import button from 'santd/button';
-import inherits from 'santd/core/util/inherits';
-import LocaleReceiver from 'santd/localeprovider/localereceiver';
+import button from '../button';
+import inherits from '../core/util/inherits';
+import LocaleReceiver from '../localeprovider/localereceiver';
 
 const cc = classCreator('modal');
 const prefixCls = cc();

@@ -4,15 +4,11 @@
 */
 
 import san, {DataTypes} from 'san';
-import {classCreator} from 'santd/core/util';
-import Trigger from 'santd/core/trigger/index';
+import {classCreator} from '../core/util';
+import Trigger from '../core/trigger/index';
 import classNames from 'classnames';
-import {
-    findComponentUpward,
-    findComponentsLevel
-} from 'santd/core/util/findCompont';
-const pagin = classCreator('menu-submenu');
-const prefixCls = pagin();
+import {findComponentsLevel} from '../core/util/findCompont';
+const prefixCls = classCreator('menu-submenu')();
 
 const BUILT_IN_PLACEMENTS = {
     leftTop: {

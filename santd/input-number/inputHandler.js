@@ -3,11 +3,10 @@
 * @author fuqiangqiang@baidu.com
 */
 import san, {DataTypes} from 'san';
-import {classCreator} from 'santd/core/util';
+import {classCreator} from '../core/util';
 import classNames from 'classnames';
-import Icon from 'santd/icon';
-const pagin = classCreator('input-number');
-const prefixCls = pagin();
+import Icon from '../icon';
+const prefixCls = classCreator('input-number')();
 
 export default san.defineComponent({
     components: {

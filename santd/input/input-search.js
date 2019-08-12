@@ -4,10 +4,10 @@
 */
 
 import san, {DataTypes} from 'san';
-import {classCreator} from 'santd/core/util';
+import {classCreator} from '../core/util';
 import classNames from 'classnames';
-import Icon from 'santd/icon';
-import Button from 'santd/button';
+import Icon from '../icon';
+import Button from '../button';
 import BaseInput from './base';
 import './style/index.less';
 const pagin = classCreator('input');

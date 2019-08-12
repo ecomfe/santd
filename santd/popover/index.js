@@ -3,12 +3,12 @@
  * @author mayihui@baidu.com
  */
 
-import './style/index.less';
+import './style/index';
 import san from 'san';
 // 注意公共方法提取到 util，送人玫瑰手有余香~
-import {classCreator} from 'santd/core/util';
-import Tooltip from 'santd/tooltip';
-import inherits from 'santd/core/util/inherits';
+import {classCreator} from '../core/util';
+import Tooltip from '../tooltip';
+import inherits from '../core/util/inherits';
 
 const prefixCls = classCreator('popover')();
 

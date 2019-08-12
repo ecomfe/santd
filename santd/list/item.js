@@ -4,9 +4,9 @@
 */
 
 import san, {DataTypes} from 'san';
-import {classCreator} from 'santd/core/util';
+import {classCreator} from '../core/util';
 import classNames from 'classnames';
-import Avatar from 'santd/avatar';
+import Avatar from '../avatar';
 
 const prefixCls = classCreator('list')();
 

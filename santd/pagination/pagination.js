@@ -4,8 +4,8 @@
 
 import san, {DataTypes} from 'san';
 import classNames from 'classnames';
-import Input from 'santd/input';
-import KEYCODE from 'santd/core/util/keyCode';
+import Input from '../input';
+import KEYCODE from '../core/util/keyCode';
 import Pager from './pager';
 import Options from './options';
 
@@ -456,14 +456,3 @@ export default san.defineComponent({
         </template>
     </ul>`
 });
-
-/*const Locale = inherits(san.defineComponent({
-    initData() {
-        return {
-            componentName: 'Pagination',
-            defaultLocale: enUS
-        };
-    }
-}), LocaleReceiver);
-
-export default inherits(Pagination, Locale);*/

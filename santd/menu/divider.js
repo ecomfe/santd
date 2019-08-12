@@ -4,7 +4,7 @@
 */
 
 import san from 'san';
-import Divider from 'santd/divider';
+import Divider from '../divider';
 
 export default san.defineComponent({
     components: {

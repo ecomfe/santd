@@ -5,12 +5,12 @@
 
 import san, {DataTypes} from 'san';
 import classNames from 'classnames';
-import {classCreator} from 'santd/core/util';
-import icon from 'santd/icon';
+import {classCreator} from '../core/util';
+import icon from '../icon';
 import Dialog from './Dialog';
 import ActionButton from './ActionButton';
-import inherits from 'santd/core/util/inherits';
-import LocaleReceiver from 'santd/localeprovider/localereceiver';
+import inherits from '../core/util/inherits';
+import LocaleReceiver from '../localeprovider/localereceiver';
 
 const Locale = inherits(san.defineComponent({
     initData() {

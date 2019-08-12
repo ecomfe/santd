@@ -5,12 +5,10 @@
 
 import '../style/index.less';
 import san, {DataTypes} from 'san';
-import Icon from 'santd/icon';
+import Icon from '../../icon';
 import Nav from './nav';
-import classNames from 'classnames';
 import toStyle from 'to-style';
-
-import {classCreator} from 'santd/core/util';
+import {classCreator} from '../../core/util';
 
 const cc = classCreator('suggestions');
 const prefixCls = cc();
@@ -69,7 +67,7 @@ export default san.defineComponent({
     created() {
         let renderer;
         this.watch('suggestions', val => {
-            const navRef= this.ref('nav-area');
+            const navRef = this.ref('nav-area');
             if (navRef && typeof val === 'function') {
                 navRef.innerHTML = '';
                 renderer = new val();

@@ -5,11 +5,11 @@
 
 import san, {DataTypes} from 'san';
 import classNames from 'classnames';
-import {addClass, removeClass} from 'santd/core/util/dom';
-import TransitionEvents from 'santd/core/util/css-animation/Event';
-import {guid} from 'santd/core/util';
-import icon from 'santd/icon';
-import button from 'santd/button';
+import {addClass, removeClass} from '../core/util/dom';
+import TransitionEvents from '../core/util/css-animation/Event';
+import {guid} from '../core/util';
+import icon from '../icon';
+import button from '../button';
 import Notice from './Notice';
 
 export const filters = {

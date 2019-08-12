@@ -4,11 +4,11 @@
 */
 
 import san, {DataTypes} from 'san';
-import {classCreator} from 'santd/core/util';
+import {classCreator} from '../core/util';
 import classNames from 'classnames';
-import Spin from 'santd/spin';
-import Pagination from 'santd/pagination';
-import Grid from 'santd/grid';
+import Spin from '../spin';
+import Pagination from '../pagination';
+import Grid from '../grid';
 import Item from './item';
 
 import './style/index';

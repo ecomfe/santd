@@ -4,11 +4,11 @@
 */
 
 import san, {DataTypes} from 'san';
-import {classCreator} from 'santd/core/util';
+import {classCreator} from '../core/util';
 import classNames from 'classnames';
 import './style/index.less';
 import BaseInput from './base';
-import Icon from 'santd/icon';
+import Icon from '../icon';
 const pagin = classCreator('input');
 const prefixCls = pagin();
 

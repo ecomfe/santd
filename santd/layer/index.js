@@ -4,9 +4,9 @@
  */
 
 import {DataTypes, defineComponent} from 'san';
-import {classCreator} from 'santd/core/util';
-import {opacity} from 'santd/core/util/transition';
-import {getOffset, getScrollTop, getScrollLeft, getViewWidth, getViewHeight} from 'santd/core/util/dom';
+import {classCreator} from '../core/util';
+import {opacity} from '../core/util/transition';
+import {getOffset, getScrollTop, getScrollLeft, getViewWidth, getViewHeight} from '../core/util/dom';
 import './style/index';
 const cc = classCreator('layer');
 

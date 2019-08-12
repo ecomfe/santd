@@ -9,10 +9,9 @@ import classNames from 'classnames';
 import PlaceHolder from './placeHolder';
 import Suggestions from './suggestions';
 import {getRegExp, insertString, setCursorPosition, getSearchWordPos} from '../utils/index';
-import {classCreator} from 'santd/core/util';
+import {classCreator} from '../../core/util';
 
-const cc = classCreator('mention');
-const prefixCls = cc();
+const prefixCls = classCreator('mention')();
 
 export default san.defineComponent({
     components: {

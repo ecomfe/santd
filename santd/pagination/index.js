@@ -2,14 +2,13 @@
 * @file 分页组件
 * @author fuqiangqiang@baidu.com
 */
-import san from 'san';
-import Icon from 'santd/icon';
-import {classCreator} from 'santd/core/util';
 import './style/index';
+import san from 'san';
+import Icon from '../icon';
+import {classCreator} from '../core/util';
 import pagination from './pagination';
 import LocaleReceiver from '../localeprovider/localereceiver';
-import enUS from './locale/en_US';
-import inherits from 'santd/core/util/inherits';
+import inherits from '../core/util/inherits';
 
 const prefixCls = classCreator('pagination')();
 

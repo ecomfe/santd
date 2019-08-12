@@ -4,9 +4,9 @@
 */
 
 import san, {DataTypes} from 'san';
-import {classCreator} from 'santd/core/util';
+import {classCreator} from '../core/util';
 import classNames from 'classnames';
-import keyCode from 'santd/core/util/keyCode';
+import keyCode from '../core/util/keyCode';
 const pagin = classCreator('input');
 const prefixCls = pagin();
 

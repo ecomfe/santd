@@ -4,17 +4,10 @@
 */
 
 import san, {DataTypes} from 'san';
-import {
-    loopMenuItem,
-    findOneLevelItem,
-    loopComponentList,
-    findAllCompUpward
-} from 'santd/core/util/findCompont';
-import {classCreator} from 'santd/core/util';
+import {classCreator} from '../core/util';
 import classNames from 'classnames';
 import './style/index.less';
-const pagin = classCreator('menu');
-const prefixCls = pagin();
+const prefixCls = classCreator('menu')();
 
 export default san.defineComponent({
     dataTypes: {

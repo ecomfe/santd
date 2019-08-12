@@ -5,14 +5,13 @@
 
 import './style/index.less';
 import san from 'san';
-import {classCreator} from 'santd/core/util';
+import {classCreator} from '../core/util';
 import classNames from 'classnames';
-import icon from 'santd/icon';
-import divider from 'santd/divider';
-import breadcrumb from 'santd/breadcrumb';
+import icon from '../icon';
+import divider from '../divider';
+import breadcrumb from '../breadcrumb';
 
-const cc = classCreator('page-header');
-const prefix = cc();
+const prefix = classCreator('page-header')();
 
 export default san.defineComponent({
     template: `
