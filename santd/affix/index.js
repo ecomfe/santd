@@ -14,6 +14,7 @@ export default san.defineComponent({
         offsetTop: DataTypes.oneOfType([DataTypes.string, DataTypes.number]),
         offsetBottom: DataTypes.oneOfType([DataTypes.string, DataTypes.number])
     },
+
     initData() {
         return {
             affix: false,
@@ -22,85 +23,77 @@ export default san.defineComponent({
             pointStyles: {}
         };
     },
+
     attached() {
         on(window, 'scroll', this.handleScroll.bind(this));
         on(window, 'resize', this.handleScroll.bind(this));
-    },
-
-    offsetType() {
-        if (+this.data.get('offsetBottom') >= 0) {
-            return 'bottom';
-        }
-
-        return 'top';
     },
     
     handleScroll() {
         const elOffset = getOffset(this.el);
         const scrollTop = getScrollTop();
-        const windowHeight = window.innerHeight;
-        const elHeight = this.el.getElementsByTagName('div')[0].offsetHeight;
-        const offsetTop = +this.data.get('offsetTop');
-        const offsetBottom = +this.data.get('offsetBottom');
+        const innerEl = this.ref('inner');
+
+        let offsetTop = +this.data.get('offsetTop');
+        let offsetBottom = +this.data.get('offsetBottom');
+        let isAffixBottom = offsetBottom >= 0;
+
+        let affix = this.data.get('affix');
+        let affixTo = null;
+        let styles = {};
+        let pointStyles = {};
+
         // fixed Top
-        if (elOffset.top - offsetTop <= scrollTop
-            && this.offsetType() === 'top'
-            && !this.data.get('affix')
-        ) {
-            this.data.set('pointStyles', {
-                width: this.ref('point').clientWidth + 'px',
-                height: this.ref('point').clientHeight + 'px'
-            });
+        
+        if (isAffixBottom) {
+            let winBottomPos = window.innerHeight + scrollTop;
+            let elBottomAffixPos = elOffset.top + offsetBottom + innerEl.offsetHeight;
 
-            this.data.set('affix', true);
-            this.data.set('styles', {
-                top: `${offsetTop}px`,
-                left: `${elOffset.left}px`,
-                width: `${this.el.offsetWidth}px`
-            });
-            this.fire('change', true);
+            if (elBottomAffixPos > winBottomPos && !affix) {
+                affixTo = true;
+                styles = {
+                    bottom: `${offsetBottom}px`
+                };
+            }
+            else if (elBottomAffixPos < winBottomPos && affix) {
+                affixTo = false;
+            }
         }
-        else if (elOffset.top - offsetTop > scrollTop
-            && this.offsetType() === 'top'
-            && this.data.get('affix')
-        ) {
-            this.data.set('pointStyles', {});
-            this.data.set('affix', false);
-            this.data.set('styles', {});
-            this.fire('change', false);
+        else {
+            let elTopAffixPos = elOffset.top - offsetTop;
+
+            if (elTopAffixPos <= scrollTop && !affix) {
+                affixTo = true;
+                styles = {
+                    top: `${offsetTop}px`
+                };
+            }
+            else if (elTopAffixPos > scrollTop && affix) {
+                affixTo = false;
+            }
         }
 
-        // fixed Bottom
-        if ((elOffset.top + offsetBottom + elHeight) > (scrollTop + windowHeight)
-            && this.offsetType() === 'bottom'
-            && !this.data.get('affix')
-        ) {
-            this.data.set('pointStyles', {
-                width: this.ref('point').clientWidth + 'px',
-                height: this.ref('point').clientHeight + 'px'
-            });
 
-            this.data.set('affix', true);
-            this.data.set('styles', {
-                bottom: `${offsetBottom}px`,
-                left: `${elOffset.left}px`,
-                width: `${this.el.offsetWidth}px`
-            });
-            this.fire('change', true);
-        }
-        else if ((elOffset.top + offsetBottom + elHeight) < (scrollTop + windowHeight)
-            && this.offsetType() === 'bottom'
-            && this.data.get('affix')
-        ) {
-            this.data.set('pointStyles', {});
-            this.data.set('affix', false);
-            this.data.set('styles', {});
-            this.fire('change', false);
+        if (affixTo != null) {
+            if (affixTo === true) {
+                pointStyles = {
+                    width: innerEl.clientWidth + 'px',
+                    height: innerEl.clientHeight + 'px'
+                };
+                styles.left = `${elOffset.left}px`;
+                styles.width = `${elOffset.width}px`;
+            }
+
+            this.data.set('pointStyles', pointStyles);
+            this.data.set('styles', styles);
+            this.data.set('affix', affixTo);
+            this.fire('change', affixTo);
         }
     },
+
     template: `
         <div class="san-affix-outer" style="{{pointStyles}}">
-            <div class="${prefixCls}" style="{{styles}}" s-ref="point">
+            <div class="${prefixCls}" style="{{styles}}" s-ref="inner">
                 <slot></slot>
             </div>
         </div>
