@@ -5,7 +5,6 @@
 
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
-import classNames from 'classnames';
 import Checkbox from '../checkbox/src/checkbox';
 import './style/index.less';
 
@@ -29,12 +28,10 @@ export default san.defineComponent({
             const prefixCls = this.data.get('prefixCls');
             const checked = this.data.get('checked');
             const disabled = this.data.get('disabled');
-
-            return classNames(className, {
-                [`${prefixCls}-wrapper`]: true,
-                [`${prefixCls}-wrapper-checked`]: checked,
-                [`${prefixCls}-wrapper-disabled`]: disabled
-            });
+            let classArr = [className, `${prefixCls}-wrapper`];
+            checked && classArr.push(`${prefixCls}-wrapper-checked`);
+            disabled && classArr.push(`${prefixCls}-wrapper-disabled`);
+            return classArr;
         }
     },
     handleChange(e) {

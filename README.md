@@ -32,15 +32,11 @@
 5. style下由index.js统一导出样式
 6. 单个组件导出多个对象时，{组件名}.{对象} = XXX; export default {组件名};
 
+### 版本依赖
+
+组件编译需要node 9以上版本，注意升级
+
 ### 安装全局依赖
-
-?> [lerna](https://github.com/lerna/lerna)：优雅地管理多个package
-
-需要全局安装 lerna
-
-```bash
-npm i -g lerna
-```
 
 > karma-cli ---测试执行过程管理工具,提供一个方便运行测试的环境, 可全局执行karma命令
 
@@ -52,8 +48,6 @@ npm i -g karma-cli
 
 ```bash
 npm i
-# 软连接各个组件
-lerna bootstrap
 # 本地运行
 npm start button
 # 如果想看button组件，那么后面加button，如果是看icon组件，那执行 npm start icon,以此类推
@@ -66,15 +60,6 @@ npm start button
 npm i -g @baidu/hulk-cli
 hulk init hulk/antd-san-component-template my-component-folder
 cd my-component-folder
-```
-
-当开发完组件以后，别忘了添加组件间的依赖。有两种方法：
-```bash
-# 执行 lerna add 命令,比如:
-lerna add button --scope button-group // 将buuton组件添加到button-group的依赖中
-
-# 或者，在button-group的package.json中，手动添加依赖，然后执行
-lerna bootstrap
 ```
 
 ### 测试

@@ -4,7 +4,6 @@
 */
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
-import classNames from 'classnames';
 import Icon from '../icon';
 const prefixCls = classCreator('input-number')();
 
@@ -16,18 +15,14 @@ export default san.defineComponent({
         classes() {
             const upOrDown = this.data.get('klass.direction');
             const disabledClass = this.data.get('disabled');
-            return classNames({
-                [`${prefixCls}-handler`]: true,
-                [`${prefixCls}-handler-${upOrDown}`]: true,
-                [`${prefixCls}-handler-up-disabled`]: disabledClass && upOrDown === 'up',
-                [`${prefixCls}-handler-down-disabled`]: disabledClass && upOrDown === 'down'
-            });
+            let classArr = [`${prefixCls}-handler`, `${prefixCls}-handler-${upOrDown}`];
+            disabledClass && upOrDown === 'up' && classArr.push(`${prefixCls}-handler-up-disabled`);
+            disabledClass && upOrDown === 'down' && classArr.push(`${prefixCls}-handler-down-disabled`);
+            return classArr;
         },
         iconClass() {
             const upOrDown = this.data.get('klass.direction');
-            return classNames({
-                [`${prefixCls}-handler-${upOrDown}-inner`]: true
-            });
+            return [`${prefixCls}-handler-${upOrDown}-inner`];
         }
     },
     initData() {

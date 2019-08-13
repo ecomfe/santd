@@ -8,7 +8,7 @@
     <div>
         <s-row>
             <s-col span="12">
-                <s-slider min="{{1}}" max="{{20}}" on-change="handleChange" value="{{integerValue}}" />
+                <s-slider min="{{1}}" max="{{20}}" on-change="handleIntegerChange" value="{{integerValue}}" />
             </s-col>
             <s-col span="4">
                 <s-inputnumber min="{{1}}" max="{{20}}" value="{{inputIntegerValue}}" on-change="handleChange" style="margin-left: 16px;" />
@@ -16,7 +16,7 @@
         </s-row>
         <s-row>
             <s-col span="12">
-                <s-slider min="{{0}}" max="{{1}}" on-change="handleChange" value="{{decimalValue}}" step="{{0.01}}"/>
+                <s-slider min="{{0}}" max="{{1}}" on-change="handleDecimalChange" value="{{decimalValue}}" step="{{0.01}}"/>
             </s-col>
             <s-col span="4">
                 <s-inputnumber min="{{0}}" max="{{1}}" step="{{0.01}}" value="{{inputDecimalValue}}" on-change="handleChange" style="margin-left: 16px;" />
@@ -48,7 +48,13 @@ export default {
             return typeof inputDecimalValue === 'number' ? inputDecimalValue : 0;
         }
     },
-    handleChange(value)  {
+    handleIntegerChange(value)  {
+        if (Number.isNaN(value)) {
+            return;
+        }
+        this.data.set('inputIntegerValue', value);
+    },
+    handleDecimalChange(value)  {
         if (Number.isNaN(value)) {
             return;
         }

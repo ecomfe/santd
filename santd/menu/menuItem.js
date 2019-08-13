@@ -5,7 +5,6 @@
 
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
-import classNames from 'classnames';
 import {findComponentsLevel} from '../core/util/findCompont';
 const prefixCls = classCreator('menu-item')();
 
@@ -30,11 +29,10 @@ export default san.defineComponent({
                     selected = true;
                 }
             });
-            return classNames({
-                [`${newPrefixCls}`]: true,
-                [`${newPrefixCls}-selected`]: selected,
-                [`${newPrefixCls}-disabled`]: disabled
-            });
+            let classArr = [newPrefixCls];
+            selected && classArr.push(`${newPrefixCls}-selected`);
+            disabled && classArr.push(`${newPrefixCls}-disabled`);
+            return classArr;
         },
         styles() {
             const inlineIndent = this.data.get('inlineIndent');

@@ -5,7 +5,6 @@
 
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
-import classNames from 'classnames';
 import Checkbox from './checkbox';
 
 const prefixCls = classCreator('checkbox')();
@@ -32,7 +31,7 @@ export default san.defineComponent({
     computed: {
         classes() {
             const className = this.data.get('className');
-            return classNames(prefixCls, className);
+            return [prefixCls, className];
         },
         checkboxs() {
             const options = this.data.get('options');

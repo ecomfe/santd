@@ -4,7 +4,6 @@
 import './style/index.less';
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
-import classNames from 'classnames';
 
 const prefixCls = classCreator('divider')();
 
@@ -33,13 +32,12 @@ export default san.defineComponent({
             const orientation = this.data.get('orientation');
             const hasSlot = this.data.get('hasSlot');
             const className = this.data.get('className');
-
-            return classNames(prefixCls, {
-                [`${prefixCls}-${type}`]: !!type,
-                [`${prefixCls}-dashed`]: dashed,
-                [`${prefixCls}-with-text`]: hasSlot && !orientation,
-                [`${prefixCls}-with-text-${orientation}`]: hasSlot && orientation
-            }, className);
+            let classArr = [prefixCls, className];
+            !!type && classArr.push(`${prefixCls}-${type}`);
+            dashed && classArr.push(`${prefixCls}-dashed`);
+            hasSlot && !orientation && classArr.push(`${prefixCls}-with-text`);
+            hasSlot && orientation && classArr.push(`${prefixCls}-with-text-${orientation}`);
+            return classArr;
         }
     },
     inited() {

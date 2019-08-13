@@ -3,7 +3,6 @@
  **/
 
 import san, {DataTypes} from 'san';
-import classNames from 'classnames';
 
 export default san.defineComponent({
     DataTypes: {
@@ -40,11 +39,10 @@ export default san.defineComponent({
             const disabled = this.data.get('disabled');
             const prefixCls = this.data.get('prefixCls');
             const className = this.data.get('className');
-
-            return classNames(prefixCls, className, {
-                [`${prefixCls}-checked`]: checked,
-                [`${prefixCls}-disabled`]: disabled
-            });
+            let classArr = [prefixCls, className];
+            checked && classArr.push(`${prefixCls}-checked`);
+            disabled && classArr.push(`${prefixCls}-disabled`);
+            return classArr;
         }
     },
     focus() {

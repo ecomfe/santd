@@ -5,7 +5,6 @@
 
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
-import classNames from 'classnames';
 import Row from '../row';
 import Col from '../col';
 import Icon from '../icon';
@@ -50,11 +49,10 @@ export default san.defineComponent({
             const prefixCls = this.data.get('prefixCls') || pagin();
             const className = this.data.get('className');
             const helpShow = this.data.get('getHelpMessage');
-            return classNames({
-                [`${prefixCls}-item`]: true,
-                [`${prefixCls}-item-with-help`]: !!helpShow,
-                [`${className}`]: !!className
-            });
+            let classArr = [`${prefixCls}-item`];
+            !!helpShow && classArr.push(`${prefixCls}-item-with-help`);
+            !!className && classArr.push(className);
+            return classArr;
         },
         isRequired() {
             const required = this.data.get('required');
@@ -80,10 +78,10 @@ export default san.defineComponent({
             const formInstance = this.data.get('formInstance');
             const formColon = formInstance && formInstance.data.get('colon');
             const computedColon = formColon !== undefined ? formColon : colon;
-            return classNames({
-                [`${prefixCls}-item-required`]: required,
-                [`${prefixCls}-item-no-colon`]: !computedColon
-            });
+            let classArr = [];
+            required && classArr.push(`${prefixCls}-item-required`);
+            !computedColon && classArr.push(`${prefixCls}-item-no-colon`);
+            return classArr;
         },
         labelColClassName() {
             const prefixCls = this.data.get('prefixCls');
@@ -93,11 +91,9 @@ export default san.defineComponent({
             const mergedLabelCol = labelCol ? labelCol : (formInstance && formInstance.data.get('labelCol')) || {};
             const labelClsBasic = `${prefixCls}-item-label`;
             const align = labelAlign ? labelAlign : (formInstance && formInstance.data.get('labelAlign'));
-            return classNames(
-                labelClsBasic,
-                align === 'left' && `${labelClsBasic}-left`,
-                mergedLabelCol.className
-            );
+            let classArr = [labelClsBasic, mergedLabelCol.className];
+            align === 'left' && classArr.push(`${labelClsBasic}-left`);
+            return classArr;
         },
         mergedWrapperCol() {
             const prefixCls = this.data.get('prefixCls');
@@ -115,7 +111,7 @@ export default san.defineComponent({
         wrapperClassName() {
             const prefixCls = this.data.get('prefixCls');
             const mergedWrapperCol = this.data.get('mergedWrapperCol');
-            return classNames(`${prefixCls}-item-control-wrapper`, mergedWrapperCol.className);
+            return [`${prefixCls}-item-control-wrapper`, mergedWrapperCol.className];
         },
         getValidateStatus() {
             const name = this.data.get('name');
@@ -193,13 +189,13 @@ export default san.defineComponent({
             const hasFeedback = this.data.get('hasFeedback');
             let classes = `${prefixCls}-item-control`;
             if (validateStatus) {
-                classes = classNames(`${prefixCls}-item-control`, {
-                    'has-feedback': hasFeedback || validateStatus === 'validating',
-                    'has-success': validateStatus === 'success',
-                    'has-warning': validateStatus === 'warning',
-                    'has-error': validateStatus === 'error',
-                    'is-validating': validateStatus === 'validating'
-                });
+                let classArr = [`${prefixCls}-item-control`];
+                (hasFeedback || validateStatus === 'validating') && classArr.push('has-feedback');
+                validateStatus === 'success' && classArr.push('has-success');
+                validateStatus === 'warning' && classArr.push('has-warning');
+                validateStatus === 'error' && classArr.push('has-error');
+                validateStatus === 'validating' && classArr.push('is-validating');
+                return classArr;
             }
             return classes;
         }

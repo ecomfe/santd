@@ -5,7 +5,6 @@
 import san from 'san';
 import Picker from '../calendar/src/picker';
 import MonthCalendar from '../calendar/src/monthCalendar';
-import classNames from 'classnames';
 import moment from 'moment';
 import {classCreator} from '../core/util';
 import inherits from '../core/util/inherits';
@@ -19,8 +18,7 @@ export default function (theCalendar) {
             classes() {
                 const className = this.data.get('className');
                 const pickerClass = this.data.get('pickerClass');
-
-                return classNames(className, pickerClass);
+                return [className, pickerClass];
             },
             calendar() {
                 const locale = this.data.get('locale');
@@ -44,10 +42,10 @@ export default function (theCalendar) {
                 const monthCellContentRender = this.data.get('monthCellContentRender');
                 const renderFooter = this.data.get('renderFooter');
                 const showTime = this.data.get('showTime');
-                const calendarClassName = classNames({
-                    [`${prefixCls}-time`]: showTime,
-                    [`${prefixCls}-month`]: theCalendar === MonthCalendar
-                });
+                let classArr = [];
+                showTime && classArr.push(`${prefixCls}-time`);
+                theCalendar === MonthCalendar && classArr.push(`${prefixCls}-month`);
+                let calendarClassName = classArr.join(' ');
                 const mode = this.data.get('mode');
                 let calendarProps = {};
                 if (mode) {

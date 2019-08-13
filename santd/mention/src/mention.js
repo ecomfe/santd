@@ -5,7 +5,6 @@
 
 import '../style/index.less';
 import san, {DataTypes} from 'san';
-import classNames from 'classnames';
 import PlaceHolder from './placeHolder';
 import Suggestions from './suggestions';
 import {getRegExp, insertString, setCursorPosition, getSearchWordPos} from '../utils/index';
@@ -55,18 +54,14 @@ export default san.defineComponent({
     },
     computed: {
         classes() {
-            return classNames({
-                [`${prefixCls}-wrapper`]: true,
-                [`${prefixCls}-active`]: false,
-                [`${prefixCls}-placement-top`]: false,
-                ['disabled']: !!this.data.get('disabled')
-            });
+            let classArr = [`${prefixCls}-wrapper`];
+            this.data.get('disabled') && classArr.push('disabled');
+            return classArr;
         },
         editor() {
-            return classNames({
-                'public-DraftEditor-content': true,
-                'notranslate': !this.data.get('readOnly')
-            });
+            let classArr = ['public-DraftEditor-content'];
+            !this.data.get('readOnly') && classArr.push('notranslate');
+            return classArr;
         },
         showPlaceholder() {
             const placeholder = this.data.get('placeholder');

@@ -3,7 +3,6 @@
  **/
 
 import san from 'san';
-import classNames from 'classnames';
 
 export default san.defineComponent({
     computed: {
@@ -12,13 +11,10 @@ export default san.defineComponent({
             const page = this.data.get('page');
             const active = this.data.get('active');
             const className = this.data.get('className');
-
-            return classNames({
-                [`${prefixCls}-item`]: true,
-                [`${prefixCls}-item-${page}`]: true,
-                [`${prefixCls}-item-active`]: active,
-                [`${prefixCls}-disabled`]: !page
-            }, className);
+            let classArr = [`${prefixCls}-item`, `${prefixCls}-item-${page}`, className];
+            active && classArr.push(`${prefixCls}-item-active`);
+            !page && classArr.push(`${prefixCls}-disabled`);
+            return classArr;
         }
     },
     handleClick() {

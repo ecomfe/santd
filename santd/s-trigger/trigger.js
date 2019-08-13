@@ -4,11 +4,10 @@
 */
 
 import san, {DataTypes} from 'san';
-import {classCreator} from '../core/util';
+import {classCreator, requestAnimationTimeout, cancelAnimationTimeout} from '../core/util';
 import {alignElement, alignPoint} from 'dom-align';
 import {addClass, contains} from '../core/util/dom';
 import addDOMEventListener from 'add-dom-event-listener';
-import {requestAnimationTimeout, cancelAnimationTimeout} from '../core/util/requestAnimationTimeout';
 import {getAlignPopupClassName, getAlignFromPlacement} from './_utils';
 import Popup from './popup';
 const prefixCls = classCreator('dropdown')();

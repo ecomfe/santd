@@ -6,7 +6,6 @@
 import './style/index.less';
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
-import classNames from 'classnames';
 
 const prefixCls = classCreator('rate-star')();
 
@@ -27,12 +26,11 @@ export default san.defineComponent({
             const allowHalf = data.get('allowHalf');
             const focused = data.get('focused');
             const starValue = index + 1;
-
-            return classNames(prefixCls, {
-                [`${prefixCls}-focused`]: focused,
-                [`${prefixCls}-full`]: starValue <= value,
-                [`${prefixCls}-half`]: allowHalf && value + 0.5 === starValue
-            });
+            let classArr = [prefixCls];
+            focused && classArr.push(`${prefixCls}-focused`);
+            (starValue <= value) && classArr.push(`${prefixCls}-full`);
+            (allowHalf && value + 0.5 === starValue) && classArr.push(`${prefixCls}-half`);
+            return classArr;
         }
     },
     initData() {

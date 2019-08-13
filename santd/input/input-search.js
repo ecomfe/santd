@@ -5,7 +5,6 @@
 
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
-import classNames from 'classnames';
 import Icon from '../icon';
 import Button from '../button';
 import BaseInput from './base';
@@ -27,22 +26,16 @@ export default san.defineComponent({
             const enterButton = this.data.get('enterButton');
             const sSize = this.data.get('size');
             const size = this.data.get('sizeMap')[sSize];
-            return classNames({
-                [`${prefixCls}-search`]: true,
-                [`${prefixCls}-affix-wrapper`]: true,
-                [`${prefixCls}-search-enter-button`]: !!enterButton,
-                [`${prefixCls}-affix-wrapper-${size}`]: !!size
-            });
+            let classArr = [`${prefixCls}-search`, `${prefixCls}-affix-wrapper`];
+            !!enterButton && classArr.push(`${prefixCls}-search-enter-button`);
+            !!size && classArr.push(`${prefixCls}-affix-wrapper-${size}`);
+            return classArr;
         },
         searchClass() {
-            return classNames({
-                [`${prefixCls}-suffix`]: true
-            });
+            return [`${prefixCls}-suffix`];
         },
         buttonClass() {
-            return classNames({
-                [`${prefixCls}-search-button`]: true
-            });
+            return [`${prefixCls}-search-button`];
         }
     },
     initData() {

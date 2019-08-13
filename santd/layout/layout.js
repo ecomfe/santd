@@ -5,7 +5,6 @@
 
 import san from 'san';
 import {classCreator} from '../core/util';
-import classNames from 'classnames';
 import './style/index';
 
 const generator = function ({suffixCls, tagName}) {
@@ -19,11 +18,10 @@ const generator = function ({suffixCls, tagName}) {
                 const prefixCls = this.data.get('prefixCls');
                 const className = this.data.get('className');
                 const hasSider = this.data.get('hasSider');
-                return classNames(className, prefixCls, {
-                    [`${prefixCls}-has-sider`]: typeof hasSider === 'boolean'
-                        ? hasSider
-                        : this.data.get('siders').length > 0
-                });
+                let classArr = [className, prefixCls];
+                let siderRes = typeof hasSider === 'boolean' ? hasSider : this.data.get('siders').length > 0;
+                siderRes && classArr.push(`${prefixCls}-has-sider`);
+                return classArr;
             }
         },
         messages: {

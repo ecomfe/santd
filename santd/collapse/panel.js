@@ -5,7 +5,6 @@
 
 import san from 'san';
 import {classCreator} from '../core/util';
-import classNames from 'classnames';
 import Collapse from './src/index';
 
 const prefixCls = classCreator('collapse')();
@@ -14,10 +13,9 @@ const CollapsePanel = san.defineComponent({
     inited() {
         const showArrow = this.data.get('showArrow');
         const className = this.data.get('className');
-        const collapsePanelClassName = classNames({
-            [`${prefixCls}-no-arrow`]: !showArrow
-        }, className);
-        this.data.set('className', collapsePanelClassName);
+        let classArr = [className];
+        !showArrow && classArr.push(`${prefixCls}-no-arrow`);
+        this.data.set('className', classArr.join(' '));
     }
 });
 

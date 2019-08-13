@@ -6,7 +6,6 @@
 import './style/index.less';
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
-import classNames from 'classnames';
 import defaultEmptyImg from './empty.svg';
 import simpleEmptyImg from './simple.svg';
 import LocaleReceiver from '../localeprovider/localereceiver';
@@ -42,10 +41,9 @@ const Empty = inherits(Locale, san.defineComponent({
         classes() {
             const className = this.data.get('className');
             const image = this.data.get('image') || defaultEmptyImg;
-
-            return classNames(prefixCls, {
-                [`${prefixCls}-normal`]: image === simpleEmptyImg
-            }, className);
+            let classArr = [prefixCls, className];
+            (image === simpleEmptyImg) && classArr.push(`${prefixCls}-normal`);
+            return classArr;
         },
         alt() {
             const des = this.data.get('desc');

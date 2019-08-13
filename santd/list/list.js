@@ -5,7 +5,6 @@
 
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
-import classNames from 'classnames';
 import Spin from '../spin';
 import Row from '../row';
 import Button from '../button';
@@ -27,32 +26,28 @@ export default san.defineComponent({
             const bordered = this.data.get('bordered');
             const grid = this.data.get('grid');
             const isLoading = this.data.get('loading');
-            return classNames({
-                [`${prefixCls}`]: true,
-                [`${prefixCls}-vertical`]: itemLayout === 'vertical',
-                [`${prefixCls}-${sizeCls}`]: sizeCls,
-                [`${prefixCls}-split`]: split,
-                [`${prefixCls}-bordered`]: bordered,
-                [`${prefixCls}-loading`]: isLoading,
-                [`${prefixCls}-grid`]: grid,
-                [`${prefixCls}-something-after-last-item`]: true
-            });
+            let classArr = [prefixCls, `${prefixCls}-something-after-last-item`];
+            itemLayout === 'vertical' && classArr.push(`${prefixCls}-vertical`);
+            sizeCls && classArr.push(`${prefixCls}-${sizeCls}`);
+            split && classArr.push(`${prefixCls}-split`);
+            bordered && classArr.push(`${prefixCls}-bordered`);
+            isLoading && classArr.push(`${prefixCls}-loading`);
+            grid && classArr.push(`${prefixCls}-grid`);
+            return classArr;
         },
         headerClass() {
             const headShow = this.data.get('headShow') || this.data.get('header');
-            return classNames({
-                [`${prefixCls}-header`]: true,
-                [`${prefixCls}-header-show`]: headShow,
-                [`${prefixCls}-header-hide`]: !headShow
-            });
+            let classArr = [`${prefixCls}-header`];
+            headShow && classArr.push(`${prefixCls}-header-show`);
+            !headShow && classArr.push(`${prefixCls}-header-hide`);
+            return classArr;
         },
         footerClass() {
             const footerShow = this.data.get('footShow') || this.data.get('footer');
-            return classNames({
-                [`${prefixCls}-footer`]: true,
-                [`${prefixCls}-footer-show`]: footerShow,
-                [`${prefixCls}-footer-hide`]: !footerShow
-            });
+            let classArr = [`${prefixCls}-footer`];
+            footerShow && classArr.push(`${prefixCls}-footer-show`);
+            !footerShow && classArr.push(`${prefixCls}-footer-hide`);
+            return classArr;
         }
     },
     initData() {

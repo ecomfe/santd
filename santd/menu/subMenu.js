@@ -6,7 +6,6 @@
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
 import Trigger from '../core/trigger/index';
-import classNames from 'classnames';
 import {findComponentsLevel} from '../core/util/findCompont';
 const prefixCls = classCreator('menu-submenu')();
 
@@ -24,7 +23,7 @@ const BUILT_IN_PLACEMENTS = {
         offset: [4, 0],
         overflow: {
             adjustX: 0,
-            adjustY: 1
+            adjustY: 1 
         }
     },
     bottomLeft: {
@@ -90,18 +89,15 @@ export default san.defineComponent({
         classes() {
             const mode = this.data.get('getRealMenuMode');
             const selected = this.data.get('selected');
-            const key = this.data.get('key');
             const disabled = this.data.get('disabled');
             const prefix = this.data.get('prefixCls');
             const newPrefixCls = prefix ? `${prefix}-menu-submenu` : `${prefixCls}`;
             const isOpen = this.data.get('isOpened');
-            return classNames({
-                [`${newPrefixCls}`]: true,
-                [`${newPrefixCls}-${mode}`]: true,
-                [`${newPrefixCls}-open`]: isOpen,
-                [`${newPrefixCls}-disabled`]: disabled,
-                [`${newPrefixCls}-selected`]: selected
-            });
+            let classArr = [newPrefixCls, `${newPrefixCls}-${mode}`];
+            isOpen && classArr.push(`${newPrefixCls}-open`);
+            disabled && classArr.push(`${newPrefixCls}-disabled`);
+            selected && classArr.push(`${newPrefixCls}-selected`);
+            return classArr;
         },
         subTitle() {
             const title = this.data.get('title');
@@ -113,16 +109,12 @@ export default san.defineComponent({
         subMenuTitleClass() {
             const prefix = this.data.get('prefixCls');
             const newPrefixCls = prefix ? `${prefix}-menu-submenu` : `${prefixCls}`;
-            return classNames({
-                [`${newPrefixCls}-title`]: true
-            });
+            return [`${newPrefixCls}-title`];
         },
         subMenuArrowClass() {
             const prefix = this.data.get('prefixCls');
             const newPrefixCls = prefix ? `${prefix}-menu-submenu` : `${prefixCls}`;
-            return classNames({
-                [`${newPrefixCls}-arrow`]: true
-            });
+            return [`${newPrefixCls}-arrow`];
         },
         titleStyle() {
             const inlineIndent = this.data.get('inlineIndent');
