@@ -4,7 +4,7 @@
  */
 
 import san from 'san';
-import Head from './head.md?exportType=markdown';
+import Head from './head.md';
 import Basic from './basic.md';
 import Style from './style.md';
 import Closable from './closable.md';
@@ -14,7 +14,7 @@ import CloseText from './close-text.md';
 import Banner from './banner.md';
 import Smooth from './smooth-closed.md';
 import Custom from './custom-icon.md';
-import Readme from '../README.md?exportType=markdown';
+import Readme from '../README.md';
 
 export default san.defineComponent({
     template: `
