@@ -11,7 +11,7 @@
                 <s-slider min="{{1}}" max="{{20}}" on-change="handleIntegerChange" value="{{integerValue}}" />
             </s-col>
             <s-col span="4">
-                <s-inputnumber min="{{1}}" max="{{20}}" value="{{inputIntegerValue}}" on-change="handleChange" style="margin-left: 16px;" />
+                <s-inputnumber min="{{1}}" max="{{20}}" value="{{inputIntegerValue}}" on-change="handleIntegerChange" style="margin-left: 16px;" />
             </s-col>
         </s-row>
         <s-row>
@@ -19,7 +19,7 @@
                 <s-slider min="{{0}}" max="{{1}}" on-change="handleDecimalChange" value="{{decimalValue}}" step="{{0.01}}"/>
             </s-col>
             <s-col span="4">
-                <s-inputnumber min="{{0}}" max="{{1}}" step="{{0.01}}" value="{{inputDecimalValue}}" on-change="handleChange" style="margin-left: 16px;" />
+                <s-inputnumber min="{{0}}" max="{{1}}" step="{{0.01}}" value="{{inputDecimalValue}}" on-change="handleDecimalChange" style="margin-left: 16px;" />
             </s-col>
         </s-row>
     </div>
