@@ -5,7 +5,6 @@
 
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
-import classNames from 'classnames';
 import Avatar from '../avatar';
 
 const prefixCls = classCreator('list')();
@@ -21,7 +20,7 @@ const Meta = san.defineComponent({
     computed: {
         classes() {
             const className = this.data.get('className');
-            return classNames(`${prefixCls}-item-meta`, className);
+            return [`${prefixCls}-item-meta`, className];
         },
         hasAvatar() {
             const instance = this.data.get('instance');
@@ -72,7 +71,7 @@ const Item = san.defineComponent({
     computed: {
         classes() {
             const className = this.data.get('className');
-            return classNames(`${prefixCls}-item`, className);
+            return [`${prefixCls}-item`, className];
         },
         hasExtra() {
             const instance = this.data.get('instance');

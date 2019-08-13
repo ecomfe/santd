@@ -5,7 +5,6 @@
 
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
-import classNames from 'classnames';
 import keyCode from '../core/util/keyCode';
 import calculateNodeHeight from './calculateNodeHeight';
 const pagin = classCreator('input');
@@ -21,10 +20,9 @@ export default san.defineComponent({
     computed: {
         areaClass() {
             const disabled = this.data.get('disabled') || false;
-            return classNames({
-                [`${prefixCls}`]: true,
-                [`${prefixCls}-disabled`]: disabled
-            });
+            let classArr = [prefixCls];
+            disabled && classArr.push(`${prefixCls}-disabled`);
+            return classArr;
         },
         stateValue() {
             const defaultValue = this.data.get('defaultValue');

@@ -7,7 +7,6 @@ import Dropdown from './dropdown';
 import {classCreator} from '../core/util';
 import Icon from '../icon';
 import Button from '../button';
-import classNames from 'classnames';
 const prefixCls = classCreator('dropdown-button')();
 
 export default san.defineComponent({
@@ -34,7 +33,7 @@ export default san.defineComponent({
     computed: {
         classes() {
             const className = this.data.get('className');
-            return classNames(prefixCls, className);
+            return [prefixCls, className];
         }
     },
     template: `

@@ -4,7 +4,6 @@
  **/
 
 import san from 'san';
-import classNames from 'classnames';
 import arrayTreeFilter from './arraytreefilter';
 import toStyle from 'to-style';
 
@@ -85,13 +84,12 @@ export default san.defineComponent({
         const hasChildren = option[this.getFieldName('children')]
             && option[this.getFieldName('children')].length > 0;
 
-        const menuItemClass = classNames(prefixCls + '-menu-item', {
-            [`${prefixCls}-menu-item-expand`]: hasChildren || option.isLeaf === false,
-            [`${prefixCls}-menu-item-active`]: this.isActiveOption(option, index),
-            [`${prefixCls}-menu-item-disabled`]: option.disabled,
-            [`${prefixCls}-menu-item-loading`]: option.loading
-        });
-        return menuItemClass;
+        let classArr = [`${prefixCls}-menu-item`];
+        (hasChildren || option.isLeaf === false) && classArr.push(`${prefixCls}-menu-item-expand`);
+        this.isActiveOption(option, index) && classArr.push(`${prefixCls}-menu-item-active`);
+        option.disabled && classArr.push(`${prefixCls}-menu-item-disabled`);
+        option.loading && classArr.push(`${prefixCls}-menu-item-loading`);
+        return classArr;
     },
     getExpandIconNode(option) {
         const hasChildren = option[this.getFieldName('children')]

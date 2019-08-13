@@ -4,7 +4,6 @@
  */
 
 import san, {DataTypes} from 'san';
-import classNames from 'classnames';
 
 export const filters = {
     css(style) {
@@ -62,12 +61,10 @@ export default san.defineComponent({
             const closable = data.get('closable');
             const componentClass = data.get('componentClass');
             const className = data.get('className');
-
-            return classNames({
-                [componentClass]: true,
-                [`${componentClass}-closable`]: closable,
-                [className]: !!className
-            });
+            let classArr = [componentClass];
+            closable && classArr.push(`${componentClass}-closable`);
+            !!className && classArr.push(className);
+            return classArr;
         }
     },
     filters: {

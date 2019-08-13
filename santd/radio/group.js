@@ -5,7 +5,6 @@
 
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
-import classNames from 'classnames';
 import Radio from './radio';
 
 const prefixCls = classCreator('radio')();
@@ -36,9 +35,9 @@ export default san.defineComponent({
             const buttonStyle = this.data.get('buttonStyle');
             const size = this.data.get('size');
             const prefix = prefixCls + '-group';
-            return classNames(prefix, `${prefix}-${buttonStyle}`, {
-                [`${prefix}-${size}`]: size
-            }, className);
+            let classArr = [prefix, `${prefix}-${buttonStyle}`, className];
+            size && classArr.push(`${prefix}-${size}`);
+            return classArr;
         },
         checkboxs() {
             const options = this.data.get('options');

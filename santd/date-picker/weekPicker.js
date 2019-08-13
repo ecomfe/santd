@@ -5,7 +5,6 @@
 import san from 'san';
 import Picker from '../calendar/src/picker';
 import Calendar from '../calendar/src/calendar';
-import classNames from 'classnames';
 import moment from 'moment';
 import {classCreator} from '../core/util';
 import inherits from '../core/util/inherits';
@@ -18,8 +17,7 @@ export default san.defineComponent({
         classes() {
             const className = this.data.get('className');
             const pickerClass = this.data.get('pickerClass');
-
-            return classNames(className, pickerClass);
+            return [className, pickerClass];
         },
         calendar() {
             const disabledDate = this.data.get('disabledDate');

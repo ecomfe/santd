@@ -4,7 +4,6 @@
  **/
 
 import san, {DataTypes} from 'san';
-import classNames from 'classnames';
 
 function toArray(activeKey) {
     let currentActiveKey = activeKey;
@@ -45,8 +44,7 @@ export default san.defineComponent({
         classes() {
             const prefixCls = this.data.get('prefixCls');
             const className = this.data.get('className');
-
-            return classNames(prefixCls, className);
+            return [prefixCls, className];
         }
     },
     updated() {

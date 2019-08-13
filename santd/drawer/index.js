@@ -9,7 +9,6 @@
 
 import './style/index.less';
 import san, {DataTypes} from 'san';
-import classNames from 'classnames';
 import {classCreator} from '../core/util';
 import Icon from '../icon';
 
@@ -95,12 +94,9 @@ export default san.defineComponent({
             const className = data.get('className');
             const placement = data.get('placement');
             const visible = data.get('visible');
-
-            return classNames({
-                [prefixCls]: true,
-                [`${prefixCls}-${placement}`]: true,
-                [`${prefixCls}-open`]: !!visible
-            }, className);
+            let classArr = [prefixCls, `${prefixCls}-${placement}`, className];
+            !!visible && classArr.push(`${prefixCls}-open`);
+            return classArr;
         },
         wrapStyle() {
             const data = this.data;

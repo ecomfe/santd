@@ -5,7 +5,6 @@
 
 import './style/index.less';
 import san, {DataTypes} from 'san';
-import classNames from 'classnames';
 import KeyCode from '../core/util/keyCode';
 import {classCreator} from '../core/util';
 import {getOffset} from '../core/util/dom';
@@ -70,9 +69,9 @@ export default san.defineComponent({
     computed: {
         classes() {
             const className = this.data.get('className');
-            return classNames(prefixCls, {
-                [`${prefixCls}-disabled`]: this.data.get('disabled')
-            }, className);
+            let classArr = [prefixCls, className];
+            this.data.get('disabled') && classArr.push(`${prefixCls}-disabled`);
+            return classArr;
         },
         starsProps() {
             const data = this.data;

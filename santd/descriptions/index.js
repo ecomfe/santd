@@ -6,7 +6,6 @@
 import './style/index.less';
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
-import classNames from 'classnames';
 import ResponsiveObserve, {responsiveArray} from '../core/util/responsiveObserve';
 const prefixCls = classCreator('descriptions')();
 
@@ -61,11 +60,10 @@ const Descriptions = san.defineComponent({
             const className = this.data.get('className');
             const size = this.data.get('size');
             const bordered = this.data.get('bordered');
-
-            return classNames(prefixCls, className, {
-                [`${prefixCls}-${size}`]: size !== 'default',
-                [`${prefixCls}-bordered`]: bordered
-            });
+            let classArr = [prefixCls, className];
+            size !== 'default' && classArr.push(`${prefixCls}-${size}`);
+            bordered && classArr.push(`${prefixCls}-bordered`);
+            return classArr;
         },
         getColumn() {
             const column = this.data.get('column');

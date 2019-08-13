@@ -4,7 +4,6 @@
  */
 
 import san, {DataTypes} from 'san';
-import classNames from 'classnames';
 import {classCreator} from '../core/util';
 import icon from '../icon';
 import Dialog from './Dialog';
@@ -112,18 +111,11 @@ export default inherits(san.defineComponent({
         classString() {
             const type = this.data.get('type');
             const className = this.data.get('className');
-
-            return classNames(
-                contentPrefixCls,
-                `${contentPrefixCls}-${type}`,
-                className
-            );
+            return [contentPrefixCls, `${contentPrefixCls}-${type}`, className]
         },
         wrapClass() {
             const centered = this.data.get('centered');
-            return classNames({
-                [`${prefixCls}-centered`]: !!centered
-            });
+            return !!centered ? [`${prefixCls}-centered`] : '';
         },
         contentIsComponent() {
             const content = this.data.get('content');

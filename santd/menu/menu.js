@@ -5,7 +5,6 @@
 
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
-import classNames from 'classnames';
 import './style/index.less';
 const prefixCls = classCreator('menu')();
 
@@ -32,13 +31,12 @@ export default san.defineComponent({
             const theme = this.data.get('theme');
             const inlineCollapsed = this.data.get('inlineCollapsed');
             const newPrefixCls = prefix ? `${prefix}-menu` : `${prefixCls}`;
-            return classNames({
-                [`${newPrefixCls}`]: true,
-                [`${newPrefixCls}-${mode}`]: !!mode,
-                [`${newPrefixCls}-${theme}`]: !!theme,
-                [`${newPrefixCls}-root`]: true,
-                [`${newPrefixCls}-inline-collapsed`]: inlineCollapsed
-            });
+            let classArr = [newPrefixCls, `${newPrefixCls}-root`];
+            !!mode && classArr.push(`${newPrefixCls}-${mode}`);
+            !!theme && classArr.push(`${newPrefixCls}-${theme}`);
+            inlineCollapsed && classArr.push(`${newPrefixCls}-inline-collapsed`);
+
+            return classArr;
         },
         chooseSelectedKeys() {
             const defaultSelectedKeys = this.data.get('defaultSelectedKeys');

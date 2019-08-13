@@ -6,7 +6,6 @@
 import './style/index.less';
 import san from 'san';
 import {classCreator} from '../core/util';
-import classNames from 'classnames';
 import icon from '../icon';
 import divider from '../divider';
 import breadcrumb from '../breadcrumb';

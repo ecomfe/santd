@@ -5,7 +5,6 @@
 import san from 'san';
 import Picker from '../calendar/src/picker';
 import RangeCalendar from '../calendar/src/rangeCalendar';
-import classNames from 'classnames';
 import moment from 'moment';
 import {classCreator} from '../core/util';
 import inherits from '../core/util/inherits';
@@ -50,8 +49,7 @@ export default san.defineComponent({
         classes() {
             const className = this.data.get('className');
             const pickerClass = this.data.get('pickerClass');
-
-            return classNames(className, pickerClass);
+            return [className, pickerClass];
         },
         renderFooter() {
             const renderExtraFooter = this.data.get('renderExtraFooter');
@@ -121,10 +119,10 @@ export default san.defineComponent({
             const prefixCls = this.data.get('prefixCls');
             const showTime = this.data.get('showTime');
             const ranges = this.data.get('ranges');
-            const calendarClassName = classNames({
-                [`${prefixCls}-time`]: showTime,
-                [`${prefixCls}-range-with-ranges`]: ranges
-            });
+            let classArr = [];
+            showTime && classArr.push(`${prefixCls}-time`);
+            ranges && classArr.push(`${prefixCls}-range-with-ranges`);
+            const calendarClassName = classArr.join(' ');
             const locale = this.data.get('locale');
             const renderFooter = this.data.get('renderFooter');
             const timePicker = this.data.get('timePicker');

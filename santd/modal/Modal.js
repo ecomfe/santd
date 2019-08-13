@@ -5,7 +5,6 @@
  */
 
 import san, {DataTypes} from 'san';
-import classNames from 'classnames';
 import {classCreator} from '../core/util';
 import Dialog from './Dialog';
 import button from '../button';
@@ -43,9 +42,9 @@ export default inherits(Locale, san.defineComponent({
             const centered = this.data.get('centered');
             const prefixCls = this.data.get('prefixCls');
             const wrapClassName = this.data.get('wrapClassName');
-            return classNames({
-                [`${prefixCls}-centered`]: !!centered
-            }, wrapClassName);
+            let classArr = [wrapClassName];
+            !!centered && classArr.push(`${prefixCls}-centered`);
+            return classArr.join(' ');
         }
     },
     initData() {
