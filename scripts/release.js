@@ -3,6 +3,13 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 
+
+// TODO:
+// 1. 获取当前版本
+// 2. 输入新的版本号
+// 3. 执行 npm version
+// 4. 开始下面的流程生成 dist 内容
+// 5. 手动发包？还是直接 exec？暂时手动吧，方便调试 release 脚本
 const fs = require('fs-extra');
 const path = require('path');
 
