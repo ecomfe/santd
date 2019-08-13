@@ -1,4 +1,3 @@
-import '../index.less';
 import './style/preview.less';
 import {defineComponent} from 'san';
 import hotClient from 'webpack-hot-middleware/client?noInfo=true&reload=true';

@@ -1,9 +1,14 @@
-const path = require('path');
-const config = require('./config');
-const isProduction = process.env.NODE_ENV === 'production';
+
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HotModuleReplacementPlugin = require('webpack/lib/HotModuleReplacementPlugin');
+const NoEmitOnErrorsPlugin = require('webpack/lib/NoEmitOnErrorsPlugin');
 const ProgressPlugin = require('webpack/lib/ProgressPlugin');
-const {resolve} = require('./lib/utils');
+
+const config = require('./config');
+const {resolve, assetsPath} = require('./lib/utils');
+
+const isProduction = process.env.NODE_ENV === 'production';
 module.exports = {
     mode: isProduction ? 'production' : 'development',
     entry: {
@@ -43,6 +48,14 @@ module.exports = {
                             sourceMap: isProduction,
                             minimize: isProduction
                         }
+                    }
+                ]
+            },
+            {
+                test: /\.md/,
+                use: [
+                    {
+                        loader: 'hulk-markdown-loader'
                     }
                 ]
             },
@@ -103,5 +116,18 @@ module.exports = {
             }
         ]
     },
-    plugins: [new ProgressPlugin()]
+    plugins: [
+        new ProgressPlugin(),
+        new MiniCssExtractPlugin({
+            filename: assetsPath('css/[name].css'),
+            chunkFilename: assetsPath('css/common.css')
+        }),
+        new HotModuleReplacementPlugin(),
+        new NoEmitOnErrorsPlugin(),
+        new HtmlWebpackPlugin({
+            filename: 'index.html',
+            template: './site/index.html',
+            inject: true
+        })
+    ]
 };
