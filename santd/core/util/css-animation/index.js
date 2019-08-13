@@ -1,11 +1,13 @@
+/**
+ * @file css animation file
+ **/
+
 import Event from './Event';
-import {requestAnimationTimeout, cancelAnimationTimeout} from '../requestAnimationTimeout';
+import {requestAnimationTimeout, cancelAnimationTimeout} from '../index';
 
 const isCssAnimationSupported = Event.endEvents.length !== 0;
 const capitalPrefixes = ['Webkit',
     'Moz',
-    // 'O',
-    // ms is special .... !
     'ms'];
 const prefixes = ['-webkit-', '-moz-', 'ms-', ''];
 
@@ -67,7 +69,7 @@ const cssAnimation = (node, transitionName, endCallback) => {
         node.rcEndListener();
     }
 
-    node.rcEndListener = (e) => {
+    node.rcEndListener = e => {
         if (e && e.target !== node) {
             return;
         }
@@ -127,7 +129,7 @@ cssAnimation.style = (node, style, callback) => {
         node.rcEndListener();
     }
 
-    node.rcEndListener = (e) => {
+    node.rcEndListener = e => {
         if (e && e.target !== node) {
             return;
         }
@@ -173,13 +175,12 @@ cssAnimation.setTransition = (node, p, value) => {
     }
 
     property = property || '';
-    capitalPrefixes.forEach((prefix) => {
+    capitalPrefixes.forEach(prefix => {
         node.style[`${prefix}Transition${property}`] = v;
     });
 };
 
 cssAnimation.isCssAnimationSupported = isCssAnimationSupported;
 
-export { isCssAnimationSupported };
-
-export default cssAnimation
+export {isCssAnimationSupported};
+export default cssAnimation;

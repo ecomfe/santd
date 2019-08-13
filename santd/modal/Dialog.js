@@ -8,9 +8,8 @@ import './style/index.less';
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
 import KeyCode from '../core/util/keyCode';
-import {on, addClass, removeClass} from '../core/util/dom';
+import {on, addClass, removeClass, getScrollBarSize} from '../core/util/dom';
 import TransitionEvents from '../core/util/css-animation/Event';
-import getScrollBarSize from '../core/util/getScrollBarSize';
 import button from '../button';
 import icon from '../icon';
 
