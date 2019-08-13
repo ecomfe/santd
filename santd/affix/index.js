@@ -22,7 +22,7 @@ export default san.defineComponent({
             affix: false,
             styles: {},
             offsetTop: 0,
-            pointStyles: {}
+            outerStyles: {}
         };
     },
 
@@ -55,7 +55,7 @@ export default san.defineComponent({
         let affix = this.data.get('affix');
         let affixTo = null;
         let styles = {};
-        let pointStyles = {};
+        let outerStyles = {};
 
         
         if (isAffixBottom) {
@@ -89,7 +89,7 @@ export default san.defineComponent({
 
         if (affixTo != null) {
             if (affixTo === true) {
-                pointStyles = {
+                outerStyles = {
                     width: innerEl.clientWidth + 'px',
                     height: innerEl.clientHeight + 'px'
                 };
@@ -97,7 +97,7 @@ export default san.defineComponent({
                 styles.width = `${elOffset.width}px`;
             }
 
-            this.data.set('pointStyles', pointStyles);
+            this.data.set('outerStyles', outerStyles);
             this.data.set('styles', styles);
             this.data.set('affix', affixTo);
             this.fire('change', affixTo);
@@ -105,7 +105,7 @@ export default san.defineComponent({
     },
 
     template: `
-        <div class="${outerCls}" style="{{pointStyles}}">
+        <div class="${outerCls}" style="{{outerStyles}}">
             <div class="${innerCls}" style="{{styles}}" s-ref="inner">
                 <slot></slot>
             </div>
