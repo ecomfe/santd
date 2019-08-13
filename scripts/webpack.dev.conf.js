@@ -10,7 +10,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 // const config = require('../config');
 const baseWebpackConfig = require('./webpack.base.conf');
-const {assetsPath} = require('./utils');
+const {assetsPath} = require('./lib/utils');
 
 module.exports = merge(baseWebpackConfig, {
     entry: {

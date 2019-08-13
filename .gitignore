@@ -14,5 +14,6 @@ lerna-debug.log
 
 santd/core/_util/
 yarn.lock
+yarn-error.log
 
 .vscode

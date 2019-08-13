@@ -1,9 +1,9 @@
 const path = require('path');
-const config = require('../config');
+const config = require('./config');
 const isProduction = process.env.NODE_ENV === 'production';
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ProgressPlugin = require('webpack/lib/ProgressPlugin');
-const {resolve} = require('./utils');
+const {resolve} = require('./lib/utils');
 module.exports = {
     mode: isProduction ? 'production' : 'development',
     entry: {

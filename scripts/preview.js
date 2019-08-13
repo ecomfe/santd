@@ -12,7 +12,7 @@ const express = require('express');
 const webpackDevServer = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
 
-const config = require('../config');
+const config = require('./config');
 const webpackConfig = require('./webpack.dev.conf');
 
 const port = process.env.PORT || config.dev.port;
