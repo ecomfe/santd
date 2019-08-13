@@ -3,8 +3,8 @@
  */
 
 import san from 'san';
-import Head from './head.md?exportType=markdown';
-import Readme from '../README.md?exportType=markdown';
+import Head from './head.md';
+import Readme from '../README.md';
 import Basic from './basic.md';
 import OffsetTop from './offsetTop.md';
 
