@@ -5,7 +5,6 @@
 
 import san, {DataTypes} from 'san';
 import {classCreator} from '..//core/util';
-import classNames from 'classnames';
 import BaseCollapse from './src/index';
 import Icon from '../icon';
 
@@ -26,10 +25,9 @@ const Collapse = san.defineComponent({
             const bordered = this.data.get('bordered');
             const className = this.data.get('className');
             const prefixCls = this.data.get('prefixCls');
-
-            return classNames(prefixCls, {
-                [`${prefixCls}-borderless`]: !bordered
-            }, className);
+            let classArr = [prefixCls, className];
+            !bordered && classArr.push(`${prefixCls}-borderless`);
+            return classArr;
         }
     },
     initData() {

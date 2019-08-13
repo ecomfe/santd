@@ -5,7 +5,6 @@
 
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
-import classNames from 'classnames';
 const prefixCls = classCreator('list')();
 
 export default san.defineComponent({

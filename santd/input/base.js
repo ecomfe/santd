@@ -5,7 +5,6 @@
 
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
-import classNames from 'classnames';
 import keyCode from '../core/util/keyCode';
 const pagin = classCreator('input');
 const prefixCls = pagin();
@@ -18,11 +17,10 @@ export default san.defineComponent({
             const size = this.data.get('sizeMap')[this.data.get('size')];
             const disabled = this.data.get('disabled');
             const className = this.data.get('className');
-            return classNames({
-                [`${prefixCls}`]: true,
-                [`${prefixCls}-${size}`]: !!size,
-                [`${prefixCls}-disabled`]: disabled
-            }, className);
+            let classArr = [prefixCls, className];
+            size && classArr.push(`${prefixCls}-${size}`);
+            disabled && classArr.push(`${prefixCls}-disabled`);
+            return classArr;
         }
     },
     initData() {

@@ -5,7 +5,6 @@
 
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
-import classNames from 'classnames';
 import './style/index.less';
 import BaseInput from './base';
 import Icon from '../icon';
@@ -51,21 +50,15 @@ const AddonRenderer = san.defineComponent({
     computed: {
         groupClasses() {
             const size = this.data.get('sizeMap')[this.data.get('size')];
-            return classNames({
-                [`${prefixCls}-group-wrapper`]: true,
-                [`${prefixCls}-group-wrapper-${size}`]: !!size
-            });
+            let classArr = [`${prefixCls}-group-wrapper`];
+            size && classArr.push(`${prefixCls}-group-wrapper-${size}`);
+            return classArr;
         },
         className() {
-            return classNames({
-                [`${prefixCls}-wrapper`]: true,
-                [`${prefixCls}-group`]: true
-            });
+            return [`${prefixCls}-wrapper`, `${prefixCls}-group`];
         },
         addonClassName() {
-            return classNames({
-                [`${prefixCls}-group-addon`]: true
-            });
+            return [`${prefixCls}-group-addon`];
         }
     },
     initData() {
@@ -104,10 +97,9 @@ const PresuffixRenderer = san.defineComponent({
     computed: {
         fixClass() {
             const size = this.data.get('sizeMap')[this.data.get('size')];
-            return classNames({
-                [`${prefixCls}-affix-wrapper`]: true,
-                [`${prefixCls}-affix-wrapper-${size}`]: !!size
-            });
+            let classArr = [`${prefixCls}-affix-wrapper`];
+            size && classArr.push(`${prefixCls}-affix-wrapper-${size}`);
+            return classArr;
         }
     },
     initData() {
@@ -162,9 +154,7 @@ export default san.defineComponent({
     computed: {
         closeAllow() {
             const couldClear = this.data.get('couldClear');
-            return classNames({
-                [`${prefixCls}-affix-wrapper`]: couldClear
-            });
+            return couldClear ? [`${prefixCls}-affix-wrapper`] : '';
         }
     },
     inited() {
@@ -229,7 +219,7 @@ export default san.defineComponent({
     <span class="{{closeAllow}}">
         <a-addonrenderer s-if="addonBefore || addonAfter" s-bind="{{_INPUTPROPS}}"></a-addonrenderer>
         <a-presuffix s-else-if="prefix || suffix" s-bind="{{_INPUTPROPS}}"></a-presuffix>
-        <s-base-input s-else s-bind="{{_INPUTPROPS}}"></s-base-input>
+        <s-base-input size="{{size}}" s-else s-bind="{{_INPUTPROPS}}"></s-base-input>
         <span
             class="${prefixCls}-suffix"
             s-if="couldClear"

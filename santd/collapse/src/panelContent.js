@@ -4,7 +4,6 @@
  **/
 
 import san, {DataTypes} from 'san';
-import classNames from 'classnames';
 
 export default san.defineComponent({
     dataTypes: {
@@ -18,12 +17,10 @@ export default san.defineComponent({
         classes() {
             const prefixCls = this.data.get('prefixCls');
             const isActive = this.data.get('isActive');
-
-            return classNames({
-                [`${prefixCls}-content`]: true,
-                [`${prefixCls}-content-active`]: isActive,
-                [`${prefixCls}-content-inactive`]: !isActive
-            });
+            let classArr = [`${prefixCls}-content`];
+            isActive && classArr.push(`${prefixCls}-content-active`);
+            !isActive && classArr.push(`${prefixCls}-content-inactive`);
+            return classArr;
         }
     },
     template: `

@@ -5,7 +5,6 @@
 import san, {DataTypes} from 'san';
 import './style/index.less';
 import * as allIcons from '../core/svgIcons/lib/dist';
-import classNames from 'classnames';
 import {classCreator} from '../core/util';
 import sanicon from './icon';
 import iconFont from './iconfont';
@@ -27,10 +26,9 @@ const icon = san.defineComponent({
         classes() {
             const type = this.data.get('type');
             const className = this.data.get('className');
-            return classNames({
-                [`${prefixCls}`]: true,
-                [`${prefixCls}-${type}`]: Boolean(type)
-            }, className);
+            let classArr = [prefixCls, className];
+            Boolean(type) && classArr.push(`${prefixCls}-${type}`);
+            return classArr;
         },
         iconTabIndex() {
             const tabIndex = this.data.get('tabIndex');
@@ -42,9 +40,6 @@ const icon = san.defineComponent({
             const rotate = this.data.get('rotate');
             const viewBox = this.data.get('viewBox');
             const theme = this.data.get('theme');
-            const svgClasses = classNames({
-                [`${prefixCls}-spin`]: !!spin || type === 'loading'
-            });
             const svgStyle = rotate
                 ? {
                     msTransform: `rotate(${rotate}deg)`,
@@ -53,7 +48,7 @@ const icon = san.defineComponent({
                 : undefined;
             const innerSvgProps = {
                 ...svgBaseProps,
-                class: svgClasses,
+                class: (!!spin || type === 'loading') ? `${prefixCls}-spin` : '',
                 style: svgStyle,
                 viewBox
             };

@@ -6,7 +6,6 @@
 
 import './style/index.less';
 import san, {DataTypes} from 'san';
-import classNames from 'classnames';
 import {classCreator} from '../core/util';
 import Icon from '../icon';
 
@@ -220,14 +219,10 @@ export default san.defineComponent({
             const showInfo = data.get('showInfo');
             const type = data.get('type');
             const progressStatus = data.get('progressStatus');
-
-            return classNames({
-                [prefixCls]: true,
-                [`${prefixCls}-${type === 'dashboard' && 'circle' || type}`]: true,
-                [`${prefixCls}-status-${progressStatus}`]: true,
-                [`${prefixCls}-show-info`]: showInfo,
-                [`${prefixCls}-${size}`]: size
-            });
+            let classArr = [prefixCls, `${prefixCls}-${type === 'dashboard' && 'circle' || type}`, `${prefixCls}-status-${progressStatus}`];
+            showInfo && classArr.push(`${prefixCls}-show-info`);
+            size && classArr.push(`${prefixCls}-${size}`);
+            return classArr;
         },
         percentStyle() {
             const data = this.data;

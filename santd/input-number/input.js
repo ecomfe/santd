@@ -5,7 +5,6 @@
 
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
-import classNames from 'classnames';
 import inputHandle from './inputHandler';
 import './style/index.less';
 const prefixCls = classCreator('input-number')();
@@ -30,13 +29,12 @@ export default san.defineComponent({
             const focused = this.data.get('autoFocus');
             const disabled = this.data.get('disabled') || false;
             const size = this.data.get('size') || 'default';
-            return classNames({
-                [`${prefixCls}`]: true,
-                [`${prefixCls}-focused`]: focused,
-                [`${prefixCls}-disabled`]: disabled,
-                [`${prefixCls}-lg`]: size === 'large',
-                [`${prefixCls}-sm`]: size === 'small'
-            });
+            let classArr = [prefixCls];
+            focused && classArr.push(`${prefixCls}-focused`);
+            disabled && classArr.push(`${prefixCls}-disabled`);
+            size === 'large' && classArr.push(`${prefixCls}-lg`);
+            size === 'small' && classArr.push(`${prefixCls}-sm`);
+            return classArr;
         },
         upClass() {
             const disabledConfirm = this.data.get('disabledConfirm');

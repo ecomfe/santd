@@ -5,7 +5,6 @@
 
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
-import classNames from 'classnames';
 import createDOMForm from './src/createDOMForm';
 import createFormField from './src/createFormField';
 import './style/index';
@@ -28,13 +27,12 @@ let form = san.defineComponent({
             const layout = this.data.get('layout');
             const prefixCls = this.data.get('prefixCls') || pagin();
             const hideRequiredMark = this.data.get('hideRequiredMark');
-            return classNames({
-                [`${prefixCls}`]: true,
-                [`${prefixCls}-horizontal`]: layout === 'horizontal',
-                [`${prefixCls}-vertical`]: layout === 'vertical',
-                [`${prefixCls}-inline`]: layout === 'inline',
-                [`${prefixCls}-hide-required-mark`]: hideRequiredMark
-            });
+            let classArr = [prefixCls];
+            layout === 'horizontal' && classArr.push(`${prefixCls}-horizontal`);
+            layout === 'vertical' && classArr.push(`${prefixCls}-vertical`);
+            layout === 'inline' && classArr.push(`${prefixCls}-inline`);
+            hideRequiredMark && classArr.push(`${prefixCls}-hide-required-mark`);
+            return classArr;
         }
     },
     initData() {

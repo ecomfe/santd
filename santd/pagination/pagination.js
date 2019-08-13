@@ -3,7 +3,6 @@
  **/
 
 import san, {DataTypes} from 'san';
-import classNames from 'classnames';
 import Input from '../input';
 import KEYCODE from '../core/util/keyCode';
 import Pager from './pager';
@@ -152,15 +151,17 @@ export default san.defineComponent({
             const className = this.data.get('className');
             const size = this.data.get('size');
             const disabled = this.data.get('disabled');
-
+            let classArr = [prefixCls];
             if (simple) {
-                return classNames(prefixCls, prefixCls + '-simple', className, {
-                    [`${prefixCls}-disabled`]: disabled
-                });
+                classArr.push(prefixCls + '-simple');
+                classArr.push(className);
+                disabled && classArr.push(`${prefixCls}-disabled`);
+
+                return classArr;
             }
-            return classNames(prefixCls, size === 'small' ? 'mini' : '', {
-                [`${prefixCls}-disabled`]: disabled
-            });
+            size === 'small' && classArr.push('mini');
+            disabled && classArr.push(`${prefixCls}-disabled`);
+            return classArr;
         },
         hasPrev() {
             return this.data.get('current') > 1;

@@ -6,7 +6,6 @@
 import './style/index.less';
 import san from 'san';
 import {classCreator} from '../core/util';
-import classNames from 'classnames';
 import Track from './src/track';
 
 const prefix = classCreator('carousel')();
@@ -63,10 +62,10 @@ export default san.defineComponent({
     },
     computed: {
         cls() {
-            let vertical = this.data.get('vertical');
-            return classNames(prefix, {
-                [`${prefix}-vertical`]: vertical
-            });
+            const vertical = this.data.get('vertical');
+            let classArr = [prefix];
+            vertical && classArr.push(`${prefix}-vertical`);
+            return classArr;
         },
         listStyle() {
             let vertical = this.data.get('vertical');
@@ -76,21 +75,18 @@ export default san.defineComponent({
             } : '';
         },
         slickCls() {
-            let vertical = this.data.get('vertical');
-            return classNames('slick-slider', {
-                'slick-initialized': true,
-                'slick-vertical': vertical
-            });
+            const vertical = this.data.get('vertical');
+            let classArr = ['slick-slider', 'slick-initialized'];
+            vertical && classArr.push('slick-vertical');
+            return classArr;
         },
         vertical() {
             const dotPosition = this.data.get('dotPosition');
             return dotPosition === 'left' || dotPosition === 'right';
         },
         dotsStyle() {
-            let dotPosition = this.data.get('dotPosition');
-            return classNames('slick-dots', {
-                [`slick-dots-${dotPosition}`]: true
-            });
+            const dotPosition = this.data.get('dotPosition');
+            return ['slick-dots', `slick-dots-${dotPosition}`];
         }
     },
     next() {

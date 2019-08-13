@@ -4,7 +4,6 @@
  */
 
 import san, {DataTypes} from 'san';
-import classNames from 'classnames';
 import {addClass, removeClass} from '../core/util/dom';
 import TransitionEvents from '../core/util/css-animation/Event';
 import {guid} from '../core/util';
@@ -65,11 +64,9 @@ const Notification = san.defineComponent({
             const data = this.data;
             const prefixCls = data.get('prefixCls');
             const className = data.get('className');
-
-            return classNames({
-                [prefixCls]: true,
-                [className]: !!className
-            });
+            let classArr = [prefixCls];
+            !!className && classArr.push(className);
+            return classArr;
         }
     },
     filters: {
@@ -82,10 +79,7 @@ const Notification = san.defineComponent({
                     done();
                     return;
                 }
-                const cls = classNames({
-                    [`${transitionName}-enter`]: true,
-                    [`${transitionName}-enter-active`]: true
-                });
+                const cls = [`${transitionName}-enter`, `${transitionName}-enter-active`].join(' ');
                 const end = () => {
                     TransitionEvents.removeEndEventListener(el, end);
                     removeClass(el, cls);
@@ -99,10 +93,7 @@ const Notification = san.defineComponent({
                     done();
                     return;
                 }
-                const cls = classNames({
-                    [`${transitionName}-leave`]: true,
-                    [`${transitionName}-leave-active`]: true
-                });
+                const cls = [`${transitionName}-leave`, `${transitionName}-leave-active`].join(' ');
                 const end = () => {
                     TransitionEvents.removeEndEventListener(el, end);
                     removeClass(el, cls);

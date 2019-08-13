@@ -33,19 +33,17 @@ export default san.defineComponent({
             const prefixCls = this.data.get('prefixCls');
             const checked = this.data.get('checked');
             const disabled = this.data.get('disabled');
-
-            return classNames(className, {
-                [`${prefixCls}-wrapper`]: true,
-                [`${prefixCls}-wrapper-checked`]: checked,
-                [`${prefixCls}-wrapper-disabled`]: disabled
-            });
+            let classArr = [className, `${prefixCls}-wrapper`];
+            checked && classArr.push(`${prefixCls}-wrapper-checked`);
+            disabled && classArr.push(`${prefixCls}-wrapper-disabled`);
+            return classArr;
         },
         checkboxClass() {
             const indeterminate = this.data.get('indeterminate');
             const prefixCls = this.data.get('prefixCls');
-            return classNames({
-                [`${prefixCls}-indeterminate`]: indeterminate
-            });
+            let classArr = [];
+            indeterminate && classArr.push(`${prefixCls}-indeterminate`);
+            return classArr;
         },
         hasSlot() {
             const instance = this.data.get('instance');

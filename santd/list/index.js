@@ -49,16 +49,15 @@ const List = san.defineComponent({
             const prefixCls = this.data.get('prefixCls');
             const className = this.data.get('className');
             const sizeClass = this.data.get('sizeClass');
-
-            return classNames(prefixCls, className, {
-                [`${prefixCls}-vertical`]: this.data.get('itemLayout') === 'vertical',
-                [`${prefixCls}-${sizeClass}`]: sizeClass,
-                [`${prefixCls}-split`]: this.data.get('split'),
-                [`${prefixCls}-bordered`]: this.data.get('bordered'),
-                [`${prefixCls}-loading`]: this.data.get('loading'),
-                [`${prefixCls}-grid`]: this.data.get('grid'),
-                [`${prefixCls}-something-after-last-item`]: this.data.get('somethingAfterLastItem')
-            });
+            let classArr = [prefixCls, className];
+            this.data.get('itemLayout') === 'vertical' && classArr.push(`${prefixCls}-vertical`);
+            sizeClass && classArr.push(`${prefixCls}-${sizeClass}`);
+            this.data.get('split') && classArr.push(`${prefixCls}-split`);
+            this.data.get('bordered') && classArr.push(`${prefixCls}-bordered`);
+            this.data.get('loading') && classArr.push(`${prefixCls}-loading`);
+            this.data.get('grid') && classArr.push(`${prefixCls}-grid`);
+            this.data.get('somethingAfterLastItem') && classArr.push(`${prefixCls}-something-after-last-item`);
+            return classArr;
         },
         sizeClass() {
             const size = this.data.get('size');

@@ -4,15 +4,11 @@
  */
 import '../style/index.less';
 import san from 'san';
-import classNames from 'classnames';
 
 export default san.defineComponent({
     computed: {
         className() {
-            return classNames({
-                ['public-DraftEditorPlaceholder-root']: true,
-                ['public-DraftEditorPlaceholder-hasFocus']: false
-            });
+            return ['public-DraftEditorPlaceholder-root'];
         }
     },
     template: `

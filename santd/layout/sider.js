@@ -5,7 +5,6 @@
 
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
-import classNames from 'classnames';
 import Icon from '../icon';
 const pagin = classCreator('layout-sider');
 const prefixCls = pagin();
@@ -50,13 +49,11 @@ export default san.defineComponent({
             const theme = this.data.get('theme') || 'dark';
             const collapsible = this.data.get('collapsible');
             const trigger = this.data.get('trigger');
-            return classNames({
-                [`${prefixCls}`]: true,
-                [`${prefixCls}-${theme}`]: true,
-                [`${prefixCls}-collapsed`]: collapsed,
-                [`${prefixCls}-has-trigger`]: collapsible && trigger !== null,
-                [`${prefixCls}-zero-width`]: +siderWidth === 0
-            });
+            let classArr = [prefixCls, `${prefixCls}-${theme}`];
+            collapsed && classArr.push(`${prefixCls}-collapsed`);
+            collapsible && trigger !== null && classArr.push(`${prefixCls}-has-trigger`);
+            +siderWidth === 0 && classArr.push(`${prefixCls}-zero-width`);
+            return classArr;
         },
         styles() {
             const siderWidth = this.data.get('siderWidth') + 'px';

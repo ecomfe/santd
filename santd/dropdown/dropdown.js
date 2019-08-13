@@ -5,7 +5,6 @@
 
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
-import classNames from 'classnames';
 import inherits from '../core/util/inherits';
 import DropDown from './src/dropdown';
 import './style/index';
@@ -31,7 +30,7 @@ export default inherits(san.defineComponent({
         },
         classes() {
             const className = this.data.get('className');
-            return classNames(className, `${prefixCls}-trigger`);
+            return [className, `${prefixCls}-trigger`].join(' ');
         },
         getTransitionName() {
             const placement = this.data.get('popupPlacement');

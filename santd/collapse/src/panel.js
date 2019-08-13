@@ -4,7 +4,6 @@
  **/
 
 import san, {DataTypes} from 'san';
-import classNames from 'classnames';
 import PanelContent from './panelContent';
 
 export default san.defineComponent({
@@ -37,18 +36,15 @@ export default san.defineComponent({
             const isActive = this.data.get('isActive');
             const disabled = this.data.get('disabled');
             const className = this.data.get('className');
-
-            return classNames({
-                [`${prefixCls}-item`]: true,
-                [`${prefixCls}-item-active`]: isActive,
-                [`${prefixCls}-item-disabled`]: disabled
-            }, className);
+            let classArr = [`${prefixCls}-item`, className];
+            isActive && classArr.push(`${prefixCls}-item-active`);
+            disabled && classArr.push(`${prefixCls}-item-disabled`);
+            return classArr;
         },
         headerClasses() {
             const prefixCls = this.data.get('prefixCls');
             const headerClass = this.data.get('headerClass');
-
-            return classNames(`${prefixCls}-header`, headerClass);
+            return [`${prefixCls}-header`, headerClass];
         }
     },
     compiled() {

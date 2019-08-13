@@ -5,7 +5,6 @@
 
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
-import classNames from 'classnames';
 import Cascader from './src/cascader';
 import Input from '../input';
 import Icon from '../icon';
@@ -104,29 +103,26 @@ export default san.defineComponent({
             const size = this.data.get('size');
             const showSearch = this.data.get('showSearch');
             const inputFocused = this.data.get('inputFocused');
-
-            return classNames(className, `${prefixCls}-picker`, {
-                [`${prefixCls}-picker-with-value`]: inputValue,
-                [`${prefixCls}-picker-disabled`]: disabled,
-                [`${prefixCls}-picker-${size}`]: !!size,
-                [`${prefixCls}-picker-show-search`]: !!showSearch,
-                [`${prefixCls}-picker-focused`]: inputFocused
-            });
+            let classArr = [className, `${prefixCls}-picker`];
+            inputValue && classArr.push(`${prefixCls}-picker-with-value`);
+            disabled && classArr.push(`${prefixCls}-picker-disabled`);
+            size && classArr.push(`${prefixCls}-picker-${size}`);
+            showSearch && classArr.push(`${prefixCls}-picker-show-search`);
+            inputFocused && classArr.push(`${prefixCls}-picker-focused`);
+            return classArr;
         },
         sizeClass() {
             const size = this.data.get('size');
-
-            return classNames({
-                [`${inputPrefixCls}-lg`]: size === 'large',
-                [`${inputPrefixCls}-sm`]: size === 'small'
-            });
+            let classArr = [];
+            size === 'large' && classArr.push(`${inputPrefixCls}-lg`);
+            size === 'small' && classArr.push(`${inputPrefixCls}-sm`);
+            return classArr;
         },
         arrowClass() {
             const popupVisible = this.data.get('popupVisible');
-            return classNames({
-                [`${prefixCls}-picker-arrow`]: true,
-                [`${prefixCls}-picker-arrow-expand`]: popupVisible
-            });
+            let classArr = [`${prefixCls}-picker-arrow`];
+            popupVisible && classArr.push(`${prefixCls}-picker-arrow-expand`);
+            return classArr;
         },
         filteredOptions() {
             const showSearch = this.data.get('showSearch') || {};

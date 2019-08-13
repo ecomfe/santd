@@ -4,7 +4,6 @@
 */
 
 import san, {DataTypes} from 'san';
-import classNames from 'classnames';
 import {classCreator} from '../core/util';
 const prefixCls = classCreator('menu-item-group')();
 
@@ -30,16 +29,12 @@ export default san.defineComponent({
         classTitle() {
             const prefix = this.data.get('prefixCls');
             const newPrefixCls = prefix ? `${prefix}-menu-item-group` : `${prefixCls}`;
-            return classNames({
-                [`${newPrefixCls}-title`]: true
-            });
+            return [`${newPrefixCls}-title`];
         },
         classList() {
             const prefix = this.data.get('prefixCls');
             const newPrefixCls = prefix ? `${prefix}-menu-item-group` : `${prefixCls}`;
-            return classNames({
-                [`${newPrefixCls}-list`]: true
-            });
+            return [`${newPrefixCls}-list`];
         }
     },
     initData() {

@@ -5,7 +5,6 @@
 
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
-import classNames from 'classnames';
 import BaseInput from './base';
 import Icon from '../icon';
 const pagin = classCreator('input-password');
@@ -18,10 +17,7 @@ export default san.defineComponent({
     },
     computed: {
         className() {
-            return classNames({
-                [`${prefixCls}`]: true,
-                ['san-input-affix-wrapper']: true
-            });
+            return [prefixCls, 'san-input-affix-wrapper'];
         }
     },
     initData() {

@@ -5,7 +5,6 @@
 
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
-import classNames from 'classnames';
 const pagin = classCreator('input-group');
 const prefixCls = pagin();
 
@@ -14,12 +13,11 @@ export default san.defineComponent({
         className() {
             const size = this.data.get('size');
             const compact = this.data.get('compact') || false;
-            return classNames({
-                [`${prefixCls}`]: true,
-                [`${prefixCls}-lg`]: size === 'large',
-                [`${prefixCls}-sm`]: size === 'small',
-                [`${prefixCls}-compact`]: compact
-            });
+            let classArr = [prefixCls];
+            size === 'large' && classArr.push(`${prefixCls}-lg`);
+            size === 'small' && classArr.push(`${prefixCls}-sm`);
+            compact && classArr.push(`${prefixCls}-compact`);
+            return classArr;
         }
     },
     template: `

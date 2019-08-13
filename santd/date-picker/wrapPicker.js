@@ -4,7 +4,6 @@
  **/
 
 import san from 'san';
-import classNames from 'classnames';
 import moment from 'moment';
 import inherits from '../core/util/inherits';
 import {classCreator} from '../core/util/index';
@@ -54,20 +53,19 @@ export default function (Picker, pickerType) {
             },
             pickerClass() {
                 const size = this.data.get('size');
-                return classNames(`${prefixCls}-picker`, {
-                    [`${prefixCls}-picker-${size}`]: !!size
-                });
+                let classArr = [`${prefixCls}-picker`];
+                !!size && classArr.push(`${prefixCls}-picker-${size}`);
+                return classArr.join(' ');
             },
             pickerInputClass() {
                 const prefixCls = this.data.get('prefixCls');
                 const size = this.data.get('size');
                 const disabled = this.data.get('disabled');
-
-                return classNames(`${prefixCls}-picker-input`, inputPrefixCls, {
-                    [`${inputPrefixCls}-lg`]: size === 'large',
-                    [`${inputPrefixCls}-sm`]: size === 'small',
-                    [`${inputPrefixCls}-disabled`]: disabled
-                });
+                let classArr = [`${prefixCls}-picker-input`, inputPrefixCls];
+                size === 'large' && classArr.push(`${inputPrefixCls}-lg`);
+                size === 'small' && classArr.push(`${inputPrefixCls}-sm`);
+                disabled && classArr.push(`${inputPrefixCls}-disabled`);
+                return classArr.join(' ');
             },
             timePicker() {
                 const showTime = this.data.get('showTime');

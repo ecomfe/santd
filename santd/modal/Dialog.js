@@ -6,7 +6,6 @@
 
 import './style/index.less';
 import san, {DataTypes} from 'san';
-import classNames from 'classnames';
 import {classCreator} from '../core/util';
 import KeyCode from '../core/util/keyCode';
 import {on, addClass, removeClass, getScrollBarSize} from '../core/util/dom';
@@ -168,13 +167,11 @@ export default san.defineComponent({
     computed: {
         wrapClass() {
             const wrapClassName = this.data.get('wrapClassName');
-            return classNames({
-                [`${prefixCls}-wrap`]: true
-            }, wrapClassName);
+            return [`${prefixCls}-wrap`, wrapClassName];
         },
         dialogClass() {
             const className = this.data.get('className');
-            return classNames(prefixCls, className);
+            return [prefixCls, className];
         },
         dialogStyle() {
             const width = this.data.get('width');
@@ -201,10 +198,7 @@ export default san.defineComponent({
 
         return {
             enter(el, done) {
-                const cls = classNames({
-                    [`${transitionName}-enter`]: true,
-                    [`${transitionName}-enter-active`]: true
-                });
+                const cls = [`${transitionName}-enter`, `${transitionName}-enter-active`].join(' ');
                 const end = () => {
                     TransitionEvents.removeEndEventListener(el, end);
                     removeClass(el, cls);
@@ -214,10 +208,7 @@ export default san.defineComponent({
                 addClass(el, cls);
             },
             leave(el, done) {
-                const cls = classNames({
-                    [`${transitionName}-leave`]: true,
-                    [`${transitionName}-leave-active`]: true
-                });
+                const cls = [`${transitionName}-leave`, `${transitionName}-leave-active`].join(' ');
                 const end = () => {
                     TransitionEvents.removeEndEventListener(el, end);
                     removeClass(el, cls);
