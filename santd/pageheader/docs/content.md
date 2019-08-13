@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 带内容的例子
 带内容的例子,可以优先展示页面的主要信息。
-</cn>
+</text>
 
 ```html
 <template>

@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### Success
 成功的结果。
-</cn>
+</text>
 
 ```html
 <template>

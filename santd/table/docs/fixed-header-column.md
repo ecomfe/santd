@@ -1,8 +1,8 @@
-<cn>
+<text lang="cn">
 #### 固定头和列
 适合同时展示有大量数据和数据列。
 需要指定 column 的 `width` 属性，否则列头和内容可能不对齐。
-</cn>
+</text>
 
 ```html
 <template>

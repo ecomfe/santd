@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 可展开
 当表格内容较多不能一次性完全展示时。
-</cn>
+</text>
 
 ```html
 <template>

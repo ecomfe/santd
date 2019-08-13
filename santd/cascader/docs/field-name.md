@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 自定义字段名
 自定义字段名
-</cn>
+</text>
 
 ```html
 <template>

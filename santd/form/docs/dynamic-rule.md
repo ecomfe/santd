@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 动态校验规则
 根据不同情况执行不同的校验规则。
-</cn>
+</text>
 
 ```html
 <template>

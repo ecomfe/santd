@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 不可用
 点击按钮切换可用状态。
-</cn>
+</text>
 
 ```html
 <template>

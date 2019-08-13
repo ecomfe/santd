@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 其它元素
 分割线和不可用菜单项。
-</cn>
+</text>
 
 ```html
 <template>

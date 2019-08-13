@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 配合form使用
 配合 Form 使用
-</cn>
+</text>
 
 ```html
 <template>

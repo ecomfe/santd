@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 受控操作示例
 tree受控操作示例
-</cn>
+</text>
 
 ```html
 <template>

@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 自定义提示
 使用 `tipFormatter` 可以格式化 `Tooltip` 的内容，设置 `tipFormatter` 为 `null`，则隐藏 Tooltip。
-</cn>
+</text>
 
 ```html
 <template>

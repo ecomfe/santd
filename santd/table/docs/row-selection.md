@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 可选择
 第一列是联动的选择框。
-</cn>
+</text>
 
 ```html
 <template>

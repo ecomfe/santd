@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 基本
 头像有三种尺寸，两种形状可选。
-</cn>
+</text>
 
 ```html
 <template>

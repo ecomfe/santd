@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 不可用
 Switch 失效状态
-</cn>
+</text>
 ```html
 <template>
     <div>

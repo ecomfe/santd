@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 四种样式
 共有四种样式 `success`、`info`、`warning`、`error`。
-</cn>
+</text>
 
 ```html
 <template>

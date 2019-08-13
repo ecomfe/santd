@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### RadioGroup 组合 - 配置方式
 通过配置 `options` 参数来渲染单选框。
-</cn>
+</text>
 
 ```html
 <template>

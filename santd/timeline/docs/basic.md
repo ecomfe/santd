@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 基本用法
 基本的时间轴。
-</cn>
+</text>
 
 ```html
 <template>

@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 倒计时
 倒计时组件。
-</cn>
+</text>
 
 ```html
 <template>

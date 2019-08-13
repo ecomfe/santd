@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 位置
 位置有12个方向。
-</cn>
+</text>
 
 ```html
 <template>

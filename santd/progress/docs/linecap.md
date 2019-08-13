@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 圆角/方角边缘
 通过设定 `strokeLinecap="square|round"` 可以调整进度条边缘的形状。
-</cn>
+</text>
 
 ```html
 <template>

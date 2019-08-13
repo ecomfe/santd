@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 典型卡片
 包含标题、内容、操作区域。
-</cn>
+</text>
 
 ```html
 <template>

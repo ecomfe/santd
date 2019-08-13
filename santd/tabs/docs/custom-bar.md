@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 自定义页签头
 给页签头增加额外的内容。
-</cn>
+</text>
 
 ```html
 <template>

@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 进度圈动态展示
 会动的进度条才是好进度条。
-</cn>
+</text>
 
 ```html
 <template>

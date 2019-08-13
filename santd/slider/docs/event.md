@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 事件
 当 Slider 的值发生改变时，会触发 `on-change` 事件，并把改变后的值作为参数传入。在 `on-mouseup` 时，会触发 `on-afterChange` 事件，并把当前值作为参数传入。
-</cn>
+</text>
 
 ```html
 <template>

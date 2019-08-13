@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### badge
 badge
-</cn>
+</text>
 
 ```html
 <style>

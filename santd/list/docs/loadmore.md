@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 加载更多
 可通过 loadMore 属性实现加载更多功能。
-</cn>
+</text>
 
 ```html
 <template>

@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 多个按钮组合
 按钮组合使用时，推荐使用1个主操作 + n 个次操作，3个以上操作时把更多操作放到 `Dropdown.Button` 中组合使用。
-</cn>
+</text>
 
 ```html
 <template>

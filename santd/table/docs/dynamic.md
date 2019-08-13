@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 动态控制表格属性
 选择不同配置组合查看效果
-</cn>
+</text>
 
 ```html
 <template>

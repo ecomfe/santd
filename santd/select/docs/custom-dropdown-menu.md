@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 扩展菜单
 使用 `dropdownRender` 对下拉菜单进行自由扩展。
-</cn>
+</text>
 
 ```html
 <template>

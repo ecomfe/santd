@@ -1,7 +1,7 @@
 /**
-* @file 开发环境webpack配置
-* @author fuqiangqiang@baidu.com
-*/
+ * @file 开发环境webpack配置
+ * @author fuqiangqiang@baidu.com
+ */
 const path = require('path');
 const fs = require('fs');
 const webpack = require('webpack');
@@ -27,7 +27,7 @@ try {
             return;
         }
 
-        const stat = (fs.lstatSync(rootPath + '/' + v)) || {};
+        const stat = fs.lstatSync(rootPath + '/' + v) || {};
         if (stat.isDirectory()) {
             copyPlugins.push({from: './docs/components/' + v + '.md', to: 'components/' + v + '.md'});
             const sidebarCompInfo = `    * [${v}](/components/${v}.md)
@@ -39,10 +39,8 @@ try {
             // 给每个组件写入一个对应的md文件供docsify使用
             fs.writeFileSync(docPath + '/components/' + v + '.md', readmeInfo);
         }
-
     });
-}
-catch (e) {
+} catch (e) {
     console.log(e);
 }
 const entries = ['./docs/index.js'];
@@ -60,15 +58,7 @@ module.exports = merge(baseWebpackConfig, {
                 test: /\.md/,
                 use: [
                     {
-                        loader: resolve('./scripts/loader/san-webpack-loader/index.js'),
-                        options: {
-                            hotReload: !isProduction,
-                            sourceMap: isProduction,
-                            minimize: isProduction
-                        }
-                    },
-                    {
-                        loader: resolve('./scripts/loader/markdown.js'),
+                        loader: 'hulk-markdown-loader',
                         options: {
                             wrapper: 'div'
                         }

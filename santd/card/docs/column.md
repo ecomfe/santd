@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 栅格卡片
 在系统概览页面常常和栅格进行配合。
-</cn>
+</text>
 
 ```html
 <template>

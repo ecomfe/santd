@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 分段进度条
 标准的进度条。
-</cn>
+</text>
 
 ```html
 <template>

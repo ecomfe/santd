@@ -52,15 +52,7 @@ module.exports = merge(baseWebpackConfig, {
             test: /\.md/,
             use: [
                 {
-                    loader: resolve('./scripts/loader/san-webpack-loader/index.js'),
-                    options: {
-                        hotReload: false,
-                        sourceMap: true,
-                        minimize: true
-                    }
-                },
-                {
-                    loader: resolve('./scripts/loader/markdown.js')
+                    loader: 'hulk-markdown-loader'
                 }
             ]
         }]

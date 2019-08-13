@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### layer
 A AntDesign-San Component
-</cn>
+</text>
 
 ```html
 <template>

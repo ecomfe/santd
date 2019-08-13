@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 搜索框
 带有搜索按钮的输入框。
-</cn>
+</text>
 
 ```html
 <template>

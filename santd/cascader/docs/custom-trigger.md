@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 可以自定义显示
 切换按钮和结果分开。
-</cn>
+</text>
 
 ```html
 <template>

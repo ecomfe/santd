@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 基本
 点击 TimePicker，然后可以在浮层中选择或者输入某一时间
-</cn>
+</text>
 
 ```html
 <template>

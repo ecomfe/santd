@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 垂直
 垂直的列表。
-</cn>
+</text>
 
 ```html
 <template>

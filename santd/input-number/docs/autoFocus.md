@@ -1,9 +1,9 @@
-<cn>
+<text lang="cn">
 #### autoFocus
 
 自动获得焦点
 
-</cn>
+</text>
 
 ```html
 <template>

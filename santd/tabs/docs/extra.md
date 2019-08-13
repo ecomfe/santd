@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 附加内容
 可以在页签右边添加附加操作。
-</cn>
+</text>
 
 ```html
 <template>

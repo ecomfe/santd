@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 表单布局
 表单有三种布局
-</cn>
+</text>
 
 ```html
 <template>

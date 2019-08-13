@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 步骤运行错误
 使用 steps 的 `status` 属性来指定当前步骤的状态。
-</cn>
+</text>
 
 ```html
 <template>

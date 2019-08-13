@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 基础列表
 基础列表
-</cn>
+</text>
 
 ```html
 <template>

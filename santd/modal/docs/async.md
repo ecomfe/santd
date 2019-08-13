@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 异步关闭
 点击确定后异步关闭对话框，例如提交表单。
-</cn>
+</text>
 
 ```html
 <template>

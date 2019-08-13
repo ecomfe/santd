@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 基本用法
 最后一列是各种操作
-</cn>
+</text>
 
 ```html
 <template>

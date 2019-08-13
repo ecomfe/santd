@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 自动切换
 定时切换下一张。
-</cn>
+</text>
 
 ```html
 <template>

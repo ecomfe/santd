@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 禁用状态
 增加disabled属性，可以对日历组件进行禁用
-</cn>
+</text>
 
 ```html
 <template>

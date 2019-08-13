@@ -2,8 +2,8 @@
  * @file Santd anchor docs file
  **/
 import san from 'san';
-import Readme from '../README.md';
-import Head from './head.md';
+import Readme from '../README.md?exportType=markdown';
+import Head from './head.md?exportType=markdown';
 import Basic from './basic.md';
 import Static from './static.md';
 import Click from './click.md';

@@ -2,6 +2,7 @@ const path = require('path');
 const config = require('../config');
 const isProduction = process.env.NODE_ENV === 'production';
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const ProgressPlugin = require('webpack/lib/ProgressPlugin');
 const {resolve} = require('./utils');
 module.exports = {
     mode: isProduction ? 'production' : 'development',
@@ -16,8 +17,8 @@ module.exports = {
     resolve: {
         extensions: ['.js', '.san', '.less'],
         alias: {
-            'san': isProduction ? 'san/dist/san.spa.min.js' : 'san/dist/san.spa.dev.js',
-            'santd': resolve('./santd')
+            san: isProduction ? 'san/dist/san.spa.min.js' : 'san/dist/san.spa.dev.js',
+            santd: resolve('./santd')
         }
     },
     module: {
@@ -36,7 +37,7 @@ module.exports = {
                         loader: 'babel-loader?cacheDirectory=true'
                     },
                     {
-                        loader: resolve('./scripts/loader/san-webpack-loader/index.js'),
+                        loader: 'hulk-san-loader',
                         options: {
                             hotReload: !isProduction,
                             sourceMap: isProduction,
@@ -79,9 +80,7 @@ module.exports = {
                         options: {
                             sourceMap: isProduction ? true : false,
                             javascriptEnabled: true,
-                            paths: [
-                                resolve('./')
-                            ]
+                            paths: [resolve('./')]
                         }
                     }
                 ]
@@ -103,5 +102,6 @@ module.exports = {
                 }
             }
         ]
-    }
+    },
+    plugins: [new ProgressPlugin()]
 };

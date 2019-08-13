@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 动态添加和删除
 用数组生成一组标签，可以动态添加和删除.
-</cn>
+</text>
 
 ```html
 <template>

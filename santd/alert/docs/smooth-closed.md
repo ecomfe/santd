@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 平滑地卸载
 平滑、自然的卸载提示。
-</cn>
+</text>
 
 ```html
 <template>

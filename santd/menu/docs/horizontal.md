@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 顶部导航
 水平的顶部导航菜单。
-</cn>
+</text>
 
 ```html
 <template>

@@ -5,9 +5,9 @@
 
 import san, {DataTypes} from 'san';
 import classNames from 'classnames';
-import TodayButton from '../calendar/todayButton';
-import OkButton from '../calendar/okButton';
-import TimepickerButton from '../calendar/timepickerButton';
+import TodayButton from './todayButton';
+import OkButton from './okButton';
+import TimepickerButton from './timepickerButton';
 
 export default san.defineComponent({
     dataTypes: {

@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 小型进度条
 适合放在较狭窄的区域内。
-</cn>
+</text>
 
 ```html
 <template>

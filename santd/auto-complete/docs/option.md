@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 自定义选项
 也可以直接传 `AutoComplete.Option` 作为 `AutoComplete` 的 `children`，而非使用 `dataSource`。
-</cn>
+</text>
 
 ```html
 <template>

@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 基本
 最简单的下拉菜单。
-</cn>
+</text>
 
 ```html
 <template>

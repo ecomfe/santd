@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 自定义on-Click事件
 点击锚点不记录历史。
-</cn>
+</text>
 
 ```html
 <template>

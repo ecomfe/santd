@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 弹出位置
 支持 6 个弹出位置。
-</cn>
+</text>
 
 ```html
 <template>

@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 多选
 多选，从已有条目中选择
-</cn>
+</text>
 
 ```html
 <template>

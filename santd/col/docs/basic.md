@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### col
 col
-</cn>
+</text>
 
 ```html
 <template>

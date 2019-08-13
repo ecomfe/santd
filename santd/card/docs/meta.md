@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 更灵活的内容展示
 可以利用 `Card.Meta` 支持更灵活的内容。
-</cn>
+</text>
 
 ```html
 <template>

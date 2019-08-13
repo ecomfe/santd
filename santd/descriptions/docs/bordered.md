@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 带边框的
 带边框和背景颜色列表。
-</cn>
+</text>
 
 ```html
 <template>

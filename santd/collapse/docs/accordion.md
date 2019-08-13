@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 手风琴
 手风琴，每次只打开一个tab。默认打开第一个。
-</cn>
+</text>
 
 ```html
 <template>

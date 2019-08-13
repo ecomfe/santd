@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### RadioGroup 垂直
 垂直的 RadioGroup，配合更多输入框选项。
-</cn>
+</text>
 
 ```html
 <template>

@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 搜索框
 搜索和远程数据结合。
-</cn>
+</text>
 
 ```html
 <template>

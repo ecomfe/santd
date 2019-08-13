@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 全选
 在实现全选效果时，你可能会用到 indeterminate 属性。
-</cn>
+</text>
 
 ```html
 <template>

@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### Warning
 警告类型的结果。
-</cn>
+</text>
 
 ```html
 <template>

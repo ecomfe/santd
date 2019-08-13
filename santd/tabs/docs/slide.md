@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 滑动
 可以左右、上下滑动，容纳更多标签。
-</cn>
+</text>
 
 ```html
 <template>

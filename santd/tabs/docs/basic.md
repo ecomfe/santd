@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 基本用法
 默认选中第一项。
-</cn>
+</text>
 
 ```html
 <template>

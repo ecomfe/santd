@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 复杂的组合
 更复杂的组合。
-</cn>
+</text>
 
 ```html
 <template>

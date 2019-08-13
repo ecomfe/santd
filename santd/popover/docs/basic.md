@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 基本
 最简单的用法，浮层的大小由内容区域决定。
-</cn>
+</text>
 
 ```html
 <template>

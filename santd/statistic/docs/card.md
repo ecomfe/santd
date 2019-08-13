@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 在卡片中使用
 在卡片中展示统计数值。
-</cn>
+</text>
 
 ```html
 <template>

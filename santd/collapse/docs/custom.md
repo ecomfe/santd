@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 自定义面板
 自定义各个面板的样式。
-</cn>
+</text>
 
 ```html
 <template>

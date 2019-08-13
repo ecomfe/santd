@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 基本评论
 一个基本的评论组件，带有作者、头像、时间和操作。
-</cn>
+</text>
 
 ```html
 <template>

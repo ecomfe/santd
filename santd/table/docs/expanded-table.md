@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 嵌套子表格
 展示每行数据更详细的信息。
-</cn>
+</text>
 
 ```html
 <template>

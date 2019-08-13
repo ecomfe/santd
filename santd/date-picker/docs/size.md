@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 三种大小
 三种大小的输入框，若不设置，则为 default。
-</cn>
+</text>
 
 ```html
 <template>

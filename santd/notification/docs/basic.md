@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 基本
 最简单的用法，4.5 秒后自动关闭。
-</cn>
+</text>
 
 ```html
 <template>

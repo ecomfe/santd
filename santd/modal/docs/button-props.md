@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 自定义页脚按钮属性
 传入 `okButtonProps` 和 `cancelButtonProps` 可分别自定义确定按钮和取消按钮的 props。
-</cn>
+</text>
 
 ```html
 <template>

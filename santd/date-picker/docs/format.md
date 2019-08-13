@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 日期格式
 使用 `format` 属性，可以自定义日期显示格式。
-</cn>
+</text>
 
 ```html
 <template>

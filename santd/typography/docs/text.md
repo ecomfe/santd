@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 文本组件
 内置不同样式的文本。
-</cn>
+</text>
 
 ```html
 <template>

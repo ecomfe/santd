@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 带边框
 添加表格边框线，页头和页脚。
-</cn>
+</text>
 
 ```html
 <template>

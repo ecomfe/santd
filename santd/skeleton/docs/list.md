@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 列表
 在列表组件中使用加载占位符。
-</cn>
+</text>
 
 ```html
 <template>

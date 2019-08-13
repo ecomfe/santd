@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 可搜索
 可搜索的树。
-</cn>
+</text>
 
 ```html
 <template>

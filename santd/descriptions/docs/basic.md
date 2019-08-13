@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 基本
 简单的展示。
-</cn>
+</text>
 
 ```html
 <template>

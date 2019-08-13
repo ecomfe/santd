@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 标准样式
 标准页头，适合使用在需要简单描述的场景。
-</cn>
+</text>
 
 ```html
 <template>

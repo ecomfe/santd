@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 垂直
 垂直方向的 Slider。
-</cn>
+</text>
 
 ```html
 <template>

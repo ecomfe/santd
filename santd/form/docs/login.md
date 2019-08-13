@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 登录框
 普通的登录框，可以容纳更多的元素。
-</cn>
+</text>
 
 ```html
 <template>

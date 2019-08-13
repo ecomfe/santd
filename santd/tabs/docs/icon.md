@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 图标
 有图标的标签。
-</cn>
+</text>
 
 ```html
 <template>

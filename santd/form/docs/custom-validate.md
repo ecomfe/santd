@@ -1,11 +1,11 @@
-<cn>
+<text lang="cn">
 #### 自定义校验
 我们提供了 `validateStatus` `help` `hasFeedback` 等属性，你可以不需要使用 Form.create 和 decorator，自己定义校验的时机和内容。
 
 1. `validateStatus`: 校验状态，可选 'success', 'warning', 'error', 'validating'。
 2. `hasFeedback`：用于给输入框添加反馈图标。
 3. `help`：设置校验文案。
-</cn>
+</text>
 
 ```html
 <template>

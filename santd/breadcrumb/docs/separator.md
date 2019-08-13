@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 分隔符
 使用 `separator=">"` 可以自定义分隔符
-</cn>
+</text>
 
 ```html
 <template>

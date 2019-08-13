@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 自定义样式
 可以自定义回到顶部按钮的样式，限制宽高：`40px * 40px`。
-</cn>
+</text>
 
 ```html
 <template>

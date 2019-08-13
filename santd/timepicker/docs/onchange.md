@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 受控组件
 value 和 on-change 需要配合使用。
-</cn>
+</text>
 
 ```html
 <template>

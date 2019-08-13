@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 箭头指向
 设置了 `arrowPointAtCenter` 后，箭头将指向目标元素的中心。
-</cn>
+</text>
 
 ```html
 <template>

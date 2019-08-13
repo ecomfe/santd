@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 搜索
 可以直接搜索选项并选择。
-</cn>
+</text>
 
 ```html
 <template>

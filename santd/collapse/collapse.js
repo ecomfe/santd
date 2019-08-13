@@ -4,7 +4,7 @@
  */
 
 import san, {DataTypes} from 'san';
-import {classCreator} from '..//core/util';
+import {classCreator} from '../core/util';
 import classNames from 'classnames';
 import BaseCollapse from './src/index';
 import Icon from '../icon';

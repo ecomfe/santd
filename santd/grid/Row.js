@@ -3,9 +3,8 @@
  **/
 import san, {DataTypes} from 'san';
 
-import Col from './Col.js';
+import Col from './Col';
 import {classCreator, type} from '../core/util';
-import {parse} from 'path';
 
 const cc = classCreator('row');
 

@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 链接线
 带连接线的树。
-</cn>
+</text>
 
 ```html
 <template>

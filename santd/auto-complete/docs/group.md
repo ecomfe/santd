@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 分组选项
 分组显示选项
-</cn>
+</text>
 
 ```html
 <template>

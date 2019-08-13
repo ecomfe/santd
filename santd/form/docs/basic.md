@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 水平登录栏
 水平登录栏，常用在顶部导航栏中。
-</cn>
+</text>
 
 ```html
 <template>

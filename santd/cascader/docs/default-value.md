@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 默认值
 默认值通过数组的方式指定。
-</cn>
+</text>
 
 ```html
 <template>

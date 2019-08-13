@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 前置/后置标签
 用于配置一些固定组合。
-</cn>
+</text>
 
 ```html
 <template>

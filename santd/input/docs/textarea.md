@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 文本域
 用于多行输入。
-</cn>
+</text>
 
 ```html
 <template>

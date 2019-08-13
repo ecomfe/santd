@@ -1,8 +1,8 @@
-<cn>
+<text lang="cn">
 #### Flex 排序
 从堆叠到水平排列。
 通过 Flex 布局的 Order 来改变元素的排序。
-</cn>
+</text>
 
 
 ```html

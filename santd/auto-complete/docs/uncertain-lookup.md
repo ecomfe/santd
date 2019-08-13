@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 查询模式 - 不确定类目
 查询模式 - 不确定类目
-</cn>
+</text>
 
 ```html
 <template>

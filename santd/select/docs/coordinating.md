@@ -1,8 +1,8 @@
-<cn>
+<text lang="cn">
 #### 联动
 省市联动是典型的例子。
 推荐使用 `Cascader` 组件。
-</cn>
+</text>
 
 ```html
 <template>

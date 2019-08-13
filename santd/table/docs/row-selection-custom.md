@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 自定义选择项
 通过 `rowSelection.selections` 自定义选择项，默认不显示下拉项，设为 `true` 时显示默认选择项。
-</cn>
+</text>
 
 ```html
 <template>

@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 分组
 用 `OptGroup` 进行选项分组。
-</cn>
+</text>
 
 ```html
 <template>

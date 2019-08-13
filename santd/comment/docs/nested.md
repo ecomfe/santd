@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 嵌套评论
 评论可以嵌套。
-</cn>
+</text>
 
 ```html
 <template>

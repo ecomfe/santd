@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 带输入框的滑块
 和数字输入框组件保持同步。
-</cn>
+</text>
 
 ```html
 <template>

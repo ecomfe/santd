@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 自定义文字格式
 `format` 属性指定格式。
-</cn>
+</text>
 
 ```html
 <template>

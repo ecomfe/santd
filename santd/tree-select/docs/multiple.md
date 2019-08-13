@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 多选
 多选的树选择。
-</cn>
+</text>
 
 ```html
 <template>

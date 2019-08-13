@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### Error
 复杂的错误反馈。
-</cn>
+</text>
 
 ```html
 <template>

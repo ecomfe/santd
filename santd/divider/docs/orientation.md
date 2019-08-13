@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 标题位置
 修改分割线标题的位置。
-</cn>
+</text>
 
 ```html
 <template>

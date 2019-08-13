@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 异步返回
 数据异步返回后，展示菜单。
-</cn>
+</text>
 
 ```html
 <template>

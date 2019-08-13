@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 面板嵌套
 嵌套折叠面板。
-</cn>
+</text>
 
 ```html
 <template>

@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 带页签的卡片
 可承载更多内容。
-</cn>
+</text>
 
 ```html
 <template>

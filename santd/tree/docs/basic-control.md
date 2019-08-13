@@ -1,8 +1,8 @@
-<cn>
+<text lang="cn">
 #### 受控操作示例
 
 受控操作示例
-</cn>
+</text>
 
 ```html
 <template>

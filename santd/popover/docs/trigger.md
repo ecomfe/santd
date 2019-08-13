@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 三种触发方式
 鼠标移入、聚集、点击。
-</cn>
+</text>
 
 ```html
 <template>

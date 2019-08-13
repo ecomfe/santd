@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 校验其他组件
 以上演示没有出现的表单控件对应的校验演示。
-</cn>
+</text>
 
 ```html
 <template>

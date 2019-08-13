@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 标题组件
 展示不同级别的标题。
-</cn>
+</text>
 
 ```html
 <template>

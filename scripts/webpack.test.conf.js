@@ -3,7 +3,6 @@
 * @author fuqiangqiang@baidu.com
 */
 
-const webpack = require('webpack');
 const merge = require('webpack-merge');
 const webpackBaseConfig = require('./webpack.base.conf');
 

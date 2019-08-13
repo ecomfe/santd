@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 进度圈
 圈形的进度。
-</cn>
+</text>
 
 ```html
 <template>

@@ -8,6 +8,7 @@
 const program = require('commander');
 const path = require('path');
 const fs = require('fs-extra');
+// TODO： 这里要干掉 hulk 依赖，重写发包逻辑
 const {downloadRepo, log, success, error} = require('@baidu/hulk-utils');
 
 program

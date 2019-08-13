@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 ####  自定义头部
 自定义日历头部内容。
-</cn>
+</text>
 
 ```html
 <template>

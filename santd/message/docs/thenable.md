@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### Promise 接口
 可以通过 then 接口在关闭后运行 callback 。以上用例将在每个 message 将要结束时通过 then 显示新的 message 。
-</cn>
+</text>
 
 ```html
 <template>

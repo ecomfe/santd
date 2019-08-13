@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 受控的Checkbox
 联动Checkbox。
-</cn>
+</text>
 
 ```html
 <template>
