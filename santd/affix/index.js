@@ -25,8 +25,20 @@ export default san.defineComponent({
     },
 
     attached() {
-        on(window, 'scroll', this.handleScroll.bind(this));
-        on(window, 'resize', this.handleScroll.bind(this));
+        if (!this._scroller) {
+            this._scroller = this.handleScroll.bind(this);
+
+            on(window, 'scroll', this._scroller);
+            on(window, 'resize', this._scroller);
+        }
+    },
+
+    disposed() {
+        if (this._scroller) {
+            off(window, 'scroll', this._scroller);
+            off(window, 'resize', this._scroller);
+            this._scroller = null;
+        }
     },
     
     handleScroll() {
@@ -43,7 +55,6 @@ export default san.defineComponent({
         let styles = {};
         let pointStyles = {};
 
-        // fixed Top
         
         if (isAffixBottom) {
             let winBottomPos = window.innerHeight + scrollTop;
