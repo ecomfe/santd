@@ -10,6 +10,5 @@ const baseWebpackConfig = require('./webpack.base.conf');
 module.exports = merge(baseWebpackConfig, {
     entry: {
         app: './site/preview/index.js'
-    },
-    devtool: '#cheap-module-eval-source-map'
+    }
 });

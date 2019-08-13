@@ -1,4 +1,3 @@
-
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HotModuleReplacementPlugin = require('webpack/lib/HotModuleReplacementPlugin');
@@ -11,6 +10,7 @@ const {resolve, assetsPath} = require('./lib/utils');
 const isProduction = process.env.NODE_ENV === 'production';
 module.exports = {
     mode: isProduction ? 'production' : 'development',
+    devtool: isProduction ? '#cheap-module-eval-source-map' : false,
     entry: {
         app: './example/main.js'
     },

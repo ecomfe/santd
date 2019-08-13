@@ -10,9 +10,6 @@ import 'prismjs/components/prism-less';
 import 'prismjs/components/prism-markdown';
 import 'prismjs/components/prism-css';
 import 'prismjs/components/prism-json';
-import 'prismjs/components/prism-json5';
-import 'prismjs/components/prism-smarty';
-import 'prismjs/components/prism-php';
 import 'prismjs/components/prism-jsx';
 
 import Entry from '~entry';

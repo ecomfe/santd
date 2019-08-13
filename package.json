@@ -5,7 +5,9 @@
     "scripts": {
         "start": "cross-env NODE_ENV=development node scripts/preview.js",
         "release:dist": "cross-env NODE_ENV=development node scripts/release.js",
+        "build:site": "cross-env NODE_ENV=production webpack --config scripts/webpack.doc.conf.js",
         "test": "node_modules/.bin/karma start karma.conf.js",
+        "dev:site": "cross-env NODE_ENV=development webpack --config scripts/webpack.doc.conf.js",
         "check": "cross-env NODE_ENV=development node scripts/check.js"
     },
     "main": "lib/index.js",
