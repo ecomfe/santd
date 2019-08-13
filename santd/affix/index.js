@@ -7,7 +7,9 @@ import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
 import {on, off, getScrollTop, getOffset} from '../core/util/dom';
 import './style/index';
-const prefixCls = classCreator('affix')();
+
+const outerCls = classCreator('affix-outer')();
+const innerCls = classCreator('affix')();
 
 export default san.defineComponent({
     dataTypes: {
@@ -103,8 +105,8 @@ export default san.defineComponent({
     },
 
     template: `
-        <div class="san-affix-outer" style="{{pointStyles}}">
-            <div class="${prefixCls}" style="{{styles}}" s-ref="inner">
+        <div class="${outerCls}" style="{{pointStyles}}">
+            <div class="${innerCls}" style="{{styles}}" s-ref="inner">
                 <slot></slot>
             </div>
         </div>
