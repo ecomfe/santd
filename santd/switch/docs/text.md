@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 文字和图标
 带有文字和图标。
-</cn>
+</text>
 ```html
 <template>
     <div>

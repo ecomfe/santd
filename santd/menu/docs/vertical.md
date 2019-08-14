@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 垂直菜单
 子菜单是弹出的形式.
-</cn>
+</text>
 
 ```html
 <template>

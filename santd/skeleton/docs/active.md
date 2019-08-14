@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 动画效果
 显示动画效果。
-</cn>
+</text>
 
 ```html
 <template>

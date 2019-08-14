@@ -1,8 +1,8 @@
-<cn>
+<text lang="cn">
 #### 固定列
 对于列数很多的数据，可以固定前后的列，横向滚动查看其它数据，需要和 `scroll.x` 配合使用。
 需要指定 column 的 `width` 属性，否则列头和内容可能不对齐。
-</cn>
+</text>
 
 ```html
 <template>

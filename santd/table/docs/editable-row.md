@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 可编辑行
 带行编辑功能的表格。
-</cn>
+</text>
 
 ```html
 <template>

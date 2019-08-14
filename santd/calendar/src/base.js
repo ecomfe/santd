@@ -5,7 +5,7 @@
 
 import san, {DataTypes} from 'san';
 import locale from './locale/en_US';
-import {isAllowedDate} from '../src/util/index';
+import {isAllowedDate} from './util/index';
 
 export default san.defineComponent({
     dataTypes: {

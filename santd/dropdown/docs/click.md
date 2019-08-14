@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 触发方式
 默认是移入触发菜单，可以点击触发。
-</cn>
+</text>
 
 ```html
 <template>

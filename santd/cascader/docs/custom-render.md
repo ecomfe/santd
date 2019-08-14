@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 自定义已选项
 例如给最后一项加上邮编链接。
-</cn>
+</text>
 
 ```html
 <template>

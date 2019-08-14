@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 小型进度圈
 小一号的圈形进度。
-</cn>
+</text>
 
 ```html
 <template>

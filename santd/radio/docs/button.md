@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 按钮样式
 按钮样式的单选组合。
-</cn>
+</text>
 
 ```html
 <template>

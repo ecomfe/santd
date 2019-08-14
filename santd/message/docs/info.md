@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 普通提示
 信息提醒反馈。
-</cn>
+</text>
 
 ```html
 <template>

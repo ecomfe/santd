@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 点状步骤条 
 包含步骤点的进度条。
-</cn>
+</text>
 
 ```html
 <template>

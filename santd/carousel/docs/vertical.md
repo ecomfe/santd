@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 垂直
 垂直显示。
-</cn>
+</text>
 
 ```html
 <template>

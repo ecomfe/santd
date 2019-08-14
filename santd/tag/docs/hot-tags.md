@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 热门标签
 选择你感兴趣的话题。
-</cn>
+</text>
 
 ```html
 <template>

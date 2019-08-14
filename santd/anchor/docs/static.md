@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 静态位置
 不浮动，状态不随页面滚动变化
-</cn>
+</text>
 
 ```html
 <template>

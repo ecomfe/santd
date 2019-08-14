@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 附加内容
 在 TimePicker 选择框底部显示自定义的内容。
-</cn>
+</text>
 
 ```html
 <template>

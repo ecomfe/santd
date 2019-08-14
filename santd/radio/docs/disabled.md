@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 不可用
 Radio不可用。
-</cn>
+</text>
 
 ```html
 <template>

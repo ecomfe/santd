@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 受控
 受控制的页码。
-</cn>
+</text>
 
 ```html
 <template>

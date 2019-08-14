@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 响应式布局
 参照 Bootstrap 的 [响应式设计](http://getbootstrap.com/css/#grid-media-queries)，预设六个响应尺寸：`xs` `sm` `md` `lg` `xl`  `xxl`。
-</cn>
+</text>
 
 
 

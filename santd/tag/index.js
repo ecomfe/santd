@@ -1,7 +1,7 @@
 /**
-* @file tag入口文件
-* @author fuqiangqiang@baidu.com
-*/
+ * @file tag入口文件
+ * @author fuqiangqiang@baidu.com
+ */
 
 import san, {DataTypes} from 'san';
 import CheckableTag from './checkableTag';
@@ -9,12 +9,23 @@ import {classCreator} from '../core/util';
 import Wave from '../core/util/wave';
 import Icon from '../icon';
 import toStyle from 'to-style';
-import './style/index.js';
+import './style/index';
 
 const prefixCls = classCreator('tag')();
 const presetColorTypes = [
-    'pink', 'red', 'yellow', 'orange', 'cyan', 'green', 'blue',
-    'purple', 'geekblue', 'magenta', 'volcano', 'gold', 'lime'
+    'pink',
+    'red',
+    'yellow',
+    'orange',
+    'cyan',
+    'green',
+    'blue',
+    'purple',
+    'geekblue',
+    'magenta',
+    'volcano',
+    'gold',
+    'lime'
 ];
 const presetColorRegex = new RegExp(`^(${presetColorTypes.join('|')})(-inverse)?$`);
 

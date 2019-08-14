@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 12 小时制
 12 小时制的时间选择器，默认的 format 为 `h:mm:ss a`。
-</cn>
+</text>
 
 ```html
 <template>

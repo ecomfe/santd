@@ -1,8 +1,8 @@
 
-<cn>
+<text lang="cn">
 #### 半星
 支持选中半星。
-</cn>
+</text>
 
 ```html
 <template>

@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 国际化
 设置 `okText` 与 `cancelText` 以自定义按钮文字。
-</cn>
+</text>
 
 ```html
 <template>

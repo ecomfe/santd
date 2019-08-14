@@ -1,10 +1,10 @@
-<cn>
+<text lang="cn">
 #### 简单列表
 列表拥有大、中、小三种尺寸。
 通过设置 `size` 为 `large` `small` 分别把按钮设为大、小尺寸。若不设置 `size`，则尺寸为中。
 可通过设置 `header` 和 `footer`，来自定义列表头部和尾部。
 如果`header`或 `footer`是个复杂结构，比如里面需要放组件，那么支持用`slot`来处理。
-</cn>
+</text>
 
 ```html
 <template>

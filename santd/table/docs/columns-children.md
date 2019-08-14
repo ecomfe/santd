@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 表头分组
 `columns[n]` 可以内嵌 `children`，以渲染分组表头。
-</cn>
+</text>
 
 ```html
 <template>

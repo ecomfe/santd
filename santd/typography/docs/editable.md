@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 可交互
 提供额外的交互能力。
-</cn>
+</text>
 
 ```html
 <template>

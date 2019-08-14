@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 垂直分割线
 使用 `type="vertical"` 设置为行内的垂直分割线。
-</cn>
+</text>
 
 ```html
 <template>

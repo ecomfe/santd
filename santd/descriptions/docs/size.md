@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 自定义尺寸
 自定义尺寸，适应在各种容器中展示。
-</cn>
+</text>
 
 ```html
 <template>

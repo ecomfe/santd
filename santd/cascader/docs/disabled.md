@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 禁用选项
 通过指定 options 里的 `disabled` 字段。
-</cn>
+</text>
 
 ```html
 <template>

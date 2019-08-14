@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 注册新用户
 用户填写必须的信息以注册新用户。
-</cn>
+</text>
 
 ```html
 <template>

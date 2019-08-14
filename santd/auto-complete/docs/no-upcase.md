@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 不区分大小写
 不区分大小写的 AutoComplete
-</cn>
+</text>
 
 ```html
 <template>

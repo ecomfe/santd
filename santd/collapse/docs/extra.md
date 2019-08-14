@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 额外节点
 添加 `name` 值为 extra 的插槽，为header添加自定义额外节点。
-</cn>
+</text>
 
 ```html
 <template>

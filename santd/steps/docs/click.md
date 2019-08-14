@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 可点击
 设置 on-change 后，Steps 变为可点击状态。
-</cn>
+</text>
 
 ```html
 <template>

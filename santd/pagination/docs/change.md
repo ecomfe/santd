@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 改变
 改变每页显示条目数
-</cn>
+</text>
 
 ```html
 <template>

@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 基本形式
 省市区级联。
-</cn>
+</text>
 
 ```html
 <template>

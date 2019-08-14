@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### block 按钮
 block属性将使按钮适合其父宽度。
-</cn>
+</text>
 
 ```html
 <template>

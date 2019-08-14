@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 迷你
 迷你版本。
-</cn>
+</text>
 
 ```html
 <template>

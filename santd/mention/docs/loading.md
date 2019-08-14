@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### loading态
 匹配内容列表为异步返回时。
-</cn>
+</text>
 
 ```html
 <template>

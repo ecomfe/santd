@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 步骤切换
 通常配合内容及按钮使用，表示一个流程的处理进度。
-</cn>
+</text>
 
 ```html
 <template>

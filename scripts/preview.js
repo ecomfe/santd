@@ -4,14 +4,15 @@
 const path = require('path');
 const {resolve} = path;
 
-const {pathExistsSync} = require('fs-extra');
+const fs = require('fs-extra');
 
 const webpack = require('webpack');
+const merge = require('webpack-merge');
 const express = require('express');
 const webpackDevServer = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
 
-const config = require('../config');
+const config = require('./config');
 const webpackConfig = require('./webpack.dev.conf');
 
 const port = process.env.PORT || config.dev.port;
@@ -19,44 +20,56 @@ const app = express();
 
 // 组件名称
 const componentName = process.argv[2] || 'button';
-if (componentName && pathExistsSync(resolve(`./santd/${componentName}`))) {
+if (componentName && fs.pathExistsSync(resolve(`./santd/${componentName}`))) {
     // 存在组件
-    start(componentName).then(stats => {
-        if (stats) {
-            process.stdout.write(stats.toString({
+    start(componentName)
+        .then(stats => {
+            if (stats) {
+                process.stdout.write(
+                    stats.toString({
+                        colors: true,
+                        modules: false,
+                        children: false,
+                        chunks: false,
+                        chunkModules: false
+                    }) + '\n'
+                );
+            }
+
+            console.log(`devServer address: http://localhost:${port}/`);
+        })
+        .catch(e => {
+            process.stderr.write(
+                e.toString({
                     colors: true,
                     modules: false,
                     children: false,
                     chunks: false,
                     chunkModules: false
-                }) + '\n');
-        }
-
-        console.log(`devServer address: http://localhost:${port}/`);
-
-    }).catch(e => {
-        process.stderr.write(e.toString({
-            colors: true,
-            modules: false,
-            children: false,
-            chunks: false,
-            chunkModules: false
-        }) + '\n');
-    });
-}
-else {
+                }) + '\n'
+            );
+        });
+} else {
     console.log(`${componentName} not exist!`);
 }
 
 function start(componentName) {
     return new Promise((resolve, reject) => {
-        const compiler = webpack(webpackConfig);
-        compiler.hooks.done.tap('sant-webpack-build', (stats) => {
+        const entry = `santd/${componentName}/docs/index.js`;
+        let config = merge(webpackConfig, {
+            resolve: {
+                alias: {
+                    '~entry': path.resolve(entry)
+                }
+            }
+        });
+
+        const compiler = webpack(config);
+        compiler.hooks.done.tap('santd-webpack-build', stats => {
             const hasErrors = stats.hasErrors();
             if (hasErrors) {
                 reject(stats);
-            }
-            else {
+            } else {
                 resolve(stats);
             }
         });

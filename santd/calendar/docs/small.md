@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 ####  卡片模式
 用于嵌套在空间有限的容器中。
-</cn>
+</text>
 
 ```html
 <template>

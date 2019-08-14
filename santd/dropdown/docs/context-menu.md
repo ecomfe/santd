@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 右键菜单
 默认是移入触发菜单，可以点击鼠标右键触发。
-</cn>
+</text>
 
 ```html
 <template>

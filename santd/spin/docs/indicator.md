@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 自定义指示符
 使用自定义指示符。
-</cn>
+</text>
 
 ```html
 <template>

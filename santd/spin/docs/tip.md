@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 自定义描述文案
 自定义描述文案。
-</cn>
+</text>
 
 ```html
 <template>

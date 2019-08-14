@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 自定义样式
 使用 style 和 className 来定义样式。
-</cn>
+</text>
 
 ```html
 <template>

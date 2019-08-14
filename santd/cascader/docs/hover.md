@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 移入展开
 通过移入展开下级菜单，点击完成选择。
-</cn>
+</text>
 
 ```html
 <template>

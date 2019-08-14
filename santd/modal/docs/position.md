@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 自定义位置
 使用 `centered` 或 `modalStyle` 添加top样式来设置对话框位置。
-</cn>
+</text>
 
 ```html
 <template>

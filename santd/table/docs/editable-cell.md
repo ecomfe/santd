@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 可编辑单元格
 带单元格编辑功能的表格。
-</cn>
+</text>
 
 ```html
 <template>

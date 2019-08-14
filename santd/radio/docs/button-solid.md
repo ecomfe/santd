@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 填底的按钮样式
 实色填底的单选按钮样式。
-</cn>
+</text>
 
 ```html
 <template>

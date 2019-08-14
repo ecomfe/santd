@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 清除
 支持允许或者禁用清除。
-</cn>
+</text>
 
 ```html
 <template>

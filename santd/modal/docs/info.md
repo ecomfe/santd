@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 信息提示
 各种类型的信息提示，只提供一个按钮用于关闭。
-</cn>
+</text>
 
 ```html
 <template>

@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 基本结构
 典型的页面布局。
-</cn>
+</text>
 
 ```html
 <template>

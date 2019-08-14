@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 抽屉表单
 在抽屉中使用表单。
-</cn>
+</text>
 
 ```html
 <template>

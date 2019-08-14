@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### Checkbox组
 方便的从数组生成Checkbox组。
-</cn>
+</text>
 
 ```html
 <template>

@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 竖排列表样式
 通过设置 `itemLayout` 属性为 `vertical` 可实现竖排列表样式。
-</cn>
+</text>
 
 ```html
 <template>

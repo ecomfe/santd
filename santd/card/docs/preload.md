@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 预加载的卡片
 数据读入前会有文本块样式。
-</cn>
+</text>
 
 ```html
 <template>

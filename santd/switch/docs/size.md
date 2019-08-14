@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 两种大小
 `size="small"` 表示小号开关。
-</cn>
+</text>
 ```html
 <template>
     <div>

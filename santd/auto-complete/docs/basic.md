@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 基本使用
 基本使用。通过 dataSource 设置自动完成的数据源
-</cn>
+</text>
 
 ```html
 <template>

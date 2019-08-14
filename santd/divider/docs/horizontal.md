@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 水平分割线
 默认为水平分割线，可在中间加入文字。
-</cn>
+</text>
 
 ```html
 <template>

@@ -1,8 +1,14 @@
-const path = require('path');
-const config = require('../config');
-const isProduction = process.env.NODE_ENV === 'production';
+
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const {resolve} = require('./utils');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HotModuleReplacementPlugin = require('webpack/lib/HotModuleReplacementPlugin');
+const NoEmitOnErrorsPlugin = require('webpack/lib/NoEmitOnErrorsPlugin');
+const ProgressPlugin = require('webpack/lib/ProgressPlugin');
+
+const config = require('./config');
+const {resolve, assetsPath} = require('./lib/utils');
+
+const isProduction = process.env.NODE_ENV === 'production';
 module.exports = {
     mode: isProduction ? 'production' : 'development',
     entry: {
@@ -16,8 +22,8 @@ module.exports = {
     resolve: {
         extensions: ['.js', '.san', '.less'],
         alias: {
-            'san': isProduction ? 'san/dist/san.spa.min.js' : 'san/dist/san.spa.dev.js',
-            'santd': resolve('./santd')
+            san: isProduction ? 'san/dist/san.spa.min.js' : 'san/dist/san.spa.dev.js',
+            santd: resolve('./santd')
         }
     },
     module: {
@@ -36,12 +42,20 @@ module.exports = {
                         loader: 'babel-loader?cacheDirectory=true'
                     },
                     {
-                        loader: resolve('./scripts/loader/san-webpack-loader/index.js'),
+                        loader: 'hulk-san-loader',
                         options: {
                             hotReload: !isProduction,
                             sourceMap: isProduction,
                             minimize: isProduction
                         }
+                    }
+                ]
+            },
+            {
+                test: /\.md/,
+                use: [
+                    {
+                        loader: 'hulk-markdown-loader'
                     }
                 ]
             },
@@ -79,9 +93,7 @@ module.exports = {
                         options: {
                             sourceMap: isProduction ? true : false,
                             javascriptEnabled: true,
-                            paths: [
-                                resolve('./')
-                            ]
+                            paths: [resolve('./')]
                         }
                     }
                 ]
@@ -103,5 +115,19 @@ module.exports = {
                 }
             }
         ]
-    }
+    },
+    plugins: [
+        new ProgressPlugin(),
+        new MiniCssExtractPlugin({
+            filename: assetsPath('css/[name].css'),
+            chunkFilename: assetsPath('css/common.css')
+        }),
+        new HotModuleReplacementPlugin(),
+        new NoEmitOnErrorsPlugin(),
+        new HtmlWebpackPlugin({
+            filename: 'index.html',
+            template: './site/index.html',
+            inject: true
+        })
+    ]
 };

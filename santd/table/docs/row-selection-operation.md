@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 选择和操作
 选择后进行操作，完成后清空选择，通过 `rowSelection.selectedRowKeys` 来控制选中项。
-</cn>
+</text>
 
 ```html
 <template>

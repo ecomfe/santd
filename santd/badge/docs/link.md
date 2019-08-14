@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 可点击
 用 a 标签进行包裹即可。
-</cn>
+</text>
 
 ```html
 <template>

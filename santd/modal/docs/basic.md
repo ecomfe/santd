@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 基本
 第一个对话框。
-</cn>
+</text>
 
 ```html
 <template>

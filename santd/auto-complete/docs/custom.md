@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 自定义输入组件
 自定义输入组件
-</cn>
+</text>
 
 ```html
 <template>

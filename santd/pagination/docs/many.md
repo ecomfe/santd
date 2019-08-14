@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 更多
 更多分页
-</cn>
+</text>
 
 ```html
 <template>

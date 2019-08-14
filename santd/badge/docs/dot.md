@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 讨嫌的小红点
 没有具体的数字。
-</cn>
+</text>
 
 ```html
 <template>

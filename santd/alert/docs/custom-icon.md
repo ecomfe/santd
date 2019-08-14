@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 自定义图标
 可口的图标让信息类型更加醒目。
-</cn>
+</text>
 
 ```html
 <template>

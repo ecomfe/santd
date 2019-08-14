@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 简洁风格
 一套没有边框的简洁样式。
-</cn>
+</text>
 
 ```html
 <template>

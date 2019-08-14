@@ -1,8 +1,8 @@
-<cn>
+<text lang="cn">
 #### 固定表头
 方便一页内展示大量数据。
 需要指定 column 的 `width` 属性，否则列头和内容可能不对齐。
-</cn>
+</text>
 
 ```html
 <template>

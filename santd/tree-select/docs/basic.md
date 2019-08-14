@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### tree-select基本
 树选择组件,最简单的用法
-</cn>
+</text>
 
 ```html
 <template>

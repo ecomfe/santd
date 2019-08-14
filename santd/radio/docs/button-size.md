@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 大小
 大中小三种组合，可以和表单输入框进行对应配合。
-</cn>
+</text>
 
 ```html
 <template>

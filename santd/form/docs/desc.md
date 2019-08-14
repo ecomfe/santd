@@ -14,9 +14,9 @@
 
 表单一定会包含表单域，表单域可以是输入控件，标准表单域，标签，下拉菜单，文本域等。
 
-这里我们封装了表单域 <Form.FormItem />
+这里我们封装了表单域 `<Form.FormItem />`
 
-```javascript
+```html
 <Form.FormItem {{...props}}>
     ...
 </Form.FormItem>

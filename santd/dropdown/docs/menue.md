@@ -1,8 +1,8 @@
-<cn>
+<text lang="cn">
 #### 多级菜单
 传入的菜单里有多个层级。
 
-</cn>
+</text>
 
 ```html
 <template>

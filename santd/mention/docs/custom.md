@@ -1,8 +1,8 @@
-<cn>
+<text lang="cn">
 #### 自定义建议
 自定义建议 <br>
 注意，自定义建议时，onSearchChange 必须不能为空。
-</cn>
+</text>
 
 ```html
 <template>

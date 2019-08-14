@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 上一步和下一步
 修改上一步和下一步为文字链接。
-</cn>
+</text>
 
 ```html
 <template>

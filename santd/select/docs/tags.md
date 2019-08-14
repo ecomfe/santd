@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 标签
 tags select，随意输入的内容,然后按回车键即可
-</cn>
+</text>
 
 ```html
 <template>

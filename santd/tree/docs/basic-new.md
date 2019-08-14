@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 基本
 最简单的用法，展示可勾选，可选中，禁用，默认展开等功能。
-</cn>
+</text>
 
 ```html
 <template>

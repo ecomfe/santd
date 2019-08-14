@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 响应式的栅格列表
 响应式的栅格列表。尺寸与 Layout Grid 保持一致。
-</cn>
+</text>
 
 ```html
 <template>

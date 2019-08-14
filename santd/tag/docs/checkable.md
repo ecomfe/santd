@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 可选择
 可通过 `CheckableTag` 实现类似 Checkbox 的效果，点击切换选中效果。
-</cn>
+</text>
 
 ```html
 <template>

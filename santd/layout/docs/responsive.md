@@ -1,9 +1,9 @@
-<cn>
+<text lang="cn">
 #### 响应式布局
 Layout.Sider 支持响应式布局。
 > 说明：配置 `breakpoint` 属性即生效，视窗宽度小于 `breakpoint` 时 Sider 缩小为 `collapsedWidth` 宽度，若将 `collapsedWidth` 设置为零，会出现特殊 trigger。
 
-</cn>
+</text>
 
 ```html
 <template>

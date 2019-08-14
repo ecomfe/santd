@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 跳转
 快速跳转到某一页
-</cn>
+</text>
 
 ```html
 <template>

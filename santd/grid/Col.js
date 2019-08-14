@@ -3,7 +3,7 @@
  **/
 import san, {DataTypes} from 'san';
 import {classCreator, type} from '../core/util';
-import Row from './Row.js';
+import Row from './Row';
 
 const cc = classCreator('col');
 const SUPPORT_PROPS = ['order', 'offset', 'pull', 'push'];

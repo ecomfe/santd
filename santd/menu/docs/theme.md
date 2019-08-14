@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 主题
 内建了两套主题 `light|dark`，默认 `light`
-</cn>
+</text>
 
 ```html
 <template>

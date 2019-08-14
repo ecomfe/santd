@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 带有图标的通知提醒框
 通知提醒框左侧有图标。
-</cn>
+</text>
 
 ```html
 <template>

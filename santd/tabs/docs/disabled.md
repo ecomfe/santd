@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 禁用
 禁用某一项。
-</cn>
+</text>
 
 ```html
 <template>

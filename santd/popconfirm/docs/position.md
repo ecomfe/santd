@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 位置
 位置有十二个方向。如需箭头指向目标元素中心，可以设置 `arrowPointAtCenter`。
-</cn>
+</text>
 
 ```html
 <template>

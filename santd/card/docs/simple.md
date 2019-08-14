@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 简洁卡片
 只包含内容区域。
-</cn>
+</text>
 
 ```html
 <template>

@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### Info
 展示处理结果。
-</cn>
+</text>
 
 ```html
 <template>

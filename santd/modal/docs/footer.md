@@ -1,8 +1,8 @@
-<cn>
+<text lang="cn">
 #### 自定义页脚
 更复杂的例子，自定义了页脚的按钮，点击提交后进入 loading 状态，完成后关闭。
 不需要默认确定取消按钮时，你可以把 `hasFooter` 设为 `false`。(hasFooter="{{false}}")
-</cn>
+</text>
 
 ```html
 <template>

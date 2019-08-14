@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 竖直方向的步骤条
 简单的竖直方向的步骤条。
-</cn>
+</text>
 
 ```html
 <template>

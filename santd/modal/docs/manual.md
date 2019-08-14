@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 手动更新和移除
 手动更新和关闭 `Modal.method` 方式创建的对话框。
-</cn>
+</text>
 
 ```html
 <template>

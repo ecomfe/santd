@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 多行
 多行模式，多行模式必须指定高度。
-</cn>
+</text>
 
 ```html
 <template>

@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 基本用法
 简单的checkbox
-</cn>
+</text>
 
 ```html
 <template>

@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 受控面板
 通过组合 `mode` 与 `on-panelChange` 控制要展示的面板。
-</cn>
+</text>
 
 ```html
 <template>

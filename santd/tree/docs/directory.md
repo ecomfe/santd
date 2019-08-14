@@ -1,8 +1,8 @@
-<cn>
+<text lang="cn">
 #### 目录树
 内置的目录树，`multiple` 模式支持 `ctrl(Windows)` / `command(Mac)` 复选。
 
-</cn>
+</text>
 
 ```html
 <template>

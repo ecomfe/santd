@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 加载中
 标识开关操作仍在执行中。
-</cn>
+</text>
 ```html
 <template>
     <div>

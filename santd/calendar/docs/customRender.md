@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 通知事项日历
 一个复杂的应用示例，用插槽 `dateContent` 和 `monthContent` 函数来自定义需要追加的渲染的数据。
-</cn>
+</text>
 
 ```html
 <template>

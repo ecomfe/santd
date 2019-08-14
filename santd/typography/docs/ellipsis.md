@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 省略号
 多行文本省略。
-</cn>
+</text>
 
 ```html
 <template>

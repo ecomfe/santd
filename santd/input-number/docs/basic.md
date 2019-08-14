@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 基本
 数字输入框。
-</cn>
+</text>
 
 ```html
 <template>

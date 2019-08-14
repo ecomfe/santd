@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 基本
 最简单的占位效果。
-</cn>
+</text>
 
 ```html
 <template>

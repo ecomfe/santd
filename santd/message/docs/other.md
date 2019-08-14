@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 其他提示类型
 包括成功、失败、警告。
-</cn>
+</text>
 
 ```html
 <template>

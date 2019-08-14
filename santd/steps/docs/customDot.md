@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 自定义点状步骤条
 为点状步骤条增加自定义展示。
-</cn>
+</text>
 
 ```html
 <template>

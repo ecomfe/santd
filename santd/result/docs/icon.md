@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 自定义 icon
 自定义 icon。
-</cn>
+</text>
 
 ```html
 <template>

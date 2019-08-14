@@ -1,7 +1,7 @@
-<cn>
+<text lang="cn">
 #### 密码框
 密码框
-</cn>
+</text>
 
 ```html
 <template>

@@ -1,8 +1,8 @@
 
-<cn>
+<text lang="cn">
 #### 文案展现
 给评分组件加上文案展示。
-</cn>
+</text>
 
 ```html
 <template>
