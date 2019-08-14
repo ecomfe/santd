@@ -16,8 +16,8 @@
 
 这里我们封装了表单域 `<Form.FormItem />`
 
-```js
-<Form.FormItem {...props}>
+```html
+<Form.FormItem {{...props}}>
     ...
 </Form.FormItem>
 ```
