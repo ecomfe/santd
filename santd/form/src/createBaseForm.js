@@ -4,7 +4,7 @@
  **/
 
 import san from 'san';
-import AsyncValidator from '@baidu/async-validator';
+import AsyncValidator from 'async-validator';
 import get from 'lodash/get';
 import set from 'lodash/set';
 import eq from 'lodash/eq';
