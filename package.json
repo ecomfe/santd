@@ -15,7 +15,7 @@
         "es"
     ],
     "dependencies": {
-        "@baidu/async-validator": "^1.11.2",
+        "async-validator": "^1.11.2",
         "add-dom-event-listener": "^1.1.0",
         "axios": "^0.18.0",
         "babel-plugin-import": "^1.11.0",
