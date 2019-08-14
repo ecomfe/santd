@@ -48,23 +48,19 @@ export function getOffset(element) {
     }
 
     let rect = element.getBoundingClientRect();
-    let offset = {
-        top: rect.top,
-        right: rect.right,
-        bottom: rect.bottom,
-        left: rect.left,
-        width: rect.right - rect.left,
-        height: rect.bottom - rect.top
-    };
     let clientTop = document.documentElement.clientTop || document.body.clientTop || 0;
     let clientLeft = document.documentElement.clientLeft || document.body.clientLeft || 0;
     let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     let scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
-    offset.top = offset.top + scrollTop - clientTop;
-    offset.bottom = offset.bottom + scrollTop - clientTop;
-    offset.left = offset.left + scrollLeft - clientLeft;
-    offset.right = offset.right + scrollLeft - clientLeft;
-    return offset;
+
+    return {
+        top: rect.top + scrollTop - clientTop,
+        right: rect.right + scrollLeft - clientLeft,
+        bottom: rect.bottom + scrollTop - clientTop,
+        left: rect.left + scrollLeft - clientLeft,
+        width: rect.right - rect.left,
+        height: rect.bottom - rect.top
+    };
 };
 
 /**
