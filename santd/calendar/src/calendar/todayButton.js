@@ -4,7 +4,6 @@
  **/
 
 import san, {DataTypes} from 'san';
-import classNames from 'classnames';
 import {getTodayTimeStr, getTodayTime, isAllowedDate} from '../util/index';
 
 
@@ -28,9 +27,9 @@ export default san.defineComponent({
             const disabledToday = this.data.get('disabledToday');
             const disabled = this.data.get('disabled');
 
-            return classNames(`${prefixCls}-today-btn`, {
-                [`${prefixCls}-today-btn-disabled`]: disabledToday || disabled
-            });
+            let classArr = [`${prefixCls}-today-btn`];
+            (disabledToday || disabled) && classArr.push(`${prefixCls}-today-btn-disabled`);
+            return classArr;
         },
         localeNow() {
             const text = this.data.get('text');

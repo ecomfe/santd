@@ -6,7 +6,6 @@
 
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
-import classNames from 'classnames';
 import Checkbox from '../checkbox';
 import button from '../button';
 import Icon from '../icon';
@@ -33,9 +32,7 @@ export default san.defineComponent({
     },
     computed: {
         classes() {
-            return classNames({
-                [`${prefixCls}-column-filters`]: true
-            });
+            return [`${prefixCls}-column-filters`];
         }
     },
     initData() {

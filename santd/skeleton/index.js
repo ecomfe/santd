@@ -6,7 +6,6 @@
 
 import './style/index.less';
 import san, {DataTypes} from 'san';
-import classNames from 'classnames';
 import {classCreator} from '../core/util';
 
 import Avatar, {SkeletonAvatarProps} from './Avatar';
@@ -100,11 +99,10 @@ export default san.defineComponent({
             if (showSkeleton) {
                 const active = data.get('active');
                 const hasAvatar = data.get('hasAvatar');
-
-                return classNames(prefixCls, {
-                    [`${prefixCls}-with-avatar`]: hasAvatar,
-                    [`${prefixCls}-active`]: active
-                });
+                let classArr = [prefixCls];
+                hasAvatar && classArr.push(`${prefixCls}-with-avatar`);
+                active && classArr.push(`${prefixCls}-active`);
+                return classArr;
             }
         },
         showSkeleton() {

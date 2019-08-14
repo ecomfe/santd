@@ -4,7 +4,6 @@
  **/
 
 import san, {DataTypes} from 'san';
-import classNames from 'classnames';
 import moment from 'moment';
 import Header from './header';
 import ComboBox from './combobox';
@@ -38,7 +37,7 @@ export default san.defineComponent({
             const prefixCls = this.data.get('prefixCls');
             const className = this.data.get('className');
 
-            return classNames(className, prefixCls + '-inner');
+            return [className, prefixCls + '-inner'];
         },
         isAM() {
             const defaultOpenValue = this.data.get('defaultOpenValue');

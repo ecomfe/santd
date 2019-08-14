@@ -4,7 +4,6 @@
  **/
 
 import san, {DataTypes} from 'san';
-import classNames from 'classnames';
 import moment from 'moment';
 
 export default san.defineComponent({
@@ -33,10 +32,9 @@ export default san.defineComponent({
         inputClass() {
             const prefixCls = this.data.get('prefixCls');
             const invalid = this.data.get('invalid');
-
-            return classNames(`${prefixCls}-input`, {
-                [`${prefixCls}-input-invalid`]: invalid
-            });
+            let classArr = [`${prefixCls}-input`];
+            invalid && classArr.push(`${prefixCls}-input-invalid`);
+            return classArr.join(' ');
         }
     },
     inited() {

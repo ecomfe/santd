@@ -4,7 +4,6 @@
  **/
 
 import san, {DataTypes} from 'san';
-import classNames from 'classnames';
 import get from 'lodash/get';
 
 export default san.defineComponent({

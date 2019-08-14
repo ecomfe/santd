@@ -7,7 +7,7 @@
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
 
-const prefixCls = classCreator('skeleton')(paragraph);
+const prefixCls = classCreator('skeleton')('paragraph');
 const widthUnit = DataTypes.oneOfType([DataTypes.number, DataTypes.string]);
 
 export const SkeletonParagraphProps = DataTypes.oneOfType([

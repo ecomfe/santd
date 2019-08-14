@@ -4,7 +4,6 @@
  **/
 
 import san, {DataTypes} from 'san';
-import classNames from 'classnames';
 
 
 export default san.defineComponent({
@@ -19,9 +18,9 @@ export default san.defineComponent({
             const prefixCls = this.data.get('prefixCls');
             const timePickerDisabled = this.data.get('timePickerDisabled');
 
-            return classNames(`${prefixCls}-time-picker-btn`, {
-                [`${prefixCls}-time-picker-btn-disabled`]: timePickerDisabled
-            });
+            let classArr = [`${prefixCls}-time-picker-btn`];
+            timePickerDisabled && classArr.push(`${prefixCls}-time-picker-btn-disabled`);
+            return classArr;
         }
     },
     handleClick() {

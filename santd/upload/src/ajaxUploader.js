@@ -4,7 +4,6 @@
  **/
 
 import san, {DataTypes} from 'san';
-import classNames from 'classnames';
 import defaultRequest from './request';
 import {getUid, attrAccept, traverseFileTree} from './util';
 
@@ -38,9 +37,9 @@ export default san.defineComponent({
             const className = this.data.get('className');
             const disabled = this.data.get('disabled');
 
-            return classNames(prefixCls, className, {
-                [`${prefixCls}-disabled`]: disabled
-            });
+            let classArr = [prefixCls, className];
+            disabled && classArr.push(`${prefixCls}-disabled`);
+            return classArr;
         }
     },
     initData() {

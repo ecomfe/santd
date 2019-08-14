@@ -5,7 +5,6 @@
 
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
-import classNames from 'classnames';
 import Icon from '../icon';
 const prefixCls = classCreator('tree')();
 
@@ -67,14 +66,14 @@ export default san.defineComponent({
             const selected = getComputedKeys(selectedKeys, key);
             const checked = this.data.get('checked') || getComputedKeys(checkedKeys, key);
             const filterTreeNode = this.data.get('isFilter');
-            return classNames({
-                [`${prefixCls}-treenode-disabled`]: disabled,
-                [`${prefixCls}-treenode-switcher-${expanded ? 'open' : 'close'}`]: true,
-                [`${prefixCls}-treenode-checkbox-checked`]: checked,
-                [`${prefixCls}-treenode-checkbox-indeterminate`]: halfChecked,
-                [`${prefixCls}-treenode-selected`]: selected && !disabled,
-                'filter-node': filterTreeNode
-            });
+            
+            let classArr = [`${prefixCls}-treenode-switcher-${expanded ? 'open' : 'close'}`];
+            disabled && classArr.push(`${prefixCls}-treenode-disabled`);
+            checked && classArr.push(`${prefixCls}-treenode-checkbox-checked`);
+            halfChecked && classArr.push(`${prefixCls}-treenode-checkbox-indeterminate`);
+            selected && !disabled && classArr.push(`${prefixCls}-treenode-selected`);
+            filterTreeNode && classArr.push('filter-node');
+            return classArr;
         },
         checkboxClass() {
             const checkedKeys = this.data.get('treeData.checkedKeys');
@@ -84,12 +83,12 @@ export default san.defineComponent({
             const halfChecked = this.data.get('halfChecked');
             const disabled = this.data.get('disabled') || this.data.get('treeData.disabled');
             const disableCheckbox = this.data.get('disableCheckbox');
-            return classNames({
-                [`${prefixCls}-checkbox`]: true,
-                [`${prefixCls}-checkbox-checked`]: checked,
-                [`${prefixCls}-checkbox-indeterminate`]: (!checked && halfChecked),
-                [`${prefixCls}-checkbox-disabled`]: (disabled || disableCheckbox)
-            });
+
+            let classArr = [`${prefixCls}-checkbox`];
+            checked && classArr.push(`${prefixCls}-checkbox-checked`);
+            !checked && halfChecked && classArr.push(`${prefixCls}-checkbox-indeterminate`);
+            (disabled || disableCheckbox) && classArr.push(`${prefixCls}-checkbox-disabled`);
+            return classArr;
         },
         // icon + title
         iconTitleClass() {
@@ -99,29 +98,22 @@ export default san.defineComponent({
             const key = this.data.get('key');
             const expanded = getComputedKeys(expandedKeys, key);
             const selected = getComputedKeys(selectedKeys, key);
-            return classNames({
-                [`${prefixCls}-node-content-wrapper`]: true,
-                [`${prefixCls}-node-content-wrapper-${expanded ? 'open' : 'close'}`]: true,
-                [`${prefixCls}-node-selected`]: selected && !disabled
-            });
+
+            let classArr = [`${prefixCls}-node-content-wrapper`, `${prefixCls}-node-content-wrapper-${expanded ? 'open' : 'close'}`];
+            selected && !disabled && classArr.push(`${prefixCls}-node-selected`);
+            return classArr;
         },
         ulChildClass() {
             const expandedKeys = this.data.get('treeData.expandedKeys');
             const key = this.data.get('key');
             const expanded = getComputedKeys(expandedKeys, key);
-            return classNames({
-                [`${prefixCls}-child-tree`]: true,
-                [`${prefixCls}-child-tree-${expanded ? 'open' : 'close'}`]: true
-            });
+            return [`${prefixCls}-child-tree`, `${prefixCls}-child-tree-${expanded ? 'open' : 'close'}`];
         },
         switcherCls() {
             const expandedKeys = this.data.get('treeData.expandedKeys');
             const key = this.data.get('key');
             const expanded = getComputedKeys(expandedKeys, key);
-            return classNames({
-                [`${prefixCls}-switcher`]: true,
-                [`${prefixCls}-switcher_${expanded ? 'open' : 'close'}`]: true
-            });
+            return [`${prefixCls}-switcher`, `${prefixCls}-switcher_${expanded ? 'open' : 'close'}`];
         }
 
     },

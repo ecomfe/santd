@@ -6,7 +6,6 @@
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
 import {loopComponentList, recursiveAllComponents} from '../core/util/findCompont';
-import classNames from 'classnames';
 import './style/index';
 import treeNode from './treeNode';
 const prefixCls = classCreator('tree')();
@@ -42,12 +41,11 @@ export default san.defineComponent({
             const showLine = this.data.get('showLine');
             const blockNode = this.data.get('blockNode');
             const directory = this.data.get('isDirectory');
-            return classNames({
-                [`${prefixCls}`]: true,
-                [`${prefixCls}-show-line`]: showLine,
-                [`${prefixCls}-block-node`]: blockNode,
-                [`${prefixCls}-directory`]: directory
-            });
+            let classArr = [prefixCls];
+            showLine && classArr.push(`${prefixCls}-show-line`);
+            blockNode && classArr.push(`${prefixCls}-block-node`);
+            directory && classArr.push(`${prefixCls}-directory`);
+            return classArr;
         }
     },
     initData() {

@@ -5,7 +5,6 @@
 
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
-import classNames from 'classnames';
 import './style/index.less';
 
 const prefixCls = classCreator('steps')();
@@ -36,13 +35,13 @@ export default san.defineComponent({
             const progressDot = this.data.get('progressDot');
             const adjustedlabelPlacement = !!progressDot ? 'vertical' : labelPlacement;
             const flexSupported = this.data.get('flexSupported');
+            let classArr = [prefixCls, `${prefixCls}-${direction}`, className];
+            size && classArr.push(`${prefixCls}-${size}`);
+            direction === 'horizontal' && classArr.push(`${prefixCls}-label-${adjustedlabelPlacement}`);
+            !!progressDot && classArr.push(`${prefixCls}-dot`);
+            !flexSupported && classArr.push(`${prefixCls}-flex-not-supported`);
 
-            return classNames(prefixCls, `${prefixCls}-${direction}`, className, {
-                [`${prefixCls}-${size}`]: size,
-                [`${prefixCls}-label-${adjustedlabelPlacement}`]: direction === 'horizontal',
-                [`${prefixCls}-dot`]: !!progressDot,
-                [`${prefixCls}-flex-not-supported`]: !flexSupported
-            });
+            return classArr;
         }
     },
     updated() {

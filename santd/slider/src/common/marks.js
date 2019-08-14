@@ -4,7 +4,6 @@
  **/
 
 import san, {DataTypes} from 'san';
-import classNames from 'classnames';
 
 export default san.defineComponent({
     dataTypes: {
@@ -46,9 +45,9 @@ export default san.defineComponent({
         const isActive = (!included && point === upperBound)
             || (included && point <= upperBound && point >= lowerBound);
 
-        return classNames(`${prefixCls}-text`, {
-            [`${prefixCls}-text-active`]: isActive
-        });
+        let classArr = [`${prefixCls}-text`];
+        isActive && classArr.push(`${prefixCls}-text-active`);
+        return classArr;
     },
     markStyle(point) {
         const vertical = this.data.get('vertical');

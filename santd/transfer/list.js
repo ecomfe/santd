@@ -3,7 +3,6 @@
  * @author mayihui@baidu.com
  */
 import san, {DataTypes} from 'san';
-import classNames from 'classnames';
 import Checkbox from '../checkbox';
 import defaultRenderList from './renderListBody';
 import Search from './search';
@@ -63,18 +62,16 @@ export default san.defineComponent({
         classes() {
             const prefixCls = this.data.get('prefixCls');
             const footer = this.data.get('footer');
-
-            return classNames(prefixCls, {
-                [`${prefixCls}-with-footer`]: !!footer
-            });
+            let classArr = [prefixCls];
+            !!footer && classArr.push(`${prefixCls}-with-footer`);
+            return classArr;
         },
         bodyClasses() {
             const prefixCls = this.data.get('prefixCls');
             const showSearch = this.data.get('showSearch');
-
-            return classNames(`${prefixCls}-body`, {
-                [`${prefixCls}-body-with-search`]: showSearch
-            });
+            let classArr = [`${prefixCls}-body`];
+            showSearch && classArr.push(`${prefixCls}-body-with-search`);
+            return classArr;
         },
         getFilteredItems() {
             const dataSource = this.data.get('dataSource');

@@ -8,7 +8,6 @@ import CalendarHeader from '../calendar/calendarHeader';
 import DateTable from '../date/dateTable';
 import DateInput from '../date/dateInput';
 import {getTimeConfig} from '../util/index';
-import classNames from 'classnames';
 import moment from 'moment';
 
 export default san.defineComponent({
@@ -23,7 +22,7 @@ export default san.defineComponent({
             const rangeClassName = prefixCls + '-range';
             const direction = this.data.get('direction');
 
-            return classNames(`${rangeClassName}-part`, `${rangeClassName}-${direction}`);
+            return [`${rangeClassName}-part`, `${rangeClassName}-${direction}`];
         },
         injectTimePicker() {
             const timePicker = this.data.get('timePicker');

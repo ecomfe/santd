@@ -4,7 +4,6 @@
  **/
 
 import san from 'san';
-import classNames from 'classnames';
 import {
     setTransform,
     isTransform3dSupported,
@@ -95,13 +94,11 @@ export default san.defineComponent({
         classes() {
             const prefixCls = this.data.get('prefixCls');
             const inkBarAnimated = this.data.get('inkBarAnimated');
-
-            return classNames({
-                [`${prefixCls}-ink-bar`]: true,
-                [inkBarAnimated
-                    ? `${prefixCls}-ink-bar-animated`
-                    : `${prefixCls}-ink-bar-no-animated`]: true
-            });
+            let classArr = [`${prefixCls}-ink-bar`];
+            inkBarAnimated
+                ? classArr.push(`${prefixCls}-ink-bar-animated`)
+                : classArr.push(`${prefixCls}-ink-bar-no-animated`);
+            return classArr;
         }
     },
     initData() {

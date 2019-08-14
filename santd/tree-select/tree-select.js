@@ -5,7 +5,6 @@
 
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
-import classNames from 'classnames';
 import Icon from '../icon';
 import Tree from '../tree';
 import SingleSelector from './selector/single-selector';
@@ -57,23 +56,23 @@ export default san.defineComponent({
             const disabled = this.data.get('disabled');
             const allowClear = this.data.get('allowClear');
             const sizei = this.data.get('sizeMap')[this.data.get('size')];
-            return classNames({
-                [`${prefixCls}`]: true,
-                [`${prefixCls}-open`]: open,
-                [`${prefixCls}-disabled`]: disabled,
-                [`${prefixCls}-enabled`]: !disabled,
-                [`${prefixCls}-focused`]: open,
-                [`${prefixCls}-allow-clear`]: allowClear,
-                [`${prefixCls}-${sizei}`]: !!sizei
-            });
+            
+            let classArr = [prefixCls];
+            open && classArr.push(`${prefixCls}-open`);
+            disabled && classArr.push(`${prefixCls}-disabled`);
+            !disabled && classArr.push(`${prefixCls}-enabled`);
+            open && classArr.push(`${prefixCls}-focused`);
+            allowClear && classArr.push(`${prefixCls}-allow-clear`);
+            sizei && classArr.push(`${prefixCls}-${sizei}`);
+            return classArr;
         },
         containerClass() {
             const multiple = this.data.get('multiple') || this.data.get('treeCheckable');
-            return classNames({
-                [`${prefixCls}-selection`]: true,
-                [`${prefixCls}-selection--multiple`]: multiple,
-                [`${prefixCls}-selection--single`]: !multiple
-            });
+            let classArr = [`${prefixCls}-selection`];
+            multiple
+                ? classArr.push(`${prefixCls}-selection--multiple`)
+                : classArr.push(`${prefixCls}-selection--single`);
+            return classArr;
         },
         values() {
             const value = this.data.get('value') || this.data.get('defaultValue');

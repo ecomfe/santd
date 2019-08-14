@@ -10,7 +10,6 @@ import MonthTable from './month/monthTable';
 import CalendarHeader from './fullCalendarHeader';
 import inherits from '../../core/util/inherits';
 import moment from 'moment';
-import classNames from 'classnames';
 
 export default inherits(san.defineComponent({
     components: {
@@ -29,10 +28,9 @@ export default inherits(san.defineComponent({
         className() {
             const prefixCls = this.data.get('prefixCls');
             const fullscreen = this.data.get('fullscreen');
-
-            return classNames(`${prefixCls}-full`, {
-                [`${prefixCls}-fullscreen`]: fullscreen
-            });
+            let classArr = [`${prefixCls}-full`];
+            fullscreen & classArr.push(`${prefixCls}-fullscreen`);
+            return classArr.join(' ');
         },
         injectHeader() {
             const headerRender = this.data.get('headerRender');

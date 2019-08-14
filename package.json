@@ -21,7 +21,6 @@
         "add-dom-event-listener": "^1.1.0",
         "axios": "^0.18.0",
         "babel-plugin-import": "^1.11.0",
-        "classnames": "^2.2.6",
         "css-animation": "^1.5.0",
         "date-fns": "^1.29.0",
         "dom-align": "^1.8.2",

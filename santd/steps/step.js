@@ -4,7 +4,6 @@
 */
 
 import san from 'san';
-import classNames from 'classnames';
 import Icon from '../icon';
 
 export default san.defineComponent({
@@ -14,14 +13,13 @@ export default san.defineComponent({
             const status = this.data.get('status') || this.data.get('parentStatus');
             const icon = this.data.get('icon');
             const className = this.data.get('className');
-
-            return classNames(`${prefixCls}-item`, `${prefixCls}-item-${status}`, className, {
-                [`${prefixCls}-item-custom`]: icon
-            });
+            let classArr = [`${prefixCls}-item`, `${prefixCls}-item-${status}`, className];
+            icon && classArr.push(`${prefixCls}-item-custom`);
+            return classArr;
         },
         iconClasses() {
             const prefixCls = this.data.get('prefixCls');
-            return classNames(`${prefixCls}-icon`);
+            return [`${prefixCls}-icon`];
         },
         injectProgressDot() {
             const instance = this.data.get('instance');

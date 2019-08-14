@@ -5,7 +5,6 @@
  */
 
 import san, {DataTypes} from 'san';
-import classNames from 'classnames';
 import {classCreator} from '../core/util';
 
 const prefixCls = classCreator('skeleton')('avatar');
@@ -28,14 +27,12 @@ export default san.defineComponent({
     computed: {
         className() {
             const {size, shape} = this.data.get('props');
-
-            return classNames({
-                [`${prefixCls}`]: true,
-                [`${prefixCls}-lg`]: size === 'large',
-                [`${prefixCls}-sm`]: size === 'small',
-                [`${prefixCls}-circle`]: shape === 'circle',
-                [`${prefixCls}-square`]: shape === 'square'
-            });
+            let classArr = [prefixCls];
+            size === 'large' && classArr.push(`${prefixCls}-lg`);
+            size === 'small' && classArr.push(`${prefixCls}-sm`);
+            shape === 'circle' && classArr.push(`${prefixCls}-circle`);
+            shape === 'square' && classArr.push(`${prefixCls}-square`);
+            return classArr;
         }
     }
 });

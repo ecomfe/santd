@@ -4,7 +4,6 @@
  **/
 
 import san, {DataTypes} from 'san';
-import classNames from 'classnames';
 import TabPane from './tabPane';
 import KeyCode from '../../core/util/keyCode';
 
@@ -54,11 +53,7 @@ const Tabs = san.defineComponent({
             const prefixCls = this.data.get('prefixCls');
             const tabBarPosition = this.data.get('tabBarPosition');
             const className = this.data.get('className');
-
-            return classNames({
-                [`${prefixCls}`]: true,
-                [`${prefixCls}-${tabBarPosition}`]: true
-            }, className);
+            return [`${prefixCls}`, `${prefixCls}-${tabBarPosition}`, className];
         },
         props() {
             const prefixCls = this.data.get('prefixCls');

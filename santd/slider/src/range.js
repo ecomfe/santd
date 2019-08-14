@@ -4,7 +4,6 @@
  **/
 
 import san, {DataTypes} from 'san';
-import classNames from 'classnames';
 import BaseSlider from './common/baseSlider';
 import inherits from '../../core/util/inherits';
 import Track from './common/track';
@@ -77,7 +76,7 @@ export default inherits(san.defineComponent({
                 const initData = bounds.map((v, i) => {
                     const handleClassName = prefixCls + '-handle';
                     return {
-                        className: classNames(handleClassName, handleClassName + '-' + (i + 1)),
+                        className: [handleClassName, handleClassName + '-' + (i + 1)].join(' '),
                         prefixCls,
                         vertical,
                         offset: offsets[i],

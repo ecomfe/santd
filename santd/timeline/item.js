@@ -6,7 +6,6 @@
 import './style/index.less';
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
-import classNames from 'classnames';
 
 const prefixCls = classCreator('timeline')();
 
@@ -30,19 +29,16 @@ export default san.defineComponent({
         classes() {
             const pending = this.data.get('pending');
             const className = this.data.get('className');
-            return classNames({
-                [`${prefixCls}-item`]: true,
-                [`${prefixCls}-item-pending`]: pending
-            }, className);
+            let classArr = [`${prefixCls}-item`, className];
+            pending && classArr.push(`${prefixCls}-item-pending`);
+            return classArr;
         },
         dotClasses() {
             const dot = this.data.get('dot');
             const color = this.data.get('color');
-            return classNames({
-                [`${prefixCls}-item-head`]: true,
-                [`${prefixCls}-item-head-custom`]: dot,
-                [`${prefixCls}-item-head-${color}`]: true
-            });
+            let classArr = [`${prefixCls}-item-head`, `${prefixCls}-item-head-${color}`];
+            dot && classArr.push(`${prefixCls}-item-head-custom`);
+            return classArr;
         },
         dotStyle() {
             const color = this.data.get('color');

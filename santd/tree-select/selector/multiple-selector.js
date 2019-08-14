@@ -5,7 +5,6 @@
 
 import san, {DataTypes} from 'san';
 import {classCreator} from '../../core/util';
-import classNames from 'classnames';
 import KEYCODE from '../../core/util/keyCode';
 import Icon from '../../icon';
 const prefixCls = classCreator('select')();
@@ -31,10 +30,9 @@ export default san.defineComponent({
         },
         mulClasses() {
             const disabled = this.data.get('disabled');
-            return classNames({
-                [`${prefixCls}-selection__choice__content`]: true,
-                [`${prefixCls}-selection__choice__disabled`]: disabled
-            });
+            let classArr = [`${prefixCls}-selection__choice__content`];
+            disabled && classArr.push(`${prefixCls}-selection__choice__disabled`);
+            return classArr;
         },
         multipleTitles() {
             const maxTagContent = this.data.get('maxTagContent');

@@ -6,7 +6,6 @@
 import './style/index.less';
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
-import classNames from 'classnames';
 import Item from './item';
 import Icon from '../icon';
 
@@ -29,12 +28,11 @@ export default san.defineComponent({
             const pending = this.data.get('pending');
             const reverse = this.data.get('reverse');
             const mode = this.data.get('mode');
-
-            return classNames(prefixCls, {
-                [`${prefixCls}-pending`]: !!pending,
-                [`${prefixCls}-reverse`]: !!reverse,
-                [`${prefixCls}-${mode}`]: !!mode
-            }, className);
+            let classArr = [prefixCls, className];
+            pending && classArr.push(`${prefixCls}-pending`);
+            reverse && classArr.push(`${prefixCls}-reverse`);
+            mode && classArr.push(`${prefixCls}-${mode}`);
+            return classArr;
         },
         isComponent() {
             const pending = this.data.get('pending');
@@ -61,7 +59,7 @@ export default san.defineComponent({
         const lastClasses = `${prefixCls}-item-last`;
 
         children.forEach((child, index) => {
-            const className = classNames([
+            const className = [
                 child.data.get('className'),
                 !reverse && !!pending
                     ? index === children.length - 2
@@ -69,7 +67,7 @@ export default san.defineComponent({
                     : index === children.length - 1
                     ? lastClasses : '',
                 this.getPositionCls(child, index)
-            ]);
+            ].join (' ');
             child.data.set('className', className);
         });
     },

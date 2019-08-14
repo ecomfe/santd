@@ -4,7 +4,6 @@
  **/
 
 import san, {DataTypes} from 'san';
-import classNames from 'classnames';
 import TableCell from './TableCell';
 
 export default san.defineComponent({
@@ -19,9 +18,7 @@ export default san.defineComponent({
     computed: {
         classes() {
             const prefixCls = this.data.get('prefixCls');
-            return classNames({
-                [`${prefixCls}-thead`]: true
-            });
+            return [`${prefixCls}-thead`];
         },
         cells() {
             const columns = this.data.get('columns');

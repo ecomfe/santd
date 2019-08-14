@@ -4,7 +4,6 @@
  **/
 
 import san, {DataTypes} from 'san';
-import classNames from 'classnames';
 import BaseTable from './BaseTable';
 
 export default san.defineComponent({
@@ -20,9 +19,7 @@ export default san.defineComponent({
         classes() {
             const table = this.data.get('table');
             const prefixCls = table.data.get('prefixCls');
-            return classNames({
-                [`${prefixCls}-header`]: true
-            });
+            return [`${prefixCls}-header`];
         }
     },
     components: {

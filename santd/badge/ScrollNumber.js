@@ -5,8 +5,6 @@
 
 import './style/index.less';
 import san, {DataTypes} from 'san';
-// 注意公共方法提取到 util，送人玫瑰手有余香~
-import classNames from 'classnames';
 
 export default san.defineComponent({
     dataTypes: {
@@ -38,8 +36,7 @@ export default san.defineComponent({
         classes() {
             const prefixCls = this.data.get('prefixCls');
             const className = this.data.get('className');
-
-            return classNames(prefixCls, className);
+            return [prefixCls, className];
         },
         isOverflow() {
             let count = this.data.get('count');

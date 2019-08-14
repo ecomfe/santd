@@ -6,7 +6,6 @@ import './style/index.less';
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
 import renderEmpty from '../core/util/renderEmpty';
-import classNames from 'classnames';
 import List from './list';
 import Operation from './operation';
 import inherits from '../core/util/inherits';
@@ -21,11 +20,10 @@ const Transfer = san.defineComponent({
             const disabled = this.data.get('disabled');
             const renderList = this.data.get('renderList');
             const prefixCls = this.data.get('prefixCls');
-
-            return classNames(prefixCls, className, {
-                [`${prefixCls}-disabled`]: disabled,
-                [`${prefixCls}-customize-list`]: !!renderList
-            });
+            let classArr = [prefixCls, className];
+            disabled && classArr.push(`${prefixCls}-disabled`);
+            !!renderList && classArr.push(`${prefixCls}-customize-list`);
+            return classArr;
         },
         getTitles() {
             const locale = this.data.get('locale');

@@ -4,7 +4,6 @@
  **/
 
 import san, {DataTypes} from 'san';
-import classNames from 'classnames';
 
 const calcPoints = (marks, dots, step, min, max) => {
     const points = Object.keys(marks).map(parseFloat).sort((a, b) => a - b);
@@ -52,9 +51,9 @@ export default san.defineComponent({
         const isActive = (!included && point === upperBound)
             || (included && point <= upperBound && point >= lowerBound);
 
-        return classNames(`${prefixCls}-dot`, {
-            [`${prefixCls}-dot-active`]: isActive
-        });
+        let classArr = [`${prefixCls}-dot`];
+        isActive && classArr.push(`${prefixCls}-dot-active`);
+        return classArr;
     },
     pointStyle(point) {
         const included = this.data.get('included');

@@ -4,7 +4,6 @@
  **/
 
 import san, {DataTypes} from 'san';
-import classNames from 'classnames';
 import TodayButton from '../calendar/todayButton';
 import OkButton from '../calendar/okButton';
 import TimepickerButton from '../calendar/timepickerButton';
@@ -27,10 +26,9 @@ export default san.defineComponent({
         classes() {
             const prefixCls = this.data.get('prefixCls');
             const hasOkBtn = this.data.get('hasOkBtn');
-
-            return classNames(`${prefixCls}-footer`, {
-                [`${prefixCls}-footer-show-ok`]: hasOkBtn
-            });
+            let classArr = [`${prefixCls}-footer`];
+            hasOkBtn && classArr.push(`${prefixCls}-footer-show-ok`);
+            return classArr;
         },
         hasOkBtn() {
             const showOk = this.data.get('showOk');

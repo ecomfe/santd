@@ -4,7 +4,6 @@
  **/
 
 import san, {DataTypes} from 'san';
-import classNames from 'classnames';
 import toStyle from 'to-style';
 
 export default san.defineComponent({
@@ -35,10 +34,11 @@ export default san.defineComponent({
                     ...cell.column.style
                 };
                 if (cell.column && cell.column.align) {
+                    let classArr = [cell.column.className];
+                    !!cell.column.align && classArr.push(`${prefixCls}-align-${cell.column.align}`);
+
                     cell.customProps.style.textAlign = cell.column.align;
-                    cell.customProps.className = classNames(cell.column.className, {
-                        [`${prefixCls}-align-${cell.column.align}`]: !!cell.column.align
-                    });
+                    cell.customProps.className = classArr.join(' ');
                 }
                 else if (cell.column && headRowHeight && headRowHeight[0]) {
                     cell.customProps.style.height = headRowHeight[0];

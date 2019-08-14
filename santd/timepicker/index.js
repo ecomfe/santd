@@ -6,7 +6,6 @@
 import './style/index.less';
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
-import classNames from 'classnames';
 import Icon from '../icon';
 import TimePicker from './src/timepicker';
 import inherits from '../core/util/inherits';
@@ -43,10 +42,9 @@ export default inherits(san.defineComponent({
         pickerClassName() {
             const className = this.data.get('className');
             const size = this.data.get('size');
-
-            return classNames(className, {
-                [`${prefixCls}-${size}`]: !!size
-            });
+            let classArr = [className];
+            !!size && classArr.push(`${prefixCls}-${size}`);
+            return classArr.join(' ');
         },
         renderInputIcon() {
             const prefixCls = this.data.get('prefixCls');

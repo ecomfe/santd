@@ -4,7 +4,6 @@
  **/
 
 import san from 'san';
-import classNames from 'classnames';
 import {isVertical} from './utils';
 
 const tab = san.defineComponent({
@@ -48,20 +47,17 @@ export default san.defineComponent({
             return children.map((child, index) => {
                 const key = child.data.get('key');
                 const closable = child.data.get('closable');
-                const className = classNames({
-                    [`${prefixCls}-tab-active`]: activeKey === key,
-                    [`${prefixCls}-tab`]: true,
-                    [`${prefixCls}-tab-disabled`]: child.data.get('disabled')
-                });
                 const gutter = tabBarGutter && index === children.length - 1 ? 0 : tabBarGutter;
                 const style = gutter !== undefined && {
                     [isVertical(tabBarPosition) ? 'margin-bottom' : 'margin-right']: gutter + 'px'
                 };
-
                 const tab = child.data.get('tab');
+                let classArr = [`${prefixCls}-tab`];
+                activeKey === key && classArr.push(`${prefixCls}-tab-active`);
+                child.data.get('disabled') && classArr.push(`${prefixCls}-tab-disabled`);
                 return {
                     key: key,
-                    className: className,
+                    className: classArr.join(' '),
                     tab: tab,
                     style: style,
                     closable: closable,

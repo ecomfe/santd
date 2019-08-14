@@ -4,7 +4,6 @@
  **/
 
 import san, {DataTypes} from 'san';
-import classNames from 'classnames';
 
 export default san.defineComponent({
     dataTypes: {
@@ -31,9 +30,9 @@ export default san.defineComponent({
             const className = this.data.get('className');
             const prefixCls = this.data.get('prefixCls');
 
-            return classNames(className, {
-                [`${prefixCls}-handle-click-focused`]: this.data.get('clickFocused')
-            });
+            let classArr = [className];
+            this.data.get('clickFocused') && classArr.push(`${prefixCls}-handle-click-focused`);
+            return classArr;
         },
         bodyStyle() {
             const vertical = this.data.get('vertical');

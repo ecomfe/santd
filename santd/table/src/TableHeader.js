@@ -4,7 +4,6 @@
  **/
 
 import san, {DataTypes} from 'san';
-import classNames from 'classnames';
 import TableHeaderRow from './TableHeaderRow';
 
 function getHeaderRows(columns, currentRow = 0, rows) {
@@ -54,9 +53,7 @@ export default san.defineComponent({
         },
         classes() {
             const prefixCls = this.data.get('prefixCls');
-            return classNames({
-                [`${prefixCls}-thead`]: true
-            });
+            return [`${prefixCls}-thead`];
         },
         rows() {
             const columns = this.data.get('columns');

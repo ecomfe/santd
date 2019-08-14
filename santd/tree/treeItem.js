@@ -5,7 +5,6 @@
 
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
-import classNames from 'classnames';
 import {
     findComponentUpward,
     recursiveAllComponents,
@@ -33,28 +32,20 @@ export default san.defineComponent({
             const halfChecked = this.data.get('halfChecked');
             const selected = this.data.get('selected'); // 是否被选中
             const loading = this.data.get('loading'); // 是否在loading
-            return classNames({
-                [`${prefixCls}-treenode-disabled`]: disabled,
-                [`${prefixCls}-treenode-switcher-${expanded ? 'open' : 'close'}`]: true,
-                [`${prefixCls}-treenode-checkbox-checked`]: checked,
-                [`${prefixCls}-treenode-checkbox-indeterminate`]: halfChecked,
-                [`${prefixCls}-treenode-selected`]: selected,
-                [`${prefixCls}-treenode-loading`]: loading
-            });
+            let classArr = [`${prefixCls}-treenode-switcher-${expanded ? 'open' : 'close'}`];
+            disabled && classArr.push(`${prefixCls}-treenode-disabled`);
+            checked && classArr.push(`${prefixCls}-treenode-checkbox-checked`);
+            halfChecked && classArr.push(`${prefixCls}-treenode-checkbox-indeterminate`);
+            selected && classArr.push(`${prefixCls}-treenode-selected`);
+            loading && classArr.push(`${prefixCls}-treenode-loading`);
+            return classArr;
         },
         leafone() {
             const expanded = this.data.get('expanded');
-            return classNames({
-                [`${prefixCls}-switcher`]: true,
-                [`${prefixCls}-switcher_${expanded ? 'open' : 'close'}`]: true
-            });
+            return [`${prefixCls}-switcher`, `${prefixCls}-switcher_${expanded ? 'open' : 'close'}`];
         },
         leaftwo() {
-            return classNames({
-                [`${prefixCls}-switcher`]: true,
-                [`${prefixCls}-switcher-noop`]: true
-
-            });
+            return [`${prefixCls}-switcher`, `${prefixCls}-switcher-noop`];
         },
         // checkbox class
         checkboxClass() {
@@ -62,30 +53,25 @@ export default san.defineComponent({
             const halfChecked = this.data.get('halfChecked'); // 有的被选中
             const disabled = this.data.get('disabled');
             const disableCheckbox = this.data.get('disableCheckbox');
-            return classNames({
-                [`${prefixCls}-checkbox`]: true,
-                [`${prefixCls}-checkbox-checked`]: checked,
-                [`${prefixCls}-checkbox-indeterminate`]: (!checked && halfChecked),
-                [`${prefixCls}-checkbox-disabled`]: (disabled || disableCheckbox)
-            });
+
+            let classArr = [`${prefixCls}-checkbox`];
+            checked && classArr.push(`${prefixCls}-checkbox-checked`);
+            !checked && halfChecked && classArr.push(`${prefixCls}-checkbox-indeterminate`);
+            (disabled || disableCheckbox) && classArr.push(`${prefixCls}-checkbox-disabled`);
+            return classArr;
         },
         // icon + title
         iconTitleClass() {
             const expanded = this.data.get('expanded');
             const selected = this.data.get('selected');
-            return classNames({
-                [`${prefixCls}-node-content-wrapper`]: true,
-                [`${prefixCls}-node-content-wrapper-${expanded ? 'open' : 'close'}`]: true,
-                [`${prefixCls}-node-selected`]: selected
-            });
+            let classArr = [`${prefixCls}-node-content-wrapper`, `${prefixCls}-node-content-wrapper-${expanded ? 'open' : 'close'}`];
+            selected && classArr.push(`${prefixCls}-node-selected`);
+            return classArr;
         },
         // 子ul
         ulChildClass() {
             const expanded = this.data.get('expanded');
-            return classNames({
-                [`${prefixCls}-child-tree`]: true,
-                [`${prefixCls}-child-tree-${expanded ? 'open' : 'close'}`]: true
-            });
+            return [`${prefixCls}-child-tree`, `${prefixCls}-child-tree-${expanded ? 'open' : 'close'}`];
         }
     },
     initData() {

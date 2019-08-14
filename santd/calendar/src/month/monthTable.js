@@ -4,7 +4,6 @@
  **/
 
 import san, {DataTypes} from 'san';
-import classNames from 'classnames';
 import {getTodayTime, getMonthName} from '../util/index';
 
 const ROW = 4;
@@ -95,11 +94,12 @@ export default san.defineComponent({
             disabled = disabledDate(testValue);
         }
 
-        return classNames(`${prefixCls}-cell`, {
-            [`${prefixCls}-cell-disabled`]: disabled,
-            [`${prefixCls}-selected-cell`]: monthData.value === currentMonth,
-            [`${prefixCls}-current-cell`]: today.year() === value.year() && monthData.value === today.month()
-        });
+        let classArr = [`${prefixCls}-cell`];
+        let isEqu = today.year() === value.year() && monthData.value === today.month();
+        disabled && classArr.push(`${prefixCls}-cell-disabled`);
+        monthData.value === currentMonth && classArr.push(`${prefixCls}-selected-cell`);
+        isEqu && classArr.push(`${prefixCls}-current-cell`);
+        return classArr;
     },
     handleChooseMonth(monthData) {
         const value = this.data.get('value');

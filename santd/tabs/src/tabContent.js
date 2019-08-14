@@ -4,7 +4,6 @@
  **/
 
 import san, {DataTypes} from 'san';
-import classNames from 'classnames';
 import toStyle from 'to-style';
 import {
   getTransformByIndex,
@@ -39,13 +38,11 @@ export default san.defineComponent({
             const prefixCls = this.data.get('prefixCls');
             const animated = this.data.get('animated');
             const className = this.data.get('className');
-
-            return classNames({
-                [`${prefixCls}-content`]: true,
-                [animated
-                    ? `${prefixCls}-content-animated`
-                    : `${prefixCls}-content-no-animated`]: true
-            }, className);
+            let classArr = [`${prefixCls}-content`, className];
+            animated
+                ? classArr.push(`${prefixCls}-content-animated`)
+                : classArr.push(`${prefixCls}-content-no-animated`);
+            return classArr;
         }
     },
     updated() {

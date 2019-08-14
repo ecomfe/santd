@@ -8,7 +8,6 @@
 
 import './style/index.less';
 import san, {DataTypes} from 'san';
-import classNames from 'classnames';
 import {classCreator} from '../core/util';
 
 const prefixCls = classCreator('spin')();
@@ -96,33 +95,27 @@ const Spin = san.defineComponent({
             const size = data.get('size');
             const currentSpinning = data.get('currentSpinning');
             const tip = data.get('tip');
-
-            return classNames({
-                [prefixCls]: true,
-                [`${prefixCls}-sm`]: size === 'small',
-                [`${prefixCls}-lg`]: size === 'large',
-                [`${prefixCls}-spinning`]: currentSpinning,
-                [`${prefixCls}-show-text`]: !!tip
-            });
+            let classArr = [prefixCls];
+            size === 'small' && classArr.push(`${prefixCls}-sm`);
+            size === 'large' && classArr.push(`${prefixCls}-lg`);
+            currentSpinning && classArr.push(`${prefixCls}-spinning`);
+            !!tip && classArr.push(`${prefixCls}-show-text`);
+            return classArr;
         },
         nestedClassName() {
             const data = this.data;
             const hasContent = data.get('hasContent');
             const wrapperClassName = data.get('wrapperClassName');
-
-            return hasContent && classNames({
-                [`${prefixCls}-nested-loading`]: true,
-                [wrapperClassName]: !!wrapperClassName
-            }) || '';
+            let classArr = [`${prefixCls}-nested-loading`];
+            !!wrapperClassName && classArr.push(wrapperClassName);
+            return hasContent || classArr;
         },
         containerClassName() {
             const data = this.data;
             const currentSpinning = data.get('currentSpinning');
-
-            return classNames({
-                [`${prefixCls}-container`]: true,
-                [`${prefixCls}-blur`]: currentSpinning
-            });
+            let classArr = [`${prefixCls}-container`];
+            currentSpinning && classArr.push(`${prefixCls}-blur`);
+            return classArr;
         },
         currentSpinning() {
             const data = this.data;

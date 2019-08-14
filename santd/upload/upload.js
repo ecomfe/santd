@@ -10,7 +10,6 @@ import uniqBy from 'lodash/uniqBy';
 import findIndex from 'lodash/findIndex';
 import {classCreator} from '../core/util';
 import {fileToObject, genPercentAdd, getFileItem, removeFileItem} from './utils';
-import classNames from 'classnames';
 import LocaleReceiver from '../localeprovider/localereceiver';
 import inherits from '../core/util/inherits';
 
@@ -23,9 +22,9 @@ const UploadButton = san.defineComponent({
             const disabled = this.data.get('disabled');
             const listType = this.data.get('listType');
 
-            return classNames(prefixCls, `${prefixCls}-select`, `${prefixCls}-select-${listType}`, {
-                [`${prefixCls}-disabled`]: disabled
-            });
+            let classArr = [prefixCls, `${prefixCls}-select`, `${prefixCls}-select-${listType}`];
+            disabled && classArr.push(`${prefixCls}-disabled`);
+            return classArr;
         }
     },
     components: {
@@ -124,13 +123,14 @@ export default inherits(Locale, san.defineComponent({
             const dragState = this.data.get('dragState');
             const disabled = this.data.get('disabled');
 
-            return classNames(prefixCls, `${prefixCls}-drag`, {
-                [`${prefixCls}-drag-uploading`]: fileList.some(
-                    file => file.status === 'uploading',
-                ),
-                [`${prefixCls}-drag-hover`]: dragState === 'dragover',
-                [`${prefixCls}-disabled`]: disabled
-            });
+            let classArr = [prefixCls, `${prefixCls}-drag`];
+            let uploadingExsit = fileList.some(
+                file => file.status === 'uploading'
+            );
+            uploadingExsit && classArr.push(`${prefixCls}-drag-uploading`);
+            dragState === 'dragover' && classArr.push(`${prefixCls}-drag-hover`);
+            disabled && classArr.push(`${prefixCls}-disabled`);
+            return classArr;
         }
     },
     initData() {

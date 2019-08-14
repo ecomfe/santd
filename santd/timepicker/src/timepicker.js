@@ -6,7 +6,6 @@
 import san, {DataTypes} from 'san';
 import Trigger from '../../core/trigger';
 import Placement from './placements';
-import classNames from 'classnames';
 import moment from 'moment';
 import inherits from '../../core/util/inherits';
 import Panel from './panel';
@@ -170,7 +169,7 @@ export default san.defineComponent({
             const prefixCls = this.data.get('prefixCls');
             const className = this.data.get('className');
             const pickerClassName = this.data.get('pickerClassName');
-            return classNames(prefixCls, pickerClassName || className);
+            return [prefixCls, pickerClassName || className];
         },
         getPopupClassName() {
             const showHour = this.data.get('showHour');
@@ -186,10 +185,9 @@ export default san.defineComponent({
             showMinute && selectColumnCount++;
             showSecond && selectColumnCount++;
             use12Hours && selectColumnCount++;
-
-            return classNames(popupClassName, {
-                [`${prefixCls}-panel-narrow`]: (!showHour || !showMinute || !showSecond) && !use12Hours
-            }, `${prefixCls}-panel-column-${selectColumnCount}`);
+            let classArr = [popupClassName, `${prefixCls}-panel-column-${selectColumnCount}`];
+            (!showHour || !showMinute || !showSecond) && !use12Hours && classArr.push(`${prefixCls}-panel-narrow`);
+            return classArr.join(' ');
         },
         injectComponent() {
             const instance = this.data.get('instance');

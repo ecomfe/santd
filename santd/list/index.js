@@ -5,7 +5,6 @@
 
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
-import classNames from 'classnames';
 import Spin from '../spin';
 import Pagination from '../pagination';
 import Grid from '../grid';

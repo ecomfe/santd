@@ -5,7 +5,6 @@
 
 import san, {DataTypes} from 'san';
 import moment from 'moment';
-import classNames from 'classnames';
 import {getTitleString, getTodayTime} from '../util/index';
 
 const ROW = 6;
@@ -252,10 +251,10 @@ export default san.defineComponent({
     },
     getTrClassName(date) {
         const prefixCls = this.data.get('prefixCls');
-        return classNames({
-            [`${prefixCls}-current-week`]: date.isCurrentWeek,
-            [`${prefixCls}-active-week`]: date.isActiveWeek
-        });
+        let classArr =[];
+        date.isCurrentWeek && classArr.push(`${prefixCls}-current-week`);
+        date.isActiveWeek && classArr.push(`${prefixCls}-active-week`);
+        return classArr;
     },
     getTitleString(current) {
         return getTitleString(current.data);

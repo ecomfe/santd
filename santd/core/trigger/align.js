@@ -4,7 +4,6 @@
  **/
 
 import san, {DataTypes} from 'san';
-import classNames from 'classnames';
 import {alignElement, alignPoint} from 'dom-align';
 import {buffer, restoreFocus} from './utils/index';
 

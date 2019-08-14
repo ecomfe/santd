@@ -5,7 +5,6 @@
 
 import san, {DataTypes} from 'san';
 import {classCreator} from '..//core/util';
-import classNames from 'classnames';
 import Checkbox from './src/checkbox';
 import './style/index.less';
 

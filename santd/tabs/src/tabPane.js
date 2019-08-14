@@ -4,7 +4,6 @@
  **/
 
 import san, {DataTypes} from 'san';
-import classNames from 'classnames';
 
 export default san.defineComponent({
     dataTypes: {
@@ -22,12 +21,10 @@ export default san.defineComponent({
             const prefixCls = rootPrefixCls + '-tabpane';
             const active = this.data.get('active');
             const className = this.data.get('className');
-
-            return classNames({
-                [`${prefixCls}`]: true,
-                [`${prefixCls}-inactive`]: !active,
-                [`${prefixCls}-active`]: active
-            }, className);
+            let classArr = [prefixCls, className];
+            !active && classArr.push(`${prefixCls}-inactive`);
+            active && classArr.push(`${prefixCls}-active`);
+            return classArr;
         },
         shouldRender() {
             const destroyInactiveTabPane = this.data.get('destroyInactiveTabPane');

@@ -4,7 +4,6 @@
  **/
 
 import san, {DataTypes} from 'san';
-import classNames from 'classnames';
 
 export default san.defineComponent({
     dataTypes: {
@@ -19,10 +18,9 @@ export default san.defineComponent({
             const visible = this.data.get('visible');
             const className = this.data.get('className');
             const hiddenClassName = this.data.get('hiddenClassName');
-
-            return classNames(className, {
-                [`${hiddenClassName}`]: !visible
-            });
+            let classArr = [className];
+            !visible && classArr.push(hiddenClassName);
+            return classArr;
         }
     },
     handleMouseEnter(e) {

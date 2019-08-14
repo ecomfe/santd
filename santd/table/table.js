@@ -10,7 +10,6 @@ import Spin from '../spin';
 import Pagination from '../pagination';
 import {classCreator} from '../core/util';
 import shallowEqual from 'shallowequal';
-import classNames from 'classnames';
 import SelectionBox from './SelectionBox';
 import SelectionCheckboxAll from './SelectionCheckboxAll';
 import FilterDropdown from './filterDropdown';
@@ -121,12 +120,11 @@ export default san.defineComponent({
             const bordered = this.data.get('bordered');
             const data = this.data.get('data');
             const showHeader = this.data.get('showHeader');
-            return classNames({
-                [`${prefixCls}-${size}`]: true,
-                [`${prefixCls}-bordered`]: bordered,
-                [`${prefixCls}-empty`]: !data.length,
-                [`${prefixCls}-without-column-header`]: !showHeader
-            });
+            let classArr = [`${prefixCls}-${size}`];
+            bordered && classArr.push(`${prefixCls}-bordered`);
+            !data.length && classArr.push(`${prefixCls}-empty`);
+            !showHeader && classArr.push(`${prefixCls}-without-column-header`);
+            return classArr;
         },
         data() {
             const instance = this.data.get('instance');
@@ -158,9 +156,9 @@ export default san.defineComponent({
                     }
                     return true;
                 });
-                const selectionColumnClass = classNames(`${prefixCls}-selection-column`, {
-                    [`${prefixCls}-selection-column-custom`]: rowSelection.selections
-                });
+                let classArr = [`${prefixCls}-selection-column`];
+                rowSelection.selections && classArr.push(`${prefixCls}-selection-column-custom`);
+                const selectionColumnClass = classArr.join(' ');
 
                 const selectionColumn = {
                     key: 'selection-column',
@@ -286,14 +284,15 @@ export default san.defineComponent({
                 const filterDropdown = (column.filters && column.filters.length > 0) || column.filterDropdown;
                 const isSortColumn = instance && instance.isSortColumn(column);
                 const sortDirections = column.sortDirections || this.data.get('sortDirections');
+                let classArr = [column.className];
+                (column.sorter || filterDropdown) && classArr.push(`${prefixCls}-column-has-actions`);
+                filterDropdown && classArr.push(`${prefixCls}-column-has-filters`);
+                column.sorter && classArr.push(`${prefixCls}-column-has-sorters`);
+                isSortColumn && sortOrder && classArr.push(`${prefixCls}-column-sort`);
+                let resClass = classArr.join(' ');
                 return {
                     ...column,
-                    className: classNames(column.className, {
-                        [`${prefixCls}-column-has-actions`]: column.sorter || filterDropdown,
-                        [`${prefixCls}-column-has-filters`]: filterDropdown,
-                        [`${prefixCls}-column-has-sorters`]: column.sorter,
-                        [`${prefixCls}-column-sort`]: isSortColumn && sortOrder
-                    }),
+                    className: resClass,
                     title: (column.title && !column.sorter ? column.title : function () {
                         return san.defineComponent({
                             initData() {

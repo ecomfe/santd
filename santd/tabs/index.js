@@ -4,7 +4,6 @@
  */
 
 import san, {DataTypes} from 'san';
-import classNames from 'classnames';
 import Icon from '../icon';
 import {classCreator} from '../core/util';
 import tabs, {TabPane, TabContent} from './src/index';
@@ -86,10 +85,10 @@ const Tabs = san.defineComponent({
                             const tabPosition = this.data.get('tabBarPosition');
                             const size = this.data.get('size');
                             const type = this.data.get('type');
-                            return classNames(`${prefixCls}-${tabPosition}-bar`, {
-                                [`${prefixCls}-${size}-bar`]: !!size,
-                                [`${prefixCls}-card-bar`]: type && type.indexOf('card') >= 0
-                            });
+                            let classArr = [`${prefixCls}-${tabPosition}-bar`];
+                            !!size && classArr.push(`${prefixCls}-${size}-bar`);
+                            type && type.indexOf('card') >= 0 && classArr.push(`${prefixCls}-card-bar`);
+                            return classArr.join(' ');
                         }
                     }
                 });
@@ -112,10 +111,9 @@ const Tabs = san.defineComponent({
                         className() {
                             const tabPosition = this.data.get('tabBarPosition');
                             const type = this.data.get('type') || '';
-                            return classNames(
-                                `${prefixCls}-${tabPosition}-content`,
-                                type.indexOf('card') >= 0 && prefixCls + '-card-content'
-                            );
+                            let classArr = [`${prefixCls}-${tabPosition}-content`];
+                            type.indexOf('card') >= 0 && classArr.push(prefixCls + '-card-content');
+                            return classArr.join(' ');
                         }
                     }
                 });
@@ -137,9 +135,7 @@ const Tabs = san.defineComponent({
                         computed: {
                             classes() {
                                 const closable = this.data.get('closable');
-                                return classNames({
-                                    [`${prefixCls}-tab-uncloseable`]: !closable
-                                });
+                                return !closable ? [`${prefixCls}-tab-uncloseable`] : '';
                             },
                             isComponent() {
                                 const instance = this.data.get('instance');
@@ -217,14 +213,12 @@ const Tabs = san.defineComponent({
             const size = this.data.get('size');
             const hasTabPaneAnimated = this.data.get('hasTabPaneAnimated');
             const type = this.data.get('type');
-
-            return classNames(className, {
-                [`${prefixCls}-vertical`]: tabPosition === 'left' || tabPosition === 'right',
-                [`${prefixCls}-${size}`]: !!size,
-                [`${prefixCls}-card`]: type.indexOf('card') >= 0,
-                [`${prefixCls}-${type}`]: true,
-                [`${prefixCls}-no-animation`]: !hasTabPaneAnimated
-            });
+            let classArr = [className, `${prefixCls}-${type}`];
+            (tabPosition === 'left' || tabPosition === 'right') && classArr.push(`${prefixCls}-vertical`);
+            !!size && classArr.push(`${prefixCls}-${size}`);
+            type.indexOf('card') >= 0 && classArr.push(`${prefixCls}-card`);
+            !hasTabPaneAnimated && classArr.push(`${prefixCls}-no-animation`);
+            return classArr.join(' ');
         },
         hasTabPaneAnimated() {
             const animated = this.data.get('animated');

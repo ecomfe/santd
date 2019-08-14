@@ -5,7 +5,6 @@
 
 import san, {DataTypes} from 'san';
 import CheckableTag from './checkableTag';
-import classNames from 'classnames';
 import {classCreator} from '../core/util';
 import Wave from '../core/util/wave';
 import Icon from '../icon';
@@ -34,12 +33,11 @@ const Tag = san.defineComponent({
             const color = this.data.get('color');
             const className = this.data.get('className');
             const isPresetColor = this.data.get('isPresetColor');
-
-            return classNames(prefixCls, {
-                [`${prefixCls}-${color}`]: isPresetColor,
-                [`${prefixCls}-has-color`]: color && !isPresetColor,
-                [`${prefixCls}-hidden`]: !visible
-            }, className);
+            let classArr = [prefixCls, className];
+            isPresetColor && classArr.push(`${prefixCls}-${color}`);
+            color && !isPresetColor && classArr.push(`${prefixCls}-has-color`);
+            !visible && classArr.push(`${prefixCls}-hidden`);
+            return classArr;
         },
         isPresetColor() {
             const color = this.data.get('color');

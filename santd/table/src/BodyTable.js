@@ -4,7 +4,6 @@
  **/
 
 import san, {DataTypes} from 'san';
-import classNames from 'classnames';
 import BaseTable from './BaseTable';
 import toStyle from 'to-style';
 
@@ -74,11 +73,11 @@ export default san.defineComponent({
             const fixed = this.data.get('fixed');
             const columns = this.data.get('columns');
             const prefixCls = this.data.get('prefixCls');
-
-            return classNames({
-                [`${prefixCls}-body-outer`]: fixed && columns.length,
-                [`${prefixCls}-body`]: !fixed
-            });
+            
+            let classArr = [];
+            fixed && columns.length && classArr.push(`${prefixCls}-body-outer`);
+            !fixed && classArr.push(`${prefixCls}-body`);
+            return classArr;
         },
         bodyStyle() {
             const scroll = this.data.get('scroll');

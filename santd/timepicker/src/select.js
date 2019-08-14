@@ -4,7 +4,6 @@
  **/
 
 import san, {DataTypes} from 'san';
-import classNames from 'classnames';
 import getRequestAnimationFrame from '../../core/util/getRequestAnimationFrame';
 
 const raf = getRequestAnimationFrame();
@@ -45,10 +44,9 @@ export default san.defineComponent({
         classes() {
             const prefixCls = this.data.get('prefixCls');
             const active = this.data.get('active');
-
-            return classNames(`${prefixCls}-select`, {
-                [`${prefixCls}-select-active`]: active
-            });
+            let classArr = [`${prefixCls}-select`];
+            active && classArr.push(`${prefixCls}-select-active`);
+            return classArr;
         },
         renderOptions() {
             const options = this.data.get('options');
@@ -56,10 +54,10 @@ export default san.defineComponent({
             const selectedIndex = this.data.get('selectedIndex');
 
             return options.map((option, index) => {
-                option.className = classNames({
-                    [`${prefixCls}-select-option-selected`]: selectedIndex === index,
-                    [`${prefixCls}-select-option-disabled`]: option.disabled
-                });
+                let classArr = [];
+                selectedIndex === index && classArr.push(`${prefixCls}-select-option-selected`);
+                option.disabled && classArr.push(`${prefixCls}-select-option-disabled`);
+                option.className = classArr.join(' ');
                 return option;
             });
         }

@@ -5,7 +5,6 @@
 
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
-import classNames from 'classnames';
 const prefixCls = classCreator('tag')();
 
 export default san.defineComponent({
@@ -15,11 +14,9 @@ export default san.defineComponent({
     computed: {
         classes() {
             const checked = this.data.get('checked');
-            return classNames({
-                [`${prefixCls}`]: true,
-                [`${prefixCls}-checkable`]: true,
-                [`${prefixCls}-checkable-checked`]: checked
-            });
+            let classArr = [prefixCls, `${prefixCls}-checkable`];
+            checked && classArr.push(`${prefixCls}-checkable-checked`);
+            return classArr;
         }
     },
     initData() {

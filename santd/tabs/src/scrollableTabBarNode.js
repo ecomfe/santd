@@ -4,7 +4,6 @@
  **/
 
 import san, {DataTypes} from 'san';
-import classNames from 'classnames';
 import debounce from 'lodash/debounce';
 import ResizeObserver from 'resize-observer-polyfill';
 import {setTransform, isTransform3dSupported} from './utils';
@@ -34,43 +33,36 @@ export default san.defineComponent({
             const prefixCls = this.data.get('prefixCls');
             const className = this.data.get('className');
             const showNextPrev = this.data.get('showNextPrev');
-
-            return classNames(`${prefixCls}-nav-container`, {
-                [`${prefixCls}-nav-container-scrolling`]: showNextPrev
-            }, className);
+            let classArr = [`${prefixCls}-nav-container`, className];
+            showNextPrev && classArr.push(`${prefixCls}-nav-container-scrolling`);
+            return classArr;
         },
         navClasses() {
             const prefixCls = this.data.get('prefixCls');
             const scrollAnimated = this.data.get('scrollAnimated');
-
-            return classNames({
-                [`${prefixCls}-nav`]: true,
-                [scrollAnimated
-                    ? `${prefixCls}-nav-animated`
-                    : `${prefixCls}-nav-no-animated`]: true
-            });
+            let classArr = [`${prefixCls}-nav`];
+            scrollAnimated
+                ? classArr.push(`${prefixCls}-nav-animated`)
+                : classArr.push(`${prefixCls}-nav-no-animated`);
+            return classArr;
         },
         prevClasses() {
             const prefixCls = this.data.get('prefixCls');
             const prev = this.data.get('prev');
             const next = this.data.get('next');
-
-            return classNames({
-                [`${prefixCls}-tab-prev`]: true,
-                [`${prefixCls}-tab-btn-disabled`]: !prev,
-                [`${prefixCls}-tab-arrow-show`]: prev || next
-            });
+            let classArr = [`${prefixCls}-tab-prev`];
+            !prev && classArr.push(`${prefixCls}-tab-btn-disabled`);
+            (prev || next) && classArr.push(`${prefixCls}-tab-arrow-show`);
+            return classArr.join(' ');
         },
         nextClasses() {
             const prefixCls = this.data.get('prefixCls');
             const prev = this.data.get('prev');
             const next = this.data.get('next');
-
-            return classNames({
-                [`${prefixCls}-tab-next`]: true,
-                [`${prefixCls}-tab-btn-disabled`]: !next,
-                [`${prefixCls}-tab-arrow-show`]: prev || next
-            });
+            let classArr = [`${prefixCls}-tab-next`];
+            !next && classArr.push(`${prefixCls}-tab-btn-disabled`);
+            (prev || next) && classArr.push(`${prefixCls}-tab-arrow-show`);
+            return classArr.join(' ');
         },
         showNextPrev() {
             const prev = this.data.get('prev');

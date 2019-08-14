@@ -14,7 +14,6 @@ import OkButton from './calendar/okButton';
 import TimePickerButton from './calendar/timepickerButton';
 import inherits from '../../core/util/inherits';
 import moment from 'moment';
-import classNames from 'classnames';
 import {syncTime, getTodayTime, isAllowedDate} from './util';
 
 function isEmptyArray(arr) {
@@ -64,18 +63,18 @@ export default inherits(san.defineComponent({
             const showTimePicker = this.data.get('showTimePicker');
             const showWeekNumber = this.data.get('showWeekNumber');
 
-            return classNames(className, prefixCls, `${prefixCls}-range`, {
-                [`${prefixCls}-show-time-picker`]: showTimePicker,
-                [`${prefixCls}-week-number`]: showWeekNumber
-            });
+            let classArr = [className, prefixCls, `${prefixCls}-range`];
+            showTimePicker && classArr.push(`${prefixCls}-show-time-picker`);
+            showWeekNumber && classArr.push(`${prefixCls}-week-number`);
+            return classArr;
         },
         footerClass() {
             const prefixCls = this.data.get('prefixCls');
             const showOkButton = this.data.get('showOkButton');
 
-            return classNames(`${prefixCls}-footer`, `${prefixCls}-range-bottom`, {
-                [`${prefixCls}-footer-show-ok`]: showOkButton
-            });
+            let classArr = [`${prefixCls}-footer`, `${prefixCls}-range-bottom`];
+            showOkButton && classArr.push(`${prefixCls}-footer-show-ok`);
+            return classArr;
         },
         mode() {
             return this.data.get('propMode') || ['date', 'date'];

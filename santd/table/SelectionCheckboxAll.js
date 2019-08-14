@@ -4,7 +4,6 @@
  **/
 
 import san, {DataTypes} from 'san';
-import classNames from 'classnames';
 import Checkbox from '../checkbox';
 import Menu from '../menu';
 import DropDown from '../dropdown';
@@ -38,7 +37,7 @@ export default san.defineComponent({
         },
         selectionPrefixCls() {
             const prefixCls = this.data.get('prefixCls');
-            return classNames(`${prefixCls}-selection`);
+            return [`${prefixCls}-selection`];
         },
         checked() {
             const data = this.data.get('data');
@@ -95,9 +94,7 @@ export default san.defineComponent({
         customSelectionsCls() {
             const hasCustomSelections = this.data.get('hasCustomSelections');
             const prefixCls = this.data.get('prefixCls');
-            return classNames({
-                [`${prefixCls}-selection-select-all-custom`]: hasCustomSelections
-            });
+            return hasCustomSelections ? [`${prefixCls}-selection-select-all-custom`] : '';
         },
         menu() {
             const newSelections = this.data.get('newSelections');

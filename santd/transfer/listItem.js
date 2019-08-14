@@ -3,7 +3,6 @@
  * @author mayihui@baidu.com
  **/
 import san from 'san';
-import classNames from 'classnames';
 import Checkbox from '../checkbox';
 
 export default san.defineComponent({
@@ -12,10 +11,9 @@ export default san.defineComponent({
             const prefixCls = this.data.get('prefixCls');
             const item = this.data.get('item') || {};
             const disabled = this.data.get('disabled');
-
-            return classNames(`${prefixCls}-content-item`, {
-                [`${prefixCls}-content-item-disabled`]: disabled || item.disabled
-            });
+            let classArr = [`${prefixCls}-content-item`];
+            (disabled || item.disabled) && classArr.push(`${prefixCls}-content-item-disabled`);
+            return classArr;
         },
         title() {
             const renderText = this.data.get('renderText');

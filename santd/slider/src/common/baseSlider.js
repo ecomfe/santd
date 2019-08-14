@@ -4,7 +4,6 @@
  **/
 
 import san, {DataTypes} from 'san';
-import classNames from 'classnames';
 import Steps from './steps';
 import Marks from './marks';
 import Handle from '../handle';
@@ -77,11 +76,11 @@ export default san.defineComponent({
             const vertical = this.data.get('vertical');
             const marks = this.data.get('marks');
 
-            return classNames(prefixCls, {
-                [`${prefixCls}-with-marks`]: Object.keys(marks).length,
-                [`${prefixCls}-disabled`]: disabled,
-                [`${prefixCls}-vertical`]: vertical
-            }, className);
+            let classArr = [prefixCls, className];
+            Object.keys(marks).length && classArr.push(`${prefixCls}-with-marks`);
+            disabled && classArr.push(`${prefixCls}-disabled`);
+            vertical && classArr.push(`${prefixCls}-vertical`);
+            return classArr;
         }
     },
     attached() {

@@ -6,7 +6,6 @@
 
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
-import classNames from 'classnames';
 import Icon from '../icon';
 import Trigger from '../core/trigger/index';
 import CreateMenu from './createMenu';
@@ -79,23 +78,19 @@ export default san.defineComponent({
             const disabled = this.data.get('disabled');
             const size = this.data.get('sizeMap')[this.data.get('size')];
             const dyClass = this.data.get('classNames');
-            return classNames({
-                [`${prefixCls}-${dyClass}`]: true,
-                [`${prefixCls}`]: true,
-                [`${prefixCls}-open`]: open,
-                [`${prefixCls}-disabled`]: disabled,
-                [`${prefixCls}-enabled`]: !disabled,
-                [`${prefixCls}-focused`]: open,
-                [`${prefixCls}-${size}`]: !!size
-            });
+            let classArr = [`${prefixCls}-${dyClass}`, prefixCls];
+            open && classArr.push(`${prefixCls}-open`);
+            disabled && classArr.push(`${prefixCls}-disabled`);
+            !disabled && classArr.push(`${prefixCls}-enabled`);
+            !!size && classArr.push(`${prefixCls}-${size}`);
+            return classArr;
         },
         containerClass() {
             const multiple = !!this.data.get('mode');
-            return classNames({
-                [`${prefixCls}-selection`]: true,
-                [`${prefixCls}-selection--multiple`]: multiple,
-                [`${prefixCls}-selection--single`]: !multiple
-            });
+            let classArr = [`${prefixCls}-selection`];
+            multiple && classArr.push(`${prefixCls}-selection--multiple`);
+            !multiple && classArr.push(`${prefixCls}-selection--single`);
+            return classArr;
         },
         loadingIcon() {
             const loading = this.data.get('loading');
@@ -103,11 +98,7 @@ export default san.defineComponent({
         },
         popupClass() {
             const dropdownClassName = this.data.get('dropdownClassName');
-            return classNames({
-                'san-select-dropdown': true,
-                'san-select-dropdown--single': true,
-                [`${dropdownClassName}`]: true
-            });
+            return ['san-select-dropdown', 'san-select-dropdown--single', dropdownClassName].join(' ');
         },
         popupStyle() {
             const width = this.data.get('width');

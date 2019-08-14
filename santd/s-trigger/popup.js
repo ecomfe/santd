@@ -5,8 +5,6 @@
 
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
-
-import classNames from 'classnames';
 import animate from '../core/util/css-animation';
 import Menu from '../menu';
 import Icon from '../icon';
@@ -188,13 +186,12 @@ export default san.defineComponent({
             const overlayClassName = this.data.get('overlayClassName');
             const hide = !this.data.get('isShow');
             const showDone = this.data.get('showDone');
-            return classNames({
-                [`${prefixCls}`]: true,
-                [`${prefixCls}-hidden`]: hide && showDone,
-                [`${overlayClassName}`]: !!overlayClassName,
-                [`${className}`]: !!className,
-                [`${dropdownClass}`]: !!dropdownClass
-            });
+            let classArr = [prefixCls];
+            hide && showDone && classArr.push(`${prefixCls}-hidden`);
+            overlayClassName && classArr.push(overlayClassName);
+            className && classArr.push(className);
+            dropdownClass && classArr.push(dropdownClass);
+            return classArr;
         },
         getListener() {
             const popupListener = this.data.get('popupListener');

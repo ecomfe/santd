@@ -4,7 +4,6 @@
  **/
 
 import san, {DataTypes} from 'san';
-import classNames from 'classnames';
 import locale from './locale/en_US';
 import {isAllowedDate} from '../src/util/index';
 
@@ -31,10 +30,10 @@ export default san.defineComponent({
             const visible = this.data.get('visible');
             const showWeekNumber = this.data.get('showWeekNumber');
 
-            return classNames(prefixCls, {
-                [`${prefixCls}-hidden`]: !visible,
-                [`${prefixCls}-week-number`]: showWeekNumber
-            }, customClassName, className);
+            let classArr = [prefixCls, customClassName, className];
+            !visible && classArr.push(`${prefixCls}-hidden`);
+            showWeekNumber && classArr.push(`${prefixCls}-week-number`);
+            return classArr;
         }
     },
     getFormat() {

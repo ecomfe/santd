@@ -4,7 +4,6 @@
  **/
 
 import san, {DataTypes} from 'san';
-import classNames from 'classnames';
 import toStyle from 'to-style';
 import ColGroup from './ColGroup';
 import TableHeader from './TableHeader';

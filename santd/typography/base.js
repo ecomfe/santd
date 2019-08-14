@@ -5,7 +5,6 @@
 
 import './style/index.less';
 import san, {NodeType} from 'san';
-import classNames from 'classnames';
 import icon from '../icon';
 import tooltip from '../tooltip';
 import copy from 'copy-to-clipboard';
@@ -111,15 +110,15 @@ const create = function (tag) {
                 const cssTextOverflow = rows === 1 && cssEllipsis;
                 const cssLineClamp = rows && rows > 1 && cssEllipsis;
 
-                return classNames(prefix, {
-                    [`${prefix}-secondary`]: type === 'secondary',
-                    [`${prefix}-warning`]: type === 'warning',
-                    [`${prefix}-danger`]: type === 'danger',
-                    [`${prefix}-disabled`]: disabled,
-                    [`${prefix}-ellipsis`]: rows,
-                    [`${prefix}-ellipsis-single-line`]: cssTextOverflow,
-                    [`${prefix}-ellipsis-multiple-line`]: cssLineClamp
-                });
+                let classArr = [prefix];
+                type === 'secondary' && classArr.push(`${prefix}-secondary`);
+                type === 'warning' && classArr.push(`${prefix}-warning`);
+                type === 'danger' && classArr.push(`${prefix}-danger`);
+                disabled && classArr.push(`${prefix}-disabled`);
+                rows && classArr.push(`${prefix}-ellipsis`);
+                cssTextOverflow && classArr.push(`${prefix}-ellipsis-single-line`);
+                cssLineClamp && classArr.push(`${prefix}-ellipsis-multiple-line`);
+                return classArr;
             }
         },
         components: {

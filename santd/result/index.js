@@ -7,7 +7,6 @@ import './style/index.less';
 import san, {DataTypes} from 'san';
 import Icon from '../icon';
 import {classCreator} from '../core/util';
-import classNames from 'classnames';
 import noFound from './noFound';
 import serverError from './serverError';
 import unauthorized from './unauthorized';
@@ -48,12 +47,11 @@ const Result = san.defineComponent({
         classes() {
             const status = this.data.get('status');
             const className = this.data.get('className');
-
-            return classNames(prefixCls, `${prefixCls}-${status}`, className);
+            return [prefixCls, `${prefixCls}-${status}`, className];
         },
         injectIcon() {
             const instance = this.data.get('instance');
-            const className = classNames(`${prefixCls}-icon`);
+            const className = `${prefixCls}-icon`;
             const status = this.data.get('status');
             const icon = this.data.get('icon');
             let renderIcon;

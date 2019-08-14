@@ -5,7 +5,6 @@
 
 import san, {DataTypes} from 'san';
 import toStyle from 'to-style';
-import classNames from 'classnames';
 
 export default san.defineComponent({
     dataTypes: {
@@ -66,11 +65,11 @@ export default san.defineComponent({
             const getClassNameFromAlign = this.data.get('getClassNameFromAlign');
             const visible = this.data.get('visible');
 
-            return classNames(
+            return [
                 prefixCls,
                 className,
                 currentAlignClassName || getClassNameFromAlign(align)
-            );
+            ].join(' ');
         }
     },
     getPopupDomNode() {

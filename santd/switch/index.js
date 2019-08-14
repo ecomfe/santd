@@ -4,7 +4,6 @@
  */
 
 import san, {DataTypes} from 'san';
-import classNames from 'classnames';
 import Icon from '../icon';
 import {classCreator} from '../core/util';
 import './style/index.less';
@@ -59,14 +58,13 @@ export default san.defineComponent({
             const loading = data.get('loading');
             const block = data.get('block');
             const className = data.get('className');
-            return classNames({
-                [`${prefixCls}`]: true,
-                [`${prefixCls}-checked`]: !!checked,
-                [`${prefixCls}-disabled`]: !!disabled,
-                [`${prefixCls}-${size}`]: !!size,
-                [`${prefixCls}-loading`]: !!loading,
-                [`${prefixCls}-block`]: !!block
-            }, className);
+            let classArr = [prefixCls, className];
+            !!checked && classArr.push(`${prefixCls}-checked`);
+            !!disabled && classArr.push(`${prefixCls}-disabled`);
+            !!size && classArr.push(`${prefixCls}-${size}`);
+            !!loading && classArr.push(`${prefixCls}-loading`);
+            !!block && classArr.push(`${prefixCls}-block`);
+            return classArr;
         },
         switchTabIndex() {
             const data = this.data;

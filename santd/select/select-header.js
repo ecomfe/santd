@@ -5,7 +5,6 @@
 
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
-import classNames from 'classnames';
 import KEYCODE from '../core/util/keyCode';
 import Icon from '../icon';
 const prefixCls = classCreator('select')();
@@ -25,10 +24,7 @@ const SingleHeadComponent = san.defineComponent({
             };
         },
         sigleSearch() {
-            return classNames({
-                [`${prefixCls}-search`]: true,
-                [`${prefixCls}-search--inline`]: true
-            });
+            return [`${prefixCls}-search`, `${prefixCls}-search--inline`];
         },
         sigleSearchStyle() {
             const isOpen = this.data.get('allData._open');
@@ -191,10 +187,9 @@ const MultagsComponent = san.defineComponent({
     computed: {
         classes() {
             const disabled = this.data.get('allData.disabled');
-            return classNames({
-                [`${prefixCls}-selection__choice`]: true,
-                [`${prefixCls}-selection__choice__disabled`]: disabled
-            });
+            let classArr = [`${prefixCls}-selection__choice`];
+            disabled && classArr.push(`${prefixCls}-selection__choice__disabled`);
+            return classArr;
         },
         headData() {
             const defaultValue = this.data.get('allData.defaultValue') || [];

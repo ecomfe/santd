@@ -5,7 +5,6 @@
 
 import san, {DataTypes} from 'san';
 import {classCreator} from '../../core/util';
-import classNames from 'classnames';
 import ColumnManager from './ColumnManager';
 import HeadTable from './HeadTable';
 import BodyTable from './BodyTable';
@@ -175,15 +174,12 @@ export default san.defineComponent({
             const scroll = this.data.get('scroll');
             const scrollPosition = this.data.get('scrollPosition');
 
-            return classNames({
-                [`${prefixCls}`]: true,
-                [`${prefixCls}-${className}`]: !!className,
-                [`${prefixCls}-fixed-header`]: useFixedHeader || (scroll && scroll.y),
-                [`${prefixCls}-scroll-position-left
-                 ${prefixCls}-scroll-position-right`]: scrollPosition === 'both',
-                [`${prefixCls}-scroll-position-${scrollPosition}`]: scrollPosition
-                    && scrollPosition !== 'both'
-            });
+            let classArr = [prefixCls];
+            !!className && classArr.push(`${prefixCls}-${className}`);
+            (useFixedHeader || (scroll && scroll.y)) && classArr.push(`${prefixCls}-fixed-header`);
+            scrollPosition === 'both' && classArr.push(`${prefixCls}-scroll-position-left ${prefixCls}-scroll-position-right`);
+            scrollPosition && scrollPosition !== 'both' && classArr.push(`${prefixCls}-scroll-position-${scrollPosition}`);
+            return classArr;
         },
         renderTitle() {
             const title = this.data.get('title');

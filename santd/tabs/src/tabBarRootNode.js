@@ -4,7 +4,6 @@
  **/
 
 import san, {DataTypes} from 'san';
-import classNames from 'classnames';
 
 export default san.defineComponent({
     dataTypes: {
@@ -32,8 +31,7 @@ export default san.defineComponent({
         classes() {
             const prefixCls = this.data.get('prefixCls');
             const className = this.data.get('className');
-
-            return classNames(`${prefixCls}-bar`, className);
+            return [`${prefixCls}-bar`, className];
         },
         hasExtra() {
             return this.data.get('tabBarExtraContent');
