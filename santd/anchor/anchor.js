@@ -5,9 +5,8 @@
 
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util/index';
-import {getScroll} from '../core/util/dom';
+import {getScroll, on, off} from '../core/util/dom';
 import Affix from '../affix';
-import addDOMEventListener from 'add-dom-event-listener';
 import getRequestAnimationFrame from '../core/util/getRequestAnimationFrame';
 import toStyle from 'to-style';
 import './style/index';
@@ -27,11 +26,7 @@ const anchorContent = `
 `;
 
 function getOffsetTop(element, container) {
-    if (!element) {
-        return 0;
-    }
-
-    if (!element.getClientRects().length) {
+    if (!element || !element.getClientRects().length) {
         return 0;
     }
 
@@ -142,7 +137,7 @@ export default san.defineComponent({
         this.data.set('style', {});
     },
     updated() {
-        const children = this.data.get('children');
+        let children = this.data.get('children');
         children.forEach(child => {
             child.data.set('activeLink', this.data.get('activeLink'));
         });
@@ -151,9 +146,19 @@ export default san.defineComponent({
         });
     },
     attached() {
-        const getContainer = this.data.get('getContainer');
-        this.scrollEvent = addDOMEventListener(getContainer(), 'scroll', this.handleScroll.bind(this));
+        let container = this.data.get('getContainer')();
+        this._handleScroll = this.handleScroll.bind(this);
+        if (this._handleScroll) {
+            on(container, 'scroll', this._handleScroll);
+        }
         this.handleScroll();
+    },
+    disposed() {
+        let container = this.data.get('getContainer')();
+        if (this._handleScroll) {
+            off(container, 'scroll', this._handleScroll);
+            this._handleScroll = null;
+        }
     },
     handleScroll() {
         if (this.data.get('animating')) {
@@ -168,28 +173,27 @@ export default san.defineComponent({
         if (typeof document === 'undefined') {
             return;
         }
-        const anchorNode = this.el;
-        const linkNode = anchorNode.getElementsByClassName(`${prefixCls}-link-title-active`)[0];
+        let anchorNode = this.el;
+        let linkNode = anchorNode.getElementsByClassName(`${prefixCls}-link-title-active`)[0];
         if (linkNode) {
             this.ref('inkNode').style.top = `${linkNode.offsetTop + linkNode.clientHeight / 2 - 4.5}px`;
         }
     },
     getCurrentAnchor(offsetTop = 0, bounds = 5) {
-        const activeLink = '';
+        let activeLink = '';
         if (typeof document === 'undefined') {
             return activeLink;
         }
 
-        const linkSections = [];
-        const getContainer = this.data.get('getContainer');
-        const container = getContainer();
-        const links = this.data.get('links');
+        let linkSections = [];
+        let container = this.data.get('getContainer')();
+        let links = this.data.get('links');
         links.forEach(link => {
             const sharpLinkMatch = sharpMatcherRegx.exec(link.toString());
             if (!sharpLinkMatch) {
                 return;
             }
-            const target = document.getElementById(sharpLinkMatch[1]);
+            let target = document.getElementById(sharpLinkMatch[1]);
             if (target) {
                 const top = getOffsetTop(target, container);
                 if (top < offsetTop + bounds) {
@@ -202,23 +206,23 @@ export default san.defineComponent({
         });
 
         if (linkSections.length) {
-            const maxSection = linkSections.reduce((prev, curr) => (curr.top > prev.top ? curr : prev));
+            let maxSection = linkSections.reduce((prev, curr) => (curr.top > prev.top ? curr : prev));
             return maxSection.link;
         }
         return '';
     },
     messages: {
-        addLink(payload) {
+        addChildren(payload) {
             this.data.push('children', payload.value);
         },
         registerLink(payload) {
-            const links = this.data.get('links');
+            let links = this.data.get('links');
             if (!links.includes(payload.value)) {
                 this.data.push('links', payload.value);
             }
         },
         unRegisterLink(payload) {
-            const links = this.data.get('links');
+            let links = this.data.get('links');
             const index = links.indexOf(payload.value);
             if (index !== -1) {
                 this.data.removeAt('links', index);

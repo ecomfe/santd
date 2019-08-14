@@ -24,19 +24,23 @@ export default san.defineComponent({
             const href = this.data.get('href');
             const active = this.data.get('activeLink') === href;
             const className = this.data.get('className');
+
             let classArr = [className, `${prefixCls}-link`];
             active && classArr.push(`${prefixCls}-link-active`);
+
             return classArr;
         },
         titleClasses() {
             const active = this.data.get('activeLink') === this.data.get('href');
+
             let classArr = [`${prefixCls}-link-title`];
             active && classArr.push(`${prefixCls}-link-title-active`);
+
             return classArr;
         }
     },
     inited() {
-        this.dispatch('addLink', this);
+        this.dispatch('addChildren', this);
     },
     updated() {
         this.dispatch('registerLink', this.data.get('href'));
