@@ -6,16 +6,9 @@
 import './style/index.less';
 import san, {DataTypes} from 'san';
 import Icon from '../icon';
+import {classCreator, guid, type} from '../core/util';
 
-// 注意公共方法提取到 util，送人玫瑰手有余香~
-import {
-    classCreator,
-    guid,
-    type
-} from '../core/util';
-
-// cc()就是 prefix class，cc('xxx')返回 prefixClass-xxx
-const cc = classCreator('avatar');
+const prefixCls = classCreator('avatar')();
 
 export default san.defineComponent({
     dataTypes: {
@@ -27,31 +20,33 @@ export default san.defineComponent({
     },
     initData() {
         return {
+            prefixCls,
             shape: 'circle',
             size: 'default',
             isImgExist: true
         };
     },
     computed: {
-        id() {
-            return cc() + guid(cc());
+        // 这里修改成guid，因为id会被加到root元素上，导致取到的元素不正确
+        guid() {
+            return guid(prefixCls);
         },
         classes() {
             const data = this.data;
             // 处理class
-            const prefixCls = cc();
-
             const isImgExist = data.get('isImgExist');
             const src = data.get('src');
             const size = data.get('size');
             const shape = data.get('shape');
             const icon = data.get('icon');
+
             let classArr = [prefixCls];
             size === 'large' && classArr.push(`${prefixCls}-lg`);
             size === 'small' && classArr.push(`${prefixCls}-sm`);
             shape && classArr.push(`${prefixCls}-${shape}`);
             src && isImgExist && classArr.push(`${prefixCls}-image`);
             icon && classArr.push(`${prefixCls}-icon`);
+
             return classArr;
         },
         styles() {
@@ -60,57 +55,52 @@ export default san.defineComponent({
             const icon = data.get('icon');
 
             return type(size, 'number') || /\d+/.test(size)
-                ? `width: ${size}px;height:${size}px; line-height:${size}px; font-size: ${
-                icon ? `${size / 2}px` : '18px'
-                } `
+                ? `width: ${size}px;height:${size}px; line-height:${size}px; font-size: ${icon ? `${size / 2}px` : '18px'} `
                 : '';
+        },
+        scaleClass() {
+            const scaleStyle = this.data.get('scaleStyle');
+            const hasSlot = this.data.get('hasSlot');
+            if (scaleStyle && hasSlot) {
+                return prefixCls + '-string';
+            }
         }
     },
     setScale() {
-        const childrenNode = document.getElementById(this.data.get('id'));
+        const childrenNode = document.getElementById(this.data.get('guid'));
         if (childrenNode) {
             const childrenWidth = childrenNode.offsetWidth;
             const avatarWidth = this.el.getBoundingClientRect().width;
-            let scale = 1;
-            if (avatarWidth - 8 < childrenWidth) {
-                scale = (avatarWidth - 8) / childrenWidth;
-            }
-            else {
-                scale = 1;
-            }
+            const scale = (avatarWidth - 8 < childrenWidth)
+                ? (avatarWidth - 8) / childrenWidth
+                : 1;
 
-            if (scale !== 1) {
-                const transformString = `scale(${scale}) translateX(-50%)`;
-                let scaleStyle = [
-                    `-ms-transform:${transformString}`,
-                    `-webkit-transform:${transformString}`,
-                    `transform:${transformString}`
-                ].join(';');
+            const transformString = `scale(${scale}) translateX(-50%)`;
+            let scaleStyle = [
+                `-ms-transform:${transformString}`,
+                `-webkit-transform:${transformString}`,
+                `transform:${transformString}`
+            ].join(';');
 
-                const size = this.data.get('size');
-                if (type(size, 'number') || /\d+/.test(size)) {
-                    scaleStyle += `line-height: ${size}px`;
-                }
-
-                this.data.set('scaleStyle', scaleStyle);
+            const size = this.data.get('size');
+            if (type(size, 'number') || /\d+/.test(size)) {
+                scaleStyle += `line-height: ${size}px`;
             }
+            this.data.set('scaleStyle', scaleStyle);
         }
-
     },
     handleImgLoadError() {
         this.fire('error');
     },
+    updated() {
+        this.setScale();
+    },
     attached() {
-        this.nextTick(() => {
-            this.setScale();
-        });
         if (this.sourceSlots.noname && this.sourceSlots.noname.length) {
             const data = this.data;
             data.set('hasSlot', true);
         }
-
     },
-
     template: `
         <span class="{{classes}}" style="{{styles}}">
             <img s-if="{{src && isImgExist}}"
@@ -120,9 +110,10 @@ export default san.defineComponent({
                 alt="{{alt}}"
             />
             <s-icon s-if="{{icon}}" type="{{icon}}"></s-icon>
-            <span s-if="hasSlot"
-                class="${cc('string')}"
-                id="{{id}}"
+            <span
+                s-if="{{hasSlot}}"
+                class="{{scaleClass}}"
+                id="{{guid}}"
                 style="{{scaleStyle}}"
             >
             <slot></slot>
