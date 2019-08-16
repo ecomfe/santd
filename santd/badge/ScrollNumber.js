@@ -72,13 +72,15 @@ export default san.defineComponent({
                     if (count > this.lastCount) {
                         if (currentDigit >= lastDigit) {
                             pos = 10 + numArr[i];
-                        } else {
+                        }
+                        else {
                             pos = 20 + numArr[i];
                         }
                     }
                     else if (currentDigit <= lastDigit) {
                         pos = 10 + numArr[i];
-                    } else {
+                    }
+                    else {
                         pos = numArr[i];
                     }
                 }

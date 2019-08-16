@@ -5,7 +5,6 @@
 
 import './style/index.less';
 import san, {DataTypes} from 'san';
-// 注意公共方法提取到 util，送人玫瑰手有余香~
 import {classCreator} from '../core/util';
 import ScrollNumber from './ScrollNumber';
 const prefixCls = classCreator('badge')();
@@ -35,12 +34,12 @@ export default san.defineComponent({
     },
     initData() {
         return {
+            prefixCls,
+            scrollNumberPrefixCls,
             count: null,
             showZero: false,
             dot: false,
             overflowCount: 99,
-            prefixCls: prefixCls,
-            scrollNumberPrefixCls: scrollNumberPrefixCls,
             style: {}
         };
     },
@@ -71,15 +70,14 @@ export default san.defineComponent({
             const hasStatus = this.data.get('hasStatus');
             const hasChild = this.data.get('hasChild');
             let classArr = [className, prefixCls];
+
             hasStatus && classArr.push(`${prefixCls}-status`);
             !hasChild && classArr.push(`${prefixCls}-not-a-wrapper`);
             return classArr;
-            
         },
         hasStatus() {
             const status = this.data.get('status');
             const color = this.data.get('color');
-
             return !!status || !!color;
         },
         styleWithOffset() {
@@ -100,6 +98,7 @@ export default san.defineComponent({
             const status = this.data.get('status');
             const color = this.data.get('color');
             let classArr = [];
+
             hasStatus && classArr.push(`${prefixCls}-status-dot`);
             status && classArr.push(`${prefixCls}-status-${status}`);
             (presetColorTypes.indexOf(color) !== -1) && classArr.push(`${prefixCls}-status-${color}`);
@@ -123,16 +122,12 @@ export default san.defineComponent({
         getDisplayCount() {
             const isDot = this.data.get('isDot');
             // dot mode don't need count
-            if (isDot) {
-                return '';
-            }
-            return this.data.get('getNumberedDispayCount');
+            return isDot ? '' : this.data.get('getNumberedDispayCount');
         },
         isHidden() {
             const showZero = this.data.get('showZero');
             const displayCount = this.data.get('getDisplayCount');
             const isZero = this.data.get('isZero');
-            // const isDot = this.data.get('isDot');
             const isEmpty = displayCount === null || displayCount === undefined || displayCount === '';
             return (isEmpty || (isZero && !showZero));
         },
@@ -140,7 +135,8 @@ export default san.defineComponent({
             const isDot = this.data.get('isDot');
             const prefixCls = this.data.get('prefixCls');
             const count = this.data.get('count');
-            let classArr =[];
+            let classArr = [];
+
             isDot && classArr.push(`${prefixCls}-dot`);
             !isDot && classArr.push(`${prefixCls}-count`);
             (!isDot && count && count.toString && count.toString().length > 1) && classArr.push(`${prefixCls}-status-${status}`);
