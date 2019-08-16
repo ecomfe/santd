@@ -5,16 +5,18 @@
 
 import './style/index.less';
 import san, {DataTypes} from 'san';
+import {on, off} from '../core/util/dom';
 import {classCreator} from '../core/util';
 
-const cc = classCreator('back-top');
+const prefixCls = classCreator('back-top')();
+
 export default san.defineComponent({
-    getDefaultTarget() {
-        return window;
+    dataTypes: {
+        visibilityHeight: DataTypes.number,
+        target: DataTypes.func
     },
     getCurrentScrollTop() {
-        let getTarget = this.data.get('target') || this.getDefaultTarget;
-        let targetNode = getTarget();
+        let targetNode = this.data.get('target')();
         if (targetNode === window) {
             return window.pageYOffset
                 || document.body.scrollTop
@@ -23,8 +25,7 @@ export default san.defineComponent({
         return targetNode.scrollTop;
     },
     setScrollTop(value) {
-        let getTarget = this.data.get('target') || this.getDefaultTarget;
-        let targetNode = getTarget();
+        let targetNode = this.data.get('target')();
         if (targetNode === window) {
             document.body.scrollTop = value;
             document.documentElement.scrollTop = value;
@@ -39,31 +40,36 @@ export default san.defineComponent({
     },
     initData() {
         return {
+            prefixCls,
             visibilityHeight: 400,
-            target: '',
+            target() {
+                return window;
+            },
             visible: false,
             hasSlot: false
         };
     },
-    inited() {
-        if (this.sourceSlots.noname && this.sourceSlots.noname.length) {
-            this.data.set('hasSlot', true);
-        }
-    },
     handleScroll() {
-        let scrollTop = this.getCurrentScrollTop();
+        const scrollTop = this.getCurrentScrollTop();
         this.data.set('visible', scrollTop > this.data.get('visibilityHeight'));
     },
     attached() {
-        let $this = this;
-        window.addEventListener('scroll', function () {
-            $this.handleScroll();
-        });
+        this._scroll = this.handleScroll.bind(this);
+        on(window, 'scroll', this._scroll);
+        if (this.sourceSlots.noname && this.sourceSlots.noname.length) {
+            this.data.set('hasSlot', true);
+        }
+        this.handleScroll();
     },
-    template: `<div>
-            <div s-if="{{visible}}" class="${cc()}" on-click="scrollToTop($event)">
-                <div class="${cc()}-content" data-hasSlot="{{hasSlot}}">
-                    <div class="${cc()}-icon" s-if="{{!hasSlot}}"></div>
+    disposed() {
+        off(window, 'scroll', this._scroll);
+        this._scroll = null;
+    },
+    template: `
+        <div>
+            <div s-if="{{visible}}" class="{{prefixCls}}" on-click="scrollToTop($event)">
+                <div class="{{prefixCls}}-content" data-hasSlot="{{hasSlot}}">
+                    <div class="{{prefixCls}}-icon" s-if="{{!hasSlot}}"></div>
                     <slot></slot>
                 </div>
             </div>
