@@ -5,7 +5,7 @@
 
 ```html
 <template>
-    <div>
+    <div id="components-anchor-demo-static">
         <s-anchor affix="{{false}}">
             <s-link href="#components-anchor-demo-basic" title="Basic Demo" />
             <s-link href="#components-anchor-demo-static" title="Static Demo" />
