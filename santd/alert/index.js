@@ -43,10 +43,11 @@ export default san.defineComponent({
         showIcon: DataTypes.bool,
         type: DataTypes.oneOf(['success', 'info', 'error', 'warning'])
     },
+
     components: {
         's-icon': Icon
     },
-    
+
     computed: {
         className() {
             const data = this.data;
@@ -66,6 +67,7 @@ export default san.defineComponent({
 
             return klass;
         },
+
         iconType() {
             return this.data.get('icon') || iconMap[this.data.get('type')] || 'smile';
         }
@@ -73,7 +75,6 @@ export default san.defineComponent({
 
     initData() {
         return {
-            banner: false,
             closing: true
         };
     },
