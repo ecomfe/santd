@@ -4,26 +4,95 @@
 */
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
-import breadcrumbList from './breadcrumbList';
+import breadcrumbItem from './breadcrumbItem';
 import './style/index';
 const prefixCls = classCreator('breadcrumb')();
 
+function getBreadcrumbName(route, params) {
+    if (!route.breadcrumbName) {
+        return null;
+    }
+    const paramsKeys = Object.keys(params).join('|');
+    const name = route.breadcrumbName.replace(
+        new RegExp(`:(${paramsKeys})`, 'g'),
+        (replacement, key) => params[key] || replacement,
+    );
+    return name;
+}
+
+function getPath(path, params = {}) {
+    path = (path || '').replace(/^\//, '');
+    Object.keys(params).forEach(key => {
+        path = path.replace(`:${key}`, params[key]);
+    });
+    return path;
+}
+
+const defaultItemRender = san.defineComponent({
+    computed: {
+        isLastItem() {
+            const routes = this.data.get('routes');
+            const route = this.data.get('route');
+
+            return routes.indexOf(route) === routes.length - 1;
+        },
+        name() {
+            const route = this.data.get('route');
+            const params = this.data.get('params') || {};
+            return getBreadcrumbName(route, params);
+        },
+        href() {
+            const paths = this.data.get('paths');
+
+            return `#/${paths.join('/')}`;
+        }
+    },
+    template: `<span>
+        <span s-if="{{isLastItem}}">{{name}}</span>
+        <a s-else href="{{href}}">{{name}}</a>
+    </span>`
+});
+
 export default san.defineComponent({
     components: {
-        's-breadcrumb-list': breadcrumbList
+        's-breadcrumb-item': breadcrumbItem
     },
     dataTypes: {
         separator: DataTypes.string,
         routes: DataTypes.instanceOf(Array)
     },
+    initData() {
+        return {
+            separator: '/',
+            paths: []
+        };
+    },
     computed: {
-        newRouteComponts() {
-            const itemRender = this.data.get('itemRender');
-            const routes = this.data.get('routes');
-            return routes && itemRender ? routes.map(route => {
-                return itemRender(route);
-            }) : [];
+        classes() {
+            const className = this.data.get('className');
+
+            let klass = [prefixCls];
+            className && klass.push(className);
+
+            return klass;
+        },
+        injectItemRender() {
+            const instance = this.data.get('instance');
+            const itemRender = this.data.get('itemRender') || defaultItemRender;
+            if (instance) {
+                instance.components.itemrender = itemRender;
+            }
         }
+    },
+    getPaths(path, params) {
+        let paths = this.data.get('paths');
+        const result = getPath(path, params);
+
+        result && (paths.push(result));
+        return paths;
+    },
+    inited() {
+        this.data.set('instance', this);
     },
     messages: {
         addBreadcrumbItem(payload) {
@@ -35,17 +104,19 @@ export default san.defineComponent({
         }
     },
     template: `
-        <div class="${prefixCls}">
-            <span s-if="routes" s-for="route,index in routes">
-                <s-breadcrumb-list
-                    index="{{index}}"
+        <div class="{{classes}}">
+            <s-breadcrumb-item
+                s-if="routes && routes.length"
+                s-for="route, index in routes"
+                separator="{{separator}}"
+            >
+                <itemrender
                     route="{{route}}"
-                    itemRender="{{itemRender}}"
                     params="{{params}}"
-                    allLen="{{routes.length}}"
-                ></s-breadcrumb-list>
-                <span class="${prefixCls}-separator">/</span>
-            </span>
+                    routes="{{routes}}"
+                    paths="{{getPaths(route.path, params)}}"
+                />
+            </s-breadcrumb-item>
             <slot s-else></slot>
         </div>
     `
