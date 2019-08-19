@@ -22,7 +22,7 @@ export default san.defineComponent({
     template: `
         <div class="{{className}}" on-animationend="animationEnd" style="{{elStyle}}">
             <slot s-if="{{showIcon}}" name="icon">
-                <s-icon class="${prefixCls}-icon" type="{{iconType}}" theme="{{iconTheme}}" />
+                <s-icon class="${prefixCls}-icon" type="{{iconType}}" theme="{{description ? 'outlined' : 'filled'}}" />
             </slot>
             <span class="${prefixCls}-message">{{message}}</span>
             <span class="${prefixCls}-description">{{description}}</span>
@@ -32,6 +32,7 @@ export default san.defineComponent({
             </a>
         </div>
     `,
+
     dataTypes: {
         banner: DataTypes.bool,
         closable: DataTypes.bool,
@@ -45,6 +46,7 @@ export default san.defineComponent({
     components: {
         's-icon': Icon
     },
+    
     computed: {
         className() {
             const data = this.data;
@@ -66,17 +68,16 @@ export default san.defineComponent({
         },
         iconType() {
             return this.data.get('icon') || iconMap[this.data.get('type')] || 'smile';
-        },
-        iconTheme() {
-            return this.data.get('description') ? 'outlined' : 'filled';
         }
     },
+
     initData() {
         return {
             banner: false,
             closing: true
         };
     },
+
     inited() {
         const data = this.data;
         let type = data.get('type');
@@ -95,6 +96,7 @@ export default san.defineComponent({
         // 默认类型info
         undefined === type && data.set('type', 'info');
     },
+
     attached() {
         const customIcon = this.slot('icon')[0];
         if (customIcon && customIcon.isInserted) {
@@ -108,11 +110,13 @@ export default san.defineComponent({
             this.data.set('elStyle', `height: ${this.el.offsetHeight}px`);
         }
     },
+
     handleClose(e) {
         e.preventDefault();
         this.data.set('closing', false);
         this.fire('close', e);
     },
+
     animationEnd() {
         this.data.set('closing', true);
         this.fire('afterClose');
