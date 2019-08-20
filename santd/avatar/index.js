@@ -15,9 +15,11 @@ export default san.defineComponent({
         shape: DataTypes.oneOf(['circle', 'square']),
         size: DataTypes.oneOfType([DataTypes.string, DataTypes.number])
     },
+
     components: {
         's-icon': Icon
     },
+
     initData() {
         return {
             prefixCls,
@@ -29,13 +31,11 @@ export default san.defineComponent({
     },
     computed: {
         classes() {
-            const data = this.data;
-            // 处理class
-            const isImgExist = data.get('isImgExist');
-            const src = data.get('src');
-            const size = data.get('size');
-            const shape = data.get('shape');
-            const icon = data.get('icon');
+            const isImgExist = this.data.get('isImgExist');
+            const src = this.data.get('src');
+            const size = this.data.get('size');
+            const shape = this.data.get('shape');
+            const icon = this.data.get('icon');
 
             let classArr = [prefixCls];
             size === 'large' && classArr.push(`${prefixCls}-lg`);
