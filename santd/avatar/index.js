@@ -47,7 +47,7 @@ export default san.defineComponent({
 
             return classArr;
         },
-        
+
         styles() {
             const size = +this.data.get('size');
             const icon = this.data.get('icon');
@@ -60,15 +60,18 @@ export default san.defineComponent({
         }
     },
 
-    setScale() {
+    handleImgLoadError() {
+        this.fire('error');
+    },
+
+    updated() {
         const childrenNode = document.getElementById(this.data.get('scaleId'));
 
+        // update scaleStyle
         if (childrenNode) {
             const childrenWidth = childrenNode.offsetWidth;
             const avatarWidth = this.el.getBoundingClientRect().width;
-            const scale = (avatarWidth - 8 < childrenWidth)
-                ? (avatarWidth - 8) / childrenWidth
-                : 1;
+            const scale = (avatarWidth - 8 < childrenWidth) || 1;
 
             const transformString = `scale(${scale}) translateX(-50%)`;
             let scaleStyle = [
@@ -83,14 +86,6 @@ export default san.defineComponent({
             }
             this.data.set('scaleStyle', scaleStyle.join(';'));
         }
-    },
-
-    handleImgLoadError() {
-        this.fire('error');
-    },
-
-    updated() {
-        this.setScale();
     },
 
     inited() {
