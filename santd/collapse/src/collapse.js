@@ -34,11 +34,7 @@ export default san.defineComponent({
         const activeKey = this.data.get('activeKey');
         const defaultActiveKey = this.data.get('defaultActiveKey');
 
-        let currentActiveKey = defaultActiveKey;
-        if (activeKey) {
-            currentActiveKey = activeKey;
-        }
-        this.data.set('activeKey', toArray(currentActiveKey));
+        this.data.set('activeKey', toArray(activeKey || defaultActiveKey));
     },
     computed: {
         classes() {

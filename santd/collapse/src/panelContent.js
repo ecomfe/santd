@@ -18,18 +18,20 @@ export default san.defineComponent({
             const prefixCls = this.data.get('prefixCls');
             const isActive = this.data.get('isActive');
             let classArr = [`${prefixCls}-content`];
+
             isActive && classArr.push(`${prefixCls}-content-active`);
             !isActive && classArr.push(`${prefixCls}-content-inactive`);
+
             return classArr;
         }
     },
     template: `
         <div class="{{classes}}" role="{{role}}">
             <div
-                s-if="forceRender || isActive || !destroyInactivePanel"
+                s-if="{{forceRender || isActive || !destroyInactivePanel}}"
                 class="{{prefixCls}}-content-box"
             >
-                    <slot></slot>
+                <slot></slot>
             </div>
         </div>
     `

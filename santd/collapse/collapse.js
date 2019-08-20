@@ -20,19 +20,27 @@ const expandIcon = san.defineComponent({
 });
 
 const Collapse = san.defineComponent({
+    dataTypes: {
+        bordered: DataTypes.bool,
+        className: DataTypes.string,
+        prefixCls: DataTypes.string
+    },
     computed: {
         classes() {
             const bordered = this.data.get('bordered');
             const className = this.data.get('className');
             const prefixCls = this.data.get('prefixCls');
-            let classArr = [prefixCls, className];
+            let classArr = [prefixCls];
+
+            className && classArr.push(className);
             !bordered && classArr.push(`${prefixCls}-borderless`);
+
             return classArr;
         }
     },
     initData() {
         return {
-            prefixCls: prefixCls,
+            prefixCls,
             bordered: true,
             accordion: false,
             destroyInactivePanel: false,

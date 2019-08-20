@@ -37,14 +37,11 @@ export default san.defineComponent({
             const disabled = this.data.get('disabled');
             const className = this.data.get('className');
             let classArr = [`${prefixCls}-item`, className];
+
             isActive && classArr.push(`${prefixCls}-item-active`);
             disabled && classArr.push(`${prefixCls}-item-disabled`);
+
             return classArr;
-        },
-        headerClasses() {
-            const prefixCls = this.data.get('prefixCls');
-            const headerClass = this.data.get('headerClass');
-            return [`${prefixCls}-header`, headerClass];
         }
     },
     compiled() {
@@ -80,7 +77,7 @@ export default san.defineComponent({
     template: `
         <div class="{{classes}}" id="{{id}}">
             <div
-                class="{{headerClasses}}"
+                class="{{prefixCls}}-header {{headerClass}}"
                 role="{{accordion ? 'tab': 'button'}}"
                 tabIndex="{{disabled ? -1 : 0}}"
                 aria-expanded="{{isActive}}"
@@ -89,7 +86,7 @@ export default san.defineComponent({
             >
                 <expandicon
                     prefixCls="{{prefixCls}}"
-                    s-if="showArrow"
+                    s-if="{{showArrow}}"
                     s-ref="expandIcon"
                     isActive="{{isActive}}">
                 </expandicon>
@@ -97,7 +94,7 @@ export default san.defineComponent({
                 <div class="{{prefixCls}}-extra"><slot name="extra"></slot></div>
             </div>
             <s-panelcontent
-                s-if="forceRender || isActive"
+                s-if="{{forceRender || isActive}}"
                 prefixCls="{{prefixCls}}"
                 forceRender="{{forceRender}}"
                 isActive="{{isActive}}"

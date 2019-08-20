@@ -13,7 +13,9 @@ const CollapsePanel = san.defineComponent({
     inited() {
         const showArrow = this.data.get('showArrow');
         const className = this.data.get('className');
-        let classArr = [className];
+        let classArr = [];
+
+        className && classArr.push(className);
         !showArrow && classArr.push(`${prefixCls}-no-arrow`);
         this.data.set('className', classArr.join(' '));
     }
