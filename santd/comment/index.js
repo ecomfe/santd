@@ -17,7 +17,7 @@ export default san.defineComponent({
                     <slot name="avatar"/>
                 </div>
                 <div class="${prefix}-content">
-                    <div class="${prefix}-content-author" s-if="showAuthor">
+                    <div class="${prefix}-content-author" s-if="{{showAuthor}}">
                         <span class="${prefix}-content-author-name">
                             <slot name="author"/>
                         </span>
@@ -28,12 +28,12 @@ export default san.defineComponent({
                     <div class="${prefix}-content-detail">
                         <slot name="content"/>
                     </div>
-                    <ul class="${prefix}-actions" s-if="showActions">
+                    <ul class="${prefix}-actions" s-if="{{showActions}}">
                         <slot name="actions"/>
                     </ul>
                 </div>
             </div>
-            <div class="${prefix}-nested" s-if="showChildren">
+            <div class="${prefix}-nested" s-if="{{showChildren}}">
                 <slot name="children"/>
             </div>
         </div>

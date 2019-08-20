@@ -60,14 +60,18 @@ const Descriptions = san.defineComponent({
             const className = this.data.get('className');
             const size = this.data.get('size');
             const bordered = this.data.get('bordered');
-            let classArr = [prefixCls, className];
+            let classArr = [prefixCls];
+
+            className && classArr.push(className);
             size !== 'default' && classArr.push(`${prefixCls}-${size}`);
             bordered && classArr.push(`${prefixCls}-bordered`);
+
             return classArr;
         },
         getColumn() {
             const column = this.data.get('column');
             const screens = this.data.get('screens');
+
             if (typeof column === 'object') {
                 for (let i = 0; i < responsiveArray.length; i++) {
                     const breakpoint = responsiveArray[i];
@@ -76,10 +80,7 @@ const Descriptions = san.defineComponent({
                     }
                 }
             }
-            if (typeof column === 'number') {
-                return column;
-            }
-            return 3;
+            return typeof column === 'number' ? column : 3;
         },
         childrenArray() {
             const instance = this.data.get('instance');
@@ -139,17 +140,17 @@ const Descriptions = san.defineComponent({
         return span || 1;
     },
     template: `<div class="{{classes}}">
-        <div class="{{prefixCls}}-title" s-if="title">{{title}}</div>
+        <div class="{{prefixCls}}-title" s-if="{{title}}">{{title}}</div>
         <div class="{{prefixCls}}-view">
             <table>
                 <tbody>
                     <template s-for="children, i in childrenArray">
-                        <template s-if="layout === 'vertical'">
+                        <template s-if="{{layout === 'vertical'}}">
                             <tr class="{{prefixCls}}-row">
                                 <template s-for="child, j in children">
                                     <td
                                         class="{{prefixCls}}-item-label"
-                                        colspan="{{getColSpan(i, j, child) * 2 - 1}}" s-if="bordered"
+                                        colspan="{{getColSpan(i, j, child) * 2 - 1}}" s-if="{{bordered}}"
                                     >
                                         {{child.label}}
                                     </td>
@@ -163,7 +164,7 @@ const Descriptions = san.defineComponent({
                                     <td
                                         class="{{prefixCls}}-item-content"
                                         colspan="{{getColSpan(i, j, child) * 2 - 1}}"
-                                        s-if="bordered"
+                                        s-if="{{bordered}}"
                                     >
                                         <slot name="slot_{{i}}_{{j}}"></slot>
                                     </td>
@@ -177,7 +178,7 @@ const Descriptions = san.defineComponent({
                         </template>
                         <tr class="{{prefixCls}}-row" s-else>
                             <template s-for="child, j in children">
-                                <template s-if="bordered">
+                                <template s-if="{{bordered}}">
                                     <th class="{{prefixCls}}-item-label {{className}} {{!label && prefixCls + '-item-no-label'}}">
                                         {{child.label}}
                                     </th>

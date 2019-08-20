@@ -15,28 +15,28 @@ export default san.defineComponent({
     },
     initData() {
         return {
+            prefixCls,
             type: 'horizontal',
             orientation: '',
-            hasSlot: false,
-            prefixCls: prefixCls
+            hasSlot: false
         };
     },
     computed: {
-        hasSlot() {
-            const instance = this.data.get('instance');
-            return instance && !!instance.slotChildren.length;
-        },
         classes() {
             const dashed = this.data.get('dashed');
             const type = this.data.get('type');
             const orientation = this.data.get('orientation');
-            const hasSlot = this.data.get('hasSlot');
+            const instance = this.data.get('instance');
+            const hasSlot = instance && instance.sourceSlots.noname;
             const className = this.data.get('className');
-            let classArr = [prefixCls, className];
+            let classArr = [prefixCls];
+
+            className && classArr.push(className);
             !!type && classArr.push(`${prefixCls}-${type}`);
             dashed && classArr.push(`${prefixCls}-dashed`);
             hasSlot && !orientation && classArr.push(`${prefixCls}-with-text`);
             hasSlot && orientation && classArr.push(`${prefixCls}-with-text-${orientation}`);
+
             return classArr;
         }
     },
@@ -45,7 +45,9 @@ export default san.defineComponent({
     },
     template: `
         <div class="{{classes}}">
-            <span s-if="hasSlot" class="{{prefixCls}}-inner-text"><slot></slot></span>
+            <span s-if="{{instance && instance.sourceSlots.noname}}" class="{{prefixCls}}-inner-text">
+                <slot />
+            </span>
       </div>
       `
 });
