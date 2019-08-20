@@ -26,7 +26,7 @@ export default san.defineComponent({
             shape: 'circle',
             size: 'default',
             isImgExist: true,
-            guid: guid(prefixCls)
+            scaleId: guid(prefixCls)
         };
     },
 
@@ -58,7 +58,8 @@ export default san.defineComponent({
     },
 
     setScale() {
-        const childrenNode = document.getElementById(this.data.get('guid'));
+        const childrenNode = document.getElementById(this.data.get('scaleId'));
+
         if (childrenNode) {
             const childrenWidth = childrenNode.offsetWidth;
             const avatarWidth = this.el.getBoundingClientRect().width;
@@ -71,13 +72,13 @@ export default san.defineComponent({
                 `-ms-transform:${transformString}`,
                 `-webkit-transform:${transformString}`,
                 `transform:${transformString}`
-            ].join(';');
+            ];
 
             const size = this.data.get('size');
             if (type(size, 'number') || /\d+/.test(size)) {
-                scaleStyle += `line-height: ${size}px`;
+                scaleStyle.push(`line-height: ${size}px`);
             }
-            this.data.set('scaleStyle', scaleStyle);
+            this.data.set('scaleStyle', scaleStyle.join(';'));
         }
     },
 
@@ -107,7 +108,7 @@ export default san.defineComponent({
             <span
                 s-if="{{hasSlot}}"
                 class="{{scaleStyle && hasSlot ? prefixCls + '-string' : ''}}"
-                id="{{guid}}"
+                id="{{scaleId}}"
                 style="{{scaleStyle}}"
             >
             <slot></slot>
