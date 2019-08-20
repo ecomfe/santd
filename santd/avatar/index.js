@@ -29,7 +29,7 @@ export default san.defineComponent({
             guid: guid(prefixCls)
         };
     },
-    
+
     computed: {
         classes() {
             const isImgExist = this.data.get('isImgExist');
@@ -48,9 +48,8 @@ export default san.defineComponent({
             return classArr;
         },
         styles() {
-            const data = this.data;
-            const size = data.get('size');
-            const icon = data.get('icon');
+            const size = this.data.get('size');
+            const icon = this.data.get('icon');
 
             return type(size, 'number') || /\d+/.test(size)
                 ? `width: ${size}px;height:${size}px; line-height:${size}px; font-size: ${icon ? `${size / 2}px` : '18px'} `
@@ -92,8 +91,7 @@ export default san.defineComponent({
 
     inited() {
         if (this.sourceSlots.noname && this.sourceSlots.noname.length) {
-            const data = this.data;
-            data.set('hasSlot', true);
+            this.data.set('hasSlot', true);
         }
     },
 
