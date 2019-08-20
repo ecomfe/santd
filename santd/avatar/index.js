@@ -29,6 +29,7 @@ export default san.defineComponent({
             guid: guid(prefixCls)
         };
     },
+    
     computed: {
         classes() {
             const isImgExist = this.data.get('isImgExist');
@@ -56,6 +57,7 @@ export default san.defineComponent({
                 : '';
         }
     },
+
     setScale() {
         const childrenNode = document.getElementById(this.data.get('guid'));
         if (childrenNode) {
@@ -79,18 +81,22 @@ export default san.defineComponent({
             this.data.set('scaleStyle', scaleStyle);
         }
     },
+
     handleImgLoadError() {
         this.fire('error');
     },
+
     updated() {
         this.setScale();
     },
-    attached() {
+
+    inited() {
         if (this.sourceSlots.noname && this.sourceSlots.noname.length) {
             const data = this.data;
             data.set('hasSlot', true);
         }
     },
+
     template: `
         <span class="{{classes}}" style="{{styles}}">
             <img s-if="{{src && isImgExist}}"
