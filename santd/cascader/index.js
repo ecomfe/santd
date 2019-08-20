@@ -103,12 +103,14 @@ export default san.defineComponent({
             const size = this.data.get('size');
             const showSearch = this.data.get('showSearch');
             const inputFocused = this.data.get('inputFocused');
+
             let classArr = [className, `${prefixCls}-picker`];
             inputValue && classArr.push(`${prefixCls}-picker-with-value`);
             disabled && classArr.push(`${prefixCls}-picker-disabled`);
             size && classArr.push(`${prefixCls}-picker-${size}`);
             showSearch && classArr.push(`${prefixCls}-picker-show-search`);
             inputFocused && classArr.push(`${prefixCls}-picker-focused`);
+
             return classArr;
         },
         sizeClass() {
@@ -173,7 +175,7 @@ export default san.defineComponent({
             }
             return [{
                 [names.label]: notFoundContent || renderEmpty('Cascader'),
-                [names.value]: 'ANT_CASCADER_NOT_FOUND',
+                [names.value]: 'SAN_CASCADER_NOT_FOUND',
                 disabled: true
             }];
         },

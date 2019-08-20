@@ -22,7 +22,7 @@ export default san.defineComponent({
     },
     initData() {
         return {
-            prefixCls: prefixCls,
+            prefixCls,
             options: [],
             disabled: false,
             childs: []
@@ -31,7 +31,10 @@ export default san.defineComponent({
     computed: {
         classes() {
             const className = this.data.get('className');
-            return [prefixCls, className];
+            let klass = [prefixCls];
+
+            className && klass.push(className);
+            return klass;
         },
         checkboxs() {
             const options = this.data.get('options');
@@ -74,10 +77,11 @@ export default san.defineComponent({
                 value.push(option.value);
             }
             else {
-                value.splice('value', optionIndex, 1);
+                value.splice(optionIndex, 1);
             }
             this.data.set('value', value);
             this.fire('change', value);
+            // 提交数据给form表单使用
             this.dispatch('UI:form-item-interact', {fieldValue: value, type: 'change'});
         },
         addCheckbox(payload) {
@@ -91,7 +95,7 @@ export default san.defineComponent({
     template: `
         <div class="{{classes}}" style="{{style}}">
             <s-checkbox
-                s-if="checkboxs.length"
+                s-if="{{checkboxs.length}}"
                 s-for="checkbox in checkboxs"
                 prefixCls="{{prefixCls}}"
                 key="{{checkbox.key}}"

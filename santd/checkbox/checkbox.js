@@ -11,12 +11,19 @@ import './style/index.less';
 const prefixCls = classCreator('checkbox')();
 
 export default san.defineComponent({
+    dataTypes: {
+        className: DataTypes.string,
+        prefixCls: DataTypes.string,
+        checked: DataTypes.bool,
+        disabled: DataTypes.bool,
+        indeterminate: DataTypes.bool
+    },
     components: {
         's-checkbox': Checkbox
     },
     initData() {
         return {
-            prefixCls: prefixCls,
+            prefixCls,
             indeterminate: false
         };
     },
@@ -29,19 +36,21 @@ export default san.defineComponent({
     computed: {
         classes() {
             const className = this.data.get('className');
-            const prefixCls = this.data.get('prefixCls');
             const checked = this.data.get('checked');
             const disabled = this.data.get('disabled');
+
             let classArr = [className, `${prefixCls}-wrapper`];
             checked && classArr.push(`${prefixCls}-wrapper-checked`);
             disabled && classArr.push(`${prefixCls}-wrapper-disabled`);
+
             return classArr;
         },
         checkboxClass() {
             const indeterminate = this.data.get('indeterminate');
-            const prefixCls = this.data.get('prefixCls');
+
             let classArr = [];
             indeterminate && classArr.push(`${prefixCls}-indeterminate`);
+
             return classArr;
         },
         hasSlot() {
@@ -98,7 +107,7 @@ export default san.defineComponent({
                 on-click="handleClick"
                 on-change="handleChange"
                 s-ref="checkbox"
-            /><span s-if="hasSlot"><slot></slot></span>
+            /><span s-if="{{hasSlot}}"><slot></slot></span>
         </label>
     `
 });

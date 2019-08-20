@@ -39,9 +39,12 @@ export default san.defineComponent({
             const disabled = this.data.get('disabled');
             const prefixCls = this.data.get('prefixCls');
             const className = this.data.get('className');
-            let classArr = [prefixCls, className];
+            let classArr = [prefixCls];
+
+            className && classArr.push(className);
             checked && classArr.push(`${prefixCls}-checked`);
             disabled && classArr.push(`${prefixCls}-disabled`);
+
             return classArr;
         }
     },
