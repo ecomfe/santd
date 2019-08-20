@@ -5,7 +5,6 @@
 
 import './style/index.less';
 import san, {DataTypes, NodeType} from 'san';
-// 注意公共方法提取到 util，送人玫瑰手有余香~
 import {classCreator} from '../core/util';
 import LoadingBlock from './loadingBlock';
 import Grid from './grid';
@@ -15,14 +14,13 @@ const prefix = classCreator('card')();
 export default san.defineComponent({
     template: `
     	<div class="{{cls}}">
-            <div s-if="showHeader" className="${prefix}-head" style="{{headStyle}}">
+            <div s-if="{{showHeader}}" className="${prefix}-head" style="{{headStyle}}">
                 <div className="${prefix}-head-wrapper">
-                    <div s-if="title" class="${prefix}-head-title">{{title}}</div>
-                    <div s-if="isExtra" class="${prefix}-extra">
+                    <div s-if="{{title}}" class="${prefix}-head-title">{{title}}</div>
+                    <div s-if="{{isExtra}}" class="${prefix}-extra">
                         <slot name="extra"></slot>
                     </div>
                 </div>
-                <!--tabs-->
                 <s-tabs
                     s-if="{{tabList && tabList.length}}"
                     activeTabKey="{{activeTabKey}}"
@@ -43,10 +41,10 @@ export default san.defineComponent({
                 <slot name="cover"></slot>
             </div>
             <div class="${prefix}-body" style="{{bodyStyle}}" s-ref="content">
-                <s-loadingblock s-if="loading"/>
+                <s-loadingblock s-if="{{loading}}" />
                 <slot s-else></slot>
             </div>
-            <ul s-if="isActions" class="${prefix}-actions" s-ref="actionsContain">
+            <ul s-if="{{isActions}}" class="${prefix}-actions" s-ref="actionsContain">
                 <slot name="actions"></slot>
             </ul>
         </div>
@@ -63,32 +61,23 @@ export default san.defineComponent({
     },
     computed: {
         cls() {
-            let selfClass = this.data.get('class');
             let loading = this.data.get('loading');
             let bordered = this.data.get('bordered');
             let type = this.data.get('type');
-
-            let widerPadding = this.data.get('widerPadding');
             let tabList = this.data.get('tabList');
-            let updateWiderPaddingCalled = this.data.get('updateWiderPaddingCalled');
             let isContainGrid = this.data.get('isContainGrid');
-
             let hoverable = !!this.data.get('hoverable');
-            let noHovering = this.data.get('noHovering');
             let size = this.data.get('size');
-            if (noHovering !== undefined) {
-                hoverable = !noHovering || hoverable;
-            }
-            let classArr = [prefix, selfClass];
+
+            let classArr = [prefix];
             loading && classArr.push(`${prefix}-loading`);
             bordered && classArr.push(`${prefix}-bordered`);
             hoverable && classArr.push(`${prefix}-hoverable`);
-            widerPadding && classArr.push(`${prefix}-wider-padding`);
-            updateWiderPaddingCalled && classArr.push(`${prefix}-padding-transition`);
             isContainGrid && classArr.push(`${prefix}-contain-grid`);
             tabList && tabList.length && classArr.push(`${prefix}-contain-tabs`);
             !!type && classArr.push(`${prefix}-type-${type}`);
             !!size && classArr.push(`${prefix}-${size}`);
+
             return classArr;
         }
     },
@@ -96,13 +85,12 @@ export default san.defineComponent({
         let isExtra = !!this.sourceSlots.named['extra'];
         let isActions = !!this.sourceSlots.named['actions'];
         let showHeader = this.data.get('title') || this.data.get('tabList') || isExtra;
+
         this.data.set('showHeader', showHeader);
         this.data.set('isActions', isActions);
         this.data.set('isExtra', isExtra);
-
     },
     attached() {
-        // let slots = this.slotChildren || [];
         let defaultSlot = this.slot()[0];
         defaultSlot && this.data.set('isContainGrid', defaultSlot.children.some(slot => slot.constructor === Grid));
         let actSlot = this.slotChildren.filter(child => child.name === 'actions');

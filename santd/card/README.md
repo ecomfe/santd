@@ -3,7 +3,7 @@
 ### Card
 | 参数                | 说明                                                | 类型          | 默认值        |
 | ---                 | ---                                                 | ---           | ---           |
-| actions             | 卡片操作组，位置在卡片底部                          | Slot(Element\ | SanComponent) | - |
+| actions             | 卡片操作组，位置在卡片底部                          | slot | - |
 | activeTabKey        | 当前激活页签的 key                                  | string        | -             |
 | headStyle           | 自定义标题区域样式                                  | string        | -             |
 | bodyStyle           | 内容区域自定义样式                                  | string        | -             |
