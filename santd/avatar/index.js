@@ -6,7 +6,7 @@
 import './style/index.less';
 import san, {DataTypes} from 'san';
 import Icon from '../icon';
-import {classCreator, guid, type} from '../core/util';
+import {classCreator, guid} from '../core/util';
 
 const prefixCls = classCreator('avatar')();
 
@@ -47,13 +47,16 @@ export default san.defineComponent({
 
             return classArr;
         },
+        
         styles() {
-            const size = this.data.get('size');
+            const size = +this.data.get('size');
             const icon = this.data.get('icon');
 
-            return type(size, 'number') || /\d+/.test(size)
-                ? `width: ${size}px;height:${size}px; line-height:${size}px; font-size: ${icon ? `${size / 2}px` : '18px'} `
-                : '';
+            if (isNaN(size)) {
+                return '';
+            }
+
+            return `width: ${size}px;height:${size}px; line-height:${size}px; font-size: ${icon ? `${size / 2}px` : '18px'}`;
         }
     },
 
@@ -74,8 +77,8 @@ export default san.defineComponent({
                 `transform:${transformString}`
             ];
 
-            const size = this.data.get('size');
-            if (type(size, 'number') || /\d+/.test(size)) {
+            const size = +this.data.get('size');
+            if (!isNaN(size)) {
                 scaleStyle.push(`line-height: ${size}px`);
             }
             this.data.set('scaleStyle', scaleStyle.join(';'));
@@ -98,21 +101,19 @@ export default san.defineComponent({
 
     template: `
         <span class="{{classes}}" style="{{styles}}">
-            <img s-if="{{src && isImgExist}}"
+            <img s-if="src && isImgExist"
                 src="{{src}}"
                 srcset="{{srcSet}}"
                 on-error="handleImgLoadError"
                 alt="{{alt}}"
             />
-            <s-icon s-if="{{icon}}" type="{{icon}}"></s-icon>
+            <s-icon s-if="icon" type="{{icon}}"/>
             <span
-                s-if="{{hasSlot}}"
+                s-if="hasSlot"
                 class="{{scaleStyle && hasSlot ? prefixCls + '-string' : ''}}"
                 id="{{scaleId}}"
                 style="{{scaleStyle}}"
-            >
-            <slot></slot>
-          </span>
+            ><slot/></span>
         </span>
     `
 });
