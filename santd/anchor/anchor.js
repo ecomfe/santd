@@ -15,7 +15,7 @@ const prefixCls = classCreator('anchor')();
 const sharpMatcherRegx = /#([^#]+)$/;
 
 const anchorContent = `
-    <div class="{{classes}}" style="{{wrapperStyle}}">
+    <div class="{{prefixCls}}-wrapper {{className}}" style="{{wrapperStyle}}">
         <div class="{{anchorClasses}}">
             <div class="${prefixCls}-ink">
                 <span class="{{inkClasses}}" s-ref="inkNode" />
@@ -96,6 +96,7 @@ export default san.defineComponent({
     },
     initData() {
         return {
+            prefixCls,
             affix: true,
             showInkInFixed: false,
             getContainer() {
@@ -107,10 +108,6 @@ export default san.defineComponent({
         };
     },
     computed: {
-        classes() {
-            let classArr = [this.data.get('className'), `${prefixCls}-wrapper`];
-            return classArr;
-        },
         anchorClasses() {
             const affix = this.data.get('affix');
             const showInkInFixed = this.data.get('showInkInFixed');

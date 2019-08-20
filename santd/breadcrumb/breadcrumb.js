@@ -8,18 +8,6 @@ import breadcrumbItem from './breadcrumbItem';
 import './style/index';
 const prefixCls = classCreator('breadcrumb')();
 
-function getBreadcrumbName(route, params) {
-    if (!route.breadcrumbName) {
-        return null;
-    }
-    const paramsKeys = Object.keys(params).join('|');
-    const name = route.breadcrumbName.replace(
-        new RegExp(`:(${paramsKeys})`, 'g'),
-        (replacement, key) => params[key] || replacement,
-    );
-    return name;
-}
-
 function getPath(path, params = {}) {
     path = (path || '').replace(/^\//, '');
     Object.keys(params).forEach(key => {
@@ -35,21 +23,25 @@ const defaultItemRender = san.defineComponent({
             const route = this.data.get('route');
 
             return routes.indexOf(route) === routes.length - 1;
-        },
-        name() {
-            const route = this.data.get('route');
-            const params = this.data.get('params') || {};
-            return getBreadcrumbName(route, params);
-        },
-        href() {
-            const paths = this.data.get('paths');
-
-            return `#/${paths.join('/')}`;
         }
     },
+    getHref(paths) {
+        return `#/${paths.join('/')}`;
+    },
+    getBreadcrumbName(route, params = {}) {
+        if (!route.breadcrumbName) {
+            return null;
+        }
+        const paramsKeys = Object.keys(params).join('|');
+        const name = route.breadcrumbName.replace(
+            new RegExp(`:(${paramsKeys})`, 'g'),
+            (replacement, key) => params[key] || replacement,
+        );
+        return name;
+    },
     template: `<span>
-        <span s-if="{{isLastItem}}">{{name}}</span>
-        <a s-else href="{{href}}">{{name}}</a>
+        <span s-if="{{isLastItem}}">{{getBreadcrumbName(route, params)}}</span>
+        <a s-else href="{{getHref(paths)}}">{{getBreadcrumbName(route, params)}}</a>
     </span>`
 });
 
@@ -58,24 +50,18 @@ export default san.defineComponent({
         's-breadcrumb-item': breadcrumbItem
     },
     dataTypes: {
+        prefixCls: DataTypes.string,
         separator: DataTypes.string,
         routes: DataTypes.instanceOf(Array)
     },
     initData() {
         return {
+            prefixCls,
             separator: '/',
             paths: []
         };
     },
     computed: {
-        classes() {
-            const className = this.data.get('className');
-
-            let klass = [prefixCls];
-            className && klass.push(className);
-
-            return klass;
-        },
         injectItemRender() {
             const instance = this.data.get('instance');
             const itemRender = this.data.get('itemRender') || defaultItemRender;
@@ -104,7 +90,7 @@ export default san.defineComponent({
         }
     },
     template: `
-        <div class="{{classes}}">
+        <div class="{{prefixCls}} {{className}}">
             <s-breadcrumb-item
                 s-if="routes && routes.length"
                 s-for="route, index in routes"

@@ -9,8 +9,13 @@ import {classCreator} from '../core/util';
 
 const prefixCls = classCreator('card')();
 export default san.defineComponent({
+    initData() {
+        return {
+            prefixCls
+        };
+    },
     template: `
-    	<div class="{{cls}}">
+    	<div class="{{prefixCls}}-meta {{className}}">
             <div s-if="{{isAvatar}}" class="${prefixCls}-meta-avatar">
                 <slot name="avatar"></slot>
             </div>
@@ -24,11 +29,6 @@ export default san.defineComponent({
             </div>
         </div>
     `,
-    computed: {
-        cls() {
-            return [`${prefixCls}-meta`, this.data.get('className')];
-        }
-    },
     inited() {
         this.data.set('isAvatar', !!this.sourceSlots.named['avatar']);
         this.data.set('isDes', !!this.sourceSlots.named['description']);

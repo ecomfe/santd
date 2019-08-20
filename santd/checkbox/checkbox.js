@@ -44,18 +44,6 @@ export default san.defineComponent({
             disabled && classArr.push(`${prefixCls}-wrapper-disabled`);
 
             return classArr;
-        },
-        checkboxClass() {
-            const indeterminate = this.data.get('indeterminate');
-
-            let classArr = [];
-            indeterminate && classArr.push(`${prefixCls}-indeterminate`);
-
-            return classArr;
-        },
-        hasSlot() {
-            const instance = this.data.get('instance');
-            return instance && instance.sourceSlots.noname;
         }
     },
     handleChange(e) {
@@ -95,7 +83,7 @@ export default san.defineComponent({
             <s-checkbox
                 prefixCls="{{prefixCls}}"
                 type="{{type}}"
-                class="{{checkboxClass}}"
+                class="{{indeterminate ? prefixCls + '-indeterminate' : ''}}"
                 checked="{{checked}}"
                 disabled="{{disabled}}"
                 name="{{name}}"
@@ -107,7 +95,7 @@ export default san.defineComponent({
                 on-click="handleClick"
                 on-change="handleChange"
                 s-ref="checkbox"
-            /><span s-if="{{hasSlot}}"><slot></slot></span>
+            /><span s-if="{{instance && instance.sourceSlots.noname}}"><slot></slot></span>
         </label>
     `
 });

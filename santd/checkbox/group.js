@@ -29,13 +29,6 @@ export default san.defineComponent({
         };
     },
     computed: {
-        classes() {
-            const className = this.data.get('className');
-            let klass = [prefixCls];
-
-            className && klass.push(className);
-            return klass;
-        },
         checkboxs() {
             const options = this.data.get('options');
             const value = this.data.get('value') || [];
@@ -93,7 +86,7 @@ export default san.defineComponent({
         }
     },
     template: `
-        <div class="{{classes}}" style="{{style}}">
+        <div class="{{prefixCls}} {{className}}" style="{{style}}">
             <s-checkbox
                 s-if="{{checkboxs.length}}"
                 s-for="checkbox in checkboxs"

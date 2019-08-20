@@ -23,14 +23,11 @@ export default san.defineComponent({
             prefixCls,
             shape: 'circle',
             size: 'default',
-            isImgExist: true
+            isImgExist: true,
+            guid: guid(prefixCls)
         };
     },
     computed: {
-        // 这里修改成guid，因为id会被加到root元素上，导致取到的元素不正确
-        guid() {
-            return guid(prefixCls);
-        },
         classes() {
             const data = this.data;
             // 处理class
@@ -57,13 +54,6 @@ export default san.defineComponent({
             return type(size, 'number') || /\d+/.test(size)
                 ? `width: ${size}px;height:${size}px; line-height:${size}px; font-size: ${icon ? `${size / 2}px` : '18px'} `
                 : '';
-        },
-        scaleClass() {
-            const scaleStyle = this.data.get('scaleStyle');
-            const hasSlot = this.data.get('hasSlot');
-            if (scaleStyle && hasSlot) {
-                return prefixCls + '-string';
-            }
         }
     },
     setScale() {
@@ -112,7 +102,7 @@ export default san.defineComponent({
             <s-icon s-if="{{icon}}" type="{{icon}}"></s-icon>
             <span
                 s-if="{{hasSlot}}"
-                class="{{scaleClass}}"
+                class="{{scaleStyle && hasSlot ? prefixCls + '-string' : ''}}"
                 id="{{guid}}"
                 style="{{scaleStyle}}"
             >
