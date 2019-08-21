@@ -209,26 +209,26 @@ export default san.defineComponent({
         return '';
     },
     messages: {
-        addChildren(payload) {
+        santd_link_addInstance(payload) {
             this.data.push('children', payload.value);
         },
-        registerLink(payload) {
+        santd_link_add(payload) {
             let links = this.data.get('links');
             if (!links.includes(payload.value)) {
                 this.data.push('links', payload.value);
             }
         },
-        unRegisterLink(payload) {
+        santd_link_rm(payload) {
             let links = this.data.get('links');
             const index = links.indexOf(payload.value);
             if (index !== -1) {
                 this.data.removeAt('links', index);
             }
         },
-        handleClick(payload) {
+        santd_link_click(payload) {
             this.fire('click', {e: payload.value.e, link: payload.value.link});
         },
-        scrollTo(payload) {
+        santd_link_scrollTo(payload) {
             const {offsetTop, getContainer} = this.data.get();
             this.data.set('animating', true);
             this.data.set('activeLink', payload.value);

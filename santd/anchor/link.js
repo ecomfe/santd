@@ -40,24 +40,24 @@ export default san.defineComponent({
         }
     },
     inited() {
-        this.dispatch('addChildren', this);
+        this.dispatch('santd_link_addInstance', this);
     },
     updated() {
-        this.dispatch('registerLink', this.data.get('href'));
+        this.dispatch('santd_link_add', this.data.get('href'));
     },
     attached() {
-        this.dispatch('registerLink', this.data.get('href'));
+        this.dispatch('santd_link_add', this.data.get('href'));
     },
     detached() {
-        this.dispatch('unRegisterLink', this.data.get('href'));
+        this.dispatch('santd_link_rm', this.data.get('href'));
     },
     handleClick(e) {
         const {href, title} = this.data.get();
-        this.dispatch('handleClick', {
+        this.dispatch('santd_link_click', {
             e,
             link: {href, title}
         });
-        this.dispatch('scrollTo', href);
+        this.dispatch('santd_link_scrollTo', href);
     },
     template: `
         <div class="{{classes}}">
