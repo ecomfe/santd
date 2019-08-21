@@ -4,7 +4,7 @@
  **/
 
 import san from 'san';
-import defaultLocale from './default';
+import defaultLocale from './zh_CN';
 import * as moment from 'moment';
 
 let locale = defaultLocale;

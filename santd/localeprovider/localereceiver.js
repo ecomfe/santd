@@ -4,7 +4,7 @@
  **/
 
 import san from 'san';
-import defaultLocaleData from './default';
+import defaultLocaleData from './zh_CN';
 
 export default san.defineComponent({
     initData() {

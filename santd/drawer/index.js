@@ -10,14 +10,12 @@
 import './style/index.less';
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
+import isNumber from 'lodash/isNumber';
 import Icon from '../icon';
 
-const cc = classCreator('drawer');
-const prefixCls = cc();
+const prefixCls = classCreator('drawer')();
 const placementType = DataTypes.oneOf(['top', 'right', 'bottom', 'left']);
 const styleType = DataTypes.oneOfType([DataTypes.string, DataTypes.object]);
-
-const isNumeric = value => !isNaN(parseFloat(value)) && isFinite(value);
 
 export const filters = {
     css(style) {
@@ -44,25 +42,25 @@ export const filters = {
 export default san.defineComponent({
     template: `
         <div class="{{drawerClassName}}" style="z-index:{{zIndex}};">
-            <div s-if="mask" class="${prefixCls}-mask" style="{{maskStyle | css}}" on-click="onMaskClick"></div>
+            <div s-if="{{mask}}" class="${prefixCls}-mask" style="{{maskStyle | css}}" on-click="onMaskClick"></div>
             <div class="${prefixCls}-content-wrapper" style="{{wrapStyle | css}}">
                 <div class="${prefixCls}-content">
                     <div class="${prefixCls}-wrapper-body" style="{{containerStyle | css}}">
-                        <div s-if="title" class="${prefixCls}-header">
+                        <div s-if="{{title}}" class="${prefixCls}-header">
                             <div class="${prefixCls}-title">{{title}}</div>
                         </div>
                         <button
-                            s-if="closable"
+                            s-if="{{closable}}"
                             on-click="close"
                             aria-label="Close"
                             class="${prefixCls}-close"
                         >
                             <span class="${prefixCls}-close-x">
-                                <s-icon type="close"/>
+                                <s-icon type="close" />
                             </span>
                         </button>
                         <div class="${prefixCls}-body" style="{{bodyStyle | css}}">
-                            <slot/>
+                            <slot />
                         </div>
                     </div>
                 </div>
@@ -94,8 +92,11 @@ export default san.defineComponent({
             const className = data.get('className');
             const placement = data.get('placement');
             const visible = data.get('visible');
-            let classArr = [prefixCls, `${prefixCls}-${placement}`, className];
+            let classArr = [prefixCls, `${prefixCls}-${placement}`];
+
+            className && classArr.push(className);
             !!visible && classArr.push(`${prefixCls}-open`);
+
             return classArr;
         },
         wrapStyle() {
@@ -113,8 +114,8 @@ export default san.defineComponent({
             return {
                 transform,
                 msTransform: transform,
-                width: isNumeric(width) ? `${width}px` : width,
-                height: isNumeric(height) ? `${height}px` : height
+                width: isNumber(width) ? `${width}px` : width,
+                height: isNumber(height) ? `${height}px` : height
             };
         }
     },
@@ -141,10 +142,9 @@ export default san.defineComponent({
         this.close(e);
     },
     close(e) {
-        const data = this.data;
-        if (data.get('visible') !== undefined) {
+        if (this.data.get('visible') !== undefined) {
             this.fire('close', e);
         }
-        data.set('visible', false);
+        this.data.set('visible', false);
     }
 });

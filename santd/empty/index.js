@@ -28,7 +28,7 @@ const Empty = inherits(Locale, san.defineComponent({
         className: DataTypes.string,
         imageStyle: DataTypes.oneOfType([DataTypes.string, DataTypes.object]),
         image: DataTypes.oneOfType([DataTypes.string, DataTypes.func]),
-        description: DataTypes.oneOfType([DataTypes.string, DataTypes.func])
+        description: DataTypes.oneOfType([DataTypes.string, DataTypes.func, DataTypes.bool])
     },
     initData() {
         return {
@@ -41,18 +41,11 @@ const Empty = inherits(Locale, san.defineComponent({
         classes() {
             const className = this.data.get('className');
             const image = this.data.get('image') || defaultEmptyImg;
-            let classArr = [prefixCls, className];
+            let classArr = [prefixCls];
+
+            className && classArr.push(className);
             (image === simpleEmptyImg) && classArr.push(`${prefixCls}-normal`);
             return classArr;
-        },
-        alt() {
-            const des = this.data.get('desc');
-
-            return typeof des === 'string' ? des : 'empty';
-        },
-        desc() {
-            const description = this.data.get('description') || '暂无数据';
-            return description;
         },
         injectImageNode() {
             const image = this.data.get('image');
@@ -65,9 +58,9 @@ const Empty = inherits(Locale, san.defineComponent({
         },
         injectDescription() {
             const instance = this.data.get('instance');
-            const description = this.data.get('desc');
+            const description = this.data.get('description');
 
-            if (typeof description !== 'string') {
+            if (description && typeof description !== 'string') {
                 instance && (instance.components.description = description);
                 return description;
             }
@@ -76,14 +69,19 @@ const Empty = inherits(Locale, san.defineComponent({
     inited() {
         this.data.set('instance', this);
     },
+    getAlt(description) {
+        return typeof description === 'string'
+            ? description
+            : 'empty';
+    },
     template: `
         <div class="{{classes}}">
             <div class="{{prefixCls}}-image" style="{{imageStyle}}">
-                <imagenode s-if="injectImageNode" />
-                <img s-else src="{{image}}" alt="{{alt}}" />
+                <imagenode s-if="{{injectImageNode}}" />
+                <img s-else src="{{image}}" alt="{{getAlt(description || locale.description)}}" />
             </div>
-            <p class="{{prefixCls}}-description">
-                <description s-if="injectDescription" />
+            <p class="{{prefixCls}}-description" s-if="{{description !== false}}">
+                <description s-if="{{injectDescription}}" />
                 <template s-else>{{description || locale.description}}</template>
             </p>
             <div class="{{prefixCls}}-footer"><slot /></div>

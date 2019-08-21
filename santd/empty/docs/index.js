@@ -7,6 +7,7 @@ import Readme from '../README.md';
 import Basic from './basic.md';
 import Choose from './choose.md';
 import Custom from './custom.md';
+import NoDescription from './nodescription.md';
 import Head from './head.md';
 
 export default san.defineComponent({
@@ -15,6 +16,7 @@ export default san.defineComponent({
         basic: Basic,
         choose: Choose,
         custom: Custom,
+        nodescription: NoDescription,
         head: Head
     },
     template: `
@@ -23,6 +25,7 @@ export default san.defineComponent({
             <basic/>
             <choose/>
             <custom/>
+            <nodescription/>
             <readme/>
         </div>
     `
