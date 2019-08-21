@@ -8,22 +8,17 @@ import {classCreator} from '../core/util';
 import './style/index.less';
 import BaseInput from './base';
 import Icon from '../icon';
-const pagin = classCreator('input');
-const prefixCls = pagin();
+const prefixCls = classCreator('input')();
 
 // 前置、后置标签
 const addon = `
 <span class="{{groupClasses}}">
-    <span class="{{className}}">
-        <span class="{{addonClassName}}" s-if="{{addonBefore}}" s-ref="addonBefore">
+    <span class="${prefixCls}-wrapper ${prefixCls}-group">
+        <span class="${prefixCls}-group-addon" s-if="{{addonBefore}}" s-ref="addonBefore">
             {{addonBefore}}
         </span>
-        <s-base-input
-            size="{{size}}"
-            s-bind="{{_INPUTPROPS}}"
-            value="{{value}}"
-        ></s-base-input>
-        <span class="{{addonClassName}}" s-if="{{addonAfter}}" s-ref="addonAfter">
+        <s-base-input size="{{size}}" value="{{value}}" prefixCls="${prefixCls}" />
+        <span class="${prefixCls}-group-addon" s-if="{{addonAfter}}" s-ref="addonAfter">
             {{addonAfter}}
         </span>
     </span>
@@ -31,15 +26,9 @@ const addon = `
 `;
 const presuffix = `
 <span class="{{fixClass}}">
-    <span class="${prefixCls}-prefix" s-if="{{prefix}}" s-ref="prefix">
-    </span>
-    <s-base-input
-        size="{{size}}"
-        s-bind="{{_INPUTPROPS}}"
-        value="{{value}}"
-    ></s-base-input>
-    <span class="${prefixCls}-suffix" s-if="{{suffix}}" s-ref="suffix">
-    </span>
+    <span class="${prefixCls}-prefix" s-if="{{prefix}}" s-ref="prefix">{{prefixString}}</span>
+    <s-base-input size="{{size}}" value="{{value}}" prefixCls="${prefixCls}" />
+    <span class="${prefixCls}-suffix" s-if="{{suffix}}" s-ref="suffix">{{suffixString}}</span>
 </span>
 `;
 
@@ -53,12 +42,6 @@ const AddonRenderer = san.defineComponent({
             let classArr = [`${prefixCls}-group-wrapper`];
             size && classArr.push(`${prefixCls}-group-wrapper-${size}`);
             return classArr;
-        },
-        className() {
-            return [`${prefixCls}-wrapper`, `${prefixCls}-group`];
-        },
-        addonClassName() {
-            return [`${prefixCls}-group-addon`];
         }
     },
     initData() {
@@ -122,9 +105,15 @@ const PresuffixRenderer = san.defineComponent({
             renderer = prefix();
             renderer.attach(this.ref('prefix'));
         }
+        else if (typeof prefix === 'string') {
+            this.data.set('prefixString', prefix);
+        }
         if (suffix && typeof suffix === 'function') {
             renderer = suffix();
             renderer.attach(this.ref('suffix'));
+        }
+        else if (typeof suffix === 'string') {
+            this.data.set('suffixString', suffix);
         }
     },
     template: presuffix
@@ -151,26 +140,10 @@ export default san.defineComponent({
         'a-addonrenderer': AddonRenderer,
         'a-presuffix': PresuffixRenderer
     },
-    computed: {
-        closeAllow() {
-            const couldClear = this.data.get('couldClear');
-            return couldClear ? [`${prefixCls}-affix-wrapper`] : '';
-        }
-    },
-    inited() {
-        this.watch('value', value => {
-            this.setBindData();
-        });
-        this.watch('placeholder', value => {
-            this.setBindData();
-        });
-    },
     created() {
         const defaultValue = this.data.get('defaultValue');
         const value = this.data.get('value');
-        const stateValue = value ? value : (defaultValue ? defaultValue : '');
-        this.setBindData();
-        this.data.set('value', stateValue);
+        this.data.set('value', value || defaultValue || '');
     },
     initData() {
         return {
@@ -185,11 +158,8 @@ export default san.defineComponent({
         inputChange(item) {
             const value = item.value;
             const allow = this.data.get('allowClear');
-            if (value && allow) {
-                this.data.set('couldClear', true);
-            } else {
-                this.data.set('couldClear', false);
-            }
+
+            this.data.set('couldClear', !!(value && allow));
             this.inputComponent = item.target;
 
             this.data.set('value', item.value);
@@ -202,27 +172,36 @@ export default san.defineComponent({
         },
         inputBlur(item) {
             this.fire('blur', item.value);
-            this.dispatch('formBlur', item.value);
             this.dispatch('UI:form-item-interact', {fieldValue: item.value, type: 'blur'});
         }
     },
     handleIconClear() {
-        this.inputComponent.el.value = '';
+        this.data.set('value', '');
     },
-    setBindData() {
-        const allData = Object.assign({}, this.data.get());
-        delete allData.size;
-        delete allData.style;
-        this.data.set('_INPUTPROPS', allData);
-    },
-    template: `
-    <span class="{{closeAllow}}">
-        <a-addonrenderer s-if="addonBefore || addonAfter" s-bind="{{_INPUTPROPS}}"></a-addonrenderer>
-        <a-presuffix s-else-if="prefix || suffix" s-bind="{{_INPUTPROPS}}"></a-presuffix>
-        <s-base-input size="{{size}}" s-else s-bind="{{_INPUTPROPS}}"></s-base-input>
+    template: `<span class="{{couldClear ? '${prefixCls}-affix-wrapper' : ''}}">
+        <a-addonrenderer
+            s-if="{{addonBefore || addonAfter}}"
+            addonAfter="{{addonAfter}}"
+            addonBefore="{{addonBefore}}"
+            value="{{value}}"
+        ></a-addonrenderer>
+        <a-presuffix
+            s-else-if="{{prefix || suffix}}"
+            prefix="{{prefix}}"
+            suffix="{{suffix}}"
+            value="{{value}}"
+        ></a-presuffix>
+        <s-base-input
+            s-else
+            size="{{size}}"
+            placeholder="{{placeholder}}"
+            value="{{value}}"
+            prefixCls="${prefixCls}"
+        >
+        </s-base-input>
         <span
             class="${prefixCls}-suffix"
-            s-if="couldClear"
+            s-if="{{couldClear}}"
             on-click="handleIconClear"
         >
             <s-icon type="close-circle"></s-icon>

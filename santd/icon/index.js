@@ -13,7 +13,6 @@ import {getTwoToneColor, setTwoToneColor} from './twoTonePrimaryColor';
 
 const prefixCls = classCreator('icon')();
 let defaultTheme = 'outlined';
-let dangerousTheme;
 
 sanicon.add(Object.keys(allIcons).map(key => allIcons[key]));
 setTwoToneColor('#1890ff');
@@ -26,13 +25,11 @@ const icon = san.defineComponent({
         classes() {
             const type = this.data.get('type');
             const className = this.data.get('className');
-            let classArr = [prefixCls, className];
+            let classArr = [prefixCls];
+
+            className && classArr.push(className);
             Boolean(type) && classArr.push(`${prefixCls}-${type}`);
             return classArr;
-        },
-        iconTabIndex() {
-            const tabIndex = this.data.get('tabIndex');
-            return tabIndex === undefined && -1;
         },
         innerSvgProps() {
             const spin = this.data.get('spin');
@@ -40,13 +37,14 @@ const icon = san.defineComponent({
             const rotate = this.data.get('rotate');
             const viewBox = this.data.get('viewBox');
             const theme = this.data.get('theme');
-            const svgStyle = rotate
+
+            let svgStyle = rotate
                 ? {
                     msTransform: `rotate(${rotate}deg)`,
                     transform: `rotate(${rotate}deg)`
                 }
                 : undefined;
-            const innerSvgProps = {
+            let innerSvgProps = {
                 ...svgBaseProps,
                 class: (!!spin || type === 'loading') ? `${prefixCls}-spin` : '',
                 style: svgStyle,
@@ -60,7 +58,7 @@ const icon = san.defineComponent({
                 let computedType = type;
                 computedType = withThemeSuffix(
                     removeTypeTheme(alias(computedType)),
-                    dangerousTheme || theme || defaultTheme
+                    theme || defaultTheme
                 );
                 innerSvgProps.computedType = computedType;
             }
@@ -82,11 +80,11 @@ const icon = san.defineComponent({
     },
     template: `<i
         aria-label="{{type && '图标: ' + type}}"
-        tabIndex="{{iconTabIndex}}"
+        tabIndex="{{tabIndex === undefined ? -1 : tabIndex}}"
         on-click="handleClick"
         class="{{classes}}"
     >
-        <template s-if="component">
+        <template s-if="{{component}}">
             <iconcomponent />
         </template>
         <s-icon

@@ -5,19 +5,16 @@
 
 ```html
 <template>
-  <div>
-    <s-input placeholder="base useage" on-change="onChange"/>
-  </div>
+    <div>
+        <s-input placeholder="Basic useage" />
+    </div>
 </template>
+
 <script>
 import Input from 'santd/input';
-import Icon from 'santd/icon';
 export default {
     components: {
         's-input': Input
-    },
-    onChange(value) {
-        console.log('the value is: ', value);
     }
 }
 </script>

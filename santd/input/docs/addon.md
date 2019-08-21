@@ -5,24 +5,25 @@
 
 ```html
 <template>
-  <div>
-    <div style="margin-bottom: 16px">
-      <s-input addonBefore="Http://" addonAfter=".com"/>
-    </div>
-    <div style="margin-bottom: 16px">
-      <s-input defaultValue="mysite" addonBefore="{{addonBefore}}" addonAfter="{{addonAfter}}"/>
-    </div>
+    <div>
+        <div style="margin-bottom: 16px">
+            <s-input addonBefore="Http://" addonAfter=".com" defaultValue="mysite" />
+        </div>
+        <div style="margin-bottom: 16px">
+            <s-input defaultValue="mysite" addonBefore="{{addonBefore}}" addonAfter="{{addonAfter}}" />
+        </div>
 
-    <div style="margin-bottom: 16px">
-      <s-input addonAfter="{{addonIcon}}" />
+        <div style="margin-bottom: 16px">
+            <s-input addonAfter="{{addonIcon}}" defaultValue="mysite" />
+        </div>
     </div>
-  </div>
 </template>
 <script>
 import san from 'san';
 import Input from 'santd/input';
 import Icon from 'santd/icon';
 import Select from 'santd/select';
+
 export default {
     components: {
         's-input': Input
@@ -56,6 +57,7 @@ export default {
                     <div>
                         <s-select defaultValue=".com" style="width:90px">
                             <s-select-option value=".com">.com</s-select-option>
+                            <s-select-option value=".jp">.jp</s-select-option>
                             <s-select-option value=".cn">.cn</s-select-option>
                             <s-select-option value=".org">.org</s-select-option>
                         </s-select>

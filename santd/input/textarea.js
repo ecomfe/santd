@@ -7,27 +7,20 @@ import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
 import keyCode from '../core/util/keyCode';
 import calculateNodeHeight from './calculateNodeHeight';
-const pagin = classCreator('input');
-const prefixCls = pagin();
+const prefixCls = classCreator('input')();
 
 export default san.defineComponent({
     dataTypes: {
         defaultValue: DataTypes.string,
         value: DataTypes.string
     },
-    components: {
-    },
     computed: {
         areaClass() {
             const disabled = this.data.get('disabled') || false;
             let classArr = [prefixCls];
+
             disabled && classArr.push(`${prefixCls}-disabled`);
             return classArr;
-        },
-        stateValue() {
-            const defaultValue = this.data.get('defaultValue');
-            const value = this.data.get('value');
-            return value ? value : (defaultValue ? defaultValue : '');
         }
     },
     initData() {
@@ -56,7 +49,8 @@ export default san.defineComponent({
         // 如果autosize里面传的是字符串对象，需要进行解析
         if (autosize.toString() === 'false' || autosize.toString() === 'true') {
             textareaStyles = calculateNodeHeight(this.el, false, null, null);
-        } else {
+        }
+        else {
             const parseObj = this.parseObjString(autosize);
             if (typeof parseObj === 'object') {
                 const minRows = parseObj.minRows;
@@ -109,7 +103,7 @@ export default san.defineComponent({
             on-input="handleTextareaChange($event)"
             on-keydown="handleKeyDown($event)"
             on-blur="handleBlur($event)"
-            value="{{stateValue}}"
+            value="{{value || defaultValue}}"
         ></textarea>
     `
 });

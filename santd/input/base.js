@@ -4,20 +4,23 @@
 */
 
 import san, {DataTypes} from 'san';
-import {classCreator} from '../core/util';
 import keyCode from '../core/util/keyCode';
-const pagin = classCreator('input');
-const prefixCls = pagin();
 
 export default san.defineComponent({
-    components: {
+    dataTypes: {
+        size: DataTypes.string,
+        disabled: DataTypes.bool,
+        prefixCls: DataTypes.string
     },
     computed: {
         baseClass() {
+            const prefixCls = this.data.get('prefixCls');
             const size = this.data.get('sizeMap')[this.data.get('size')];
             const disabled = this.data.get('disabled');
             const className = this.data.get('className');
-            let classArr = [prefixCls, className];
+            let classArr = [prefixCls];
+
+            className && (classArr = classArr.concat(className));
             size && classArr.push(`${prefixCls}-${size}`);
             disabled && classArr.push(`${prefixCls}-disabled`);
             return classArr;
@@ -26,7 +29,6 @@ export default san.defineComponent({
     initData() {
         return {
             type: 'text',
-            stateValue: '',
             sizeMap: {
                 large: 'lg',
                 small: 'sm'

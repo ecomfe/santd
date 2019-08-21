@@ -5,26 +5,26 @@
 
 ```html
 <template>
-  <div>
-  <div style="margin-bottom: 16px">
-      <s-input-search
-          defaultValue="default"
-          on-search="onSearch"
-          on-pressEnter="onPressEnter"
-          style="width: 200px;"
-      ></s-input-search>
+    <div>
+        <div style="margin-bottom: 16px">
+            <s-input-search
+                placeholder="input search text"
+                on-search="onSearch"
+                style="width: 200px;"
+            ></s-input-search>
+        </div>
+        <div style="margin-bottom: 16px">
+            <s-input-search placeholder="input search text" enterButton="{{true}}" on-search="onSearch"></s-input-search>
+        </div>
+        <div style="margin-bottom: 16px">
+            <s-input-search placeholder="input search text" enterButton="Search" on-search="onSearch" size="large"></s-input-search>
+        </div>
     </div>
-    <div style="margin-bottom: 16px">
-      <s-input-search placeholder="input search text" enterButton="" on-search="onSearch"></s-input-search>
-    </div>
-   <div style="margin-bottom: 16px">
-      <s-input-search placeholder="input search text" enterButton="Search" on-search="onSearch"></s-input-search>
-    </div>
-  </div>
 </template>
 <script>
 import Input from 'santd/input';
 import Icon from 'santd/icon';
+
 export default {
     components: {
         's-input': Input,
@@ -33,9 +33,6 @@ export default {
     },
     onSearch(value) {
         console.log('the search value is: ', value);
-    },
-    onPressEnter(value) {
-      console.log('enter value is: ', value);
     }
 }
 </script>

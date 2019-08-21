@@ -9,8 +9,7 @@ import Icon from '../icon';
 import Button from '../button';
 import BaseInput from './base';
 import './style/index.less';
-const pagin = classCreator('input');
-const prefixCls = pagin();
+const prefixCls = classCreator('input')();
 
 export default san.defineComponent({
     dataTypes: {
@@ -27,15 +26,11 @@ export default san.defineComponent({
             const sSize = this.data.get('size');
             const size = this.data.get('sizeMap')[sSize];
             let classArr = [`${prefixCls}-search`, `${prefixCls}-affix-wrapper`];
+
             !!enterButton && classArr.push(`${prefixCls}-search-enter-button`);
             !!size && classArr.push(`${prefixCls}-affix-wrapper-${size}`);
+
             return classArr;
-        },
-        searchClass() {
-            return [`${prefixCls}-suffix`];
-        },
-        buttonClass() {
-            return [`${prefixCls}-search-button`];
         }
     },
     initData() {
@@ -52,11 +47,11 @@ export default san.defineComponent({
         },
         inputChange(item) {
             this.fire('change', item.value);
-            this.dispatch('formChange', item.value);
+            this.dispatch('UI:form-item-interact', {fieldValue: item.value, type: 'change'});
         },
         inputBlur(item) {
             this.fire('blur', item.value);
-            this.dispatch('formBlur', item.value);
+            this.dispatch('UI:form-item-interact', {fieldValue: item.value, type: 'change'});
         }
     },
     searchClick(e) {
@@ -73,14 +68,15 @@ export default san.defineComponent({
                 disabled="{{disabled}}"
                 id="{{id}}"
                 type="{{type}}"
+                prefixCls="${prefixCls}"
             ></s-base-input>
-            <span s-if="{{enterButton}}" class="{{searchClass}}" on-click="searchClick($event)">
-                <s-button type="primary" class="{{buttonClass}}" size="{{size}}">
+            <span s-if="{{enterButton}}" class="${prefixCls}-suffix" on-click="searchClick($event)">
+                <s-button type="primary" class="${prefixCls}-search-button" size="{{size}}">
                     <s-icon s-if="{{enterButton === true}}" type="search"></s-icon>
                     <span s-else>{{enterButton}}</span>
                 </s-button>
             </span>
-            <span s-else class="{{searchClass}}" on-click="searchClick($event)">
+            <span s-else class="${prefixCls}-suffix" on-click="searchClick($event)">
                 <s-icon class="${prefixCls}-search-icon" type="search"></s-icon>
             <span>
         </span>

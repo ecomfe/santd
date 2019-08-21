@@ -5,9 +5,9 @@
 
 ```html
 <template>
-  <div>
-    <s-input value="{{value}}" placeholder="input with clear icon" allowClear on-change="onChange"/>
-  </div>
+<div>
+    <s-input placeholder="input with clear icon" allowClear on-change="onChange"/>
+</div>
 </template>
 <script>
 import Input from 'santd/input';
@@ -17,12 +17,7 @@ export default {
         's-input': Input
     },
     onChange(value) {
-        console.log('the value is: ', value);
-    },
-    created() {
-        setTimeout(() => {
-            this.data.set('value', 1234)
-        },1000)
+        console.log(value);
     }
 }
 </script>

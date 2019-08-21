@@ -20,7 +20,7 @@ export default function (options = {}) {
         && scriptUrl.length
         && !customCache.has(scriptUrl)
     ) {
-        const script = document.createElement('script');
+        let script = document.createElement('script');
         script.setAttribute('src', scriptUrl);
         script.setAttribute('data-namespace', scriptUrl);
         customCache.add(scriptUrl);
@@ -37,8 +37,8 @@ export default function (options = {}) {
             };
         },
         attached() {
-            const useNode = this.el.querySelector('use');
             const type = this.data.get('type');
+            let useNode = this.el.querySelector('use');
             useNode.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '#' + type);
         },
         template: `

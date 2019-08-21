@@ -6,8 +6,8 @@
 import san from 'san';
 import {getSecondaryColor, isIconDefinition, MiniMap, withSuffix} from './utils';
 
-const definitions = new MiniMap();
-const twoToneColorPalette = {
+let definitions = new MiniMap();
+let twoToneColorPalette = {
     primaryColor: '#333',
     secondaryColor: '#E6E6E6'
 };

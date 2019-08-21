@@ -1,5 +1,5 @@
 /**
-* @file docs入口文件
+* @file Santd input docs file
 */
 import san from 'san';
 import Readme from '../README.md';
@@ -17,7 +17,7 @@ import Allow from './allow-clear.md';
 import Password from './password.md';
 
 export default san.defineComponent({
-    components:{
+    components: {
         readme: Readme,
         head: Head,
         basic: Basic,
@@ -37,16 +37,16 @@ export default san.defineComponent({
             <head/>
             <basic/>
             <addon/>
-            <psfix/>
-            <size/>
             <search/>
+            <autoarea/>
+            <psfix/>
+            <allow/>
+            <size/>
             <group/>
             <textarea/>
-            <autoarea/>
             <tooltip/>
-            <allow/>
             <password/>
             <readme/>
         </div>
     `
-})
+});

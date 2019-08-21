@@ -5,23 +5,24 @@
 
 ```html
 <template>
-  <div>
+<div>
     <div style="margin-bottom: 16px">
-      <s-input on-change="onChange" prefix="{{prefix}}" value="{{value}}" />
+        <s-input prefix="{{prefix}}" suffix="{{suffix}}" />
     </div>
     <div style="margin-bottom: 16px">
-      <s-input
-        defaultValue="mysite"
-        on-pressEnter="onPressEnter"
-        suffix="{{suffix}}"
-      />
+        <s-input
+            suffix="RMB"
+            prefix="￥"
+        />
     </div>
-  </div>
+</div>
 </template>
 <script>
 import san from 'san';
 import Input from 'santd/input';
 import Icon from 'santd/icon';
+import Tooltip from 'santd/tooltip';
+
 export default {
     components: {
         's-input': Input,
@@ -35,9 +36,9 @@ export default {
                         's-icon': Icon
                     },
                     template: `
-                        <div>
-                            <s-icon type="user"></s-icon>
-                        </div>
+                        <span>
+                            <s-icon type="user" style="color: rgba(0, 0, 0, .25);"></s-icon>
+                        </span>
                     `
                 });
                 return new Prefix();
@@ -45,28 +46,20 @@ export default {
             suffix() {
                 const suffix = san.defineComponent({
                     components: {
-                        's-icon': Icon
+                        's-icon': Icon,
+                        's-tooltip': Tooltip
                     },
                     template: `
-                        <div>
-                            <s-icon type="user"></s-icon>
-                        </div>
+                        <span>
+                            <s-tooltip title="Extra information">
+                                <s-icon type="info-circle" style="color: rgba(0, 0, 0, .45);"/>
+                            </s-tooltip>
+                        </span>
                     `
                 });
                 return new suffix();
             }
         }
-    },
-    attached() {
-        setTimeout(() => {
-            this.data.set('value', 1234);
-        },1000)
-    },
-    onChange(value) {
-        console.log('the value is: ', value);
-    },
-    onPressEnter(value) {
-      console.log('pressEnter value : ', value);
     }
 }
 </script>

@@ -7,18 +7,13 @@ import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
 import BaseInput from './base';
 import Icon from '../icon';
-const pagin = classCreator('input-password');
-const prefixCls = pagin();
+const prefixCls = classCreator('input')();
+const passwordPrefixCls = classCreator('input-password')();
 
 export default san.defineComponent({
     components: {
         's-base-input': BaseInput,
         's-icon': Icon
-    },
-    computed: {
-        className() {
-            return [prefixCls, 'san-input-affix-wrapper'];
-        }
     },
     initData() {
         return {
@@ -26,49 +21,34 @@ export default san.defineComponent({
             visibilityToggle: true
         };
     },
-    created() {
-        this.watch('value', val => {
-            this.setBindData();
-        });
-        this.setBindData();
-    },
     messages: {
         inputChange(item) {
             this.fire('change', item.value);
-            this.dispatch('formChange', item.value);
+            this.dispatch('UI:form-item-interact', {fieldValue: item.value, type: 'change'});
         },
         pressEnter(item) {
             this.fire('pressEnter', item.value);
         },
         inputBlur(item) {
             this.fire('blur', item.value);
-            this.dispatch('formBlur', item.value);
+            this.dispatch('UI:form-item-interact', {fieldValue: item.value, type: 'blur'});
         }
     },
     handleEye() {
         const type = this.data.get('type');
-        const typeMap = {
-            password: 'text',
-            text: 'password'
-        };
-        this.data.set('type', typeMap[type]);
-
-    },
-    setBindData() {
-        const allData = Object.assign({}, this.data.get());
-        delete allData.size;
-        delete allData.style;
-        this.data.set('_INPUTPROPS', allData);
+        this.data.set('type', type === 'text' ? 'password' : 'text');
     },
     template: `
-        <span class="{{className}}">
+        <span class="${passwordPrefixCls} ${prefixCls}-affix-wrapper">
             <s-base-input
-                s-bind="{{_INPUTPROPS}}"
+                prefixCls="${prefixCls}"
                 type="{{type}}"
+                value="{{value}}"
+                placeholder="{{placeholder}}"
             />
-            <span class="san-input-suffix" s-if="visibilityToggle" on-click="handleEye">
-                <s-icon s-if="type==='password'" type="eye-invisible"></s-icon>
-                <s-icon s-if="type==='text'" type="eye"></s-icon>
+            <span class="${prefixCls}-suffix" s-if="{{visibilityToggle}}" on-click="handleEye">
+                <s-icon s-if="{{type==='password'}}" type="eye-invisible" />
+                <s-icon s-if="{{type==='text'}}" type="eye" />
             </span>
         </span>
     `
