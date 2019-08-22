@@ -89,7 +89,7 @@ export default san.defineComponent({
         this.isActiveOption(option, index) && classArr.push(`${prefixCls}-menu-item-active`);
         option.disabled && classArr.push(`${prefixCls}-menu-item-disabled`);
         option.loading && classArr.push(`${prefixCls}-menu-item-loading`);
-        return classArr;
+        return classArr.join(' ');
     },
     getExpandIconNode(option) {
         const hasChildren = option[this.getFieldName('children')]
@@ -101,10 +101,7 @@ export default san.defineComponent({
         return false;
     },
     handleClick(e, option, index) {
-        this.dispatch('menuClick', {option, index, e});
-    },
-    handleDoubleClick(e, option, index) {
-        this.dispatch('menuDoubleClick', {option, index});
+        this.dispatch('santd_cascader_menuClick', {option, index, e});
     },
     handleMouseEnter(e, option, index) {
         const expandTrigger = this.data.get('expandTrigger');
@@ -149,7 +146,6 @@ export default san.defineComponent({
                 key="{{getLabel(option, 'value')}}"
                 class="{{option.className}}"
                 on-click="handleClick($event, option, index)"
-                on-doubleclick="handleDoubleClick($event, option, index)"
                 on-mouseenter="handleMouseEnter($event, option, index)"
                 on-mouseleave="handleMouseLeave($event, option, index)"
                 s-ref="option{{index}}-{{subIndex}}"

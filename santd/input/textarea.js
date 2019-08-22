@@ -97,7 +97,7 @@ export default san.defineComponent({
             disabled="{{disabled}}"
             maxlength="{{maxlength}}"
             name="{{name}}"
-            readonly="{{readonly}}"
+            readonly="{{readOnly}}"
             autofocus="{{autofocus}}"
             placeholder="{{placeholder}}"
             on-input="handleTextareaChange($event)"

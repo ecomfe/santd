@@ -43,8 +43,15 @@ export default san.defineComponent({
             <s-base-input
                 prefixCls="${prefixCls}"
                 type="{{type}}"
-                value="{{value}}"
                 placeholder="{{placeholder}}"
+                size="{{size}}"
+                value="{{value}}"
+                disabled="{{disabled}}"
+                readOnly="{{readOnly}}"
+                tabIndex="{{tabIndex}}"
+                className="{{className}}"
+                autoComplete="{{autoComplete}}"
+                autoFocus="{{autoFocus}}"
             />
             <span class="${prefixCls}-suffix" s-if="{{visibilityToggle}}" on-click="handleEye">
                 <s-icon s-if="{{type==='password'}}" type="eye-invisible" />

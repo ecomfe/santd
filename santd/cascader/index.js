@@ -328,6 +328,7 @@ export default san.defineComponent({
                     readOnly="{{!showSearch}}"
                     autoComplete="off"
                     autoFocus="{{autoFocus}}"
+                    placeholder="{{value && value.length ? '' : placeholder}}"
                     on-change="handleInputChange"
                     on-click="handleInputClick"
                     on-blur="handleInputBlur"

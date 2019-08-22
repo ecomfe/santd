@@ -17,7 +17,19 @@ const addon = `
         <span class="${prefixCls}-group-addon" s-if="{{addonBefore}}" s-ref="addonBefore">
             {{addonBefore}}
         </span>
-        <s-base-input size="{{size}}" value="{{value}}" prefixCls="${prefixCls}" />
+        <s-base-input
+            value="{{value}}"
+            size="{{size}}"
+            placeholder="{{placeholder}}"
+            value="{{value}}"
+            disabled="{{disabled}}"
+            readOnly="{{readOnly}}"
+            tabIndex="{{tabIndex}}"
+            className="{{className}}"
+            autoComplete="{{autoComplete}}"
+            autoFocus="{{autoFocus}}"
+            prefixCls="${prefixCls}"
+        />
         <span class="${prefixCls}-group-addon" s-if="{{addonAfter}}" s-ref="addonAfter">
             {{addonAfter}}
         </span>
@@ -27,7 +39,19 @@ const addon = `
 const presuffix = `
 <span class="{{fixClass}}">
     <span class="${prefixCls}-prefix" s-if="{{prefix}}" s-ref="prefix">{{prefixString}}</span>
-    <s-base-input size="{{size}}" value="{{value}}" prefixCls="${prefixCls}" />
+    <s-base-input
+        value="{{value}}"
+        size="{{size}}"
+        placeholder="{{placeholder}}"
+        value="{{value}}"
+        disabled="{{disabled}}"
+        readOnly="{{readOnly}}"
+        tabIndex="{{tabIndex}}"
+        className="{{className}}"
+        autoComplete="{{autoComplete}}"
+        autoFocus="{{autoFocus}}"
+        prefixCls="${prefixCls}"
+    />
     <span class="${prefixCls}-suffix" s-if="{{suffix}}" s-ref="suffix">{{suffixString}}</span>
 </span>
 `;
@@ -184,21 +208,45 @@ export default san.defineComponent({
             addonAfter="{{addonAfter}}"
             addonBefore="{{addonBefore}}"
             value="{{value}}"
+            size="{{size}}"
+            placeholder="{{placeholder}}"
+            value="{{value}}"
+            disabled="{{disabled}}"
+            readOnly="{{readOnly}}"
+            tabIndex="{{tabIndex}}"
+            className="{{className}}"
+            autoComplete="{{autoComplete}}"
+            autoFocus="{{autoFocus}}"
         ></a-addonrenderer>
         <a-presuffix
             s-else-if="{{prefix || suffix}}"
             prefix="{{prefix}}"
             suffix="{{suffix}}"
             value="{{value}}"
+            disabled="{{disabled}}"
+            size="{{size}}"
+            placeholder="{{placeholder}}"
+            value="{{value}}"
+            readOnly="{{readOnly}}"
+            tabIndex="{{tabIndex}}"
+            className="{{className}}"
+            autoComplete="{{autoComplete}}"
+            autoFocus="{{autoFocus}}"
         ></a-presuffix>
         <s-base-input
             s-else
             size="{{size}}"
             placeholder="{{placeholder}}"
             value="{{value}}"
+            disabled="{{disabled}}"
+            size="{{size}}"
+            readOnly="{{readOnly}}"
+            tabIndex="{{tabIndex}}"
+            className="{{className}}"
+            autoComplete="{{autoComplete}}"
+            autoFocus="{{autoFocus}}"
             prefixCls="${prefixCls}"
-        >
-        </s-base-input>
+        />
         <span
             class="${prefixCls}-suffix"
             s-if="{{couldClear}}"

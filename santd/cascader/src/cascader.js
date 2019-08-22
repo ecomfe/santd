@@ -161,7 +161,7 @@ export default inherits(san.defineComponent({
         this.data.set('activeValue', activeValue);
     },
     messages: {
-        menuClick(payload) {
+        santd_cascader_menuClick(payload) {
             this.handleMenuSelect(
                 payload.value.option,
                 payload.value.index,

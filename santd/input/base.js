@@ -57,8 +57,10 @@ export default san.defineComponent({
             on-blur="inputOnBlur($event)"
             value="{{value}}"
             disabled="{{disabled}}"
+            readonly="{{readOnly}}"
             id="{{id}}"
             type="{{type}}"
+            tabindex="{{tabIndex}}"
             maxlength="{{maxLength}}"
         />
     `

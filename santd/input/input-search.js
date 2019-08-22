@@ -62,13 +62,17 @@ export default san.defineComponent({
         <span class="{{className}}">
             <s-base-input
                 s-ref="inputValue"
+                prefixCls="${prefixCls}"
                 placeholder="{{placeholder}}"
                 size="{{size}}"
                 defaultValue="{{defaultValue}}"
                 disabled="{{disabled}}"
                 id="{{id}}"
                 type="{{type}}"
-                prefixCls="${prefixCls}"
+                readOnly="{{readOnly}}"
+                tabIndex="{{tabIndex}}"
+                autoComplete="{{autoComplete}}"
+                autoFocus="{{autoFocus}}"
             ></s-base-input>
             <span s-if="{{enterButton}}" class="${prefixCls}-suffix" on-click="searchClick($event)">
                 <s-button type="primary" class="${prefixCls}-search-button" size="{{size}}">
@@ -81,5 +85,4 @@ export default san.defineComponent({
             <span>
         </span>
     `
-
 });
