@@ -43,9 +43,6 @@ export default san.defineComponent({
                     return option;
                 });
             });
-        },
-        dropdownStyle() {
-            return toStyle.string(this.data.get('dropdownMenuColumnStyle'));
         }
     },
     updated() {
@@ -139,7 +136,7 @@ export default san.defineComponent({
             class="{{prefixCls}}-menu"
             key="{{index}}"
             role="menuitem"
-            style="{{dropdownStyle}}"
+            style="{{dropdownMenuColumnStyle}}"
         >
             <li
                 s-for="option, subIndex in options"
