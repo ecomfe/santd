@@ -5,7 +5,7 @@
 
 ```html
 <template>
-  <div>
+  <div id="components-layout-demo-basic">
     <s-layout>
       <s-header>Header</s-header>
       <s-content>Content</s-content>

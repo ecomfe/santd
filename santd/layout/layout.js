@@ -25,10 +25,10 @@ const generator = function ({suffixCls, tagName}) {
             }
         },
         messages: {
-            addSider(payload) {
+            santd_layout_addSider(payload) {
                 this.data.push('siders', payload.value);
             },
-            removeSider(payload) {
+            santd_layout_removeSider(payload) {
                 const siders = this.data.get('siders');
                 this.data.set('siders', siders.filter(sider => sider !== payload.value));
             }

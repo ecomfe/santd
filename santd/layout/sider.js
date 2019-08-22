@@ -6,8 +6,7 @@
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
 import Icon from '../icon';
-const pagin = classCreator('layout-sider');
-const prefixCls = pagin();
+const prefixCls = classCreator('layout-sider')();
 
 const dimensionMap = {
     xs: '480px',
@@ -50,6 +49,7 @@ export default san.defineComponent({
             const collapsible = this.data.get('collapsible');
             const trigger = this.data.get('trigger');
             let classArr = [prefixCls, `${prefixCls}-${theme}`];
+
             collapsed && classArr.push(`${prefixCls}-collapsed`);
             collapsible && trigger !== null && classArr.push(`${prefixCls}-has-trigger`);
             +siderWidth === 0 && classArr.push(`${prefixCls}-zero-width`);
@@ -90,7 +90,7 @@ export default san.defineComponent({
         this.data.set('collapsedWidth', collapsedWidth);
     },
     attached() {
-        this.dispatch('addSider', this.id);
+        this.dispatch('santd_layout_addSider', this.id);
         const defaultCollapsed = this.data.get('defaultCollapsed');
         const collapsed = this.data.get('collapsed');
         const collapsedWidth = +this.data.get('collapsedWidth');
@@ -126,7 +126,7 @@ export default san.defineComponent({
         this.fire('breakpoint', mql);
     },
     detached() {
-        this.dispatch('removeSider', this.id);
+        this.dispatch('santd_layout_removeSider', this.id);
         if (this.mql) {
             this.mql.removeListener(this.responsiveHandler.bind(this));
         }
@@ -159,12 +159,6 @@ export default san.defineComponent({
             >
                 <s-icon type="{{trigger || 'bars'}}"></s-icon>
             </span>
-            <!--<div
-                s-if="{{collapsible && !(below && zeroWidthTrigger)}}"
-                class="${prefixCls}-trigger"
-                style="width: {{siderWidth}}px"
-            >
-            </div>-->
         </sider>
     `
 });
