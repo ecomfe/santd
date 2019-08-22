@@ -16,7 +16,7 @@ export default san.defineComponent({
         };
     },
     created() {
-        this.dispatch('addBreadcrumbItem', this);
+        this.dispatch('santd_breadcrumb_add', this);
     },
     template: `
         <span>

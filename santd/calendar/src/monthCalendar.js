@@ -33,13 +33,13 @@ export default inherits(san.defineComponent({
     handleMonthSelect(value) {
         // this.data.set('value', value);
         this.fire('select', value);
-        this.dispatch('select', {value: value, cause: null});
+        this.dispatch('santd_calendar_select', {value: value, cause: null});
     },
     handlePanelChange({value, mode}) {
         if (mode && mode !== 'date') {
             this.data.set('mode', mode);
         }
-        this.dispatch('panelChange', {value: value || this.data.get('value'), mode});
+        this.dispatch('santd_calendar_panelChange', {value: value || this.data.get('value'), mode});
     },
     components: {
         's-calendarheader': CalendarHeader

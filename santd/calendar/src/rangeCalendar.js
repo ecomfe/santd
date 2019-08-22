@@ -249,13 +249,13 @@ export default inherits(san.defineComponent({
             this.fireHoverValueChange(selectedValue.concat());
         }
         this.fire('change', selectedValue);
-        this.dispatch('change', selectedValue);
+        this.dispatch('santd_calendar_change', selectedValue);
         if (direct || selectedValue[0] && selectedValue[1]) {
             this.data.set('prevSelectedValue', selectedValue);
             this.data.set('firstSelectedValue', null);
             this.fireHoverValueChange([]);
             this.fire('select', {selectedValue, cause});
-            this.dispatch('select', {value: selectedValue, cause});
+            this.dispatch('santd_calendar_select', {value: selectedValue, cause});
         }
     },
     compare(v1, v2) {
@@ -270,7 +270,7 @@ export default inherits(san.defineComponent({
     fireHoverValueChange(hoverValue) {
         this.data.set('hoverValue', hoverValue);
         this.fire('hoverChange', hoverValue);
-        this.dispatch('hoverChange', hoverValue);
+        this.dispatch('santd_calendar_hoverChange', hoverValue);
     },
     handleDatePanelLeave() {
         const type = this.data.get('type');
@@ -388,18 +388,18 @@ export default inherits(san.defineComponent({
         const isAllowedDateAndTime = this.data.get('isAllowedDateAndTime');
         if (isAllowedDateAndTime) {
             this.fire('ok', selectedValue);
-            this.dispatch('ok', selectedValue);
+            this.dispatch('santd_calendar_ok', selectedValue);
         }
     },
     handleStartValueChange(leftValue) {
         this.data.set('value[0]', leftValue);
         this.fire('valueChange', this.data.get('value'));
-        this.dispatch('valueChange', this.data.get('value'));
+        this.dispatch('santd_calendar_valueChange', this.data.get('value'));
     },
     handleEndValueChange(rightValue) {
         this.data.set('value[1]', rightValue);
         this.fire('valueChange', this.data.get('value'));
-        this.dispatch('valueChange', this.data.get('value'));
+        this.dispatch('santd_calendar_valueChange', this.data.get('value'));
     },
     handleStartPanelChange({value, mode}) {
         const newMode = [mode, this.data.get('mode')[1]];
@@ -410,7 +410,7 @@ export default inherits(san.defineComponent({
         this.data.set('panelTriggerSource', 'start');
         const newValue = [value || prevValue[0], prevValue[1]];
         this.fire('panelChange', {value: newValue, mode: newMode});
-        this.dispatch('panelChange', {value: newValue, mode: newMode});
+        this.dispatch('santd_calendar_panelChange', {value: newValue, mode: newMode});
     },
     handleEndPanelChange({value, mode}) {
         const newMode = [this.data.get('mode')[0], mode];
@@ -421,7 +421,7 @@ export default inherits(san.defineComponent({
         this.data.set('panelTriggerSource', 'end');
         const newValue = [prevValue[0], value || prevValue[1]];
         this.fire('panelChange', {value: newValue, mode: newMode});
-        this.dispatch('panelChange', {value: newValue, mode: newMode});
+        this.dispatch('santd_calendar_panelChange', {value: newValue, mode: newMode});
     },
     handleInputSelect(direction, value, cause) {
         if (!value) {

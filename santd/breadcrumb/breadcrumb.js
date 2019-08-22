@@ -81,7 +81,7 @@ export default san.defineComponent({
         this.data.set('instance', this);
     },
     messages: {
-        addBreadcrumbItem(payload) {
+        santd_breadcrumb_add(payload) {
             const item = payload.value;
             const separator = this.data.get('separator');
             if (separator) {

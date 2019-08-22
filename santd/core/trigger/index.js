@@ -445,7 +445,7 @@ export default san.defineComponent({
         savePopup(payload) {
             this.data.set('popupComponent', payload.value);
         },
-        handleTrigger(payload) {
+        santd_button_trigger(payload) {
             const action = payload.value.action;
             const e = payload.value.e;
             if (this[action]) {

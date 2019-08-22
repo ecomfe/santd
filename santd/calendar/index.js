@@ -48,7 +48,9 @@ const exportCalendar = san.defineComponent({
         classes() {
             const className = this.data.get('className');
             const fullscreen = this.data.get('fullscreen');
-            let classArr = [prefixCls, className];
+
+            let classArr = [prefixCls];
+            className && classArr.push(className);
             fullscreen && classArr.push(`${prefixCls}-fullscreen`);
             return classArr;
         },
@@ -187,14 +189,20 @@ const exportCalendar = san.defineComponent({
         }
     },
     inited() {
-        const value = this.data.get('value');
         const defaultValue = this.data.get('defaultValue');
+        const value = this.data.get('value') || defaultValue || moment();
+        const localeCode = this.data.get('localeCode');
 
-        this.data.set('value', value || defaultValue || moment());
+        if (localeCode) {
+            moment.locale(localeCode);
+            value.locale(localeCode);
+        }
+        this.data.set('value', value);
         this.data.set('instance', this);
+
         this.watch('localeCode', val => {
             moment.locale(val);
-            const value = this.data.get('value').locale(val);
+            value.locale(val);
             this.data.set('value', value, {force: true});
         });
     },

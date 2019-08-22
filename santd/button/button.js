@@ -98,13 +98,13 @@ export default san.defineComponent({
     },
 
     handleFocus(e) {
-        this.dispatch('handleTrigger', {
+        this.dispatch('santd_button_trigger', {
             action: 'handleFocus', e
         });
     },
 
     handleBlur(e) {
-        this.dispatch('handleTrigger', {
+        this.dispatch('santd_button_trigger', {
             action: 'handleBlur', e
         });
     },

@@ -29,7 +29,8 @@ export default inherits(san.defineComponent({
             const prefixCls = this.data.get('prefixCls');
             const fullscreen = this.data.get('fullscreen');
             let classArr = [`${prefixCls}-full`];
-            fullscreen & classArr.push(`${prefixCls}-fullscreen`);
+
+            fullscreen && classArr.push(`${prefixCls}-fullscreen`);
             return classArr.join(' ');
         },
         injectHeader() {

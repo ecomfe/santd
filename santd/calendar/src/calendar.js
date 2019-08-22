@@ -75,11 +75,11 @@ export default inherits(san.defineComponent({
             }
         }
         this.fire('select', {value});
-        this.dispatch('select', {value, cause: null});
+        this.dispatch('santd_calendar_select', {value, cause: null});
     },
     handleDateInputChange(value) {
         this.fire('select', {value, cause: {source: 'dateInput'}});
-        this.dispatch('select', {value: value.clone(), cause: null});
+        this.dispatch('santd_calendar_select', {value: value.clone(), cause: null});
     },
     handlePanelChange({value, mode}) {
         this.data.set('mode', mode);
@@ -87,7 +87,7 @@ export default inherits(san.defineComponent({
             this.data.set('value', value);
         }
         this.fire('panelChange', {value: value || this.data.get('value'), mode});
-        this.dispatch('panelChange', {value: value || this.data.get('value'), mode});
+        this.dispatch('santd_calendar_panelChange', {value: value || this.data.get('value'), mode});
         if (this.onPanelChange) {
             this.onPanelChange(value || this.data.get('value'), mode);
         }
@@ -96,13 +96,13 @@ export default inherits(san.defineComponent({
         const value = this.data.get('value');
         const now = getTodayTime(value);
         this.fire('select', {value: now, cause: {source: 'todayButton'}});
-        this.dispatch('select', {value: now, cause: {source: 'todayButton'}});
+        this.dispatch('santd_calendar_select', {value: now, cause: {source: 'todayButton'}});
     },
     handleOk() {
         const selectedValue = this.data.get('selectedValue');
         if (this.isAllowedDate(selectedValue)) {
             this.fire('ok', selectedValue);
-            this.dispatch('ok', selectedValue);
+            this.dispatch('santd_calendar_ok', selectedValue);
         }
     },
     handleOpenTimePicker() {

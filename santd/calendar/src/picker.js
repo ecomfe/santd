@@ -107,7 +107,7 @@ export default inherits(san.defineComponent({
         }
     },
     messages: {
-        select(payload) {
+        santd_calendar_select(payload) {
             const value = payload.value.value;
             const cause = payload.value.cause || {};
             const calendar = this.data.get('calendar');
@@ -122,11 +122,11 @@ export default inherits(san.defineComponent({
             }
             this.fire('change', value);
         },
-        ok(payload) {
+        santd_calendar_ok(payload) {
             this.close();
             this.fire('ok', payload.value);
         },
-        panelChange(payload) {
+        santd_calendar_panelChange(payload) {
             const value = payload.value.value;
             const mode = payload.value.mode;
 

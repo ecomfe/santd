@@ -70,7 +70,6 @@ export default san.defineComponent({
         this.data.set('value', value);
         if (originalValue && value && !originalValue.isSame(value) || (!originalValue && value) || (originalValue && !value)) {
             this.fire('change', value);
-            // this.dispatch('change', value);
         }
     },
     isAllowedDate(value) {
