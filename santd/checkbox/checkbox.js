@@ -31,7 +31,7 @@ export default san.defineComponent({
         this.data.set('instance', this);
     },
     attached() {
-        this.dispatch('addCheckbox', this);
+        this.dispatch('santd_checkbox_add', this);
     },
     computed: {
         classes() {
@@ -48,7 +48,7 @@ export default san.defineComponent({
     },
     handleChange(e) {
         this.fire('change', e);
-        this.dispatch('toggleOption', {
+        this.dispatch('santd_checkbox_toggleOption', {
             value: this.data.get('value')
         });
     },

@@ -442,7 +442,7 @@ export default san.defineComponent({
         this.data.set('show', !this.data.get('show'));
     },
     messages: {
-        savePopup(payload) {
+        santd_popup_save(payload) {
             this.data.set('popupComponent', payload.value);
         },
         santd_button_trigger(payload) {
@@ -452,19 +452,19 @@ export default san.defineComponent({
                 this[action](e, true);
             }
         },
-        handlePopupMouseEnter(payload) {
+        santd_popup_mouseEnter(payload) {
             const e = payload.value;
             if (this.data.get('isMouseEnterToShow')) {
                 this.handlePopupMouseEnter(e);
             }
         },
-        handlePopupMouseLeave(payload) {
+        santd_popup_mouseLeave(payload) {
             const e = payload.value;
             if (this.data.get('isMouseLeaveToHide')) {
                 this.handlePopupMouseLeave(e);
             }
         },
-        handlePopupMouseDown(payload) {
+        santd_popup_mouseDown(payload) {
             const e = payload.value;
             this.handlePopupMouseDown(e);
         }

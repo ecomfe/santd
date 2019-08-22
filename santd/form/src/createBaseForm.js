@@ -522,14 +522,14 @@ export default function (options = {}, mixins = []) {
             this.data.set('renderFields', {});
         };
         wrappedComponent.messages = {
-            formChange(payload) {
+            santd_form_change(payload) {
                 const {name, action} = payload.value;
                 const field = this.data.get('renderFields.' + name);
                 if (field && field[action]) {
                     field[action](name, action, payload.value);
                 }
             },
-            attachFormItem(payload) {
+            santd_formitem_add(payload) {
                 const children = this.data.get('children') || {};
                 children[payload.value.id] = payload.value;
                 const decorator = payload.value.data.get('decorator');
@@ -540,7 +540,7 @@ export default function (options = {}, mixins = []) {
                 this.data.set('children', children);
                 this.data.set('form', this, {force: true});
             },
-            removeFormItem(payload) {
+            santd_formitem_remove(payload) {
                 const children = this.data.get('children') || {};
                 children[payload.value.id] = payload.value;
                 const decorator = payload.value.data.get('decorator');

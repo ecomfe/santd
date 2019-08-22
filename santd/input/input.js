@@ -77,8 +77,8 @@ const AddonRenderer = san.defineComponent({
         };
     },
     messages: {
-        inputChange(data) {
-            this.dispatch('inputChange', data.value);
+        santd_input_change(data) {
+            this.dispatch('santd_input_change', data.value);
         }
     },
     attached() {
@@ -118,8 +118,8 @@ const PresuffixRenderer = san.defineComponent({
         };
     },
     messages: {
-        inputChange(data) {
-            this.dispatch('inputChange', data.value);
+        santd_input_change(data) {
+            this.dispatch('santd_input_change', data.value);
         }
     },
     attached() {
@@ -179,7 +179,7 @@ export default san.defineComponent({
         };
     },
     messages: {
-        inputChange(item) {
+        santd_input_change(item) {
             const value = item.value;
             const allow = this.data.get('allowClear');
 
@@ -191,10 +191,10 @@ export default san.defineComponent({
             this.dispatch('UI:form-item-interact', {fieldValue: value, type: 'change'});
         },
         // 接收input-enter
-        pressEnter(item) {
+        santd_input_pressEnter(item) {
             this.fire('pressEnter', item.value);
         },
-        inputBlur(item) {
+        santd_input_blur(item) {
             this.fire('blur', item.value);
             this.dispatch('UI:form-item-interact', {fieldValue: item.value, type: 'blur'});
         }

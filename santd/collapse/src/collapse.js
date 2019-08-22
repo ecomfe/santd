@@ -68,10 +68,10 @@ export default san.defineComponent({
         });
     },
     messages: {
-        addPanel(payload) {
+        santd_panel_add(payload) {
             this.data.push('children', payload.value);
         },
-        panelClick(payload) {
+        santd_panel_click(payload) {
             let activeKey = this.data.get('activeKey');
             const accordion = this.data.get('accordion');
             const key = payload.value;

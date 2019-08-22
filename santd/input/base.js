@@ -37,16 +37,16 @@ export default san.defineComponent({
     },
     inputChange(e) {
         const inputValue = e.target.value;
-        this.dispatch('inputChange', inputValue);
+        this.dispatch('santd_input_change', inputValue);
     },
     keydownHander(e) {
         if (e.keyCode === keyCode.ENTER) {
-            this.dispatch('pressEnter', e.target.value);
+            this.dispatch('santd_input_pressEnter', e.target.value);
         }
     },
     inputOnBlur(e) {
         const inputValue = e.target.value;
-        this.dispatch('inputBlur', inputValue);
+        this.dispatch('santd_input_blur', inputValue);
     },
     template: `
         <input

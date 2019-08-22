@@ -22,14 +22,14 @@ export default san.defineComponent({
         };
     },
     messages: {
-        inputChange(item) {
+        santd_input_change(item) {
             this.fire('change', item.value);
             this.dispatch('UI:form-item-interact', {fieldValue: item.value, type: 'change'});
         },
-        pressEnter(item) {
+        santd_input_pressEnter(item) {
             this.fire('pressEnter', item.value);
         },
-        inputBlur(item) {
+        santd_input_blur(item) {
             this.fire('blur', item.value);
             this.dispatch('UI:form-item-interact', {fieldValue: item.value, type: 'blur'});
         }

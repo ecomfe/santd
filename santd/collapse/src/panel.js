@@ -51,7 +51,7 @@ export default san.defineComponent({
         this.data.set('instance', this);
     },
     attached() {
-        this.dispatch('addPanel', this);
+        this.dispatch('santd_panel_add', this);
         this.watch('prefixCls', val => {
             const expandIcon = this.ref('expandIcon');
             if (expandIcon) {
@@ -67,7 +67,7 @@ export default san.defineComponent({
             return;
         }
         const panelKey = this.data.get('panelKey');
-        this.dispatch('panelClick', panelKey);
+        this.dispatch('santd_panel_click', panelKey);
     },
     handleKeyPress(e) {
         if (e.key === 'Enter' || e.keyCode === 13 || e.which === 13) {

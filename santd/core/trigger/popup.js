@@ -91,19 +91,19 @@ export default san.defineComponent({
         this.fire('align', {source, result});
     },
     attached() {
-        this.dispatch('savePopup', this);
+        this.dispatch('santd_popup_save', this);
     },
     handlePopupMouseEnter(e) {
-        this.dispatch('handlePopupMouseEnter', e);
+        this.dispatch('santd_popup_mouseEnter', e);
     },
     handlePopupMouseLeave(e) {
-        this.dispatch('handlePopupMouseLeave', e);
+        this.dispatch('santd_popup_mouseLeave', e);
     },
     handlePopupMouseDown(e) {
-        this.dispatch('handlePopupMouseDown', e);
+        this.dispatch('santd_popup_mouseDown', e);
     },
     handlePopupTouchStart(e) {
-        this.dispatch('handlePopupMouseDown', e);
+        this.dispatch('santd_popup_mouseDown', e);
     },
     template: `
         <div

@@ -140,7 +140,7 @@ export default san.defineComponent({
             const hoverValue = this.data.get('hoverValue');
             const mode = this.data.get('mode');
             const localeCode = this.data.get('localeCode');
-            if (localeCode) {
+            if (localeCode && showDate) {
                 showDate[0].locale(localeCode);
                 showDate[1].locale(localeCode);
             }

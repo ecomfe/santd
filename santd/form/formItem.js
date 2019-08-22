@@ -237,7 +237,7 @@ export default san.defineComponent({
                 }
             }
         });
-        this.dispatch('attachFormItem', this);
+        this.dispatch('santd_formitem_add', this);
         const decoratorInstance = this.data.get('decoratorInstance');
         this.watch('form', val => {
             const prevValue = decoratorInstance && decoratorInstance.data.get('value');
@@ -263,12 +263,12 @@ export default san.defineComponent({
         }
     },
     detached() {
-        this.dispatch('removeFormItem', this);
+        this.dispatch('santd_formitem_remove', this);
     },
     messages: {
         'UI:form-item-interact'(item) {
             const decorator = this.data.get('decorator') || {};
-            this.dispatch('formChange', {
+            this.dispatch('santd_form_change', {
                 name: decorator.name,
                 value: item.value.fieldValue,
                 action: item.value.type

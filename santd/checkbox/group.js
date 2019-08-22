@@ -62,7 +62,7 @@ export default san.defineComponent({
         });
     },
     messages: {
-        toggleOption(payload) {
+        santd_checkbox_toggleOption(payload) {
             const option = payload.value;
             const value = this.data.get('value') || [];
             const optionIndex = value.indexOf(option.value);
@@ -77,7 +77,7 @@ export default san.defineComponent({
             // 提交数据给form表单使用
             this.dispatch('UI:form-item-interact', {fieldValue: value, type: 'change'});
         },
-        addCheckbox(payload) {
+        santd_checkbox_add(payload) {
             const checkboxs = this.data.get('checkboxs');
             // 当没有options数据的时候才去收集子checkbox
             if (!checkboxs.length) {
