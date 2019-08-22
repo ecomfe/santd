@@ -11,7 +11,6 @@
             loading="{{initLoading}}"
             itemLayout="horizontal"
             dataSource="{{list}}"
-            on-loadmore="onLoadMore"
         >
             <s-list-item slot="renderItem">
                 <s-skeleton avatar loading="{{item.loading}}" active>

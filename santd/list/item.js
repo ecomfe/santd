@@ -17,49 +17,34 @@ const Meta = san.defineComponent({
         title: DataTypes.string,
         description: DataTypes.string
     },
-    computed: {
-        classes() {
-            const className = this.data.get('className');
-            return [`${prefixCls}-item-meta`, className];
-        },
-        hasAvatar() {
-            const instance = this.data.get('instance');
-            const avatar = this.data.get('avatar');
-            return instance && instance.sourceSlots.named.avatar || avatar;
-        },
-        hasTitle() {
-            const instance = this.data.get('instance');
-            const title = this.data.get('title');
-            return instance && instance.sourceSlots.named.title || title;
-        },
-        hasDescription() {
-            const instance = this.data.get('instance');
-            const description = this.data.get('description');
-            return instance && instance.sourceSlots.named.description || description;
-        }
-    },
     initData() {
         return {
             prefixCls
         };
     },
-    inited() {
-        this.data.set('instance', this);
-    },
     components: {
         's-avatar': Avatar
     },
+    hasAvatar(avatar) {
+        return this.sourceSlots.named.avatar || avatar;
+    },
+    hasTitle(title) {
+        return this.sourceSlots.named.title || title;
+    },
+    hasDescription(description) {
+        return this.sourceSlots.named.description || description;
+    },
     template: `
-        <div class="{{classes}}">
-            <div class="{{prefixCls}}-item-meta-avatar" s-if="hasAvatar">
-                <s-avatar src="{{avatar}}" s-if="avatar"></s-avatar>
+        <div class="{{prefixCls}}-item-meta {{className}}">
+            <div class="{{prefixCls}}-item-meta-avatar" s-if="{{hasAvatar(avatar)}}">
+                <s-avatar src="{{avatar}}" s-if="{{avatar}}"></s-avatar>
                 <slot name="avatar"></slot>
             </div>
-            <div class="{{prefixCls}}-item-meta-content" s-if="hasDescription || hasTitle">
-                <h4 class="{{prefixCls}}-item-meta-title" s-if="hasTitle">
+            <div class="{{prefixCls}}-item-meta-content" s-if="{{hasDescription(description) || hasTitle(title)}}">
+                <h4 class="{{prefixCls}}-item-meta-title" s-if="{{hasTitle(title)}}">
                     {{title}}<slot name="title"></slot>
                 </h4>
-                <div class="{{prefixCls}}-item-meta-description" s-if="hasDescription">
+                <div class="{{prefixCls}}-item-meta-description" s-if="{{hasDescription(description)}}">
                     {{description}}<slot name="description"></slot>
                 </div>
             </div>
@@ -68,30 +53,20 @@ const Meta = san.defineComponent({
 });
 
 const Item = san.defineComponent({
-    computed: {
-        classes() {
-            const className = this.data.get('className');
-            return [`${prefixCls}-item`, className];
-        },
-        hasExtra() {
-            const instance = this.data.get('instance');
-            return instance && instance.sourceSlots.named.extra;
-        }
-    },
     initData() {
         return {
             prefixCls
         };
     },
-    inited() {
-        this.data.set('instance', this);
-    },
     attached() {
-        this.dispatch('addItem', this);
+        this.dispatch('santd_list_addItem', this);
+    },
+    hasExtra() {
+        return this.sourceSlots.named.extra;
     },
     template: `
-        <div class="{{classes}}">
-            <template s-if="itemLayout === 'vertical' && hasExtra">
+        <div class="{{prefixCls}}-item {{className}}">
+            <template s-if="{{itemLayout === 'vertical' && hasExtra()}}">
                 <div class="{{prefixCls}}-item-main" key="content">
                     <slot></slot>
                     <slot name="actions" s-bind="{{{prefixCls: prefixCls, item: item, index: index}}}"></slot>

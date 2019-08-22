@@ -48,7 +48,9 @@ const List = san.defineComponent({
             const prefixCls = this.data.get('prefixCls');
             const className = this.data.get('className');
             const sizeClass = this.data.get('sizeClass');
-            let classArr = [prefixCls, className];
+            let classArr = [prefixCls];
+
+            className && classArr.push(className);
             this.data.get('itemLayout') === 'vertical' && classArr.push(`${prefixCls}-vertical`);
             sizeClass && classArr.push(`${prefixCls}-${sizeClass}`);
             this.data.get('split') && classArr.push(`${prefixCls}-split`);
@@ -69,37 +71,6 @@ const List = san.defineComponent({
             }
             return '';
         },
-        hasHeader() {
-            const instance = this.data.get('instance');
-            const header = this.data.get('header');
-            return instance && instance.sourceSlots.named.header || header;
-        },
-        hasFooter() {
-            const instance = this.data.get('instance');
-            const footer = this.data.get('footer');
-            return instance && instance.sourceSlots.named.footer || footer;
-        },
-        hasChildren() {
-            const hasHeader = this.data.get('hasHeader');
-            const hasFooter = this.data.get('hasFooter');
-            const dataSource = this.data.get('dataSource');
-
-            return hasHeader || hasFooter || dataSource.length !== 0;
-        },
-        hasRenderEmpty() {
-            const instance = this.data.get('instance');
-            return instance && instance.sourceSlots.named.renderEmpty;
-        },
-        hasLoadMore() {
-            const instance = this.data.get('instance');
-            return instance && instance.sourceSlots.named.loadMore;
-        },
-        somethingAfterLastItem() {
-            const loadMore = this.data.get('loadMore');
-            const pagination = this.data.get('pagination');
-            const hasFooter =  this.data.get('hasFooter');
-            return !!(loadMore || pagination || hasFooter);
-        },
         paginationProps() {
             const dataSource = this.data.get('dataSource');
             const pagination = this.data.get('pagination');
@@ -114,7 +85,6 @@ const List = san.defineComponent({
         },
         splitDataSource() {
             const dataSource = this.data.get('dataSource');
-            const pagination = this.data.get('pagination');
             const paginationProps = this.data.get('paginationProps');
 
             if (dataSource.length > (paginationProps.current - 1) * paginationProps.pageSize) {
@@ -143,7 +113,7 @@ const List = san.defineComponent({
         return grid[type] && Math.floor(24 / grid[type]);
     },
     messages: {
-        addItem(payload) {
+        santd_list_addItem(payload) {
             const item = payload.value;
             item.data.set('itemLayout', this.data.get('itemLayout'));
             this.data.push('children', item);
@@ -155,6 +125,29 @@ const List = san.defineComponent({
             child.data.set('item', dataSource[index]);
             child.data.set('index', index);
         });
+        this.data.set('somethingAfterLastItem', this.somethingAfterLastItem());
+    },
+    hasHeader() {
+        return this.sourceSlots.named.header || this.data.get('header');
+    },
+    hasFooter() {
+        return this.sourceSlots.named.footer || this.data.get('footer');
+    },
+    hasChildren() {
+        const dataSource = this.data.get('dataSource');
+
+        return this.hasHeader() || this.hasFooter() || dataSource.length !== 0;
+    },
+    hasRenderEmpty() {
+        return this.sourceSlots.named.renderEmpty;
+    },
+    hasLoadMore() {
+        return this.sourceSlots.named.loadMore;
+    },
+    somethingAfterLastItem() {
+        const loadMore = this.data.get('loadMore');
+        const pagination = this.data.get('pagination');
+        return !!(loadMore || pagination || this.hasFooter());
     },
     handlePaginationChange(payload) {
         const pagination = this.data.get('pagination');
@@ -180,7 +173,7 @@ const List = san.defineComponent({
         <div class="{{classes}}" id="{{id}}">
             <div
                 class="{{prefixCls}}-pagination"
-                s-if="(paginationPosition === 'top' || paginationPosition === 'both') && pagination"
+                s-if="{{(paginationPosition === 'top' || paginationPosition === 'both') && pagination}}"
             >
                 <s-pagination
                     total="{{paginationProps.total}}"
@@ -190,18 +183,18 @@ const List = san.defineComponent({
                     on-showSizeChang="handleShowSizeChange"
                 ></s-pagination>
             </div>
-            <div class="{{prefixCls}}-header" s-if="hasHeader || header">
+            <div class="{{prefixCls}}-header" s-if="{{hasHeader() || header}}">
                 {{header}}<slot name="header"></slot>
             </div>
             <s-spin spinning="{{loading}}">
                 <div slot="content">
                     <div style="min-height: 53px;" s-if="loading"></div>
-                    <div s-if="!loading && !hasChildren" class="{{prefixCls}}-empty-text">
-                        <slot name="renderEmpty" s-if="{{hasRenderEmpty}}"></slot>
+                    <div s-if="{{!loading && !hasChildren()}}" class="{{prefixCls}}-empty-text">
+                        <slot name="renderEmpty" s-if="{{hasRenderEmpty()}}"></slot>
                         <span s-else>没有数据</span>
                     </div>
                     <template s-else>
-                        <s-row gutter="{{grid.gutter}}" s-if="grid">
+                        <s-row gutter="{{grid.gutter}}" s-if="{{grid}}">
                             <s-col
                                 span="{{getGrid(grid, 'column')}}"
                                 xs="{{getGrid(grid, 'xs')}}"
@@ -219,14 +212,14 @@ const List = san.defineComponent({
                     </template>
                 </div>
             </s-spin>
-            <div class="{{prefixCls}}-footer" s-if="hasFooter || footer">
+            <div class="{{prefixCls}}-footer" s-if="{{hasFooter() || footer}}">
                 {{footer}}<slot name="footer"></slot>
             </div>
-            <slot s-if="hasLoadMore" name="loadMore"></slot>
+            <slot s-if="{{hasLoadMore()}}" name="loadMore"></slot>
             <template s-else>
                 <div
                     class="{{prefixCls}}-pagination"
-                    s-if="(paginationPosition === 'bottom' || paginationPosition === 'both') && pagination"
+                    s-if="{{(paginationPosition === 'bottom' || paginationPosition === 'both') && pagination}}"
                 >
                     <s-pagination
                         total="{{paginationProps.total}}"
@@ -243,12 +236,3 @@ const List = san.defineComponent({
 
 List.Item = Item;
 export default List;
-
-/*import List from './list';
-import ListItem from './item';
-import ItemMeta from './item-meta';
-
-List.ListItem = ListItem;
-List.ItemMeta = ItemMeta;
-
-export default List;*/
