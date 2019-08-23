@@ -41,7 +41,6 @@ export default san.defineComponent({
             placeholder: '',
             readOnly: false,
             disabled: false,
-            contenteditable: true,
             suggestions: [],
             filteredSuggestions: [],
             isShowSug: false,
@@ -53,32 +52,14 @@ export default san.defineComponent({
         };
     },
     computed: {
-        classes() {
-            let classArr = [`${prefixCls}-wrapper`];
-            this.data.get('disabled') && classArr.push('disabled');
-            return classArr;
-        },
-        editor() {
-            let classArr = ['public-DraftEditor-content'];
-            !this.data.get('readOnly') && classArr.push('notranslate');
-            return classArr;
-        },
-        showPlaceholder() {
-            const placeholder = this.data.get('placeholder');
-            const value = this.data.get('value');
-            return !!placeholder && !value;
-        },
-        contenteditable() {
-            return !this.data.get('disabled') && !this.data.get('readOnly');
-        },
         editorStyle() {
             let multiLines = !!this.data.get('multiLines');
             const baseStyle = multiLines ? this.data.get('baseStyle') : {};
-            return {...baseStyle, outline: 'none', 'white-space': 'pre-wrap', 'overflow-wrap': 'break-word'}
+            return {...baseStyle, outline: 'none', 'white-space': 'pre-wrap', 'overflow-wrap': 'break-word'};
         }
     },
     messages: {
-        itemSelect(e) {
+        santd_mention_itemSelect(e) {
             const {value, start, end} = this.data.get();
             let newInputValue = insertString(value, start, end, e.value);
             // 点击下拉选项后，设置输入框的值
@@ -160,7 +141,7 @@ export default san.defineComponent({
         // 需要先获取到上面行的字符数，而且，如果是同一行，不能加，只能在回车后的第一次才能加上
         const preLineOffset = this.ref('mention-editor').innerText.length;
         let anchorOffset = window.getSelection().anchorOffset; // 光标位置
-        if (anchorOffset ===1) {
+        if (anchorOffset === 1) {
             anchorOffset += preLineOffset;
         }
         const startPos = value.slice(0, anchorOffset).search(/\S+$/);
@@ -202,20 +183,19 @@ export default san.defineComponent({
         this.ref('mention-editor').blur();
     },
     template: `
-        <div className="{{classes}}">
+        <div class="${prefixCls}-wrapper {{disabled ? 'disabled' : ''}}">
             <div className="${prefixCls}-editor">
-                <s-placeholder s-if="{{showPlaceholder}}">{{placeholder}}</s-placeholder>
+                <s-placeholder s-if="{{!value && placeholder}}">{{placeholder}}</s-placeholder>
                 <div s-ref="mention-editor"
                     style="{{editorStyle}}"
                     className="${prefixCls}-editor-wrapper"
-                    contenteditable="{{contenteditable}}"
+                    contenteditable="{{!disabled && !readOnly}}"
                     on-focus="onFocus($event)"
                     on-blur="onBlur($event)"
                     on-keydown="onKeydown($event)"
                     on-input="onInput($event)"
                 >
                 </div>
-
             </div>
             <s-suggestions
                 isShowSug="{{isShowSug}}"

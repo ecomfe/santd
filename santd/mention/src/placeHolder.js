@@ -6,14 +6,9 @@ import '../style/index.less';
 import san from 'san';
 
 export default san.defineComponent({
-    computed: {
-        className() {
-            return ['public-DraftEditorPlaceholder-root'];
-        }
-    },
     template: `
-		<div className="{{className}}">
-	        <div className="public-DraftEditorPlaceholder-inner"><slot></slot></div>
-		</div>
-	`
+        <div className="public-DraftEditorPlaceholder-root">
+            <div className="public-DraftEditorPlaceholder-inner"><slot></slot></div>
+        </div>
+    `
 });

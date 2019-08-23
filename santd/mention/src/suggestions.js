@@ -10,11 +10,8 @@ import Nav from './nav';
 import toStyle from 'to-style';
 import {classCreator} from '../../core/util';
 
-const cc = classCreator('suggestions');
-const prefixCls = cc();
-// 复用san-dropdown-menu样式
-const ccdrop = classCreator('dropdown');
-const prefixDropCls = ccdrop();
+const prefixCls = classCreator('suggestions')();
+const prefixDropCls = classCreator('dropdown')();
 
 export default san.defineComponent({
     dataTypes: {
@@ -28,9 +25,6 @@ export default san.defineComponent({
         's-nav': Nav
     },
     computed: {
-        length() {
-            return this.data.get('suggestions') && this.data.get('suggestions').length > 0;
-        },
         innerStyle() {
             const isShowSug = this.data.get('isShowSug');
             const position = this.data.get('position');
@@ -44,14 +38,6 @@ export default san.defineComponent({
             };
         }
     },
-    compiled() {
-        const parentSuggestion = this.parentComponent.data.get('suggestions');
-        if (typeof parentSuggestion === 'function') {
-            this.components.newsuggestion = parentSuggestion;
-        } else {
-            this.components.newsuggestion = null;
-        }
-    },
     initData() {
         return {
             position: {
@@ -60,29 +46,23 @@ export default san.defineComponent({
                 height: 0
             },
             display: 'none',
-            loading: false,
-            newsuggestion: this.components.newsuggestion
+            loading: false
         };
     },
     created() {
-        let renderer;
-        this.watch('suggestions', val => {
-            const navRef = this.ref('nav-area');
-            if (navRef && typeof val === 'function') {
-                navRef.innerHTML = '';
-                renderer = new val();
-                renderer.attach(navRef);
-                renderer.parentComponent = this;
-            }
-        });
+        const suggestions = this.data.get('suggestions');
+        if (typeof suggestions === 'function') {
+            this.components.customsuggestions = suggestions;
+            this.data.set('customSuggestions', true);
+        }
     },
     template: `
         <div className="${prefixCls}-wrapper" style="{{innerStyle}}">
             <div className="${prefixCls}-content ${prefixDropCls}-menu" s-ref="nav-area">
-                <newsuggestion s-if="newsuggestion"></newsuggestion>
+                <customsuggestions s-if="{{customSuggestions}}" />
                 <template s-else>
-                    <s-nav s-if="{{length}}" s-for="item in suggestions">{{item}}</s-nav>
-                    <s-icon s-else-if="{{loading}}" type="loading" style="display:block;margin:0 auto;"></s-icon>
+                    <s-nav s-if="{{suggestions && suggestions.length}}" s-for="item in suggestions">{{item}}</s-nav>
+                    <s-icon s-else-if="{{loading}}" type="loading" style="display:block;margin:0 auto;" />
                     <div s-else className="${prefixCls}-notfound">{{notFoundContent}}</div>
                 </template>
             </div>

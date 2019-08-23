@@ -9,7 +9,7 @@ export default san.defineComponent({
     handleClick() {
         const value = this.data.get('value');
         const dispatchData = value ? value : this.el.innerText;
-        this.dispatch('itemSelect', dispatchData);
+        this.dispatch('santd_mention_itemSelect', dispatchData);
     },
 
     template: `<div class="san-dropdown-menu-item" on-click="handleClick">

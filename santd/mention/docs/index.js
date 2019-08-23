@@ -1,3 +1,7 @@
+/**
+ * @file Santd mention docs file
+ **/
+
 import san from 'san';
 import Readme from '../README.md';
 import Head from './head.md';
@@ -27,17 +31,17 @@ export default san.defineComponent({
     },
     template: `
         <div>
-            <head />
-        	<basic />
+            <head/>
+            <basic/>
             <placement/>
-            <loading />
-            <custom/>
+            <loading/>
             <avatar/>
+            <custom/>
             <form/>
-            <multilines />
-            <readonly />
-            <multipletrigger />
-            <readme />
+            <multilines/>
+            <readonly/>
+            <multipletrigger/>
+            <readme/>
         </div>
     `
 });
