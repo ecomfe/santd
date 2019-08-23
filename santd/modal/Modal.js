@@ -11,8 +11,7 @@ import button from '../button';
 import inherits from '../core/util/inherits';
 import LocaleReceiver from '../localeprovider/localereceiver';
 
-const cc = classCreator('modal');
-const prefixCls = cc();
+const prefixCls = classCreator('modal')();
 
 const Locale = inherits(san.defineComponent({
     initData() {

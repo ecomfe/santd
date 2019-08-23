@@ -49,8 +49,7 @@ export const filters = {
     }
 };
 
-const cc = classCreator('modal');
-const prefixCls = cc();
+const prefixCls = classCreator('modal')();
 const locale = {
     okText: '确定',
     cancelText: '取消',
@@ -111,35 +110,35 @@ const sentinel = san.defineComponent({
 export default san.defineComponent({
     template: `
         <template>
-            <div s-if="mask && visible"
+            <div s-if="{{mask && visible}}"
                 s-transition="modalTrans(maskTransitionName)"
                 class="${prefixCls}-mask"
                 style="{{maskStyle | mergeStyle(zIndex)}}"></div>
-            <div s-if="visible || inTransition"
+            <div s-if="{{visible || inTransition}}"
                 s-ref="wrap"
                 tabIndex="-1"
                 role="dialog"
                 aria-labelledby="{{title ? titleId : null}}"
-                class="{{wrapClass}}"
+                class="${prefixCls}-wrap {{wrapClassName}}"
                 style="{{wrapStyle | css | mergeStyle(zIndex)}}"
                 on-keydown="onKeydown"
                 on-click="onMaskClick"
             >
-                <div s-if="visible"
+                <div s-if="{{visible}}"
                     s-transition="modalTrans(transitionName, true)"
                     s-ref="dialog"
                     role="document"
-                    class="{{dialogClass}}"
-                    style="{{dialogStyle}}"
+                    class="${prefixCls} {{className}}"
+                    style="{{dialogStyle(width, modalStyle)}}"
                 >
                     <sentinel s-ref="sentinelStart" type="sentinelStart"/>
                     <div class="${prefixCls}-content">
-                        <button s-if="closable" aria-label="Close" class="${prefixCls}-close" on-click="close">
+                        <button s-if="{{closable}}" aria-label="Close" class="${prefixCls}-close" on-click="close">
                             <span class="${prefixCls}-close-x">
                                 <s-icon class="${prefixCls}-close-icon" type="close"/>
                             </span>
                         </button>
-                        <div s-if="title" s-ref="header" class="${prefixCls}-header">
+                        <div s-if="{{title}}" s-ref="header" class="${prefixCls}-header">
                             <slot name="title">
                                 <div class="${prefixCls}-title" id="{{titleId}}">{{title}}</div>
                             </slot>
@@ -147,7 +146,7 @@ export default san.defineComponent({
                         <div s-ref="body" class="${prefixCls}-body" style="{{bodyStyle | css}}">
                             <slot/>
                         </div>
-                        <div s-if="hasFooter" s-ref="footer" class="${prefixCls}-footer">
+                        <div s-if="{{hasFooter}}" s-ref="footer" class="${prefixCls}-footer">
                             <slot name="footer"/>
                         </div>
                     </div>
@@ -164,26 +163,11 @@ export default san.defineComponent({
         's-button': button,
         's-icon': icon
     },
-    computed: {
-        wrapClass() {
-            const wrapClassName = this.data.get('wrapClassName');
-            return [`${prefixCls}-wrap`, wrapClassName];
-        },
-        dialogClass() {
-            const className = this.data.get('className');
-            return [prefixCls, className];
-        },
-        dialogStyle() {
-            const width = this.data.get('width');
-            const style = this.data.get('modalStyle');
-            return `width: ${width}px; ${filters.css(style)}`;
-        },
-        titleId() {
-            return `santdDialogTitle${uuid++}`;
-        }
-    },
     filters: {
         ...filters
+    },
+    dialogStyle(width, modalStyle) {
+        return `width: ${width}px; ${filters.css(modalStyle)}`;
     },
     modalTrans(transitionName, needCallback) {
         if (!transitionName) {
@@ -235,6 +219,7 @@ export default san.defineComponent({
             okType: 'primary',
             confirmloading: false,
             inTransition: false,
+            titleId: `santdDialogTitle${uuid++}`,
             locale
         };
     },

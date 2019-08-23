@@ -44,8 +44,8 @@ export default inherits(san.defineComponent({
     template: `<template>
         <s-dialog
             prefixCls="{{prefixCls}}"
-            className="{{classString}}"
-            wrapClassName="{{wrapClass}}"
+            className="${contentPrefixCls} ${contentPrefixCls}-{{type}} {{className}}"
+            wrapClassName="{{!!centered ? ${prefixCls}-centered : ''}}"
             visible="{{visible}}"
             title=""
             hasFooter="{{false}}"
@@ -67,13 +67,13 @@ export default inherits(san.defineComponent({
                     <s-icon type="{{iconType}}"/>
                     <span class="${contentPrefixCls}-title">{{title}}</span>
                     <div class="${contentPrefixCls}-content">
-                        <template s-if="contentIsComponent"><content-loader/></template>
+                        <template s-if="{{contentIsComponent}}"><content-loader/></template>
                         <template s-else>{{content}}</template>
                     </div>
                 </div>
                 <div class="${contentPrefixCls}-btns">
                     <s-button
-                        s-if="okCancel"
+                        s-if="{{okCancel}}"
                         actionFn="{{onCancel}}"
                         closeModal="{{close}}"
                         autoFocus="{{autoFocusButton === 'cancel'}}"
@@ -108,15 +108,6 @@ export default inherits(san.defineComponent({
         'function' === typeof afterCloseFn && afterCloseFn();
     },
     computed: {
-        classString() {
-            const type = this.data.get('type');
-            const className = this.data.get('className');
-            return [contentPrefixCls, `${contentPrefixCls}-${type}`, className]
-        },
-        wrapClass() {
-            const centered = this.data.get('centered');
-            return !!centered ? [`${prefixCls}-centered`] : '';
-        },
         contentIsComponent() {
             const content = this.data.get('content');
             return isValidComponent(content);
@@ -135,7 +126,6 @@ export default inherits(san.defineComponent({
     attached() {
         // 处理content是san组件的情况
         const content = this.data.get('content');
-        const contentIsComponent = this.data.get('contentIsComponent');
-        contentIsComponent && contentFun.resolve(content);
+        this.data.get('contentIsComponent') && contentFun.resolve(content);
     }
 }), Locale);

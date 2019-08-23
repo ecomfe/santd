@@ -9,8 +9,7 @@ import {classCreator, type} from '../core/util';
 import Notification from '../notification/Notification';
 
 const noop = () => {}; // empty function
-const cc = classCreator('message');
-let prefixCls = cc();
+const prefixCls = classCreator('message')();
 let messageInstance;
 let key = 1;
 
