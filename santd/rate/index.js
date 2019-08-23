@@ -69,7 +69,9 @@ export default san.defineComponent({
     computed: {
         classes() {
             const className = this.data.get('className');
-            let classArr = [prefixCls, className];
+            let classArr = [prefixCls];
+
+            className && classArr.push(className);
             this.data.get('disabled') && classArr.push(`${prefixCls}-disabled`);
             return classArr;
         },
@@ -208,7 +210,7 @@ export default san.defineComponent({
             on-keydown="onKeyDown"
         >
             <template s-for="props, index in starsProps">
-                <s-tooltip title="{{tooltips[index]}}" s-if="tooltips">
+                <s-tooltip title="{{tooltips[index]}}" s-if="{{tooltips}}">
                     <s-star
                         s-ref="{{props.ref}}"
                         index="{{props.index}}"
@@ -239,10 +241,10 @@ export default san.defineComponent({
                     character="{{character}}"
                     characterIsString="{{characterIsString}}"
                 >
-                    <template s-if="characterIsString && character" slot="starCharacter">
+                    <template s-if="{{characterIsString && character}}" slot="starCharacter">
                         {{character}}
                     </template>
-                    <template s-else-if="!characterIsString" slot="starCharacter">
+                    <template s-else-if="{{!characterIsString}}" slot="starCharacter">
                         <slot name="character" />
                     </template>
                     <s-icon type="star" theme="filled" s-else="!character" slot="starCharacter" />

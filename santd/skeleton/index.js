@@ -15,66 +15,46 @@ import Paragraph, {SkeletonParagraphProps} from './Paragraph';
 const prefixCls = classCreator('skeleton')();
 
 function getComponentProps(prop) {
-    if (prop && typeof prop === 'object') {
-        return prop;
-    }
-
-    return {};
+    return prop && typeof prop === 'object' ? prop : {};
 }
 
 function getAvatarBasicProps(hasTitle, hasParagraph) {
-    let shape = 'circle';
-    const size = 'large';
-
-    if (hasTitle && !hasParagraph) {
-        shape = 'square';
-    }
-
-    return {shape, size};
+    return {
+        shape: hasTitle && !hasParagraph ? 'square' : 'circle',
+        size: 'large'
+    };
 }
 
 function getTitleBasicProps(hasAvatar, hasParagraph) {
-    if (!hasAvatar && hasParagraph) {
-        return {width: '38%'};
+    if (hasParagraph) {
+        return {
+            width: !hasAvatar ? '38%' : '50%'
+        };
     }
-
-    if (hasAvatar && hasParagraph) {
-        return {width: '50%'};
-    }
-
     return {};
 }
 
 function getParagraphBasicProps(hasAvatar, hasTitle) {
-    const basicProps = {};
+    let basicProps = {};
 
-    // Width
     if (!hasAvatar || !hasTitle) {
         basicProps.width = '61%';
     }
-
-    // Rows
-    if (!hasAvatar && hasTitle) {
-        basicProps.rows = 3;
-    }
-    else {
-        basicProps.rows = 2;
-    }
-
+    basicProps.rows = !hasAvatar && hasTitle ? 3 : 2;
     return basicProps;
 }
 
 export default san.defineComponent({
     template: `
-        <div>
-            <slot s-if="!showSkeleton"/>
-            <div s-if="showSkeleton" class="{{className}}">
-                <div s-if="hasAvatar" class="${prefixCls}-header">
+        <div style="display: table; width: 100%;">
+            <slot s-if="{{!(loading || undefined === loading)}}"/>
+            <div s-if="{{loading || undefined === loading}}" class="{{className}}">
+                <div s-if="{{avatar}}" class="${prefixCls}-header">
                     <avatar props="{{avatarProps}}"/>
                 </div>
-                <div s-if="{{hasTitle || hasParagraph}}" class="${prefixCls}-content">
-                    <title s-if="{{hasTitle}}" props="{{titleProps}}"/>
-                    <paragraph s-if="{{hasParagraph}}" props="{{paragraphProps}}"/>
+                <div s-if="{{title || paragraph}}" class="${prefixCls}-content">
+                    <title s-if="{{title}}" props="{{titleProps}}"/>
+                    <paragraph s-if="{{paragraph}}" props="{{paragraphProps}}"/>
                 </div>
             </div>
         </div>
@@ -93,62 +73,47 @@ export default san.defineComponent({
     },
     computed: {
         className() {
-            const data = this.data;
-            const showSkeleton = data.get('showSkeleton');
+            const loading = this.data.get('loading');
 
-            if (showSkeleton) {
-                const active = data.get('active');
-                const hasAvatar = data.get('hasAvatar');
+            if (loading || undefined === loading) {
+                const active = this.data.get('active');
+                const avatar = this.data.get('avatar');
                 let classArr = [prefixCls];
-                hasAvatar && classArr.push(`${prefixCls}-with-avatar`);
+                avatar && classArr.push(`${prefixCls}-with-avatar`);
                 active && classArr.push(`${prefixCls}-active`);
                 return classArr;
             }
         },
-        showSkeleton() {
-            const data = this.data;
-            const loading = data.get('loading');
-            return loading || undefined === loading;
-        },
-        hasAvatar() {
-            return !!this.data.get('avatar');
-        },
-        hasTitle() {
-            return !!this.data.get('title');
-        },
-        hasParagraph() {
-            return !!this.data.get('paragraph');
-        },
         avatarProps() {
             const data = this.data;
             const avatar = data.get('avatar');
-            const hasTitle = data.get('hasTitle');
-            const hasParagraph = data.get('hasParagraph');
+            const title = data.get('title');
+            const paragraph = data.get('paragraph');
 
             return {
-                ...getAvatarBasicProps(hasTitle, hasParagraph),
+                ...getAvatarBasicProps(!!title, !!paragraph),
                 ...getComponentProps(avatar)
             };
         },
         paragraphProps() {
             const data = this.data;
             const paragraph = data.get('paragraph');
-            const hasAvatar = data.get('hasAvatar');
-            const hasTitle = data.get('hasTitle');
+            const avatar = data.get('avatar');
+            const title = data.get('title');
 
             return {
-                ...getParagraphBasicProps(hasAvatar, hasTitle),
+                ...getParagraphBasicProps(!!avatar, !!title),
                 ...getComponentProps(paragraph)
             };
         },
         titleProps() {
             const data = this.data;
             const title = data.get('title');
-            const hasAvatar = data.get('hasAvatar');
-            const hasParagraph = data.get('hasParagraph');
+            const avatar = data.get('avatar');
+            const paragraph = data.get('paragraph');
 
             return {
-                ...getTitleBasicProps(hasAvatar, hasParagraph),
+                ...getTitleBasicProps(!!avatar, !!paragraph),
                 ...getComponentProps(title)
             };
         }

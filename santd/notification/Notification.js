@@ -10,28 +10,7 @@ import {guid} from '../core/util';
 import icon from '../icon';
 import button from '../button';
 import Notice from './Notice';
-
-export const filters = {
-    css(style) {
-        if (!style) {
-            return '';
-        }
-        if (typeof style === 'string') {
-            return style.replace(/\s+/g, '');
-        }
-        Object.keys(style).map(key => {
-            // css样式传入的小驼峰转换为短横线
-            if (/([A-Z])/g.test(key)) {
-                const kebabKey = key.replace(/([A-Z])/g, m => `-${m.toLowerCase()}`);
-                style[kebabKey] = style[key];
-                delete style[key];
-                return kebabKey;
-            }
-            return key;
-        });
-        return style;
-    }
-};
+import filters from '../modal/Dialog';
 
 const Notification = san.defineComponent({
     template: '<div class="{{wrapClass}}" style="{{style | css}}"></div>',
@@ -69,9 +48,7 @@ const Notification = san.defineComponent({
             return classArr;
         }
     },
-    filters: {
-        ...filters
-    },
+    filters,
     fadeTrans(transitionName, disableTransition) {
         return {
             enter(el, done) {

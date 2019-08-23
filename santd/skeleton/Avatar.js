@@ -19,7 +19,7 @@ export const SkeletonAvatarProps = DataTypes.oneOfType([
 
 export default san.defineComponent({
     template: `
-        <span class="{{className}}"/>
+        <span class="{{className}}" />
     `,
     dataTypes: {
         props: SkeletonAvatarProps

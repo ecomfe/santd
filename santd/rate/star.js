@@ -51,17 +51,17 @@ export default san.defineComponent({
         this.data.set('focused', !this.data.get('focused'));
     },
     template: `
-    <li
-        class="{{classes}}"
-        on-click="onClick"
-        on-mousemove="onHover"
-    >
-        <div class="${prefixCls}-first">
-            <slot name="starCharacter" />
-        </div>
-        <div class="${prefixCls}-second">
-            <slot name="starCharacter" />
-        </div>
-  </li>
+        <li
+            class="{{classes}}"
+            on-click="onClick"
+            on-mousemove="onHover"
+        >
+            <div class="${prefixCls}-first">
+                <slot name="starCharacter" />
+            </div>
+            <div class="${prefixCls}-second">
+                <slot name="starCharacter" />
+            </div>
+        </li>
     `
 });

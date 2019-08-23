@@ -35,7 +35,9 @@ export default san.defineComponent({
             const buttonStyle = this.data.get('buttonStyle');
             const size = this.data.get('size');
             const prefix = prefixCls + '-group';
-            let classArr = [prefix, `${prefix}-${buttonStyle}`, className];
+            let classArr = [prefix, `${prefix}-${buttonStyle}`];
+
+            className && classArr.push(className);
             size && classArr.push(`${prefix}-${size}`);
             return classArr;
         },
@@ -56,10 +58,6 @@ export default san.defineComponent({
                     ...option
                 };
             });
-        },
-        groupName() {
-            const instance = this.data.get('instance');
-            return this.data.get('name') || instance && instance.id;
         }
     },
     inited() {
@@ -74,17 +72,17 @@ export default san.defineComponent({
             child.data.set('checked', value === child.data.get('value'));
             child.data.set('disabled', 'disabled' in child.data.get()
                 ? child.data.get('disabled') : this.data.get('disabled'));
-            child.data.set('name', this.data.get('groupName'));
+            child.data.set('name', this.data.get('name') || this.data.get('id'));
         });
     },
     messages: {
-        toggleOption(payload) {
+        santd_radio_toggleOption(payload) {
             const option = payload.value;
             this.data.set('value', option.value);
             this.fire('change', option.event);
             this.dispatch('UI:form-item-interact', {fieldValue: option.value, type: 'change'});
         },
-        addRadio(payload) {
+        santd_radio_add(payload) {
             const checkboxs = this.data.get('checkboxs');
             // 当没有options数据的时候才去收集子checkbox
             if (!checkboxs.length) {
@@ -95,14 +93,14 @@ export default san.defineComponent({
     template: `
         <div class="{{classes}}" style="{{style}}">
             <s-radio
-                s-if="checkboxs.length"
+                s-if="{{checkboxs.length}}"
                 s-for="checkbox in checkboxs"
                 prefixCls="{{prefixCls}}"
                 key="{{checkbox.key}}"
                 disabled="{{checkbox.disabled}}"
                 value="{{checkbox.value}}"
                 checked="{{checkbox.checked}}"
-                name="{{groupName}}"
+                name="{{name || id}}"
             >{{checkbox.label}}</s-radio>
             <slot></slot>
         </div>

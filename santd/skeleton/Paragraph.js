@@ -21,7 +21,7 @@ export const SkeletonParagraphProps = DataTypes.oneOfType([
 export default san.defineComponent({
     template: `
         <ul class="${prefixCls}">
-            <li s-for="row, index in rowList" style="{{index | getWidth(props)}}"/>
+            <li s-for="row, index in rowList" style="{{index | getWidth(props)}}" />
         </ul>
     `,
     dataTypes: {

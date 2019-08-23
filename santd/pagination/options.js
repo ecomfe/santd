@@ -11,13 +11,6 @@ export default san.defineComponent({
         's-select': Select,
         's-option': Select.Option
     },
-    computed: {
-        value() {
-            const pageSize = this.data.get('pageSize');
-            const pageSizeOptions = this.data.get('pageSizeOptions');
-            return pageSize || pageSizeOptions[0];
-        }
-    },
     handleChangeSize(value) {
         this.fire('changeSize', Number(value));
     },
@@ -39,11 +32,11 @@ export default san.defineComponent({
     template: `
         <li class="{{rootPrefixCls}}-options">
             <s-select
-                s-if="showSizeChanger"
+                s-if="{{showSizeChanger}}"
                 prefixCls="{{selectPrefixCls}}"
                 className="{{rootPrefixCls}}-options-size-changer"
                 optionLabelProp="children"
-                defaultValue="{{value}}"
+                defaultValue="{{pageSize || pageSizeOptions[0]}}"
                 size="{{size}}"
                 disabled="{{disabled}}"
                 on-change="handleChangeSize"
@@ -53,13 +46,13 @@ export default san.defineComponent({
                 </s-option>
             </s-select>
             <div
-                s-if="quickGo"
+                s-if="{{quickGo}}"
                 class="{{rootPrefixCls}}-options-quick-jumper"
             >
                 {{locale.jump_to}}
                 <input type="text" value="{{goInputText}}" on-change="handleChange" on-keyup="handleGo" disabled="{{disabled}}"/>
                 {{locale.page}}
-                <button s-if="goButton === true" on-click="handleGo" on-keyup="handleGo" disabled="{{disabled}}">
+                <button s-if="{{goButton === true}}" on-click="handleGo" on-keyup="handleGo" disabled="{{disabled}}">
                     {{locale.jump_to_confirm}}
                 </button>
                 <span s-else on-click="handleGo" on-keyup="handleGo">{{goButton}}</span>

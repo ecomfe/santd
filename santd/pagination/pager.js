@@ -11,7 +11,9 @@ export default san.defineComponent({
             const page = this.data.get('page');
             const active = this.data.get('active');
             const className = this.data.get('className');
-            let classArr = [`${prefixCls}-item`, `${prefixCls}-item-${page}`, className];
+            let classArr = [`${prefixCls}-item`, `${prefixCls}-item-${page}`];
+
+            className && classArr.push(className);
             active && classArr.push(`${prefixCls}-item-active`);
             !page && classArr.push(`${prefixCls}-disabled`);
             return classArr;

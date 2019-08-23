@@ -116,9 +116,9 @@ const Result = san.defineComponent({
     template: `<div class="{{classes}}">
         <rendericon />
         <div class="{{prefixCls}}-title">{{title}}</div>
-        <div class="{{prefixCls}}-subtitle" s-if="subTitle">"{{subTitle}}"</div>
-        <div class="{{prefixCls}}-content" s-if="hasChildren"><slot></slot></div>
-        <div class="{{prefixCls}}-extra" s-if="extra">
+        <div class="{{prefixCls}}-subtitle" s-if="{{subTitle}}">"{{subTitle}}"</div>
+        <div class="{{prefixCls}}-content" s-if="{{hasChildren}}"><slot></slot></div>
+        <div class="{{prefixCls}}-extra" s-if="{{extra}}">
             <renderextra />
         </div>
     </div>`

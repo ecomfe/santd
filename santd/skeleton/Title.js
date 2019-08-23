@@ -19,15 +19,9 @@ export const SkeletonTitleProps = DataTypes.oneOfType([
 
 export default san.defineComponent({
     template: `
-        <h3 class="${prefixCls}-title" style="{{style}}"/>
+        <h3 class="${prefixCls}-title" style="width: {{props.width}}" />
     `,
     dataTypes: {
         props: SkeletonTitleProps
-    },
-    computed: {
-        style() {
-            const width = this.data.get('props.width');
-            return `width: ${width}`;
-        }
     }
 });

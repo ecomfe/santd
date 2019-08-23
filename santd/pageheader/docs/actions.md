@@ -5,7 +5,7 @@
 
 ```html
 <template>
-    <div>
+    <div id="components-pageheader-demo-actions">
         <s-pageheader
             onBack="{{onBack}}"
             title="Title"

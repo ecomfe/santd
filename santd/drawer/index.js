@@ -12,32 +12,11 @@ import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
 import isNumber from 'lodash/isNumber';
 import Icon from '../icon';
+import filters from '../modal/Dialog';
 
 const prefixCls = classCreator('drawer')();
 const placementType = DataTypes.oneOf(['top', 'right', 'bottom', 'left']);
 const styleType = DataTypes.oneOfType([DataTypes.string, DataTypes.object]);
-
-export const filters = {
-    css(style) {
-        if (!style) {
-            return '';
-        }
-        if (typeof style === 'string') {
-            return style.replace(/\s+/g, '');
-        }
-        Object.keys(style).map(key => {
-            // css样式传入的小驼峰转换为短横线
-            if (/([A-Z])/g.test(key)) {
-                const kebabKey = key.replace(/([A-Z])/g, m => `-${m.toLowerCase()}`);
-                style[kebabKey] = style[key];
-                delete style[key];
-                return kebabKey;
-            }
-            return key;
-        });
-        return style;
-    }
-};
 
 export default san.defineComponent({
     template: `
@@ -119,9 +98,7 @@ export default san.defineComponent({
             };
         }
     },
-    filters: {
-        ...filters
-    },
+    filters,
     initData() {
         return {
             closable: true,

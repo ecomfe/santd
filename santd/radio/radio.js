@@ -16,11 +16,11 @@ export default san.defineComponent({
     },
     initData() {
         return {
-            prefixCls: prefixCls
+            prefixCls
         };
     },
     attached() {
-        this.dispatch('addRadio', this);
+        this.dispatch('santd_radio_add', this);
     },
     computed: {
         classes() {
@@ -28,7 +28,9 @@ export default san.defineComponent({
             const prefixCls = this.data.get('prefixCls');
             const checked = this.data.get('checked');
             const disabled = this.data.get('disabled');
-            let classArr = [className, `${prefixCls}-wrapper`];
+            let classArr = [`${prefixCls}-wrapper`];
+
+            className && classArr.push(className);
             checked && classArr.push(`${prefixCls}-wrapper-checked`);
             disabled && classArr.push(`${prefixCls}-wrapper-disabled`);
             return classArr;
@@ -36,7 +38,7 @@ export default san.defineComponent({
     },
     handleChange(e) {
         this.fire('change', e);
-        this.dispatch('toggleOption', {
+        this.dispatch('santd_radio_toggleOption', {
             value: this.data.get('value'),
             event: e
         });

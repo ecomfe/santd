@@ -5,8 +5,8 @@
 
 ```html
 <template>
-    <div>
-  	    <s-pageheader title="Title" breadcrumb="{{breadcrumb}}">
+    <div id="components-pageheader-demo-content">
+        <s-pageheader title="Title" breadcrumb="{{breadcrumb}}">
             <div className="wrap">
             <div className="content">
                 <div className="content">
@@ -83,6 +83,9 @@ export default {
         display: inline-block;
         vertical-align: text-top;
         margin-right: 32px;
+    }
+    #components-pageheader-demo-content .contentLink a img {
+        margin-right: 8px;
     }
 </style>
 ```
