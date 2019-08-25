@@ -31,9 +31,9 @@ let AutoComplete = san.defineComponent({
             this.sourceSlots.named = [];
             const source = this.source;
             const owner = this.owner;
-            const that = this;
+            
             this.components.injectslot = san.defineComponent({
-                components: that.parentComponent.components,
+                components: this.parentComponent.components,
                 compiled() {
                     this.source = source;
                     this.owner = owner;
@@ -80,7 +80,7 @@ let AutoComplete = san.defineComponent({
     dropdownVisibleChange(val) {
         this.fire('dropdownVisibleChange', val);
     },
-    
+
     template: `
         <div>
             <s-select
