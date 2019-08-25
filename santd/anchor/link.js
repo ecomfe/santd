@@ -11,8 +11,7 @@ const prefixCls = classCreator('anchor')();
 export default san.defineComponent({
     dataTypes: {
         prefixCls: DataTypes.string,
-        href: DataTypes.string,
-        className: DataTypes.string
+        href: DataTypes.string
     },
     initData() {
         return {
@@ -23,13 +22,13 @@ export default san.defineComponent({
         classes() {
             const href = this.data.get('href');
             const active = this.data.get('activeLink') === href;
-            const className = this.data.get('className');
 
-            let classArr = [className, `${prefixCls}-link`];
+            let classArr = [`${prefixCls}-link`];
             active && classArr.push(`${prefixCls}-link-active`);
 
             return classArr;
         },
+
         titleClasses() {
             const active = this.data.get('activeLink') === this.data.get('href');
 
@@ -39,18 +38,23 @@ export default san.defineComponent({
             return classArr;
         }
     },
+
     inited() {
         this.dispatch('santd_link_addInstance', this);
     },
+
     updated() {
         this.dispatch('santd_link_add', this.data.get('href'));
     },
+
     attached() {
         this.dispatch('santd_link_add', this.data.get('href'));
     },
+
     detached() {
         this.dispatch('santd_link_rm', this.data.get('href'));
     },
+
     handleClick(e) {
         const {href, title} = this.data.get();
         this.dispatch('santd_link_click', {
@@ -59,6 +63,7 @@ export default san.defineComponent({
         });
         this.dispatch('santd_link_scrollTo', href);
     },
+
     template: `
         <div class="{{classes}}">
             <a
@@ -69,7 +74,7 @@ export default san.defineComponent({
             >
                 {{title}}
             </a>
-            <slot></slot>
+            <slot/>
         </div>
     `
 });
