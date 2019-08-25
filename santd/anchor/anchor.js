@@ -15,12 +15,12 @@ const prefixCls = classCreator('anchor')();
 const sharpMatcherRegx = /#([^#]+)$/;
 
 const anchorContent = `
-    <div class="{{prefixCls}}-wrapper {{className}}" style="{{wrapperStyle}}">
+    <div class="{{prefixCls}}-wrapper" style="{{wrapperStyle}}">
         <div class="{{anchorClasses}}">
             <div class="${prefixCls}-ink">
                 <span class="{{inkClasses}}" s-ref="inkNode" />
             </div>
-            <slot></slot>
+            <slot/>
         </div>
     </div>
 `;
@@ -92,7 +92,6 @@ function getContainer() {
 export default san.defineComponent({
     dataTypes: {
         prefixCls: DataTypes.string,
-        className: DataTypes.string,
         offsetTop: DataTypes.number,
         bounds: DataTypes.number,
         affix: DataTypes.bool,
@@ -144,6 +143,7 @@ export default san.defineComponent({
             this.updateInk();
         });
     },
+
     attached() {
         let container = this.data.get('getContainer')();
         this._handleScroll = this.handleScroll.bind(this);
@@ -152,6 +152,7 @@ export default san.defineComponent({
         }
         this.handleScroll();
     },
+
     disposed() {
         let container = this.data.get('getContainer')();
         if (this._handleScroll) {
@@ -159,25 +160,28 @@ export default san.defineComponent({
             this._handleScroll = null;
         }
     },
+
     handleScroll() {
         if (this.data.get('animating')) {
             return;
         }
 
         const {offsetTop, bounds} = this.data.get();
-
         this.data.set('activeLink', this.getCurrentAnchor(offsetTop, bounds));
     },
+
     updateInk() {
         if (typeof document === 'undefined') {
             return;
         }
+
         let anchorNode = this.el;
         let linkNode = anchorNode.getElementsByClassName(`${prefixCls}-link-title-active`)[0];
         if (linkNode) {
             this.ref('inkNode').style.top = `${linkNode.offsetTop + linkNode.clientHeight / 2 - 4.5}px`;
         }
     },
+
     getCurrentAnchor(offsetTop = 0, bounds = 5) {
         let activeLink = '';
         if (typeof document === 'undefined') {
@@ -208,6 +212,7 @@ export default san.defineComponent({
             let maxSection = linkSections.reduce((prev, curr) => (curr.top > prev.top ? curr : prev));
             return maxSection.link;
         }
+
         return '';
     },
     messages: {
