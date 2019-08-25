@@ -51,17 +51,21 @@ function easeInOutCubic(t, b, c, d) {
 }
 
 function scrollTo(href, offsetTop = 0, getContainer, callback) {
-    const container = getContainer();
-    const scrollTop = getScroll(container, true);
-    const raf = getRequestAnimationFrame();
     const sharpLinkMatch = sharpMatcherRegx.exec(href);
     if (!sharpLinkMatch) {
         return;
     }
+
     const targetElement = document.getElementById(sharpLinkMatch[1]);
     if (!targetElement) {
         return;
     }
+
+
+    const container = getContainer();
+    const scrollTop = getScroll(container, true);
+    const raf = getRequestAnimationFrame();
+    
     const eleOffsetTop = getOffsetTop(targetElement, container);
     const targetScrollTop = scrollTop + eleOffsetTop - offsetTop;
     const startTime = Date.now();
@@ -184,37 +188,35 @@ export default san.defineComponent({
 
     getCurrentAnchor(offsetTop = 0, bounds = 5) {
         let activeLink = '';
-        if (typeof document === 'undefined') {
-            return activeLink;
-        }
 
-        let linkSections = [];
-        let container = this.data.get('getContainer')();
-        let links = this.data.get('links');
-        links.forEach(link => {
-            const sharpLinkMatch = sharpMatcherRegx.exec(link.toString());
-            if (!sharpLinkMatch) {
-                return;
-            }
-            let target = document.getElementById(sharpLinkMatch[1]);
-            if (target) {
-                const top = getOffsetTop(target, container);
-                if (top < offsetTop + bounds) {
-                    linkSections.push({
-                        link,
-                        top
-                    });
+        if (document) {
+            let linkSections = [];
+            let container = this.data.get('getContainer')();
+            let maxSection;
+            
+            this.data.get('links').forEach(link => {
+                const sharpLinkMatch = sharpMatcherRegx.exec(link.toString());
+                if (!sharpLinkMatch) {
+                    return;
                 }
-            }
-        });
 
-        if (linkSections.length) {
-            let maxSection = linkSections.reduce((prev, curr) => (curr.top > prev.top ? curr : prev));
-            return maxSection.link;
+                let target = document.getElementById(sharpLinkMatch[1]);
+                if (target) {
+                    const top = getOffsetTop(target, container);
+                    if (!maxSection
+                        || top < offsetTop + bounds && top > maxSection.top
+                    ) {
+                        maxSection = {link, top};
+                    }
+                }
+            });
+
+            maxSection && (activeLink = maxSection.link);
         }
 
-        return '';
+        return activeLink;
     },
+
     messages: {
         santd_link_addInstance(payload) {
             this.data.push('children', payload.value);
@@ -239,6 +241,7 @@ export default san.defineComponent({
             const {offsetTop, getContainer} = this.data.get();
             this.data.set('animating', true);
             this.data.set('activeLink', payload.value);
+
             scrollTo(payload.value, offsetTop, getContainer, () => {
                 this.data.set('animating', false);
             });
