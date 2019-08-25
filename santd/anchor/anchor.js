@@ -85,6 +85,10 @@ function scrollTo(href, offsetTop = 0, getContainer, callback) {
     raf(frameFunc);
 }
 
+function getContainer() {
+    return window;
+}
+
 export default san.defineComponent({
     dataTypes: {
         prefixCls: DataTypes.string,
@@ -97,11 +101,9 @@ export default san.defineComponent({
     initData() {
         return {
             prefixCls,
+            getContainer,
             affix: true,
             showInkInFixed: false,
-            getContainer() {
-                return window;
-            },
             activeLink: null,
             links: [],
             children: []
@@ -237,9 +239,11 @@ export default san.defineComponent({
             });
         }
     },
+
     components: {
         's-affix': Affix
     },
+
     template: `
         <div>
             <s-affix s-if="affix" offsetTop="{{offsetTop}}">
