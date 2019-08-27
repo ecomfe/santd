@@ -16,7 +16,7 @@ const sharpMatcherRegx = /#([^#]+)$/;
 
 const anchorContent = `
     <div class="{{prefixCls}}-wrapper" style="{{wrapperStyle}}{{style}}">
-        <div class="{{anchorClasses}}">
+        <div class="${prefixCls}{{!affix && !showInkInFixed ? ' fixed' : ''}}">
             <div class="${prefixCls}-ink">
                 <span class="${prefixCls}-ink-ball{{activeLink ? ' visible' : ''}}" s-ref="inkNode" />
             </div>
@@ -117,14 +117,6 @@ export default san.defineComponent({
     },
 
     computed: {
-        anchorClasses() {
-            const affix = this.data.get('affix');
-            const showInkInFixed = this.data.get('showInkInFixed');
-
-            let classArr = [prefixCls];
-            !affix && !showInkInFixed && classArr.push('fixed');
-            return classArr;
-        },
         wrapperStyle() {
             const offsetTop = this.data.get('offsetTop');
             return {
