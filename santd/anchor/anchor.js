@@ -115,7 +115,7 @@ export default san.defineComponent({
 
     inited() {
         this.children = [];
-    }
+    },
 
     updated() {
         this.nextTick(() => {
