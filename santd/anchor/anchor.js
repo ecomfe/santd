@@ -120,29 +120,30 @@ export default san.defineComponent({
     }
 
     updated() {
-        this.children.forEach(child => {
-            child.data.set('activeLink', this.data.get('activeLink'));
-        });
         this.nextTick(() => {
             this.updateInk();
         });
     },
 
     attached() {
-        let container = this.data.get('getContainer')();
         this._handleScroll = this.handleScroll.bind(this);
         if (this._handleScroll) {
-            on(container, 'scroll', this._handleScroll);
+            on(this.data.get('getContainer')(), 'scroll', this._handleScroll);
         }
         this.handleScroll();
+
+        this.watch('activeLink', value => {
+            this.children.forEach(child => {
+                child.data.set('activeLink', value);
+            });
+        });
     },
 
     disposed() {
         this.children = null;
-        
-        let container = this.data.get('getContainer')();
+
         if (this._handleScroll) {
-            off(container, 'scroll', this._handleScroll);
+            off(this.data.get('getContainer')(), 'scroll', this._handleScroll);
             this._handleScroll = null;
         }
     },
