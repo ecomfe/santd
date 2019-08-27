@@ -111,14 +111,16 @@ export default san.defineComponent({
             affix: true,
             showInkInFixed: false,
             activeLink: null,
-            links: [],
-            children: []
+            links: []
         };
     },
 
+    inited() {
+        this.children = [];
+    }
+
     updated() {
-        let children = this.data.get('children');
-        children.forEach(child => {
+        this.children.forEach(child => {
             child.data.set('activeLink', this.data.get('activeLink'));
         });
         this.nextTick(() => {
@@ -136,6 +138,8 @@ export default san.defineComponent({
     },
 
     disposed() {
+        this.children = null;
+        
         let container = this.data.get('getContainer')();
         if (this._handleScroll) {
             off(container, 'scroll', this._handleScroll);
@@ -197,14 +201,16 @@ export default san.defineComponent({
 
     messages: {
         santd_link_addInstance(payload) {
-            this.data.push('children', payload.value);
+            this.children.push(payload.value);
         },
+
         santd_link_add(payload) {
             let links = this.data.get('links');
             if (!links.includes(payload.value)) {
                 this.data.push('links', payload.value);
             }
         },
+
         santd_link_rm(payload) {
             let links = this.data.get('links');
             const index = links.indexOf(payload.value);
@@ -212,9 +218,11 @@ export default san.defineComponent({
                 this.data.removeAt('links', index);
             }
         },
+
         santd_link_click(payload) {
             this.fire('click', {e: payload.value.e, link: payload.value.link});
         },
+
         santd_link_scrollTo(payload) {
             const {offsetTop, getContainer} = this.data.get();
             this.data.set('animating', true);
