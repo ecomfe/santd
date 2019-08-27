@@ -15,6 +15,7 @@ export default san.defineComponent({
         visibilityHeight: DataTypes.number,
         target: DataTypes.func
     },
+    
     getCurrentScrollTop() {
         let targetNode = this.data.get('target')();
         if (targetNode === window) {
@@ -24,6 +25,7 @@ export default san.defineComponent({
         }
         return targetNode.scrollTop;
     },
+
     setScrollTop(value) {
         let targetNode = this.data.get('target')();
         if (targetNode === window) {
@@ -34,13 +36,14 @@ export default san.defineComponent({
             targetNode.scrollTop = value;
         }
     },
+
     scrollToTop(e) {
         this.setScrollTop(0);
         this.fire('click', e);
     },
+
     initData() {
         return {
-            prefixCls,
             visibilityHeight: 400,
             target() {
                 return window;
@@ -49,10 +52,12 @@ export default san.defineComponent({
             hasSlot: false
         };
     },
+
     handleScroll() {
         const scrollTop = this.getCurrentScrollTop();
         this.data.set('visible', scrollTop > this.data.get('visibilityHeight'));
     },
+
     attached() {
         this._scroll = this.handleScroll.bind(this);
         on(window, 'scroll', this._scroll);
@@ -61,16 +66,18 @@ export default san.defineComponent({
         }
         this.handleScroll();
     },
+
     disposed() {
         off(window, 'scroll', this._scroll);
         this._scroll = null;
     },
+
     template: `
         <div>
-            <div s-if="{{visible}}" class="{{prefixCls}}" on-click="scrollToTop($event)">
-                <div class="{{prefixCls}}-content" data-hasSlot="{{hasSlot}}">
-                    <div class="{{prefixCls}}-icon" s-if="{{!hasSlot}}"></div>
-                    <slot></slot>
+            <div s-if="{{visible}}" class="${prefixCls}" on-click="scrollToTop($event)">
+                <div class="${prefixCls}-content" data-hasSlot="{{hasSlot}}">
+                    <div class="${prefixCls}-icon" s-if="{{!hasSlot}}"></div>
+                    <slot/>
                 </div>
             </div>
         </div>
