@@ -101,6 +101,7 @@ export default san.defineComponent({
         affix: DataTypes.bool,
         showInkInFixed: DataTypes.bool
     },
+
     initData() {
         return {
             prefixCls,
@@ -112,10 +113,12 @@ export default san.defineComponent({
             children: []
         };
     },
+
     computed: {
         anchorClasses() {
             const affix = this.data.get('affix');
             const showInkInFixed = this.data.get('showInkInFixed');
+
             let classArr = [prefixCls];
             !affix && !showInkInFixed && classArr.push('fixed');
             return classArr;
@@ -127,17 +130,20 @@ export default san.defineComponent({
                 ...toStyle.object(this.data.get('bodyStyle'))
             };
         },
+
         inkClasses() {
-            const activeLink = this.data.get('activeLink');
             let classArr = [`${prefixCls}-ink-ball`];
-            activeLink && classArr.push('visible');
+            this.data.get('activeLink') && classArr.push('visible');
+
             return classArr;
         }
     },
+
     inited() {
         this.data.set('bodyStyle', this.data.get('style'));
         this.data.set('style', {});
     },
+
     updated() {
         let children = this.data.get('children');
         children.forEach(child => {
@@ -194,7 +200,7 @@ export default san.defineComponent({
             let container = this.data.get('getContainer')();
             let maxSection;
             
-            this.data.get('links').forEach(link => {
+            this.data.get('links').forEach(function (link) {
                 const sharpLinkMatch = sharpMatcherRegx.exec(link.toString());
                 if (!sharpLinkMatch) {
                     return;
