@@ -15,7 +15,7 @@ const prefixCls = classCreator('anchor')();
 const sharpMatcherRegx = /#([^#]+)$/;
 
 const anchorContent = `
-    <div class="{{prefixCls}}-wrapper" style="max-height:{{offsetTop ? 'calc(100vh -' + offsetTop + 'px)' : '100vh'}};{{style}}">
+    <div class="${prefixCls}-wrapper" style="max-height:{{offsetTop ? 'calc(100vh -' + offsetTop + 'px)' : '100vh'}};{{style}}">
         <div class="${prefixCls}{{!affix && !showInkInFixed ? ' fixed' : ''}}">
             <div class="${prefixCls}-ink">
                 <span class="${prefixCls}-ink-ball{{activeLink ? ' visible' : ''}}" s-ref="inkNode" />
@@ -97,7 +97,6 @@ export default san.defineComponent({
     autoFillStyleAndId: false,
 
     dataTypes: {
-        prefixCls: DataTypes.string,
         offsetTop: DataTypes.number,
         bounds: DataTypes.number,
         affix: DataTypes.bool,
@@ -106,7 +105,6 @@ export default san.defineComponent({
 
     initData() {
         return {
-            prefixCls,
             getContainer,
             affix: true,
             showInkInFixed: false,
