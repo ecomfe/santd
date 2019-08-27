@@ -15,10 +15,10 @@ const prefixCls = classCreator('anchor')();
 const sharpMatcherRegx = /#([^#]+)$/;
 
 const anchorContent = `
-    <div class="{{prefixCls}}-wrapper" style="{{wrapperStyle}}">
+    <div class="{{prefixCls}}-wrapper" style="{{wrapperStyle}}{{style}}">
         <div class="{{anchorClasses}}">
             <div class="${prefixCls}-ink">
-                <span class="{{inkClasses}}" s-ref="inkNode" />
+                <span class="${prefixCls}-ink-ball{{activeLink ? ' visible' : ''}}" s-ref="inkNode" />
             </div>
             <slot/>
         </div>
@@ -94,6 +94,8 @@ function getContainer() {
 }
 
 export default san.defineComponent({
+    autoFillStyleAndId: false,
+
     dataTypes: {
         prefixCls: DataTypes.string,
         offsetTop: DataTypes.number,
@@ -129,13 +131,6 @@ export default san.defineComponent({
                 'max-height': offsetTop ? `calc(100vh - ${offsetTop}px)` : '100vh',
                 ...toStyle.object(this.data.get('bodyStyle'))
             };
-        },
-
-        inkClasses() {
-            let classArr = [`${prefixCls}-ink-ball`];
-            this.data.get('activeLink') && classArr.push('visible');
-
-            return classArr;
         }
     },
 
