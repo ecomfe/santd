@@ -114,10 +114,11 @@ export default san.defineComponent({
     },
 
     inited() {
-        this.children = [];
+        this.linkChildren = [];
     },
 
     updated() {
+
         this.nextTick(() => {
             this.updateInk();
         });
@@ -131,14 +132,14 @@ export default san.defineComponent({
         this.handleScroll();
 
         this.watch('activeLink', value => {
-            this.children.forEach(child => {
+            this.linkChildren.forEach(child => {
                 child.data.set('activeLink', value);
             });
         });
     },
 
     disposed() {
-        this.children = null;
+        this.linkChildren = null;
 
         if (this._handleScroll) {
             off(this.data.get('getContainer')(), 'scroll', this._handleScroll);
@@ -200,7 +201,7 @@ export default san.defineComponent({
 
     messages: {
         santd_link_addInstance(payload) {
-            this.children.push(payload.value);
+            this.linkChildren.push(payload.value);
         },
 
         santd_link_add(payload) {
