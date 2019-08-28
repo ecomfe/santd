@@ -17,7 +17,7 @@ const babel = require('./lib/babel');
 const copyFile = require('./lib/copy-file');
 
 const dest = path.join(__dirname, '../dist');
-const source = path.join(__dirname, '../santd');
+const source = path.join(__dirname, '../src');
 
 // clear dir
 fs.emptyDirSync(dest);

@@ -1,5 +1,5 @@
 {
-    "name": "@baidu/santd",
+    "name": "santd",
     "version": "1.0.0-alpha.38",
     "description": "san UI dedign",
     "scripts": {

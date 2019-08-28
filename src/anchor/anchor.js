@@ -8,7 +8,7 @@ import {classCreator} from '../core/util/index';
 import {getScroll, on, off} from '../core/util/dom';
 import Affix from '../affix';
 import getRequestAnimationFrame from '../core/util/getRequestAnimationFrame';
-import toStyle from 'to-style';
+// import toStyle from 'to-style';
 import './style/index';
 
 const prefixCls = classCreator('anchor')();
