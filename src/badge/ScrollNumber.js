@@ -9,13 +9,12 @@ import san, {DataTypes} from 'san';
 export default san.defineComponent({
     dataTypes: {
         prefixCls: DataTypes.string,
-        className: DataTypes.string,
         count: DataTypes.oneOfType([DataTypes.string, DataTypes.object, DataTypes.number]),
         title: DataTypes.oneOfType([DataTypes.string, DataTypes.object, DataTypes.number])
     },
     template: `
         <sup
-            class="{{prefixCls}} {{className}}"
+            class="{{prefixCls}}"
             title="{{title}}">
             <template s-if="isOverflow">
                 {{count}}
