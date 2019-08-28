@@ -10,14 +10,7 @@ import {classCreator} from '../core/util';
 const prefixCls = classCreator('card')();
 
 export default san.defineComponent({
-    initData() {
-        return {
-            prefixCls
-        };
-    },
     template: `
-    	<div class="{{prefixCls}}-grid {{className}}">
-            <slot></slot>
-        </div>
+        <div class="${prefixCls}-grid"><slot /></div>
     `
 });
