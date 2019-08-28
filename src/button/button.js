@@ -23,7 +23,6 @@ export default san.defineComponent({
         target: DataTypes.string,
         type: DataTypes.oneOf(['default', 'primary', 'ghost', 'dashed', 'danger', 'link']),
         block: DataTypes.bool,
-        className: DataTypes.string,
         noWave: DataTypes.bool
     },
 
@@ -39,7 +38,6 @@ export default san.defineComponent({
             let type = data.get('type');
             let shape = data.get('shape');
             let size = data.get('sizeMap')[data.get('size')];
-            let className = data.get('className');
 
 
             let clazz = [PREFIX_CLASS];
@@ -50,7 +48,6 @@ export default san.defineComponent({
             (data.get('loading') === true) && clazz.push(`${PREFIX_CLASS}-loading`);
             data.get('block') && clazz.push(`${PREFIX_CLASS}-block`);
             data.get('ghost') && clazz.push(`${PREFIX_CLASS}-background-ghost`);
-            className && clazz.push(className);
 
             return clazz;
         }

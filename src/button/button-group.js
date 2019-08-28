@@ -22,7 +22,7 @@ export default san.defineComponent({
 
     computed: {
         classes() {
-            let arr = [PREFIX_CLASS, this.data.get('className')];
+            let arr = [PREFIX_CLASS];
 
             let size = this.data.get('sizeMap')[this.data.get('size')];
             size && arr.push(`${PREFIX_CLASS}-${size}`);

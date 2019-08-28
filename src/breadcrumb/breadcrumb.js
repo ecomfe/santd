@@ -50,13 +50,11 @@ export default san.defineComponent({
         's-breadcrumb-item': breadcrumbItem
     },
     dataTypes: {
-        prefixCls: DataTypes.string,
         separator: DataTypes.string,
         routes: DataTypes.instanceOf(Array)
     },
     initData() {
         return {
-            prefixCls,
             separator: '/',
             paths: []
         };
@@ -90,7 +88,7 @@ export default san.defineComponent({
         }
     },
     template: `
-        <div class="{{prefixCls}} {{className}}">
+        <div class="${prefixCls} {{className}}">
             <s-breadcrumb-item
                 s-if="routes && routes.length"
                 s-for="route, index in routes"
