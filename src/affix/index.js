@@ -25,12 +25,6 @@ export default san.defineComponent({
             outerStyles: {}
         };
     },
-    computed: {
-        dynamicClass() {
-            const clsFlag = this.data.get('affix');
-            return clsFlag ? [`${innerCls}`] : ''
-        }
-    },
     attached() {
         if (!this._scroller) {
             this._scroller = this.handleScroll.bind(this);
@@ -47,7 +41,7 @@ export default san.defineComponent({
             this._scroller = null;
         }
     },
-    
+
     handleScroll() {
         const elOffset = getOffset(this.el);
         const scrollTop = getScrollTop();
@@ -61,7 +55,7 @@ export default san.defineComponent({
         let affixTo = null;
         let styles = {};
         let outerStyles = {};
-        
+
         if (isAffixBottom) {
             let winBottomPos = window.innerHeight + scrollTop;
             let elBottomAffixPos = elOffset.top + offsetBottom + innerEl.offsetHeight;
@@ -104,10 +98,10 @@ export default san.defineComponent({
             this.fire('change', affixTo);
         }
     },
-    
+
     template: `
         <div class="${outerCls}" style="{{outerStyles}}">
-            <div class="{{dynamicClass}}" style="{{styles}}" s-ref="inner">
+            <div class="{{affix ? '${innerCls}' : ''}}" style="{{styles}}" s-ref="inner">
                 <slot></slot>
             </div>
         </div>
