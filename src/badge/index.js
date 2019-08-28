@@ -131,11 +131,11 @@ export default san.defineComponent({
     template: `
         <span class="{{classes}}" style="{{!hasChild && hasStatus ? styleWithOffset(offset, bodyStyle) : ''}}">
             <slot />
-            <span s-if="{{!hasChild && hasStatus}}" class="{{statusClass}}" style="{{statusStyle(color)}}"></span>
+            <span s-if="{{!hasChild ? hasStatus : ''}}" class="{{statusClass}}" style="{{statusStyle(color)}}"></span>
             <span
                 style="{{{color: bodyStyle.color}}}"
                 class="${prefixCls}-status-text"
-                s-if="{{!hasChild && hasStatus}}"
+                s-if="{{!hasChild ? hasStatus : ''}}"
             >{{text}}</span>
             <s-scrollnumber
                 s-if="{{!isHidden || isDot && !hasStatus}}"

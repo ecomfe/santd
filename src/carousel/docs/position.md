@@ -7,7 +7,7 @@
 <template>
     <div style="width: 600px">
         <div>
-            <s-group style="margin-bottom: 8px" defaultValue="top" on-change="handleChange">
+            <s-group style="margin-bottom: 8px" defaultValue="top" on-change="handleChange" name="position">
                 <s-button value="top">Top</s-button>
                 <s-button value="bottom">Bottom</s-button>
                 <s-button value="left">Left</s-button>
@@ -29,13 +29,12 @@ import Radio from 'santd/radio';
 export default {
     components: {
         's-carousel': Carousel,
-        's-radio': Radio,
         's-group': Radio.Group,
         's-button': Radio.Button
     },
     initData() {
         return {
-            dotPosition: 'right'
+            dotPosition: 'top'
         };
     },
     handleAfter(current) {

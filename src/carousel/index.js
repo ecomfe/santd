@@ -8,14 +8,14 @@ import san from 'san';
 import {classCreator} from '../core/util';
 import Track from './src/track';
 
-const prefix = classCreator('carousel')();
+const prefixCls = classCreator('carousel')();
 
 export default san.defineComponent({
     template: `
-    	<div class="{{cls}}">
-            <div class="{{slickCls}}" style="{{showCompo ? 'opacity: 1' : 'opacity: 0'}}">
+    	<div class="${prefixCls} {{vertical ? '${prefixCls}-vertical' : ''}}">
+            <div class="slick-slider slick-initialized {{vertical ? 'slick-vertical' : ''}}" style="{{showCompo ? 'opacity: 1' : 'opacity: 0'}}">
                 <div class="slick-list"
-                    style="{{listStyle}}">
+                    style="{{vertical && clientHeight ? 'height:' + clientHeight + 'px' : ''}}">
                     <s-track
                         clientWidth="{{clientWidth}}"
                         vertical="{{vertical}}"
@@ -28,7 +28,7 @@ export default san.defineComponent({
                     ><slot></slot>
                     </s-track>
                 </div>
-                <ul class="{{dotsStyle}}" style="display: block;" s-if="dots">
+                <ul class="slick-dots slick-dots-{{dotPosition}}" style="display: block;" s-if="dots">
                     <li class="" s-for="dot, index in slickDots"
                         class="{{dot === curIndex ? 'slick-active' : ''}}">
                         <button on-click="handleChange(dot)">{{dot}}</button>
@@ -47,7 +47,7 @@ export default san.defineComponent({
             slickTracks: [],
             dontAnimate: false,
             animating: false,
-            // vertical: false,
+            vertical: false,
             dots: true,
             easing: 'linear',
             dotPosition: 'bottom',
@@ -61,32 +61,9 @@ export default san.defineComponent({
         's-track': Track
     },
     computed: {
-        cls() {
-            const vertical = this.data.get('vertical');
-            let classArr = [prefix];
-            vertical && classArr.push(`${prefix}-vertical`);
-            return classArr;
-        },
-        listStyle() {
-            let vertical = this.data.get('vertical');
-            let clientHeight = this.data.get('clientHeight');
-            return (vertical && clientHeight) ? {
-                height: `${clientHeight}px`
-            } : '';
-        },
-        slickCls() {
-            const vertical = this.data.get('vertical');
-            let classArr = ['slick-slider', 'slick-initialized'];
-            vertical && classArr.push('slick-vertical');
-            return classArr;
-        },
         vertical() {
             const dotPosition = this.data.get('dotPosition');
             return dotPosition === 'left' || dotPosition === 'right';
-        },
-        dotsStyle() {
-            const dotPosition = this.data.get('dotPosition');
-            return ['slick-dots', `slick-dots-${dotPosition}`];
         }
     },
     next() {

@@ -24,13 +24,11 @@ export default san.defineComponent({
     },
     computed: {
         classes() {
-            const className = this.data.get('className');
             const prefixCls = this.data.get('prefixCls');
             const checked = this.data.get('checked');
             const disabled = this.data.get('disabled');
             let classArr = [`${prefixCls}-wrapper`];
 
-            className && classArr.push(className);
             checked && classArr.push(`${prefixCls}-wrapper-checked`);
             disabled && classArr.push(`${prefixCls}-wrapper-disabled`);
             return classArr;
@@ -67,7 +65,6 @@ export default san.defineComponent({
     template: `
         <label
             class="{{classes}}"
-            style="{{style}}"
             on-mouseenter="handleMouseEnter"
             on-mouseleave="handleMouseLeave"
         >
@@ -86,7 +83,7 @@ export default san.defineComponent({
                 on-change="handleChange"
                 s-ref="checkbox"
             />
-            <span><slot></slot></span>
+            <span><slot /></span>
         </label>
     `
 });

@@ -22,7 +22,6 @@ export default san.defineComponent({
     },
     initData() {
         return {
-            prefixCls: prefixCls,
             buttonStyle: 'outline',
             options: [],
             disabled: false,
@@ -31,13 +30,11 @@ export default san.defineComponent({
     },
     computed: {
         classes() {
-            const className = this.data.get('className');
             const buttonStyle = this.data.get('buttonStyle');
             const size = this.data.get('size');
             const prefix = prefixCls + '-group';
             let classArr = [prefix, `${prefix}-${buttonStyle}`];
 
-            className && classArr.push(className);
             size && classArr.push(`${prefix}-${size}`);
             return classArr;
         },
@@ -95,7 +92,7 @@ export default san.defineComponent({
             <s-radio
                 s-if="{{checkboxs.length}}"
                 s-for="checkbox in checkboxs"
-                prefixCls="{{prefixCls}}"
+                prefixCls="${prefixCls}"
                 key="{{checkbox.key}}"
                 disabled="{{checkbox.disabled}}"
                 value="{{checkbox.value}}"
