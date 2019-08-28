@@ -15,7 +15,7 @@ export default san.defineComponent({
         visibilityHeight: DataTypes.number,
         target: DataTypes.func
     },
-    
+
     getCurrentScrollTop() {
         let targetNode = this.data.get('target')();
         if (targetNode === window) {
@@ -48,9 +48,14 @@ export default san.defineComponent({
             target() {
                 return window;
             },
-            visible: false,
-            hasSlot: false
+            visible: false
         };
+    },
+
+    inited() {
+        if (this.sourceSlots.noname && this.sourceSlots.noname.length) {
+            this.data.set('hasSlot', true);
+        }
     },
 
     handleScroll() {
@@ -61,9 +66,7 @@ export default san.defineComponent({
     attached() {
         this._scroll = this.handleScroll.bind(this);
         on(window, 'scroll', this._scroll);
-        if (this.sourceSlots.noname && this.sourceSlots.noname.length) {
-            this.data.set('hasSlot', true);
-        }
+        
         this.handleScroll();
     },
 
