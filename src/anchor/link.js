@@ -18,26 +18,6 @@ export default san.defineComponent({
             href: '#'
         };
     },
-    computed: {
-        classes() {
-            const href = this.data.get('href');
-            const active = this.data.get('activeLink') === href;
-
-            let classArr = [`${prefixCls}-link`];
-            active && classArr.push(`${prefixCls}-link-active`);
-
-            return classArr;
-        },
-
-        titleClasses() {
-            const active = this.data.get('activeLink') === this.data.get('href');
-
-            let classArr = [`${prefixCls}-link-title`];
-            active && classArr.push(`${prefixCls}-link-title-active`);
-
-            return classArr;
-        }
-    },
 
     inited() {
         this.dispatch('santd_link_addInstance', this);
@@ -64,10 +44,19 @@ export default san.defineComponent({
         this.dispatch('santd_link_scrollTo', href);
     },
 
+    messages: {
+        santd_link_add(payload) {
+            // 修复子组件多层嵌套时dispatch顺序不正确的问题
+            this.nextTick(() => {
+                this.dispatch('santd_link_add', payload.value);
+            });
+        }
+    },
+
     template: `
-        <div class="{{classes}}">
+        <div class="${prefixCls}-link {{activeLink === href ? '${prefixCls}-link-active' : ''}}">
             <a
-                class="{{titleClasses}}"
+                class="${prefixCls}-link-title {{activeLink === href ? '${prefixCls}-link-title-active' : ''}}"
                 href="{{href}}"
                 title="{{title}}"
                 on-click="handleClick"
