@@ -19,46 +19,38 @@ export default san.defineComponent({
         activeKey: DataTypes.oneOfType([DataTypes.string, DataTypes.array]),
         defaultActiveKey: DataTypes.oneOfType([DataTypes.string, DataTypes.array]),
         acordion: DataTypes.bool,
-        className: DataTypes.string,
         destroyInactivePanel: DataTypes.bool
     },
+
     initData() {
         return {
             prefixCls: 'collapse',
             accordion: false,
             destroyInactivePanel: false,
-            children: []
+            linkChildren: []
         };
     },
+
     inited() {
         const activeKey = this.data.get('activeKey');
         const defaultActiveKey = this.data.get('defaultActiveKey');
 
         this.data.set('activeKey', toArray(activeKey || defaultActiveKey));
     },
-    computed: {
-        classes() {
-            const prefixCls = this.data.get('prefixCls');
-            const className = this.data.get('className');
-            return [prefixCls, className];
-        }
-    },
+
     updated() {
-        const children = this.data.get('children');
+        const linkChildren = this.data.get('linkChildren');
+        const activeKey = this.data.get('activeKey');
         const prefixCls = this.data.get('prefixCls');
-        children.forEach((child, index) => {
-            const activeKey = this.data.get('activeKey');
+        const accordion = this.data.get('accordion');
+        const expandIcon = this.data.get('expandIcon');
+
+        linkChildren.forEach((child, index) => {
             const key = child.data.get('key') || String(index);
-            const accordion = this.data.get('accordion');
-            const expandIcon = this.data.get('expandIcon');
 
             let isActive = false;
-            if (accordion) {
-                isActive = activeKey[0] === key;
-            }
-            else {
-                isActive = activeKey.indexOf(key) > -1;
-            }
+            isActive = accordion ? activeKey[0] === key : activeKey.includes(key);
+
             child.data.set('key', key);
             child.data.set('panelKey', key);
             child.data.set('prefixCls', prefixCls);
@@ -67,9 +59,10 @@ export default san.defineComponent({
             child.data.set('expandIcon', expandIcon);
         });
     },
+
     messages: {
         santd_panel_add(payload) {
-            this.data.push('children', payload.value);
+            this.data.push('linkChildren', payload.value);
         },
         santd_panel_click(payload) {
             let activeKey = this.data.get('activeKey');
@@ -81,10 +74,8 @@ export default san.defineComponent({
             }
             else {
                 activeKey = [...activeKey];
-                const index = activeKey.indexOf(key);
-                const isActive = index > -1;
-                if (isActive) {
-                    // remove active state
+                if (activeKey.includes(key)) {
+                    const index = activeKey.indexOf(key);
                     activeKey.splice(index, 1);
                 }
                 else {
@@ -94,9 +85,10 @@ export default san.defineComponent({
             this.data.set('activeKey', activeKey);
         }
     },
+
     template: `
-        <div class="{{classes}}" role="{{accordion ? 'tablist' : ''}}">
-            <slot></slot>
+        <div class="{{prefixCls}} {{classes}}" role="{{accordion ? 'tablist' : ''}}">
+            <slot />
         </div>
     `
 });

@@ -21,6 +21,7 @@ export default san.defineComponent({
         forceRender: DataTypes.bool,
         panelKey: DataTypes.oneOfType([DataTypes.string, DataTypes.number])
     },
+
     initData() {
         return {
             showArrow: true,
@@ -30,50 +31,50 @@ export default san.defineComponent({
             forceRender: false
         };
     },
+
     computed: {
         classes() {
             const prefixCls = this.data.get('prefixCls');
-            const isActive = this.data.get('isActive');
-            const disabled = this.data.get('disabled');
-            const className = this.data.get('className');
-            let classArr = [`${prefixCls}-item`, className];
+            let classArr = [`${prefixCls}-item`];
 
-            isActive && classArr.push(`${prefixCls}-item-active`);
-            disabled && classArr.push(`${prefixCls}-item-disabled`);
+            this.data.get('isActive') && classArr.push(`${prefixCls}-item-active`);
+            this.data.get('disabled') && classArr.push(`${prefixCls}-item-disabled`);
+            !this.data.get('showArrow') && classArr.push(`${prefixCls}-no-arrow`);
 
             return classArr;
         }
     },
+
     compiled() {
         this.components.expandicon = this.parentComponent.data.get('expandIcon');
     },
-    inited() {
-        this.data.set('instance', this);
-    },
+
     attached() {
         this.dispatch('santd_panel_add', this);
         this.watch('prefixCls', val => {
-            const expandIcon = this.ref('expandIcon');
-            if (expandIcon) {
-                expandIcon.el.className = val + '-arrow';
+            if (this.ref('expandIcon')) {
+                this.data.set('hasExpandIcon', true);
             }
         });
     },
+
     components: {
         's-panelcontent': PanelContent
     },
+
     handleItemClick() {
         if (this.data.get('disabled')) {
             return;
         }
-        const panelKey = this.data.get('panelKey');
-        this.dispatch('santd_panel_click', panelKey);
+        this.dispatch('santd_panel_click', this.data.get('panelKey'));
     },
+
     handleKeyPress(e) {
         if (e.key === 'Enter' || e.keyCode === 13 || e.which === 13) {
             this.handleItemClick();
         }
     },
+
     template: `
         <div class="{{classes}}" id="{{id}}">
             <div
@@ -85,13 +86,13 @@ export default san.defineComponent({
                 on-keypress="handleKeyPress"
             >
                 <expandicon
+                    class="{{hasExpandIcon ? prefixCls + '-arrow' : ''}}"
                     prefixCls="{{prefixCls}}"
                     s-if="{{showArrow}}"
                     s-ref="expandIcon"
-                    isActive="{{isActive}}">
-                </expandicon>
-                {{header}}<slot name="header"></slot>
-                <div class="{{prefixCls}}-extra"><slot name="extra"></slot></div>
+                    isActive="{{isActive}}"
+                />{{header}}<slot name="header" />
+                <div class="{{prefixCls}}-extra"><slot name="extra" /></div>
             </div>
             <s-panelcontent
                 s-if="{{forceRender || isActive}}"
@@ -100,7 +101,7 @@ export default san.defineComponent({
                 isActive="{{isActive}}"
                 destroyInactivePanel="{{destroyInactivePanel}}"
             >
-                <slot></slot>
+                <slot />
             </s-panelcontent>
         </div>
     `

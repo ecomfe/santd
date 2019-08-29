@@ -38,6 +38,7 @@ export default san.defineComponent({
             </div>
         </div>
     `,
+
     inited() {
         let {author, datetime, actions, children} = this.sourceSlots.named;
         this.data.set('showAuthor', author || datetime);

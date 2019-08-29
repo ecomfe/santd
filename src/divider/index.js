@@ -13,25 +13,23 @@ export default san.defineComponent({
         orientation: DataTypes.oneOf(['right', 'left', '']),
         dashed: DataTypes.bool
     },
+
     initData() {
         return {
-            prefixCls,
             type: 'horizontal',
             orientation: '',
             hasSlot: false
         };
     },
+
     computed: {
         classes() {
             const dashed = this.data.get('dashed');
             const type = this.data.get('type');
             const orientation = this.data.get('orientation');
-            const instance = this.data.get('instance');
-            const hasSlot = instance && instance.sourceSlots.noname;
-            const className = this.data.get('className');
+            const hasSlot = this.data.get('hasSlot');
             let classArr = [prefixCls];
 
-            className && classArr.push(className);
             !!type && classArr.push(`${prefixCls}-${type}`);
             dashed && classArr.push(`${prefixCls}-dashed`);
             hasSlot && !orientation && classArr.push(`${prefixCls}-with-text`);
@@ -40,12 +38,16 @@ export default san.defineComponent({
             return classArr;
         }
     },
+
     inited() {
-        this.data.set('instance', this);
+        if (this.sourceSlots.noname) {
+            this.data.set('hasSlot', true);
+        }
     },
+
     template: `
         <div class="{{classes}}">
-            <span s-if="{{instance && instance.sourceSlots.noname}}" class="{{prefixCls}}-inner-text">
+            <span s-if="{{hasSlot}}" class="${prefixCls}-inner-text">
                 <slot />
             </span>
       </div>

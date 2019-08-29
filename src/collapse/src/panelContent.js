@@ -13,25 +13,14 @@ export default san.defineComponent({
         forceRender: DataTypes.bool,
         role: DataTypes.string
     },
-    computed: {
-        classes() {
-            const prefixCls = this.data.get('prefixCls');
-            const isActive = this.data.get('isActive');
-            let classArr = [`${prefixCls}-content`];
 
-            isActive && classArr.push(`${prefixCls}-content-active`);
-            !isActive && classArr.push(`${prefixCls}-content-inactive`);
-
-            return classArr;
-        }
-    },
     template: `
-        <div class="{{classes}}" role="{{role}}">
+        <div class="{{prefixCls}}-content {{prefixCls}}-content-{{isActive ? 'active' : 'inactive'}}" role="{{role}}">
             <div
                 s-if="{{forceRender || isActive || !destroyInactivePanel}}"
                 class="{{prefixCls}}-content-box"
             >
-                <slot></slot>
+                <slot />
             </div>
         </div>
     `

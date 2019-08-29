@@ -24,17 +24,15 @@ const Item = san.defineComponent({
 
 const Descriptions = san.defineComponent({
     dataTypes: {
-        prefixCls: DataTypes.string,
-        className: DataTypes.string,
         bordered: DataTypes.bool,
         size: DataTypes.string,
         title: DataTypes.string,
         column: DataTypes.oneOfType([DataTypes.number, DataTypes.object]),
         layout: DataTypes.string
     },
+
     initData() {
         return {
-            prefixCls,
             size: 'default',
             bordered: false,
             layou: 'horizontal',
@@ -42,6 +40,7 @@ const Descriptions = san.defineComponent({
             screens: {}
         };
     },
+
     attached() {
         const column = this.data.get('column');
         this.token = ResponsiveObserve.subscribe(screens => {
@@ -51,18 +50,17 @@ const Descriptions = san.defineComponent({
             this.data.set('screens', screens);
         });
     },
+
     disposed() {
         ResponsiveObserve.unsubscribe(this.token);
     },
+
     computed: {
         classes() {
-            const prefixCls = this.data.get('prefixCls');
-            const className = this.data.get('className');
             const size = this.data.get('size');
             const bordered = this.data.get('bordered');
             let classArr = [prefixCls];
 
-            className && classArr.push(className);
             size !== 'default' && classArr.push(`${prefixCls}-${size}`);
             bordered && classArr.push(`${prefixCls}-bordered`);
 
@@ -125,9 +123,11 @@ const Descriptions = san.defineComponent({
             }
         }
     },
+
     inited() {
         this.data.set('instance', this);
     },
+
     getColSpan(i, j, child) {
         const childrenArray = this.data.get('childrenArray');
         const column = this.data.get('getColumn');
@@ -139,59 +139,60 @@ const Descriptions = san.defineComponent({
         }
         return span || 1;
     },
+
     template: `<div class="{{classes}}">
-        <div class="{{prefixCls}}-title" s-if="{{title}}">{{title}}</div>
-        <div class="{{prefixCls}}-view">
+        <div class="${prefixCls}-title" s-if="{{title}}">{{title}}</div>
+        <div class="${prefixCls}-view">
             <table>
                 <tbody>
                     <template s-for="children, i in childrenArray">
                         <template s-if="{{layout === 'vertical'}}">
-                            <tr class="{{prefixCls}}-row">
+                            <tr class="${prefixCls}-row">
                                 <template s-for="child, j in children">
                                     <td
-                                        class="{{prefixCls}}-item-label"
+                                        class="${prefixCls}-item-label"
                                         colspan="{{getColSpan(i, j, child) * 2 - 1}}" s-if="{{bordered}}"
                                     >
                                         {{child.label}}
                                     </td>
-                                    <td colspan="{{getColSpan(i, j, child)}}" class="{{prefixCls}}-item" s-else>
-                                        <span class="{{prefixCls}}-item-label">{{child.label}}</span>
+                                    <td colspan="{{getColSpan(i, j, child)}}" class="${prefixCls}-item" s-else>
+                                        <span class="${prefixCls}-item-label">{{child.label}}</span>
                                     </td>
                                 </template>
                             </tr>
-                            <tr class="{{prefixCls}}-row">
+                            <tr class="${prefixCls}-row">
                                 <template s-for="child, j in children">
                                     <td
-                                        class="{{prefixCls}}-item-content"
+                                        class="${prefixCls}-item-content"
                                         colspan="{{getColSpan(i, j, child) * 2 - 1}}"
                                         s-if="{{bordered}}"
                                     >
                                         <slot name="slot_{{i}}_{{j}}"></slot>
                                     </td>
-                                    <td colspan="{{getColSpan(i, j, child)}}" class="{{prefixCls}}-item" s-else>
-                                        <span class="{{prefixCls}}-item-content">
+                                    <td colspan="{{getColSpan(i, j, child)}}" class="${prefixCls}-item" s-else>
+                                        <span class="${prefixCls}-item-content">
                                             <slot name="slot_{{i}}_{{j}}"></slot>
                                         </span>
                                     </td>
                                 </template>
                             </tr>
                         </template>
-                        <tr class="{{prefixCls}}-row" s-else>
+                        <tr class="${prefixCls}-row" s-else>
                             <template s-for="child, j in children">
                                 <template s-if="{{bordered}}">
-                                    <th class="{{prefixCls}}-item-label {{className}} {{!label && prefixCls + '-item-no-label'}}">
+                                    <th class="${prefixCls}-item-label {{!label && prefixCls + '-item-no-label'}}">
                                         {{child.label}}
                                     </th>
                                     <td
-                                        class="{{prefixCls}}-item-content {{className}}"
+                                        class="${prefixCls}-item-content"
                                         colspan="{{getColSpan(i, j, child) * 2 -1}}"
                                     >
                                         <slot name="slot_{{i}}_{{j}}"></slot>
                                     </td>
                                 </template>
-                                <td colspan="{{getColSpan(i, j, child)}}" class="{{prefixCls}}-item" s-else>
-                                    <span class="{{prefixCls}}-item-label">{{child.label}}</span>
-                                    <span class="{{prefixCls}}-item-content">
+                                <td colspan="{{getColSpan(i, j, child)}}" class="${prefixCls}-item" s-else>
+                                    <span class="${prefixCls}-item-label">{{child.label}}</span>
+                                    <span class="${prefixCls}-item-content">
                                         <slot name="slot_{{i}}_{{j}}"></slot>
                                     </span>
                                 </td>
