@@ -12,78 +12,87 @@ const prefixCls = classCreator('checkbox')();
 
 export default san.defineComponent({
     dataTypes: {
-        className: DataTypes.string,
-        prefixCls: DataTypes.string,
         checked: DataTypes.bool,
         disabled: DataTypes.bool,
         indeterminate: DataTypes.bool
     },
+
     components: {
         's-checkbox': Checkbox
     },
+
     initData() {
         return {
-            prefixCls,
             indeterminate: false
         };
     },
+
     inited() {
         this.data.set('instance', this);
     },
+
     attached() {
         this.dispatch('santd_checkbox_add', this);
     },
+
     computed: {
         classes() {
-            const className = this.data.get('className');
             const checked = this.data.get('checked');
             const disabled = this.data.get('disabled');
 
-            let classArr = [className, `${prefixCls}-wrapper`];
+            let classArr = [`${prefixCls}-wrapper`];
             checked && classArr.push(`${prefixCls}-wrapper-checked`);
             disabled && classArr.push(`${prefixCls}-wrapper-disabled`);
 
             return classArr;
         }
     },
+
     handleChange(e) {
         this.fire('change', e);
         this.dispatch('santd_checkbox_toggleOption', {
             value: this.data.get('value')
         });
     },
+
     handleClick(e) {
         this.fire('click', e);
     },
+
     handleBlur(e) {
         this.fire('blur', e);
     },
+
     handleFocus(e) {
         this.fire('focus', e);
     },
+
     handleMouseEnter(e) {
         this.fire('mouseenter', e);
     },
+
     handleMouseLeave(e) {
         this.fire('mouseleave', e);
     },
+
     focus() {
         this.ref('checkbox').focus();
     },
+
     blur() {
         this.ref('checkbox').blur();
     },
+
     template: `
         <label
             class="{{classes}}"
-            style="{{style}}"
             on-mouseenter="handleMouseEnter"
             on-mouseleave="handleMouseLeave"
         >
             <s-checkbox
-                prefixCls="{{prefixCls}}"
+                prefixCls="${prefixCls}"
                 type="{{type}}"
-                class="{{indeterminate ? prefixCls + '-indeterminate' : ''}}"
+                class="{{indeterminate ? '${prefixCls}-indeterminate' : ''}}"
                 checked="{{checked}}"
                 disabled="{{disabled}}"
                 name="{{name}}"
@@ -95,7 +104,7 @@ export default san.defineComponent({
                 on-click="handleClick"
                 on-change="handleChange"
                 s-ref="checkbox"
-            /><span s-if="{{instance && instance.sourceSlots.noname}}"><slot></slot></span>
+            /><span s-if="{{instance && instance.sourceSlots.noname}}"><slot /></span>
         </label>
     `
 });

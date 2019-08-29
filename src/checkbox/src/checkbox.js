@@ -7,8 +7,6 @@ import san, {DataTypes} from 'san';
 export default san.defineComponent({
     DataTypes: {
         prefixCls: DataTypes.string,
-        className: DataTypes.string,
-        style: DataTypes.object,
         name: DataTypes.string,
         id: DataTypes.string,
         type: DataTypes.string,
@@ -20,51 +18,55 @@ export default san.defineComponent({
         autoFocus: DataTypes.bool,
         value: DataTypes.any
     },
+
     initData() {
         return {
             prefixCls: 'checkbox',
-            className: '',
-            style: {},
             type: 'checkbox',
             defaultChecked: false
         };
     },
+
     inited() {
-        const checked = this.data.get('checked');
-        this.data.set('checked', checked || this.data.get('defaultChecked'));
+        this.data.set('checked', this.data.get('checked') || this.data.get('defaultChecked'));
     },
+
     computed: {
         classes() {
             const checked = this.data.get('checked');
             const disabled = this.data.get('disabled');
             const prefixCls = this.data.get('prefixCls');
-            const className = this.data.get('className');
             let classArr = [prefixCls];
 
-            className && classArr.push(className);
             checked && classArr.push(`${prefixCls}-checked`);
             disabled && classArr.push(`${prefixCls}-disabled`);
 
             return classArr;
         }
     },
+
     focus() {
         const input = this.ref('input');
         input.focus();
     },
+
     blur() {
         const input = this.ref('input');
         input.blur();
     },
+
     handleClick(e) {
         this.fire('click', e);
     },
+
     handleFocus(e) {
         this.fire('focus', e);
     },
+
     handleBlur(e) {
         this.fire('blur', e);
     },
+
     handleChange(e) {
         if (this.data.get('disabled')) {
             return;
@@ -89,8 +91,9 @@ export default san.defineComponent({
             nativeEvent: e.nativeEvent
         });
     },
+
     template: `
-        <span class="{{classes}}" style="{{style}}">
+        <span class="{{classes}}">
             <input
                 name="{{name}}"
                 id="{{id}}"

@@ -17,17 +17,19 @@ export default san.defineComponent({
         disabled: DataTypes.bool,
         name: DataTypes.string
     },
+
     components: {
         's-checkbox': Checkbox
     },
+
     initData() {
         return {
-            prefixCls,
             options: [],
             disabled: false,
             childs: []
         };
     },
+
     computed: {
         checkboxs() {
             const options = this.data.get('options');
@@ -46,21 +48,21 @@ export default san.defineComponent({
             });
         }
     },
+
     inited() {
-        const value = this.data.get('value') || this.data.get('defaultValue') || [];
-        this.data.set('instance', this);
-        this.data.set('value', value);
+        this.data.set('value', this.data.get('value') || this.data.get('defaultValue') || []);
     },
+
     updated() {
         const childs = this.data.get('childs');
         const value = this.data.get('value') || [];
         childs.length && childs.forEach(child => {
             child.data.set('checked', value.indexOf(child.data.get('value')) !== -1);
-            child.data.set('disabled', 'disabled' in child.data.get()
-                ? child.data.get('disabled') : this.data.get('disabled'));
+            child.data.set('disabled', child.data.get('disabled') || this.data.get('disabled'));
             child.data.set('name', this.data.get('name'));
         });
     },
+
     messages: {
         santd_checkbox_toggleOption(payload) {
             const option = payload.value;
@@ -85,17 +87,17 @@ export default san.defineComponent({
             }
         }
     },
+
     template: `
-        <div class="{{prefixCls}} {{className}}" style="{{style}}">
+        <div class="${prefixCls}">
             <s-checkbox
                 s-if="{{checkboxs.length}}"
                 s-for="checkbox in checkboxs"
-                prefixCls="{{prefixCls}}"
                 key="{{checkbox.key}}"
                 disabled="{{checkbox.disabled}}"
                 value="{{checkbox.value}}"
                 checked="{{checkbox.checked}}"
-                className="{{prefixCls}}-group-item"
+                class="${prefixCls}-group-item"
                 name="{{name}}"
             >{{checkbox.label}}</s-checkbox>
             <slot></slot>
