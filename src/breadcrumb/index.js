@@ -50,15 +50,6 @@ const Breadcrumb = san.defineComponent({
         };
     },
 
-    computed: {
-        injectItemRender() {
-            const instance = this.data.get('instance');
-            const itemRender = this.data.get('itemRender') || defaultItemRender;
-            if (instance) {
-                instance.components.itemrender = itemRender;
-            }
-        }
-    },
 
     getPaths(path, params) {
         let paths = this.data.get('paths');
@@ -66,10 +57,6 @@ const Breadcrumb = san.defineComponent({
 
         result && (paths.push(result));
         return paths;
-    },
-
-    inited() {
-        this.data.set('instance', this);
     },
 
     getHref(paths) {
