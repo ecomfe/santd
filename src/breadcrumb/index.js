@@ -17,22 +17,6 @@ function getPath(path, params = {}) {
     return path;
 }
 
-const defaultItemRender = san.defineComponent({
-    computed: {
-        isLastItem() {
-            const routes = this.data.get('routes');
-            const route = this.data.get('route');
-
-            return routes.indexOf(route) === routes.length - 1;
-        }
-    },
-    
-    template: `<span>
-        <span s-if="{{isLastItem}}">{{getBreadcrumbName(route, params)}}</span>
-        <a s-else href="{{getHref(paths)}}">{{getBreadcrumbName(route, params)}}</a>
-    </span>`
-});
-
 const Breadcrumb = san.defineComponent({
     components: {
         's-breadcrumb-item': BreadcrumbItem
