@@ -70,7 +70,7 @@ const Breadcrumb = san.defineComponent({
     },
 
     template: `
-        <div class="${prefixCls} {{className}}">
+        <div class="${prefixCls}">
             <slot name="item" 
                 s-if="routes && routes.length"
                 s-for="route, index in routes"
