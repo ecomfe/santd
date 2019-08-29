@@ -9,6 +9,29 @@ import BreadcrumbItem from './item';
 import './style/index';
 const prefixCls = classCreator('breadcrumb')();
 
+function getPath(path, params = {}) {
+    path = (path || '').replace(/^\//, '');
+    Object.keys(params).forEach(key => {
+        path = path.replace(`:${key}`, params[key]);
+    });
+    return path;
+}
+
+const defaultItemRender = san.defineComponent({
+    computed: {
+        isLastItem() {
+            const routes = this.data.get('routes');
+            const route = this.data.get('route');
+
+            return routes.indexOf(route) === routes.length - 1;
+        }
+    },
+    
+    template: `<span>
+        <span s-if="{{isLastItem}}">{{getBreadcrumbName(route, params)}}</span>
+        <a s-else href="{{getHref(paths)}}">{{getBreadcrumbName(route, params)}}</a>
+    </span>`
+});
 
 const Breadcrumb = san.defineComponent({
     components: {
@@ -17,7 +40,7 @@ const Breadcrumb = san.defineComponent({
 
     dataTypes: {
         separator: DataTypes.string,
-        routes: DataTypes.instanceOf(Array)
+        routes: DataTypes.array
     },
 
     initData() {
@@ -49,6 +72,22 @@ const Breadcrumb = san.defineComponent({
         this.data.set('instance', this);
     },
 
+    getHref(paths) {
+        return `#/${paths.join('/')}`;
+    },
+
+    getBreadcrumbName(route, params = {}) {
+        if (!route.breadcrumbName) {
+            return null;
+        }
+        const paramsKeys = Object.keys(params).join('|');
+        const name = route.breadcrumbName.replace(
+            new RegExp(`:(${paramsKeys})`, 'g'),
+            (replacement, key) => params[key] || replacement,
+        );
+        return name;
+    },
+
     messages: {
         santd_breadcrumb_add(payload) {
             const item = payload.value;
@@ -58,22 +97,23 @@ const Breadcrumb = san.defineComponent({
             }
         }
     },
-    
+
     template: `
         <div class="${prefixCls} {{className}}">
-            <s-breadcrumb-item
+            <slot name="item" 
                 s-if="routes && routes.length"
                 s-for="route, index in routes"
-                separator="{{separator}}"
+                var-separator="separator"
+                var-index="index"
+                var-route="route"
+                var-params="params"
+                var-paths="getPaths(route.path, params)"
             >
-                <itemrender
-                    route="{{route}}"
-                    params="{{params}}"
-                    routes="{{routes}}"
-                    paths="{{getPaths(route.path, params)}}"
-                />
-            </s-breadcrumb-item>
-            <slot s-else></slot>
+                <s-breadcrumb-item separator="{{separator}}" href="{{routes.length - 1 > index ? getHref(paths) : ''}}">
+                    {{getBreadcrumbName(route, params)}}
+                </s-breadcrumb-item>
+            </slot>
+            <slot s-else />
         </div>
     `
 });

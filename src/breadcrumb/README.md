@@ -4,7 +4,7 @@
 
 | 属性 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| itemRender| 自定义链接,跟 routes配合使用 | SanNode | - |
+| item| 当包含 routes 时，定制 BreadcrumbItem。跟 routes 配合使用 | slot | - |
 | params | 路由参数，处理routes数组中的path路径 | object | - |
 | routes | router的路由信息 | Array | - |
 | separator | 分隔符自定义 | string | `/` |
@@ -47,30 +47,34 @@ router.start();
 const demo = san.defineComponent({
     initData() {
         return { 
-            routes: [{
-                path: 'index',
-                breadcrumbName: 'home'
-            }, {
-                path: 'first',
-                breadcrumbName: 'first'
-            }, {
-                path: 'second',
-                breadcrumbName: 'second'
-            }],
-            itemRender: san.defineComponent({
-                components: {
-                    'router-link': Link
-                },
-                computed: { 
-                    to() {
-                        let paths = this.data.get('paths');
-                        return paths.join('/');
-                    }
-                },
-                template: '<router-link to="{{to}}">{{route.breadcrumbName}}</router-link>'
-            })
+            routes: [
+                {
+                    path: 'index',
+                    breadcrumbName: 'home'
+                }, 
+                {
+                    path: 'first',
+                    breadcrumbName: 'first'
+                }, 
+                {
+                    path: 'second',
+                    breadcrumbName: 'second'
+                }
+            ]
         }
     },
-    template: '<s-breadcrumb itemRender="{itemRender}" routes="{routes}"></s-breadcrumb>'
+
+    components: {
+        's-breadcrumb': Breadcrumb,
+        's-brcrumbitem': Breadcrumb.Item
+    },
+
+    template: "<div>"
+        + '<s-breadcrumb routes="{{routes}}">'
+        + '    <s-breadcrumb-item slot="item" href="{{routes.length - 1 > index ? route.breadcrumbName : \'\'}}">'
+        + "        {{route.breadcrumbName}}"
+        + "    </s-breadcrumb-item>"
+        + "</s-breadcrumb>"
+      + "</div>"
 });
-``````
+```
