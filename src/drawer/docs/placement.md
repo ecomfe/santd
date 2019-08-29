@@ -6,7 +6,7 @@
 ```html
 <template>
     <div>
-        <s-radio-group style="margin-right: 8px" value="{{placement}}" on-change="onChange($event)">
+        <s-radio-group style="margin-right: 8px" value="{{placement}}" on-change="onChange($event)" name="position">
             <s-radio value="top">top</s-radio>
             <s-radio value="right">right</s-radio>
             <s-radio value="bottom">bottom</s-radio>

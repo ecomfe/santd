@@ -20,7 +20,7 @@ const styleType = DataTypes.oneOfType([DataTypes.string, DataTypes.object]);
 
 export default san.defineComponent({
     template: `
-        <div class="{{drawerClassName}}" style="z-index:{{zIndex}};">
+        <div class="${prefixCls} ${prefixCls}-{{placement}} {{visible ? '${prefixCls}-open' : ''}}" style="z-index:{{zIndex}};">
             <div s-if="{{mask}}" class="${prefixCls}-mask" style="{{maskStyle | css}}" on-click="onMaskClick"></div>
             <div class="${prefixCls}-content-wrapper" style="{{wrapStyle | css}}">
                 <div class="${prefixCls}-content">
@@ -46,9 +46,9 @@ export default san.defineComponent({
             </div>
         </div>
     `,
+
     dataTypes: {
         bodyStyle: styleType, // 原来的参数是style，但是san会把样式添加到根节点，所以改为了bodyStyle
-        className: DataTypes.string,
         closable: DataTypes.bool,
         destroyOnClose: DataTypes.bool,
         getContainer: DataTypes.string,
@@ -62,33 +62,21 @@ export default san.defineComponent({
         visible: DataTypes.bool,
         zIndex: DataTypes.number
     },
+
     components: {
         's-icon': Icon
     },
+
     computed: {
-        drawerClassName() {
-            const data = this.data;
-            const className = data.get('className');
-            const placement = data.get('placement');
-            const visible = data.get('visible');
-            let classArr = [prefixCls, `${prefixCls}-${placement}`];
-
-            className && classArr.push(className);
-            !!visible && classArr.push(`${prefixCls}-open`);
-
-            return classArr;
-        },
         wrapStyle() {
-            const data = this.data;
-            const placement = data.get('placement');
-            const visible = data.get('visible');
+            const placement = this.data.get('placement');
             const isHorizontal = placement === 'left' || placement === 'right';
             const placementName = `translate${isHorizontal ? 'X' : 'Y'}`;
             const placementPos = placement === 'left' || placement === 'top' ? '-100%' : '100%';
 
-            const width = isHorizontal && data.get('width');
-            const height = !isHorizontal && data.get('height');
-            const transform = visible ? '' : `${placementName}(${placementPos})`;
+            const width = isHorizontal && this.data.get('width');
+            const height = !isHorizontal && this.data.get('height');
+            const transform = this.data.get('visible') ? '' : `${placementName}(${placementPos})`;
 
             return {
                 transform,
@@ -98,7 +86,9 @@ export default san.defineComponent({
             };
         }
     },
+
     filters,
+
     initData() {
         return {
             closable: true,
@@ -112,12 +102,14 @@ export default san.defineComponent({
             placement: 'right'
         };
     },
+
     onMaskClick(e) {
         if (!this.data.get('maskClosable')) {
             return;
         }
         this.close(e);
     },
+
     close(e) {
         if (this.data.get('visible') !== undefined) {
             this.fire('close', e);
