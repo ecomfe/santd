@@ -14,8 +14,9 @@ const expandIcon = san.defineComponent({
     components: {
         's-icon': Icon
     },
+
     template: `<span>
-        <s-icon type="right" rotate="{{isActive ? 90 : 0}}"></s-icon>
+        <s-icon type="right" rotate="{{isActive ? 90 : 0}}" />
     </span>`
 });
 
@@ -23,29 +24,26 @@ const Collapse = san.defineComponent({
     dataTypes: {
         bordered: DataTypes.bool,
         className: DataTypes.string,
-        prefixCls: DataTypes.string
+        prefixCls: DataTypes.string,
+        destroyInactivePanel: DataTypes.bool
     },
+
     computed: {
         classes() {
             const bordered = this.data.get('bordered');
-            const className = this.data.get('className');
             const prefixCls = this.data.get('prefixCls');
-            let classArr = [prefixCls];
-
-            className && classArr.push(className);
-            !bordered && classArr.push(`${prefixCls}-borderless`);
-
-            return classArr;
+            return !bordered ? `${prefixCls}-borderless` : '';
         }
     },
+
     initData() {
         return {
             prefixCls,
             bordered: true,
             accordion: false,
-            destroyInactivePanel: false,
-            children: [],
-            expandIcon: expandIcon
+            linkChildren: [],
+            expandIcon,
+            destroyInactivePanel: false
         };
     }
 });
