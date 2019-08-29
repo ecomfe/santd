@@ -61,10 +61,9 @@ const Breadcrumb = san.defineComponent({
 
     messages: {
         santd_breadcrumb_add(payload) {
-            const item = payload.value;
             const separator = this.data.get('separator');
             if (separator) {
-                item.data.set('separator', separator);
+                payload.value.data.set('separator', separator);
             }
         }
     },

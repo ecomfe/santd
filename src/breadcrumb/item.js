@@ -18,10 +18,10 @@ export default san.defineComponent({
         };
     },
 
-    created() {
+    inited() {
         this.dispatch('santd_breadcrumb_add', this);
     },
-    
+
     template: `
         <span>
             <a s-if="href" href="{{href}}" class="${prefixCls}-link"><slot/></a>
