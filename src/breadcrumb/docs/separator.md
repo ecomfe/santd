@@ -20,7 +20,7 @@ import Breadcrumb from 'santd/breadcrumb';
 export default {
     components: {
         's-breadcrumb': Breadcrumb,
-        's-brcrumbitem': Breadcrumb.BrcrumbItem
+        's-brcrumbitem': Breadcrumb.Item
     }
 }
 </script>
