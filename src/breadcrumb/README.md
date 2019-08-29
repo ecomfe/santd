@@ -9,10 +9,10 @@
 | routes | router的路由信息 | Array | - |
 | separator | 分隔符自定义 | string | `/` |
 
-## breadcrumbItem组件属性
+## Breadcrumb.Item 组件属性
 | 属性 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| href | breadcrumbItem组件属性，如果有href，则会进行a标签的跳转 | string | - |
+| href | Breadcrumb.Item 组件属性，如果有href，则会进行a标签的跳转 | string | - |
 
 ## routes
 
