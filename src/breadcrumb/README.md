@@ -66,7 +66,7 @@ const demo = san.defineComponent({
 
     components: {
         's-breadcrumb': Breadcrumb,
-        's-brcrumbitem': Breadcrumb.Item
+        's-breadcrumb-item': Breadcrumb.Item
     },
 
     template: "<div>"
