@@ -7,6 +7,7 @@ import Readme from '../README.md';
 import Basic from './basic.md';
 import withIcon from './withIcon.md';
 import Separator from './separator.md';
+import withroutes from './withroutes.md';
 
 export default san.defineComponent({
     components: {
@@ -14,7 +15,8 @@ export default san.defineComponent({
         readme: Readme,
         basic: Basic,
         addicon: withIcon,
-        separator: Separator
+        separator: Separator,
+        withroutes: withroutes
     },
     template: `
         <div>
@@ -22,7 +24,9 @@ export default san.defineComponent({
             <basic/>
             <addicon/>
             <separator/>
+            <withroutes/>
             <readme/>
+
         </div>
     `
 });
