@@ -84,7 +84,7 @@ export default san.defineComponent({
             return resArr;
         }
     },
-    
+
     getStyleArr() {
         let posArray = this.data.get('posArray');
         let styleArr = [];
@@ -96,11 +96,6 @@ export default san.defineComponent({
         return styleArr;
     },
     initData() {
-        let childrenToReturn = [];
-        for (let i = 0; i < 30; i++) {
-            childrenToReturn.push(i % 10);
-        }
-
         return {
             numberList,
             count: null,
