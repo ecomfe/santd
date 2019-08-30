@@ -6,6 +6,11 @@
 import './style/index.less';
 import san, {DataTypes} from 'san';
 
+let numberList = [];
+for (let i = 0; i < 30; i++) {
+    numberList.push(i % 10);
+}
+
 export default san.defineComponent({
     dataTypes: {
         prefixCls: DataTypes.string,
@@ -26,7 +31,7 @@ export default san.defineComponent({
                     class="{{prefixCls}}-only"
                     style="{{styleArr[idx]}};"
                 >
-                    <p s-for="item, p in renderNumberList" class="">{{item}}</p>
+                    <p s-for="item, p in numberList">{{item}}</p>
                 </span>
             </template>
         </sup>
@@ -36,20 +41,16 @@ export default san.defineComponent({
             let count = this.data.get('count');
             return !count || isNaN(count);
         },
+
         numberArray() {
             let num = this.data.get('count');
-            return num !== undefined && num !== null ? num.toString().split('').map(i => Number(i)) : [];
+            return num != null ? num.toString().split('').map(i => Number(i)) : [];
         },
+
         lastNumArray() {
             return this.lastCount !== undefined ? this.lastCount.toString().split('').map(i => Number(i)) : [];
         },
-        renderNumberList(pos) {
-            let childrenToReturn = [];
-            for (let i = 0; i < 30; i++) {
-                childrenToReturn.push(i % 10);
-            }
-            return childrenToReturn;
-        },
+
         posArray() {
             let numArr = this.data.get('numberArray');
             let resArr = [];
@@ -83,6 +84,7 @@ export default san.defineComponent({
             return resArr;
         }
     },
+    
     getStyleArr() {
         let posArray = this.data.get('posArray');
         let styleArr = [];
@@ -94,7 +96,13 @@ export default san.defineComponent({
         return styleArr;
     },
     initData() {
+        let childrenToReturn = [];
+        for (let i = 0; i < 30; i++) {
+            childrenToReturn.push(i % 10);
+        }
+
         return {
+            numberList,
             count: null,
             showZero: false,
             dot: false,
