@@ -10,10 +10,9 @@
             title="Card title"
             hoverable
             style="width: 300px"
-            bordered="{{false}}">
-            <template slot="extra">
-                <a href="#">More</a>
-            </template>
+            bordered="{{false}}"
+        >
+            <template slot="extra"><a href="#">More</a></template>
             <p>Card content</p>
             <p>Card content</p>
             <p>Card content</p>

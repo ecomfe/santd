@@ -4,21 +4,32 @@
  */
 
 import './style/index.less';
-import san, {DataTypes, NodeType} from 'san';
+import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
 import LoadingBlock from './loadingBlock';
-import Grid from './grid';
 import Tabs from '../tabs';
 
 const prefix = classCreator('card')();
 export default san.defineComponent({
+    dataTypes: {
+        type: DataTypes.string,
+        title: DataTypes.string,
+        size: DataTypes.string,
+        tabList: DataTypes.array,
+        loading: DataTypes.bool,
+        hoverable: DataTypes.bool,
+        defaultActiveKey: DataTypes.string,
+        activeTabKey: DataTypes.string,
+        bordered: DataTypes.bool,
+        actions: DataTypes.array
+    },
     template: `
     	<div class="{{cls}}">
-            <div s-if="{{showHeader}}" className="${prefix}-head" style="{{headStyle}}">
-                <div className="${prefix}-head-wrapper">
+            <div s-if="{{showHeader}}" class="${prefix}-head" style="{{headStyle}}">
+                <div class="${prefix}-head-wrapper">
                     <div s-if="{{title}}" class="${prefix}-head-title">{{title}}</div>
-                    <div s-if="{{isExtra}}" class="${prefix}-extra">
-                        <slot name="extra"></slot>
+                    <div s-if="{{hasExtra}}" class="${prefix}-extra">
+                        <slot name="extra" />
                     </div>
                 </div>
                 <s-tabs
@@ -38,14 +49,16 @@ export default san.defineComponent({
                 </s-tabs>
             </div>
             <div class="${prefix}-cover">
-                <slot name="cover"></slot>
+                <slot name="cover" />
             </div>
-            <div class="${prefix}-body" style="{{bodyStyle}}" s-ref="content">
+            <div class="${prefix}-body" style="{{bodyStyle}}">
                 <s-loadingblock s-if="{{loading}}" />
-                <slot s-else></slot>
+                <slot s-else />
             </div>
-            <ul s-if="{{isActions}}" class="${prefix}-actions" s-ref="actionsContain">
-                <slot name="actions"></slot>
+            <ul s-if="{{actions}}" class="${prefix}-actions">
+                <li s-for="action in actions" style="width: {{100 / actions.length}}%">
+                    <span><slot name="{{action}}"/></span>
+                </li>
             </ul>
         </div>
     `,
@@ -82,40 +95,11 @@ export default san.defineComponent({
         }
     },
     inited() {
-        let isExtra = !!this.sourceSlots.named['extra'];
-        let isActions = !!this.sourceSlots.named['actions'];
-        let showHeader = this.data.get('title') || this.data.get('tabList') || isExtra;
+        let hasExtra = !!this.sourceSlots.named.extra;
+        let showHeader = this.data.get('title') || this.data.get('tabList') || hasExtra;
 
         this.data.set('showHeader', showHeader);
-        this.data.set('isActions', isActions);
-        this.data.set('isExtra', isExtra);
-    },
-    attached() {
-        let defaultSlot = this.slot()[0];
-        defaultSlot && this.data.set('isContainGrid', defaultSlot.children.some(slot => slot.constructor === Grid));
-        let actSlot = this.slotChildren.filter(child => child.name === 'actions');
-
-        let cmptNodeList = [];
-        let loopCMPT = list => {
-            list && list.length && list.forEach(item => {
-                if (item.nodeType === NodeType.CMPT && item.tagName === 'i') {
-                    cmptNodeList.push(item);
-                }
-                loopCMPT(item.children);
-            });
-        };
-        if (actSlot.length) {
-            actSlot = actSlot[0];
-            loopCMPT(actSlot.children);
-            cmptNodeList.forEach(item => {
-                let li = document.createElement('li');
-                let span = document.createElement('span');
-                li.style = `width: ${100 / cmptNodeList.length}%`;
-                span.appendChild(item.el);
-                li.appendChild(span);
-                this.ref('actionsContain').appendChild(li);
-            });
-        }
+        this.data.set('hasExtra', hasExtra);
     },
     onTabChange(key) {
         this.fire('tabChange', key);

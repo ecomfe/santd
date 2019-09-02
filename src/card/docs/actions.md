@@ -6,9 +6,7 @@
 ```html
 <template>
     <div>
-        <s-card
-            hoverable
-            style="width: 300px">
+        <s-card style="width: 300px" actions="{{['setting', 'edit', 'ellipsis']}}">
             <template slot="cover">
                 <img alt="example" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1544096030542&di=76297da1f83761c2bdd3741c767f73d8&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimage%2Fc0%253Dshijue1%252C0%252C0%252C294%252C40%2Fsign%3Dc789ae0679f08202399f997c23929198%2F5bafa40f4bfbfbedc1a67c5a72f0f736afc31f13.jpg" />
             </template>
@@ -19,9 +17,13 @@
                     <s-avatar src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1544096149211&di=2a2a049606dae06d29593fbfb48e5301&imgtype=0&src=http%3A%2F%2Fg.hiphotos.baidu.com%2Fzhidao%2Fpic%2Fitem%2F8c1001e93901213fce85790251e736d12e2e95bd.jpg" />
                 </template>
             </s-meta>
-            <template slot="actions">
-                <s-icon type="setting"/>
-                <s-icon type="edit"/>
+            <template slot="setting">
+                <s-icon type="setting" />
+            </template>
+            <template slot="edit">
+                <s-icon type="edit" />
+            </template>
+            <template slot="ellipsis">
                 <s-icon type="ellipsis"/>
             </template>
         </s-card>
@@ -31,12 +33,11 @@
 import Card from 'santd/card';
 import Avatar from 'santd/avatar';
 import Icon from 'santd/icon';
-const { Meta } = Card;
 
 export default {
     components: {
         's-card': Card,
-        's-meta': Meta,
+        's-meta': Card.Meta,
         's-avatar': Avatar,
         's-icon': Icon
     }

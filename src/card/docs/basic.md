@@ -8,7 +8,7 @@
     <div>
         <s-card
             title="Default size card"
-            style="width: 300px"
+            style="width: 300px;margin-bottom: 20px;"
         >
             <template slot="extra"><a href="#">More</a></template>
             <p>Card content</p>

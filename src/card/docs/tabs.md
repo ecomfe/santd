@@ -6,10 +6,7 @@
 ```html
 <template>
     <div>
-        <s-card
-            hoverable
-            tabList="{{tabList}}"
-            on-tabChange="onTabChange">
+        <s-card tabList="{{tabList}}" on-tabChange="onTabChange">
             <p>{{contentList[selectedTab]}}</p>
         </s-card>
     </div>
