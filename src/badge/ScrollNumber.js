@@ -18,22 +18,18 @@ export default san.defineComponent({
         title: DataTypes.oneOfType([DataTypes.string, DataTypes.object, DataTypes.number])
     },
     template: `
-        <sup
-            class="{{prefixCls}}"
-            title="{{title}}">
+        <sup class="{{prefixCls}}" title="{{title}}">
             <template s-if="!count">
                 {{count}}
             </template>
-            <template s-else>
-                <span
-                    s-if="numberArray.length"
-                    s-for="num, idx in numberArray"
-                    class="{{prefixCls}}-only"
-                    style="{{styleArr[idx]}};"
-                >
-                    <p s-for="item, p in numberList">{{item}}</p>
-                </span>
-            </template>
+            <span
+                s-elif="numberArray.length"
+                s-for="num, idx in numberArray"
+                class="{{prefixCls}}-only"
+                style="{{styleArr[idx]}};"
+            >
+                <p s-for="item in numberList">{{item}}</p>
+            </span>
         </sup>
     `,
     computed: {
