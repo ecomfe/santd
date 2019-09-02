@@ -6,102 +6,67 @@
 import './style/index.less';
 import san, {DataTypes} from 'san';
 
+let numberList = [];
+for (let i = 0; i < 30; i++) {
+    numberList.push(i % 10);
+}
+
 export default san.defineComponent({
     dataTypes: {
         prefixCls: DataTypes.string,
         count: DataTypes.oneOfType([DataTypes.string, DataTypes.object, DataTypes.number]),
         title: DataTypes.oneOfType([DataTypes.string, DataTypes.object, DataTypes.number])
     },
+
     template: `
-        <sup
-            class="{{prefixCls}}"
-            title="{{title}}">
+        <sup class="{{prefixCls}}" title="{{title}}">
             <template s-if="isOverflow">
                 {{count}}
             </template>
-            <template s-else>
-                <span
-                    s-if="numberArray.length"
-                    s-for="num, idx in numberArray"
-                    class="{{prefixCls}}-only"
-                    style="{{styleArr[idx]}};"
-                >
-                    <p s-for="item, p in renderNumberList" class="">{{item}}</p>
-                </span>
-            </template>
+            <span
+                s-elif="numberArray.length"
+                s-for="num, idx in numberArray"
+                class="{{prefixCls}}-only"
+                style="{{styleArr[idx]}};"
+            >
+                <p s-for="item in numberList">{{item}}</p>
+            </span>
         </sup>
     `,
+    
     computed: {
         isOverflow() {
-            let count = this.data.get('count');
+            let count = +this.data.get('count');
             return !count || isNaN(count);
         },
+
         numberArray() {
             let num = this.data.get('count');
-            return num !== undefined && num !== null ? num.toString().split('').map(i => Number(i)) : [];
-        },
-        lastNumArray() {
-            return this.lastCount !== undefined ? this.lastCount.toString().split('').map(i => Number(i)) : [];
-        },
-        renderNumberList(pos) {
-            let childrenToReturn = [];
-            for (let i = 0; i < 30; i++) {
-                childrenToReturn.push(i % 10);
-            }
-            return childrenToReturn;
-        },
-        posArray() {
-            let numArr = this.data.get('numberArray');
-            let resArr = [];
-            for (let i in numArr) {
-                let pos = numArr[i];
-                const animateStarted = this.data.get('animateStarted');
-                if (animateStarted) {
-                    pos = 10 + numArr[i];
-                }
-                else {
-                    const count = +this.data.get('count');
-                    const currentDigit = numArr[i];
-                    const lastDigit = this.data.get('lastNumArray')[i];
-                    if (count > this.lastCount) {
-                        if (currentDigit >= lastDigit) {
-                            pos = 10 + numArr[i];
-                        }
-                        else {
-                            pos = 20 + numArr[i];
-                        }
-                    }
-                    else if (currentDigit <= lastDigit) {
-                        pos = 10 + numArr[i];
-                    }
-                    else {
-                        pos = numArr[i];
-                    }
-                }
-                resArr.push(pos);
-            }
-            return resArr;
+            return num != null ? num.toString().split('').map(i => Number(i)) : [];
         }
     },
+
     getStyleArr() {
-        let posArray = this.data.get('posArray');
+        let numberArray = this.data.get('numberArray');
         let styleArr = [];
-        for (let i in posArray) {
-            let pos = posArray[i];
-            let style = `transform: translateY(${pos * -100}%);`;
-            styleArr.push(style);
+
+        if (numberArray) {
+            for (let i = 0; i < numberArray.length; i++) {
+                let num = numberArray[i];
+                styleArr.push('transform: translateY(' + ((10 + num) * -100) + '}%);');
+            }
         }
         return styleArr;
     },
+
     initData() {
         return {
+            numberList,
             count: null,
-            showZero: false,
-            dot: false,
-            overflowCount: 99,
-            animateStarted: true
+            overflowCount: 99
         };
     },
+
     updateStyle() {
         if (!this.animated) {
             this.nextTick(() => {
@@ -115,12 +80,12 @@ export default san.defineComponent({
             });
         }
     },
+
     inited() {
-        this.lastCount = this.data.get('count');
         this.data.set('styleArr', this.getStyleArr());
     },
+
     updated() {
         this.updateStyle();
-        this.lastCount = this.data.get('count');
     }
 });
