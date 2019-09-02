@@ -74,9 +74,7 @@ export default san.defineComponent({
 
     initData() {
         return {
-            numberList,
-            count: null,
-            overflowCount: 99
+            numberList
         };
     }
 });
