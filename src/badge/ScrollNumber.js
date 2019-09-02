@@ -17,6 +17,7 @@ export default san.defineComponent({
         count: DataTypes.oneOfType([DataTypes.string, DataTypes.object, DataTypes.number]),
         title: DataTypes.oneOfType([DataTypes.string, DataTypes.object, DataTypes.number])
     },
+
     template: `
         <sup class="{{prefixCls}}" title="{{title}}">
             <template s-if="isOverflow">
@@ -32,6 +33,7 @@ export default san.defineComponent({
             </span>
         </sup>
     `,
+    
     computed: {
         isOverflow() {
             let count = +this.data.get('count');
@@ -41,25 +43,18 @@ export default san.defineComponent({
         numberArray() {
             let num = this.data.get('count');
             return num != null ? num.toString().split('').map(i => Number(i)) : [];
-        },
-
-        posArray() {
-            let numArr = this.data.get('numberArray');
-            let resArr = [];
-            for (let i in numArr) {
-                resArr.push(10 + numArr[i]);
-            }
-            return resArr;
         }
     },
 
     getStyleArr() {
-        let posArray = this.data.get('posArray');
+        let numberArray = this.data.get('numberArray');
         let styleArr = [];
-        for (let i in posArray) {
-            let pos = posArray[i];
-            let style = `transform: translateY(${pos * -100}%);`;
-            styleArr.push(style);
+
+        if (numberArray) {
+            for (let i = 0; i < numberArray.length; i++) {
+                let num = numberArray[i];
+                styleArr.push('transform: translateY(' + ((10 + num) * -100) + '}%);');
+            }
         }
         return styleArr;
     },
