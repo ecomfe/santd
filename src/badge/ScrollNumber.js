@@ -87,12 +87,10 @@ export default san.defineComponent({
     },
 
     inited() {
-        this.lastCount = this.data.get('count');
         this.data.set('styleArr', this.getStyleArr());
     },
 
     updated() {
         this.updateStyle();
-        this.lastCount = this.data.get('count');
     }
 });
