@@ -21,7 +21,7 @@ export default san.defineComponent({
         <sup
             class="{{prefixCls}}"
             title="{{title}}">
-            <template s-if="isOverflow">
+            <template s-if="!count">
                 {{count}}
             </template>
             <template s-else>
@@ -55,31 +55,7 @@ export default san.defineComponent({
             let numArr = this.data.get('numberArray');
             let resArr = [];
             for (let i in numArr) {
-                let pos = numArr[i];
-                const animateStarted = this.data.get('animateStarted');
-                if (animateStarted) {
-                    pos = 10 + numArr[i];
-                }
-                else {
-                    const count = +this.data.get('count');
-                    const currentDigit = numArr[i];
-                    const lastDigit = this.data.get('lastNumArray')[i];
-                    if (count > this.lastCount) {
-                        if (currentDigit >= lastDigit) {
-                            pos = 10 + numArr[i];
-                        }
-                        else {
-                            pos = 20 + numArr[i];
-                        }
-                    }
-                    else if (currentDigit <= lastDigit) {
-                        pos = 10 + numArr[i];
-                    }
-                    else {
-                        pos = numArr[i];
-                    }
-                }
-                resArr.push(pos);
+                resArr.push(10 + numArr[i]);
             }
             return resArr;
         }
@@ -101,8 +77,7 @@ export default san.defineComponent({
             count: null,
             showZero: false,
             dot: false,
-            overflowCount: 99,
-            animateStarted: true
+            overflowCount: 99
         };
     },
     updateStyle() {
