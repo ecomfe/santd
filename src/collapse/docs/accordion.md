@@ -6,8 +6,8 @@
 ```html
 <template>
     <div>
-    <s-collapse accordion>
-        <s-panel header="This is panel header 1" key="1" active>
+    <s-collapse accordion defaultActiveKey="{{['1']}}">
+        <s-panel header="This is panel header 1" key="1">
             <p>
                 A dog is a type of domesticated animal.
                 Known for its loyalty and faithfulness,
@@ -32,11 +32,11 @@
   </div>
 </template>
 <script>
-import collapse from 'santd/collapse';
+import Collapse from 'santd/collapse';
 export default {
     components: {
-        's-collapse': collapse,
-        's-panel': collapse.Panel
+        's-collapse': Collapse,
+        's-panel': Collapse.Panel
     }
 }
 </script>

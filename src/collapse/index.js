@@ -4,7 +4,7 @@
  */
 
 import Collapse from './collapse';
-import Panel from './src/panel';
+import Panel from './panel';
 import './style/index.less';
 
 Collapse.Panel = Panel;

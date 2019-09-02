@@ -5,6 +5,7 @@
 
 import san, {DataTypes} from 'san';
 import PanelContent from './panelContent';
+import Icon from '../icon';
 
 export default san.defineComponent({
     dataTypes: {
@@ -45,21 +46,18 @@ export default san.defineComponent({
         }
     },
 
-    compiled() {
-        this.components.expandicon = this.parentComponent.data.get('expandIcon');
+    inited() {
+        const hasExpandIcon = this.sourceSlots.named[this.data.get('expandIcon')];
+        this.data.set('hasExpandIcon', !!hasExpandIcon);
     },
 
     attached() {
         this.dispatch('santd_panel_add', this);
-        this.watch('prefixCls', val => {
-            if (this.ref('expandIcon')) {
-                this.data.set('hasExpandIcon', true);
-            }
-        });
     },
 
     components: {
-        's-panelcontent': PanelContent
+        's-panelcontent': PanelContent,
+        's-icon': Icon
     },
 
     handleItemClick() {
@@ -85,13 +83,19 @@ export default san.defineComponent({
                 on-click="handleItemClick"
                 on-keypress="handleKeyPress"
             >
-                <expandicon
-                    class="{{hasExpandIcon ? prefixCls + '-arrow' : ''}}"
-                    prefixCls="{{prefixCls}}"
-                    s-if="{{showArrow}}"
-                    s-ref="expandIcon"
-                    isActive="{{isActive}}"
-                />{{header}}<slot name="header" />
+                <s-icon
+                    s-if="{{!hasExpandIcon && showArrow}}"
+                    type="{{expandIcon || 'right'}}"
+                    rotate="{{isActive ? 90 : 0}}"
+                    class="{{prefixCls}}-arrow"
+                />
+                <slot
+                    s-else-if="{{showArrow}}"
+                    name="{{expandIcon}}"
+                    var-isActive="{{isActive}}"
+                    var-prefixCls="{{prefixCls}}"
+                />
+                {{header}}<slot name="header" />
                 <div class="{{prefixCls}}-extra"><slot name="extra" /></div>
             </div>
             <s-panelcontent

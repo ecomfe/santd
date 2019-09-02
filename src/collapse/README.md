@@ -9,7 +9,6 @@
 | bordered  | 带边框风格的折叠面板 | boolean            | `true` |
 | accordion  | 手风琴模式 | boolean            | `false` |
 | on-change  | 切换面板的回调          | Function  | 无         |
-| expandIcon | 自定义切换图标          | SanNode    | - |
 | destroyInactivePanel | 销毁折叠隐藏的面板          | boolean    | `false` |
 
 ### Collapse.Panel
@@ -22,3 +21,4 @@
 | key | 对应 activeKey | string | 无 |
 | showArrow | 是否展示当前面板上的箭头 | boolean | `true` |
 | extra | 自定义渲染每个面板右上角的内容 | slot | - |
+| expandIcon | 自定义切换图标          | string    | - |

@@ -41,13 +41,13 @@
   </div>
 </template>
 <script>
-import collapse from 'santd/collapse';
-import icon from 'santd/icon';
+import Collapse from 'santd/collapse';
+import Icon from 'santd/icon';
 export default {
     components: {
-        's-collapse': collapse,
-        's-panel': collapse.Panel,
-        's-icon': icon
+        's-collapse': Collapse,
+        's-panel': Collapse.Panel,
+        's-icon': Icon
     },
     handleChange(args) {
         console.log('handleChange', args);

@@ -25,11 +25,11 @@
   </div>
 </template>
 <script>
-import collapse from 'santd/collapse';
+import Collapse from 'santd/collapse';
 export default {
     components: {
-        's-collapse': collapse,
-        's-panel': collapse.Panel
+        's-collapse': Collapse,
+        's-panel': Collapse.Panel
     },
     handleChange(args) {
         console.log('handleChange', args);
