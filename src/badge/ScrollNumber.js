@@ -43,10 +43,6 @@ export default san.defineComponent({
             return num != null ? num.toString().split('').map(i => Number(i)) : [];
         },
 
-        lastNumArray() {
-            return this.lastCount !== undefined ? this.lastCount.toString().split('').map(i => Number(i)) : [];
-        },
-
         posArray() {
             let numArr = this.data.get('numberArray');
             let resArr = [];
@@ -67,6 +63,7 @@ export default san.defineComponent({
         }
         return styleArr;
     },
+
     initData() {
         return {
             numberList,
@@ -74,6 +71,7 @@ export default san.defineComponent({
             overflowCount: 99
         };
     },
+
     updateStyle() {
         if (!this.animated) {
             this.nextTick(() => {
@@ -87,10 +85,12 @@ export default san.defineComponent({
             });
         }
     },
+
     inited() {
         this.lastCount = this.data.get('count');
         this.data.set('styleArr', this.getStyleArr());
     },
+
     updated() {
         this.updateStyle();
         this.lastCount = this.data.get('count');
