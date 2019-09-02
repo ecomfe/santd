@@ -24,25 +24,37 @@ export default san.defineComponent({
                 {{count}}
             </template>
             <span
-                s-elif="numberArray.length"
-                s-for="num, idx in numberArray"
+                s-elif="numberStyles.length"
+                s-for="numStyle, idx in numberStyles trackBy idx"
                 class="{{prefixCls}}-only"
-                style="{{styleArr[idx]}};"
+                style="{{numStyle}};"
             >
                 <p s-for="item in numberList">{{item}}</p>
             </span>
         </sup>
     `,
-    
+
     computed: {
         isOverflow() {
             let count = +this.data.get('count');
-            return !count || isNaN(count);
+            return !count;
         },
 
-        numberArray() {
-            let num = this.data.get('count');
-            return num != null ? num.toString().split('').map(i => Number(i)) : [];
+        numberStyles() {
+            let results = [];
+
+            // 简单点，就不依赖 isOverflow 了
+            let count = +this.data.get('count');
+            if (count) {
+                let nums = count.toString().split('');
+
+                for (let i = 0; i < nums.length; i++) {
+                    let num = +nums[i];
+                    results.push('transform: translateY(' + ((10 + num) * -100) + '%);');
+                }
+            }
+            
+            return results;
         }
     },
 
@@ -53,39 +65,16 @@ export default san.defineComponent({
         if (numberArray) {
             for (let i = 0; i < numberArray.length; i++) {
                 let num = numberArray[i];
-                styleArr.push('transform: translateY(' + ((10 + num) * -100) + '}%);');
+                styleArr.push('transform: translateY(' + ((10 + num) * -100) + '%);');
             }
         }
+
         return styleArr;
     },
 
     initData() {
         return {
-            numberList,
-            count: null,
-            overflowCount: 99
+            numberList
         };
-    },
-
-    updateStyle() {
-        if (!this.animated) {
-            this.nextTick(() => {
-                requestAnimationFrame(() => {
-                    this.data.set('styleArr', this.getStyleArr());
-                    this.nextTick(() => {
-                        this.animated = true;
-                    });
-                });
-                this.animated = false;
-            });
-        }
-    },
-
-    inited() {
-        this.data.set('styleArr', this.getStyleArr());
-    },
-
-    updated() {
-        this.updateStyle();
     }
 });
