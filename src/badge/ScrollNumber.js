@@ -19,7 +19,7 @@ export default san.defineComponent({
     },
     template: `
         <sup class="{{prefixCls}}" title="{{title}}">
-            <template s-if="!count">
+            <template s-if="isOverflow">
                 {{count}}
             </template>
             <span
@@ -34,7 +34,7 @@ export default san.defineComponent({
     `,
     computed: {
         isOverflow() {
-            let count = this.data.get('count');
+            let count = +this.data.get('count');
             return !count || isNaN(count);
         },
 
