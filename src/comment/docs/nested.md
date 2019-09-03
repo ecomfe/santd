@@ -16,9 +16,9 @@
 </template>
 <script>
 import san from 'san';
-import comment from 'santd/comment';
-import icon from 'santd/icon';
-import avatar from 'santd/avatar';
+import Comment from 'santd/comment';
+import Icon from 'santd/icon';
+import Avatar from 'santd/avatar';
 import moment from 'moment';
 
 const pComment = san.defineComponent({
@@ -29,17 +29,18 @@ const pComment = san.defineComponent({
                 <a slot="author">Han Solo</a>
                 <p slot="content">We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.</p>
                 <template slot="actions">
-                    <li><span>Reply to</span></li>
+                    <s-comment-action><span>Reply to</span></s-comment-action>
                 </template>
                 <span slot="datetime">{{datetime}}</span>
-                <slot slot="children"/>
+                <slot slot="nested"/>
             </s-comment>
         </template>
     `,
     components: {
-        's-comment': comment,
-        's-icon': icon,
-        's-avatar': avatar
+        's-comment': Comment,
+        's-comment-action': Comment.Action,
+        's-icon': Icon,
+        's-avatar': Avatar
     },
     initData() {
         return {

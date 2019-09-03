@@ -7,42 +7,48 @@ import './style/index.less';
 import san from 'san';
 import {classCreator} from '../core/util';
 
-const prefix = classCreator('comment')();
+const prefixCls = classCreator('comment')();
 
-export default san.defineComponent({
+const Action = san.defineComponent({
+    template: `<li><slot /></li>`
+});
+
+const Comment = san.defineComponent({
     template: `
-    	<div class="${prefix}">
-            <div class="${prefix}-inner">
-                <div class="${prefix}-avatar">
-                    <slot name="avatar"/>
-                </div>
-                <div class="${prefix}-content">
-                    <div class="${prefix}-content-author" s-if="{{showAuthor}}">
-                        <span class="${prefix}-content-author-name">
-                            <slot name="author"/>
+    	<div class="${prefixCls}">
+            <div class="${prefixCls}-inner">
+                <div class="${prefixCls}-avatar"><slot name="avatar" /></div>
+                <div class="${prefixCls}-content">
+                    <div class="${prefixCls}-content-author" s-if="{{hasAuthor}}">
+                        <span class="${prefixCls}-content-author-name">
+                            <slot name="author" />
                         </span>
-                        <span class="${prefix}-content-author-time">
-                            <slot name="datetime"/>
+                        <span class="${prefixCls}-content-author-time">
+                            <slot name="datetime" />
                         </span>
                     </div>
-                    <div class="${prefix}-content-detail">
-                        <slot name="content"/>
+                    <div class="${prefixCls}-content-detail">
+                        <slot name="content" />
                     </div>
-                    <ul class="${prefix}-actions" s-if="{{showActions}}">
+                    <ul class="${prefixCls}-actions" s-if="{{hasActions}}">
                         <slot name="actions"/>
                     </ul>
                 </div>
             </div>
-            <div class="${prefix}-nested" s-if="{{showChildren}}">
-                <slot name="children"/>
+            <div class="${prefixCls}-nested" s-if="{{hasNested}}">
+                <slot name="nested" />
             </div>
         </div>
     `,
 
     inited() {
-        let {author, datetime, actions, children} = this.sourceSlots.named;
-        this.data.set('showAuthor', author || datetime);
-        this.data.set('showActions', !!actions);
-        this.data.set('showChildren', !!children);
+        let {author, datetime, actions, nested} = this.sourceSlots.named;
+        this.data.set('hasAuthor', author || datetime);
+        this.data.set('hasActions', !!actions);
+        this.data.set('hasNested', !!nested);
     }
 });
+
+Comment.Action = Action;
+
+export default Comment;

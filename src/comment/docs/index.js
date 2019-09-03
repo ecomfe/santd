@@ -1,3 +1,7 @@
+/**
+ * @file Santd comment docs file
+ **/
+
 import san from 'san';
 import Readme from '../README.md';
 import Basic from './basic.md';
@@ -6,7 +10,7 @@ import Reply from './reply.md';
 import Head from './head.md';
 
 export default san.defineComponent({
-    components:{
+    components: {
         readme: Readme,
         basic: Basic,
         nest: Nested,
@@ -22,4 +26,4 @@ export default san.defineComponent({
             <readme/>
         </div>
     `
-})
+});

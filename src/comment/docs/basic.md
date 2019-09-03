@@ -11,31 +11,42 @@
             <a slot="author">Han Solo</a>
             <p slot="content">We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.</p>
             <template slot="actions">
-                <li><span>
-                    <s-icon type="like" theme="{{action.type === 'liked' ? 'filled' : 'outlined'}}" on-click="handleLike"/>
-                    <span style="padding-left: 8px; cursor: auto;">{{action.likes}}</span>
-                </span></li>
-                <li><span>
-                    <s-icon type="dislike" theme="{{action.type === 'disliked' ? 'filled' : 'outlined'}}" on-click="handleDislike"/>
-                    <span style="padding-left: 8px; cursor: auto;">{{action.dislikes}}</span>
-                </span></li>
-                <li><span>Reply to</span></li>
+                <s-comment-action>
+                    <span>
+                        <s-tooltip title="Like">
+                            <s-icon type="like" theme="{{action.type === 'liked' ? 'filled' : 'outlined'}}" on-click="handleLike" />
+                        </s-tooltip>
+                        <span style="padding-left: 5px; cursor: auto;">{{action.likes}}</span>
+                    </span>
+                </s-comment-action>
+                <s-comment-action>
+                    <span>
+                        <s-tooltip title="DisLike">
+                            <s-icon type="dislike" theme="{{action.type === 'disliked' ? 'filled' : 'outlined'}}" on-click="handleDislike" />
+                        </s-tooltip>
+                        <span style="padding-left: 5px; cursor: auto;">{{action.dislikes}}</span>
+                    </span>
+                </s-comment-action>
+                <s-comment-action><span>Reply to</span></s-comment-action>
             </template>
             <span slot="datetime">{{datetime}}</span>
         </s-comment>
     </div>
 </template>
 <script>
-import comment from 'santd/comment';
-import icon from 'santd/icon';
-import avatar from 'santd/avatar';
+import Comment from 'santd/comment';
+import Icon from 'santd/icon';
+import Avatar from 'santd/avatar';
+import Tooltip from 'santd/tooltip';
 import moment from 'moment';
 
 export default {
     components: {
-        's-comment': comment,
-        's-icon': icon,
-        's-avatar': avatar
+        's-comment': Comment,
+        's-comment-action': Comment.Action,
+        's-icon': Icon,
+        's-avatar': Avatar,
+        's-tooltip': Tooltip
     },
     initData() {
         return {
