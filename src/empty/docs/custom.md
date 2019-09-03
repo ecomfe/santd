@@ -9,8 +9,10 @@
         <s-empty
             image="https://gw.alipayobjects.com/mdn/miniapp_social/afts/img/A*pevERLJC9v0AAAAAAAAAAABjAQAAAQ/original"
             imageStyle="height: 60px;"
-            description="{{description}}"
         >
+            <span slot="description">
+                Customize <a href="#API">Description</a>
+            </span>
             <s-button type="primary">Create Now</s-button>
         </s-empty>
     </div>
@@ -24,7 +26,6 @@ export default {
         return {
             description: san.defineComponent({
                 template: `<span>
-                    Customize <a href="#API">Description</a>
                 </span>`
             })
         };

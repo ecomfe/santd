@@ -24,50 +24,27 @@ const Locale = san.defineComponent({
 
 const Empty = inherits(Locale, san.defineComponent({
     dataTypes: {
-        prefixCls: DataTypes.string,
-        className: DataTypes.string,
         imageStyle: DataTypes.oneOfType([DataTypes.string, DataTypes.object]),
-        image: DataTypes.oneOfType([DataTypes.string, DataTypes.func]),
-        description: DataTypes.oneOfType([DataTypes.string, DataTypes.func, DataTypes.bool])
+        image: DataTypes.string,
+        description: DataTypes.oneOfType([DataTypes.string, DataTypes.bool])
     },
     initData() {
         return {
-            prefixCls,
             image: defaultEmptyImg,
             simpleEmptyImg
         };
     },
     computed: {
         classes() {
-            const className = this.data.get('className');
             const image = this.data.get('image') || defaultEmptyImg;
             let classArr = [prefixCls];
 
-            className && classArr.push(className);
             (image === simpleEmptyImg) && classArr.push(`${prefixCls}-normal`);
             return classArr;
-        },
-        injectImageNode() {
-            const image = this.data.get('image');
-            const instance = this.data.get('instance');
-
-            if (typeof image !== 'string') {
-                instance && (instance.components.imagenode = image);
-                return image;
-            }
-        },
-        injectDescription() {
-            const instance = this.data.get('instance');
-            const description = this.data.get('description');
-
-            if (description && typeof description !== 'string') {
-                instance && (instance.components.description = description);
-                return description;
-            }
         }
     },
     inited() {
-        this.data.set('instance', this);
+        this.data.set('hasDescription', !!this.sourceSlots.named.description);
     },
     getAlt(description) {
         return typeof description === 'string'
@@ -76,15 +53,12 @@ const Empty = inherits(Locale, san.defineComponent({
     },
     template: `
         <div class="{{classes}}">
-            <div class="{{prefixCls}}-image" style="{{imageStyle}}">
-                <imagenode s-if="{{injectImageNode}}" />
-                <img s-else src="{{image}}" alt="{{getAlt(description || locale.description)}}" />
+            <div class="${prefixCls}-image" style="{{imageStyle}}">
+                <img s-if="{{image}}" src="{{image}}" alt="{{getAlt(description || locale.description)}}" />
             </div>
-            <p class="{{prefixCls}}-description" s-if="{{description !== false}}">
-                <description s-if="{{injectDescription}}" />
-                <template s-else>{{description || locale.description}}</template>
+            <p class="${prefixCls}-description" s-if="{{hasDescription || description}}">
+                <slot name="description" />{{description}}
             </p>
-            <div class="{{prefixCls}}-footer"><slot /></div>
         </div>
     `
 }));
