@@ -4,7 +4,7 @@ import Icon from 'santd/icon';
 import Input from 'santd/input';
 import manifest from 'santd/core/svgIcons/lib/manifest';
 import {FilledIcon, OutlinedIcon, TwoToneIcon} from './themeIcons';
-import {categories, Categories, CategoriesKeys} from './fields';
+import {categories} from './fields';
 
 import './index.less';
 
@@ -20,15 +20,15 @@ export default san.defineComponent({
         's-radiogroup': Radio.Group,
         's-radiobutton': Radio.Button,
         's-icon': Icon,
-        's-inputsearch': Input.Search
+        's-inputsearch': Input.Search,
+        's-outlinedicon': OutlinedIcon,
+        's-filledicon': FilledIcon,
+        's-twotoneicon': TwoToneIcon
     },
     initData() {
         return {
             theme: 'outlined',
             searchKey: '',
-            FilledIcon,
-            OutlinedIcon,
-            TwoToneIcon,
             categoryMap: {
                 direction: '方向性图标',
                 suggestion: '提示建议性图标',
@@ -80,15 +80,15 @@ export default san.defineComponent({
     },
     template: `<div>
         <div style="display: flex; justify-content: space-between">
-            <s-radiogroup value="{{theme}}" size="large" buttonStyle="solid" on-change="handleChangeTheme">
+            <s-radiogroup value="{{theme}}" size="large" buttonStyle="solid" on-change="handleChangeTheme" name="type">
                 <s-radiobutton value="outlined">
-                    <s-icon component="{{OutlinedIcon}}" /> 线框风格
+                    <s-icon><s-outlinedicon slot="component" /></s-icon> 线框风格
                 </s-radiobutton>
                 <s-radiobutton value="filled">
-                    <s-icon component="{{FilledIcon}}" /> 实底风格
+                    <s-icon><s-filledicon slot="component" /></s-icon> 实底风格
                 </s-radiobutton>
                 <s-radiobutton value="twoTone">
-                    <s-icon component="{{TwoToneIcon}}" /> 双色风格
+                    <s-icon><s-twotoneicon slot="component" /></s-icon> 双色风格
                 </s-radiobutton>
             </s-radiogroup>
             <s-inputsearch

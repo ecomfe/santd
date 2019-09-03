@@ -12,7 +12,6 @@ import {svgBaseProps, withThemeSuffix, removeTypeTheme, alias} from './utils';
 import {getTwoToneColor, setTwoToneColor} from './twoTonePrimaryColor';
 
 const prefixCls = classCreator('icon')();
-let defaultTheme = 'outlined';
 
 sanicon.add(Object.keys(allIcons).map(key => allIcons[key]));
 setTwoToneColor('#1890ff');
@@ -24,10 +23,8 @@ const icon = san.defineComponent({
     computed: {
         classes() {
             const type = this.data.get('type');
-            const className = this.data.get('className');
             let classArr = [prefixCls];
 
-            className && classArr.push(className);
             Boolean(type) && classArr.push(`${prefixCls}-${type}`);
             return classArr;
         },
@@ -58,22 +55,15 @@ const icon = san.defineComponent({
                 let computedType = type;
                 computedType = withThemeSuffix(
                     removeTypeTheme(alias(computedType)),
-                    theme || defaultTheme
+                    theme || 'outlined'
                 );
                 innerSvgProps.computedType = computedType;
             }
             return innerSvgProps;
-        },
-        injectComponent() {
-            const instance = this.data.get('instance');
-            const component = this.data.get('component');
-            if (instance && component) {
-                instance.components.iconcomponent = component;
-            }
         }
     },
     inited() {
-        this.data.set('instance', this);
+        this.data.set('hasComponent', !!this.sourceSlots.named.component);
     },
     handleClick(e) {
         this.fire('click', e);
@@ -84,9 +74,7 @@ const icon = san.defineComponent({
         on-click="handleClick"
         class="{{classes}}"
     >
-        <template s-if="{{component}}">
-            <iconcomponent />
-        </template>
+        <slot name="component" s-if="{{hasComponent}}" />
         <s-icon
             s-else
             style="{{innerSvgProps.style}}"
@@ -97,7 +85,7 @@ const icon = san.defineComponent({
             spin="{{spin}}"
             rotate="{{rotate}}"
         >
-            <slot></slot>
+            <slot />
         </s-icon>
     </i>`
 });
