@@ -42,26 +42,26 @@ export default san.defineComponent({
         gutter: DataTypes.oneOfType([DataTypes.number, DataTypes.string, DataTypes.object]),
         justify: DataTypes.oneOf(['start', 'end', 'center', 'space-around', 'space-between'])
     },
+
     computed: {
         styleClass() {
             let arr = [cc()];
             const data = this.data;
+
             let type = data.get('type');
             if (type === 'flex') {
                 arr.push(cc(type));
 
                 ['align', 'justify'].forEach(key => {
                     let value = data.get(key);
-                    if (value) {
-                        arr.push(cc(`${type}-${value}`));
-                    }
+                    value && arr.push(cc(`${type}-${value}`));
                 });
             }
-            this.data.get('className') && arr.push(this.data.get('className'));
 
             return arr;
         }
     },
+
     inited() {
         let gutter = +this.getGutter();
         if (gutter) {
@@ -77,6 +77,7 @@ export default san.defineComponent({
             }
         });
     },
+
     getGutter() {
         const data = this.data;
         let gutter = data.get('gutter');
@@ -93,6 +94,7 @@ export default san.defineComponent({
 
         return gutter;
     },
+
     attached() {
         let gutter = +this.getGutter();
         if (gutter) {
@@ -143,6 +145,7 @@ export default san.defineComponent({
             );
         });
     },
+
     disposed() {
         Object.keys(responsiveMap).map(screen => enquire.unregister(responsiveMap[screen]));
     },
@@ -154,9 +157,10 @@ export default san.defineComponent({
             gutter: 0
         };
     },
+
     template: `
         <div class="{{styleClass}}" style="{{rowStyle}}">
-            <slot></slot>
+            <slot />
         </div>
     `
 });

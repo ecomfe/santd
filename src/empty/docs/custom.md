@@ -22,14 +22,6 @@ import san from 'san';
 import Empty from 'santd/empty';
 import Button from 'santd/button';
 export default {
-    initData() {
-        return {
-            description: san.defineComponent({
-                template: `<span>
-                </span>`
-            })
-        };
-    },
     components: {
         's-empty': Empty,
         's-button': Button

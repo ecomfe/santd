@@ -6,7 +6,7 @@
 
 ```html
 <template>
-  <div>
+  <div id="components-grid-demo-basic">
     <s-row>
       <s-col span="12">col-12</s-col>
       <s-col span="12">col-12</s-col>

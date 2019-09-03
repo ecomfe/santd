@@ -24,22 +24,18 @@ export default san.defineComponent({
         xl: DataTypes.oneOfType([DataTypes.number, DataTypes.string, DataTypes.object]),
         xxl: DataTypes.oneOfType([DataTypes.number, DataTypes.string, DataTypes.object])
     },
+
     computed: {
         styleClass() {
-            let arr = [];
+            let arr = [cc()];
             let data = this.data;
-            let span = data.get('span');
-            arr.push(cc());
-            if (span !== undefined) {
-                arr.push(cc(span + ''));
-            }
+
+            const span = data.get('span');
+            span && arr.push(cc(span));
 
             SUPPORT_PROPS.forEach(key => {
-                let value = data.get(key);
-                if (value) {
-                    arr.push(cc(`${key}-${value}`));
-                }
-
+                const value = data.get(key);
+                value && arr.push(cc(`${key}-${value}`));
             });
 
             SUPPORT_SCREENS.forEach(size => {
@@ -48,31 +44,19 @@ export default san.defineComponent({
                     return;
                 }
 
-                let sizeProps = {};
-                if (type(value, 'number') || type(value, 'string')) {
-                    // console.log(typeof value);
-                    sizeProps.span = +value;
-                }
-                else {
-                    sizeProps = value || {};
-                }
-                if (sizeProps.span) {
-                    arr.push(cc(`${size}-${sizeProps.span}`));
-                }
+                let sizeProps = type(value, 'object') ? value || {} : {span: +value};
+                sizeProps.span && arr.push(cc(`${size}-${sizeProps.span}`));
 
                 SUPPORT_PROPS.forEach(key => {
                     if (sizeProps[key] || +sizeProps[key] === 0) {
                         arr.push(cc(`${size}-${key}-${sizeProps[key]}`));
                     }
-
                 });
-
             });
-            this.data.get('className') && arr.push(this.data.get('className'));
-
             return arr;
         }
     },
+
     getGutter(data) {
         let gutter = data.get('gutter');
         if (typeof gutter === 'object') {
@@ -87,6 +71,7 @@ export default san.defineComponent({
 
         return gutter;
     },
+
     attached() {
         let parent = this.parent;
         while (parent && !(parent instanceof Row)) {
@@ -103,14 +88,16 @@ export default san.defineComponent({
             }
         }
     },
+
     initData() {
         return {
             colStyle: {}
         };
     },
+
     template: `
         <div class="{{styleClass}}" style="{{colStyle}}">
-            <slot></slot>
+            <slot />
         </div>
     `
 });

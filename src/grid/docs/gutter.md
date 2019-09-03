@@ -32,16 +32,4 @@ export default {
     }
 }
 </script>
-<style scoped>
-.gutter-example >>> .san-row > div {
-  background: transparent;
-  border: 0;
-}
-.gutter-box {
-  background: #00A0E9;
-  padding: 5px 0;
-}
-</style>
 ```
-
-
