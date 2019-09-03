@@ -18,6 +18,6 @@ module.exports = {
     docs: {
         port: 8889,
         assetsSubDirectory: 'static',
-        assetsPublicPath: '/'
+        assetsPublicPath: './'
     }
 };

@@ -34,7 +34,7 @@ export default san.defineComponent({
 
         return 'top';
     },
-    
+
     handleScroll() {
         const elOffset = getOffset(this.el);
         const scrollTop = getScrollTop();
@@ -54,6 +54,7 @@ export default san.defineComponent({
 
             this.data.set('affix', true);
             this.data.set('styles', {
+                position: 'fixed',
                 top: `${offsetTop}px`,
                 left: `${elOffset.left}px`,
                 width: `${this.el.offsetWidth}px`
@@ -82,6 +83,7 @@ export default san.defineComponent({
 
             this.data.set('affix', true);
             this.data.set('styles', {
+                position: 'fixed',
                 bottom: `${offsetBottom}px`,
                 left: `${elOffset.left}px`,
                 width: `${this.el.offsetWidth}px`
