@@ -10,15 +10,13 @@ import './style/index';
 const generator = function ({suffixCls, tagName}) {
     const prefixCls = classCreator(suffixCls)();
     const template = `
-        <${tagName} class="{{classes}}"><slot></slot></${tagName}>
+        <${tagName} class="{{classes}}"><slot /></${tagName}>
     `;
     const baseComponent = san.defineComponent({
         computed: {
             classes() {
-                const prefixCls = this.data.get('prefixCls');
-                const className = this.data.get('className');
                 const hasSider = this.data.get('hasSider');
-                let classArr = [className, prefixCls];
+                let classArr = [prefixCls];
                 let siderRes = typeof hasSider === 'boolean' ? hasSider : this.data.get('siders').length > 0;
                 siderRes && classArr.push(`${prefixCls}-has-sider`);
                 return classArr;
@@ -37,7 +35,6 @@ const generator = function ({suffixCls, tagName}) {
     });
     baseComponent.prototype.initData = function () {
         return {
-            prefixCls: prefixCls,
             siders: []
         };
     };
