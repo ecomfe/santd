@@ -23,7 +23,7 @@ const BUILT_IN_PLACEMENTS = {
         offset: [4, 0],
         overflow: {
             adjustX: 0,
-            adjustY: 1 
+            adjustY: 1
         }
     },
     bottomLeft: {
@@ -60,31 +60,15 @@ export default san.defineComponent({
             const mode = this.data.get('mode');
             return inlineCollapsed ? 'vertical' : mode;
         },
-        isInlineMode() {
-            const mode = this.data.get('getRealMenuMode');
-            if (mode === 'inline') {
-                return true;
-            }
-            return false;
-        },
         popupPlacement() {
             const mode = this.data.get('getRealMenuMode');
-            if (mode === 'horizontal') {
-                return 'bottomCenter';
-            }
-            return 'rightTop';
+            return mode === 'horizontal' ? 'bottomCenter' : 'rightTop'
         },
         isOpened() {
             const key = this.data.get('key');
             const openKeys = this.data.get('openKeys') || [];
             const collapsed = this.data.get('inlineCollapsed') || false;
-            let isOpen = false;
-            openKeys.forEach(okey => {
-                if (okey === key && !collapsed) {
-                    isOpen = true;
-                }
-            });
-            return isOpen;
+            return openKeys.some(okey => (okey === key && !collapsed));
         },
         classes() {
             const mode = this.data.get('getRealMenuMode');
@@ -101,10 +85,7 @@ export default san.defineComponent({
         },
         subTitle() {
             const title = this.data.get('title');
-            if (typeof title === 'string') {
-                return title;
-            }
-            return '';
+            return typeof title === 'string' ? title : '';
         },
         subMenuTitleClass() {
             const prefix = this.data.get('prefixCls');
@@ -121,23 +102,7 @@ export default san.defineComponent({
             if (this.data.get('mode') === 'inline') {
                 const level = this.data.get('level');
                 return {'padding-left': inlineIndent + level * inlineIndent + 'px'};
-
             }
-        },
-        inlineModeShow() {
-            // 处理inline模式下显示隐藏问题
-            const isInlineMode = this.data.get('isInlineMode');
-            if (isInlineMode) {
-                return 'inlineShow';
-            }
-            return 'inlineHide';
-        },
-        inlineModeHide() {
-            const isInlineMode = this.data.get('isInlineMode');
-            if (isInlineMode) {
-                return 'inlineHide';
-            }
-            return 'inlineShow';
         }
     },
     initData() {
@@ -152,6 +117,9 @@ export default san.defineComponent({
     compiled() {
         // const parent = this.getTargetComponent('mode');
         // const parMode = parent.data.get('mode');
+        if (this.getTargetComponent('mode').data.get('mode') === 'inline') {
+            return;
+        }
         const slots = this.sourceSlots;
         this.sourceSlots = {};
         const source = this.source;
@@ -314,37 +282,38 @@ export default san.defineComponent({
             on-click="subMenuClick($event)"
             on-mouseenter="subMenuMouseEnter"
             on-mouseleave="subMenuMouseLeave"
-            >
-            <div class="{{subMenuTitleClass}} {{inlineModeShow}}" style="{{titleStyle}}">
-                <span s-ref="subMenuTitle">{{subTitle}}</span>
-                <i class="{{subMenuArrowClass}}">
-                </i>
-            </div>
-            <div class="{{inlineModeShow}}">
-                <injectslot isOpened="{{isOpened}}" mode="{{getRealMenuMode}}"></injectslot>
-            </div>
-
-            <s-trigger
-                builtinPlacements="{{placements}}"
-                popupPlacement="{{popupPlacement}}"
-                action="hover"
-                popup="{{popup}}"
-                style="display: block"
-                visible="{{visible}}"
-                popupVisible="{{popupVisible}}"
-                on-popupMouseLeave="popupMouseLeave"
-                on-popupMouseEnter="popupMouseEnter"
-                getPopupContainer="{{getPopupContainer}}"
-                mouseEnterDelay="{{subMenuOpenDelay}}"
-                mouseLeaveDelay="{{subMenuCloseDelay}}"
-                forceRender="{{forceSubMenuRender}}"
-            >
-                <div class="{{subMenuTitleClass}} {{inlineModeHide}}" style="{{titleStyle}}">
-                    <span s-ref="triggerTitle">{{subTitle}}</span>
-                    <i class="{{subMenuArrowClass}}">
-                    </i>
+        >
+            <template s-if="getRealMenuMode === 'inline'" >
+                <div class="{{subMenuTitleClass}}" style="{{titleStyle}}">
+                    <span s-ref="subMenuTitle">{{subTitle}}</span>
+                    <i class="{{subMenuArrowClass}}"></i>
                 </div>
-            </s-trigger>
+                <ul class="san-menu san-menu-sub san-menu-{{mode}} {{isOpened ? '' : 'san-menu-hidden'}}">
+                    <slot />
+                </ul>
+            </template>
+            <template s-else>
+                <s-trigger
+                    builtinPlacements="{{placements}}"
+                    popupPlacement="{{popupPlacement}}"
+                    action="hover"
+                    popup="{{popup}}"
+                    style="display: block"
+                    visible="{{visible}}"
+                    popupVisible="{{popupVisible}}"
+                    on-popupMouseLeave="popupMouseLeave"
+                    on-popupMouseEnter="popupMouseEnter"
+                    getPopupContainer="{{getPopupContainer}}"
+                    mouseEnterDelay="{{subMenuOpenDelay}}"
+                    mouseLeaveDelay="{{subMenuCloseDelay}}"
+                    forceRender="{{forceSubMenuRender}}"
+                >
+                    <div class="{{subMenuTitleClass}}" style="{{titleStyle}}">
+                        <span s-ref="triggerTitle">{{subTitle}}</span>
+                        <i class="{{subMenuArrowClass}}"></i>
+                    </div>
+                </s-trigger>
+            </template>
         </li>
     `
 });
