@@ -145,7 +145,6 @@ export default san.defineComponent({
                 count="{{isDot ? '' : getNumberedDisplayCount}}"
                 title="{{getScrollNumberTitle(title, count)}}"
                 style="{{styleWithOffset(offset, bodyStyle)}}"
-                key="{{scrollNumber}}"
             />
             <slot name="count" />
         </span>
