@@ -23,7 +23,7 @@ export default {
             message: 'Notification Title',
             description: 'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
             style: {
-                width: '600px',
+                width: '300px',
                 marginLeft: (335 - 600) + 'px',
             }
         });

@@ -13,13 +13,12 @@ import Notice from './Notice';
 import filters from '../modal/Dialog';
 
 const Notification = san.defineComponent({
-    template: '<div class="{{wrapClass}}" style="{{style | css}}"></div>',
+    template: '<div class="{{prefixCls}}" style="{{style | css}}"></div>',
     dataTypes: {
         prefixCls: DataTypes.string,
         animation: DataTypes.oneOfType([DataTypes.string, DataTypes.object]),
         transitionName: DataTypes.string,
         maxCount: DataTypes.number,
-        style: DataTypes.object,
         closeIcon: DataTypes.any
     },
     components: {
@@ -38,14 +37,6 @@ const Notification = san.defineComponent({
             }
 
             return transitionName;
-        },
-        wrapClass() {
-            const data = this.data;
-            const prefixCls = data.get('prefixCls');
-            const className = data.get('className');
-            let classArr = [prefixCls];
-            !!className && classArr.push(className);
-            return classArr;
         }
     },
     filters,

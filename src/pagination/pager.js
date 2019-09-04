@@ -10,10 +10,8 @@ export default san.defineComponent({
             const prefixCls = this.data.get('rootPrefixCls');
             const page = this.data.get('page');
             const active = this.data.get('active');
-            const className = this.data.get('className');
             let classArr = [`${prefixCls}-item`, `${prefixCls}-item-${page}`];
 
-            className && classArr.push(className);
             active && classArr.push(`${prefixCls}-item-active`);
             !page && classArr.push(`${prefixCls}-disabled`);
             return classArr;
@@ -32,6 +30,7 @@ export default san.defineComponent({
         on-keyPress="handleKeyPress"
         tabIndex="0"
     >
-        <a>{{page}}</a>
+        <slot name="itemRender" s-if="{{itemRender}}" var-type="{{'page'}}" var-page="{{page}}" />
+        <a s-else>{{page}}</a>
     </li>`
 });

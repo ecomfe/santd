@@ -23,7 +23,6 @@ const Locale = inherits(san.defineComponent({
 
 export default inherits(Locale, san.defineComponent({
     dataTypes: {
-        prefixCls: DataTypes.string,
         okText: DataTypes.string,
         cancelText: DataTypes.string,
         centered: DataTypes.bool,
@@ -39,7 +38,6 @@ export default inherits(Locale, san.defineComponent({
     computed: {
         wrapClass() {
             const centered = this.data.get('centered');
-            const prefixCls = this.data.get('prefixCls');
             const wrapClassName = this.data.get('wrapClassName');
             let classArr = [wrapClassName];
             !!centered && classArr.push(`${prefixCls}-centered`);
@@ -48,7 +46,6 @@ export default inherits(Locale, san.defineComponent({
     },
     initData() {
         return {
-            prefixCls,
             width: 520,
             transitionName: 'zoom',
             maskTransitionName: 'fade',

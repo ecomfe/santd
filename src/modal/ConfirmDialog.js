@@ -19,8 +19,7 @@ const Locale = inherits(san.defineComponent({
     }
 }), LocaleReceiver);
 
-const cc = classCreator('modal');
-const prefixCls = cc();
+const prefixCls = classCreator('modal')();
 const contentPrefixCls = `${prefixCls}-confirm`;
 
 // 判断是否SanComponent, 可能会随着san的版本迭代变更，参考依据如下：

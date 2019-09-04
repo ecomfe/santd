@@ -7,7 +7,7 @@
 import './style/index.less';
 import Notification from './Notification';
 
-const notificationInstance = {};
+let notificationInstance = {};
 let defaultDuration = 4.5;
 let defaultTop = 24;
 let defaultBottom = 24;
