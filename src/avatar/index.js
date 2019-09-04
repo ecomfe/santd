@@ -71,7 +71,7 @@ export default san.defineComponent({
         if (childrenNode) {
             const childrenWidth = childrenNode.offsetWidth;
             const avatarWidth = this.el.getBoundingClientRect().width;
-            const scale = (avatarWidth - 8 < childrenWidth) || 1;
+            const scale = (avatarWidth - 8 < childrenWidth) ? (avatarWidth - 8) / childrenWidth : 1;
 
             const transformString = `scale(${scale}) translateX(-50%)`;
             let scaleStyle = [
