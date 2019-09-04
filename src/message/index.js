@@ -8,8 +8,7 @@ import './style/index.less';
 import {classCreator, type} from '../core/util';
 import Notification from '../notification/Notification';
 
-const noop = () => {}; // empty function
-const prefixCls = classCreator('message')();
+let prefixCls = classCreator('message')();
 let messageInstance;
 let key = 1;
 
@@ -19,7 +18,7 @@ let defaultMaxCount;
 let defaultTop;
 let defaultTransitionName = 'move-up';
 
-function getMessageInstance(callback = noop) {
+function getMessageInstance(callback = () => {}) {
     if (messageInstance) {
         callback(messageInstance);
         return;
@@ -62,7 +61,7 @@ function notice(args) {
         getMessageInstance(instance => {
             const className = args.type ? ` ${prefixCls}-${args.type}` : '';
             const defaultIcon = `
-                <s-icon type="${iconType}" theme="${iconType === 'loading' ? 'outlined' : 'filled'}"/>
+                <s-icon type="${iconType}" theme="${iconType === 'loading' ? 'outlined' : 'filled'}" />
             `;
             const iconNode = args.icon ? args.icon : iconType ? defaultIcon : '';
             instance.notice({

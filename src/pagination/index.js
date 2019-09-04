@@ -16,8 +16,8 @@ const prevIcon = san.defineComponent({
     components: {
         's-icon': Icon
     },
-    template: `<a class="{{prefixCls + '-item-link'}}">
-        <s-icon type="left"></s-icon>
+    template: `<a class="${prefixCls}-item-link">
+        <s-icon type="left" />
       </a>`
 });
 
@@ -25,8 +25,8 @@ const nextIcon = san.defineComponent({
     components: {
         's-icon': Icon
     },
-    template: `<a class="{{prefixCls + '-item-link'}}">
-        <s-icon type="right"></s-icon>
+    template: `<a class="${prefixCls}-item-link">
+        <s-icon type="right" />
       </a>`
 });
 
@@ -34,10 +34,10 @@ const jumpPrevIcon = san.defineComponent({
     components: {
         's-icon': Icon
     },
-    template: `<a class="{{prefixCls + '-item-link'}}">
-        <div className="{{prefixCls + '-item-container'}}">
-            <s-icon className="{{prefixCls + '-item-link-icon'}}" type="double-left" />
-            <span className="{{prefixCls + '-item-ellipsis'}}">•••</span>
+    template: `<a class="${prefixCls}-item-link">
+        <div class="${prefixCls}-item-container">
+            <s-icon class="${prefixCls}-item-link-icon" type="double-left" />
+            <span class="${prefixCls}-item-ellipsis">•••</span>
         </div>
       </a>`
 });
@@ -46,32 +46,30 @@ const jumpNextIcon = san.defineComponent({
     components: {
         's-icon': Icon
     },
-    template: `<a class="{{prefixCls + '-item-link'}}">
-        <div className="{{prefixCls + '-item-container'}}">
-            <s-icon className="{{prefixCls + '-item-link-icon'}}" type="double-right" />
-            <span className="{{prefixCls + '-item-ellipsis'}}">•••</span>
+    template: `<a class="${prefixCls}-item-link">
+        <div class="${prefixCls}-item-container">
+            <s-icon class="${prefixCls}-item-link-icon" type="double-right" />
+            <span class="${prefixCls}-item-ellipsis">•••</span>
         </div>
       </a>`
 });
 
 const Pagination = san.defineComponent({
     components: {
-        pagination
-    },
-    initData() {
-        return {
-            prevIcon,
-            nextIcon,
-            jumpPrevIcon,
-            jumpNextIcon,
-            prefixCls
-        };
+        pagination,
+        previcon: prevIcon,
+        nexticon: nextIcon,
+        jumpprevicon: jumpPrevIcon,
+        jumpnexticon: jumpNextIcon
     },
     handleShowSizeChange(payload) {
         this.fire('showSizeChange', payload);
     },
     handleChange(payload) {
         this.fire('change', payload);
+    },
+    inited() {
+        this.data.set('itemRender', !!this.sourceSlots.named.itemRender);
     },
     template: `
         <div>
@@ -80,16 +78,12 @@ const Pagination = san.defineComponent({
                 defaultPageSize="{{defaultPageSize}}"
                 hideOnSinglePage="{{hideOnSinglePage}}"
                 current="{{current}}"
-                prevIcon="{{prevIcon}}"
-                nextIcon="{{nextIcon}}"
-                jumpPrevIcon="{{jumpPrevIcon}}"
-                jumpNextIcon="{{jumpNextIcon}}"
                 total="{{total}}"
                 simple="{{simple}}"
                 pageSize="{{pageSize}}"
                 showQuickJumper="{{showQuickJumper}}"
                 showSizeChanger="{{showSizeChanger}}"
-                prefixCls="{{prefixCls}}"
+                prefixCls="${prefixCls}"
                 size="{{size}}"
                 showTotal="{{showTotal}}"
                 itemRender="{{itemRender}}"
@@ -97,7 +91,13 @@ const Pagination = san.defineComponent({
                 disabled="{{disabled}}"
                 on-showSizeChange="handleShowSizeChange"
                 on-change="handleChange"
-            />
+            >
+                <previcon slot="prevIcon" />
+                <nexticon slot="nextIcon" />
+                <jumpprevicon slot="jumpPrevIcon" />
+                <jumpnexticon slot="jumpNextIcon" />
+                <slot slot="itemRender" name="itemRender" var-type="{{type}}" var-page="{{page}}" />
+            </pagination>
         </div>
     `
 });

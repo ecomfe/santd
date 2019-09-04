@@ -14,10 +14,10 @@ export default san.defineComponent({
             on-mouseenter="clearCloseTimer"
             on-mouseleave="startCloseTimer"
         >
-            <div class="{{componentClass}}-content" s-ref="content"><slot/></div>
-            <a s-if="closable" on-click="handleClose" class="{{componentClass}}-close" tabIndex="0">
+            <div class="{{prefixCls}}-notice-content" s-ref="content"><slot/></div>
+            <a s-if="closable" on-click="handleClose" class="{{prefixCls}}-notice-close" tabIndex="0">
                 <slot name="close-icon">
-                    <span class="{{componentClass}}-close-x">关闭</span>
+                    <span class="{{prefixCls}}-notice-close-x">关闭</span>
                 </slot>
             </a>
         </div>
@@ -25,24 +25,16 @@ export default san.defineComponent({
     dataTypes: {
         duration: DataTypes.number,
         closable: DataTypes.bool,
-        className: DataTypes.string,
         prefixCls: DataTypes.string,
         update: DataTypes.bool
     },
     computed: {
-        componentClass() {
-            const data = this.data;
-            const prefixCls = data.get('prefixCls');
-            return `${prefixCls}-notice`;
-        },
         noticeClass() {
             const data = this.data;
             const closable = data.get('closable');
-            const componentClass = data.get('componentClass');
-            const className = data.get('className');
+            const componentClass = data.get('prefixCls') + '-notice';
             let classArr = [componentClass];
             closable && classArr.push(`${componentClass}-closable`);
-            !!className && classArr.push(className);
             return classArr;
         }
     },

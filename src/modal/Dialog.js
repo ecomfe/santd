@@ -95,12 +95,6 @@ function offset(el) {
     return pos;
 }
 
-// function multiEvent(element, event, handler) {
-//     event.split(' ').forEach(e => {
-//         on(element, e, handler);
-//     });
-// }
-
 const sentinel = san.defineComponent({
     template: `
         <div tabindex="0" style="width:0px;height:0px;overflow:hidden;">{{type}}</div>

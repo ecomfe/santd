@@ -17,7 +17,8 @@ const prevTemplate = `
         class="{{hasPrev ? '' : prefixCls + '-disabled'}} {{prefixCls + '-prev'}}"
         aria-disabled="{{!hasPrev}}"
     >
-        <previcon prefixCls="{{prefixCls}}"></previcon>
+        <slot name="itemRender" var-type="{{'prev'}}" s-if="{{itemRender}}" />
+        <slot name="prevIcon" s-else />
     </li>
 `;
 
@@ -30,7 +31,8 @@ const nextTemplate = `
         class="{{hasNext ? '' : prefixCls + '-disabled'}} {{prefixCls + '-next'}}"
         aria-disabled="{{!hasNext}}"
     >
-        <nexticon prefixCls="{{prefixCls}}"></nexticon>
+        <slot name="itemRender" var-type="{{'next'}}" s-if="{{itemRender}}" />
+        <slot name="nextIcon" s-else />
     </li>
 `;
 
@@ -68,10 +70,6 @@ const simpleTemplate = `
 
 `;
 
-const defaultItemRender = function (type, elem) {
-    return elem;
-};
-
 export default san.defineComponent({
     DataTypes: {
         prefixCls: DataTypes.string,
@@ -91,8 +89,7 @@ export default san.defineComponent({
         ]),
         showTitle: DataTypes.bool,
         pageSizeOptions: DataTypes.array,
-        showTotal: DataTypes.bool,
-        style: DataTypes.object
+        showTotal: DataTypes.bool
     },
     initData() {
         return {
@@ -100,7 +97,6 @@ export default san.defineComponent({
             total: 0,
             defaultPageSize: 10,
             onChange() {},
-            className: '',
             selectPrefixCls: 'select',
             prefixCls: 'pagination',
             selectComponentClass: null,
@@ -111,8 +107,7 @@ export default san.defineComponent({
             showLessItems: false,
             showTitle: true,
             pageSizeOptions: [10, 20, 30, 40],
-            onShowSizeChange() {},
-            style: {}
+            onShowSizeChange() {}
         };
     },
     inited() {
@@ -122,7 +117,7 @@ export default san.defineComponent({
         this.data.set('current', current);
         this.data.set('currentInputValue', current);
         this.data.set('pageSize', pageSize);
-        this.data.set('instance', this);
+        this.data.get('hasGoButton', typeof this.data.get('showQuickJumper.goButton') === 'boolean');
     },
     components: {
         's-input': Input,
@@ -130,31 +125,14 @@ export default san.defineComponent({
         's-options': Options
     },
     computed: {
-        injectComponents() {
-            const instance = this.data.get('instance');
-            const itemRender = this.data.get('itemRender') || defaultItemRender;
-            const prevIcon = this.data.get('prevIcon');
-            const nextIcon = this.data.get('nextIcon');
-            const jumpPrevIcon = this.data.get('jumpPrevIcon');
-            const jumpNextIcon = this.data.get('jumpNextIcon');
-
-            if (instance) {
-                instance.components.previcon = itemRender('prev', prevIcon);
-                instance.components.nexticon = itemRender('next', nextIcon);
-                instance.components.jumpprevicon = itemRender('jump-prev', jumpPrevIcon);
-                instance.components.jumpnexticon = itemRender('jump-next', jumpNextIcon);
-            }
-        },
         classes() {
             const simple = this.data.get('simple');
             const prefixCls = this.data.get('prefixCls');
-            const className = this.data.get('className');
             const size = this.data.get('size');
             const disabled = this.data.get('disabled');
             let classArr = [prefixCls];
             if (simple) {
                 classArr.push(prefixCls + '-simple');
-                classArr.push(className);
                 disabled && classArr.push(`${prefixCls}-disabled`);
 
                 return classArr;
@@ -169,30 +147,12 @@ export default san.defineComponent({
         hasNext() {
             return this.data.get('current') < this.data.get('allPages');
         },
-        getJumpPrevPage() {
-            const current = this.data.get('current');
-            return Math.max(1, current - (this.data.get('showLessItems') ? 3 : 5));
-        },
-        getJumpNextPage() {
-            const current = this.data.get('current');
-            const allPages = this.data.get('allPages');
-            return Math.min(allPages, current + (this.data.get('showLessItems') ? 3 : 5));
-        },
         allPages() {
-            const pageSize = this.data.get('pageSize');
-            const total = this.data.get('total');
-            return Math.floor((total - 1) / pageSize) + 1;
-        },
-        pageBufferSize() {
-            return this.data.get('showLessItems') ? 1 : 2;
-        },
-        hasGoButton() {
-            const button = this.data.get('showQuickJumper.goButton');
-            return typeof button === 'boolean';
+            return Math.floor((this.data.get('total') - 1) / this.data.get('pageSize')) + 1;
         },
         pageList() {
             const allPages = this.data.get('allPages');
-            const pageBufferSize = this.data.get('pageBufferSize');
+            const pageBufferSize = this.data.get('showLessItems') ? 1 : 2;
             const current = this.data.get('current');
             const prefixCls = this.data.get('prefixCls');
             const pageList = [];
@@ -255,15 +215,6 @@ export default san.defineComponent({
             }
             return pageList;
         },
-        shouldDisplayQuickJumper() {
-            const showQuickJumper = this.data.get('showQuickJumper');
-            const pageSize = this.data.get('pageSize');
-            const total = this.data.get('total');
-            if (total <= pageSize) {
-                return false;
-            }
-            return showQuickJumper;
-        },
         totalText() {
             const showTotal = this.data.get('showTotal');
             const total = this.data.get('total');
@@ -286,22 +237,20 @@ export default san.defineComponent({
             && page !== this.data.get('current');
     },
     handlePrev() {
-        const hasPrev = this.data.get('hasPrev');
-        if (hasPrev) {
-            this.handleChange(this.data.get('current') - 1);
-        }
+        this.data.get('hasPrev') && this.handleChange(this.data.get('current') - 1);
     },
     handleNext() {
-        const hasNext = this.data.get('hasNext');
-        if (hasNext) {
-            this.handleChange(this.data.get('current') + 1);
-        }
+        this.data.get('hasNext') && this.handleChange(this.data.get('current') + 1);
     },
     handleJumpPrev() {
-        this.handleChange(this.data.get('getJumpPrevPage'));
+        const jumpPrevPage = Math.max(1, this.data.get('current') - (this.data.get('showLessItems') ? 3 : 5));
+        this.handleChange(jumpPrevPage);
     },
     handleJumpNext() {
-        this.handleChange(this.data.get('getJumpNextPage'));
+        const current = this.data.get('current');
+        const allPages = this.data.get('allPages');
+        const jumpNextPage = Math.min(allPages, current + (this.data.get('showLessItems') ? 3 : 5));
+        this.handleChange(jumpNextPage);
     },
     handleKeyDown(e) {
         if (e.keyCode === KEYCODE.ARROW_UP || e.keyCode === KEYCODE.ARROW_DOWN) {
@@ -313,15 +262,7 @@ export default san.defineComponent({
         const currentInputValue = this.data.get('currentInputValue');
         let value;
 
-        if (inputValue === '') {
-            value = inputValue;
-        }
-        else if (isNaN(Number(inputValue))) {
-            value = currentInputValue;
-        }
-        else {
-            value = Number(inputValue);
-        }
+        value = isNaN(Number(inputValue)) ? currentInputValue : Number(inputValue);
 
         if (value !== currentInputValue) {
             this.data.set('currentInputValue', value);
@@ -414,26 +355,27 @@ export default san.defineComponent({
                 locale="{{locale}}"
                 on-click="handleChange"
                 on-keyPress="runIfEnter"
-            ></s-pager>
+                itemRender="{{itemRender}}"
+            ><slot name="itemRender" slot="itemRender" var-type="{{type}}" var-page="{{page}}" /></s-pager>
             <li
                 s-if="item.type === 'jumpPrev'"
-                className="{{prefixCls}}-jump-prev {{prefixCls}}-jump-prev-custom-icon"
+                class="{{prefixCls}}-jump-prev {{prefixCls}}-jump-prev-custom-icon"
                 tabIndex="0"
                 key="prev"
                 on-click="handleJumpPrev"
                 on-keypress="runIfEnterJumpPrev"
             >
-                <jumpprevicon prefixCls="{{prefixCls}}"></jumpprevicon>
+                <slot name="jumpPrevIcon" />
             </li>
             <li
                 s-if="item.type === 'jumpNext'"
-                className="{{prefixCls}}-jump-next {{prefixCls}}-jump-next-custom-icon"
+                class="{{prefixCls}}-jump-next {{prefixCls}}-jump-next-custom-icon"
                 tabIndex="0"
                 key="next"
                 on-click="handleJumpNext"
                 on-keypress="runIfEnterJumpNext"
             >
-                <jumpnexticon prefixCls="{{prefixCls}}"></jumpnexticon>
+                <slot name="jumpNextIcon" />
             </li>
             </template>
             ${nextTemplate}
@@ -446,7 +388,7 @@ export default san.defineComponent({
                 current="{{current}}"
                 pageSize="{{pageSize}}"
                 pageSizeOptions="{{pageSizeOptions}}"
-                quickGo="{{shouldDisplayQuickJumper}}"
+                quickGo="{{showQuickJumper && total > pageSize}}"
                 goButton="{{showQuickJumper.goButton}}"
                 locale="{{locale}}"
                 disabled="{{disabled}}"

@@ -10,32 +10,31 @@ import icon from '../icon';
 import divider from '../divider';
 import breadcrumb from '../breadcrumb';
 
-const prefix = classCreator('page-header')();
+const prefixCls = classCreator('page-header')();
 
 export default san.defineComponent({
     template: `
-    	<div class="${prefix}">
-            <s-breadcrumb separator="/" s-if="{{showBread(breadcrumb)}}" s-bind="{{breadcrumb}}">
-            </s-breadcrumb>
-            <div class="${prefix}-back-icon" on-click="handleBack" s-if="{{showBackIcon(breadcrumb, backIcon)}}">
-                <s-icon type="{{backIcon}}"/>
+    	<div class="${prefixCls}">
+            <s-breadcrumb separator="/" s-if="{{showBread(breadcrumb)}}" s-bind="{{breadcrumb}}" />
+            <div class="${prefixCls}-back-icon" on-click="handleBack" s-if="{{showBackIcon(breadcrumb, backIcon)}}">
+                <s-icon type="{{backIcon}}" />
                 <s-divider type="vertical" />
             </div>
-            <div class="${prefix}-title-view">
-                <span class="${prefix}-title-view-title">{{title}}</span>
-                <span class="${prefix}-title-view-sub-title">{{subTitle}}</span>
-                <span class="${prefix}-title-view-tags">
-                    <slot name="tags"/>
+            <div class="${prefixCls}-title-view">
+                <span class="${prefixCls}-title-view-title">{{title}}</span>
+                <span class="${prefixCls}-title-view-sub-title">{{subTitle}}</span>
+                <span class="${prefixCls}-title-view-tags">
+                    <slot name="tags" />
                 </span>
-                <span class="${prefix}-title-view-extra">
-                    <slot name="extra"/>
+                <span class="${prefixCls}-title-view-extra">
+                    <slot name="extraa "/>
                 </span>
             </div>
-            <div class="${prefix}-content-view" s-if="{{showContent}}">
-                <slot/>
+            <div class="${prefixCls}-content-view" s-if="{{hasContent}}">
+                <slot />
             </div>
-            <div class="${prefix}-footer" s-if="{{showFooter}}">
-                <slot name="footer"/>
+            <div class="${prefixCls}-footer" s-if="{{hasFooter}}">
+                <slot name="footer" />
             </div>
         </div>
     `,
@@ -66,9 +65,7 @@ export default san.defineComponent({
         }
     },
     inited() {
-        let defaultSlot = !!this.sourceSlots.noname;
-        let footer = !!this.sourceSlots.named.footer;
-        this.data.set('showContent', defaultSlot);
-        this.data.set('showFooter', footer);
+        this.data.set('hasContent', !!this.sourceSlots.noname);
+        this.data.set('hasFooter', !!this.sourceSlots.named.footer);
     }
 });
