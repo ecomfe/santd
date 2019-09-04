@@ -94,6 +94,10 @@ export default san.defineComponent({
         }
     },
 
+    attached() {
+        this.updated();
+    },
+
     template: `
         <span class="{{classes}}" style="{{styles}}">
             <img s-if="src && isImgExist"
