@@ -9,10 +9,21 @@ import {classCreator} from '../core/util';
 const prefixCls = classCreator('badge')();
 const scrollNumberPrefixCls = classCreator('scroll-number')();
 
-const presetColorTypes = [
-    'pink', 'red', 'yellow', 'orange', 'cyan', 'green', 'blue',
-    'purple', 'geekblue', 'magenta', 'volcano', 'gold', 'lime'
-];
+const presetColorTypes = {
+    pink: 1,
+    red: 1,
+    yellow: 1,
+    orange: 1,
+    cyan: 1,
+    green: 1,
+    blue: 1,
+    purple: 1,
+    geekblue: 1,
+    magenta: 1,
+    volcano: 1,
+    gold: 1,
+    lime: 1
+};
 
 let scrollNumberList = [];
 for (let i = 0; i < 30; i++) {
@@ -88,6 +99,8 @@ const ScrollNumber = san.defineComponent({
 
 
 export default san.defineComponent({
+    autoFillStyleAndId: false,
+
     dataTypes: {
         count: DataTypes.oneOfType([DataTypes.string, DataTypes.number, DataTypes.object]),
         showZero: DataTypes.bool,
@@ -108,20 +121,14 @@ export default san.defineComponent({
             count: null,
             showZero: false,
             dot: false,
-            overflowCount: 99,
-            style: {}
+            overflowCount: 99
         };
     },
 
-    created() {
-        const style = this.data.get('style');
-        this.data.set('bodyStyle', style);
-        this.data.set('style', {});
-    },
 
     attached() {
         this.slot('count')[0].children.forEach(children => {
-            if (children.nodeType === 5) {
+            if (children instanceof san.Component) {
                 children.data.set('class', scrollNumberPrefixCls + '-custom-component');
             }
         });
@@ -135,7 +142,7 @@ export default san.defineComponent({
 
     computed: {
         classes() {
-            let classArr = [prefixCls];
+            let classArr = [];
 
             this.data.get('hasStatus') && classArr.push(`${prefixCls}-status`);
             !this.data.get('hasChild') && classArr.push(`${prefixCls}-not-a-wrapper`);
@@ -151,7 +158,7 @@ export default san.defineComponent({
 
             this.data.get('hasStatus') && classArr.push(`${prefixCls}-status-dot`);
             status && classArr.push(`${prefixCls}-status-${status}`);
-            presetColorTypes.includes(color) && classArr.push(`${prefixCls}-status-${color}`);
+            presetColorTypes[color] && classArr.push(`${prefixCls}-status-${color}`);
             return classArr;
         },
         getNumberedDisplayCount() {
@@ -176,14 +183,14 @@ export default san.defineComponent({
         }
     },
 
-    styleWithOffset(offset, bodyStyle) {
+    styleWithOffset(offset, style) {
         return offset
             ? {
                 'right': -parseInt(offset[0], 10),
                 'margin-top': offset[1],
-                ...bodyStyle
+                ...style
             }
-            : bodyStyle;
+            : style;
     },
 
     getScrollNumberTitle(title, count) {
@@ -191,7 +198,7 @@ export default san.defineComponent({
     },
 
     statusStyle(color) {
-        if (color && !presetColorTypes.includes(color)) {
+        if (presetColorTypes[color]) {
             return {
                 background: color
             };
@@ -200,21 +207,21 @@ export default san.defineComponent({
     },
 
     template: `
-        <span class="{{classes}}" style="{{!hasChild && hasStatus ? styleWithOffset(offset, bodyStyle) : ''}}">
+        <span class="${prefixCls} {{classes}}" style="{{!hasChild && hasStatus ? styleWithOffset(offset, style) : ''}}">
             <slot />
             <span s-if="{{!hasChild ? hasStatus : ''}}" class="{{statusClass}}" style="{{statusStyle(color)}}"></span>
             <span
-                style="{{{color: bodyStyle.color}}}"
+                style="{{{color: style.color}}}"
                 class="${prefixCls}-status-text"
                 s-if="{{!hasChild ? hasStatus : ''}}"
             >{{text}}</span>
             <s-scrollnumber
                 s-if="{{!isHidden || isDot && !hasStatus}}"
                 data-show="{{!isHidden}}"
-                class="{{isDot ? '${prefixCls}-dot' : '${prefixCls}-count'}}"
+                class="${prefixCls}-{{isDot ? 'dot' : 'count'}}"
                 count="{{isDot ? '' : getNumberedDisplayCount}}"
                 title="{{getScrollNumberTitle(title, count)}}"
-                style="{{styleWithOffset(offset, bodyStyle)}}"
+                style="{{styleWithOffset(offset, style)}}"
             />
             <slot name="count" />
         </span>
