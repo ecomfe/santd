@@ -32,12 +32,12 @@ for (let i = 0; i < 30; i++) {
 
 const ScrollNumber = san.defineComponent({
     dataTypes: {
-        count: DataTypes.oneOfType([DataTypes.string, DataTypes.object, DataTypes.number]),
+        count: DataTypes.oneOfType([DataTypes.string, DataTypes.number]),
         title: DataTypes.oneOfType([DataTypes.string, DataTypes.object, DataTypes.number])
     },
 
     template: `
-        <sup class="${scrollNumberPrefixCls}" title="{{title}}">
+        <sup class="${scrollNumberPrefixCls}" title="{{title || ''}}">
             <template s-if="isOverflow">
                 {{count}}
             </template>
@@ -102,7 +102,7 @@ export default san.defineComponent({
     autoFillStyleAndId: false,
 
     dataTypes: {
-        count: DataTypes.oneOfType([DataTypes.string, DataTypes.number, DataTypes.object]),
+        count: DataTypes.oneOfType([DataTypes.string, DataTypes.number]),
         showZero: DataTypes.bool,
         overflowCount: DataTypes.number,
         dot: DataTypes.bool,
@@ -118,10 +118,10 @@ export default san.defineComponent({
 
     initData() {
         return {
-            count: null,
             showZero: false,
             dot: false,
-            overflowCount: 99
+            overflowCount: 99,
+            hasChild: this._hasChild
         };
     },
 
@@ -136,7 +136,7 @@ export default san.defineComponent({
 
     compiled() {
         if (this.sourceSlots.noname || this.sourceSlots.named.count) {
-            this.data.set('hasChild', true);
+            this._hasChild = true;
         }
     },
 
@@ -193,10 +193,6 @@ export default san.defineComponent({
             : style;
     },
 
-    getScrollNumberTitle(title, count) {
-        return title || typeof count === 'string' || typeof count === 'number' ? count : '';
-    },
-
     statusStyle(color) {
         if (presetColorTypes[color]) {
             return {
@@ -220,7 +216,7 @@ export default san.defineComponent({
                 data-show="{{!isHidden}}"
                 class="${prefixCls}-{{isDot ? 'dot' : 'count'}}"
                 count="{{isDot ? '' : getNumberedDisplayCount}}"
-                title="{{getScrollNumberTitle(title, count)}}"
+                title="{{title || count}}"
                 style="{{styleWithOffset(offset, style)}}"
             />
             <slot name="count" />
