@@ -6,7 +6,6 @@
 import './style/index.less';
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
-import ScrollNumber from './ScrollNumber';
 const prefixCls = classCreator('badge')();
 const scrollNumberPrefixCls = classCreator('scroll-number')();
 
@@ -14,6 +13,79 @@ const presetColorTypes = [
     'pink', 'red', 'yellow', 'orange', 'cyan', 'green', 'blue',
     'purple', 'geekblue', 'magenta', 'volcano', 'gold', 'lime'
 ];
+
+let scrollNumberList = [];
+for (let i = 0; i < 30; i++) {
+    scrollNumberList.push(i % 10);
+}
+
+const ScrollNumber = san.defineComponent({
+    dataTypes: {
+        count: DataTypes.oneOfType([DataTypes.string, DataTypes.object, DataTypes.number]),
+        title: DataTypes.oneOfType([DataTypes.string, DataTypes.object, DataTypes.number])
+    },
+
+    template: `
+        <sup class="${scrollNumberPrefixCls}" title="{{title}}">
+            <template s-if="isOverflow">
+                {{count}}
+            </template>
+            <span
+                s-elif="numberStyles.length"
+                s-for="numStyle, idx in numberStyles trackBy idx"
+                class="${scrollNumberPrefixCls}-only"
+                style="{{numStyle}};"
+            >
+                <p s-for="item in scrollNumberList">{{item}}</p>
+            </span>
+        </sup>
+    `,
+
+    computed: {
+        isOverflow() {
+            let count = +this.data.get('count');
+            return !count;
+        },
+
+        numberStyles() {
+            let results = [];
+
+            // 简单点，就不依赖 isOverflow 了
+            let count = +this.data.get('count');
+            if (count) {
+                let nums = count.toString().split('');
+
+                for (let i = 0; i < nums.length; i++) {
+                    let num = +nums[i];
+                    results.push('transform: translateY(' + ((10 + num) * -100) + '%);');
+                }
+            }
+            
+            return results;
+        }
+    },
+
+    getStyleArr() {
+        let numberArray = this.data.get('numberArray');
+        let styleArr = [];
+
+        if (numberArray) {
+            for (let i = 0; i < numberArray.length; i++) {
+                let num = numberArray[i];
+                styleArr.push('transform: translateY(' + ((10 + num) * -100) + '%);');
+            }
+        }
+
+        return styleArr;
+    },
+
+    initData() {
+        return {
+            scrollNumberList
+        };
+    }
+});
+
 
 export default san.defineComponent({
     dataTypes: {
@@ -48,18 +120,17 @@ export default san.defineComponent({
     },
 
     attached() {
-        let hasChild = false;
-        this.slotChildren.forEach(slot => {
-            if (slot.children.length) {
-                hasChild = true;
+        this.slot('count')[0].children.forEach(children => {
+            if (children.nodeType === 5) {
+                children.data.set('class', scrollNumberPrefixCls + '-custom-component');
             }
-            slot.name === 'count' && slot.children.length && slot.children.forEach(children => {
-                if (children.nodeType === 5) {
-                    children.data.set('class', scrollNumberPrefixCls + '-custom-component');
-                }
-            });
         });
-        this.data.set('hasChild', hasChild);
+    },
+
+    inited() {
+        if (this.sourceSlots.noname || this.sourceSlots.named.count) {
+            this.data.set('hasChild', true);
+        }
     },
 
     computed: {
@@ -139,7 +210,6 @@ export default san.defineComponent({
             >{{text}}</span>
             <s-scrollnumber
                 s-if="{{!isHidden || isDot && !hasStatus}}"
-                prefixCls="${scrollNumberPrefixCls}"
                 data-show="{{!isHidden}}"
                 class="{{isDot ? '${prefixCls}-dot' : '${prefixCls}-count'}}"
                 count="{{isDot ? '' : getNumberedDisplayCount}}"
