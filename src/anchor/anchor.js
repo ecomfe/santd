@@ -8,6 +8,7 @@ import {classCreator} from '../core/util/index';
 import {getScroll, on, off} from '../core/util/dom';
 import Affix from '../affix';
 import getRequestAnimationFrame from '../core/util/getRequestAnimationFrame';
+import toStyle from 'to-style';
 import './style/index';
 
 const prefixCls = classCreator('anchor')();
@@ -64,7 +65,7 @@ function scrollTo(href, offsetTop = 0, getContainer, callback) {
     const container = getContainer();
     const scrollTop = getScroll(container, true);
     const raf = getRequestAnimationFrame();
-
+    
     const eleOffsetTop = getOffsetTop(targetElement, container);
     const targetScrollTop = scrollTop + eleOffsetTop - offsetTop;
     const startTime = Date.now();
@@ -117,6 +118,7 @@ export default san.defineComponent({
     },
 
     updated() {
+
         this.nextTick(() => {
             this.updateInk();
         });
@@ -127,7 +129,7 @@ export default san.defineComponent({
         if (this._handleScroll) {
             on(this.data.get('getContainer')(), 'scroll', this._handleScroll);
         }
-        // this.handleScroll();
+        this.handleScroll();
 
         this.watch('activeLink', value => {
             this.linkChildren.forEach(child => {
@@ -170,8 +172,10 @@ export default san.defineComponent({
         let activeLink = '';
 
         if (document) {
+            let linkSections = [];
             let container = this.data.get('getContainer')();
-
+            let maxSection;
+            
             this.data.get('links').forEach(function (link) {
                 const sharpLinkMatch = sharpMatcherRegx.exec(link.toString());
                 if (!sharpLinkMatch) {
@@ -181,11 +185,15 @@ export default san.defineComponent({
                 let target = document.getElementById(sharpLinkMatch[1]);
                 if (target) {
                     const top = getOffsetTop(target, container);
-                    if (top < offsetTop + bounds) {
-                        activeLink = link;
+                    if (!maxSection
+                        || top < offsetTop + bounds && top > maxSection.top
+                    ) {
+                        maxSection = {link, top};
                     }
                 }
             });
+
+            maxSection && (activeLink = maxSection.link);
         }
 
         return activeLink;
