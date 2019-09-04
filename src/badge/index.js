@@ -37,7 +37,7 @@ const ScrollNumber = san.defineComponent({
     },
 
     template: `
-        <sup class="${scrollNumberPrefixCls}" title="{{title || ''}}">
+        <sup class="${scrollNumberPrefixCls}" title="{{title || ''}}" style="{{offsetStyle}}">
             <template s-if="isOverflow">
                 {{count}}
             </template>
@@ -148,76 +148,64 @@ export default san.defineComponent({
             !this.data.get('hasChild') && classArr.push(`${prefixCls}-not-a-wrapper`);
             return classArr;
         },
-        hasStatus() {
-            return !!this.data.get('status') || !!this.data.get('color');
+
+        mainStyles() {
+            let offset = this.data.get('offset');
+            let style = this.data.get('style');
+            let hasChild = this.data.get('hasChild');
+            let hasStatus = this.data.get('hasStatus');
+
+            if (!hasChild && hasStatus) {
+                return offset 
+                    ? {
+                        'right': -offset[0],
+                        'margin-top': offset[1],
+                        ...style
+                    } 
+                    : style;
+            }
+
+            return '';
         },
+
+        hasStatus() {
+            return this.data.get('status') || this.data.get('color');
+        },
+
         statusClass() {
             const status = this.data.get('status');
             const color = this.data.get('color');
             let classArr = [];
 
-            this.data.get('hasStatus') && classArr.push(`${prefixCls}-status-dot`);
+            (status || color) && classArr.push(`${prefixCls}-status-dot`);
             status && classArr.push(`${prefixCls}-status-${status}`);
             presetColorTypes[color] && classArr.push(`${prefixCls}-status-${color}`);
             return classArr;
         },
-        getNumberedDisplayCount() {
+
+        displayCount() {
             const count = this.data.get('count');
             const overflowCount = this.data.get('overflowCount');
 
             return count > overflowCount ? overflowCount + '+' : count;
-        },
-        isZero() {
-            const numberedDispayCount = this.data.get('getNumberedDisplayCount');
-            return numberedDispayCount === '0' || numberedDispayCount === 0 || numberedDispayCount < 0;
-        },
-        isDot() {
-            return (this.data.get('dot') && !this.data.get('isZero')) || this.data.get('hasStatus');
-        },
-        isHidden() {
-            const showZero = this.data.get('showZero');
-            const displayCount = this.data.get('isDot') ? '' : this.data.get('getNumberedDisplayCount');
-            const isZero = this.data.get('isZero');
-            const isEmpty = displayCount === null || displayCount === undefined || displayCount === '';
-            return (isEmpty || (isZero && !showZero));
         }
-    },
-
-    styleWithOffset(offset, style) {
-        return offset
-            ? {
-                'right': -parseInt(offset[0], 10),
-                'margin-top': offset[1],
-                ...style
-            }
-            : style;
-    },
-
-    statusStyle(color) {
-        if (presetColorTypes[color]) {
-            return {
-                background: color
-            };
-        }
-        return {};
     },
 
     template: `
-        <span class="${prefixCls} {{classes}}" style="{{!hasChild && hasStatus ? styleWithOffset(offset, style) : ''}}">
+        <span class="${prefixCls} {{classes}}" style="{{mainStyles}}">
             <slot />
-            <span s-if="{{!hasChild ? hasStatus : ''}}" class="{{statusClass}}" style="{{statusStyle(color)}}"></span>
+            <span s-if="!hasChild && hasStatus" class="{{statusClass}}" style="{{color ? 'background:' + color : ''}}"></span>
             <span
-                style="{{{color: style.color}}}"
+                style="{{style && style.color ? 'color:' + color : ''}}"
                 class="${prefixCls}-status-text"
-                s-if="{{!hasChild ? hasStatus : ''}}"
+                s-if="!hasChild && hasStatus"
             >{{text}}</span>
             <s-scrollnumber
-                s-if="{{!isHidden || isDot && !hasStatus}}"
-                data-show="{{!isHidden}}"
-                class="${prefixCls}-{{isDot ? 'dot' : 'count'}}"
-                count="{{isDot ? '' : getNumberedDisplayCount}}"
+                s-if="showZero || count"
+                class="${prefixCls}-{{dot && count || hasStatus ? 'dot' : 'count'}}"
+                count="{{dot && count || hasStatus ? '' : displayCount}}"
                 title="{{title || count}}"
-                style="{{styleWithOffset(offset, style)}}"
+                style="{{style}}"
             />
             <slot name="count" />
         </span>
