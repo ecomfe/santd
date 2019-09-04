@@ -134,7 +134,7 @@ export default san.defineComponent({
         });
     },
 
-    inited() {
+    compiled() {
         if (this.sourceSlots.noname || this.sourceSlots.named.count) {
             this.data.set('hasChild', true);
         }
