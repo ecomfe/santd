@@ -10,10 +10,6 @@ import {classCreator} from '../core/util';
 
 const prefixCls = classCreator('back-top')();
 
-function target() {
-    return window;
-}
-
 export default san.defineComponent({
     dataTypes: {
         visibilityHeight: DataTypes.number,
@@ -49,7 +45,9 @@ export default san.defineComponent({
     initData() {
         return {
             visibilityHeight: 400,
-            target,
+            target() {
+                return window;
+            },
             visible: false
         };
     },
@@ -68,7 +66,7 @@ export default san.defineComponent({
     attached() {
         this._scroll = this.handleScroll.bind(this);
         on(window, 'scroll', this._scroll);
-
+        
         this.handleScroll();
     },
 
