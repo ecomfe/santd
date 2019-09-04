@@ -14,22 +14,43 @@ import './style/index';
 
 const prefixCls = classCreator('list')();
 
+
+const contentTemplate = `
+    <div s-if="{{!loading && !hasChildren()}}" class="${prefixCls}-empty-text">
+        <slot name="renderEmpty" s-if="{{hasRenderEmpty()}}" />
+        <span s-else>没有数据</span>
+    </div>
+    <template s-else>
+        <s-row gutter="{{grid.gutter}}" s-if="{{grid}}">
+            <s-col
+                span="{{getGrid(grid, 'column')}}"
+                xs="{{getGrid(grid, 'xs')}}"
+                sm="{{getGrid(grid, 'sm')}}"
+                md="{{getGrid(grid, 'md')}}"
+                lg="{{getGrid(grid, 'lg')}}"
+                xl="{{getGrid(grid, 'xl')}}"
+                xxl="{{getGrid(grid, 'xxl')}}"
+                s-for="item, index in splitDataSource"
+            >
+                <slot name="renderItem" var-item="{{item}}" var-index="{{index}}" />
+            </s-col>
+        </s-row>
+        <slot s-for="item in splitDataSource" name="renderItem" var-item="{{item}}" s-else />
+    </template>
+`;
+
 const List = san.defineComponent({
     dataTypes: {
         bordered: DataTypes.bool,
-        className: DataTypes.string,
         dataSource: DataTypes.array,
         id: DataTypes.string,
         loading: DataTypes.oneOfType([DataTypes.bool, DataTypes.object]),
         pagination: DataTypes.oneOfType([DataTypes.bool, DataTypes.object]),
-        prefixCls: DataTypes.string,
-        rowKey: DataTypes.string,
         size: DataTypes.string,
         split: DataTypes.bool
     },
     initData() {
         return {
-            prefixCls: prefixCls,
             dataSource: [],
             bordered: false,
             split: true,
@@ -40,17 +61,14 @@ const List = san.defineComponent({
                 current: 1,
                 total: 0
             },
-            children: []
+            itemChildren: []
         };
     },
     computed: {
         classes() {
-            const prefixCls = this.data.get('prefixCls');
-            const className = this.data.get('className');
             const sizeClass = this.data.get('sizeClass');
             let classArr = [prefixCls];
 
-            className && classArr.push(className);
             this.data.get('itemLayout') === 'vertical' && classArr.push(`${prefixCls}-vertical`);
             sizeClass && classArr.push(`${prefixCls}-${sizeClass}`);
             this.data.get('split') && classArr.push(`${prefixCls}-split`);
@@ -101,7 +119,6 @@ const List = san.defineComponent({
 
         this.data.set('paginationCurrent', paginationObj.defaultCurrent || 1);
         this.data.set('paginationSize', paginationObj.defaultPageSize || 10);
-        this.data.set('instance', this);
     },
     components: {
         's-spin': Spin,
@@ -116,12 +133,12 @@ const List = san.defineComponent({
         santd_list_addItem(payload) {
             const item = payload.value;
             item.data.set('itemLayout', this.data.get('itemLayout'));
-            this.data.push('children', item);
+            this.data.push('itemChildren', item);
         }
     },
     attached() {
         const dataSource = this.data.get('splitDataSource');
-        this.data.get('children').forEach((child, index) => {
+        this.data.get('itemChildren').forEach((child, index) => {
             child.data.set('item', dataSource[index]);
             child.data.set('index', index);
         });
@@ -155,8 +172,8 @@ const List = san.defineComponent({
         this.data.set('paginationCurrent', payload.page);
         this.data.set('paginationSize', payload.pageSize);
 
-        if (pagination && pagination['onChange']) {
-            pagination['onChange'](payload.page, payload.pageSize);
+        if (pagination && pagination.onChange) {
+            pagination.onChange(payload.page, payload.pageSize);
         }
     },
     handleShowSizeChange(payload) {
@@ -165,14 +182,14 @@ const List = san.defineComponent({
         this.data.set('paginationCurrent', payload.page);
         this.data.set('paginationSize', payload.pageSize);
 
-        if (pagination && pagination['onShowSizeChange']) {
-            pagination['onShowSizeChange'](payload.page, payload.pageSize);
+        if (pagination && pagination.onShowSizeChange) {
+            pagination.onShowSizeChange(payload.page, payload.pageSize);
         }
     },
     template: `
         <div class="{{classes}}" id="{{id}}">
             <div
-                class="{{prefixCls}}-pagination"
+                class="${prefixCls}-pagination"
                 s-if="{{(paginationPosition === 'top' || paginationPosition === 'both') && pagination}}"
             >
                 <s-pagination
@@ -183,42 +200,22 @@ const List = san.defineComponent({
                     on-showSizeChang="handleShowSizeChange"
                 ></s-pagination>
             </div>
-            <div class="{{prefixCls}}-header" s-if="{{hasHeader() || header}}">
-                {{header}}<slot name="header"></slot>
+            <div class="${prefixCls}-header" s-if="{{hasHeader() || header}}">
+                {{header}}<slot name="header" />
             </div>
-            <s-spin spinning="{{loading}}">
-                <div slot="content">
-                    <div style="min-height: 53px;" s-if="loading"></div>
-                    <div s-if="{{!loading && !hasChildren()}}" class="{{prefixCls}}-empty-text">
-                        <slot name="renderEmpty" s-if="{{hasRenderEmpty()}}"></slot>
-                        <span s-else>没有数据</span>
-                    </div>
-                    <template s-else>
-                        <s-row gutter="{{grid.gutter}}" s-if="{{grid}}">
-                            <s-col
-                                span="{{getGrid(grid, 'column')}}"
-                                xs="{{getGrid(grid, 'xs')}}"
-                                sm="{{getGrid(grid, 'sm')}}"
-                                md="{{getGrid(grid, 'md')}}"
-                                lg="{{getGrid(grid, 'lg')}}"
-                                xl="{{getGrid(grid, 'xl')}}"
-                                xxl="{{getGrid(grid, 'xxl')}}"
-                                s-for="item, index in splitDataSource"
-                            >
-                                <slot name="renderItem" s-bind="{{{item: item, index: index}}}"></slot>
-                            </s-col>
-                        </s-row>
-                        <slot s-for="item in splitDataSource" name="renderItem" s-bind="{{{item: item}}}" s-else></slot>
-                    </template>
-                </div>
+            <s-spin spinning="{{loading}}" s-if="{{hasLoadMore()}}">
+                <div slot="content">${contentTemplate}</div>
             </s-spin>
-            <div class="{{prefixCls}}-footer" s-if="{{hasFooter() || footer}}">
-                {{footer}}<slot name="footer"></slot>
+            <template s-else>
+                ${contentTemplate}
+            </template>
+            <div class="${prefixCls}-footer" s-if="{{hasFooter() || footer}}">
+                {{footer}}<slot name="footer" />
             </div>
-            <slot s-if="{{hasLoadMore()}}" name="loadMore"></slot>
+            <slot s-if="{{hasLoadMore()}}" name="loadMore" />
             <template s-else>
                 <div
-                    class="{{prefixCls}}-pagination"
+                    class="${prefixCls}-pagination"
                     s-if="{{(paginationPosition === 'bottom' || paginationPosition === 'both') && pagination}}"
                 >
                     <s-pagination

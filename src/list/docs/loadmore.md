@@ -12,7 +12,9 @@
             itemLayout="horizontal"
             dataSource="{{list}}"
         >
-            <s-list-item slot="renderItem">
+            <s-list-item slot="renderItem" actions="{{['edit', 'more']}}">
+                <a slot="edit">edit</a>
+                <a slot="more">more</a>
                 <s-skeleton avatar loading="{{item.loading}}" active>
                     <s-list-item-meta description="San Design, a design language for background applications, is refined by Baidu App Team">
                         <s-avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" slot="avatar"></s-avatar>
@@ -100,6 +102,7 @@ export default {
             });
 
             this.data.pop('list');
+            console.log(res);
             res.forEach(item => {
                 this.data.push('list', item);
             });
