@@ -11,16 +11,9 @@ const prefixCls = classCreator('list')();
 
 const Meta = san.defineComponent({
     dataTypes: {
-        className: DataTypes.string,
-        prefixCls: DataTypes.string,
         avatar: DataTypes.string,
         title: DataTypes.string,
         description: DataTypes.string
-    },
-    initData() {
-        return {
-            prefixCls
-        };
     },
     components: {
         's-avatar': Avatar
@@ -35,17 +28,17 @@ const Meta = san.defineComponent({
         return this.sourceSlots.named.description || description;
     },
     template: `
-        <div class="{{prefixCls}}-item-meta {{className}}">
-            <div class="{{prefixCls}}-item-meta-avatar" s-if="{{hasAvatar(avatar)}}">
-                <s-avatar src="{{avatar}}" s-if="{{avatar}}"></s-avatar>
-                <slot name="avatar"></slot>
+        <div class="${prefixCls}-item-meta">
+            <div class="${prefixCls}-item-meta-avatar" s-if="{{hasAvatar(avatar)}}">
+                <s-avatar src="{{avatar}}" s-if="{{avatar}}" />
+                <slot name="avatar" />
             </div>
-            <div class="{{prefixCls}}-item-meta-content" s-if="{{hasDescription(description) || hasTitle(title)}}">
-                <h4 class="{{prefixCls}}-item-meta-title" s-if="{{hasTitle(title)}}">
-                    {{title}}<slot name="title"></slot>
+            <div class="${prefixCls}-item-meta-content" s-if="{{hasDescription(description) || hasTitle(title)}}">
+                <h4 class="${prefixCls}-item-meta-title" s-if="{{hasTitle(title)}}">
+                    {{title}}<slot name="title" />
                 </h4>
-                <div class="{{prefixCls}}-item-meta-description" s-if="{{hasDescription(description)}}">
-                    {{description}}<slot name="description"></slot>
+                <div class="${prefixCls}-item-meta-description" s-if="{{hasDescription(description)}}">
+                    {{description}}<slot name="description" />
                 </div>
             </div>
         </div>
@@ -53,10 +46,8 @@ const Meta = san.defineComponent({
 });
 
 const Item = san.defineComponent({
-    initData() {
-        return {
-            prefixCls
-        };
+    dataTypes: {
+        actions: DataTypes.array
     },
     attached() {
         this.dispatch('santd_list_addItem', this);
@@ -65,19 +56,29 @@ const Item = san.defineComponent({
         return this.sourceSlots.named.extra;
     },
     template: `
-        <div class="{{prefixCls}}-item {{className}}">
+        <div class="${prefixCls}-item">
             <template s-if="{{itemLayout === 'vertical' && hasExtra()}}">
-                <div class="{{prefixCls}}-item-main" key="content">
-                    <slot></slot>
-                    <slot name="actions" s-bind="{{{prefixCls: prefixCls, item: item, index: index}}}"></slot>
+                <div class="${prefixCls}-item-main" key="content">
+                    <slot />
+                    <ul s-if="{{actions}}" class="${prefixCls}-item-action">
+                        <li s-for="action, index in actions">
+                            <slot name="{{action}}" />
+                            <em class="${prefixCls}-item-action-split" s-if="{{index !== actions.length - 1}}" />
+                        </li>
+                    </ul>
                 </div>
-                <div class="{{prefixCls}}-item-extra" key="extra">
-                    <slot name="extra"></slot>
+                <div class="${prefixCls}-item-extra" key="extra">
+                    <slot name="extra" />
                 </div>
             </template>
             <template s-else>
-                <slot></slot>
-                <slot name="actions" s-bind="{{{prefixCls: prefixCls, item: item, index: index}}}"></slot>
+                <slot />
+                <ul s-if="{{actions}}" class="${prefixCls}-item-action">
+                    <li s-for="action, index in actions">
+                        <slot name="{{action}}" />
+                        <em class="${prefixCls}-item-action-split" s-if="{{index !== actions.length - 1}}" />
+                    </li>
+                </ul>
             </template>
         </div>
     `

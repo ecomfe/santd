@@ -15,13 +15,13 @@
             <s-list-item slot="renderItem"><s-text mark>[ITEM]</s-text> {{item}}</s-list-item>
             <div slot="footer">Footer</div>
         </s-list>
-        <h3 style="margin-bottom: 16px;">Small Size</h3>
+        <h3 style="margin: 16px 0;">Small Size</h3>
         <s-list bordered dataSource="{{data}}" size="small">
             <div slot="header">Header</div>
             <s-list-item slot="renderItem">{{item}}</s-list-item>
             <div slot="footer">Footer</div>
         </s-list>
-        <h3 style="margin-bottom: 16px;">Large Size</h3>
+        <h3 style="margin: 16px 0;">Large Size</h3>
         <s-list bordered dataSource="{{data}}" size="large">
             <div slot="header">Header</div>
             <s-list-item slot="renderItem">{{item}}</s-list-item>
@@ -36,7 +36,6 @@ import Typography from 'santd/typography';
 
 export default {
     components: {
-        's-icon': Icon,
         's-list': List,
         's-list-item': List.Item,
         's-text': Typography.Text

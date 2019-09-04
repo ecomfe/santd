@@ -12,7 +12,10 @@
             pagination="{{pagination}}"
             dataSource="{{listData}}"
         >
-            <s-list-item slot="renderItem" key="{{item.title}}">
+            <s-list-item slot="renderItem" key="{{item.title}}" actions="{{['star', 'like', 'message']}}">
+                <span slot="star"><s-icon type="star-o" style="margin-right: 8px;" />156</span>
+                <span slot="like"><s-icon type="like-o" style="margin-right: 8px;" />156</span>
+                <span slot="message"><s-icon type="message" style="margin-right: 8px;" />2</span>
                 <ul slot="actions" class="{{prefixCls}}-item-action">
                     <li><s-icon type="star-o" style="margin-right: 8px;" />156</li>
                     <li><s-icon type="like-o" style="margin-right: 8px;" />156</li>
@@ -25,7 +28,7 @@
                 </s-list-item-meta>
                 {{item.content}}
             </s-list-item>
-            <div slot="footer"><b>footer part</b></div>
+            <div slot="footer"><b>Santd</b> footer part</div>
         </s-list>
     </div>
 </template>
