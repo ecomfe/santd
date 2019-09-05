@@ -14,14 +14,13 @@ import './style/index';
 
 const prefixCls = classCreator('list')();
 
-
 const contentTemplate = `
-    <div s-if="{{!loading && !hasChildren()}}" class="${prefixCls}-empty-text">
-        <slot name="renderEmpty" s-if="{{hasRenderEmpty()}}" />
+    <div s-if="!loading && !hasChildren()" class="${prefixCls}-empty-text">
+        <slot name="renderEmpty" s-if="hasRenderEmpty" />
         <span s-else>没有数据</span>
     </div>
     <template s-else>
-        <s-row gutter="{{grid.gutter}}" s-if="{{grid}}">
+        <s-row gutter="{{grid.gutter}}" s-if="grid">
             <s-col
                 span="{{getGrid(grid, 'column')}}"
                 xs="{{getGrid(grid, 'xs')}}"
@@ -66,28 +65,18 @@ const List = san.defineComponent({
     },
     computed: {
         classes() {
-            const sizeClass = this.data.get('sizeClass');
+            const size = this.data.get('size');
             let classArr = [prefixCls];
 
             this.data.get('itemLayout') === 'vertical' && classArr.push(`${prefixCls}-vertical`);
-            sizeClass && classArr.push(`${prefixCls}-${sizeClass}`);
+            size === 'large' && classArr.push(`${prefixCls}-lg`);
+            size === 'small' && classArr.push(`${prefixCls}-sm`);
             this.data.get('split') && classArr.push(`${prefixCls}-split`);
             this.data.get('bordered') && classArr.push(`${prefixCls}-bordered`);
             this.data.get('loading') && classArr.push(`${prefixCls}-loading`);
             this.data.get('grid') && classArr.push(`${prefixCls}-grid`);
             this.data.get('somethingAfterLastItem') && classArr.push(`${prefixCls}-something-after-last-item`);
             return classArr;
-        },
-        sizeClass() {
-            const size = this.data.get('size');
-
-            if (size === 'large') {
-                return 'lg';
-            }
-            else if (size === 'small') {
-                return 'sm';
-            }
-            return '';
         },
         paginationProps() {
             const dataSource = this.data.get('dataSource');
@@ -114,11 +103,14 @@ const List = san.defineComponent({
         }
     },
     inited() {
-        const pagination = this.data.get('pagination');
-        const paginationObj = pagination && typeof pagination === 'object' ? pagination : {};
+        const pagination = this.data.get('pagination') || {};
 
-        this.data.set('paginationCurrent', paginationObj.defaultCurrent || 1);
-        this.data.set('paginationSize', paginationObj.defaultPageSize || 10);
+        this.data.set('paginationCurrent', pagination.defaultCurrent || 1);
+        this.data.set('paginationSize', pagination.defaultPageSize || 10);
+        this.data.set('hasHeader', !!this.sourceSlots.named.header || this.data.get('header'));
+        this.data.set('hasFooter', !!this.sourceSlots.named.footer || this.data.get('footer'));
+        this.data.set('hasRenderEmpty', !!this.sourceSlots.named.renderEmpty);
+        this.data.set('hasLoadMore', !!this.sourceSlots.named.loadMore);
     },
     components: {
         's-spin': Spin,
@@ -144,53 +136,37 @@ const List = san.defineComponent({
         });
         this.data.set('somethingAfterLastItem', this.somethingAfterLastItem());
     },
-    hasHeader() {
-        return this.sourceSlots.named.header || this.data.get('header');
-    },
-    hasFooter() {
-        return this.sourceSlots.named.footer || this.data.get('footer');
-    },
     hasChildren() {
         const dataSource = this.data.get('dataSource');
 
-        return this.hasHeader() || this.hasFooter() || dataSource.length !== 0;
-    },
-    hasRenderEmpty() {
-        return this.sourceSlots.named.renderEmpty;
-    },
-    hasLoadMore() {
-        return this.sourceSlots.named.loadMore;
+        return this.data.get('hasHeader') || this.data.get('hasFooter') || dataSource.length !== 0;
     },
     somethingAfterLastItem() {
         const loadMore = this.data.get('loadMore');
         const pagination = this.data.get('pagination');
-        return !!(loadMore || pagination || this.hasFooter());
+        return !!(loadMore || pagination || this.data.get('hasFooter'));
     },
     handlePaginationChange(payload) {
-        const pagination = this.data.get('pagination');
+        const pagination = this.data.get('pagination') || {};
 
         this.data.set('paginationCurrent', payload.page);
         this.data.set('paginationSize', payload.pageSize);
 
-        if (pagination && pagination.onChange) {
-            pagination.onChange(payload.page, payload.pageSize);
-        }
+        pagination.onChange && pagination.onChange(payload.page, payload.pageSize);
     },
     handleShowSizeChange(payload) {
-        const pagination = this.data.get('pagination');
+        const pagination = this.data.get('pagination') || {};
 
         this.data.set('paginationCurrent', payload.page);
         this.data.set('paginationSize', payload.pageSize);
 
-        if (pagination && pagination.onShowSizeChange) {
-            pagination.onShowSizeChange(payload.page, payload.pageSize);
-        }
+        pagination.onShowSizeChange && pagination.onShowSizeChange(payload.page, payload.pageSize);
     },
     template: `
         <div class="{{classes}}" id="{{id}}">
             <div
                 class="${prefixCls}-pagination"
-                s-if="{{(paginationPosition === 'top' || paginationPosition === 'both') && pagination}}"
+                s-if="(paginationPosition === 'top' || paginationPosition === 'both') && pagination"
             >
                 <s-pagination
                     total="{{paginationProps.total}}"
@@ -200,23 +176,23 @@ const List = san.defineComponent({
                     on-showSizeChang="handleShowSizeChange"
                 ></s-pagination>
             </div>
-            <div class="${prefixCls}-header" s-if="{{hasHeader() || header}}">
+            <div class="${prefixCls}-header" s-if="hasHeader">
                 {{header}}<slot name="header" />
             </div>
-            <s-spin spinning="{{loading}}" s-if="{{hasLoadMore()}}">
+            <s-spin spinning="{{loading}}" s-if="hasLoadMore">
                 <div slot="content">${contentTemplate}</div>
             </s-spin>
             <template s-else>
                 ${contentTemplate}
             </template>
-            <div class="${prefixCls}-footer" s-if="{{hasFooter() || footer}}">
+            <div class="${prefixCls}-footer" s-if="hasFooter">
                 {{footer}}<slot name="footer" />
             </div>
-            <slot s-if="{{hasLoadMore()}}" name="loadMore" />
+            <slot s-if="hasLoadMore" name="loadMore" />
             <template s-else>
                 <div
                     class="${prefixCls}-pagination"
-                    s-if="{{(paginationPosition === 'bottom' || paginationPosition === 'both') && pagination}}"
+                    s-if="(paginationPosition === 'bottom' || paginationPosition === 'both') && pagination"
                 >
                     <s-pagination
                         total="{{paginationProps.total}}"

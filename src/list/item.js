@@ -15,70 +15,65 @@ const Meta = san.defineComponent({
         title: DataTypes.string,
         description: DataTypes.string
     },
+
     components: {
         's-avatar': Avatar
     },
-    hasAvatar(avatar) {
-        return this.sourceSlots.named.avatar || avatar;
+
+    inited() {
+        this.data.set('hasAvatar', !!(this.sourceSlots.named.avatar || this.data.get('avatar')));
+        this.data.set('hasTitle', !!(this.sourceSlots.named.title || this.data.get('title')));
+        this.data.set('hasDescription', !!(this.sourceSlots.named.description || this.data.get('description')));
     },
-    hasTitle(title) {
-        return this.sourceSlots.named.title || title;
-    },
-    hasDescription(description) {
-        return this.sourceSlots.named.description || description;
-    },
+
     template: `
         <div class="${prefixCls}-item-meta">
-            <div class="${prefixCls}-item-meta-avatar" s-if="{{hasAvatar(avatar)}}">
-                <s-avatar src="{{avatar}}" s-if="{{avatar}}" />
-                <slot name="avatar" />
+            <div class="${prefixCls}-item-meta-avatar" s-if="hasAvatar">
+                <s-avatar src="{{avatar}}" s-if="avatar" />
+                <slot name="avatar" s-else/>
             </div>
-            <div class="${prefixCls}-item-meta-content" s-if="{{hasDescription(description) || hasTitle(title)}}">
-                <h4 class="${prefixCls}-item-meta-title" s-if="{{hasTitle(title)}}">
-                    {{title}}<slot name="title" />
+            <div class="${prefixCls}-item-meta-content" s-if="hasDescription || hasTitle">
+                <h4 class="${prefixCls}-item-meta-title" s-if="hasTitle">
+                    <template s-if="title">{{title}}</template>
+                    <slot name="title" s-else />
                 </h4>
-                <div class="${prefixCls}-item-meta-description" s-if="{{hasDescription(description)}}">
-                    {{description}}<slot name="description" />
+                <div class="${prefixCls}-item-meta-description" s-if="hasDescription">
+                    <template s-if="description">{{description}}</template>
+                    <slot name="description" s-else />
                 </div>
             </div>
         </div>
     `
 });
 
+const actionsTemplate = `
+    <slot />
+    <ul s-if="actions" class="${prefixCls}-item-action">
+        <li s-for="action, index in actions">
+            <slot name="{{action}}" />
+            <em class="${prefixCls}-item-action-split" s-if="index !== actions.length - 1" />
+        </li>
+    </ul>
+`;
+
 const Item = san.defineComponent({
     dataTypes: {
         actions: DataTypes.array
     },
+    inited() {
+        this.data.set('hasExtra', !!this.sourceSlots.named.extra);
+    },
     attached() {
         this.dispatch('santd_list_addItem', this);
     },
-    hasExtra() {
-        return this.sourceSlots.named.extra;
-    },
     template: `
         <div class="${prefixCls}-item">
-            <template s-if="{{itemLayout === 'vertical' && hasExtra()}}">
-                <div class="${prefixCls}-item-main" key="content">
-                    <slot />
-                    <ul s-if="{{actions}}" class="${prefixCls}-item-action">
-                        <li s-for="action, index in actions">
-                            <slot name="{{action}}" />
-                            <em class="${prefixCls}-item-action-split" s-if="{{index !== actions.length - 1}}" />
-                        </li>
-                    </ul>
-                </div>
-                <div class="${prefixCls}-item-extra" key="extra">
-                    <slot name="extra" />
-                </div>
+            <template s-if="itemLayout === 'vertical' && hasExtra">
+                <div class="${prefixCls}-item-main" key="content">${actionsTemplate}</div>
+                <div class="${prefixCls}-item-extra" key="extra"><slot name="extra" /></div>
             </template>
             <template s-else>
-                <slot />
-                <ul s-if="{{actions}}" class="${prefixCls}-item-action">
-                    <li s-for="action, index in actions">
-                        <slot name="{{action}}" />
-                        <em class="${prefixCls}-item-action-split" s-if="{{index !== actions.length - 1}}" />
-                    </li>
-                </ul>
+                ${actionsTemplate}
             </template>
         </div>
     `
