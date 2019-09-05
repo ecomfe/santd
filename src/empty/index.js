@@ -34,15 +34,6 @@ const Empty = inherits(Locale, san.defineComponent({
             simpleEmptyImg
         };
     },
-    computed: {
-        classes() {
-            const image = this.data.get('image') || defaultEmptyImg;
-            let classArr = [prefixCls];
-
-            (image === simpleEmptyImg) && classArr.push(`${prefixCls}-normal`);
-            return classArr;
-        }
-    },
     inited() {
         this.data.set('hasDescription', !!this.sourceSlots.named.description);
     },
@@ -52,12 +43,15 @@ const Empty = inherits(Locale, san.defineComponent({
             : 'empty';
     },
     template: `
-        <div class="{{classes}}">
+        <div class="${prefixCls} {{image === simpleEmptyImg ? '${prefixCls}-normal' : ''}}">
             <div class="${prefixCls}-image" style="{{imageStyle}}">
                 <img s-if="{{image}}" src="{{image}}" alt="{{getAlt(description || locale.description)}}" />
             </div>
-            <p class="${prefixCls}-description" s-if="{{hasDescription || description}}">
-                <slot name="description" />{{description}}
+            <p class="${prefixCls}-description" s-if="{{hasDescription || description !== false}}">
+                <slot name="description" s-if="hasDescription" />
+                <template s-else>
+                    {{description || locale.description}}
+                </template>
             </p>
         </div>
     `
