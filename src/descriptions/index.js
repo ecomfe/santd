@@ -35,7 +35,7 @@ const Descriptions = san.defineComponent({
         return {
             size: 'default',
             bordered: false,
-            layou: 'horizontal',
+            layout: 'horizontal',
             column: defaultColumnMap,
             screens: {}
         };
@@ -79,53 +79,41 @@ const Descriptions = san.defineComponent({
                 }
             }
             return typeof column === 'number' ? column : 3;
-        },
-        childrenArray() {
-            const instance = this.data.get('instance');
-            const column = this.data.get('getColumn');
-
-            if (instance) {
-                let slots = instance.sourceSlots.noname || [];
-                let totalRowSpan = 0;
-                let childrenArray = [];
-                let columnArray = [];
-                slots.filter(slot => slot.tagName).forEach(slot => {
-                    const labelIndex = slot.hotspot.props.label;
-                    const spanIndex = slot.hotspot.props.span;
-                    slot.label = slot.props[labelIndex] && slot.props[labelIndex].raw;
-                    slot.span = slot.props[spanIndex] && slot.props[spanIndex].raw || 1;
-                    columnArray.push(slot);
-
-                    if (slot.props[spanIndex]) {
-                        totalRowSpan += slot.props[spanIndex].expr.value;
-                    }
-                    else {
-                        totalRowSpan += 1;
-                    }
-
-                    if (totalRowSpan >= column) {
-                        childrenArray.push(columnArray);
-                        columnArray = [];
-                        totalRowSpan = 0;
-                    }
-                });
-
-                if (columnArray.length > 0) {
-                    childrenArray.push(columnArray);
-                    columnArray = [];
-                }
-                childrenArray.forEach((children, i) => {
-                    children.forEach((child, j) => {
-                        instance.sourceSlots.named[`slot_${i}_${j}`] = child.children;
-                    });
-                });
-                return childrenArray;
-            }
         }
     },
 
     inited() {
-        this.data.set('instance', this);
+        const column = this.data.get('getColumn');
+        let slots = this.sourceSlots.noname || [];
+        let totalRowSpan = 0;
+        let childrenArray = [];
+        let columnArray = [];
+        slots.filter(slot => slot.tagName).forEach(slot => {
+            const labelIndex = slot.hotspot.props.label;
+            const spanIndex = slot.hotspot.props.span;
+            slot.label = slot.props[labelIndex] && slot.props[labelIndex].expr.value;
+            slot.span = slot.props[spanIndex] && slot.props[spanIndex].expr.value || 1;
+            columnArray.push(slot);
+
+            totalRowSpan += slot.props[spanIndex] ? slot.props[spanIndex].expr.value : 1;
+
+            if (totalRowSpan >= column) {
+                childrenArray.push(columnArray);
+                columnArray = [];
+                totalRowSpan = 0;
+            }
+        });
+
+        if (columnArray.length > 0) {
+            childrenArray.push(columnArray);
+            columnArray = [];
+        }
+        this.data.set('childrenArray', childrenArray);
+        childrenArray.forEach((children, i) => {
+            children.forEach((child, j) => {
+                this.sourceSlots.named[`slot_${i}_${j}`] = child.children;
+            });
+        });
     },
 
     getColSpan(i, j, child) {
@@ -141,17 +129,17 @@ const Descriptions = san.defineComponent({
     },
 
     template: `<div class="{{classes}}">
-        <div class="${prefixCls}-title" s-if="{{title}}">{{title}}</div>
+        <div class="${prefixCls}-title" s-if="title">{{title}}</div>
         <div class="${prefixCls}-view">
             <table>
                 <tbody>
                     <template s-for="children, i in childrenArray">
-                        <template s-if="{{layout === 'vertical'}}">
+                        <template s-if="layout === 'vertical'">
                             <tr class="${prefixCls}-row">
                                 <template s-for="child, j in children">
                                     <td
                                         class="${prefixCls}-item-label"
-                                        colspan="{{getColSpan(i, j, child) * 2 - 1}}" s-if="{{bordered}}"
+                                        colspan="{{getColSpan(i, j, child) * 2 - 1}}" s-if="bordered"
                                     >
                                         {{child.label}}
                                     </td>
@@ -165,13 +153,13 @@ const Descriptions = san.defineComponent({
                                     <td
                                         class="${prefixCls}-item-content"
                                         colspan="{{getColSpan(i, j, child) * 2 - 1}}"
-                                        s-if="{{bordered}}"
+                                        s-if="bordered"
                                     >
-                                        <slot name="slot_{{i}}_{{j}}"></slot>
+                                        <slot name="slot_{{i}}_{{j}}" />
                                     </td>
                                     <td colspan="{{getColSpan(i, j, child)}}" class="${prefixCls}-item" s-else>
                                         <span class="${prefixCls}-item-content">
-                                            <slot name="slot_{{i}}_{{j}}"></slot>
+                                            <slot name="slot_{{i}}_{{j}}" />
                                         </span>
                                     </td>
                                 </template>
@@ -179,7 +167,7 @@ const Descriptions = san.defineComponent({
                         </template>
                         <tr class="${prefixCls}-row" s-else>
                             <template s-for="child, j in children">
-                                <template s-if="{{bordered}}">
+                                <template s-if="bordered">
                                     <th class="${prefixCls}-item-label {{!label && prefixCls + '-item-no-label'}}">
                                         {{child.label}}
                                     </th>
@@ -187,13 +175,13 @@ const Descriptions = san.defineComponent({
                                         class="${prefixCls}-item-content"
                                         colspan="{{getColSpan(i, j, child) * 2 -1}}"
                                     >
-                                        <slot name="slot_{{i}}_{{j}}"></slot>
+                                        <slot name="slot_{{i}}_{{j}}" />
                                     </td>
                                 </template>
                                 <td colspan="{{getColSpan(i, j, child)}}" class="${prefixCls}-item" s-else>
                                     <span class="${prefixCls}-item-label">{{child.label}}</span>
                                     <span class="${prefixCls}-item-content">
-                                        <slot name="slot_{{i}}_{{j}}"></slot>
+                                        <slot name="slot_{{i}}_{{j}}" />
                                     </span>
                                 </td>
                             </template>
