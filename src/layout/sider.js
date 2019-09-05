@@ -141,7 +141,7 @@ export default san.defineComponent({
                 <slot />
             </div>
             <span
-                s-if="{{collapsedWidth === 0 && trigger !== 'null' && mediaChange}}"
+                s-if="collapsedWidth === 0 && trigger !== 'null' && mediaChange"
                 class="${prefixCls}-zero-width-trigger"
                 on-click="toggle"
             >

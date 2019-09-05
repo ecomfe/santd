@@ -10,18 +10,9 @@ import './style/index';
 const generator = function ({suffixCls, tagName}) {
     const prefixCls = classCreator(suffixCls)();
     const template = `
-        <${tagName} class="{{classes}}"><slot /></${tagName}>
+        <${tagName} class="${prefixCls} {{hasSider || siders.length > 0 ? '${prefixCls}-has-sider' : ''}}"><slot /></${tagName}>
     `;
     const baseComponent = san.defineComponent({
-        computed: {
-            classes() {
-                const hasSider = this.data.get('hasSider');
-                let classArr = [prefixCls];
-                let siderRes = typeof hasSider === 'boolean' ? hasSider : this.data.get('siders').length > 0;
-                siderRes && classArr.push(`${prefixCls}-has-sider`);
-                return classArr;
-            }
-        },
         messages: {
             santd_layout_addSider(payload) {
                 this.data.push('siders', payload.value);
@@ -31,13 +22,13 @@ const generator = function ({suffixCls, tagName}) {
                 this.data.set('siders', siders.filter(sider => sider !== payload.value));
             }
         },
+        initData() {
+            return {
+                siders: []
+            };
+        },
         template: template
     });
-    baseComponent.prototype.initData = function () {
-        return {
-            siders: []
-        };
-    };
     return baseComponent;
 };
 
