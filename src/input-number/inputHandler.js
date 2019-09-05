@@ -6,36 +6,41 @@ import san, {DataTypes} from 'san';
 import Icon from '../icon';
 
 export default san.defineComponent({
+    dataTypes: {
+        prefixCls: DataTypes.string,
+        direction: DataTypes.string,
+        disabled: DataTypes.bool
+    },
+
     components: {
         's-icon': Icon
     },
+
     computed: {
         classes() {
             const prefixCls = this.data.get('prefixCls');
-            const upOrDown = this.data.get('klass.direction');
-            const disabledClass = this.data.get('klass.disabled') || false;
-            let classArr = [`${prefixCls}-handler`, `${prefixCls}-handler-${upOrDown}`];
+            const direction = this.data.get('direction');
+            let classArr = [`${prefixCls}-handler`, `${prefixCls}-handler-${direction}`];
 
-            disabledClass && upOrDown === 'up' && classArr.push(`${prefixCls}-handler-up-disabled`);
-            disabledClass && upOrDown === 'down' && classArr.push(`${prefixCls}-handler-down-disabled`);
+            this.data.get('disabled') && direction && classArr.push(`${prefixCls}-handler-${direction}-disabled`);
             return classArr;
         }
     },
 
     valueChange(e) {
-        const upOrDown = this.data.get('klass.direction');
-        this.dispatch('santd_inputnumber_' + upOrDown);
+        this.dispatch('santd_inputnumber_' + this.data.get('direction'));
     },
+
     template: `
         <span
             class="{{classes}}"
             unselectable="unselectable"
             role="button"
             aria-label="Decrease Value"
-            aria-disabled="{{klass.disabled || false}}"
+            aria-disabled="{{disabled || false}}"
             on-click="valueChange"
         >
-            <s-icon type="{{klass.direction}}" class="{{prefixCls}}-handler-{{klass.direction}}-inner"></s-icon>
+            <s-icon type="{{direction}}" class="{{prefixCls}}-handler-{{direction}}-inner" />
         </span>
     `
 });

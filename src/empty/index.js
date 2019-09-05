@@ -45,9 +45,9 @@ const Empty = inherits(Locale, san.defineComponent({
     template: `
         <div class="${prefixCls} {{image === simpleEmptyImg ? '${prefixCls}-normal' : ''}}">
             <div class="${prefixCls}-image" style="{{imageStyle}}">
-                <img s-if="{{image}}" src="{{image}}" alt="{{getAlt(description || locale.description)}}" />
+                <img s-if="image" src="{{image}}" alt="{{getAlt(description || locale.description)}}" />
             </div>
-            <p class="${prefixCls}-description" s-if="{{hasDescription || description !== false}}">
+            <p class="${prefixCls}-description" s-if="hasDescription || description !== false">
                 <slot name="description" s-if="hasDescription" />
                 <template s-else>
                     {{description || locale.description}}
