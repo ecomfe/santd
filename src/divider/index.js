@@ -16,9 +16,7 @@ export default san.defineComponent({
 
     initData() {
         return {
-            type: 'horizontal',
-            orientation: '',
-            hasSlot: false
+            type: 'horizontal'
         };
     },
 
@@ -40,14 +38,12 @@ export default san.defineComponent({
     },
 
     inited() {
-        if (this.sourceSlots.noname) {
-            this.data.set('hasSlot', true);
-        }
+        this.data.set('hasSlot', !!this.sourceSlots.noname);
     },
 
     template: `
         <div class="{{classes}}">
-            <span s-if="{{hasSlot}}" class="${prefixCls}-inner-text">
+            <span s-if="hasSlot" class="${prefixCls}-inner-text">
                 <slot />
             </span>
       </div>
