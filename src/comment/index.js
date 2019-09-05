@@ -15,11 +15,11 @@ const Action = san.defineComponent({
 
 const Comment = san.defineComponent({
     template: `
-    	<div class="${prefixCls}">
+        <div class="${prefixCls}">
             <div class="${prefixCls}-inner">
                 <div class="${prefixCls}-avatar"><slot name="avatar" /></div>
                 <div class="${prefixCls}-content">
-                    <div class="${prefixCls}-content-author" s-if="{{hasAuthor}}">
+                    <div class="${prefixCls}-content-author" s-if="hasAuthor">
                         <span class="${prefixCls}-content-author-name">
                             <slot name="author" />
                         </span>
@@ -30,12 +30,12 @@ const Comment = san.defineComponent({
                     <div class="${prefixCls}-content-detail">
                         <slot name="content" />
                     </div>
-                    <ul class="${prefixCls}-actions" s-if="{{hasActions}}">
+                    <ul class="${prefixCls}-actions" s-if="hasActions">
                         <slot name="actions"/>
                     </ul>
                 </div>
             </div>
-            <div class="${prefixCls}-nested" s-if="{{hasNested}}">
+            <div class="${prefixCls}-nested" s-if="hasNested">
                 <slot name="nested" />
             </div>
         </div>
