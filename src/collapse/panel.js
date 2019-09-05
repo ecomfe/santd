@@ -47,8 +47,7 @@ export default san.defineComponent({
     },
 
     inited() {
-        const hasExpandIcon = this.sourceSlots.named[this.data.get('expandIcon')];
-        this.data.set('hasExpandIcon', !!hasExpandIcon);
+        this.data.set('hasExpandIcon', !!this.sourceSlots.named[this.data.get('expandIcon')]);
     },
 
     attached() {

@@ -5,7 +5,6 @@
 
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
-import Icon from '../icon';
 
 const prefixCls = classCreator('collapse')();
 
@@ -30,7 +29,7 @@ export default san.defineComponent({
             bordered: true,
             accordion: false,
             destroyInactivePanel: false,
-            linkChildren: []
+            panelChildren: []
         };
     },
 
@@ -42,17 +41,15 @@ export default san.defineComponent({
     },
 
     updated() {
-        const linkChildren = this.data.get('linkChildren');
+        const panelChildren = this.data.get('panelChildren');
         const activeKey = this.data.get('activeKey');
         const accordion = this.data.get('accordion');
 
-        linkChildren.forEach((child, index) => {
+        panelChildren.forEach((child, index) => {
             const key = child.data.get('key') || String(index);
 
-            let isActive = false;
-            isActive = accordion ? activeKey[0] === key : activeKey.includes(key);
+            let isActive = accordion ? activeKey[0] === key : activeKey.includes(key);
 
-            child.data.set('key', key);
             child.data.set('panelKey', key);
             child.data.set('prefixCls', prefixCls);
             child.data.set('isActive', isActive);
@@ -62,7 +59,7 @@ export default san.defineComponent({
 
     messages: {
         santd_panel_add(payload) {
-            this.data.push('linkChildren', payload.value);
+            this.data.push('panelChildren', payload.value);
         },
         santd_panel_click(payload) {
             let activeKey = this.data.get('activeKey');
@@ -75,8 +72,7 @@ export default san.defineComponent({
             else {
                 activeKey = [...activeKey];
                 if (activeKey.includes(key)) {
-                    const index = activeKey.indexOf(key);
-                    activeKey.splice(index, 1);
+                    activeKey.splice(activeKey.indexOf(key), 1);
                 }
                 else {
                     activeKey.push(key);
