@@ -91,7 +91,7 @@ export default san.defineComponent({
     template: `
         <div class="${prefixCls}">
             <s-checkbox
-                s-if="{{checkboxs.length}}"
+                s-if="checkboxs.length"
                 s-for="checkbox in checkboxs"
                 key="{{checkbox.key}}"
                 disabled="{{checkbox.disabled}}"
@@ -100,7 +100,7 @@ export default san.defineComponent({
                 class="${prefixCls}-group-item"
                 name="{{name}}"
             >{{checkbox.label}}</s-checkbox>
-            <slot></slot>
+            <slot />
         </div>
     `
 });

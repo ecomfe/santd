@@ -28,7 +28,7 @@ export default san.defineComponent({
     },
 
     inited() {
-        this.data.set('instance', this);
+        this.data.set('hasSlot', !!this.sourceSlots.noname);
     },
 
     attached() {
@@ -104,7 +104,7 @@ export default san.defineComponent({
                 on-click="handleClick"
                 on-change="handleChange"
                 s-ref="checkbox"
-            /><span s-if="{{instance && instance.sourceSlots.noname}}"><slot /></span>
+            /><span s-if="hasSlot"><slot /></span>
         </label>
     `
 });
