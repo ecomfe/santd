@@ -63,7 +63,7 @@ export default san.defineComponent({
             >
                 {{title}}
             </a>
-            <slot/>
+            <slot />
         </div>
     `
 });
