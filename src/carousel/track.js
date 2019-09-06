@@ -8,91 +8,114 @@ import san from 'san';
 export default san.defineComponent({
     template: `
         <div class="slick-track"
-            style="{{trackStyle}}"
+            style="opacity: 1;{{trackStyle}}"
             on-transitionend="animationEnd"
         >
-            <slot></slot>
+            <slot/>
         </div>
     `,
+
     initData() {
         return {
-            slickTracks: [],
-            slickDots: [],
             clientHeight: 0
         };
     },
+
+    inited() {
+        this.slickTracks = [];
+        this.slickDots = [];
+    },
+
+    disposed() {
+        this.slickTracks = null;
+        this.slickDots = null;
+    },
+
     computed: {
-        width() {
-            let clientWidth = this.data.get('clientWidth');
-            let slickTracks = this.data.get('slickTracks');
-            slickTracks.forEach(item => {
-                item.style.width = clientWidth + 'px';
-            });
-        },
         trackStyle() {
             const vertical = this.data.get('vertical');
-            const count = this.data.get('slickTracks').length;
+            const count = this.data.get('tracksCount');
             const easing = this.data.get('easing');
-            const animating = this.data.get('animating');
             const speed = this.data.get('speed');
             const slickIndex = this.data.get('slickIndex');
             const clientHeight = this.data.get('clientHeight');
             const clientWidth = this.data.get('clientWidth');
 
-            let style = {opacity: 1};
+            let style = this.data.get('animating')
+                ? `transition:transform ${speed}ms ${easing} 0s;`
+                : '';
+
             if (vertical) {
                 if (clientHeight) {
-                    style = {
-                        ...style,
-                        transform: `translate3d(0px, -${clientHeight * slickIndex}px, 0px)`,
-                        height: `${clientHeight * count}px`
-                    };
+                    style += `
+                        transform: translate3d(0px, -${clientHeight * slickIndex}px, 0px);
+                        height: ${clientHeight * count}px;
+                    `;
                 }
             }
             else {
-                style = {
-                    ...style,
-                    width: `${clientWidth * count}px`,
-                    transform: `translate3d(-${clientWidth * slickIndex}px, 0px, 0px)`
-                };
+                style += `
+                    width: ${clientWidth * count}px;
+                    transform: translate3d(-${clientWidth * slickIndex}px, 0px, 0px);
+                `;
             }
-            animating && (style.transition = `transform ${speed}ms ${easing} 0s`);
+
             return style;
         }
     },
+
     attached() {
-        let {slickTracks, slickDots, clientHeight} = this.data.get();
-        const children = this.el.children;
-        let postNode = '';
-        let preNode = '';
-        Array.prototype.forEach.call(children, (node, index) => {
+        let {clientHeight, clientWidth} = this.data.get();
+
+        let children = this.el.children;
+        let len = children.length;
+
+        let postNode;
+        let preNode;
+
+        for (let i = 0; i < len; i++) {
+            let node = children[i];
+
             let wrapper = document.createElement('div');
             wrapper.className = 'slick-slide';
-            wrapper.style = 'outline: none;';
+            wrapper.style.outline = 'none';
+            wrapper.style.width = clientWidth + 'px';
             wrapper.tabIndex = -1;
+
             let cNode = node.cloneNode(true);
             cNode.style = 'width: 100%; display: inline-block;';
             wrapper.appendChild(cNode);
+
             this.el.replaceChild(wrapper, node);
-            slickTracks.push(wrapper);
-            slickDots.push(index);
-            if (index === 0) {
+            this.slickTracks.push(wrapper);
+            this.slickDots.push(i);
+
+
+            if (!i) {
                 postNode = wrapper.cloneNode(true);
             }
-            if (index === children.length - 1) {
+
+            if (i === children.length - 1) {
                 preNode = wrapper.cloneNode(true);
-                this.el.insertBefore(preNode, slickTracks[0]);
+                this.el.insertBefore(preNode, this.slickTracks[0]);
                 this.el.appendChild(postNode);
-                slickTracks.unshift(preNode);
-                slickTracks.push(postNode);
+                this.slickTracks.unshift(preNode);
+                this.slickTracks.push(postNode);
             }
+
             clientHeight = clientHeight || wrapper.clientHeight;
-        });
-        this.data.set('slickDots', slickDots);
-        this.data.set('slickTracks', slickTracks);
+        }
+
         this.data.set('clientHeight', clientHeight);
-        this.fire('init', {slickDots, slickTracks, clientHeight});
+        this.data.set('tracksCount', len + 2);
+
+        this.fire('init', {
+            slickDots: this.slickDots, 
+            slickTracks: this.slickTracks, 
+            clientHeight
+        });
     },
+
     animationEnd() {
         this.fire('transitionend');
     }
