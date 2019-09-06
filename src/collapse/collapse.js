@@ -34,18 +34,23 @@ export default san.defineComponent({
     },
 
     inited() {
+        this.panelChildren = [];
+
         const activeKey = this.data.get('activeKey');
         const defaultActiveKey = this.data.get('defaultActiveKey');
 
         this.data.set('activeKey', toArray(activeKey || defaultActiveKey));
     },
 
+    disposed() {
+        this.panelChildren = null;
+    },
+
     updated() {
-        const panelChildren = this.data.get('panelChildren');
         const activeKey = this.data.get('activeKey');
         const accordion = this.data.get('accordion');
 
-        panelChildren.forEach((child, index) => {
+        this.panelChildren.forEach((child, index) => {
             const key = child.data.get('key') || String(index);
 
             let isActive = accordion ? activeKey[0] === key : activeKey.includes(key);
@@ -59,8 +64,9 @@ export default san.defineComponent({
 
     messages: {
         santd_panel_add(payload) {
-            this.data.push('panelChildren', payload.value);
+            this.panelChildren.push(payload.value);
         },
+
         santd_panel_click(payload) {
             let activeKey = this.data.get('activeKey');
             const accordion = this.data.get('accordion');
