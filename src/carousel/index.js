@@ -6,14 +6,14 @@
 import './style/index.less';
 import san from 'san';
 import {classCreator} from '../core/util';
-import Track from './src/track';
+import Track from './track';
 
 const prefixCls = classCreator('carousel')();
 
 export default san.defineComponent({
     template: `
-    	<div class="${prefixCls} {{vertical ? '${prefixCls}-vertical' : ''}}">
-            <div class="slick-slider slick-initialized {{vertical ? 'slick-vertical' : ''}}" style="{{showCompo ? 'opacity: 1' : 'opacity: 0'}}">
+        <div class="${prefixCls} {{vertical ? '${prefixCls}-vertical' : ''}}">
+            <div class="slick-slider slick-initialized {{vertical ? 'slick-vertical' : ''}}" style="opacity:{{showCompo ? '1' : '0'}}">
                 <div class="slick-list"
                     style="{{vertical && clientHeight ? 'height:' + clientHeight + 'px' : ''}}">
                     <s-track
@@ -25,12 +25,11 @@ export default san.defineComponent({
                         animating="{{animating}}"
                         on-init="handleInit"
                         on-transitionend="animationEnd"
-                    ><slot></slot>
+                    ><slot />
                     </s-track>
                 </div>
                 <ul class="slick-dots slick-dots-{{dotPosition}}" style="display: block;" s-if="dots">
-                    <li class="" s-for="dot, index in slickDots"
-                        class="{{dot === curIndex ? 'slick-active' : ''}}">
+                    <li s-for="dot in slickDots" class="{{dot === curIndex ? 'slick-active' : ''}}">
                         <button on-click="handleChange(dot)">{{dot}}</button>
                     </li>
                 </ul>
@@ -44,10 +43,8 @@ export default san.defineComponent({
             curIndex: 0,
             slickIndex: 1,
             slickDots: [],
-            slickTracks: [],
             dontAnimate: false,
             animating: false,
-            vertical: false,
             dots: true,
             easing: 'linear',
             dotPosition: 'bottom',
@@ -66,33 +63,32 @@ export default san.defineComponent({
             return dotPosition === 'left' || dotPosition === 'right';
         }
     },
+
     next() {
         let {curIndex, slickDots} = this.data.get();
-        curIndex = (curIndex + 1) % slickDots.length;
-        this.handleChange(curIndex);
+        this.handleChange((curIndex + 1) % slickDots.length);
     },
+
     prev() {
         let {curIndex, slickDots} = this.data.get();
         curIndex--;
-        curIndex = curIndex > -1 ? curIndex : slickDots.length - 1;
-        this.handleChange(curIndex);
+        this.handleChange(curIndex > -1 ? curIndex : slickDots.length - 1);
     },
+
     goTo(slideNumber = 0) {
         const len = this.data.get('slickDots').length;
         const index = Math.min(Math.max(0, slideNumber), len - 1);
         this.handleChange(index);
     },
-    inited() {
-        this.autoplayTimer = null;
-    },
+
     handleInit(e) {
         this.data.set('slickDots', e.slickDots);
-        this.data.set('slickTracks', e.slickTracks);
         setTimeout(() => {
             this.data.set('clientHeight', e.clientHeight);
             this.data.set('showCompo', true);
         }, 0);
     },
+
     attached() {
         let clientWidth = this.el.clientWidth;
         this.data.set('clientWidth', clientWidth);
@@ -100,43 +96,40 @@ export default san.defineComponent({
         const autoplay = this.data.get('autoplay');
         const autoplaySpeed = this.data.get('autoplaySpeed');
         if (autoplay && !this.autoplayTimer) {
-            this.autoplayTimer = window.setInterval(() => {
-                let curIndex = this.data.get('curIndex');
-                let isLastOne = false;
-                ++curIndex;
-                if (curIndex >= this.data.get('slickDots').length) {
-                    curIndex = 0;
-                    isLastOne = true;
-                }
-                this.handleChange.bind(this)(curIndex, isLastOne);
+            this.autoplayTimer = setInterval(() => {
+                this.handleChange(this.data.get('curIndex') + 1);
             }, autoplaySpeed);
         }
     },
     detached() {
-        this.autoplayTimer && clearInterval(this.autoplayTimer);
-        this.autoplayTimer = null;
+        if (this.autoplayTimer) {
+            clearInterval(this.autoplayTimer);
+            this.autoplayTimer = null;
+        }
     },
-    handleChange(index, isLastOne = false) {
-        const curIndex = this.data.get('curIndex');
+
+    handleChange(index) {
+        let len = this.data.get('slickDots').length;
+        let curIndex = this.data.get('curIndex');
+        let slickIndex = index + 1;
+
+        if (index >= len) {
+            index = 0;
+            setTimeout(() => {
+                this.data.set('slickIndex', 1);
+            }, this.data.get('speed') * 2);
+        }
+
         this.fire('beforeChange', {from: curIndex, to: index});
+
         this.data.set('curIndex', index);
-        this.fire('afterChange', index);
+        this.data.set('slickIndex', slickIndex);
         this.data.set('animating', true);
-        this.setSlickIndex(isLastOne);
+
+        this.fire('afterChange', index);
     },
+
     animationEnd() {
         this.data.set('animating', false);
-    },
-    setSlickIndex(isLastOne) {
-        const curIndex = this.data.get('curIndex');
-        let sindex = curIndex + 1;
-        if (isLastOne) {
-            const {speed, slickDots} = this.data.get();
-            setTimeout(() => {
-                this.data.set('slickIndex', curIndex + 1);
-            }, speed * 2);
-            sindex = slickDots.length + 1;
-        }
-        this.data.set('slickIndex', sindex);
     }
 });

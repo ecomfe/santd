@@ -24,16 +24,16 @@ export default san.defineComponent({
         actions: DataTypes.array
     },
     template: `
-    	<div class="{{cls}}">
-            <div s-if="{{showHeader}}" class="${prefix}-head" style="{{headStyle}}">
+        <div class="{{cls}}">
+            <div s-if="showHeader" class="${prefix}-head" style="{{headStyle}}">
                 <div class="${prefix}-head-wrapper">
-                    <div s-if="{{title}}" class="${prefix}-head-title">{{title}}</div>
-                    <div s-if="{{hasExtra}}" class="${prefix}-extra">
+                    <div s-if="title" class="${prefix}-head-title">{{title}}</div>
+                    <div s-if="hasExtra" class="${prefix}-extra">
                         <slot name="extra" />
                     </div>
                 </div>
                 <s-tabs
-                    s-if="{{tabList && tabList.length}}"
+                    s-if="tabList && tabList.length"
                     activeTabKey="{{activeTabKey}}"
                     defaultActiveKey="{{defaultActiveKey}}"
                     class="${prefix}-head-tabs"
@@ -52,10 +52,10 @@ export default san.defineComponent({
                 <slot name="cover" />
             </div>
             <div class="${prefix}-body" style="{{bodyStyle}}">
-                <s-loadingblock s-if="{{loading}}" />
+                <s-loadingblock s-if="loading" />
                 <slot s-else />
             </div>
-            <ul s-if="{{actions}}" class="${prefix}-actions">
+            <ul s-if="actions" class="${prefix}-actions">
                 <li s-for="action in actions" style="width: {{100 / actions.length}}%">
                     <span><slot name="{{action}}"/></span>
                 </li>
