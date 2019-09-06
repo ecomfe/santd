@@ -29,6 +29,13 @@ export default san.defineComponent({
         <div>
             <head/>
             <basic/>
+            <accordion/>
+            <nest/>
+            <simple/>
+            <custom/>
+            <arrow/>
+            <extra/>
+            <readme/>
         </div>
     `
 });
