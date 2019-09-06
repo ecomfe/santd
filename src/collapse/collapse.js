@@ -83,7 +83,7 @@ export default san.defineComponent({
     },
 
     template: `
-        <div class="${prefixCls} {{!bordered ? '${prefixCls}-borderless' : ''}}" role="{{accordion ? 'tablist' : ''}}">
+        <div class="${prefixCls} {{bordered ? '' : '${prefixCls}-borderless'}}" role="{{accordion ? 'tablist' : ''}}">
             <slot />
         </div>
     `
