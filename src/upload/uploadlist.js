@@ -29,24 +29,24 @@ const FileIcon = san.defineComponent({
         <template s-if="listType === 'picture' || listType === 'picture-card'">
             <div
                 s-if="listType === 'picture-card' && file.status === 'uploading'"
-                class="{{prefixCls}}-list-item-uploading-text"
+                class="${prefixCls}-list-item-uploading-text"
             >{{locale.uploading}}</div>
             <s-icon
                 s-else-if="!file.thumbUrl && !file.url"
-                class="{{prefixCls}}-list-item-thumbnail"
+                class="${prefixCls}-list-item-thumbnail"
                 type="picture"
                 theme="twoTone"
             />
             <a
                 s-else
-                class="{{prefixCls}}-list-item-thumbnail"
+                class="${prefixCls}-list-item-thumbnail"
                 href="{{file.url || file.thumUrl}}"
                 target="_blank"
                 rel="noopener noreferrer"
                 on-click="handlePreview(file, $event)"
             >
                 <img src="{{file.thumbUrl || file.url}}" alt="{{file.name}}" s-if="isImage && (file.thumbUrl || file.url)" />
-                <s-icon type="file" class="{{prefixCls}}-list-item-icon" theme="twoTone" s-else />
+                <s-icon type="file" class="${prefixCls}-list-item-icon" theme="twoTone" s-else />
             </a>
         </template>
         <s-icon s-else type="{{file.status === 'uploading' ? 'loading' : 'paper-clip'}}" />
@@ -67,12 +67,9 @@ export default san.defineComponent({
             const locale = this.data.get('locale');
 
             return fileList.map(file => {
-                if (file.response && typeof file.response === 'string') {
-                    file.message = file.response;
-                }
-                else {
-                    file.message = (file.error && file.error.statusText) || locale.uploadError;
-                }
+                file.message = file.response && file.response === 'string'
+                    ? file.response
+                    : (file.error && file.error.statusText) || locale.uploadError;
                 return {
                     ...file
                 };
@@ -81,7 +78,6 @@ export default san.defineComponent({
     },
     initData() {
         return {
-            prefixCls,
             listType: 'text',
             progressAttr: {
                 strokeWidth: 2,
@@ -137,16 +133,15 @@ export default san.defineComponent({
         's-icon': Icon
     },
     template: `
-        <div class="{{prefixCls}}-list {{prefixCls}}-list-{{listType}}">
+        <div class="${prefixCls}-list ${prefixCls}-list-{{listType}}">
             <div
                 s-for="file in items trackBy file.uid"
-                key="{{file.uid}}"
-                class="{{prefixCls}}-list-item {{prefixCls}}-list-item-{{file.status}}"
+                class="${prefixCls}-list-item ${prefixCls}-list-item-{{file.status}}"
             >
-                <div class="{{prefixCls}}-list-item-info">
+                <div class="${prefixCls}-list-item-info">
                     <s-tooltip title="{{file.message}}" s-if="file.status === 'error'">
                         <s-fileicon
-                            prefixCls="{{prefixCls}}"
+                            prefixCls="${prefixCls}"
                             file="{{file}}"
                             listType="{{listType}}"
                             on-preview="handlePreview"
@@ -155,14 +150,14 @@ export default san.defineComponent({
                             s-if="file.url"
                             target="_blank"
                             rel="noopener noreferrer"
-                            class="{{prefixCls}}-list-item-name"
+                            class="${prefixCls}-list-item-name"
                             title="{{title.name}}"
                             href="{{file.url}}"
                             on-click="handlePreview({file, e: $event})"
                         >{{file.name}}</a>
                         <span
                             s-else
-                            class="{{prefixCls}}-list-item-name"
+                            class="${prefixCls}-list-item-name"
                             title="{{file.name}}"
                             on-click="handlePreview({file, e: $event})"
                         >
@@ -171,7 +166,7 @@ export default san.defineComponent({
                     </s-tooltip>
                     <span s-else>
                         <s-fileicon
-                            prefixCls="{{prefixCls}}"
+                            prefixCls="${prefixCls}"
                             file="{{file}}"
                             listType="{{listType}}"
                             on-preview="handlePreview"
@@ -180,14 +175,14 @@ export default san.defineComponent({
                             s-if="file.url"
                             target="_blank"
                             rel="noopener noreferrer"
-                            class="{{prefixCls}}-list-item-name"
+                            class="${prefixCls}-list-item-name"
                             title="{{title.name}}"
                             href="{{file.url}}"
                             on-click="handlePreview({file, e: $event})"
                         >{{file.name}}</a>
                         <span
                             s-else
-                            class="{{prefixCls}}-list-item-name"
+                            class="${prefixCls}-list-item-name"
                             title="{{file.name}}"
                             on-click="handlePreview({file, e: $event})"
                         >
@@ -197,7 +192,7 @@ export default san.defineComponent({
                 </div>
                 <span
                     s-if="listType === 'picture-card' && file.status !== 'uploading'"
-                    class="{{prefixCls}}-list-item-actions"
+                    class="${prefixCls}-list-item-actions"
                 >
                     <a
                         s-if="showPreviewIcon"
@@ -213,7 +208,7 @@ export default san.defineComponent({
                     <s-icon s-if="showRemoveIcon" type="delete" title="{{locale.removeFile}}" on-click="handleClose(file)" />
                 </span>
                 <s-icon s-else-if="showRemoveIcon" type="close" title="{{locale.removeFile}}" on-click="handleClose(file)" />
-                <div class="{{prefixCls}}-list-item-progress" key="progress" s-if="file.status === 'uploading'">
+                <div class="${prefixCls}-list-item-progress" s-if="file.status === 'uploading'">
                     <s-progress s-if="file.percent" type="line" s-bind="{{progressAttr}}" percent="{{file.percent}}" />
                 </div>
             </div>
