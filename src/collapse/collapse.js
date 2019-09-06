@@ -9,7 +9,7 @@ import {classCreator} from '../core/util';
 const prefixCls = classCreator('collapse')();
 
 
-export default san.defineComponent({
+let Collapse = san.defineComponent({
     dataTypes: {
         activeKey: DataTypes.oneOfType([DataTypes.string, DataTypes.array]),
         defaultActiveKey: DataTypes.oneOfType([DataTypes.string, DataTypes.array]),
@@ -51,7 +51,6 @@ export default san.defineComponent({
             let isActive = accordion ? activeKey[0] === key : activeKey.includes(key);
 
             child.data.set('panelKey', key);
-            child.data.set('prefixCls', prefixCls);
             child.data.set('isActive', isActive);
             child.data.set('accordion', accordion);
         });
@@ -90,3 +89,7 @@ export default san.defineComponent({
         </div>
     `
 });
+
+Collapse.prefixCls = prefixCls;
+
+export default Collapse;

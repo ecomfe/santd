@@ -6,10 +6,10 @@
 import san, {DataTypes} from 'san';
 import Icon from '../icon';
 
+let prefixCls = '';
 
 const PanelContent = san.defineComponent({
     dataTypes: {
-        prefixCls: DataTypes.string,
         isActive: DataTypes.bool,
         destroyInactivePanel: DataTypes.bool,
         forceRender: DataTypes.bool,
@@ -17,10 +17,10 @@ const PanelContent = san.defineComponent({
     },
 
     template: `
-        <div class="{{prefixCls}}-content {{prefixCls}}-content-{{isActive ? 'active' : 'inactive'}}" role="{{role}}">
+        <div class="${prefixCls}-content ${prefixCls}-content-{{isActive ? 'active' : 'inactive'}}" role="{{role}}">
             <div
                 s-if="forceRender || isActive || !destroyInactivePanel"
-                class="{{prefixCls}}-content-box"
+                class="${prefixCls}-content-box"
             >
                 <slot />
             </div>
@@ -28,7 +28,7 @@ const PanelContent = san.defineComponent({
     `
 });
 
-export default san.defineComponent({
+let Panel = san.defineComponent({
     dataTypes: {
         prefixCls: DataTypes.string,
         className: DataTypes.string,
@@ -55,8 +55,7 @@ export default san.defineComponent({
 
     computed: {
         classes() {
-            const prefixCls = this.data.get('prefixCls');
-            let classArr = [`${prefixCls}-item`];
+            let classArr = [];
 
             this.data.get('isActive') && classArr.push(`${prefixCls}-item-active`);
             this.data.get('disabled') && classArr.push(`${prefixCls}-item-disabled`);
@@ -93,9 +92,9 @@ export default san.defineComponent({
     },
 
     template: `
-        <div class="{{classes}}">
+        <div class="${prefixCls}-item {{classes}}">
             <div
-                class="{{prefixCls}}-header {{headerClass}}"
+                class="${prefixCls}-header {{headerClass}}"
                 role="{{accordion ? 'tab': 'button'}}"
                 tabIndex="{{disabled ? -1 : 0}}"
                 aria-expanded="{{isActive}}"
@@ -106,20 +105,19 @@ export default san.defineComponent({
                     s-if="!hasExpandIcon && showArrow"
                     type="{{expandIcon || 'right'}}"
                     rotate="{{isActive ? 90 : 0}}"
-                    class="{{prefixCls}}-arrow"
+                    class="${prefixCls}-arrow"
                 />
                 <slot
                     s-else-if="showArrow"
                     name="{{expandIcon}}"
                     var-isActive="{{isActive}}"
-                    var-prefixCls="{{prefixCls}}"
+                    var-prefixCls="${prefixCls}"
                 />
                 {{header}}<slot name="header" />
-                <div class="{{prefixCls}}-extra"><slot name="extra" /></div>
+                <div class="${prefixCls}-extra"><slot name="extra" /></div>
             </div>
             <s-panelcontent
                 s-if="forceRender || isActive"
-                prefixCls="{{prefixCls}}"
                 forceRender="{{forceRender}}"
                 isActive="{{isActive}}"
                 destroyInactivePanel="{{destroyInactivePanel}}"
@@ -129,3 +127,10 @@ export default san.defineComponent({
         </div>
     `
 });
+
+Panel.initPrefixCls = function (cls) {
+    prefixCls = cls;
+};
+
+
+export default Panel;

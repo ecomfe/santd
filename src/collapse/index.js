@@ -7,5 +7,7 @@ import Collapse from './collapse';
 import Panel from './panel';
 import './style/index.less';
 
+Panel.initPrefixCls(Collapse.prefixCls);
 Collapse.Panel = Panel;
+
 export default Collapse;
