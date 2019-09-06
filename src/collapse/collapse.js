@@ -21,8 +21,7 @@ let Collapse = san.defineComponent({
         return {
             bordered: true,
             accordion: false,
-            destroyInactivePanel: false,
-            panelChildren: []
+            destroyInactivePanel: false
         };
     },
 
@@ -71,7 +70,7 @@ let Collapse = san.defineComponent({
                 activeKey = activeKey[0] === key ? [] : [key];
             }
             else {
-                activeKey = [...activeKey];
+                activeKey = activeKey.slice(0);
                 if (activeKey.includes(key)) {
                     activeKey.splice(activeKey.indexOf(key), 1);
                 }
@@ -90,6 +89,5 @@ let Collapse = san.defineComponent({
     `
 });
 
-Collapse.prefixCls = prefixCls;
 
 export default Collapse;

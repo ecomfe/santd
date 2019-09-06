@@ -4,9 +4,10 @@
  **/
 
 import san, {DataTypes} from 'san';
+import {classCreator} from '../core/util';
 import Icon from '../icon';
 
-let prefixCls = '';
+const prefixCls = classCreator('collapse')();
 
 const PanelContent = san.defineComponent({
     dataTypes: {
@@ -111,7 +112,6 @@ let Panel = san.defineComponent({
                     s-else-if="showArrow"
                     name="{{expandIcon}}"
                     var-isActive="{{isActive}}"
-                    var-prefixCls="${prefixCls}"
                 />
                 {{header}}<slot name="header" />
                 <div class="${prefixCls}-extra"><slot name="extra" /></div>
@@ -127,10 +127,6 @@ let Panel = san.defineComponent({
         </div>
     `
 });
-
-Panel.initPrefixCls = function (cls) {
-    prefixCls = cls;
-};
 
 
 export default Panel;
