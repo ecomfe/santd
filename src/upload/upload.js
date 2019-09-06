@@ -15,58 +15,6 @@ import inherits from '../core/util/inherits';
 
 const prefixCls = classCreator('upload')();
 
-const UploadButton = san.defineComponent({
-    computed: {
-        classes() {
-            const prefixCls = this.data.get('prefixCls');
-            const disabled = this.data.get('disabled');
-            const listType = this.data.get('listType');
-
-            let classArr = [prefixCls, `${prefixCls}-select`, `${prefixCls}-select-${listType}`];
-            disabled && classArr.push(`${prefixCls}-disabled`);
-            return classArr;
-        }
-    },
-    components: {
-        's-upload': Upload
-    },
-    handleStart(params) {
-        this.fire('start', params);
-    },
-    handleError(params) {
-        this.fire('error', params);
-    },
-    handleProgress(params) {
-        this.fire('progress', params);
-    },
-    handleSuccess(params) {
-        this.fire('success', params);
-    },
-    template: `<div class="{{classes}}" style="{{hasChildren ? '' : 'display: none;'}}">
-        <s-upload
-            prefixCls="{{prefixCls}}"
-            action="{{action}}"
-            directory="{{directory}}"
-            beforeUpload="{{beforeUpload}}"
-            customRequest="{{customRequest}}"
-            data="{{data}}"
-            disabled="{{disabled}}"
-            headers="{{headers}}"
-            multiple="{{multiple}}"
-            name="{{name}}"
-            openFileDialogOnClick="{{openFileDialogOnClick}}"
-            beforeUpload="{{beforeUpload}}"
-            s-ref="upload"
-            on-start="handleStart"
-            on-error="handleError"
-            on-progress="handleProgress"
-            on-success="handleSuccess"
-        >
-            <slot />
-        </s-upload>
-    </div>`
-});
-
 const Locale = inherits(san.defineComponent({
     initData() {
         return {
@@ -75,50 +23,52 @@ const Locale = inherits(san.defineComponent({
     }
 }), LocaleReceiver);
 
+const uploadButtonTemplate = `
+<div
+    class="${prefixCls} ${prefixCls}-select ${prefixCls}-select-{{listType}} {{disabled ? '${prefixCls}-disabled': ''}}"
+    style="{{showButton ? '' : 'display:none;'}}"
+>
+    <s-upload
+        showButton="{{showButton}}"
+        prefixCls="${prefixCls}"
+        listType="{{listType}}"
+        action="{{action}}"
+        directory="{{directory}}"
+        beforeUpload="{{beforeUpload}}"
+        customRequest="{{customRequest}}"
+        data="{{data}}"
+        disabled="{{disabled}}"
+        headers="{{headers}}"
+        multiple="{{multiple}}"
+        name="{{name}}"
+        openFileDialogOnClick="{{openFileDialogOnClick}}"
+        beforeUpload="{{beforeUploadFunc(beforeUpload, fileList)}}"
+        s-ref="button"
+        on-start="handleStart"
+        on-error="handleError"
+        on-progress="handleProgress"
+        on-success="handleSuccess"
+    ><slot /></s-upload>
+</div>
+`;
+
+const uploadListTemplate = `
+    <s-uploadlist
+        s-if="showUploadList"
+        listType="{{listType}}"
+        fileList="{{fileList}}"
+        previewFile="{{previewFile}}"
+        showRemoveIcon="{{!disabled && showRemoveIcon}}"
+        showPreviewIcon="{{showPreviewIcon}}"
+        locale="{{locale}}"
+        on-remove="handleManualRemove"
+        on-preview="handlePreview"
+    />
+`;
+
 export default inherits(Locale, san.defineComponent({
-    updated() {
-        const instance = this.data.get('instance');
-        const slotChildren = instance && instance.slotChildren || [];
-        const children = slotChildren.length && slotChildren[0].children || [];
-
-        let result = false;
-        children.forEach(child => {
-            if (child.nodeType === 4 || child.nodeType === 5
-                || (child.nodeType === 2 && child.children.length)
-            ) {
-                result = true;
-            }
-        });
-
-        this.data.set('hasChildren', result);
-    },
     computed: {
-        beforeUploadFunc() {
-            const beforeUpload = this.data.get('beforeUpload');
-            const instance = this.data.get('instance');
-            const prevFileList = this.data.get('fileList');
-
-            return function (file, fileList) {
-                if (!beforeUpload) {
-                    return true;
-                }
-
-                const result = beforeUpload(file, fileList);
-                if (result === false) {
-                    instance.handleChange({
-                        file,
-                        fileList: uniqBy(prevFileList.concat(fileList.map(fileToObject)), item => item.uid)
-                    });
-                    return false;
-                }
-                if (result && result.then) {
-                    return result;
-                }
-                return true;
-            };
-        },
         dragClass() {
-            const prefixCls = this.data.get('prefixCls');
             const fileList = this.data.get('fileList') || [];
             const dragState = this.data.get('dragState');
             const disabled = this.data.get('disabled');
@@ -130,12 +80,12 @@ export default inherits(Locale, san.defineComponent({
             uploadingExsit && classArr.push(`${prefixCls}-drag-uploading`);
             dragState === 'dragover' && classArr.push(`${prefixCls}-drag-hover`);
             disabled && classArr.push(`${prefixCls}-disabled`);
+
             return classArr;
         }
     },
     initData() {
         return {
-            prefixCls,
             type: 'select',
             multiple: false,
             action: '',
@@ -148,27 +98,41 @@ export default inherits(Locale, san.defineComponent({
             listType: 'text',
             disabled: false,
             openFileDialogOnClick: true,
-            dragState: 'drop'
+            dragState: 'drop',
+            showButton: true
         };
     },
     inited() {
-        const fileList = this.data.get('fileList');
-        const defaultFileList = this.data.get('defaultFileList');
-
-        this.data.set('fileList', fileList || defaultFileList || []);
-    },
-    attached() {
-        this.data.set('instance', this);
+        this.data.set('fileList', this.data.get('fileList') || this.data.get('defaultFileList') || []);
     },
     components: {
-        's-uploadbutton': UploadButton,
         's-uploadlist': UploadList,
         's-upload': Upload
+    },
+    beforeUploadFunc(beforeUpload, prevFileList) {
+        return (file, fileList) => {
+            if (!beforeUpload) {
+                return true;
+            }
+
+            const result = beforeUpload(file, fileList);
+            if (result === false) {
+                this.handleChange({
+                    file,
+                    fileList: uniqBy(prevFileList.concat(fileList.map(fileToObject)), item => item.uid)
+                });
+                return false;
+            }
+            if (result && result.then) {
+                return result;
+            }
+            return true;
+        };
     },
     clearProgressTimer() {
         clearInterval(this.progressTimer);
     },
-    autoUpdateProgress(_, file) {
+    autoUpdateProgress(file) {
         const getPercent = genPercentAdd();
         let curPercent = 0;
         this.clearProgressTimer();
@@ -200,7 +164,7 @@ export default inherits(Locale, san.defineComponent({
         });
         // fix ie progress
         if (!window.FormData) {
-            this.autoUpdateProgress(0, targetItem);
+            this.autoUpdateProgress(targetItem);
         }
     },
     handleError({err, ret, file}) {
@@ -302,7 +266,7 @@ export default inherits(Locale, san.defineComponent({
     handleFileDrop(e) {
         this.data.set('dragState', e.type);
     },
-    template: `<span class="{{className}}">
+    template: `<span>
         <template s-if="type === 'drag'">
         <div
             class="{{dragClass}}"
@@ -311,7 +275,7 @@ export default inherits(Locale, san.defineComponent({
             on-dragLeave="handleFileDrop"
         >
             <s-upload
-                prefixCls="{{prefixCls}}"
+                prefixCls="${prefixCls}"
                 listType="{{listType}}"
                 action="{{action}}"
                 directory="{{directory}}"
@@ -323,95 +287,24 @@ export default inherits(Locale, san.defineComponent({
                 multiple="{{multiple}}"
                 name="{{name}}"
                 openFileDialogOnClick="{{openFileDialogOnClick}}"
-                beforeUpload="{{beforeUploadFunc}}"
+                beforeUpload="{{beforeUploadFunc(beforeUpload, fileList)}}"
                 s-ref="button"
-                hasChildren="{{hasChildren}}"
-                className="{{prefixCls}}-btn"
+                class="${prefixCls}-btn"
                 on-start="handleStart"
                 on-error="handleError"
                 on-progress="handleProgress"
                 on-success="handleSuccess"
-            ><div class="{{prefixCls}}-drag-container"><slot/></div></s-upload>
+            ><div class="${prefixCls}-drag-container"><slot /></div></s-upload>
         </div>
-        <s-uploadlist
-            s-if="showUploadList"
-            listType="{{listType}}"
-            fileList="{{fileList}}"
-            previewFile="{{previewFile}}"
-            showRemoveIcon="{{!disabled && showRemoveIcon}}"
-            showPreviewIcon="{{showPreviewIcon}}"
-            locale="{{locale}}"
-            on-remove="handleManualRemove"
-            on-preview="handlePreview"
-        />
+        ${uploadListTemplate}
         </template>
         <template s-else-if="listType === 'picture-card'">
-        <s-uploadlist
-            s-if="showUploadList"
-            listType="{{listType}}"
-            fileList="{{fileList}}"
-            previewFile="{{previewFile}}"
-            showRemoveIcon="{{!disabled && showRemoveIcon}}"
-            showPreviewIcon="{{showPreviewIcon}}"
-            locale="{{locale}}"
-            on-remove="handleManualRemove"
-            on-preview="handlePreview"
-        />
-        <s-uploadbutton
-            prefixCls="{{prefixCls}}"
-            listType="{{listType}}"
-            action="{{action}}"
-            directory="{{directory}}"
-            beforeUpload="{{beforeUpload}}"
-            customRequest="{{customRequest}}"
-            data="{{data}}"
-            disabled="{{disabled}}"
-            headers="{{headers}}"
-            multiple="{{multiple}}"
-            name="{{name}}"
-            openFileDialogOnClick="{{openFileDialogOnClick}}"
-            beforeUpload="{{beforeUploadFunc}}"
-            s-ref="button"
-            hasChildren="{{hasChildren}}"
-            on-start="handleStart"
-            on-error="handleError"
-            on-progress="handleProgress"
-            on-success="handleSuccess"
-        ><slot /></s-uploadbutton>
+            ${uploadListTemplate}
+            ${uploadButtonTemplate}
         </template>
         <template s-else>
-        <s-uploadbutton
-            prefixCls="{{prefixCls}}"
-            listType="{{listType}}"
-            action="{{action}}"
-            directory="{{directory}}"
-            beforeUpload="{{beforeUpload}}"
-            customRequest="{{customRequest}}"
-            data="{{data}}"
-            disabled="{{disabled}}"
-            headers="{{headers}}"
-            multiple="{{multiple}}"
-            name="{{name}}"
-            openFileDialogOnClick="{{openFileDialogOnClick}}"
-            beforeUpload="{{beforeUploadFunc}}"
-            s-ref="button"
-            hasChildren="{{hasChildren}}"
-            on-start="handleStart"
-            on-error="handleError"
-            on-progress="handleProgress"
-            on-success="handleSuccess"
-        ><slot /></s-uploadbutton>
-        <s-uploadlist
-            s-if="showUploadList"
-            listType="{{listType}}"
-            fileList="{{fileList}}"
-            previewFile="{{previewFile}}"
-            showRemoveIcon="{{!disabled && showRemoveIcon}}"
-            showPreviewIcon="{{showPreviewIcon}}"
-            locale="{{locale}}"
-            on-remove="handleManualRemove"
-            on-preview="handlePreview"
-        />
+            ${uploadButtonTemplate}
+            ${uploadListTemplate}
         </template>
     </span>`
 }));

@@ -10,13 +10,12 @@
             action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
             listType="picture-card"
             fileList="{{fileList}}"
+            showButton="{{fileList.length < 3}}"
             on-change="handleChange"
             on-preview="handlePreview"
         >
-            <div s-if="fileList.length < 3">
-                <s-icon type="plus" />
-                <div class="san-upload-text">Upload</div>
-            </div>
+            <s-icon type="plus" />
+            <div class="san-upload-text">Upload</div>
         </s-upload>
         <s-modal visible="{{previewVisible}}" hasFooter="{{false}}" on-cancel="handleCancel">
             <img alt="example" style="width: 100%" src="{{previewImage}}" />

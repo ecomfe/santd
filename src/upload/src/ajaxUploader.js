@@ -31,17 +31,6 @@ export default san.defineComponent({
         withCredentials: DataTypes.bool,
         openFileDialogOnClick: DataTypes.bool
     },
-    computed: {
-        classes() {
-            const prefixCls = this.data.get('prefixCls');
-            const className = this.data.get('className');
-            const disabled = this.data.get('disabled');
-
-            let classArr = [prefixCls, className];
-            disabled && classArr.push(`${prefixCls}-disabled`);
-            return classArr;
-        }
-    },
     initData() {
         return {
             uid: getUid(),
@@ -204,7 +193,7 @@ export default san.defineComponent({
     },
     template: `
         <div
-            class="{{classes}}"
+            class="{{prefixCls}} {{disabled ? prefixCls + '-disabled' : ''}}"
             role="button"
             tabIndex="0"
             on-click="handleClick"
