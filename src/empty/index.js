@@ -9,7 +9,6 @@ import {classCreator} from '../core/util';
 import defaultEmptyImg from './empty.svg';
 import simpleEmptyImg from './simple.svg';
 import LocaleReceiver from '../localeprovider/localereceiver';
-import inherits from '../core/util/inherits';
 
 const prefixCls = classCreator('empty')();
 
@@ -22,30 +21,28 @@ const Locale = san.defineComponent({
 }, LocaleReceiver);
 
 
-const Empty = inherits(Locale, san.defineComponent({
+const Empty = san.defineComponent({
     dataTypes: {
         imageStyle: DataTypes.oneOfType([DataTypes.string, DataTypes.object]),
         image: DataTypes.string,
-        description: DataTypes.oneOfType([DataTypes.string, DataTypes.bool])
+        description: DataTypes.oneOfType([DataTypes.string])
     },
+
     initData() {
         return {
             image: defaultEmptyImg,
             simpleEmptyImg
         };
     },
+
     inited() {
         this.data.set('hasDescription', !!this.sourceSlots.named.description);
     },
-    getAlt(description) {
-        return typeof description === 'string'
-            ? description
-            : 'empty';
-    },
+
     template: `
         <div class="${prefixCls} {{image === simpleEmptyImg ? '${prefixCls}-normal' : ''}}">
             <div class="${prefixCls}-image" style="{{imageStyle}}">
-                <img s-if="image" src="{{image}}" alt="{{getAlt(description || locale.description)}}" />
+                <img s-if="image" src="{{image}}" alt="{{description || locale.description || 'empty'}}" />
             </div>
             <p class="${prefixCls}-description" s-if="hasDescription || description !== false">
                 <slot name="description" s-if="hasDescription" />
@@ -55,7 +52,7 @@ const Empty = inherits(Locale, san.defineComponent({
             </p>
         </div>
     `
-}));
+}, Locale);
 
 Empty.PRESENTED_IMAGE_DFEAULT = defaultEmptyImg;
 Empty.PRESENTED_IMAGE_SIMPLE = simpleEmptyImg;
