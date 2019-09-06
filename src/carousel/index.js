@@ -6,13 +6,13 @@
 import './style/index.less';
 import san from 'san';
 import {classCreator} from '../core/util';
-import Track from './src/track';
+import Track from './track';
 
 const prefixCls = classCreator('carousel')();
 
 export default san.defineComponent({
     template: `
-    	<div class="${prefixCls} {{vertical ? '${prefixCls}-vertical' : ''}}">
+        <div class="${prefixCls} {{vertical ? '${prefixCls}-vertical' : ''}}">
             <div class="slick-slider slick-initialized {{vertical ? 'slick-vertical' : ''}}" style="{{showCompo ? 'opacity: 1' : 'opacity: 0'}}">
                 <div class="slick-list"
                     style="{{vertical && clientHeight ? 'height:' + clientHeight + 'px' : ''}}">
@@ -25,12 +25,11 @@ export default san.defineComponent({
                         animating="{{animating}}"
                         on-init="handleInit"
                         on-transitionend="animationEnd"
-                    ><slot></slot>
+                    ><slot />
                     </s-track>
                 </div>
                 <ul class="slick-dots slick-dots-{{dotPosition}}" style="display: block;" s-if="dots">
-                    <li class="" s-for="dot, index in slickDots"
-                        class="{{dot === curIndex ? 'slick-active' : ''}}">
+                    <li s-for="dot, index in slickDots" class="{{dot === curIndex ? 'slick-active' : ''}}">
                         <button on-click="handleChange(dot)">{{dot}}</button>
                     </li>
                 </ul>
@@ -47,7 +46,6 @@ export default san.defineComponent({
             slickTracks: [],
             dontAnimate: false,
             animating: false,
-            vertical: false,
             dots: true,
             easing: 'linear',
             dotPosition: 'bottom',
@@ -66,25 +64,24 @@ export default san.defineComponent({
             return dotPosition === 'left' || dotPosition === 'right';
         }
     },
+
     next() {
         let {curIndex, slickDots} = this.data.get();
-        curIndex = (curIndex + 1) % slickDots.length;
-        this.handleChange(curIndex);
+        this.handleChange((curIndex + 1) % slickDots.length);
     },
+
     prev() {
         let {curIndex, slickDots} = this.data.get();
         curIndex--;
-        curIndex = curIndex > -1 ? curIndex : slickDots.length - 1;
-        this.handleChange(curIndex);
+        this.handleChange(curIndex > -1 ? curIndex : slickDots.length - 1);
     },
+
     goTo(slideNumber = 0) {
         const len = this.data.get('slickDots').length;
         const index = Math.min(Math.max(0, slideNumber), len - 1);
         this.handleChange(index);
     },
-    inited() {
-        this.autoplayTimer = null;
-    },
+
     handleInit(e) {
         this.data.set('slickDots', e.slickDots);
         this.data.set('slickTracks', e.slickTracks);
@@ -93,6 +90,7 @@ export default san.defineComponent({
             this.data.set('showCompo', true);
         }, 0);
     },
+
     attached() {
         let clientWidth = this.el.clientWidth;
         this.data.set('clientWidth', clientWidth);
@@ -100,7 +98,7 @@ export default san.defineComponent({
         const autoplay = this.data.get('autoplay');
         const autoplaySpeed = this.data.get('autoplaySpeed');
         if (autoplay && !this.autoplayTimer) {
-            this.autoplayTimer = window.setInterval(() => {
+            this.autoplayTimer = setInterval(() => {
                 let curIndex = this.data.get('curIndex');
                 let isLastOne = false;
                 ++curIndex;
@@ -124,9 +122,11 @@ export default san.defineComponent({
         this.data.set('animating', true);
         this.setSlickIndex(isLastOne);
     },
+
     animationEnd() {
         this.data.set('animating', false);
     },
+
     setSlickIndex(isLastOne) {
         const curIndex = this.data.get('curIndex');
         let sindex = curIndex + 1;
