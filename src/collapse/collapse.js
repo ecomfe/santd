@@ -8,13 +8,6 @@ import {classCreator} from '../core/util';
 
 const prefixCls = classCreator('collapse')();
 
-function toArray(activeKey) {
-    let currentActiveKey = activeKey;
-    if (!Array.isArray(currentActiveKey)) {
-        currentActiveKey = currentActiveKey ? [currentActiveKey] : [];
-    }
-    return currentActiveKey;
-}
 
 export default san.defineComponent({
     dataTypes: {
@@ -36,10 +29,12 @@ export default san.defineComponent({
     inited() {
         this.panelChildren = [];
 
-        const activeKey = this.data.get('activeKey');
-        const defaultActiveKey = this.data.get('defaultActiveKey');
+        let activeKey = this.data.get('activeKey') || this.data.get('defaultActiveKey');
+        if (!(activeKey instanceof Array)) {
+            activeKey = [activeKey];
+        }
 
-        this.data.set('activeKey', toArray(activeKey || defaultActiveKey));
+        this.data.set('activeKey', activeKey);
     },
 
     disposed() {
@@ -70,6 +65,7 @@ export default san.defineComponent({
         santd_panel_click(payload) {
             let activeKey = this.data.get('activeKey');
             const accordion = this.data.get('accordion');
+
             const key = payload.value;
 
             if (accordion) {
