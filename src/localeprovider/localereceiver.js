@@ -7,16 +7,11 @@ import san from 'san';
 import defaultLocaleData from './zh_CN';
 
 export default san.defineComponent({
-    initData() {
-        return {
-            componentName: 'global'
-        };
-    },
     computed: {
         locale() {
-            const componentName = this.data.get('componentName');
+            const componentName = this.data.get('componentName') || 'global';
             const defaultLocale = this.data.get('defaultLocale');
-            const locale = defaultLocale || defaultLocaleData[componentName || 'global'];
+            const locale = defaultLocale || defaultLocaleData[componentName];
 
             const sanLocale = this.data.get('localeContext') || defaultLocaleData;
             const localeFromContext = componentName && sanLocale ? sanLocale[componentName] : {};

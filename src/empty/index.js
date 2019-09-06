@@ -20,23 +20,24 @@ const Locale = san.defineComponent({
     }
 }, LocaleReceiver);
 
-
 const Empty = san.defineComponent({
     dataTypes: {
         imageStyle: DataTypes.oneOfType([DataTypes.string, DataTypes.object]),
         image: DataTypes.string,
-        description: DataTypes.oneOfType([DataTypes.string])
+        description: DataTypes.oneOfType([DataTypes.string, DataTypes.bool])
     },
 
     initData() {
         return {
             image: defaultEmptyImg,
-            simpleEmptyImg
+            simpleEmptyImg,
+            ...Locale.prototype.initData()
         };
     },
 
     inited() {
         this.data.set('hasDescription', !!this.sourceSlots.named.description);
+        Locale.prototype.inited();
     },
 
     template: `
