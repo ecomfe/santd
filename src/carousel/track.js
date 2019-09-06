@@ -65,7 +65,7 @@ export default san.defineComponent({
     },
 
     attached() {
-        let {clientHeight, clientWidth} = this.data.get();
+        let clientHeight = this.data.get('clientHeight');
 
         let children = this.el.children;
         let len = children.length;
@@ -79,7 +79,6 @@ export default san.defineComponent({
             let wrapper = document.createElement('div');
             wrapper.className = 'slick-slide';
             wrapper.style.outline = 'none';
-            wrapper.style.width = clientWidth + 'px';
             wrapper.tabIndex = -1;
 
             let cNode = node.cloneNode(true);
@@ -108,6 +107,12 @@ export default san.defineComponent({
 
         this.data.set('clientHeight', clientHeight);
         this.data.set('tracksCount', len + 2);
+
+        this.watch('clientWidth', value => {
+            this.slickTracks.forEach(trackEl => {
+                trackEl.style.width = value + 'px';
+            });
+        });
 
         this.fire('init', {
             slickDots: this.slickDots, 

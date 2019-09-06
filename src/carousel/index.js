@@ -13,7 +13,7 @@ const prefixCls = classCreator('carousel')();
 export default san.defineComponent({
     template: `
         <div class="${prefixCls} {{vertical ? '${prefixCls}-vertical' : ''}}">
-            <div class="slick-slider slick-initialized {{vertical ? 'slick-vertical' : ''}}" style="{{showCompo ? 'opacity: 1' : 'opacity: 0'}}">
+            <div class="slick-slider slick-initialized {{vertical ? 'slick-vertical' : ''}}" style="opacity:{{showCompo ? '1' : '0'}}">
                 <div class="slick-list"
                     style="{{vertical && clientHeight ? 'height:' + clientHeight + 'px' : ''}}">
                     <s-track
@@ -29,7 +29,7 @@ export default san.defineComponent({
                     </s-track>
                 </div>
                 <ul class="slick-dots slick-dots-{{dotPosition}}" style="display: block;" s-if="dots">
-                    <li s-for="dot, index in slickDots" class="{{dot === curIndex ? 'slick-active' : ''}}">
+                    <li s-for="dot in slickDots" class="{{dot === curIndex ? 'slick-active' : ''}}">
                         <button on-click="handleChange(dot)">{{dot}}</button>
                     </li>
                 </ul>
@@ -43,7 +43,6 @@ export default san.defineComponent({
             curIndex: 0,
             slickIndex: 1,
             slickDots: [],
-            slickTracks: [],
             dontAnimate: false,
             animating: false,
             dots: true,
@@ -84,7 +83,6 @@ export default san.defineComponent({
 
     handleInit(e) {
         this.data.set('slickDots', e.slickDots);
-        this.data.set('slickTracks', e.slickTracks);
         setTimeout(() => {
             this.data.set('clientHeight', e.clientHeight);
             this.data.set('showCompo', true);
@@ -99,44 +97,39 @@ export default san.defineComponent({
         const autoplaySpeed = this.data.get('autoplaySpeed');
         if (autoplay && !this.autoplayTimer) {
             this.autoplayTimer = setInterval(() => {
-                let curIndex = this.data.get('curIndex');
-                let isLastOne = false;
-                ++curIndex;
-                if (curIndex >= this.data.get('slickDots').length) {
-                    curIndex = 0;
-                    isLastOne = true;
-                }
-                this.handleChange.bind(this)(curIndex, isLastOne);
+                this.handleChange(this.data.get('curIndex') + 1);
             }, autoplaySpeed);
         }
     },
     detached() {
-        this.autoplayTimer && clearInterval(this.autoplayTimer);
-        this.autoplayTimer = null;
+        if (this.autoplayTimer) {
+            clearInterval(this.autoplayTimer);
+            this.autoplayTimer = null;
+        }
     },
-    handleChange(index, isLastOne = false) {
-        const curIndex = this.data.get('curIndex');
+
+    handleChange(index) {
+        let len = this.data.get('slickDots').length;
+        let curIndex = this.data.get('curIndex');
+        let slickIndex = index + 1;
+
+        if (index >= len) {
+            index = 0;
+            setTimeout(() => {
+                this.data.set('slickIndex', 1);
+            }, this.data.get('speed') * 2);
+        }
+
         this.fire('beforeChange', {from: curIndex, to: index});
+
         this.data.set('curIndex', index);
-        this.fire('afterChange', index);
+        this.data.set('slickIndex', slickIndex);
         this.data.set('animating', true);
-        this.setSlickIndex(isLastOne);
+
+        this.fire('afterChange', index);
     },
 
     animationEnd() {
         this.data.set('animating', false);
-    },
-
-    setSlickIndex(isLastOne) {
-        const curIndex = this.data.get('curIndex');
-        let sindex = curIndex + 1;
-        if (isLastOne) {
-            const {speed, slickDots} = this.data.get();
-            setTimeout(() => {
-                this.data.set('slickIndex', curIndex + 1);
-            }, speed * 2);
-            sindex = slickDots.length + 1;
-        }
-        this.data.set('slickIndex', sindex);
     }
 });
