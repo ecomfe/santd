@@ -4,7 +4,6 @@
  **/
 
 import san, {DataTypes} from 'san';
-import PanelContent from './panelContent';
 import Icon from '../icon';
 
 
@@ -33,7 +32,6 @@ export default san.defineComponent({
     dataTypes: {
         prefixCls: DataTypes.string,
         className: DataTypes.string,
-        id: DataTypes.string,
         header: DataTypes.string,
         headerClass: DataTypes.string,
         showArrow: DataTypes.bool,
@@ -95,7 +93,7 @@ export default san.defineComponent({
     },
 
     template: `
-        <div class="{{classes}}" id="{{id}}">
+        <div class="{{classes}}">
             <div
                 class="{{prefixCls}}-header {{headerClass}}"
                 role="{{accordion ? 'tab': 'button'}}"
@@ -105,13 +103,13 @@ export default san.defineComponent({
                 on-keypress="handleKeyPress"
             >
                 <s-icon
-                    s-if="{{!hasExpandIcon && showArrow}}"
+                    s-if="!hasExpandIcon && showArrow"
                     type="{{expandIcon || 'right'}}"
                     rotate="{{isActive ? 90 : 0}}"
                     class="{{prefixCls}}-arrow"
                 />
                 <slot
-                    s-else-if="{{showArrow}}"
+                    s-else-if="showArrow"
                     name="{{expandIcon}}"
                     var-isActive="{{isActive}}"
                     var-prefixCls="{{prefixCls}}"
@@ -120,7 +118,7 @@ export default san.defineComponent({
                 <div class="{{prefixCls}}-extra"><slot name="extra" /></div>
             </div>
             <s-panelcontent
-                s-if="{{forceRender || isActive}}"
+                s-if="forceRender || isActive"
                 prefixCls="{{prefixCls}}"
                 forceRender="{{forceRender}}"
                 isActive="{{isActive}}"
