@@ -45,4 +45,3 @@ export default san.defineComponent({
     },
     template: '<div><slot /></div>'
 });
-
