@@ -25,8 +25,7 @@ export default san.defineComponent({
     initData() {
         return {
             options: [],
-            disabled: false,
-            childs: []
+            disabled: false
         };
     },
 
@@ -34,6 +33,8 @@ export default san.defineComponent({
         checkboxs() {
             const options = this.data.get('options');
             const value = this.data.get('value') || [];
+            const disabled = this.data.get('disabled');
+
             return options.map(option => {
                 if (typeof option === 'string') {
                     option = {
@@ -41,8 +42,8 @@ export default san.defineComponent({
                         value: option
                     };
                 }
-                option.key = option.value.toString();
-                option.disabled = 'disabled' in option ? option.disabled : this.data.get('disabled');
+
+                option.disabled = option.disabled != null ? option.disabled : disabled;
                 option.checked = value.indexOf(option.value) !== -1;
                 return option;
             });
@@ -50,13 +51,17 @@ export default san.defineComponent({
     },
 
     inited() {
+        this.checkboxs = [];
         this.data.set('value', this.data.get('value') || this.data.get('defaultValue') || []);
     },
 
+    disposed() {
+        this.checkboxs = null;
+    },
+
     updated() {
-        const childs = this.data.get('childs');
         const value = this.data.get('value') || [];
-        childs.length && childs.forEach(child => {
+        this.checkboxs.forEach(child => {
             child.data.set('checked', value.indexOf(child.data.get('value')) !== -1);
             child.data.set('disabled', child.data.get('disabled') || this.data.get('disabled'));
             child.data.set('name', this.data.get('name'));
@@ -66,24 +71,26 @@ export default san.defineComponent({
     messages: {
         santd_checkbox_toggleOption(payload) {
             const option = payload.value;
-            const value = this.data.get('value') || [];
-            const optionIndex = value.indexOf(option.value);
+            const optionIndex = this.data.get('value').indexOf(option.value);
             if (optionIndex === -1) {
-                value.push(option.value);
+                this.data.push('value', option.value);
             }
             else {
-                value.splice(optionIndex, 1);
+                this.data.removeAt('value', optionIndex);
             }
-            this.data.set('value', value);
+            
             this.fire('change', value);
             // 提交数据给form表单使用
-            this.dispatch('UI:form-item-interact', {fieldValue: value, type: 'change'});
+            this.dispatch('UI:form-item-interact', {
+                fieldValue: this.data.get('value'), 
+                type: 'change'
+            });
         },
+
         santd_checkbox_add(payload) {
-            const checkboxs = this.data.get('checkboxs');
             // 当没有options数据的时候才去收集子checkbox
-            if (!checkboxs.length) {
-                this.data.push('childs', payload.value);
+            if (!this.data.get('checkboxs').length) {
+                this.checkboxs.push(payload.value);
             }
         }
     },
@@ -93,7 +100,6 @@ export default san.defineComponent({
             <s-checkbox
                 s-if="checkboxs.length"
                 s-for="checkbox in checkboxs"
-                key="{{checkbox.key}}"
                 disabled="{{checkbox.disabled}}"
                 value="{{checkbox.value}}"
                 checked="{{checkbox.checked}}"
