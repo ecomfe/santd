@@ -79,7 +79,7 @@ export default san.defineComponent({
                 this.data.removeAt('value', optionIndex);
             }
             
-            this.fire('change', value);
+            this.fire('change', option.value);
             // 提交数据给form表单使用
             this.dispatch('UI:form-item-interact', {
                 fieldValue: this.data.get('value'), 
