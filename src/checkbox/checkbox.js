@@ -9,117 +9,6 @@ import './style/index.less';
 
 const prefixCls = classCreator('checkbox')();
 
-const Checkbox = san.defineComponent({
-    DataTypes: {
-        prefixCls: DataTypes.string,
-        name: DataTypes.string,
-        id: DataTypes.string,
-        type: DataTypes.string,
-        defaultChecked: DataTypes.oneOfType([DataTypes.number, DataTypes.bool]),
-        checked: DataTypes.oneOfType([DataTypes.number, DataTypes.bool]),
-        disabled: DataTypes.bool,
-        tabIndex: DataTypes.oneOfType([DataTypes.string, DataTypes.number]),
-        readOnly: DataTypes.bool,
-        autoFocus: DataTypes.bool,
-        value: DataTypes.any
-    },
-
-    initData() {
-        return {
-            prefixCls: 'checkbox',
-            type: 'checkbox',
-            defaultChecked: false
-        };
-    },
-
-    inited() {
-        this.data.set('checked', this.data.get('checked') || this.data.get('defaultChecked'));
-    },
-
-    computed: {
-        classes() {
-            const checked = this.data.get('checked');
-            const disabled = this.data.get('disabled');
-            const prefixCls = this.data.get('prefixCls');
-            let classArr = [prefixCls];
-
-            checked && classArr.push(`${prefixCls}-checked`);
-            disabled && classArr.push(`${prefixCls}-disabled`);
-
-            return classArr;
-        }
-    },
-
-    focus() {
-        const input = this.ref('input');
-        input.focus();
-    },
-
-    blur() {
-        const input = this.ref('input');
-        input.blur();
-    },
-
-    handleClick(e) {
-        this.fire('click', e);
-    },
-
-    handleFocus(e) {
-        this.fire('focus', e);
-    },
-
-    handleBlur(e) {
-        this.fire('blur', e);
-    },
-
-    handleChange(e) {
-        if (this.data.get('disabled')) {
-            return;
-        }
-        let checked = e.target.checked;
-        const type = this.data.get('type');
-        if (checked === this.data.get('checked') && type !== 'radio') {
-            checked = !checked;
-        }
-        this.data.set('checked', checked);
-        this.fire('change', {
-            target: {
-                ...this.data.get(),
-                checked
-            },
-            stopPropagation() {
-                e.stopPropagation();
-            },
-            preventDefault() {
-                e.preventDefault();
-            },
-            nativeEvent: e.nativeEvent
-        });
-    },
-
-    template: `
-        <span class="{{classes}}">
-            <input
-                name="{{name}}"
-                id="{{id}}"
-                type="{{type}}"
-                readonly="{{readOnly}}"
-                disabled="{{disabled}}"
-                tabindex="{{tabIndex}}"
-                class="{{prefixCls}}-input"
-                on-click="handleClick"
-                on-focus="handleFocus"
-                on-blur="handleBlur"
-                on-change="handleChange"
-                autofocus="{{autoFocus}}"
-                s-ref="input"
-                value="{{value}}"
-            />
-            <span class="{{prefixCls}}-inner" />
-        </span>
-    `
-});
-
 export default san.defineComponent({
     template: `
         <label
@@ -127,42 +16,47 @@ export default san.defineComponent({
             on-mouseenter="handleMouseEnter"
             on-mouseleave="handleMouseLeave"
         >
-            <s-checkbox
-                prefixCls="${prefixCls}"
-                type="{{type}}"
-                class="{{indeterminate ? '${prefixCls}-indeterminate' : ''}}"
-                checked="{{checked}}"
-                disabled="{{disabled}}"
-                name="{{name}}"
-                defaultChecked="{{defaultChecked}}"
-                autoFocus="{{autoFocus}}"
-                value="{{value}}"
-                on-focus="handleFocus"
-                on-blur="handleBlur"
-                on-click="handleClick"
-                on-change="handleChange"
-                s-ref="checkbox"
-            /><span s-if="hasSlot"><slot /></span>
+            <span class="{{inputWrapClasses}}">
+                <input
+                    name="{{name}}"
+                    type="{{type}}"
+                    readonly="{{readOnly}}"
+                    disabled="{{disabled}}"
+                    tabindex="{{tabIndex}}"
+                    class="${prefixCls}-input"
+                    on-click="handleClick"
+                    on-focus="handleFocus"
+                    on-blur="handleBlur"
+                    on-change="handleChange"
+                    autofocus="{{autoFocus}}"
+                    s-ref="input"
+                    value="{{value}}"
+                />
+                <span class="${prefixCls}-inner" />
+            </span>
+            <span s-if="hasSlot"><slot /></span>
         </label>
     `,
-    
+
     dataTypes: {
         checked: DataTypes.bool,
         disabled: DataTypes.bool,
         indeterminate: DataTypes.bool
     },
 
-    components: {
-        's-checkbox': Checkbox
-    },
-
     initData() {
         return {
+            type: 'checkbox',
+            defaultChecked: false,
             indeterminate: false
         };
     },
 
     inited() {
+        if (this.data.get('checked') == null) {
+            this.data.set('checked', this.data.get('defaultChecked'));
+        }
+        
         this.data.set('hasSlot', !!this.sourceSlots.noname);
     },
 
@@ -180,11 +74,42 @@ export default san.defineComponent({
             disabled && classArr.push(`${prefixCls}-wrapper-disabled`);
 
             return classArr;
+        },
+
+        inputWrapClasses() {
+            const checked = this.data.get('checked');
+            const disabled = this.data.get('disabled');
+            let classArr = [prefixCls];
+
+            checked && classArr.push(`${prefixCls}-checked`);
+            disabled && classArr.push(`${prefixCls}-disabled`);
+
+            return classArr;
         }
     },
 
     handleChange(e) {
-        this.fire('change', e);
+        if (this.data.get('disabled')) {
+            return;
+        }
+
+        let checked = e.target.checked;
+        if (checked === this.data.get('checked') && this.data.get('type') !== 'radio') {
+            checked = !checked;
+        }
+        this.data.set('checked', checked);
+
+        this.fire('change', {
+            target: this.data.get(),
+            stopPropagation() {
+                e.stopPropagation();
+            },
+            preventDefault() {
+                e.preventDefault();
+            },
+            nativeEvent: e.nativeEvent
+        });
+
         this.dispatch('santd_checkbox_toggleOption', {
             value: this.data.get('value')
         });
@@ -211,10 +136,10 @@ export default san.defineComponent({
     },
 
     focus() {
-        this.ref('checkbox').focus();
+        this.ref('input').focus();
     },
 
     blur() {
-        this.ref('checkbox').blur();
+        this.ref('input').blur();
     }
 });
