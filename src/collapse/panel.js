@@ -118,9 +118,9 @@ let Panel = san.defineComponent({
             </div>
             <s-panelcontent
                 s-if="forceRender || isActive"
-                forceRender="{{forceRender}}"
-                isActive="{{isActive}}"
-                destroyInactivePanel="{{destroyInactivePanel}}"
+                force-render="{{forceRender}}"
+                is-active="{{isActive}}"
+                destroy-inactive-panel="{{destroyInactivePanel}}"
             >
                 <slot />
             </s-panelcontent>
