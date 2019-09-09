@@ -5,30 +5,34 @@
 import './style/index.less';
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
-import renderEmpty from '../core/util/renderEmpty';
+import Empty from '../empty';
 import List from './list';
 import Operation from './operation';
 import inherits from '../core/util/inherits';
 import LocaleReceiver from '../localeprovider/localereceiver';
 
 const prefixCls = classCreator('transfer')();
+const emptyPrefixCls = classCreator('empty')();
 
-const Transfer = san.defineComponent({
+const Locale = inherits(san.defineComponent({
+    initData() {
+        return {
+            componentName: 'Transfer'
+        };
+    }
+}), LocaleReceiver);
+
+export default san.defineComponent({
     computed: {
+        ...Locale.prototype.computed,
         classes() {
-            const className = this.data.get('className');
             const disabled = this.data.get('disabled');
             const renderList = this.data.get('renderList');
-            const prefixCls = this.data.get('prefixCls');
-            let classArr = [prefixCls, className];
+            let classArr = [prefixCls];
+
             disabled && classArr.push(`${prefixCls}-disabled`);
             !!renderList && classArr.push(`${prefixCls}-customize-list`);
             return classArr;
-        },
-        getTitles() {
-            const locale = this.data.get('locale');
-            const titles = this.data.get('titles') || (locale && locale.titles);
-            return titles || ['', ''];
         },
         separateDataSource() {
             const dataSource = this.data.get('dataSource');
@@ -55,28 +59,19 @@ const Transfer = san.defineComponent({
                 leftDataSource,
                 rightDataSource
             };
-        },
-        leftActive() {
-            const targetSelectedKeys = this.data.get('targetSelectedKeys');
-            return targetSelectedKeys.length > 0;
-        },
-        rightActive() {
-            const sourceSelectedKeys = this.data.get('sourceSelectedKeys');
-            return sourceSelectedKeys.length > 0;
         }
     },
     initData() {
         return {
-            prefixCls,
+            ...Locale.prototype.initData(),
             showSelectAll: true,
-            notFoundContent: renderEmpty('Transfer'),
             sourceSelectedKeys: [],
             targetSelectedKeys: [],
             operations: []
         };
     },
     inited() {
-        this.data.set('instance', this);
+        this.data.set('hasFooter', !!this.sourceSlots.named.footer);
     },
     getSelectedKeysName(direction) {
         return direction === 'left' ? 'sourceSelectedKeys' : 'targetSelectedKeys';
@@ -84,19 +79,16 @@ const Transfer = san.defineComponent({
     handleSelectChange(direction, holder) {
         const sourceSelectedKeys = this.data.get('sourceSelectedKeys');
         const targetSelectedKeys = this.data.get('targetSelectedKeys');
-
-        if (direction === 'left') {
-            this.fire('selectChange', {sourceSelectedKeys: holder, targetSelectedKeys});
-        }
-        else {
-            this.fire('selectChange', {targetSelectedKeys: holder, sourceSelectedKeys});
-        }
+        this.fire('selectChange', direction === 'left'
+            ? {sourceSelectedKeys: holder, targetSelectedKeys}
+            : {targetSelectedKeys: holder, sourceSelectedKeys}
+        );
     },
     handleItemSelect(direction, selectedKey, checked) {
         const sourceSelectedKeys = this.data.get('sourceSelectedKeys');
         const targetSelectedKeys = this.data.get('targetSelectedKeys');
 
-        const holder = direction === 'left' ? [...sourceSelectedKeys] : [...targetSelectedKeys];
+        const holder = direction === 'left' ? sourceSelectedKeys.slice(0) : targetSelectedKeys.slice(0);
         const index = holder.indexOf(selectedKey);
         if (index > -1) {
             holder.splice(index, 1);
@@ -183,14 +175,18 @@ const Transfer = san.defineComponent({
     handleClear(direction) {
         this.fire('search', {direction, value: ''});
     },
+    getTitles(titles, index) {
+        const locale = this.data.get('locale');
+        return (titles || (locale && locale.titles) || [])[index] || '';
+    },
     components: {
         's-list': List,
-        's-operation': Operation
+        's-operation': Operation,
+        's-empty': Empty
     },
     template: `<div class="{{classes}}">
         <s-list
-            prefixCls="{{prefixCls}}-list"
-            titleText="{{getTitles[0]}}"
+            titleText="{{getTitles(titles, 0)}}"
             dataSource="{{separateDataSource.leftDataSource}}"
             filterOption="{{filterOption}}"
             style="{{listStyle}}"
@@ -200,11 +196,10 @@ const Transfer = san.defineComponent({
             showSearch="{{showSearch}}"
             body="{{body}}"
             renderList="{{renderList}}"
-            footer="{{footer}}"
+            hasFooter="{{hasFooter}}"
             disabled="{{disabled}}"
             direction="left"
             showSelectAll="{{showSelectAll}}"
-            notFoundContent="{{notFoundContent}}"
             searchPlaceholder="{{locale.searchPlaceholder}}"
             itemUnit="{{locale.itemUnit}}"
             itemsUnit="{{locale.itemsUnit}}"
@@ -213,12 +208,15 @@ const Transfer = san.defineComponent({
             on-scroll="handleScroll('left', $event)"
             on-filter="handleLeftFilter"
             on-clear="handleLeftClear"
-        />
+        >
+            <slot name="footer" slot="footer" />
+            <s-empty slot="notfoundcontent" image="${Empty.PRESENTED_IMAGE_SIMPLE}" class="${emptyPrefixCls}-small"/>
+        </s-list>
         <s-operation
-            className="{{prefixCls}}-operation"
-            rightActive="{{rightActive}}"
+            class="${prefixCls}-operation"
+            rightActive="{{sourceSelectedKeys.length > 0}}"
             rightArrowText="{{operations[0]}}"
-            leftActive="{{leftActive}}"
+            leftActive="{{targetSelectedKeys.length > 0}}"
             leftArrowText="{{operations[1]}}"
             style="{{operationStyle}}"
             disabled="{{disabled}}"
@@ -226,8 +224,7 @@ const Transfer = san.defineComponent({
             on-moveToRight="handleMoveTo('right')"
         />
         <s-list
-            prefixCls="{{prefixCls}}-list"
-            titleText="{{getTitles[1]}}"
+            titleText="{{getTitles(titles, 1)}}"
             dataSource="{{separateDataSource.rightDataSource}}"
             filterOption="{{filterOption}}"
             style="{{listStyle}}"
@@ -236,12 +233,11 @@ const Transfer = san.defineComponent({
             render="{{render}}"
             showSearch="{{showSearch}}"
             body="{{body}}"
-            footer="{{footer}}"
+            hasFooter="{{hasFooter}}"
             renderList="{{renderList}}"
             disabled="{{disabled}}"
             direction="right"
             showSelectAll="{{showSelectAll}}"
-            notFoundContent="{{notFoundContent}}"
             searchPlaceholder="{{locale.searchPlaceholder}}"
             itemUnit="{{locale.itemUnit}}"
             itemsUnit="{{locale.itemsUnit}}"
@@ -250,16 +246,9 @@ const Transfer = san.defineComponent({
             on-scroll="handleScroll('right', $event)"
             on-filter="handleRightFilter"
             on-clear="handleRightClear"
-        />
+        >
+            <slot name="footer" slot="footer" />
+            <s-empty slot="notfoundcontent" image="${Empty.PRESENTED_IMAGE_SIMPLE}" class="${emptyPrefixCls}-small"/>
+        </s-list>
     </div>`
-});
-
-const Locale = inherits(san.defineComponent({
-    initData() {
-        return {
-            componentName: 'Transfer'
-        };
-    }
-}), LocaleReceiver);
-
-export default inherits(Locale, Transfer);
+}, Locale);

@@ -16,7 +16,7 @@ export default san.defineComponent({
         's-button': Button
     },
     template: `
-        <div class="{{className}}">
+        <div>
             <s-button
                 type="primary"
                 size="small"

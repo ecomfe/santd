@@ -13,9 +13,14 @@
             on-change="handleChange"
             operations="{{['to Right', 'to Left']}}"
             listStyle="{{listStyle}}"
-            footer="{{footer}}"
             showSearch
-        />
+        >
+            <span slot="footer">
+                <s-button size="small" style="float: right; margin: 5px;" on-click="getMock">
+                    reload
+                </s-button>
+            </span>
+        </s-transfer>
     </div>
 </template>
 <script>
@@ -32,20 +37,7 @@ export default {
             render(item) {
                 return item.title + '-' + item.description;
             },
-            listStyle: 'width: 250px; height: 300px;',
-            footer() {
-                return san.defineComponent({
-                    components: {
-                        's-button': Button
-                    },
-                    handleClick: that.getMock.bind(that),
-                    template: `<span>
-                        <s-button size="small" style="float: right; margin: 5px;" on-click="handleClick">
-                            reload
-                        </s-button>
-                    </span>`
-                });
-            }
+            listStyle: 'width: 250px; height: 300px;'
         };
     },
     attached() {
@@ -70,7 +62,8 @@ export default {
         this.data.set('targetKeys', targetKeys);
     },
     components: {
-        's-transfer': Transfer
+        's-transfer': Transfer,
+        's-button': Button
     },
     handleChange({targetKeys}) {
         this.data.set('targetKeys', targetKeys);

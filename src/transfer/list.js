@@ -3,10 +3,12 @@
  * @author mayihui@baidu.com
  */
 import san, {DataTypes} from 'san';
+import {classCreator} from '../core/util';
 import Checkbox from '../checkbox';
 import defaultRenderList from './renderListBody';
 import Search from './search';
 
+const prefixCls = classCreator('transfer')('list');
 const defaultRender = function () {
     return null;
 };
@@ -34,7 +36,6 @@ const matchFilter = function (text, item, filterValue, filterOption) {
 
 export default san.defineComponent({
     dataTypes: {
-        prefixCls: DataTypes.string,
         titleText: DataTypes.string,
         dataSource: DataTypes.array,
         filterOption: DataTypes.func,
@@ -42,7 +43,6 @@ export default san.defineComponent({
         render: DataTypes.func,
         showSearch: DataTypes.bool,
         searchPlaceholder: DataTypes.string,
-        notFoundContent: DataTypes.func,
         itemUnit: DataTypes.string,
         itemsUnit: DataTypes.string,
         body: DataTypes.func,
@@ -59,20 +59,6 @@ export default san.defineComponent({
         };
     },
     computed: {
-        classes() {
-            const prefixCls = this.data.get('prefixCls');
-            const footer = this.data.get('footer');
-            let classArr = [prefixCls];
-            !!footer && classArr.push(`${prefixCls}-with-footer`);
-            return classArr;
-        },
-        bodyClasses() {
-            const prefixCls = this.data.get('prefixCls');
-            const showSearch = this.data.get('showSearch');
-            let classArr = [`${prefixCls}-body`];
-            showSearch && classArr.push(`${prefixCls}-body-with-search`);
-            return classArr;
-        },
         getFilteredItems() {
             const dataSource = this.data.get('dataSource');
             const filterValue = this.data.get('filterValue');
@@ -132,22 +118,6 @@ export default san.defineComponent({
                     customize
                 };
             }
-        },
-        injectNotFoundContent() {
-            const instance = this.data.get('instance');
-            const notFoundContent = this.data.get('notFoundContent');
-
-            if (notFoundContent && instance) {
-                instance.components.notfoundcontent = notFoundContent;
-            }
-        },
-        injectFooter() {
-            const footer = this.data.get('footer');
-            const instance = this.data.get('instance');
-
-            if (instance && footer) {
-                instance.components.footer = footer();
-            }
         }
     },
     inited() {
@@ -179,8 +149,8 @@ export default san.defineComponent({
         's-checkbox': Checkbox,
         's-search': Search
     },
-    template: `<div class="{{classes}}">
-        <div class="{{prefixCls}}-header">
+    template: `<div class="${prefixCls} {{hasFooter ? '${prefixCls}-with-footer' : ''}}">
+        <div class="${prefixCls}-header">
             <s-checkbox
                 s-if="showSelectAll !== false"
                 disabled="{{disabled}}"
@@ -188,18 +158,18 @@ export default san.defineComponent({
                 indeterminate="{{getCheckStatus === 'part'}}"
                 on-change="handleItemSelectAll"
             />
-            <span class="{{prefixCls}}-header-selected">
+            <span class="${prefixCls}-header-selected">
                 <span>
                     {{checkedKeys.length > 0 ? checkedKeys.length + '/' : ''}}
                     {{getFilteredItems.filteredItems.length}} {{dataSource.length > 1 ? itemsUnit : itemUnit}}
                 </span>
-                <span class="{{prefixCls}}-header-title">{{titleText}}</span>
+                <span class="${prefixCls}-header-title">{{titleText}}</span>
             </span>
         </div>
-        <div class="{{bodyClasses}}">
-            <div s-if="showSearch" class="{{prefixCls}}-body-search-wrapper">
+        <div class="${prefixCls}-body {{showSearch ? '${prefixCls}-body-with-search' : ''}}">
+            <div s-if="showSearch" class="${prefixCls}-body-search-wrapper">
                 <s-search
-                    prefixCls="{{prefixCls}}-search"
+                    prefixCls="${prefixCls}-search"
                     placeholder="{{searchPlaceholder}}"
                     value="{{filterValue}}"
                     disabled="{{disabled}}"
@@ -207,9 +177,9 @@ export default san.defineComponent({
                     on-clear="handleClear"
                 />
             </div>
-            <div className="{{prefixCls}}-body-customize-wrapper" s-if="injectBodyNode.customize">
+            <div className="${prefixCls}-body-customize-wrapper" s-if="injectBodyNode.customize">
                 <bodycontent
-                    prefixCls="{{prefixCls}}"
+                    prefixCls="${prefixCls}"
                     direction="{{direction}}"
                     filteredItems="{{getFilteredItems.filteredItems}}"
                     disabled="{{disabled}}"
@@ -224,7 +194,7 @@ export default san.defineComponent({
             <template s-else>
                 <bodycontent
                     s-if="getFilteredItems.filteredItems.length"
-                    prefixCls="{{prefixCls}}"
+                    prefixCls="${prefixCls}"
                     direction="{{direction}}"
                     filteredItems="{{getFilteredItems.filteredItems}}"
                     disabled="{{disabled}}"
@@ -235,9 +205,9 @@ export default san.defineComponent({
                     on-itemSelectAll="handleItemSelectAll"
                     on-scroll="handleScroll"
                 />
-                <div s-else class="{{prefixCls}}-body-not-found"><notfoundcontent /></div>
+                <div s-else class="${prefixCls}-body-not-found"><slot name="notfoundcontent" /></div>
             </template>
         </div>
-        <div class="{{prefixCls}}-footer" s-if="footer"><footer /></div>
+        <div class="${prefixCls}-footer" s-if="hasFooter"><slot name="footer" /></div>
     </div>`
 });
