@@ -53,10 +53,7 @@ export default san.defineComponent({
     },
 
     inited() {
-        if (this.data.get('checked') == null) {
-            this.data.set('checked', this.data.get('defaultChecked'));
-        }
-        
+        this.data.set('checked', this.data.get('checked') || this.data.get('defaultChecked'));
         this.data.set('hasSlot', !!this.sourceSlots.noname);
     },
 
@@ -68,10 +65,12 @@ export default san.defineComponent({
         classes() {
             const checked = this.data.get('checked');
             const disabled = this.data.get('disabled');
+            const indeterminate = this.data.get('indeterminate');
 
             let classArr = [`${prefixCls}-wrapper`];
             checked && classArr.push(`${prefixCls}-wrapper-checked`);
             disabled && classArr.push(`${prefixCls}-wrapper-disabled`);
+            indeterminate && classArr.push(`${prefixCls}-indeterminate`);
 
             return classArr;
         },
@@ -94,7 +93,7 @@ export default san.defineComponent({
         }
 
         let checked = e.target.checked;
-        if (checked === this.data.get('checked') && this.data.get('type') !== 'radio') {
+        if (checked === this.data.get('checked')) {
             checked = !checked;
         }
         this.data.set('checked', checked);

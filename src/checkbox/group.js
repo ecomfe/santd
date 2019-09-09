@@ -78,11 +78,12 @@ export default san.defineComponent({
             else {
                 this.data.removeAt('value', optionIndex);
             }
-            
-            this.fire('change', option.value);
+
+            // 这里跟ant保持一致，返回包含所有数据的数组
+            this.fire('change', this.data.get('value'));
             // 提交数据给form表单使用
             this.dispatch('UI:form-item-interact', {
-                fieldValue: this.data.get('value'), 
+                fieldValue: this.data.get('value'),
                 type: 'change'
             });
         },
