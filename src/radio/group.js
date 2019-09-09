@@ -33,19 +33,23 @@ export default san.defineComponent({
     computed: {
         radios() {
             const options = this.data.get('options');
-            const value = this.data.get('value') || [];
+            const value = this.data.get('value');
+            const disabled = this.data.get('disabled');
+
             return options.map(option => {
-                if (typeof option === 'string') {
-                    option = {
+                let radioOption = typeof option === 'string'
+                    ? {
                         label: option,
                         value: option
+                    }
+                    : {
+                        label: option.label,
+                        value: option.value
                     };
-                }
-                option.disabled = 'disabled' in option ? option.disabled : this.data.get('disabled');
-                option.checked = (value === option.value);
-                return {
-                    ...option
-                };
+
+                radioOption.disabled = option.disabled != null ? option.disabled : disabled;
+                radioOption.checked = (value === option.value);
+                return radioOption;
             });
         }
     },
@@ -61,11 +65,13 @@ export default san.defineComponent({
 
     updated() {
         const value = this.data.get('value');
+        const disabled = this.data.get('disabled');
+        const name = this.data.get('name');
+
         this.radios && this.radios.forEach(child => {
             child.data.set('checked', value === child.data.get('value'));
-            child.data.set('disabled', 'disabled' in child.data.get()
-                ? child.data.get('disabled') : this.data.get('disabled'));
-            child.data.set('name', this.data.get('name') || this.data.get('id'));
+            child.data.set('disabled', child.data.get('disabled') || disabled);
+            child.data.set('name', name);
         });
     },
 
@@ -95,7 +101,7 @@ export default san.defineComponent({
                 disabled="{{radio.disabled}}"
                 value="{{radio.value}}"
                 checked="{{radio.checked}}"
-                name="{{name || id}}"
+                name="{{name}}"
             >{{radio.label}}</s-radio>
             <slot />
         </div>
