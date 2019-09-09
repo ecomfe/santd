@@ -17,9 +17,11 @@ export default san.defineComponent({
         disabled: DataTypes.bool,
         name: DataTypes.string
     },
+
     components: {
         's-radio': Radio
     },
+
     initData() {
         return {
             buttonStyle: 'outline',
@@ -28,6 +30,7 @@ export default san.defineComponent({
             childs: []
         };
     },
+
     computed: {
         radios() {
             const options = this.data.get('options');
@@ -39,7 +42,6 @@ export default san.defineComponent({
                         value: option
                     };
                 }
-                option.key = option.value.toString();
                 option.disabled = 'disabled' in option ? option.disabled : this.data.get('disabled');
                 option.checked = (value === option.value);
                 return {
@@ -48,9 +50,11 @@ export default san.defineComponent({
             });
         }
     },
+
     inited() {
         this.data.set('value', this.data.get('value') || this.data.get('defaultValue') || '');
     },
+
     updated() {
         const childs = this.data.get('childs');
         const value = this.data.get('value');
@@ -61,6 +65,7 @@ export default san.defineComponent({
             child.data.set('name', this.data.get('name') || this.data.get('id'));
         });
     },
+
     messages: {
         santd_radio_toggleOption(payload) {
             const option = payload.value;
@@ -76,13 +81,13 @@ export default san.defineComponent({
             }
         }
     },
+
     template: `
         <div class="${prefixCls}-group ${prefixCls}-group-{{buttonStyle}} {{size ? '${prefixCls}-group-' + size : ''}}">
             <s-radio
                 s-if="{{radios.length}}"
                 s-for="radio in radios"
                 prefixCls="${prefixCls}"
-                key="{{radio.key}}"
                 disabled="{{radio.disabled}}"
                 value="{{radio.value}}"
                 checked="{{radio.checked}}"
