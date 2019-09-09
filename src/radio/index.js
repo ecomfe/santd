@@ -10,5 +10,4 @@ import Button from './radioButton';
 Radio.Group = Group;
 Radio.Button = Button;
 
-// export {Group, Button};
 export default Radio;
