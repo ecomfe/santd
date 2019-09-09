@@ -12,7 +12,7 @@ import {classCreator, getComponentChildren} from '../core/util';
 import inherits from '../core/util/inherits';
 import LocaleReceiver from '../localeprovider/localereceiver';
 
-const prefix = classCreator('typography')();
+const prefixCls = classCreator('typography')();
 
 const isStyleSupport = function (styleName) {
     if (typeof window !== 'undefined' && window.document && window.document.documentElement) {
@@ -34,19 +34,19 @@ const Locale = inherits(san.defineComponent({
 
 const create = function (tag) {
     const content = `
-        <strong s-if="strong"><slot/></strong>
-        <u s-elif="underline"><slot/></u>
-        <del s-elif="delete"><slot/></del>
-        <code s-elif="code"><slot/></code>
-        <mark s-elif="mark"><slot/></mark>
-        <slot s-else/>
-        <s-tooltip title="{{copied ? locale.copied : locale.copy}}" s-if="{{copyable}}">
+        <strong s-if="strong"><slot /></strong>
+        <u s-elif="underline"><slot /></u>
+        <del s-elif="delete"><slot /></del>
+        <code s-elif="code"><slot /></code>
+        <mark s-elif="mark"><slot /></mark>
+        <slot s-else />
+        <s-tooltip title="{{copied ? locale.copied : locale.copy}}" s-if="copyable">
             <button
-                class="${prefix}-copy"
+                class="${prefixCls}-copy"
                 style="border: 0px; background: transparent; padding: 0px; line-height: inherit;"
                 s-if="copyable"
                 on-click="handleCopy">
-                <s-icon type="{{copied ? 'check' : 'copy'}}"></s-icon>
+                <s-icon type="{{copied ? 'check' : 'copy'}}" />
             </button>
         </s-tooltip>
     `;
@@ -75,11 +75,7 @@ const create = function (tag) {
         computed: {
             getEllipsis() {
                 const ellipsis = this.data.get('ellipsis');
-                if (!ellipsis) {
-                    return {};
-                }
-
-                return {
+                return !ellipsis ? {} : {
                     rows: 1,
                     expandable: false,
                     ...(typeof ellipsis === 'object' ? ellipsis : null)
@@ -110,14 +106,15 @@ const create = function (tag) {
                 const cssTextOverflow = rows === 1 && cssEllipsis;
                 const cssLineClamp = rows && rows > 1 && cssEllipsis;
 
-                let classArr = [prefix];
-                type === 'secondary' && classArr.push(`${prefix}-secondary`);
-                type === 'warning' && classArr.push(`${prefix}-warning`);
-                type === 'danger' && classArr.push(`${prefix}-danger`);
-                disabled && classArr.push(`${prefix}-disabled`);
-                rows && classArr.push(`${prefix}-ellipsis`);
-                cssTextOverflow && classArr.push(`${prefix}-ellipsis-single-line`);
-                cssLineClamp && classArr.push(`${prefix}-ellipsis-multiple-line`);
+                let classArr = [prefixCls];
+                type === 'secondary' && classArr.push(`${prefixCls}-secondary`);
+                type === 'warning' && classArr.push(`${prefixCls}-warning`);
+                type === 'danger' && classArr.push(`${prefixCls}-danger`);
+                disabled && classArr.push(`${prefixCls}-disabled`);
+                rows && classArr.push(`${prefixCls}-ellipsis`);
+                cssTextOverflow && classArr.push(`${prefixCls}-ellipsis-single-line`);
+                cssLineClamp && classArr.push(`${prefixCls}-ellipsis-multiple-line`);
+
                 return classArr;
             }
         },
@@ -132,10 +129,8 @@ const create = function (tag) {
             };
 
             if (copyConfig.text === undefined) {
-                let textnode = getComponentChildren(this.children,
-                    item => item.nodeType === NodeType.TEXT);
-                copyConfig.text = textnode.reduce(
-                    (total, cur) => !/^\n\s*$/g.test(cur.content) ? (total + cur.content) : total, '');
+                let textnode = getComponentChildren(this.children, item => item.nodeType === NodeType.TEXT);
+                copyConfig.text = textnode.reduce((total, cur) => !/^\n\s*$/g.test(cur.content) ? (total + cur.content) : total, '');
             }
             copy(copyConfig.text || '');
             copyConfig.onCopy && typeof copyConfig.onCopy === 'function' && copyConfig.onCopy();

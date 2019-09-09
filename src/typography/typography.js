@@ -7,12 +7,10 @@ import './style/index.less';
 import san from 'san';
 import {classCreator} from '../core/util';
 
-const prefix = classCreator('typography')();
+const prefixCls = classCreator('typography')();
 
 export default san.defineComponent({
     template: `
-    	<article class="${prefix}">
-            <slot/>
-        </article>
+        <article class="${prefixCls}"><slot /></article>
     `
 });
