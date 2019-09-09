@@ -7,7 +7,7 @@
 <template>
     <div>
         <div>
-            <s-group defaultValue="a" size="large">
+            <s-group defaultValue="a" size="large" name="group1">
                 <s-button value="a">Hangzhou</s-button>
                 <s-button value="b">Shanghai</s-button>
                 <s-button value="c">Beijing</s-button>
@@ -15,7 +15,7 @@
             </s-group>
         </div>
         <div style="margin-top: 16px;">
-            <s-group defaultValue="a">
+            <s-group defaultValue="a" name="group2">
                 <s-button value="a">Hangzhou</s-button>
                 <s-button value="b">Shanghai</s-button>
                 <s-button value="c">Beijing</s-button>
@@ -23,7 +23,7 @@
             </s-group>
         </div>
         <div style="margin-top: 16px;">
-            <s-group defaultValue="a" size="small">
+            <s-group defaultValue="a" size="small" name="group3">
                 <s-button value="a">Hangzhou</s-button>
                 <s-button value="b">Shanghai</s-button>
                 <s-button value="c">Beijing</s-button>

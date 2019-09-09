@@ -33,8 +33,8 @@ export default san.defineComponent({
             <desc/>
             <basic/>
             <disabled/>
-            <group/>
             <vertical/>
+            <group/>
             <groupoptions/>
             <groupwithname/>
             <button/>

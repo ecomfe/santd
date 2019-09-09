@@ -39,7 +39,7 @@ export default {
     },
     handleChange(e) {
         console.log('radio checked', e.target.value);
-        this.data.set('value', e.target.value);
+        this.data.set('value', Number(e.target.value));
     }
 }
 </script>

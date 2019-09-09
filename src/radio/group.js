@@ -11,8 +11,8 @@ const prefixCls = classCreator('radio')();
 
 export default san.defineComponent({
     DataTypes: {
-        defaultValue: DataTypes.array,
-        value: DataTypes.array,
+        defaultValue: DataTypes.oneOf([DataTypes.string, DataTypes.number]),
+        value: DataTypes.oneOf([DataTypes.string, DataTypes.number]),
         options: DataTypes.array,
         disabled: DataTypes.bool,
         name: DataTypes.string
@@ -29,16 +29,7 @@ export default san.defineComponent({
         };
     },
     computed: {
-        classes() {
-            const buttonStyle = this.data.get('buttonStyle');
-            const size = this.data.get('size');
-            const prefix = prefixCls + '-group';
-            let classArr = [prefix, `${prefix}-${buttonStyle}`];
-
-            size && classArr.push(`${prefix}-${size}`);
-            return classArr;
-        },
-        checkboxs() {
+        radios() {
             const options = this.data.get('options');
             const value = this.data.get('value') || [];
             return options.map(option => {
@@ -58,9 +49,7 @@ export default san.defineComponent({
         }
     },
     inited() {
-        const value = this.data.get('value') || this.data.get('defaultValue') || [];
-        this.data.set('instance', this);
-        this.data.set('value', value);
+        this.data.set('value', this.data.get('value') || this.data.get('defaultValue') || '');
     },
     updated() {
         const childs = this.data.get('childs');
@@ -80,26 +69,26 @@ export default san.defineComponent({
             this.dispatch('UI:form-item-interact', {fieldValue: option.value, type: 'change'});
         },
         santd_radio_add(payload) {
-            const checkboxs = this.data.get('checkboxs');
+            const radios = this.data.get('radios');
             // 当没有options数据的时候才去收集子checkbox
-            if (!checkboxs.length) {
+            if (!radios.length) {
                 this.data.push('childs', payload.value);
             }
         }
     },
     template: `
-        <div class="{{classes}}" style="{{style}}">
+        <div class="${prefixCls}-group ${prefixCls}-group-{{buttonStyle}} {{size ? '${prefixCls}-group-' + size : ''}}">
             <s-radio
-                s-if="{{checkboxs.length}}"
-                s-for="checkbox in checkboxs"
+                s-if="{{radios.length}}"
+                s-for="radio in radios"
                 prefixCls="${prefixCls}"
-                key="{{checkbox.key}}"
-                disabled="{{checkbox.disabled}}"
-                value="{{checkbox.value}}"
-                checked="{{checkbox.checked}}"
+                key="{{radio.key}}"
+                disabled="{{radio.disabled}}"
+                value="{{radio.value}}"
+                checked="{{radio.checked}}"
                 name="{{name || id}}"
-            >{{checkbox.label}}</s-radio>
-            <slot></slot>
+            >{{radio.label}}</s-radio>
+            <slot />
         </div>
     `
 });

@@ -6,9 +6,9 @@
 ```html
 <template>
     <div>
-        <s-group value="{{value1}}" options="{{plainOptions}}" on-change="onChange1($event)"/>
-        <s-group value="{{value2}}" options="{{options}}" on-change="onChange2($event)"/>
-        <s-group value="{{value3}}" options="{{optionsWithDisabled}}" on-change="onChange3($event)"/>
+        <s-group value="{{value1}}" options="{{plainOptions}}" on-change="onChange1($event)" name="group1"/>
+        <s-group value="{{value2}}" options="{{options}}" on-change="onChange2($event)" name="group2"/>
+        <s-group value="{{value3}}" options="{{optionsWithDisabled}}" on-change="onChange3($event)" name="group3"/>
     </div>
 </template>
 <script>

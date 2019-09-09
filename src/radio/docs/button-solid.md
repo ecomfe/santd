@@ -7,7 +7,7 @@
 <template>
     <div>
         <div>
-            <s-group defaultValue="a" buttonStyle="solid">
+            <s-group defaultValue="a" buttonStyle="solid" name="button1">
                 <s-button value="a">Hangzhou</s-button>
                 <s-button value="b">Shanghai</s-button>
                 <s-button value="c">Beijing</s-button>
@@ -15,7 +15,7 @@
             </s-group>
         </div>
         <div style="margin-top: 16px;">
-            <s-group defaultValue="a" buttonStyle="solid">
+            <s-group defaultValue="a" buttonStyle="solid" name="button2">
                 <s-button value="a">Hangzhou</s-button>
                 <s-button value="b" disabled>Shanghai</s-button>
                 <s-button value="c">Beijing</s-button>

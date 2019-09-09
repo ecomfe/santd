@@ -12,10 +12,10 @@ const prefixCls = classCreator('radio-button')();
 const radioButton = san.defineComponent({
     initData() {
         return {
+            ...Radio.prototype.initData(),
             prefixCls
         };
     }
-});
+}, Radio);
 
-san.inherits(radioButton, Radio);
 export default radioButton;
