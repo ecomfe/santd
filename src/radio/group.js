@@ -26,8 +26,7 @@ export default san.defineComponent({
         return {
             buttonStyle: 'outline',
             options: [],
-            disabled: false,
-            childs: []
+            disabled: false
         };
     },
 
@@ -52,13 +51,17 @@ export default san.defineComponent({
     },
 
     inited() {
+        this.radios = [];
         this.data.set('value', this.data.get('value') || this.data.get('defaultValue') || '');
     },
 
+    disposed() {
+        this.radios = null;
+    },
+
     updated() {
-        const childs = this.data.get('childs');
         const value = this.data.get('value');
-        childs.length && childs.forEach(child => {
+        this.radios && this.radios.forEach(child => {
             child.data.set('checked', value === child.data.get('value'));
             child.data.set('disabled', 'disabled' in child.data.get()
                 ? child.data.get('disabled') : this.data.get('disabled'));
@@ -73,11 +76,12 @@ export default san.defineComponent({
             this.fire('change', option.event);
             this.dispatch('UI:form-item-interact', {fieldValue: option.value, type: 'change'});
         },
+
         santd_radio_add(payload) {
-            const radios = this.data.get('radios');
+            const radios = ;
             // 当没有options数据的时候才去收集子checkbox
-            if (!radios.length) {
-                this.data.push('childs', payload.value);
+            if (!this.data.get('options').length) {
+                this.radios.push(payload.value)
             }
         }
     },
