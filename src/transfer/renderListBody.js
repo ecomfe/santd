@@ -3,10 +3,16 @@
  * @author mayihui@baidu.com
  **/
 import san from 'san';
-import ListItem from './listItem';
+import Checkbox from '../checkbox';
+import {classCreator} from '../core/util';
+
+const prefixCls = classCreator('transfer')('list');
 
 export default san.defineComponent({
     handleItemSelect(item) {
+        if (this.data.get('disabled') || item.disabled) {
+            return;
+        }
         const selectedKeys = this.data.get('selectedKeys');
         const checked = selectedKeys.indexOf(item.key) >= 0;
         this.fire('itemSelect', {selectedKey: item.key, checked: !checked});
@@ -15,21 +21,20 @@ export default san.defineComponent({
         this.fire('scroll', e);
     },
     components: {
-        's-listitem': ListItem
+        's-checkbox': Checkbox
     },
     template: `
-            <ul class="{{prefixCls}}-content" on-scroll="handleScroll">
-                <s-listitem
+            <ul class="${prefixCls}-content" on-scroll="handleScroll">
+                <li
                     s-for="item in filteredRenderItems"
-                    disabled="{{item.item.disabled}}"
-                    key="{{item.key}}"
-                    item="{{item.item}}"
-                    renderedText="{{item.renderedText}}"
-                    renderedEl="{{item.renderedEl}}"
-                    on-click="handleItemSelect"
-                    prefixCls="{{prefixCls}}"
-                    selectedKeys="{{selectedKeys}}"
-                />
+                    class="${prefixCls}-content-item {{disabled || item.disabled ? '${prefixCls}-content-item-disabled' : ''}}"
+                    title="{{item.title}}"
+                    on-click="handleItemSelect(item)"
+                >
+                    <s-checkbox checked="{{item.checked}}" disabled="{{disabled || item.disabled}}" />
+                    <slot var-item="{{item}}" s-if="hasRender" />
+                    <template s-else>{{item.title}}</template>
+                </li>
             </ul>
         `
 });

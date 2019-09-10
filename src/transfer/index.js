@@ -72,6 +72,7 @@ export default san.defineComponent({
     },
     inited() {
         this.data.set('hasFooter', !!this.sourceSlots.named.footer);
+        this.data.set('hasRender', !!this.sourceSlots.named.render);
     },
     getSelectedKeysName(direction) {
         return direction === 'left' ? 'sourceSelectedKeys' : 'targetSelectedKeys';
@@ -192,9 +193,9 @@ export default san.defineComponent({
             style="{{listStyle}}"
             checkedKeys="{{sourceSelectedKeys}}"
             targetKeys="{{targetKeys}}"
-            render="{{render}}"
             showSearch="{{showSearch}}"
             body="{{body}}"
+            hasRender="{{hasRender}}"
             renderList="{{renderList}}"
             hasFooter="{{hasFooter}}"
             disabled="{{disabled}}"
@@ -209,6 +210,7 @@ export default san.defineComponent({
             on-filter="handleLeftFilter"
             on-clear="handleLeftClear"
         >
+            <slot name="render" slot="render" var-item="{{item}}" />
             <slot name="footer" slot="footer" />
             <s-empty slot="notfoundcontent" image="${Empty.PRESENTED_IMAGE_SIMPLE}" class="${emptyPrefixCls}-small"/>
         </s-list>
@@ -230,10 +232,10 @@ export default san.defineComponent({
             style="{{listStyle}}"
             checkedKeys="{{targetSelectedKeys}}"
             targetKeys="{{targetKeys}}"
-            render="{{render}}"
             showSearch="{{showSearch}}"
             body="{{body}}"
             hasFooter="{{hasFooter}}"
+            hasRender="{{hasRender}}"
             renderList="{{renderList}}"
             disabled="{{disabled}}"
             direction="right"
@@ -247,6 +249,7 @@ export default san.defineComponent({
             on-filter="handleRightFilter"
             on-clear="handleRightClear"
         >
+            <slot name="render" slot="render" var-item="{{item}}" />
             <slot name="footer" slot="footer" />
             <s-empty slot="notfoundcontent" image="${Empty.PRESENTED_IMAGE_SIMPLE}" class="${emptyPrefixCls}-small"/>
         </s-list>

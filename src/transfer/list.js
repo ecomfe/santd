@@ -27,11 +27,11 @@ const renderItem = function (item, render = defaultRender) {
     };
 };
 
-const matchFilter = function (text, item, filterValue, filterOption) {
+const matchFilter = function (item, filterValue, filterOption) {
     if (filterOption) {
         return filterOption(filterValue, item);
     }
-    return text.indexOf(filterValue) >= 0;
+    return item.title.indexOf(filterValue) >= 0;
 };
 
 export default san.defineComponent({
@@ -40,7 +40,6 @@ export default san.defineComponent({
         dataSource: DataTypes.array,
         filterOption: DataTypes.func,
         checkedKeys: DataTypes.array,
-        render: DataTypes.func,
         showSearch: DataTypes.bool,
         searchPlaceholder: DataTypes.string,
         itemUnit: DataTypes.string,
@@ -63,31 +62,23 @@ export default san.defineComponent({
             const dataSource = this.data.get('dataSource');
             const filterValue = this.data.get('filterValue');
             const filterOption = this.data.get('filterOption');
-            const render = this.data.get('render');
-            const filteredItems = [];
-            const filteredRenderItems = [];
+            const selectedKeys = this.data.get('checkedKeys') || [];
 
-            dataSource.forEach(item => {
-                const renderedItem = renderItem(item, render);
-                const renderedText = renderedItem.renderedText;
+            return dataSource.map(item => {
+                item.checked = selectedKeys.includes(item.key);
 
-                // Filter skip
                 if (filterValue && filterValue.trim()
-                    && !matchFilter(renderedText, item, filterValue, filterOption)) {
+                    && !matchFilter(item, filterValue, filterOption)) {
                     return null;
                 }
 
-                filteredItems.push(item);
-                filteredRenderItems.push(renderedItem);
+                return {
+                    ...item
+                };
             });
-
-            return {
-                filteredItems,
-                filteredRenderItems
-            };
         },
         getCheckStatus() {
-            const filteredItems = this.data.get('getFilteredItems').filteredItems;
+            const filteredItems = this.data.get('getFilteredItems');
             const checkedKeys = this.data.get('checkedKeys');
             if (checkedKeys.length === 0) {
                 return 'none';
@@ -147,7 +138,8 @@ export default san.defineComponent({
     },
     components: {
         's-checkbox': Checkbox,
-        's-search': Search
+        's-search': Search,
+        's-renderlist': defaultRenderList
     },
     template: `<div class="${prefixCls} {{hasFooter ? '${prefixCls}-with-footer' : ''}}">
         <div class="${prefixCls}-header">
@@ -161,7 +153,7 @@ export default san.defineComponent({
             <span class="${prefixCls}-header-selected">
                 <span>
                     {{checkedKeys.length > 0 ? checkedKeys.length + '/' : ''}}
-                    {{getFilteredItems.filteredItems.length}} {{dataSource.length > 1 ? itemsUnit : itemUnit}}
+                    {{getFilteredItems.length}} {{dataSource.length > 1 ? itemsUnit : itemUnit}}
                 </span>
                 <span class="${prefixCls}-header-title">{{titleText}}</span>
             </span>
@@ -181,30 +173,32 @@ export default san.defineComponent({
                 <bodycontent
                     prefixCls="${prefixCls}"
                     direction="{{direction}}"
-                    filteredItems="{{getFilteredItems.filteredItems}}"
+                    filteredItems="{{getFilteredItems}}"
                     disabled="{{disabled}}"
                     selectedKeys="{{checkedKeys}}"
                     targetKeys="{{targetKeys}}"
-                    filteredRenderItems="{{getFilteredItems.filteredRenderItems}}"
+                    filteredRenderItems="{{getFilteredItems}}"
+                    hasRender="{{hasRender}}"
                     on-itemSelect="handleItemSelect"
                     on-itemSelectAll="handleItemSelectAll"
                     on-scroll="handleScroll"
-                />
+                ><slot name="render" var-item="{{item}}" /></bodycontent>
             </div>
             <template s-else>
-                <bodycontent
-                    s-if="getFilteredItems.filteredItems.length"
+                <s-renderlist
+                    s-if="getFilteredItems.length"
                     prefixCls="${prefixCls}"
                     direction="{{direction}}"
-                    filteredItems="{{getFilteredItems.filteredItems}}"
+                    filteredItems="{{getFilteredItems}}"
                     disabled="{{disabled}}"
                     selectedKeys="{{checkedKeys}}"
                     targetKeys="{{targetKeys}}"
-                    filteredRenderItems="{{getFilteredItems.filteredRenderItems}}"
+                    filteredRenderItems="{{getFilteredItems}}"
+                    hasRender="{{hasRender}}"
                     on-itemSelect="handleItemSelect"
                     on-itemSelectAll="handleItemSelectAll"
                     on-scroll="handleScroll"
-                />
+                ><slot name="render" var-item="{{item}}" /></s-renderlist>
                 <div s-else class="${prefixCls}-body-not-found"><slot name="notfoundcontent" /></div>
             </template>
         </div>

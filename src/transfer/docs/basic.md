@@ -10,13 +10,14 @@
             disabled="{{disabled}}"
             dataSource="{{mockData}}"
             targetKeys="{{targetKeys}}"
-            render="{{render}}"
             titles="{{['Source', 'Target']}}"
             on-selectChange="handleSelectChange"
             on-change="handleChange"
             on-scroll="handleScroll"
             selectedKeys="{{selectedKeys}}"
-        />
+        >
+            <span slot="render">{{item.title}}</span>
+        </s-transfer>
         <s-switch
             checkedChildren="disabled"
             unCheckedChildren="disabled"

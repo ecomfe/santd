@@ -10,9 +10,10 @@
             dataSource="{{mockData}}"
             listStyle="{{listStyle}}"
             targetKeys="{{targetKeys}}"
-            render="{{render}}"
             on-change="handleChange"
-        />
+        >
+            <span class="custom-item" slot="render">{{item.title}} - {{item.description}}</span>
+        </s-transfer>
     </div>
 </template>
 <script>
@@ -24,16 +25,6 @@ export default {
         return {
             mockData: [],
             targetKeys: [],
-            render(item) {
-                const customLabel = san.defineComponent({
-                    template: `<span class="custom-item">{{item.title}} - {{item.description}}</span>`
-                });
-
-                return {
-                    label: customLabel,
-                    value: item.title
-                };
-            },
             listStyle: 'width: 250px; height: 300px;',
         };
     },
