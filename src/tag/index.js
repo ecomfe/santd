@@ -63,13 +63,6 @@ const Tag = san.defineComponent({
                 'background-color': color && !isPresetColor ? color : undefined,
                 ...toStyle.object(bodyStyle)
             };
-        },
-
-        isNeedWave() {
-            const instance = this.data.get('instance');
-            const children = instance && instance.sourceSlots.noname[0];
-
-            return children && children.tagName === 'a';
         }
     },
 
@@ -81,9 +74,12 @@ const Tag = san.defineComponent({
     },
 
     inited() {
+        let nonameSlots = this.sourceSlots.noname;
+        if (nonameSlots && nonameSlots[0].tagName === 'a') {
+            this.data.set('isNeedWave', true);
+        }
         this.data.set('bodyStyle', this.data.get('style'));
         this.data.set('style', {});
-        this.data.set('instance', this);
     },
 
     setVisible(visible, e) {
