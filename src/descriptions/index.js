@@ -168,7 +168,7 @@ const Descriptions = san.defineComponent({
                         <tr class="${prefixCls}-row" s-else>
                             <template s-for="child, j in children">
                                 <template s-if="bordered">
-                                    <th class="${prefixCls}-item-label {{!label && prefixCls + '-item-no-label'}}">
+                                    <th class="${prefixCls}-item-label {{!label && '${prefixCls}-item-no-label'}}">
                                         {{child.label}}
                                     </th>
                                     <td
