@@ -8,7 +8,6 @@ import CheckableTag from './checkableTag';
 import {classCreator} from '../core/util';
 import Wave from '../core/util/wave';
 import Icon from '../icon';
-import toStyle from 'to-style';
 import './style/index';
 
 const prefixCls = classCreator('tag')();
@@ -33,8 +32,7 @@ const Tag = san.defineComponent({
     dataTypes: {
         color: DataTypes.string,
         closable: DataTypes.bool,
-        visible: DataTypes.bool,
-        style: DataTypes.oneOfType([DataTypes.string, DataTypes.object])
+        visible: DataTypes.bool
     },
 
     computed: {
@@ -42,6 +40,7 @@ const Tag = san.defineComponent({
             const visible = this.data.get('visible');
             const color = this.data.get('color');
             const isPresetColor = this.data.get('isPresetColor');
+
             let classArr = [prefixCls];
             isPresetColor && classArr.push(`${prefixCls}-${color}`);
             color && !isPresetColor && classArr.push(`${prefixCls}-has-color`);
@@ -52,17 +51,6 @@ const Tag = san.defineComponent({
         isPresetColor() {
             const color = this.data.get('color');
             return color ? presetColorRegex.test(color) : false;
-        },
-
-        tagStyle() {
-            const color = this.data.get('color');
-            const bodyStyle = this.data.get('bodyStyle');
-            const isPresetColor = this.data.get('isPresetColor');
-
-            return {
-                'background-color': color && !isPresetColor ? color : undefined,
-                ...toStyle.object(bodyStyle)
-            };
         }
     },
 
@@ -78,8 +66,6 @@ const Tag = san.defineComponent({
         if (nonameSlots && nonameSlots[0].tagName === 'a') {
             this.data.set('isNeedWave', true);
         }
-        this.data.set('bodyStyle', this.data.get('style'));
-        this.data.set('style', {});
     },
 
     setVisible(visible, e) {
@@ -104,7 +90,7 @@ const Tag = san.defineComponent({
     },
 
     template: `
-        <div class="{{classes}}" style="{{tagStyle}}" on-click="handleClick">
+        <div class="{{classes}}" style="{{color && !isPresetColor ? 'background-color:' + color : ''}}" on-click="handleClick">
             <slot />
             <s-icon type="close" on-click="handleIconClick" s-if="closable" />
             <s-wave s-if="isNeedWave" />
