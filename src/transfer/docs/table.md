@@ -10,12 +10,26 @@
             disabled="{{disabled}}"
             dataSource="{{mockData}}"
             targetKeys="{{targetKeys}}"
-            renderList="{{renderList}}"
             showSelectAll="{{false}}"
             showSearch="{{showSearch}}"
             filterOption="{{filterOption}}"
             on-change="handleChange"
-        />
+        >
+            <s-transfertable
+                slot="leftRenderList"
+                direction="{{direction}}"
+                filteredItems="{{filteredItems}}"
+                selectedKeys="{{selectedKeys}}"
+                disabled="{{disabled}}"
+            />
+            <s-transfertable
+                slot="rightRenderList"
+                direction="{{direction}}"
+                filteredItems="{{filteredItems}}"
+                selectedKeys="{{selectedKeys}}"
+                disabled="{{disabled}}"
+            />
+        </s-transfer>
         <s-switch
             checkedChildren="disabled"
             unCheckedChildren="disabled"
@@ -68,7 +82,7 @@ const leftTableColumns = [{
 
 const rightTableColumns = [{
     dataIndex: 'title',
-    title: 'Name',
+    title: 'Name'
 }];
 
 import san from 'san';
@@ -77,6 +91,56 @@ import transfer from 'santd/transfer';
 import Switch from 'santd/switch';
 import Table from 'santd/table';
 import Tag from 'santd/tag';
+
+const transferTable = san.defineComponent({
+    components: {
+        's-table': Table
+    },
+    inited() {
+        this.data.set('instance', this);
+    },
+    computed: {
+        columns() {
+            const direction = this.data.get('direction');
+            return direction === 'left' ? leftTableColumns : rightTableColumns;
+        },
+        rowSelection() {
+            const disabled = this.data.get('disabled');
+            const selectedKeys = this.data.get('selectedKeys');
+            const instance = this.data.get('instance');
+            return {
+                getCheckboxProps(item) {
+                    return {
+                        disabled: disabled || item.disabled
+                    }
+                },
+                onSelectAll(selected, selectedRows) {
+                    const treeSelectedKeys = selectedRows
+                        .filter(item => !item.disabled)
+                        .map(({key}) => key);
+
+                    const diffKeys = selected
+                        ? difference(treeSelectedKeys, selectedKeys)
+                        : difference(selectedKeys, treeSelectedKeys);
+
+                    instance.dispatch('santd_transfer_itemSelectAll', {selectedKey: diffKeys, checked: selected})
+                },
+                onSelect(params, selected) {
+                    instance.dispatch('santd_transfer_itemSelect', {selectedKey: params.key, checked: selected});
+                },
+                selectedRowKeys: selectedKeys
+            }
+        }
+    },
+    template: `<div>
+        <s-table
+            columns="{{columns}}"
+            dataSource="{{filteredItems}}"
+            size="small"
+            rowSelection="{{rowSelection}}"
+        />
+    </div>`
+});
 
 export default {
     initData() {
@@ -88,63 +152,13 @@ export default {
             selectedKeys: [],
             filterOption(inputValue, item) {
                 return item.title.indexOf(inputValue) !== -1 || item.tag.indexOf(inputValue) !== -1
-            },
-            renderList() {
-                return san.defineComponent({
-                    components: {
-                        's-table': Table
-                    },
-                    inited() {
-                        this.data.set('instance', this);
-                    },
-                    computed: {
-                        columns() {
-                            const direction = this.data.get('direction');
-                            return direction === 'left' ? leftTableColumns : rightTableColumns;
-                        },
-                        rowSelection() {
-                            const disabled = this.data.get('disabled');
-                            const selectedKeys = this.data.get('selectedKeys');
-                            const instance = this.data.get('instance');
-                            return {
-                                getCheckboxProps(item) {
-                                    return {
-                                        disabled: disabled || item.disabled
-                                    }
-                                },
-                                onSelectAll(selected, selectedRows) {
-                                    const treeSelectedKeys = selectedRows
-                                        .filter(item => !item.disabled)
-                                        .map(({key}) => key);
-
-                                    const diffKeys = selected
-                                        ? difference(treeSelectedKeys, selectedKeys)
-                                        : difference(selectedKeys, treeSelectedKeys);
-
-                                    instance.fire('itemSelectAll', {selectedKey: diffKeys, checked: selected})
-                                },
-                                onSelect(params, selected) {
-                                    instance.fire('itemSelect', {selectedKey: params.key, checked: selected});
-                                },
-                                selectedRowKeys: selectedKeys
-                            }
-                        }
-                    },
-                    template: `<div>
-                        <s-table
-                            columns="{{columns}}"
-                            dataSource="{{filteredItems}}"
-                            size="small"
-                            rowSelection="{{rowSelection}}"
-                        />
-                    </div>`
-                });
             }
         };
     },
     components: {
         's-transfer': transfer,
-        's-switch': Switch
+        's-switch': Switch,
+        's-transfertable': transferTable
     },
     handleChange({targetKeys}) {
         this.data.set('targetKeys', targetKeys);

@@ -26,14 +26,14 @@ export default san.defineComponent({
     template: `
             <ul class="${prefixCls}-content" on-scroll="handleScroll">
                 <li
-                    s-for="item in filteredRenderItems"
+                    s-for="item in filteredItems"
                     class="${prefixCls}-content-item {{disabled || item.disabled ? '${prefixCls}-content-item-disabled' : ''}}"
                     title="{{item.title}}"
                     on-click="handleItemSelect(item)"
                 >
                     <s-checkbox checked="{{item.checked}}" disabled="{{disabled || item.disabled}}" />
                     <slot var-item="{{item}}" s-if="hasRender" />
-                    <template s-else>{{item.title}}</template>
+                    <span class="${prefixCls}-content-item-text" s-else>{{item.title}}</span>
                 </li>
             </ul>
         `

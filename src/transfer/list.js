@@ -9,23 +9,6 @@ import defaultRenderList from './renderListBody';
 import Search from './search';
 
 const prefixCls = classCreator('transfer')('list');
-const defaultRender = function () {
-    return null;
-};
-
-const isRenderResultPlainObject = function (result) {
-    return result && Object.prototype.toString.call(result) === '[object Object]';
-};
-
-const renderItem = function (item, render = defaultRender) {
-    const renderResult = render(item);
-    const isRenderResultPlain = isRenderResultPlainObject(renderResult);
-    return {
-        renderedText: isRenderResultPlain ? renderResult.value : renderResult,
-        renderedEl: isRenderResultPlain ? renderResult.label : renderResult,
-        item
-    };
-};
 
 const matchFilter = function (item, filterValue, filterOption) {
     if (filterOption) {
@@ -44,9 +27,6 @@ export default san.defineComponent({
         searchPlaceholder: DataTypes.string,
         itemUnit: DataTypes.string,
         itemsUnit: DataTypes.string,
-        body: DataTypes.func,
-        renderList: DataTypes.func,
-        footer: DataTypes.func,
         disabled: DataTypes.bool,
         direction: DataTypes.string,
         showSelectAll: DataTypes.bool
@@ -60,22 +40,15 @@ export default san.defineComponent({
     computed: {
         getFilteredItems() {
             const dataSource = this.data.get('dataSource');
-            const filterValue = this.data.get('filterValue');
+            const filterValue = this.data.get('filterValue') || '';
             const filterOption = this.data.get('filterOption');
             const selectedKeys = this.data.get('checkedKeys') || [];
 
-            return dataSource.map(item => {
-                item.checked = selectedKeys.includes(item.key);
-
-                if (filterValue && filterValue.trim()
-                    && !matchFilter(item, filterValue, filterOption)) {
-                    return null;
-                }
-
-                return {
-                    ...item
-                };
-            });
+            return dataSource.filter(item => matchFilter(item, filterValue.trim(), filterOption))
+                .map(item => {
+                    item.checked = selectedKeys.includes(item.key);
+                    return {...item};
+                });
         },
         getCheckStatus() {
             const filteredItems = this.data.get('getFilteredItems');
@@ -89,36 +62,12 @@ export default san.defineComponent({
                 return 'all';
             }
             return 'part';
-        },
-        injectBodyNode() {
-            const instance = this.data.get('instance');
-            const dataSource = this.data.get('dataSource');
-            const renderList = this.data.get('renderList');
-            const direction = this.data.get('direction');
-
-            let bodyContent = renderList ? renderList({direction}) : null;
-            const customize = !!bodyContent;
-            if (!customize) {
-                bodyContent = defaultRenderList;
-            }
-
-            if (instance) {
-                instance.components.bodycontent = bodyContent;
-
-                return {
-                    customize
-                };
-            }
         }
     },
-    inited() {
-        this.data.set('instance', this);
-    },
     handleItemSelectAll() {
-        const filteredItems = this.data.get('getFilteredItems').filteredItems;
+        const filteredItems = this.data.get('getFilteredItems');
         const getCheckStatus = this.data.get('getCheckStatus');
-        const selectedKeys = filteredItems.filter(item => !item.disabled)
-            .map(({key}) => key);
+        const selectedKeys = filteredItems.filter(item => !item.disabled).map(({key}) => key);
 
         this.fire('itemSelectAll', {selectedKeys, checkAll: !(getCheckStatus === 'all')});
     },
@@ -141,6 +90,14 @@ export default san.defineComponent({
         's-search': Search,
         's-renderlist': defaultRenderList
     },
+    messages: {
+        santd_transfer_itemSelect(payload) {
+            this.handleItemSelect(payload.value);
+        },
+        santd_transfer_itemSelectAll(payload) {
+            this.handleItemSelectAll();
+        }
+    },
     template: `<div class="${prefixCls} {{hasFooter ? '${prefixCls}-with-footer' : ''}}">
         <div class="${prefixCls}-header">
             <s-checkbox
@@ -161,7 +118,6 @@ export default san.defineComponent({
         <div class="${prefixCls}-body {{showSearch ? '${prefixCls}-body-with-search' : ''}}">
             <div s-if="showSearch" class="${prefixCls}-body-search-wrapper">
                 <s-search
-                    prefixCls="${prefixCls}-search"
                     placeholder="{{searchPlaceholder}}"
                     value="{{filterValue}}"
                     disabled="{{disabled}}"
@@ -169,20 +125,15 @@ export default san.defineComponent({
                     on-clear="handleClear"
                 />
             </div>
-            <div className="${prefixCls}-body-customize-wrapper" s-if="injectBodyNode.customize">
-                <bodycontent
-                    prefixCls="${prefixCls}"
-                    direction="{{direction}}"
-                    filteredItems="{{getFilteredItems}}"
-                    disabled="{{disabled}}"
-                    selectedKeys="{{checkedKeys}}"
-                    targetKeys="{{targetKeys}}"
-                    filteredRenderItems="{{getFilteredItems}}"
-                    hasRender="{{hasRender}}"
-                    on-itemSelect="handleItemSelect"
-                    on-itemSelectAll="handleItemSelectAll"
-                    on-scroll="handleScroll"
-                ><slot name="render" var-item="{{item}}" /></bodycontent>
+            <div class="${prefixCls}-body-customize-wrapper" s-if="hasRenderList">
+                <slot
+                    name="renderList"
+                    var-direction="{{direction}}"
+                    var-filteredItems="{{getFilteredItems}}"
+                    var-disabled="{{disabled}}"
+                    var-selectedKeys="{{checkedKeys}}"
+                    var-targetKeys="{{targetKeys}}"
+                />
             </div>
             <template s-else>
                 <s-renderlist

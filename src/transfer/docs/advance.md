@@ -9,10 +9,9 @@
         <s-transfer
             dataSource="{{mockData}}"
             targetKeys="{{targetKeys}}"
-            render="{{render}}"
             on-change="handleChange"
             operations="{{['to Right', 'to Left']}}"
-            listStyle="{{listStyle}}"
+            listStyle="width: 250px; height: 300px;"
             showSearch
         >
             <span slot="footer">
@@ -30,14 +29,9 @@ import san from 'san';
 
 export default {
     initData() {
-        const that = this;
         return {
             mockData: [],
-            targetKeys: [],
-            render(item) {
-                return item.title + '-' + item.description;
-            },
-            listStyle: 'width: 250px; height: 300px;'
+            targetKeys: []
         };
     },
     attached() {

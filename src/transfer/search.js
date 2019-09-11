@@ -3,17 +3,15 @@
  * @author mayihui@baidu.com
  **/
 import san from 'san';
+import {classCreator} from '../core/util';
 import Icon from '../icon';
-import Input from '../input';
+
+const prefixCls = classCreator('transfer')('list');
+const inputPrefixCls = classCreator('input')();
 
 export default san.defineComponent({
-    initData() {
-        return {
-            placeholder: ''
-        };
-    },
     handleChange(e) {
-        this.fire('change', e);
+        this.fire('change', e.target.value);
     },
     handleClear(e) {
         e.preventDefault();
@@ -23,27 +21,26 @@ export default san.defineComponent({
         }
     },
     components: {
-        's-input': Input,
         's-icon': Icon
     },
     template: `
         <div>
-            <s-input
+            <input
                 placeholder="{{placeholder}}"
-                className="{{prefixCls}}"
+                class="${inputPrefixCls} ${prefixCls}-search"
+                type="text"
+                on-keyup="handleChange"
                 value="{{value}}"
-                disabled="{{disabled}}"
-                on-change="handleChange"
             />
             <a
                 href="#"
-                className="{{prefixCls}}-action"
+                class="${prefixCls}-search-action"
                 on-click="handleClear"
                 s-if="value && value.length > 0"
             >
                 <s-icon type="close-circle" theme="filled" />
             </a>
-            <span className="{{prefixCls}}-action" s-else>
+            <span class="${prefixCls}-search-action" s-else>
                 <s-icon type="search" />
             </span>
         </div>

@@ -9,7 +9,6 @@
         <s-transfer
             dataSource="{{mockData}}"
             targetKeys="{{targetKeys}}"
-            render="{{render}}"
             filterOption="{{filterOption}}"
             showSearch
             on-change="handleChange"
@@ -25,9 +24,6 @@ export default {
         return {
             mockData: [],
             targetKeys: [],
-            render(item) {
-                return item.title;
-            },
             filterOption: (inputValue, option) => option.description.indexOf(inputValue) > -1
         };
     },

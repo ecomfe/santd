@@ -27,11 +27,11 @@ export default san.defineComponent({
         ...Locale.prototype.computed,
         classes() {
             const disabled = this.data.get('disabled');
-            const renderList = this.data.get('renderList');
+            const hasRenderList = this.data.get('hasLeftRenderList') || this.data.get('hsaRightRenderList');
             let classArr = [prefixCls];
 
             disabled && classArr.push(`${prefixCls}-disabled`);
-            !!renderList && classArr.push(`${prefixCls}-customize-list`);
+            !!hasRenderList && classArr.push(`${prefixCls}-customize-list`);
             return classArr;
         },
         separateDataSource() {
@@ -73,6 +73,8 @@ export default san.defineComponent({
     inited() {
         this.data.set('hasFooter', !!this.sourceSlots.named.footer);
         this.data.set('hasRender', !!this.sourceSlots.named.render);
+        this.data.set('hasLeftRenderList', !!this.sourceSlots.named.leftRenderList);
+        this.data.set('hasRightRenderList', !!this.sourceSlots.named.rightRenderList);
     },
     getSelectedKeysName(direction) {
         return direction === 'left' ? 'sourceSelectedKeys' : 'targetSelectedKeys';
@@ -196,7 +198,7 @@ export default san.defineComponent({
             showSearch="{{showSearch}}"
             body="{{body}}"
             hasRender="{{hasRender}}"
-            renderList="{{renderList}}"
+            hasRenderList="{{hasLeftRenderList}}"
             hasFooter="{{hasFooter}}"
             disabled="{{disabled}}"
             direction="left"
@@ -211,6 +213,15 @@ export default san.defineComponent({
             on-clear="handleLeftClear"
         >
             <slot name="render" slot="render" var-item="{{item}}" />
+            <slot
+                name="leftRenderList"
+                slot="renderList"
+                var-direction="{{direction}}"
+                var-filteredItems="{{filteredItems}}"
+                var-selectedKeys="{{selectedKeys}}"
+                var-disabled="{{disabled}}"
+                var-targetKeys="{{targetKeys}}"
+            />
             <slot name="footer" slot="footer" />
             <s-empty slot="notfoundcontent" image="${Empty.PRESENTED_IMAGE_SIMPLE}" class="${emptyPrefixCls}-small"/>
         </s-list>
@@ -236,7 +247,7 @@ export default san.defineComponent({
             body="{{body}}"
             hasFooter="{{hasFooter}}"
             hasRender="{{hasRender}}"
-            renderList="{{renderList}}"
+            hasRenderList="{{hasRightRenderList}}"
             disabled="{{disabled}}"
             direction="right"
             showSelectAll="{{showSelectAll}}"
@@ -250,6 +261,15 @@ export default san.defineComponent({
             on-clear="handleRightClear"
         >
             <slot name="render" slot="render" var-item="{{item}}" />
+            <slot
+                name="rightRenderList"
+                slot="renderList"
+                var-direction="{{direction}}"
+                var-filteredItems="{{filteredItems}}"
+                var-selectedKeys="{{selectedKeys}}"
+                var-disabled="{{disabled}}"
+                var-targetKeys="{{targetKeys}}"
+            />
             <slot name="footer" slot="footer" />
             <s-empty slot="notfoundcontent" image="${Empty.PRESENTED_IMAGE_SIMPLE}" class="${emptyPrefixCls}-small"/>
         </s-list>

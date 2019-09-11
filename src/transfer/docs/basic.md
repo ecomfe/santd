@@ -51,9 +51,6 @@ export default {
             disabled: false,
             mockData: mockData,
             targetKeys: oriTargetKeys,
-            render(item) {
-                return item.title;
-            },
             selectedKeys: []
         };
     },
