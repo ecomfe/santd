@@ -13,96 +13,75 @@ const prefixCls = classCreator('timeline')();
 
 export default san.defineComponent({
     dataTypes: {
-        prefixCls: DataTypes.string,
-        className: DataTypes.string,
-        style: DataTypes.oneOfType([DataTypes.string, DataTypes.object]),
-        pending: DataTypes.oneOfType([DataTypes.string, DataTypes.bool, DataTypes.func]),
-        pendingDot: DataTypes.oneOfType([DataTypes.string, DataTypes.func]),
         reverse: DataTypes.bool,
-        mode: DataTypes.oneOf(['left', 'alternate', 'right']),
-        children: DataTypes.array
+        mode: DataTypes.oneOf(['left', 'alternate', 'right'])
     },
     computed: {
         classes() {
-            const className = this.data.get('className');
-            const pending = this.data.get('pending');
+            const hasPending = this.data.get('hasPending');
             const reverse = this.data.get('reverse');
             const mode = this.data.get('mode');
-            let classArr = [prefixCls, className];
-            pending && classArr.push(`${prefixCls}-pending`);
+            let classArr = [prefixCls];
+
+            hasPending && classArr.push(`${prefixCls}-pending`);
             reverse && classArr.push(`${prefixCls}-reverse`);
             mode && classArr.push(`${prefixCls}-${mode}`);
+
             return classArr;
-        },
-        isComponent() {
-            const pending = this.data.get('pending');
-            return typeof pending === 'function';
         }
     },
     initData() {
         return {
             reverse: false,
-            mode: 'left',
-            children: [],
-            defaultDot: san.defineComponent({
-                components: {
-                    's-icon': Icon
-                },
-                template: '<span><s-icon type="loading" /></span>'
-            })
+            mode: 'left'
         };
     },
     updated() {
-        const children = this.data.get('children');
         const reverse = this.data.get('reverse');
-        const pending = this.data.get('pending');
+        const hasPending = this.data.get('hasPending');
         const lastClasses = `${prefixCls}-item-last`;
 
-        children.forEach((child, index) => {
+        this.items.forEach((child, index) => {
             const className = [
-                child.data.get('className'),
-                !reverse && !!pending
-                    ? index === children.length - 2
+                !reverse && !!hasPending
+                    ? index === this.items.length - 2
                         ? lastClasses : ''
-                    : index === children.length - 1
-                    ? lastClasses : '',
+                    : index === this.items.length - 1
+                        ? lastClasses : '',
                 this.getPositionCls(child, index)
             ].join (' ');
-            child.data.set('className', className);
+            child.data.set('class', className);
         });
     },
-    attached() {
+    inited() {
+        this.items = [];
+        this.data.set('hasPending', !!this.sourceSlots.named.pending);
+        this.data.set('hasPendingDot', !!this.sourceSlots.named.pendingDot);
+
         this.watch('reverse', val => {
             this.sourceSlots.noname = this.sourceSlots.noname.reverse();
             this._repaintChildren();
         });
     },
-    compiled() {
-        const parent = this.parentComponent;
-        const pending = parent.data.get('pending');
-        pending && (this.components.pending = pending);
+    attached() {
+        this.updated();
     },
     getPositionCls(child, index) {
         const mode = this.data.get('mode');
         const position = child.data.get('position');
 
-        if (mode === 'alternate') {
-            if (position) {
-                return `${prefixCls}-item-${position}`;
-            }
-            return index % 2 === 0 ? `${prefixCls}-item-left` : `${prefixCls}-item-right`;
-        }
         if (mode) {
-            return `${prefixCls}-item-${mode}`;
+            return mode === 'alternate'
+                ? position
+                    ? `${prefixCls}-item-${position}`
+                    : index % 2 === 0 ? `${prefixCls}-item-left` : `${prefixCls}-item-right`
+                : `${prefixCls}-item-${mode}`;
         }
-        if (position === 'right') {
-            return `${prefixCls}-item-right`;
-        }
-        return '';
+        return position === 'right' ? `${prefixCls}-item-right` : '';
     },
     messages: {
-        addItem(payload) {
-            this.data.push('children', payload.value);
+        santd_timeline_addItem(payload) {
+            this.items.push(payload.value);
         }
     },
     components: {
@@ -112,18 +91,20 @@ export default san.defineComponent({
     template: `
         <ul class="{{classes}}">
             <template s-if="!reverse">
-                <slot></slot>
-                <s-item s-if="pending" pending="{{!!pending}}" dot="{{pendingDot || defaultDot}}" s-ref="pending">
-                    <template s-if="!isComponent">{{pending}}</template>
-                    <pending s-else></pending>
+                <slot />
+                <s-item s-if="hasPending" pending="{{hasPending}}">
+                    <slot name="pending" />
+                    <slot name="pendingDot" slot="dot" s-if="hasPendingDot" />
+                    <s-icon type="loading" slot="dot" s-else />
                 </s-item>
             </template>
             <template s-else>
-                <s-item s-if="pending" pending="{{!!pending}}" dot="{{pendingDot || defaultDot}}" s-ref="pending">
-                    <template s-if="!isComponent">{{pending}}</template>
-                    <pending s-else></pending>
+                <s-item s-if="hasPending" pending="{{hasPending}}">
+                    <slot name="pending" />
+                    <slot name="pendingDot" slot="dot" s-if="hasPendingDot" />
+                    <s-icon type="loading" slot="dot" s-else />
                 </s-item>
-                <slot></slot>
+                <slot />
             </template>
         </ul>
     `

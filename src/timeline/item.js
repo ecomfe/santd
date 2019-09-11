@@ -11,68 +11,36 @@ const prefixCls = classCreator('timeline')();
 
 export default san.defineComponent({
     dataTypes: {
-        prefixCls: DataTypes.string,
-        className: DataTypes.string,
         color: DataTypes.string,
-        dot: DataTypes.oneOfType([DataTypes.string, DataTypes.func]),
-        pending: DataTypes.bool,
-        position: DataTypes.string
+        pending: DataTypes.bool
     },
     initData() {
         return {
             color: 'blue',
-            pending: false,
-            position: ''
+            pending: false
         };
     },
-    computed: {
-        classes() {
-            const pending = this.data.get('pending');
-            const className = this.data.get('className');
-            let classArr = [`${prefixCls}-item`, className];
-            pending && classArr.push(`${prefixCls}-item-pending`);
-            return classArr;
-        },
-        dotClasses() {
-            const dot = this.data.get('dot');
-            const color = this.data.get('color');
-            let classArr = [`${prefixCls}-item-head`, `${prefixCls}-item-head-${color}`];
-            dot && classArr.push(`${prefixCls}-item-head-custom`);
-            return classArr;
-        },
-        dotStyle() {
-            const color = this.data.get('color');
-            if (!/blue|red|green/.test(color)) {
-                return {
-                    'border-color': color
-                };
-            }
-        },
-        isComponent() {
-            const dot = this.data.get('dot');
-            return typeof dot === 'function';
-        }
-    },
     inited() {
-        this.dispatch('addItem', this);
+        this.data.set('hasDot', !!this.sourceSlots.named.dot);
+        this.dispatch('santd_timeline_addItem', this);
     },
-    attached() {
-        const dotNode = this.ref('dot');
-        const Dot = this.data.get('dot');
-        const isComponent = this.data.get('isComponent');
-        if (Dot && isComponent) {
-            const instance = new Dot();
-            instance.attach(dotNode);
-            instance.parentComponent = this;
+    getDotStyle(color) {
+        if (!/blue|red|green|gray/.test(color)) {
+            return {
+                'border-color': color
+            };
         }
     },
     template: `
-        <li class="{{classes}}">
+        <li class="${prefixCls}-item {{pending ? '${prefixCls}-item-pending' : ''}}">
             <div class="${prefixCls}-item-tail" />
-            <div class="{{dotClasses}}" style="{{dotStyle}}" s-ref="dot">
-                <template s-if="!isComponent">{{dot}}</template>
+            <div
+                class="${prefixCls}-item-head ${prefixCls}-item-head-{{color}} {{hasDot ? '${prefixCls}-item-head-custom' : ''}}"
+                style="{{getDotStyle(color)}}"
+            >
+                <slot name="dot" />
             </div>
-            <div class="${prefixCls}-item-content"><slot></slot></div>
+            <div class="${prefixCls}-item-content"><slot /></div>
         </li>
     `
 });

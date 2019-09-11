@@ -9,30 +9,24 @@
         <s-timeline mode="right">
             <s-timeline-item>Create a services site 2015-09-01</s-timeline-item>
             <s-timeline-item>Solve initial network problems 2015-09-01</s-timeline-item>
-            <s-timeline-item color="red" dot="{{dot}}">Technical testing 2015-09-01</s-timeline-item>
+            <s-timeline-item color="red">
+                <s-icon type="clock-circle-o" style="font-size: 16px;" slot="dot" />
+                Technical testing 2015-09-01
+            </s-timeline-item>
             <s-timeline-item>Network problems being solved 2015-09-01</s-timeline-item>
         </s-timeline>
     </div>
 </template>
 <script>
 import san from 'san';
-import icon from 'santd/icon';
-import timeline from 'santd/timeline';
+import Icon from 'santd/icon';
+import Timeline from 'santd/timeline';
 
 export default {
     components: {
-        's-timeline': timeline,
-        's-timeline-item': timeline.Item
-    },
-    initData() {
-        return {
-            dot: san.defineComponent({
-                components: {
-                    's-icon': icon
-                },
-                template: `<span><s-icon type="clock-circle-o" style="font-size: 16px;" /></span>`
-            })
-        }
+        's-timeline': Timeline,
+        's-timeline-item': Timeline.Item,
+        's-icon': Icon
     }
 }
 </script>

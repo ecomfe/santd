@@ -15,11 +15,11 @@
     </div>
 </template>
 <script>
-import timeline from 'santd/timeline';
+import Timeline from 'santd/timeline';
 export default {
     components: {
-        's-timeline': timeline,
-        's-timeline-item': timeline.Item
+        's-timeline': Timeline,
+        's-timeline-item': Timeline.Item
     }
 }
 </script>

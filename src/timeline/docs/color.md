@@ -19,15 +19,20 @@
                 <p>Technical testing 2</p>
                 <p>Technical testing 3 2015-09-01</p>
             </s-timeline-item>
+            <s-timeline-item color="gray">
+                <p>Technical testing 1</p>
+                <p>Technical testing 2</p>
+                <p>Technical testing 3 2015-09-01</p>
+            </s-timeline-item>
     </s-timeline>
   </div>
 </template>
 <script>
-import timeline from 'santd/timeline';
+import Timeline from 'santd/timeline';
 export default {
     components: {
-        's-timeline': timeline,
-        's-timeline-item': timeline.Item
+        's-timeline': Timeline,
+        's-timeline-item': Timeline.Item
     }
 }
 </script>
