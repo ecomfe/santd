@@ -6,7 +6,7 @@
 ```html
 <template>
     <div>
-        <s-steps progressDot current="1">
+        <s-steps progressDot current="{{1}}">
             <s-step title="Finished" description="This is a description." />
             <s-step title="In Progress" description="This is a description." />
             <s-step title="Waiting" description="This is a description." />

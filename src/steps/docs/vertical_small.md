@@ -6,7 +6,7 @@
 ```html
 <template>
     <div>
-        <s-steps current="1" direction="vertical" size="small">
+        <s-steps current="{{1}}" direction="vertical" size="small">
             <s-step title="Finished" description="This is a description." />
             <s-step title="In Progress" description="This is a description." />
             <s-step title="Waiting" description="This is a description." />

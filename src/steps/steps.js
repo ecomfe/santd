@@ -10,68 +10,75 @@ import './style/index.less';
 const prefixCls = classCreator('steps')();
 
 export default san.defineComponent({
+    dataTypes: {
+        direction: DataTypes.string,
+        labelPlacement: DataTypes.string,
+        current: DataTypes.number,
+        progressDot: DataTypes.bool,
+        size: DataTypes.string,
+        status: DataTypes.string
+    },
     initData() {
         return {
-            prefixCls,
-            iconPrefix: 'san',
             direction: 'horizontal',
             labelPlacement: 'horizontal',
-            initial: 0,
             current: 0,
             status: 'process',
             size: '',
             progressDot: false,
-            flexSupported: true,
-            lastStepOffsetWidth: 0,
-            children: []
+            flexSupported: true
         };
     },
     computed: {
         classes() {
             const direction = this.data.get('direction');
-            const className = this.data.get('className');
             const size = this.data.get('size');
             const labelPlacement = this.data.get('labelPlacement');
-            const progressDot = this.data.get('progressDot');
-            const adjustedlabelPlacement = !!progressDot ? 'vertical' : labelPlacement;
+            const hasDot = this.data.get('hasDot');
+            const adjustedlabelPlacement = hasDot ? 'vertical' : labelPlacement;
             const flexSupported = this.data.get('flexSupported');
-            let classArr = [prefixCls, `${prefixCls}-${direction}`, className];
+            let classArr = [prefixCls, `${prefixCls}-${direction}`];
+
             size && classArr.push(`${prefixCls}-${size}`);
             direction === 'horizontal' && classArr.push(`${prefixCls}-label-${adjustedlabelPlacement}`);
-            !!progressDot && classArr.push(`${prefixCls}-dot`);
+            !!hasDot && classArr.push(`${prefixCls}-dot`);
             !flexSupported && classArr.push(`${prefixCls}-flex-not-supported`);
 
             return classArr;
         }
     },
+    inited() {
+        this.items = [];
+        this.data.set('hasDot', this.data.get('progressDot') || !!this.sourceSlots.named.progressDot);
+    },
     updated() {
-        const children = this.data.get('children');
         const status = this.data.get('status');
         const current = this.data.get('current');
+
+        // 判断是否有change方法
         const hasChange = !!this.listeners.change;
-        children.forEach((child, index) => {
-            child.data.set('stepNumber', index + 1);
-            child.data.set('stepIndex', index);
-            if (status === 'error' && index === current - 1) {
-                child.data.set('className', `${prefixCls}-next-error`);
-            }
+        this.items.forEach((item, index) => {
+            item.data.set('stepNumber', index + 1);
+            item.data.set('stepIndex', index);
+            status === 'error' && index === current - 1 && item.data.set('class', `${prefixCls}-next-error`);
+
             if (index === Number(current)) {
-                child.data.set('status', status);
-            }
-            else if (index < current) {
-                child.data.set('status', 'finish');
+                item.data.set('status', status);
             }
             else {
-                child.data.set('status', 'wait');
+                item.data.set('status', index < current ? 'finish' : 'wait');
             }
-            child.data.set('hasChange', hasChange);
+            item.data.set('hasChange', hasChange);
         });
     },
+    attached() {
+        this.updated();
+    },
     messages: {
-        addStep(payload) {
-            this.data.push('children', payload.value);
+        santd_steps_addStep(payload) {
+            this.items.push(payload.value);
         },
-        clickStep(payload) {
+        santd_steps_clickStep(payload) {
             const current = this.data.get('current');
             if (current !== payload.value) {
                 this.fire('change', payload.value);
