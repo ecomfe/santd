@@ -1,6 +1,6 @@
 ## API
 
-```
+```bash
 const dataSource = ['12345', '23456', '34567'];
 <s-auto-complete dataSource={{dataSource}} />;
 ```
