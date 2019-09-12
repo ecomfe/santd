@@ -71,7 +71,7 @@ const ScrollNumber = san.defineComponent({
                     results.push('transform: translateY(' + ((10 + num) * -100) + '%);');
                 }
             }
-            
+
             return results;
         }
     },
@@ -156,12 +156,12 @@ export default san.defineComponent({
             let hasStatus = this.data.get('hasStatus');
 
             if (!hasChild && hasStatus) {
-                return offset 
+                return offset
                     ? {
                         'right': -offset[0],
                         'margin-top': offset[1],
                         ...style
-                    } 
+                    }
                     : style;
             }
 
@@ -188,21 +188,27 @@ export default san.defineComponent({
             const overflowCount = this.data.get('overflowCount');
 
             return count > overflowCount ? overflowCount + '+' : count;
+        },
+
+        isZero() {
+            const count = +this.data.get('count');
+            return count === 0;
         }
     },
 
     template: `
         <span class="${prefixCls} {{classes}}" style="{{mainStyles}}">
             <slot />
-            <span s-if="!hasChild && hasStatus" class="{{statusClass}}" style="{{color ? 'background:' + color : ''}}"></span>
+            <span s-if="!hasChild && hasStatus" class="{{statusClass}}" style="{{color ? 'background:' + color : ''}}">
+            </span>
             <span
                 style="{{style && style.color ? 'color:' + color : ''}}"
                 class="${prefixCls}-status-text"
                 s-if="!hasChild && hasStatus"
             >{{text}}</span>
             <s-scrollnumber
-                s-if="showZero || count"
-                class="${prefixCls}-{{dot && count || hasStatus ? 'dot' : 'count'}}"
+                s-if="isZero ? showZero : (count || dot)"
+                class="${prefixCls}-{{count || isZero && showZero ? 'count' : 'dot'}}"
                 count="{{dot && count || hasStatus ? '' : displayCount}}"
                 title="{{title || count}}"
                 style="{{style}}"

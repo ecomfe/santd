@@ -2,7 +2,7 @@
  * @file Santd col file
  **/
 import san, {DataTypes} from 'san';
-import {classCreator, type} from '../core/util';
+import {classCreator} from '../core/util';
 import Row from './Row';
 
 const cc = classCreator('col');
@@ -34,25 +34,25 @@ export default san.defineComponent({
             const span = data.get('span');
             span && arr.push(cc(span));
 
-            for (let i = 0; i <= SUPPORT_PROPS.length; i++) {
+            for (let i = 0; i < SUPPORT_PROPS.length; i++) {
                 let key = SUPPORT_PROPS[i];
                 let value = data.get(key);
                 value && arr.push(cc(`${key}-${value}`));
             }
 
-            for (let i = 0; i <= SUPPORT_SCREENS.length; i++) {
+            for (let i = 0; i < SUPPORT_SCREENS.length; i++) {
                 let size = SUPPORT_SCREENS[i];
                 let value = data.get(size);
                 if (!value) {
                     continue;
                 }
 
-                let sizeProps = typeof value === 'object' 
-                    ? value || {} 
+                let sizeProps = typeof value === 'object'
+                    ? (value || {})
                     : {span: +value};
                 sizeProps.span && arr.push(cc(`${size}-${sizeProps.span}`));
 
-                for (let j = 0; j <= SUPPORT_PROPS.length; j++) {
+                for (let j = 0; j < SUPPORT_PROPS.length; j++) {
                     let key = SUPPORT_PROPS[j];
                     if (sizeProps[key] || +sizeProps[key] === 0) {
                         arr.push(cc(`${size}-${key}-${sizeProps[key]}`));
@@ -70,7 +70,7 @@ export default san.defineComponent({
         if (typeof gutter === 'object') {
             let screens = data.get('screens');
 
-            for (let i = 0; i <= SUPPORT_SCREENS.length; i++) {
+            for (let i = 0; i < SUPPORT_SCREENS.length; i++) {
                 const breakpoint = SUPPORT_SCREENS[i];
 
                 if (screens[breakpoint] && gutter[breakpoint] != null) {
