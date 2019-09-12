@@ -7,6 +7,8 @@ import Col from './Col';
 import {classCreator, type} from '../core/util';
 
 const cc = classCreator('row');
+const baseClass = cc();
+
 
 let enquire = null;
 // matchMedia polyfill for
@@ -44,18 +46,17 @@ export default san.defineComponent({
     },
 
     computed: {
-        styleClass() {
-            let arr = [cc()];
-            const data = this.data;
+        classes() {
+            let arr = [baseClass];
 
-            let type = data.get('type');
+            let type = this.data.get('type');
+            let align = this.data.get('align');
+            let justify = this.data.get('justify');
+
             if (type === 'flex') {
                 arr.push(cc(type));
-
-                ['align', 'justify'].forEach(key => {
-                    let value = data.get(key);
-                    value && arr.push(cc(`${type}-${value}`));
-                });
+                align && arr.push(cc(`${type}-${align}`));
+                justify && arr.push(cc(`${type}-${justify}`));
             }
 
             return arr;
@@ -159,7 +160,7 @@ export default san.defineComponent({
     },
 
     template: `
-        <div class="{{styleClass}}" style="{{rowStyle}}">
+        <div class="{{classes}}" style="{{rowStyle}}">
             <slot />
         </div>
     `
