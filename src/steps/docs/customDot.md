@@ -6,11 +6,14 @@
 ```html
 <template>
     <div>
-        <s-steps progressDot="{{customDot}}" current="1">
+        <s-steps current="{{1}}">
             <s-step title="Finished" description="You can hover on the dot." />
             <s-step title="In Progress" description="You can hover on the dot." />
             <s-step title="Waiting" description="You can hover on the dot." />
             <s-step title="Waiting" description="You can hover on the dot." />
+            <s-popover content="step {{index}} status: {{status}}" slot="progressDot" style="float:left;width:100%;height:100%;">
+                <span class="{{prefixCls}}-icon-dot" />
+            </s-popover>
       </s-steps>
     </div>
 </template>
@@ -19,28 +22,11 @@ import san from 'san';
 import Steps from 'santd/steps';
 import Popover from 'santd/popover';
 
-const customDot = function (dot) {
-    return san.defineComponent({
-        components: {
-            's-popover': Popover,
-            's-dot': dot
-        },
-        template: `<span>
-            <s-popover content="step {{index}} status: {{status}}" style="float:left;width:100%;height:100%;">
-                <s-dot/>
-            </s-popover>
-        </span>`
-    });
-}
 export default {
-    initData() {
-        return {
-            customDot
-        };
-    },
     components: {
         's-steps': Steps,
-        's-step': Steps.Step
+        's-step': Steps.Step,
+        's-popover': Popover
     }
 }
 </script>
