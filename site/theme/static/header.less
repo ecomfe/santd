@@ -59,26 +59,35 @@
     line-height: 22px;
     padding-left: 16px;
     margin: 22px auto 0 8px;
+    input {
+        font-size: 14px;
+        margin-top: -5px;
+        width: 200px;
+        border: 0;
+        box-shadow: none;
+        background: transparent;
+        &::placeholder {
+            color: #a3b1bf;
+        }
+    }
+    .san-select-selection {
+        border: 0;
+        padding: 0;
+        .san-input {
+            padding: 0;
+        }
+    }
+    .san-input:focus,
+    .san-input:hover,
+    .san-select-open .san-select-selection {
+        box-shadow: none;
+    }
+    .san-icon {
+        color: #ced4d9;
+        position: relative;
+        top: .5px;
+    }
 }
-
-// #search-box .anticon {
-//     color: #ced4d9;
-//     position: relative;
-//     top: 0.5px;
-// }
-
-// #search-box input {
-//     font-size: 14px;
-//     margin-top: -5px;
-//     width: 200px;
-//     border: 0;
-//     box-shadow: none;
-//     background: transparent;
-
-//     &::placeholder {
-//         color: #a3b1bf;
-//     }
-// }
 
 // .header-lang-button,
 // .version {

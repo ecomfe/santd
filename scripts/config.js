@@ -15,9 +15,11 @@ module.exports = {
         assetsSubDirectory: 'static',
         assetsPublicPath: '/'
     },
-    docs: {
+    doc: {
         port: 8889,
+        assetsRoot: path.resolve(__dirname, '../output/site'),
         assetsSubDirectory: 'static',
-        assetsPublicPath: './'
+        assetsPublicPath: './',
+        devAssetsPublicPath: '/'
     }
 };

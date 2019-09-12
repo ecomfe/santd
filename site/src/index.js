@@ -7,15 +7,16 @@ import './style/index.less';
 import {Component} from 'san';
 import {router} from 'san-router';
 
-import 'prismjs';
-import 'prismjs/components/prism-markup-templating';
-import 'prismjs/components/prism-bash';
-import 'prismjs/components/prism-javascript';
-import 'prismjs/components/prism-less';
-import 'prismjs/components/prism-markdown';
-import 'prismjs/components/prism-css';
-import 'prismjs/components/prism-json';
-import 'prismjs/components/prism-jsx';
+import Prism from 'prismjs';
+import 'prismjs/themes/prism.css';
+// import 'prismjs/components/prism-markup-templating';
+// import 'prismjs/components/prism-bash';
+// import 'prismjs/components/prism-javascript';
+// import 'prismjs/components/prism-less';
+// import 'prismjs/components/prism-markdown';
+// import 'prismjs/components/prism-css';
+// import 'prismjs/components/prism-json';
+// import 'prismjs/components/prism-jsx';
 
 import Content from './containers/Content';
 import Header from './containers/Header';
@@ -30,7 +31,7 @@ class Index extends Component {
     // eslint-disable-next-line
     static template = /*html*/ `
         <div class="page-wrapper">
-            <doc-header />
+            <doc-header routes="{{routes}}" on-redirect="handleRedirect"/>
             <div class="main-wrapper">
                 <s-row>
                     <s-col xs="24" sm="24" md="24" lg="6" xl="5" xxl="4" class="main-menu">
@@ -105,7 +106,6 @@ class Index extends Component {
         // 路由监听
         router.listen(e => {
             const query = e.query;
-
             if (e.path === '/' || !that.checkRouter(query)) {
                 that.handleRedirect({key: defaultPath});
                 that.data.set('currentPath', defaultPath);
@@ -136,6 +136,7 @@ class Index extends Component {
                         that.handleError(e);
                     });
                 }
+                that.hlCode();
             }
         });
 
@@ -150,7 +151,14 @@ class Index extends Component {
         const routerMap = this.data.get('routerMap');
         return routerMap[query.type] && routerMap[query.type][query.id];
     }
-
+    hlCode() {
+        setTimeout(() => {
+            let code = document.getElementsByTagName('code');
+            Array.prototype.forEach.call(code, function (item) {
+                Prism.highlightElement(item);
+            });
+        }, 100);
+    }
     handleError(err) {
         Notification.error({
             message: err.type || '错误提示',
