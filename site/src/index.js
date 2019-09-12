@@ -9,14 +9,6 @@ import {router} from 'san-router';
 
 import Prism from 'prismjs';
 import 'prismjs/themes/prism.css';
-// import 'prismjs/components/prism-markup-templating';
-// import 'prismjs/components/prism-bash';
-// import 'prismjs/components/prism-javascript';
-// import 'prismjs/components/prism-less';
-// import 'prismjs/components/prism-markdown';
-// import 'prismjs/components/prism-css';
-// import 'prismjs/components/prism-json';
-// import 'prismjs/components/prism-jsx';
 
 import Content from './containers/Content';
 import Header from './containers/Header';

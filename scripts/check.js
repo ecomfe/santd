@@ -6,7 +6,7 @@ const fs = require('fs');
 const path = require('path');
 const $ = require('dekko');
 const componentName = process.argv[2] || '';
-const filePath = path.resolve(__dirname, `../santd/${componentName}`);
+const filePath = path.resolve(__dirname, `../src/${componentName}`);
 
 const dekko = (fdir) => {
     $(fdir)

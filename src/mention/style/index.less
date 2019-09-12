@@ -1,0 +1,66 @@
+@mention-prefix-cls: ~"@{ant-prefix}-mention";
+@suggestions-prefix-cls: ~"@{ant-prefix}-suggestions";
+@import "../../core/styles/themes/default.less";
+@import "../../core/styles/mixins/index.less";
+@import "../../input/style/mixin.less";
+@import "../../dropdown/style/index.less";
+
+.@{mention-prefix-cls}-wrapper {
+    .reset-component;
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    vertical-align: middle;
+    .@{mention-prefix-cls}-editor {
+        .input;
+        min-height: @input-height-base;
+        height: auto; // To override height in .input mixin
+        line-height: @line-height-base;
+        padding: 0;
+        display: block;
+        &-wrapper {
+            min-height: inherit;
+            overflow-y: auto;
+            height: auto;
+            user-modify: read-write-plaintext-only;
+            padding: 5px @control-padding-horizontal - 1px;
+        }
+    }
+    &.@{mention-prefix-cls}-active:not(.disabled) .@{mention-prefix-cls}-editor {
+        .active;
+    }
+    &.disabled .@{mention-prefix-cls}-editor {
+        .disabled();
+    }
+    .public-DraftEditorPlaceholder-root {
+        position: absolute;
+        pointer-events: none;
+        .public-DraftEditorPlaceholder-inner {
+            color: @input-placeholder-color;
+            opacity: 1;
+            outline: none;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            height: auto;
+            padding: 5px @control-padding-horizontal - 1px;
+        }
+    }
+    .public-DraftEditor-content {
+        min-height: inherit;
+        height: auto;
+        padding: 5px @control-padding-horizontal - 1px;
+    }
+}
+
+.@{suggestions-prefix-cls}-wrapper {
+    position: absolute;
+    z-index: 9999;
+    display: none;
+    transition: all .3s;
+    min-width: 90px;
+    text-align: center;
+    transform-origin: center top 0;
+    .@{suggestions-prefix-cls}-notfound {
+        padding: 5px @control-padding-horizontal;
+    }
+}

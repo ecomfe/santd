@@ -45,15 +45,16 @@ export default class Header extends Component {
                         on-click="itemClick"
                     >
                         <s-menu-item key="1">
-                            <span>首页</span>
+                            <a href="#/">
+                                <span>组件</span>
+                            </a>
                         </s-menu-item>
                         <s-menu-item key="2">
-                            <span>设计语言</span>
+                            <a href="https://ant.design/docs/spec/introduce-cn" target="_blank">
+                                <span>设计语言</span>
+                            </a>
                         </s-menu-item>
-                        <s-menu-item key="3">
-                            <span>组件</span>
-                        </s-menu-item>
-                        <s-sub-menu key="sub" title="生态">
+                        <s-sub-menu key="3" title="生态" target="_blank">
                             <s-menu-item key="4">
                                 <a href="http://pro.ant.design" class="header-link" target="_blank">
                                     Ant Design Pro v4
@@ -121,7 +122,7 @@ export default class Header extends Component {
     }
     handleSearch(value) {
         const opts = this.data.get('opts');
-        let showOpts = value ? opts.filter(item => item.name.indexOf(value) === -1) : opts;
+        let showOpts = value ? opts.filter(item => item.name.indexOf(value) > -1) : opts;
         this.data.set('showOpts', showOpts);
     }
     handleSelect(value) {

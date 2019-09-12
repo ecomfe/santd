@@ -20,7 +20,7 @@ const app = express();
 
 // 组件名称
 const componentName = process.argv[2] || 'button';
-if (componentName && fs.pathExistsSync(resolve(`./santd/${componentName}`))) {
+if (componentName && fs.pathExistsSync(resolve(`./src/${componentName}`))) {
     // 存在组件
     start(componentName)
         .then(stats => {
@@ -55,7 +55,7 @@ if (componentName && fs.pathExistsSync(resolve(`./santd/${componentName}`))) {
 
 function start(componentName) {
     return new Promise((resolve, reject) => {
-        const entry = `santd/${componentName}/docs/index.js`;
+        const entry = `src/${componentName}/docs/index.js`;
         let config = merge(webpackConfig, {
             resolve: {
                 alias: {
