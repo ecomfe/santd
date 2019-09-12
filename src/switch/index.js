@@ -12,20 +12,19 @@ const prefixCls = classCreator('switch')();
 export default san.defineComponent({
     dataTypes: {
         disabled: DataTypes.bool,
-        checkedChildren: DataTypes.any,
-        unCheckedChildren: DataTypes.any,
+        checkedChildren: DataTypes.string,
+        unCheckedChildren: DataTypes.string,
         checked: DataTypes.bool,
         defaultChecked: DataTypes.bool,
         autoFocus: DataTypes.bool,
-        type: DataTypes.string,
-        className: DataTypes.string,
-        prefixCls: DataTypes.string,
         loading: DataTypes.bool,
         tabIndex: DataTypes.oneOfType([DataTypes.string, DataTypes.number])
     },
+
     components: {
         's-icon': Icon
     },
+
     initData() {
         return {
             sizeMap: {
@@ -35,20 +34,14 @@ export default san.defineComponent({
             disabled: false,
             defaultChecked: false,
             checked: false,
-            checkedChildrenIsString: false,
-            unCheckedChildrenIsString: false,
-            loading: false,
-            prefixCls
+            loading: false
         };
     },
+
     inited() {
-        const data = this.data;
-        data.set('checked',
-            data.get('checked')
-            || data.get('defaultChecked'));
-        data.set('checkedChildrenIsString', typeof data.get('checkedChildren') === 'string');
-        data.set('unCheckedChildrenIsString', typeof data.get('unCheckedChildren') === 'string');
+        this.data.set('checked', this.data.get('checked') || this.data.get('defaultChecked'));
     },
+
     computed: {
         classes() {
             const data = this.data;
@@ -57,20 +50,17 @@ export default san.defineComponent({
             const size = data.get('sizeMap')[data.get('size')];
             const loading = data.get('loading');
             const block = data.get('block');
-            const className = data.get('className');
-            let classArr = [prefixCls, className];
+            let classArr = [prefixCls];
+
             !!checked && classArr.push(`${prefixCls}-checked`);
             !!disabled && classArr.push(`${prefixCls}-disabled`);
             !!size && classArr.push(`${prefixCls}-${size}`);
             !!loading && classArr.push(`${prefixCls}-loading`);
             !!block && classArr.push(`${prefixCls}-block`);
             return classArr;
-        },
-        switchTabIndex() {
-            const data = this.data;
-            return data.get('disabled') ? -1 : data.get('tabIndex') || 0;
         }
     },
+
     attached() {
         this.nextTick(() => {
             const autoFocus = this.data.get('autoFocus');
@@ -80,6 +70,7 @@ export default san.defineComponent({
             }
         });
     },
+
     setChecked(checked) {
         if (this.data.get('disabled')) {
             return;
@@ -90,30 +81,38 @@ export default san.defineComponent({
         this.fire('change', checked);
         this.dispatch('UI:form-item-interact', {fieldValue: checked, type: 'change'});
     },
+
     toggle() {
         const checked = !this.data.get('checked');
         this.setChecked(checked);
         this.fire('click', checked);
     },
+
     handleKeyDown(e) {
         if (e.keyCode === 37) { // Left
             this.setChecked(false);
-        } else if (e.keyCode === 39) { // Right
+        }
+        else if (e.keyCode === 39) { // Right
             this.setChecked(true);
-        } else if (e.keyCode === 32 || e.keyCode === 13) { // Space, Enter
+        }
+        else if (e.keyCode === 32 || e.keyCode === 13) { // Space, Enter
             this.toggle();
         }
     },
+
     focus() {
         this.el.focus();
     },
+
     blur() {
         this.el.blur();
     },
+
     handleMouseUp(e) {
         this.el.blur();
         this.fire('mouseup', e);
     },
+
     template: `
         <span
             disabled="{{disabled}}"
@@ -121,28 +120,16 @@ export default san.defineComponent({
             on-click="toggle"
             on-keydown="handleKeyDown"
             on-mouseUp="handleMouseUp"
-            tabIndex="{{switchTabIndex}}"
+            tabIndex="{{disabled ? -1 : tabIndex || 0}}"
         >
-            <span class="{{prefixCls}}-handler">
-                <s-icon s-if="{{loading}}" type="loading"></s-icon>
+            <span class="${prefixCls}-handler" s-if="{{loading}}">
+                <s-icon type="loading" />
             </span>
-            <span class="{{prefixCls}}-inner">
-                <template s-if="checked">
-                    <template s-if="checkedChildrenIsString">
-                        {{checkedChildren}}
-                    </template>
-                    <template s-else>
-                        <slot name="checkedChildren" />
-                    </template>
-                </template>
-                <template s-else>
-                    <template s-if="unCheckedChildrenIsString">
-                        {{unCheckedChildren}}
-                    </template>
-                    <template s-else>
-                        <slot name="unCheckedChildren" />
-                    </template>
-                </template>
+            <span class="${prefixCls}-inner">
+                <template s-if="checked && checkedChildren">{{checkedChildren}}</template>
+                <slot name="checkedChildren" s-else-if="checked" />
+                <template s-if="!checked && unCheckedChildren">{{unCheckedChildren}}</template>
+                <slot name="unCheckedChildren" s-else-if="!checked" />
             </span>
         </span>
     `
