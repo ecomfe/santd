@@ -77,22 +77,15 @@ export default san.defineComponent({
         while (parent && !(parent instanceof Row)) {
             parent = parent.parent;
         }
+
         if (parent && parent.data) {
             let gutter = +this.getGutter(parent.data);
+
             if (gutter) {
                 gutter = gutter / 2;
-                this.data.set('colStyle', {
-                    'padding-left': gutter + 'px',
-                    'padding-right': gutter + 'px'
-                });
+                this.data.set('colStyle', `padding-left:${gutter};padding-right:${gutter};`);
             }
         }
-    },
-
-    initData() {
-        return {
-            colStyle: {}
-        };
     },
 
     template: `
