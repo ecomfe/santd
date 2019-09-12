@@ -3,6 +3,7 @@
 * @author fuqiangqiang@baidu.com
 */
 
+import san, {DataTypes} from 'san';
 import Select from '../select';
 
 let AutoComplete = san.defineComponent({
