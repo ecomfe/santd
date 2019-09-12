@@ -6,6 +6,7 @@ import {classCreator, type} from '../core/util';
 import Row from './Row';
 
 const cc = classCreator('col');
+const baseClass = cc();
 const SUPPORT_PROPS = ['order', 'offset', 'pull', 'push'];
 const SUPPORT_SCREENS = ['xs', 'sm', 'md', 'lg', 'xl', 'xxl'];
 
@@ -26,44 +27,53 @@ export default san.defineComponent({
     },
 
     computed: {
-        styleClass() {
-            let arr = [cc()];
+        classes() {
+            let arr = [baseClass];
             let data = this.data;
 
             const span = data.get('span');
             span && arr.push(cc(span));
 
-            SUPPORT_PROPS.forEach(key => {
-                const value = data.get(key);
+            for (let i = 0; i <= SUPPORT_PROPS.length; i++) {
+                let key = SUPPORT_PROPS[i];
+                let value = data.get(key);
                 value && arr.push(cc(`${key}-${value}`));
-            });
+            }
 
-            SUPPORT_SCREENS.forEach(size => {
+            for (let i = 0; i <= SUPPORT_SCREENS.length; i++) {
+                let size = SUPPORT_SCREENS[i];
                 let value = data.get(size);
                 if (!value) {
-                    return;
+                    continue;
                 }
 
-                let sizeProps = type(value, 'object') ? value || {} : {span: +value};
+                let sizeProps = typeof value === 'object' 
+                    ? value || {} 
+                    : {span: +value};
                 sizeProps.span && arr.push(cc(`${size}-${sizeProps.span}`));
 
-                SUPPORT_PROPS.forEach(key => {
+                for (let j = 0; j <= SUPPORT_PROPS.length; j++) {
+                    let key = SUPPORT_PROPS[j];
                     if (sizeProps[key] || +sizeProps[key] === 0) {
                         arr.push(cc(`${size}-${key}-${sizeProps[key]}`));
                     }
-                });
-            });
+                }
+            }
+
             return arr;
         }
     },
 
     getGutter(data) {
         let gutter = data.get('gutter');
+
         if (typeof gutter === 'object') {
             let screens = data.get('screens');
+
             for (let i = 0; i <= SUPPORT_SCREENS.length; i++) {
                 const breakpoint = SUPPORT_SCREENS[i];
-                if (screens[breakpoint] && gutter[breakpoint] !== undefined) {
+
+                if (screens[breakpoint] && gutter[breakpoint] != null) {
                     return gutter[breakpoint];
                 }
             }
@@ -89,7 +99,7 @@ export default san.defineComponent({
     },
 
     template: `
-        <div class="{{styleClass}}" style="{{colStyle}}">
+        <div class="{{classes}}" style="{{colStyle}}">
             <slot />
         </div>
     `
