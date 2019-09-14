@@ -97,19 +97,19 @@ export default san.defineComponent({
         let gutter = +this.getGutter();
         if (gutter) {
             const slots = this.slot();
+
             if (slots && slots.length) {
                 gutter = gutter / 2;
-                const loopCMPT = list => {
+
+                function loopCMPT(list) {
                     list && list.length && list.forEach(item => {
                         if (item instanceof Col) {
-                            item.data.set('colStyle', {
-                                'padding-left': gutter + 'px',
-                                'padding-right': gutter + 'px'
-                            });
+                            item.data.set('colStyle', `padding-left:${gutter};padding-right:${gutter};`);
                         }
                         loopCMPT(item.children);
                     });
                 };
+
                 loopCMPT(slots);
             }
         }
