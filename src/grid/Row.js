@@ -64,30 +64,27 @@ export default san.defineComponent({
     },
 
     inited() {
-        let gutter = +this.getGutter();
-        if (gutter) {
-            gutter = gutter / -2;
-            this.data.set('rowStyle', `margin-left: ${gutter}px; margin-right:${gutter}px;`);
-        }
-
-        this.watch('gutter', val => {
+        this._calcStyles = () => {
             let gutter = +this.getGutter();
             if (gutter) {
                 gutter = gutter / -2;
-                this.data.set('rowStyle', `margin-left: ${gutter}px; margin-right:${gutter}px;`);
+                this.data.set('styles', `margin-left: ${gutter}px; margin-right:${gutter}px;`);
             }
-        });
+        };
+
+        this._calcStyles();
+        this.watch('gutter', this._calcStyles);
+
     },
 
     getGutter() {
-        const data = this.data;
-        let gutter = data.get('gutter');
+        let gutter = this.data.get('gutter');
         if (typeof gutter === 'object') {
-            let screens = data.get('screens');
-            // console.log(screens);
+            let screens = this.data.get('screens');
+
             for (let i = 0; i <= responsiveArray.length; i++) {
-                const breakpoint = responsiveArray[i];
-                if (screens[breakpoint] && gutter[breakpoint] !== undefined) {
+                let breakpoint = responsiveArray[i];
+                if (screens[breakpoint] && gutter[breakpoint] != null) {
                     return gutter[breakpoint];
                 }
             }
@@ -160,7 +157,7 @@ export default san.defineComponent({
     },
 
     template: `
-        <div class="{{classes}}" style="{{rowStyle}}">
+        <div class="{{classes}}" style="{{styles}}">
             <slot />
         </div>
     `
