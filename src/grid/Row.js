@@ -115,7 +115,7 @@ export default san.defineComponent({
         }
 
         this.nextTick(() => {
-            Object.keys(responsiveMap).map(screen =>
+            responsiveArray.forEach(screen =>
                 enquire.register(responsiveMap[screen], {
                     match: () => {
                         let gutter = +this.data.get('gutter');
@@ -142,7 +142,7 @@ export default san.defineComponent({
     },
 
     disposed() {
-        Object.keys(responsiveMap).map(screen => enquire.unregister(responsiveMap[screen]));
+        responsiveArray.forEach(screen => enquire.unregister(responsiveMap[screen]));
     },
 
     initData() {
