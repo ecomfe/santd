@@ -4,7 +4,7 @@
 import san, {DataTypes} from 'san';
 
 import Col from './Col';
-import {classCreator, type} from '../core/util';
+import {classCreator} from '../core/util';
 
 const cc = classCreator('row');
 const baseClass = cc();
@@ -118,23 +118,20 @@ export default san.defineComponent({
             Object.keys(responsiveMap).map(screen =>
                 enquire.register(responsiveMap[screen], {
                     match: () => {
-                        const data = this.data;
+                        let gutter = +this.data.get('gutter');
 
-                        let gutter = data.get('gutter');
-
-                        if (type(gutter, 'number') || (type(gutter, 'string') && !isNaN(+gutter))) {
+                        if (!isNaN(gutter))) {
                             let obj = {};
                             obj[screen] = true;
-                            data.merge('screens', obj);
+                            this.data.merge('screens', obj);
                         }
                     },
                     unmatch: () => {
-                        const data = this.data;
-                        let gutter = data.get('gutter');
-                        if (type(gutter, 'number') || (type(gutter, 'string') && !isNaN(+gutter))) {
+                        let gutter = +this.data.get('gutter');
+                        if (!isNaN(+gutter)) {
                             let obj = {};
                             obj[screen] = false;
-                            data.merge('screens', obj);
+                            this.data.merge('screens', obj);
                         }
                     },
                     // Keep a empty destory to avoid triggering unmatch when unregister
