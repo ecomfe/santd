@@ -3,27 +3,9 @@
  * @author mayihui@baidu.com
  **/
 
-function extend(target, source) {
-    for (let key in source) {
-        if (source.hasOwnProperty(key)) {
-            let value = source[key];
-            if (typeof value !== 'undefined') {
-                target[key] = value;
-            }
-        }
-    }
 
-    return target;
-}
 
 export default function (subClass, superClass) {
-    /*const subClassProto = subClass.prototype;
-
-    let F = new Function();
-    F.prototype = superClass.prototype;
-    subClass.prototype = new F();
-    subClass.prototype.constructor = subClass;
-    extend(subClass.prototype, subClassProto);*/
 
     const newSubClassProto = subClass.prototype;
     for (let i in superClass.prototype) {
