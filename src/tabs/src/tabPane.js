@@ -4,26 +4,22 @@
  **/
 
 import san, {DataTypes} from 'san';
+import {classCreator} from '../../core/util';
+const prefixCls = classCreator('tabs')();
 
 export default san.defineComponent({
     dataTypes: {
-        className: DataTypes.string,
         active: DataTypes.bool,
-        style: DataTypes.oneOfType([DataTypes.string, DataTypes.object]),
         destroyInactiveTabPane: DataTypes.bool,
         forceRender: DataTypes.bool,
-        rootPrefixCls: DataTypes.string,
         id: DataTypes.string
     },
     computed: {
         classes() {
-            const rootPrefixCls = this.data.get('rootPrefixCls');
-            const prefixCls = rootPrefixCls + '-tabpane';
             const active = this.data.get('active');
-            const className = this.data.get('className');
-            let classArr = [prefixCls, className];
-            !active && classArr.push(`${prefixCls}-inactive`);
-            active && classArr.push(`${prefixCls}-active`);
+            let classArr = [`${prefixCls}-tabpane`];
+            !active && classArr.push(`${prefixCls}-tabpane-inactive`);
+            active && classArr.push(`${prefixCls}-tabpane-active`);
             return classArr;
         },
         shouldRender() {
@@ -43,14 +39,12 @@ export default san.defineComponent({
         const parent = this.parentComponent;
         const {
             activeKey,
-            destroyInactiveTabPane,
-            prefixCls
+            destroyInactiveTabPane
         } = parent.data.get();
         const key = this.data.get('key');
 
         this.data.set('active', activeKey === key);
         this.data.set('destroyInactiveTabPane', destroyInactiveTabPane);
-        this.data.set('rootPrefixCls', prefixCls);
     },
     detached() {
         this.dispatch('removeTabPane', this.data.get('key'));

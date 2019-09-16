@@ -4,32 +4,37 @@
  **/
 
 import san from 'san';
-import TabBarRootNode from './tabBarRootNode';
+import Icon from '../../icon';
 import ScrollableTabBarNode from './scrollableTabBarNode';
 import TabBarTabsNode from './tabBarTabsNode';
 import InkTabBarNode from './inkTabBarNode';
+import {classCreator} from '../../core/util';
+const prefixCls = classCreator('tabs')();
 
 export default san.defineComponent({
     components: {
-        's-tabbarrootnode': TabBarRootNode,
         's-scrollabletabbarnode': ScrollableTabBarNode,
         's-tabbartabsnode': TabBarTabsNode,
-        's-inktabbarnode': InkTabBarNode
+        's-inktabbarnode': InkTabBarNode,
+        's-icon': Icon
     },
     initData() {
         return {
+            tabBarPosition: 'top',
             refs: {}
         };
     },
     computed: {
-        bodyStyle() {
-            const tabBarPosition = this.data.get('tabBarPosition');
-            if (tabBarPosition === 'left' || tabBarPosition === 'right') {
-                return {
-                    height: '100%',
-                    float: tabBarPosition
-                };
-            }
+        classes() {
+            const tabPosition = this.data.get('tabBarPosition');
+            const size = this.data.get('size');
+            const type = this.data.get('type');
+
+            let classArr = [`${prefixCls}-bar`, `${prefixCls}-${tabPosition}-bar`];
+            !!size && classArr.push(`${prefixCls}-${size}-bar`);
+            type && type.indexOf('card') >= 0 && classArr.push(`${prefixCls}-card-bar`);
+
+            return classArr.join(' ');
         }
     },
     messages: {
@@ -40,39 +45,57 @@ export default san.defineComponent({
     handleTabClick(payload) {
         this.fire('tabClick', payload);
     },
+    handleKeyDown(e) {
+        this.fire('keydown', e);
+    },
+    handleCreateNewTab() {
+        this.fire('createNewTab');
+    },
+    handleRemoveTab(prop) {
+        this.fire('removeTab', prop);
+    },
+    attached() {
+        this.data.set('refs.root', this.ref('root'));
+    },
     template: `
-        <div style="{{bodyStyle}}">
-            <s-tabbarrootnode
-                prefixCls="{{prefixCls}}"
-                className="{{className}}"
-                tabBarExtraContent="{{tabBarExtraContent}}"
-                prevIcon="{{prevIcon}}"
-                nextIcon="{{nextIcon}}"
-                style="{{tabBarStyle}}"
+        <div style="{{tabBarPosition === 'left' || tabBarPosition === 'right' ? 'height:100%;float:' + tabBarPosition : ''}}">
+            <div
+                role="tablist"
+                class="{{classes}}"
+                tabIndex="0"
+                on-keydown="handleKeyDown"
+                s-ref="root"
             >
+                <div
+                    class="${prefixCls}-extra-content"
+                    style="{{tabBarPosition === 'top' || tabBarPosition === 'bottom' ? 'float: right' : ''}}"
+                >
+                    <template s-if="type === 'editable-card' && !hideAdd">
+                        <s-icon type="plus" class="${prefixCls}-new-tab" on-click="handleCreateNewTab" />
+                        <slot name="tabBarExtraContent" />
+                    </template>
+                    <slot name="tabBarExtraContent" s-else />
+                </div>
                 <s-scrollabletabbarnode
-                    prefixCls="{{prefixCls}}"
                     refs="{{refs}}"
                     tabBarPosition="{{tabBarPosition}}"
                 >
                     <s-tabbartabsnode
-                        prefixCls="{{prefixCls}}"
+                        type="{{type}}"
+                        closable="{{closable}}"
                         children="{{children}}"
                         activeKey="{{activeKey}}"
                         tabBarGutter="{{tabBarGutter}}"
                         tabBarPosition="{{tabBarPosition}}"
                         on-tabClick="handleTabClick"
-                        injectComponent="{{injectComponent}}"
+                        on-removeTab="handleRemoveTab"
                     ></s-tabbartabsnode>
                     <s-inktabbarnode
-                        prefixCls="{{prefixCls}}"
                         refs="{{refs}}"
-                        children="{{children}}"
-                        activeKey="{{activeKey}}"
                         tabBarPosition="{{tabBarPosition}}"
                     ></s-inktabbarnode>
                 </s-scrollabletabbarnode>
-            </s-tabbarrootnode>
+            </div>
         </div>
     `
 });

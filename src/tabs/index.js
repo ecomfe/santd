@@ -4,49 +4,14 @@
  */
 
 import san, {DataTypes} from 'san';
-import Icon from '../icon';
 import {classCreator} from '../core/util';
-import tabs, {TabPane, TabContent} from './src/index';
-import scrollableInkTabBar from './src/scrollableInkTabBar';
+import Tabs, {TabPane} from './src/index';
 import './style/index.less';
 
 const prefixCls = classCreator('tabs')();
 
-const prevIcon = san.defineComponent({
-    computed: {
-        prevIconType() {
-            const tabPosition = this.data.get('tabPosition');
-            const isVertical = tabPosition === 'left' || tabPosition === 'right';
-
-            return isVertical ? 'up' : 'left';
-        }
-    },
-    components: {
-        's-icon': Icon
-    },
-    template: `<span class="{{prefixCls}}-tab-prev-icon">
-        <s-icon type="{{prevIconType}}" class="{{prefixCls}}-tab-prev-icon-target"/>
-    </span>`
-});
-
-const nextIcon = san.defineComponent({
-    computed: {
-        nextIconType() {
-            const tabPosition = this.data.get('tabPosition');
-            const isVertical = tabPosition === 'left' || tabPosition === 'right';
-
-            return isVertical ? 'down' : 'right';
-        }
-    },
-    components: {
-        's-icon': Icon
-    },
-    template: `<span class="{{prefixCls}}-tab-next-icon">
-        <s-icon type="{{nextIconType}}" class="{{prefixCls}}-tab-next-icon-target"/>
-    </span>`
-});
-
-const Tabs = san.defineComponent({
+const SanTabs = san.defineComponent({
+    autoFillStyleAndId: false,
     dataTypes: {
         activeKey: DataTypes.string,
         defaultActiveKey: DataTypes.string,
@@ -55,169 +20,33 @@ const Tabs = san.defineComponent({
         type: DataTypes.oneOf(['line', 'card', 'editable-card']),
         tabPosition: DataTypes.oneOf(['top', 'right', 'bottom', 'left']),
         size: DataTypes.oneOf(['large', 'default', 'small']),
-        style: DataTypes.oneOfType([DataTypes.string, DataTypes.object]),
-        prefixCls: DataTypes.string,
-        className: DataTypes.string,
         animated: DataTypes.oneOfType([DataTypes.bool, DataTypes.object]),
-        tabBarGutter: DataTypes.number,
-        renderTabBar: DataTypes.func,
-        renderTabContent: DataTypes.func,
-        tabBarExtraContent: DataTypes.func
+        tabBarGutter: DataTypes.number
     },
     initData() {
         return {
             type: 'line',
             hideAdd: false,
-            tabPosition: 'top',
-            prefixCls: prefixCls,
-            defaultRenderTabBar() {
-                const tabBar = san.defineComponent({
-                    initData() {
-                        return {
-                            ...scrollableInkTabBar.prototype.initData(),
-                            prevIcon,
-                            nextIcon
-                        };
-                    },
-                    computed: {
-                        ...scrollableInkTabBar.prototype.computed,
-                        className() {
-                            const tabPosition = this.data.get('tabBarPosition');
-                            const size = this.data.get('size');
-                            const type = this.data.get('type');
-                            let classArr = [`${prefixCls}-${tabPosition}-bar`];
-                            !!size && classArr.push(`${prefixCls}-${size}-bar`);
-                            type && type.indexOf('card') >= 0 && classArr.push(`${prefixCls}-card-bar`);
-                            return classArr.join(' ');
-                        }
-                    }
-                });
-
-                san.inherits(tabBar, scrollableInkTabBar);
-                return tabBar;
-            },
-            defaultRenderTabContent() {
-                const hasTabPaneAnimated = this.data.get('hasTabPaneAnimated');
-                const newTabContent = san.defineComponent({
-                    initData() {
-                        return {
-                            ...TabContent.prototype.initData(),
-                            hasTabPaneAnimated: hasTabPaneAnimated,
-                            animatedWithMargin: true
-                        };
-                    },
-                    computed: {
-                        ...TabContent.prototype.computed,
-                        className() {
-                            const tabPosition = this.data.get('tabBarPosition');
-                            const type = this.data.get('type') || '';
-                            let classArr = [`${prefixCls}-${tabPosition}-content`];
-                            type.indexOf('card') >= 0 && classArr.push(prefixCls + '-card-content');
-                            return classArr.join(' ');
-                        }
-                    }
-                });
-                san.inherits(newTabContent, TabContent);
-                return newTabContent;
-            },
-            injectComponent(tab) {
-                const type = this.data.get('type');
-                const that = this;
-                if (type === 'editable-card') {
-                    return san.defineComponent({
-                        components: {
-                            tabnode: typeof tab === 'function' ? tab : '',
-                            icon: Icon
-                        },
-                        inited() {
-                            this.data.set('instance', this);
-                        },
-                        computed: {
-                            classes() {
-                                const closable = this.data.get('closable');
-                                return !closable ? [`${prefixCls}-tab-uncloseable`] : '';
-                            },
-                            isComponent() {
-                                const instance = this.data.get('instance');
-                                const tabNode = instance && instance.components.tabnode;
-                                return tabNode && typeof tabNode === 'function';
-                            }
-                        },
-                        handleRemoveTab(e) {
-                            const key = this.data.get('key');
-                            that.handleRemoveTab(key, e);
-                        },
-                        template: `
-                            <div class="{{classes}}">
-                                <tabnode s-if="isComponent"></tabnode>
-                                <template s-else>{{tab}}</template>
-                                <icon
-                                    type="close"
-                                    class="${prefixCls}-close-x"
-                                    s-if="closable === undefined ? true : closable"
-                                    on-click="handleRemoveTab($event)"
-                                ></icon>
-                            </div>
-                        `
-                    });
-                }
-            }
+            tabPosition: 'top'
         };
     },
     inited() {
-        const injectComponent = this.data.get('injectComponent');
-        const hideAdd = this.data.get('hideAdd');
-        const type = this.data.get('type');
-        this.data.set('injectComponent', injectComponent.bind(this));
-        this.data.set('bodyStyle', this.data.get('style'));
-        this.data.set('style', {});
-
-        let tabBarExtraContent;
-        const that = this;
-        if (type === 'editable-card' && !hideAdd) {
-            tabBarExtraContent = this.data.get('tabBarExtraContent');
-            const extraContent = san.defineComponent({
-                components: {
-                    'icon': Icon,
-                    'extra': tabBarExtraContent
-                },
-                handleCreateNewTab(e) {
-                    that.handleCreateNewTab(e);
-                },
-                template: `
-                    <span>
-                        <icon type="plus" class="${prefixCls}-new-tab" on-click="handleCreateNewTab"/>
-                        <extra></extra>
-                    </span>
-                `
-            });
-            tabBarExtraContent = extraContent;
-        }
-        if (tabBarExtraContent) {
-            this.data.set('tabBarExtraContent', san.defineComponent({
-                components: {
-                    extra: tabBarExtraContent
-                },
-                template: `
-                    <div class="${prefixCls}-extra-content">
-                        <extra></extra>
-                    </div>
-                `
-            }));
-        }
+        this.data.set('hasRenderTabBar', !!this.sourceSlots.named.renderTabBar);
+        this.data.set('hasExtraContent', !!this.sourceSlots.named.tabBarExtraContent);
     },
     computed: {
         classes() {
-            const className = this.data.get('className');
             const tabPosition = this.data.get('tabPosition');
             const size = this.data.get('size');
             const hasTabPaneAnimated = this.data.get('hasTabPaneAnimated');
             const type = this.data.get('type');
-            let classArr = [className, `${prefixCls}-${type}`];
+            let classArr = [`${prefixCls}-${type}`];
+
             (tabPosition === 'left' || tabPosition === 'right') && classArr.push(`${prefixCls}-vertical`);
             !!size && classArr.push(`${prefixCls}-${size}`);
             type.indexOf('card') >= 0 && classArr.push(`${prefixCls}-card`);
             !hasTabPaneAnimated && classArr.push(`${prefixCls}-no-animation`);
+
             return classArr.join(' ');
         },
         hasTabPaneAnimated() {
@@ -231,7 +60,7 @@ const Tabs = san.defineComponent({
             return tabPaneAnimated;
         }
     },
-    handleRemoveTab(key, e) {
+    handleRemoveTab({key, e}) {
         e.stopPropagation();
         if (!key) {
             return;
@@ -260,7 +89,7 @@ const Tabs = san.defineComponent({
         this.fire('tabClick', key);
     },
     components: {
-        's-tabs': tabs
+        's-tabs': Tabs
     },
     template: `<div>
         <s-tabs
@@ -269,24 +98,30 @@ const Tabs = san.defineComponent({
             tabBarGutter="{{tabBarGutter}}"
             tabBarStyle="{{tabBarStyle}}"
             tabBarPosition="{{tabPosition}}"
-            prefixCls="{{prefixCls}}"
-            className="{{classes}}"
             tabPaneAnimated="{{hasTabPaneAnimated}}"
-            tabBarExtraContent="{{tabBarExtraContent}}"
+            hasExtraContent="{{hasExtraContent}}"
+            hasRenderTabBar="{{hasRenderTabBar}}"
+            hideAdd="{{hideAdd}}"
             size="{{size}}"
             type="{{type}}"
-            injectComponent="{{injectComponent}}"
-            style="{{bodyStyle}}"
+            style="{{style}}"
+            class="{{classes}}"
+            closable="{{closable}}"
+            on-createNewTab="handleCreateNewTab"
+            on-removeTab="handleRemoveTab"
             on-change="handleChange"
             on-prevClick="handlePrevClick"
             on-nextClick="handleNextClick"
             on-tabClick="handleTabClick"
         >
-            <slot></slot>
+            <slot name="tabBarExtraContent" slot="tabBarExtraContent" />
+            <slot name="renderTabBar" slot="renderTabBar" var-props="{{props}}" />
+            <slot />
         </s-tabs>
     </div>`
 });
 
-Tabs.TabPane = TabPane;
+SanTabs.TabPane = TabPane;
+SanTabs.TabBar = Tabs.TabBar;
 
-export default Tabs;
+export default SanTabs;

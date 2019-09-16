@@ -6,57 +6,31 @@
 import san, {DataTypes} from 'san';
 import TabPane from './tabPane';
 import KeyCode from '../../core/util/keyCode';
+import {classCreator} from '../../core/util';
+import ScrollableInkTabBar from './scrollableInkTabBar';
+import TabContent from './tabContent';
+
+const prefixCls = classCreator('tabs')();
 
 const Tabs = san.defineComponent({
     dataTypes: {
         destroyInactiveTabPane: DataTypes.bool,
-        prefixCls: DataTypes.string,
-        className: DataTypes.string,
         tabBarPosition: DataTypes.string,
-        style: DataTypes.oneOfType([DataTypes.string, DataTypes.object]),
         activeKey: DataTypes.string,
         defaultActiveKey: DataTypes.string
     },
     initData() {
         return {
-            prefixCls: 'tabs',
             destroyInactiveTabPane: false,
             tabBarPosition: 'top',
             children: []
         };
     },
     inited() {
-        let activeKey = this.data.get('activeKey');
-        let defaultActiveKey = this.data.get('defaultActiveKey');
-
-        this.data.set('activeKey', activeKey || defaultActiveKey);
-    },
-    compiled() {
-        const parent = this.parentComponent;
-        const defaultRenderTabBar = parent.data.get('defaultRenderTabBar');
-        const renderTabBar = parent.data.get('renderTabBar');
-        let tabBar;
-        if (renderTabBar) {
-            tabBar = renderTabBar.bind(parent)(defaultRenderTabBar.bind(parent)(), parent.data.get());
-        }
-        else {
-            tabBar = defaultRenderTabBar.bind(parent)();
-        }
-        const renderTabContent = parent.data.get('defaultRenderTabContent');
-        const tabContent = renderTabContent.bind(parent)();
-
-        this.components['s-tabbar'] = tabBar;
-        this.components['s-tabcontent'] = tabContent;
+        this.data.set('activeKey', this.data.get('activeKey') || this.data.get('defaultActiveKey'));
     },
     computed: {
-        classes() {
-            const prefixCls = this.data.get('prefixCls');
-            const tabBarPosition = this.data.get('tabBarPosition');
-            const className = this.data.get('className');
-            return [`${prefixCls}`, `${prefixCls}-${tabBarPosition}`, className];
-        },
         props() {
-            const prefixCls = this.data.get('prefixCls');
             const activeKey = this.data.get('activeKey');
             const children = this.data.get('children');
             const tabBarGutter = this.data.get('tabBarGutter');
@@ -125,6 +99,12 @@ const Tabs = san.defineComponent({
             this.handleTabClick({key: previousKey});
         }
     },
+    handleCreateNewTab() {
+        this.fire('createNewTab');
+    },
+    handleRemoveTab(prop) {
+        this.fire('removeTab', prop);
+    },
     setActiveKey(key) {
         if (this.data.get('activeKey') !== key) {
             this.data.set('activeKey', key);
@@ -145,14 +125,16 @@ const Tabs = san.defineComponent({
             this.fire('nextClick', payload.value);
         }
     },
+    components: {
+        's-tabbar': ScrollableInkTabBar,
+        's-tabcontent': TabContent
+    },
     template: `
-        <div
-            class="{{classes}}"
-        >
+        <div class="${prefixCls} ${prefixCls}-{{tabBarPosition}}">
             <template s-if="tabBarPosition === 'bottom'">
                 <s-tabcontent
                     animated="{{hasTabPaneAnimated}}"
-                    prefixCls="{{prefixCls}}"
+                    prefixCls="${prefixCls}"
                     activeKey="{{activeKey}}"
                     destroyInactiveTabPane="{{destroyInactiveTabPane}}"
                     key="tabContent"
@@ -160,41 +142,49 @@ const Tabs = san.defineComponent({
                     tabBarPosition="{{tabBarPosition}}"
                     type="{{type}}"
                 >
-                    <slot></slot>
+                    <slot />
                 </s-tabcontent>
+                <slot name="renderTabBar" var-props="{{props}}" s-if="hasRenderTabBar" />
                 <s-tabbar
-                    prefixCls="{{prefixCls}}"
                     activeKey="{{activeKey}}"
                     children="{{children}}"
                     tabBarGutter="{{tabBarGutter}}"
                     tabBarStyle="{{tabBarStyle}}"
                     tabBarPosition="{{tabBarPosition}}"
+                    hasExtraContent="{{hasExtraContent}}"
                     on-keydown="native:handleNavKeyDown"
+                    on-createNewTab="handleCreateNewTab"
+                    on-removeTab="handleRemoveTab"
                     type="{{type}}"
+                    closable="{{closable}}"
+                    hideAdd="{{hideAdd}}"
                     size="{{size}}"
-                    tabBarExtraContent="{{tabBarExtraContent}}"
-                    injectComponent="{{injectComponent}}"
                     props="{{props}}"
-                ></s-tabbar>
+                    s-else
+                ><slot name="tabBarExtraContent" slot="tabBarExtraContent" /></s-tabbar>
             </template>
             <template s-else>
+                <slot name="renderTabBar" var-props="{{props}}" s-if="hasRenderTabBar" />
                 <s-tabbar
-                    prefixCls="{{prefixCls}}"
                     activeKey="{{activeKey}}"
                     children="{{children}}"
                     tabBarGutter="{{tabBarGutter}}"
                     tabBarStyle="{{tabBarStyle}}"
                     tabBarPosition="{{tabBarPosition}}"
+                    hasExtraContent="{{hasExtraContent}}"
                     on-keydown="native:handleNavKeyDown"
+                    on-createNewTab="handleCreateNewTab"
+                    on-removeTab="handleRemoveTab"
                     type="{{type}}"
+                    closable="{{closable}}"
+                    hideAdd="{{hideAdd}}"
                     size="{{size}}"
-                    tabBarExtraContent="{{tabBarExtraContent}}"
-                    injectComponent="{{injectComponent}}"
                     props="{{props}}"
-                ></s-tabbar>
+                    s-else
+                ><slot name="tabBarExtraContent" slot="tabBarExtraContent" /></s-tabbar>
                 <s-tabcontent
                     animated="{{hasTabPaneAnimated}}"
-                    prefixCls="{{prefixCls}}"
+                    prefixCls="${prefixCls}"
                     activeKey="{{activeKey}}"
                     destroyInactiveTabPane="{{destroyInactiveTabPane}}"
                     key="tabContent"
@@ -202,7 +192,7 @@ const Tabs = san.defineComponent({
                     tabBarPosition="{{tabBarPosition}}"
                     type="{{type}}"
                 >
-                    <slot></slot>
+                    <slot />
                 </s-tabcontent>
             </template>
         </div>
@@ -210,5 +200,6 @@ const Tabs = san.defineComponent({
 });
 
 Tabs.TabPane = TabPane;
+Tabs.TabBar = ScrollableInkTabBar;
 
 export default Tabs;

@@ -6,10 +6,11 @@
 ```html
 <template>
     <div>
-        <s-tabs
-            defaultActiveKey="1"
-            renderTabBar="{{renderTabBar}}"
-        >
+        <s-tabs defaultActiveKey="1">
+            <template slot="renderTabBar">
+                <h2>I am a new bar.</h2>
+                <s-tabbar s-bind="{{props}}"/>
+            </template>
             <s-tabpane tab="Tab 1" key="1">Content of Tab Pane 1</s-tabpane>
             <s-tabpane tab="Tab 2" key="2">Content of Tab Pane 2</s-tabpane>
             <s-tabpane tab="Tab 3" key="3">Content of Tab Pane 3</s-tabpane>
@@ -24,21 +25,7 @@ export default {
     components: {
         's-tabs': Tabs,
         's-tabpane': Tabs.TabPane,
-    },
-    initData() {
-        return {
-            renderTabBar(bar) {
-                return san.defineComponent({
-                    components: {
-                        's-bar': bar
-                    },
-                    template: `<div>
-                        <h2>I am a new bar.</h2>
-                        <s-bar s-bind="{{props}}"></s-bar>
-                    </div>`
-                });
-            }
-        }
+        's-tabbar': Tabs.TabBar
     }
 }
 </script>

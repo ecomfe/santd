@@ -11,6 +11,9 @@ import {
     getTop,
     getActiveIndex
 } from './utils';
+import {classCreator} from '../../core/util';
+
+const prefixCls = classCreator('tabs')();
 
 function update(component, init) {
     const refs = component.data.get('refs');
@@ -20,13 +23,13 @@ function update(component, init) {
     const activeTab = refs.activeTab;
     const inkBarNodeStyle = inkBarNode && inkBarNode.style;
     const tabBarPosition = component.data.get('tabBarPosition');
-    const children = component.data.get('children');
-    const activeKey = component.data.get('activeKey');
-    const activeIndex = getActiveIndex(children, activeKey);
+    // const children = component.data.get('children');
+    // const activeKey = component.data.get('activeKey');
+    // const activeIndex = getActiveIndex(children, activeKey);
     const styles = component.data.get('styles');
 
     if (init) {
-        inkBarNodeStyle.display = 'none';
+        // inkBarNodeStyle.display = 'none';
     }
     if (!inkBarNode) {
         return;
@@ -86,21 +89,10 @@ function update(component, init) {
             inkBarNodeStyle.height = `${height}px`;
         }
     }
-    inkBarNodeStyle.display = activeIndex !== -1 ? 'block' : 'none';
+    // inkBarNodeStyle.display = activeIndex !== -1 ? 'block' : 'none';
 }
 
 export default san.defineComponent({
-    computed: {
-        classes() {
-            const prefixCls = this.data.get('prefixCls');
-            const inkBarAnimated = this.data.get('inkBarAnimated');
-            let classArr = [`${prefixCls}-ink-bar`];
-            inkBarAnimated
-                ? classArr.push(`${prefixCls}-ink-bar-animated`)
-                : classArr.push(`${prefixCls}-ink-bar-no-animated`);
-            return classArr;
-        }
-    },
     initData() {
         return {
             inkBarAnimated: true,
@@ -116,14 +108,13 @@ export default san.defineComponent({
             ref: this.el
         });
 
-        window.setTimeout(() => {
-            update(this, true);
-        }, 0);
+        /*window.setTimeout(() => {
+            // update(this, true);
+        }, 0);*/
     },
     template: `
         <div
-            class="{{classes}}"
-            key="inkBar"
+            class="${prefixCls}-ink-bar ${prefixCls}-ink-bar-{{inkBarAnimated ? 'animated' : 'no-animated'}}"
             style="{{styles.inkBar}}"
         >
         </div>

@@ -4,41 +4,38 @@
  **/
 
 import san, {DataTypes} from 'san';
-import toStyle from 'to-style';
 import {
   getTransformByIndex,
   getActiveIndex,
   getTransformPropValue,
   getMarginStyle
 } from './utils';
+import {classCreator} from '../../core/util';
+
+const prefixCls = classCreator('tabs')();
 
 export default san.defineComponent({
     dataTypes: {
         animated: DataTypes.oneOfType([DataTypes.bool, DataTypes.object]),
         animatedWithMargin: DataTypes.bool,
-        prefixCls: DataTypes.string,
         activeKey: DataTypes.string,
-        style: DataTypes.oneOfType([DataTypes.string, DataTypes.object]),
-        tabBarPosition: DataTypes.string,
-        className: DataTypes.string
+        tabBarPosition: DataTypes.string
     },
     initData() {
         return {
             animated: true,
+            animatedWithMargin: true,
             children: []
         };
     },
-    created() {
-        const style = this.data.get('style');
-        this.data.set('bodyStyle', style);
-        this.data.set('style', {});
-    },
     computed: {
         classes() {
-            const prefixCls = this.data.get('prefixCls');
             const animated = this.data.get('animated');
-            const className = this.data.get('className');
-            let classArr = [`${prefixCls}-content`, className];
+            const tabPosition = this.data.get('tabBarPosition');
+            const type = this.data.get('type') || '';
+
+            let classArr = [`${prefixCls}-content`, `${prefixCls}-${tabPosition}-content`];
+            type.indexOf('card') >= 0 && classArr.push(prefixCls + '-card-content');
             animated
                 ? classArr.push(`${prefixCls}-content-animated`)
                 : classArr.push(`${prefixCls}-content-no-animated`);
@@ -51,7 +48,6 @@ export default san.defineComponent({
         const animated = this.data.get('animated');
         const tabBarPosition = this.data.get('tabBarPosition');
         const animatedWithMargin = this.data.get('animatedWithMargin');
-        const bodyStyle = this.data.get('bodyStyle');
         let style = {};
 
         if (animated) {
@@ -61,18 +57,18 @@ export default san.defineComponent({
                 : getTransformPropValue(getTransformByIndex(activeIndex, tabBarPosition));
 
             style = {
-                ...bodyStyle,
+                ...this.data.get('style'),
                 ...animatedStyle
             };
         }
         else {
             style = {
-                ...bodyStyle,
+                ...this.data.get('style'),
                 display: 'none'
             };
         }
 
-        this.data.set('style', toStyle.string(style));
+        this.data.set('style', style);
         this.dispatch('addTabPane', this.data.get('children'));
         children.forEach(child => {
             child.data.set('activeKey', activeKey);
@@ -93,11 +89,8 @@ export default san.defineComponent({
         }
     },
     template: `
-        <div
-            class="{{classes}}"
-            style="{{style}}"
-        >
-            <slot></slot>
+        <div class="{{classes}}">
+            <slot />
         </div>
     `
 });

@@ -1,18 +1,7 @@
 /**
  * @file Santd tabs utils file
  * @author mayihui@baidu.com
- **/
-
-/*export function toArray(children) {
-  // allow [c,[a,b]]
-  const c = [];
-  React.Children.forEach(children, child => {
-    if (child) {
-      c.push(child);
-    }
-``  });
-  return c;
-}*/
+ */
 
 export function getActiveIndex(children, activeKey) {
     // const c = toArray(children);

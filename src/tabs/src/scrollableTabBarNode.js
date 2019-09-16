@@ -8,76 +8,60 @@ import debounce from 'lodash/debounce';
 import ResizeObserver from 'resize-observer-polyfill';
 import {setTransform, isTransform3dSupported} from './utils';
 import Icon from '../../icon';
+import {classCreator} from '../../core/util';
+const prefixCls = classCreator('tabs')();
+
+const prevIcon = san.defineComponent({
+    computed: {
+        prevIconType() {
+            const tabPosition = this.data.get('tabPosition');
+            const isVertical = tabPosition === 'left' || tabPosition === 'right';
+
+            return isVertical ? 'up' : 'left';
+        }
+    },
+    components: {
+        's-icon': Icon
+    },
+    template: `<span class="${prefixCls}-tab-prev-icon">
+        <s-icon type="{{prevIconType}}" class="${prefixCls}-tab-prev-icon-target"/>
+    </span>`
+});
+
+const nextIcon = san.defineComponent({
+    computed: {
+        nextIconType() {
+            const tabPosition = this.data.get('tabPosition');
+            const isVertical = tabPosition === 'left' || tabPosition === 'right';
+
+            return isVertical ? 'down' : 'right';
+        }
+    },
+    components: {
+        's-icon': Icon
+    },
+    template: `<span class="${prefixCls}-tab-next-icon">
+        <s-icon type="{{nextIconType}}" class="${prefixCls}-tab-next-icon-target"/>
+    </span>`
+});
 
 export default san.defineComponent({
     dataTypes: {
-        prefixCls: DataTypes.string,
-        className: DataTypes.string,
         tabBarPosition: DataTypes.oneOf(['left', 'right', 'top', 'bottom']),
         activeKey: DataTypes.string,
         scrollAnimated: DataTypes.bool
     },
     initData() {
         return {
-            prefixCls: '',
-            className: '',
             tabBarPosition: 'left',
             scrollAnimated: true,
-            next: false,
             prev: false,
+            next: false,
             offset: 0
         };
     },
-    computed: {
-        classes() {
-            const prefixCls = this.data.get('prefixCls');
-            const className = this.data.get('className');
-            const showNextPrev = this.data.get('showNextPrev');
-            let classArr = [`${prefixCls}-nav-container`, className];
-            showNextPrev && classArr.push(`${prefixCls}-nav-container-scrolling`);
-            return classArr;
-        },
-        navClasses() {
-            const prefixCls = this.data.get('prefixCls');
-            const scrollAnimated = this.data.get('scrollAnimated');
-            let classArr = [`${prefixCls}-nav`];
-            scrollAnimated
-                ? classArr.push(`${prefixCls}-nav-animated`)
-                : classArr.push(`${prefixCls}-nav-no-animated`);
-            return classArr;
-        },
-        prevClasses() {
-            const prefixCls = this.data.get('prefixCls');
-            const prev = this.data.get('prev');
-            const next = this.data.get('next');
-            let classArr = [`${prefixCls}-tab-prev`];
-            !prev && classArr.push(`${prefixCls}-tab-btn-disabled`);
-            (prev || next) && classArr.push(`${prefixCls}-tab-arrow-show`);
-            return classArr.join(' ');
-        },
-        nextClasses() {
-            const prefixCls = this.data.get('prefixCls');
-            const prev = this.data.get('prev');
-            const next = this.data.get('next');
-            let classArr = [`${prefixCls}-tab-next`];
-            !next && classArr.push(`${prefixCls}-tab-btn-disabled`);
-            (prev || next) && classArr.push(`${prefixCls}-tab-arrow-show`);
-            return classArr.join(' ');
-        },
-        showNextPrev() {
-            const prev = this.data.get('prev');
-            const next = this.data.get('next');
-            return prev || next;
-        }
-    },
     handleKeyDown(e) {
         this.fire('keydown', e);
-    },
-    compiled() {
-        this.components.previcon = this.parentComponent.data.get('prevIcon');
-        this.components.nexticon = this.parentComponent.data.get('nextIcon');
-    },
-    updated() {
     },
     attached() {
         this.dispatch('addRef', {
@@ -98,6 +82,7 @@ export default san.defineComponent({
             this.scrollToActiveTab();
         }, 200);
         this.resizeObserver = new ResizeObserver(this.debouncedResize);
+
         window.setTimeout(() => {
             const refs = this.data.get('refs');
             this.resizeObserver.observe(refs.container);
@@ -210,30 +195,24 @@ export default san.defineComponent({
     },
     setPrev(v) {
         const prev = this.data.get('prev');
-        if (prev !== v) {
-            this.data.set('prev', v);
-        }
+        prev !== v && this.data.set('prev', v);
     },
     setNext(v) {
         const next = this.data.get('next');
-        if (next !== v) {
-            this.data.set('next', v);
-        }
-    },
-    isNextPrevShown() {
-        return this.data.get('next') || this.data.get('prev');
+        next !== v && this.data.set('next', v);
     },
     scrollToActiveTab(e) {
         const refs = this.data.get('refs');
         const activeTab = refs.activeTab;
         const navWrap = refs.navWrap;
+        const isNextPrevShown = this.data.get('next') || this.data.get('prev');
         if (e && e.target !== e.currentTarget || !activeTab) {
             return;
         }
 
         // when not scrollable or enter scrollable first time, don't emit scrolling
-        const needToSroll = this.isNextPrevShown() && this.lastNextPrevShown;
-        this.lastNextPrevShown = this.isNextPrevShown();
+        const needToSroll = isNextPrevShown && this.lastNextPrevShown;
+        this.lastNextPrevShown = isNextPrevShown;
         if (!needToSroll) {
             return;
         }
@@ -252,7 +231,6 @@ export default san.defineComponent({
         }
     },
     handlePrev(e) {
-        // this.props.onPrevClick(e);
         this.dispatch('prevClick', e);
         const refs = this.data.get('refs');
         const navWrapNode = refs.navWrap;
@@ -269,32 +247,34 @@ export default san.defineComponent({
         this.setOffset(offset - navWrapNodeWH);
     },
     components: {
-        's-icon': Icon
+        's-icon': Icon,
+        's-previcon': prevIcon,
+        's-nexticon': nextIcon
     },
     template: `
         <div
-            class="{{classes}}"
+            class="${prefixCls}-nav-container {{prev || next ? '${prefixCls}-nav-container-scrolling' : ''}}"
             key="container"
             s-ref="container"
         >
             <span
                 unselectable="unselectable"
-                className="{{prevClasses}}"
+                class="${prefixCls}-tab-prev {{prev || next ? '${prefixCls}-tab-arrow-show' : ''}} {{!prev ? '${prefixCls}-tab-btn-disabled' : ''}"
                 on-click="handlePrev"
             >
-                <previcon prefixCls="{{prefixCls}}" tabPosition="{{tabBarPosition}}"></previcon>
+                <s-previcon prefixCls="${prefixCls}" tabPosition="{{tabBarPosition}}"></s-previcon>
             </span>
             <span
                 unselectable="unselectable"
-                className="{{nextClasses}}"
+                class="${prefixCls}-tab-next {{prev || next ? '${prefixCls}-tab-arrow-show' : ''}} {{!next ? '${prefixCls}-tab-btn-disabled' : ''}}"
                 on-click="handleNext"
             >
-                <nexticon prefixCls="{{prefixCls}}" tabPosition="{{tabBarPosition}}"></nexticon>
+                <s-nexticon prefixCls="${prefixCls}" tabPosition="{{tabBarPosition}}"></s-nexticon>
             </span>
-            <div class="{{prefixCls}}-nav-wrap" s-ref="navWrap">
-                <div class="{{prefixCls}}-nav-scroll">
-                    <div class="{{navClasses}}" s-ref="nav">
-                        <slot></slot>
+            <div class="${prefixCls}-nav-wrap" s-ref="navWrap">
+                <div class="${prefixCls}-nav-scroll">
+                    <div class="${prefixCls}-nav ${prefixCls}-nav-{{scrollAnimated ? 'animated' : 'no-animated'}}" s-ref="nav">
+                        <slot />
                     </div>
                 </div>
             </div>

@@ -6,7 +6,7 @@
 ```html
 <template>
     <div>
-        <s-radiogroup on-change="handleModeChange" value="{{mode}}" style="margin-bottom: 8px;">
+        <s-radiogroup on-change="handleModeChange" value="{{mode}}" style="margin-bottom: 8px;" name="mode">
             <s-radiobutton value="top">Horizontal</s-radiobutton>
             <s-radiobutton value="left">Vertical</s-radiobutton>
         </s-radiogroup>
