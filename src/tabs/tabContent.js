@@ -10,7 +10,7 @@ import {
   getTransformPropValue,
   getMarginStyle
 } from './utils';
-import {classCreator} from '../../core/util';
+import {classCreator} from '../core/util';
 
 const prefixCls = classCreator('tabs')();
 
@@ -63,8 +63,7 @@ export default san.defineComponent({
         }
         else {
             style = {
-                ...this.data.get('style'),
-                display: 'none'
+                ...this.data.get('style')
             };
         }
 

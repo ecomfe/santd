@@ -4,23 +4,27 @@
  **/
 
 import san from 'san';
-import Icon from '../../icon';
+import Icon from '../icon';
 import ScrollableTabBarNode from './scrollableTabBarNode';
 import TabBarTabsNode from './tabBarTabsNode';
-import InkTabBarNode from './inkTabBarNode';
-import {classCreator} from '../../core/util';
+import {
+    isTransform3dSupported,
+    getLeft,
+    getTop
+} from './utils';
+import {classCreator} from '../core/util';
 const prefixCls = classCreator('tabs')();
 
 export default san.defineComponent({
     components: {
         's-scrollabletabbarnode': ScrollableTabBarNode,
         's-tabbartabsnode': TabBarTabsNode,
-        's-inktabbarnode': InkTabBarNode,
         's-icon': Icon
     },
     initData() {
         return {
             tabBarPosition: 'top',
+            inkBarAnimated: true,
             refs: {}
         };
     },
@@ -54,8 +58,56 @@ export default san.defineComponent({
     handleRemoveTab(prop) {
         this.fire('removeTab', prop);
     },
+    updateInkBar(component, init) {
+        const refs = this.data.get('refs');
+        const rootNode = this.ref('root');
+        const wrapNode = refs.nav || rootNode;
+        const inkBarNode = this.ref('inkBar');
+        const inkBarNodeStyle = inkBarNode && inkBarNode.style;
+        const tabsNode = this.ref('tabsNode');
+        const tabBarPosition = this.data.get('tabBarPosition');
+        let tabBarData = this.data.get('tabBarData') || [];
+        let activeTab;
+        tabBarData.forEach((tabBar, index) => {
+            if (tabBar.active && tabsNode.children[1].children[index]) {
+                activeTab = tabsNode.children[1].children[index].el;
+                return;
+            }
+        });
+        if (!inkBarNode || !activeTab) {
+            return;
+        }
+        this.data.set('refs.activeTab', activeTab);
+        const transformSupported = isTransform3dSupported(inkBarNodeStyle);
+        let inkBarStyles = '';
+        if (tabBarPosition === 'top' || tabBarPosition === 'bottom') {
+            let left = getLeft(activeTab, wrapNode);
+            let width = activeTab.offsetWidth;
+
+            // use 3d gpu to optimize render
+            inkBarStyles = transformSupported
+                ? `transform: translate3d(${left}px, 0, 0);`
+                : `left: ${left}px;`;
+            inkBarStyles += `width: ${width}px;`;
+        }
+        else {
+            let top = getTop(activeTab, wrapNode, true);
+            let height = activeTab.offsetHeight;
+            inkBarStyles = transformSupported
+                ? `transform: translate3d(0, ${top}px, 0);`
+                : `top: ${top}px;`;
+            inkBarStyles += `height: ${height}px;`;
+        }
+        this.data.set('inkBarStyles', inkBarStyles);
+    },
     attached() {
         this.data.set('refs.root', this.ref('root'));
+        window.setTimeout(() => {
+            this.updateInkBar();
+        }, 0);
+        this.watch('tabBarData', val => {
+            this.updateInkBar();
+        });
     },
     template: `
         <div style="{{tabBarPosition === 'left' || tabBarPosition === 'right' ? 'height:100%;float:' + tabBarPosition : ''}}">
@@ -81,19 +133,21 @@ export default san.defineComponent({
                     tabBarPosition="{{tabBarPosition}}"
                 >
                     <s-tabbartabsnode
+                        tabBarData="{{tabBarData}}"
                         type="{{type}}"
                         closable="{{closable}}"
-                        children="{{children}}"
                         activeKey="{{activeKey}}"
                         tabBarGutter="{{tabBarGutter}}"
                         tabBarPosition="{{tabBarPosition}}"
                         on-tabClick="handleTabClick"
                         on-removeTab="handleRemoveTab"
-                    ></s-tabbartabsnode>
-                    <s-inktabbarnode
-                        refs="{{refs}}"
-                        tabBarPosition="{{tabBarPosition}}"
-                    ></s-inktabbarnode>
+                        s-ref="tabsNode"
+                    />
+                    <div
+                        class="${prefixCls}-ink-bar ${prefixCls}-ink-bar-{{inkBarAnimated ? 'animated' : 'no-animated'}}"
+                        style="{{inkBarStyles}}"
+                        s-ref="inkBar"
+                    />
                 </s-scrollabletabbarnode>
             </div>
         </div>

@@ -5,8 +5,8 @@
 
 ```html
 <template>
-    <div class="" >
-        <s-tabs>
+    <div>
+        <s-tabs defaultActiveKey="1">
             <span slot="tabBarExtraContent"><s-button>Extra Action</s-button></span>
             <s-tabpane tab="Tab 1" key="1">Content of Tab Pane 1</s-tabpane>
             <s-tabpane tab="Tab 2" key="2">Content of Tab Pane 2</s-tabpane>

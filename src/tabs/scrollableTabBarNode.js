@@ -7,8 +7,8 @@ import san, {DataTypes} from 'san';
 import debounce from 'lodash/debounce';
 import ResizeObserver from 'resize-observer-polyfill';
 import {setTransform, isTransform3dSupported} from './utils';
-import Icon from '../../icon';
-import {classCreator} from '../../core/util';
+import Icon from '../icon';
+import {classCreator} from '../core/util';
 const prefixCls = classCreator('tabs')();
 
 const prevIcon = san.defineComponent({
@@ -87,6 +87,10 @@ export default san.defineComponent({
             const refs = this.data.get('refs');
             this.resizeObserver.observe(refs.container);
         }, 0);
+
+        this.watch('tabBarPosition', val => {
+            this.scrollToActiveTab();
+        });
     },
     getScrollWH(node) {
         const tabBarPosition = this.data.get('tabBarPosition');
@@ -259,7 +263,7 @@ export default san.defineComponent({
         >
             <span
                 unselectable="unselectable"
-                class="${prefixCls}-tab-prev {{prev || next ? '${prefixCls}-tab-arrow-show' : ''}} {{!prev ? '${prefixCls}-tab-btn-disabled' : ''}"
+                class="${prefixCls}-tab-prev {{prev || next ? '${prefixCls}-tab-arrow-show' : ''}} {{!prev ? '${prefixCls}-tab-btn-disabled' : ''}}"
                 on-click="handlePrev"
             >
                 <s-previcon prefixCls="${prefixCls}" tabPosition="{{tabBarPosition}}"></s-previcon>

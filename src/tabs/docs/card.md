@@ -6,7 +6,7 @@
 ```html
 <template>
     <div >
-        <s-tab type="card">
+        <s-tab type="card" defaultActiveKey="1">
             <s-tabpane tab="Tab 1" key="1">
                 Content of Tab Pane 1
             </s-tabpane>

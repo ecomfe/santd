@@ -48,7 +48,7 @@ export default san.defineComponent({
             <editable/>
             <cardtop/>
             <customadd/>
-            <custombar/>
+            <!--<custombar/>-->
             <readme/>
         </div>
     `

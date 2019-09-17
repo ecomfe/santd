@@ -15,7 +15,7 @@
                 <s-option value="right">right</s-option>
             </s-select>
         </div>
-        <s-tab tabPosition="{{tabPosition}}">
+        <s-tab tabPosition="{{tabPosition}}" defaultActiveKey="1">
             <s-tabpane tab="Tab 1" key="1">
                 Content of Tab Pane 1
             </s-tabpane>
@@ -35,7 +35,7 @@ import Tabs from 'santd/tabs';
 export default {
     initData() {
         return {
-            tabPosition: 'top',
+            tabPosition: 'bottom',
         };
     },
     components: {
