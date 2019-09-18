@@ -64,15 +64,15 @@ export default san.defineComponent({
         this.fire('keydown', e);
     },
     attached() {
-        this.dispatch('addRef', {
+        this.dispatch('santd_tabs_addRef', {
             name: 'container',
             ref: this.el
         });
-        this.dispatch('addRef', {
+        this.dispatch('santd_tabs_addRef', {
             name: 'nav',
             ref: this.ref('nav')
         });
-        this.dispatch('addRef', {
+        this.dispatch('santd_tabs_addRef', {
             name: 'navWrap',
             ref: this.ref('navWrap')
         });
@@ -235,7 +235,7 @@ export default san.defineComponent({
         }
     },
     handlePrev(e) {
-        this.dispatch('prevClick', e);
+        this.dispatch('santd_tabs_prevClick', e);
         const refs = this.data.get('refs');
         const navWrapNode = refs.navWrap;
         const navWrapNodeWH = this.getOffsetWH(navWrapNode);
@@ -243,7 +243,7 @@ export default san.defineComponent({
         this.setOffset(offset + navWrapNodeWH);
     },
     handleNext(e) {
-        this.dispatch('nextClick', e);
+        this.dispatch('santd_tabs_nextClick', e);
         const refs = this.data.get('refs');
         const navWrapNode = refs.navWrap;
         const navWrapNodeWH = this.getOffsetWH(navWrapNode);

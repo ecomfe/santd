@@ -8,7 +8,6 @@ import TabPane from './tabPane';
 import KeyCode from '../core/util/keyCode';
 import {classCreator} from '../core/util';
 import ScrollableInkTabBar from './scrollableInkTabBar';
-import TabContent from './tabContent';
 
 import './style/index';
 
@@ -47,19 +46,17 @@ const Tabs = san.defineComponent({
         classes() {
             const tabPosition = this.data.get('tabPosition');
             const size = this.data.get('size');
-            const hasTabPaneAnimated = this.data.get('hasTabPaneAnimated');
             const type = this.data.get('type');
             let classArr = [`${prefixCls}`, `${prefixCls}-${type}`, `${prefixCls}-${tabPosition}`];
 
             (tabPosition === 'left' || tabPosition === 'right') && classArr.push(`${prefixCls}-vertical`);
             !!size && classArr.push(`${prefixCls}-${size}`);
             type.indexOf('card') >= 0 && classArr.push(`${prefixCls}-card`);
-            !hasTabPaneAnimated && classArr.push(`${prefixCls}-no-animation`);
 
             return classArr.join(' ');
         },
         contentClasses() {
-            const animated = this.data.get('animated');
+            const animated = this.data.get('hasAnimated').tabPane;
             const tabPosition = this.data.get('tabPosition');
             const type = this.data.get('type') || '';
 
@@ -70,55 +67,42 @@ const Tabs = san.defineComponent({
                 : classArr.push(`${prefixCls}-content-no-animated`);
             return classArr;
         },
-        hasTabPaneAnimated() {
+        hasAnimated() {
             const animated = this.data.get('animated');
 
-            let tabPaneAnimated = typeof animated === 'object' ? animated.tabPane : animated;
-            if (this.data.get('type') !== 'line') {
-                tabPaneAnimated = typeof animated !== 'undefined' ? tabPaneAnimated : false;
-            }
-            return tabPaneAnimated;
+            return typeof animated === 'object' ? animated : {tabPane: animated, inkBar: animated};
         },
         props() {
             const activeKey = this.data.get('activeKey');
-            const children = this.data.get('children');
             const tabBarGutter = this.data.get('tabBarGutter');
             const tabBarPosition = this.data.get('tabBarPosition');
             const type = this.data.get('type');
             const size = this.data.get('size');
+            const tabBarData = this.data.get('tabBarData');
             return {
-                prefixCls,
                 activeKey,
-                children,
                 tabBarGutter,
                 tabBarPosition,
                 type,
-                size
+                size,
+                tabBarData
             };
         }
     },
     getNextActiveKey(next) {
         const activeKey = this.data.get('activeKey');
-        const childs = this.data.get('children');
-        const children = [];
-        childs.forEach(c => {
-            if (c && !c.data.get('disabled')) {
-                if (next) {
-                    children.push(c);
-                } else {
-                    children.unshift(c);
+        const tabPanesLength = this.tabPanes.length;
+        let ret = tabPanesLength && this.tabPanes[0].data.get('key');
+        this.tabPanes.forEach((tabPane, index) => {
+            if (tabPane.data.get('key') === activeKey) {
+                let currentIndex = next ? ++index : --index;
+                if (currentIndex < 0) {
+                    currentIndex = 0;
                 }
-            }
-        });
-        const length = children.length;
-        let ret = length && children[0].data.get('key');
-        children.forEach((child, i) => {
-            if (child.data.get('key') === activeKey) {
-                if (i === length - 1) {
-                    ret = children[0].data.get('key');
-                } else {
-                    ret = children[i + 1].data.get('key');
+                if (currentIndex > tabPanesLength - 1) {
+                    currentIndex = tabPanesLength - 1;
                 }
+                ret = this.tabPanes[currentIndex].data.get('key');
             }
         });
         return ret;
@@ -134,7 +118,8 @@ const Tabs = san.defineComponent({
             e.preventDefault();
             const nextKey = this.getNextActiveKey(true);
             this.handleTabClick({key: nextKey});
-        } else if (eventKeyCode === KeyCode.ARROW_LEFT || eventKeyCode === KeyCode.ARROW_UP) {
+        }
+        else if (eventKeyCode === KeyCode.ARROW_LEFT || eventKeyCode === KeyCode.ARROW_UP) {
             e.preventDefault();
             const previousKey = this.getNextActiveKey(false);
             this.handleTabClick({key: previousKey});
@@ -170,7 +155,7 @@ const Tabs = san.defineComponent({
             tabPane.data.set('active', activeKey === key);
             tabBarData.push(tabPane.data.get());
         });
-        this.data.set('tabBarData', tabBarData, {force: true});
+        this.data.set('tabBarData', tabBarData);
     },
     attached() {
         this.updateTab();
@@ -193,13 +178,10 @@ const Tabs = san.defineComponent({
             });
             this.updateTab();
         },
-        tabClick(payload) {
-            this.handleTabClick(payload.value);
-        },
-        prevClick(payload) {
+        santd_tabs_prevClick(payload) {
             this.fire('prevClick', payload.value);
         },
-        nextClick(payload) {
+        santd_tabs_nextClick(payload) {
             this.fire('nextClick', payload.value);
         }
     },
@@ -218,6 +200,8 @@ const Tabs = san.defineComponent({
                     tabBarStyle="{{tabBarStyle}}"
                     tabBarPosition="{{tabPosition}}"
                     hasExtraContent="{{hasExtraContent}}"
+                    inkBarAnimated="{{hasAnimated.inkBar}}"
+                    on-tabClick="handleTabClick"
                     on-keydown="native:handleNavKeyDown"
                     on-createNewTab="handleCreateNewTab"
                     on-removeTab="handleRemoveTab"
@@ -238,6 +222,8 @@ const Tabs = san.defineComponent({
                     tabBarStyle="{{tabBarStyle}}"
                     tabBarPosition="{{tabPosition}}"
                     hasExtraContent="{{hasExtraContent}}"
+                    inkBarAnimated="{{hasAnimated.inkBar}}"
+                    on-tabClick="handleTabClick"
                     on-keydown="native:handleNavKeyDown"
                     on-createNewTab="handleCreateNewTab"
                     on-removeTab="handleRemoveTab"

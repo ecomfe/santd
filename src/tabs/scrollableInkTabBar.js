@@ -42,7 +42,7 @@ export default san.defineComponent({
         }
     },
     messages: {
-        addRef(payload) {
+        santd_tabs_addRef(payload) {
             this.data.set('refs.' + payload.value.name, payload.value.ref);
         }
     },

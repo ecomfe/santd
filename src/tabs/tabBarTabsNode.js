@@ -36,7 +36,6 @@ export default san.defineComponent({
         if (disabled) {
             return;
         }
-        this.dispatch('tabClick', {key, e});
         this.fire('tabClick', {key, e});
     },
     handleRemoveTab(key, e) {
@@ -44,7 +43,7 @@ export default san.defineComponent({
         this.fire('removeTab', {key, e});
     },
     attached() {
-        this.dispatch('addRef', {
+        this.dispatch('santd_tabs_addRef', {
             name: 'navTabsContainer',
             ref: this.el
         });
