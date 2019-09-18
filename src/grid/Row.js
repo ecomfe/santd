@@ -120,7 +120,7 @@ export default san.defineComponent({
                     match: () => {
                         let gutter = +this.data.get('gutter');
 
-                        if (!isNaN(gutter))) {
+                        if (!isNaN(gutter)) {
                             let obj = {};
                             obj[screen] = true;
                             this.data.merge('screens', obj);
