@@ -9,13 +9,13 @@ import statistic from './statistic';
 import * as moment from 'moment';
 
 const timeUnits = [
-    ['Y', 1000 * 60 * 60 * 24 * 365], // years
-    ['M', 1000 * 60 * 60 * 24 * 30], // months
-    ['D', 1000 * 60 * 60 * 24], // days
-    ['H', 1000 * 60 * 60], // hours
-    ['m', 1000 * 60], // minutes
-    ['s', 1000], // seconds
-    ['S', 1] // million seconds
+    [/Y+/g, 1000 * 60 * 60 * 24 * 365], // years
+    [/M+/g, 1000 * 60 * 60 * 24 * 30], // months
+    [/D+/g, 1000 * 60 * 60 * 24], // days
+    [/H+/g, 1000 * 60 * 60], // hours
+    [/m+/g, 1000 * 60], // minutes
+    [/s+/g, 1000], // seconds
+    [/S+/g, 1] // million seconds
 ];
 
 const REFRESH_INTERVAL = 33;
@@ -33,20 +33,20 @@ function padStart(string, length, chars) {
         : string;
 };
 
-const formatTimeStr = (duration, format) => {
+function formatTimeStr(duration, format) {
     let leftDuration = duration;
-    return timeUnits.reduce((current, [name, unit]) => {
-        if (current.indexOf(name) !== -1) {
+
+    timeUnits.forEach(([rule, unit]) => {
+        format = format.replace(rule, match => {
             const value = Math.floor(leftDuration / unit);
             leftDuration -= value * unit;
-            return current.replace(new RegExp(`${name}+`, 'g'), match => {
-                const len = match.length;
-                return padStart(value.toString(), len, '0');
-            });
-        }
-        return current;
-    }, format);
-};
+
+            return padStart('' + value, match.length, '0');
+        });
+    });
+
+    return format;
+}
 
 export default san.defineComponent({
     template: `
