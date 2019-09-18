@@ -9,20 +9,23 @@ import {classCreator} from '../core/util';
 
 const prefix = classCreator('statistic')();
 
-const padEnd = (string, length, chars) => {
-    string = string.toString();
-    length = parseInt(length, 0);
+function padEnd(string, length, chars) {
+    string = '' + string;
+    length = +length;
 
     let strLength = length ? string.length : 0;
     let l = length - strLength;
     let padding = '';
+
     while (l-- > 0) {
         padding += chars;
     }
+
     return (length && strLength < length)
         ? (string + padding)
         : string;
-};
+}
+
 export default san.defineComponent({
     template: `
         <div class="${prefix}">
@@ -42,7 +45,7 @@ export default san.defineComponent({
             </div>
         </div>
     `,
-    
+
     initData() {
         return {
             groupSeparator: ',',
@@ -58,32 +61,36 @@ export default san.defineComponent({
             let groupSeparator = this.data.get('groupSeparator');
             let precision = this.data.get('precision');
             let decimalSeparator = this.data.get('decimalSeparator');
+
             if (formatter && typeof formatter === 'function') {
                 return {
                     int: formatter(value)
                 };
             }
-            value = value.toString();
+
+            value = String(value);
             const cells = value.match(/^(-?)(\d*)(\.(\d+))?$/);
             if (!cells) {
                 return {int: value};
-            } else {
-                const negative = cells[1];
-                let int = cells[2] || '0';
-                let decimal = cells[4] || '';
-                int = int.replace(/\B(?=(\d{3})+(?!\d))/g, groupSeparator);
-
-                if (typeof precision === 'number') {
-                    decimal = padEnd(decimal, precision, '0').slice(0, precision);
-                }
-                if (decimal) {
-                    decimal = `${decimalSeparator}${decimal}`;
-                }
-                return {
-                    int: negative + int,
-                    decimal
-                };
             }
+
+            const negative = cells[1];
+            let int = cells[2] || '0';
+            let decimal = cells[4] || '';
+            int = int.replace(/\B(?=(\d{3})+(?!\d))/g, groupSeparator);
+
+            if (typeof precision === 'number') {
+                decimal = padEnd(decimal, precision, '0').slice(0, precision);
+            }
+
+            if (decimal) {
+                decimal = `${decimalSeparator}${decimal}`;
+            }
+            
+            return {
+                int: negative + int,
+                decimal
+            };
         }
     },
 
