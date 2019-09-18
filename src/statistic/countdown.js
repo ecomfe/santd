@@ -17,18 +17,20 @@ const timeUnits = [
     ['s', 1000], // seconds
     ['S', 1] // million seconds
 ];
-const REFRESH_INTERVAL = 1000 / 30;
+
+const REFRESH_INTERVAL = 33;
 
 const padStart = (string, length, chars) => {
-    string = string.toString();
-    length = parseInt(length, 0);
+    string = '' + string;
+    length = +length;
 
     let strLength = length ? string.length : 0;
     let l = length - strLength;
     let padding = '';
-    while (l-- > 0) {
+    while (l--) {
         padding += chars;
     }
+
     return (length && strLength < length)
         ? (padding + string)
         : string;
@@ -55,9 +57,11 @@ export default san.defineComponent({
             <s-statistic s-bind="{{props}}" value="{{value}}"/>
         </template>
     `,
+
     components: {
         's-statistic': statistic
     },
+    
     initData()  {
         return {
             format: 'HH:mm:ss'
@@ -95,6 +99,7 @@ export default san.defineComponent({
         if (this.countdownId) {
             return;
         }
+
         this.countdownId = window.setInterval(() => {
             this.data.set('value', this.getFormatValue());
             this.syncTimer();
