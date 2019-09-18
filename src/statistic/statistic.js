@@ -25,7 +25,7 @@ const padEnd = (string, length, chars) => {
 };
 export default san.defineComponent({
     template: `
-    	<div class="${prefix}">
+        <div class="${prefix}">
             <div class="${prefix}-title" s-if="title">{{title}}</div>
             <div class="${prefix}-content" style="{{valueStyle}}">
                 <span s-if="showPrefix" class="${prefix}-content-prefix">
@@ -34,7 +34,7 @@ export default san.defineComponent({
                 <span class="${prefix}-content-value">
                     <span class="${prefix}-content-value-int">{{showValue.int}}</span>
                     <span class="${prefix}-content-value-decimal"
-                        s-if="{{showValue.decimal}}">{{showValue.decimal}}</span>
+                        s-if="showValue.decimal">{{showValue.decimal}}</span>
                 </span>
                 <span s-if="showSuffix" class="${prefix}-content-suffix">
                     <slot name="suffix"/>
@@ -42,6 +42,7 @@ export default san.defineComponent({
             </div>
         </div>
     `,
+    
     initData() {
         return {
             groupSeparator: ',',
@@ -49,6 +50,7 @@ export default san.defineComponent({
             decimalSeparator: '.'
         };
     },
+
     computed: {
         showValue() {
             let value = this.data.get('value');
@@ -84,6 +86,7 @@ export default san.defineComponent({
             }
         }
     },
+
     inited() {
         this.data.set('showPrefix', !!this.sourceSlots.named.prefix);
         this.data.set('showSuffix', !!this.sourceSlots.named.suffix);
