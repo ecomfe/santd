@@ -20,10 +20,7 @@ const timeUnits = [
 
 const REFRESH_INTERVAL = 33;
 
-const padStart = (string, length, chars) => {
-    string = '' + string;
-    length = +length;
-
+function padStart(string, length, chars) {
     let strLength = length ? string.length : 0;
     let l = length - strLength;
     let padding = '';
@@ -61,7 +58,7 @@ export default san.defineComponent({
     components: {
         's-statistic': statistic
     },
-    
+
     initData()  {
         return {
             format: 'HH:mm:ss'

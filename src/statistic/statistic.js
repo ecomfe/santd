@@ -10,14 +10,11 @@ import {classCreator} from '../core/util';
 const prefix = classCreator('statistic')();
 
 function padEnd(string, length, chars) {
-    string = '' + string;
-    length = +length;
-
     let strLength = length ? string.length : 0;
     let l = length - strLength;
     let padding = '';
 
-    while (l-- > 0) {
+    while (l--) {
         padding += chars;
     }
 
@@ -86,7 +83,7 @@ export default san.defineComponent({
             if (decimal) {
                 decimal = `${decimalSeparator}${decimal}`;
             }
-            
+
             return {
                 int: negative + int,
                 decimal
