@@ -52,7 +52,7 @@ const formatTimeStr = (duration, format) => {
 export default san.defineComponent({
     template: `
         <template>
-    	   <s-statistic s-bind="{{props}}" value="{{value}}"/>
+            <s-statistic s-bind="{{props}}" value="{{value}}"/>
         </template>
     `,
     components: {
@@ -63,8 +63,7 @@ export default san.defineComponent({
             format: 'HH:mm:ss'
         };
     },
-    computed: {
-    },
+
     getFormatValue() {
         let value = this.data.get('deadline');
         let format = this.data.get('format');
@@ -73,12 +72,14 @@ export default san.defineComponent({
         const diff = Math.max(target - current, 0);
         return formatTimeStr(diff, format);
     },
+
     inited() {
         this.data.set('deadline', this.data.get('value'));
         this.data.set('value', this.getFormatValue());
         this.data.set('props', this.data.get());
         this.syncTimer();
     },
+
     syncTimer() {
         const value = this.data.get('deadline');
         const timestamp = moment(value).valueOf();
@@ -89,6 +90,7 @@ export default san.defineComponent({
             this.fire('finish');
         }
     },
+
     startTimer() {
         if (this.countdownId) {
             return;
@@ -98,10 +100,11 @@ export default san.defineComponent({
             this.syncTimer();
         }, REFRESH_INTERVAL);
     },
+
     stopTimer() {
         if (this.countdownId) {
             window.clearInterval(this.countdownId);
-            this.countdownId = undefined;
+            this.countdownId = null;
         }
     }
 });
