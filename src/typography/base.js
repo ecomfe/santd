@@ -42,9 +42,9 @@ const create = function (tag) {
         <slot s-else />
         <s-tooltip title="{{copied ? locale.copied : locale.copy}}" s-if="copyable">
             <button
+                s-if="copyable"
                 class="${prefixCls}-copy"
                 style="border: 0px; background: transparent; padding: 0px; line-height: inherit;"
-                s-if="copyable"
                 on-click="handleCopy">
                 <s-icon type="{{copied ? 'check' : 'copy'}}" />
             </button>
@@ -53,13 +53,13 @@ const create = function (tag) {
 
     let template;
     if (!tag || tag === 'paragraph') {
-        template = ['<div class="{{classes}}">', content, '</div>'];
+        template = `<div class="{{classes}}">${content}</div>`;
     }
     else if (tag === 'text') {
-        template = ['<span class="{{classes}}">', content, '</span>'];
+        template = `<span class="{{classes}}">${content}</span>`;
     }
     else if (tag === 'title') {
-        template = ['<span>', content, '</span>'];
+        template = `<span>${content}</span>`;
     }
 
     const base = san.defineComponent({
@@ -128,12 +128,14 @@ const create = function (tag) {
                 ...(typeof copyable === 'object' ? copyable : null)
             };
 
-            if (copyConfig.text === undefined) {
+            if (copyConfig.text == null) {
                 let textnode = getComponentChildren(this.children, item => item.nodeType === NodeType.TEXT);
                 copyConfig.text = textnode.reduce((total, cur) => !/^\n\s*$/g.test(cur.content) ? (total + cur.content) : total, '');
             }
             copy(copyConfig.text || '');
-            copyConfig.onCopy && typeof copyConfig.onCopy === 'function' && copyConfig.onCopy();
+            if (typeof copyConfig.onCopy === 'function') {
+                copyConfig.onCopy();
+            }
 
             this.data.set('copied', true);
             this.copyId = window.setTimeout(() => {
