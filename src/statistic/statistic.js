@@ -4,10 +4,10 @@
  */
 
 import './style/index.less';
-import san from 'san';
+import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
 
-const prefix = classCreator('statistic')();
+const prefixCls = classCreator('statistic')();
 
 function padEnd(string, length, chars) {
     let strLength = length ? string.length : 0;
@@ -24,20 +24,31 @@ function padEnd(string, length, chars) {
 }
 
 export default san.defineComponent({
+    dataTypes: {
+        decimalSeparator: DataTypes.string,
+        formatter: DataTypes.func,
+        groupSeparator: DataTypes.string,
+        precision: DataTypes.number,
+        prefix: DataTypes.string,
+        suffix: DataTypes.string,
+        title: DataTypes.string,
+        value: DataTypes.oneOfType([DataTypes.string, DataTypes.number])
+    },
     template: `
-        <div class="${prefix}">
-            <div class="${prefix}-title" s-if="title">{{title}}</div>
-            <div class="${prefix}-content" style="{{valueStyle}}">
-                <span s-if="showPrefix" class="${prefix}-content-prefix">
-                    <slot name="prefix"/>
+        <div class="${prefixCls}">
+            <div class="${prefixCls}-title" s-if="title">{{title}}</div>
+            <div class="${prefixCls}-content" style="{{valueStyle}}">
+                <span s-if="hasPrefix" class="${prefixCls}-content-prefix">
+                    <slot name="prefix" />{{prefix}}
                 </span>
-                <span class="${prefix}-content-value">
-                    <span class="${prefix}-content-value-int">{{showValue.int}}</span>
-                    <span class="${prefix}-content-value-decimal"
-                        s-if="showValue.decimal">{{showValue.decimal}}</span>
+                <span class="${prefixCls}-content-value">
+                    <span class="${prefixCls}-content-value-int">{{showValue.int}}</span>
+                    <span class="${prefixCls}-content-value-decimal"
+                        s-if="{{showValue.decimal}}"
+                    >{{showValue.decimal}}</span>
                 </span>
-                <span s-if="showSuffix" class="${prefix}-content-suffix">
-                    <slot name="suffix"/>
+                <span s-if="hasSuffix" class="${prefixCls}-content-suffix">
+                    <slot name="suffix" />{{suffix}}
                 </span>
             </div>
         </div>
@@ -49,6 +60,11 @@ export default san.defineComponent({
             value: 0,
             decimalSeparator: '.'
         };
+    },
+
+    inited() {
+        this.data.set('hasPrefix', this.data.get('prefix') || !!this.sourceSlots.named.prefix);
+        this.data.set('hasSuffix', this.data.get('suffix') || !!this.sourceSlots.named.suffix);
     },
 
     computed: {
@@ -67,6 +83,7 @@ export default san.defineComponent({
 
             value = String(value);
             const cells = value.match(/^(-?)(\d*)(\.(\d+))?$/);
+
             if (!cells) {
                 return {int: value};
             }
@@ -79,7 +96,6 @@ export default san.defineComponent({
             if (typeof precision === 'number') {
                 decimal = padEnd(decimal, precision, '0').slice(0, precision);
             }
-
             if (decimal) {
                 decimal = `${decimalSeparator}${decimal}`;
             }
@@ -89,10 +105,5 @@ export default san.defineComponent({
                 decimal
             };
         }
-    },
-
-    inited() {
-        this.data.set('showPrefix', !!this.sourceSlots.named.prefix);
-        this.data.set('showSuffix', !!this.sourceSlots.named.suffix);
     }
 });

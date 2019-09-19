@@ -1,3 +1,6 @@
+/**
+ * @file Santd statistic docs file
+ **/
 import san from 'san';
 import Readme from '../README.md';
 import Basic from './basic.md';
@@ -7,7 +10,7 @@ import Countdown from './countdown.md';
 import Head from './head.md';
 
 export default san.defineComponent({
-    components:{
+    components: {
         readme: Readme,
         basic: Basic,
         unit: Unit,
@@ -25,4 +28,4 @@ export default san.defineComponent({
             <readme/>
         </div>
     `
-})
+});

@@ -5,8 +5,8 @@
 
 import './style/index.less';
 import san from 'san';
-import statistic from './statistic';
-import * as moment from 'moment';
+import Statistic from './statistic';
+import moment from 'moment';
 
 const timeUnits = [
     [/Y+/g, 1000 * 60 * 60 * 24 * 365], // years
@@ -24,14 +24,15 @@ function padStart(string, length, chars) {
     let strLength = length ? string.length : 0;
     let l = length - strLength;
     let padding = '';
-    while (l--) {
+    // 这里要判断l > 0，否则会死循环，因为l有可能算出来是-1
+    while (l-- > 0) {
         padding += chars;
     }
 
     return (length && strLength < length)
         ? (padding + string)
         : string;
-};
+}
 
 function formatTimeStr(duration, format) {
     let leftDuration = duration;
@@ -49,36 +50,26 @@ function formatTimeStr(duration, format) {
 }
 
 export default san.defineComponent({
-    template: `
-        <template>
-            <s-statistic s-bind="{{props}}" value="{{value}}"/>
-        </template>
-    `,
-
-    components: {
-        's-statistic': statistic
-    },
-
-    initData()  {
+    initData() {
         return {
+            ...Statistic.prototype.initData(),
             format: 'HH:mm:ss'
         };
     },
 
-    getFormatValue() {
-        let value = this.data.get('deadline');
-        let format = this.data.get('format');
-        const target = moment(value).valueOf();
-        const current = moment().valueOf();
-        const diff = Math.max(target - current, 0);
-        return formatTimeStr(diff, format);
-    },
-
     inited() {
+        Statistic.prototype.inited.bind(this)();
         this.data.set('deadline', this.data.get('value'));
         this.data.set('value', this.getFormatValue());
-        this.data.set('props', this.data.get());
+
         this.syncTimer();
+    },
+
+    getFormatValue() {
+        const target = moment(this.data.get('deadline')).valueOf();
+        const current = moment().valueOf();
+        const diff = Math.max(target - current, 0);
+        return formatTimeStr(diff, this.data.get('format'));
     },
 
     syncTimer() {
@@ -86,7 +77,8 @@ export default san.defineComponent({
         const timestamp = moment(value).valueOf();
         if (timestamp >= Date.now()) {
             this.startTimer();
-        } else {
+        }
+        else {
             this.stopTimer();
             this.fire('finish');
         }
@@ -109,4 +101,4 @@ export default san.defineComponent({
             this.countdownId = null;
         }
     }
-});
+}, Statistic);
