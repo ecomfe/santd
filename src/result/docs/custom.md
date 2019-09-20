@@ -10,8 +10,11 @@
             status="error"
             title="Submission Failed"
             subTitle="Please check and modify the following information before resubmitting."
-            extra="{{extra}}"
         >
+            <template slot="extra">
+                <s-button type="primary" key="console">Go Console</s-button>
+                <s-button key="buy">Buy Again</s-button>
+            </template>
             <div class="desc">
                 <s-paragraph>
                     <s-text strong style="font-size: 16px;">The content you submitted has the following error:</s-text>
@@ -33,27 +36,14 @@ import Result from 'santd/result';
 import Button from 'santd/button';
 import Icon from 'santd/icon';
 import Typography from 'santd/typography';
-import san from 'san';
 
 export default {
     components: {
         's-result': Result,
         's-paragraph': Typography.Paragraph,
         's-text': Typography.Text,
-        's-icon': Icon
-    },
-    initData() {
-        return {
-            extra: san.defineComponent({
-                components: {
-                    's-button': Button
-                },
-                template: `<div>
-                    <s-button type="primary" key="console">Go Console</s-button>
-                    <s-button key="buy">Buy Again</s-button>
-                </div>`
-            })
-        }
+        's-icon': Icon,
+        's-button': Button
     }
 }
 </script>

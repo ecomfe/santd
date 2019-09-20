@@ -6,11 +6,10 @@
 ```html
 <template>
     <div>
-        <s-result
-            icon="{{icon}}"
-            title="Great, we have done all the operations!"
-            extra="{{extra}}"
-        />
+        <s-result title="Great, we have done all the operations!">
+            <s-icon type="smile" theme="twoTone" slot="icon" />
+            <s-button type="primary" slot="extra">Next</s-button>
+        </s-result>
     </div>
 </template>
 <script>
@@ -21,27 +20,9 @@ import san from 'san';
 
 export default {
     components: {
-        's-result': Result
-    },
-    initData() {
-        return {
-            extra: san.defineComponent({
-                components: {
-                    's-button': Button
-                },
-                template: `<div>
-                    <s-button type="primary">Next</s-button>
-                </div>`
-            }),
-            icon: san.defineComponent({
-                components: {
-                    's-icon': Icon
-                },
-                template: `<div>
-                    <s-icon type="smile" theme="twoTone" />
-                </div>`
-            })
-        }
+        's-result': Result,
+        's-icon': Icon,
+        's-button': Button
     }
 }
 </script>

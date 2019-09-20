@@ -25,106 +25,54 @@ export const ExceptionMap = {
     403: unauthorized
 };
 
-const ExceptionStatus = Object.keys(ExceptionMap);
-
 const Result = san.defineComponent({
     dataTypes: {
-        icon: DataTypes.func,
         status: DataTypes.string,
         title: DataTypes.string,
-        subTitle: DataTypes.string,
-        extra: DataTypes.func,
-        prefixCls: DataTypes.string,
-        className: DataTypes.string
+        subTitle: DataTypes.string
     },
     initData() {
         return {
-            prefixCls,
-            status: 'info'
+            status: 'info',
+            exceptionMap: ExceptionMap,
+            iconMap: IconMap
         };
     },
-    computed: {
-        classes() {
-            const status = this.data.get('status');
-            const className = this.data.get('className');
-            return [prefixCls, `${prefixCls}-${status}`, className];
-        },
-        injectIcon() {
-            const instance = this.data.get('instance');
-            const className = `${prefixCls}-icon`;
-            const status = this.data.get('status');
-            const icon = this.data.get('icon');
-            let renderIcon;
-
-            if (ExceptionStatus.includes(status)) {
-                const SVGCompnoent = ExceptionMap[status];
-                renderIcon = san.defineComponent({
-                    components: {
-                        svgcomponent: SVGCompnoent
-                    },
-                    initData() {
-                        return {
-                            className,
-                            prefixCls
-                        };
-                    },
-                    template: `<div class="{{className}} {{prefixCls}}-image">
-                        <svgcomponent />
-                    </div>`
-                });
-            }
-            else {
-                const iconString = IconMap[status];
-                renderIcon = san.defineComponent({
-                    initData() {
-                        return {
-                            className,
-                            iconString,
-                            icon
-                        };
-                    },
-                    components: {
-                        's-icon': Icon,
-                        's-iconnode': icon
-                    },
-                    template: `<div class="{{className}}">
-                        <s-iconnode s-if="icon" />
-                        <s-icon s-else theme='filled' type="{{iconString}}" />
-                    </div>`
-                });
-            }
-
-            if (instance) {
-                instance.components.rendericon = renderIcon;
-            }
-        },
-        injectExtra() {
-            const extra = this.data.get('extra');
-            const instance = this.data.get('instance');
-            if (instance) {
-                instance.components.renderextra = extra;
-            }
-        },
-        hasChildren() {
-            const instance = this.data.get('instance');
-            return instance && instance.sourceSlots.noname && instance.sourceSlots.noname.length;
-        }
+    components: {
+        's-icon': Icon,
+        's-nofound': noFound,
+        's-servererror': serverError,
+        's-unauthorized': unauthorized
     },
     inited() {
         this.data.set('instance', this);
+        this.data.set('hasIcon', !!this.sourceSlots.named.icon);
+        this.data.set('hasExtra', !!this.sourceSlots.named.extra);
+
+        // 由于named slot会留下换行，所以用是否含有children来判断是不是有noname slot;
+        let noName = this.sourceSlots.noname || [];
+        this.data.set('hasContent', !!noName.filter(item => !!item.children).length);
     },
-    template: `<div class="{{classes}}">
-        <rendericon />
-        <div class="{{prefixCls}}-title">{{title}}</div>
-        <div class="{{prefixCls}}-subtitle" s-if="{{subTitle}}">"{{subTitle}}"</div>
-        <div class="{{prefixCls}}-content" s-if="{{hasChildren}}"><slot></slot></div>
-        <div class="{{prefixCls}}-extra" s-if="{{extra}}">
-            <renderextra />
+    template: `<div class="${prefixCls} ${prefixCls}-{{status}}">
+        <div class="${prefixCls}-icon ${prefixCls}-image" s-if="exceptionMap[status]">
+            <s-unauthorized s-if="status === '403'" />
+            <s-nofound s-else-if="status === '404'" />
+            <s-servererror s-else-if="status === '500'" />
+        </div>
+        <div class="${prefixCls}-icon" s-else>
+            <slot name="icon" s-if="hasIcon" />
+            <s-icon theme="filled" type="{{iconMap[status]}}" s-else />
+        </div>
+        <div class="${prefixCls}-title">{{title}}</div>
+        <div class="${prefixCls}-subtitle" s-if="subTitle">"{{subTitle}}"</div>
+        <div class="${prefixCls}-content" s-if="hasContent"><slot /></div>
+        <div class="${prefixCls}-extra" s-if="hasExtra">
+            <slot name="extra" />
         </div>
     </div>`
 });
 
-ExceptionStatus.forEach(key => {
+Object.keys(ExceptionMap).forEach(key => {
     const privateKey = `PRESENTED_IMAGE_${key}`;
     Result[privateKey] = ExceptionMap[key];
 });

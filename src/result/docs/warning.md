@@ -9,30 +9,19 @@
         <s-result
             status="warning"
             title="There are some problems with your operation."
-            extra="{{extra}}"
-        />
+        >
+            <s-button type="primary" key="console" slot="extra">Go Console</s-button>
+        </s-result>
     </div>
 </template>
 <script>
 import Result from 'santd/result';
 import Button from 'santd/button';
-import san from 'san';
 
 export default {
     components: {
-        's-result': Result
-    },
-    initData() {
-        return {
-            extra: san.defineComponent({
-                components: {
-                    's-button': Button
-                },
-                template: `<div>
-                    <s-button type="primary" key="console">Go Console</s-button>
-                </div>`
-            })
-        }
+        's-result': Result,
+        's-button': Button
     }
 }
 </script>
