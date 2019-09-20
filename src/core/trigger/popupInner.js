@@ -29,17 +29,6 @@ export default san.defineComponent({
         prefixCls: DataTypes.string
     },
 
-    computed: {
-        classes() {
-            const visible = this.data.get('visible');
-            const className = this.data.get('className');
-            const hiddenClassName = this.data.get('hiddenClassName');
-            let classArr = [className];
-            !visible && classArr.push(hiddenClassName);
-            return classArr;
-        }
-    },
-
     handleMouseEnter(e) {
         this.fire('mouseenter', e);
     },
@@ -128,7 +117,7 @@ export default san.defineComponent({
     },
 
     template: `
-        <div style="position: absolute;" class="{{classes}}">
+        <div style="position: absolute;" class="{{visible ? '' : hiddenClassName}}">
             <div
                 class="{{prefixCls}}-content"
                 on-mouseenter="handleMouseEnter"
