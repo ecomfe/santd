@@ -63,7 +63,7 @@ const create = function (tag) {
     }
 
     const base = san.defineComponent({
-        template: template.join(''),
+        template,
         initData() {
             return {
                 clientRendered: false
