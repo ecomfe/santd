@@ -60,14 +60,17 @@ export default san.defineComponent({
     },
 
     startMonitorWindowResize() {
-        if (!this.resizeHandler) {
-            this.bufferMonitor = buffer(this.forceAlign.bind(this), this.data.get('monitorBufferTime'));
+        if (!this.bufferMonitor) {
+            this.bufferMonitor = buffer(
+                this.forceAlign.bind(this), 
+                this.data.get('monitorBufferTime')
+            );
             window.addEventListener('resize', this.bufferMonitor, false);
         }
     },
 
     stopMonitorWindowResize() {
-        if (this.resizeHandler) {
+        if (this.bufferMonitor) {
             this.bufferMonitor.clear();
             window.removeEventListener('resize', this.bufferMonitor, false);
         }
