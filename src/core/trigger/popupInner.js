@@ -31,10 +31,12 @@ export default san.defineComponent({
         this.fire('touchstart', e);
     },
 
-    created() {
-        this.data.set('monitorBufferTime', 50);
-        this.data.set('monitorWindowResize', false);
-        this.data.set('disabled', false);
+    initData() {
+        return {
+            monitorBufferTime: 50,
+            monitorWindowResize: false,
+            disabled: false
+        };
     },
 
     attached() {
