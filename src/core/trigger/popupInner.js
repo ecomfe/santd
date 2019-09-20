@@ -7,20 +7,6 @@ import san, {DataTypes} from 'san';
 import {alignElement, alignPoint} from 'dom-align';
 import {buffer, restoreFocus} from './utils/index';
 
-function getElement(target) {
-    if (!(target instanceof window.HTMLElement)) {
-        return null;
-    }
-    return target;
-}
-
-function getPoint(point) {
-    if (typeof point !== 'object' || !point) {
-        return null;
-    }
-    return point;
-}
-
 
 export default san.defineComponent({
     dataTypes: {
@@ -95,24 +81,14 @@ export default san.defineComponent({
         } = this.data.get();
 
         if (!disabled && target) {
-            const source = this.el;
-
-            let result;
-            const element = getElement(target);
-            const point = getPoint(target);
-
-            const activeElement = document.activeElement;
-
-            if (element) {
-                result = alignElement(source, element, align);
+            if (target instanceof window.HTMLElement) {
+                alignElement(this.el, target, align);
             }
-            else if (point) {
-                result = alignPoint(source, point, align);
+            else if (target && typeof target === 'object') {
+                alignPoint(this.el, target, align);
             }
 
-            restoreFocus(activeElement, source);
-
-            // this.fire('align', {source, result});
+            restoreFocus(document.activeElement, this.el);
         }
     },
 
