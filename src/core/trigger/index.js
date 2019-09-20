@@ -7,7 +7,6 @@ import san, {DataTypes} from 'san';
 import Portal from './utils/portal';
 import Popup from './popup';
 import PopupInner from './popupInner';
-import Align from './align';
 import Animate from '../util/animate';
 import inherits from '../util/inherits';
 import {contains} from '../util/dom';
@@ -154,7 +153,7 @@ export default san.defineComponent({
             return inherits(san.defineComponent({
                 components: {
                     's-popup': popup,
-                    's-popupinner': inherits(Align, PopupInner),
+                    's-popupinner': PopupInner,
                     's-animate': Animate
                 },
                 initData() {
