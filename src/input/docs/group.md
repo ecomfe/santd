@@ -18,12 +18,12 @@
         </s-row>
       </s-input-group>
       <br/>
-      <s-input-group compact>
-          <s-input style="width: 20%" defaultValue="0571"/>
-          <s-input style="width: 30%" defaultValue="26888888"/>
+      <s-input-group compact="{{true}}">
+          <s-input style="width: 20%" defaultValue="0571" />
+          <s-input style="width: 30%" defaultValue="26888888" />
     </s-input-group>
     <br/>
-    <s-input-group compact>
+    <s-input-group compact="{{true}}">
         <s-select defaultValue="zhejiang" style="width:120px">
           <s-select-option value="zhejiang">Zhejiang</s-select-option>
           <s-select-option value="jiangsu">Jiangsu</s-select-option>
@@ -31,7 +31,7 @@
         <s-input style="width: 50%" defaultValue="Xihu District, Hangzhou"/>
     </s-input-group>
     <br/>
-    <s-input-group compact>
+    <s-input-group compact="{{true}}">
         <s-select defaultValue="Option" style="width:120px">
           <s-select-option value="Option">Option</s-select-option>
           <s-select-option value="Option">Option</s-select-option>
@@ -40,12 +40,12 @@
         <s-inputnumber/>
     </s-input-group>
     <br/>
-    <s-input-group compact>
+    <s-input-group compact="{{true}}">
         <s-input style="width: 50%" defaultValue="input content"/>
         <s-datepicker />
     </s-input-group>
     <br/>
-    <s-input-group compact>
+    <s-input-group compact="{{true}}">
         <s-select defaultValue="Option1-1" style="width:120px">
           <s-select-option value="Option1-1">Option1-1</s-select-option>
           <s-select-option value="Option1-2">Option1-2</s-select-option>

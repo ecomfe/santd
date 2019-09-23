@@ -14,30 +14,10 @@ export default san.defineComponent({
         defaultValue: DataTypes.string,
         value: DataTypes.string
     },
-    computed: {
-        areaClass() {
-            const disabled = this.data.get('disabled') || false;
-            let classArr = [prefixCls];
-
-            disabled && classArr.push(`${prefixCls}-disabled`);
-            return classArr;
-        }
-    },
-    initData() {
-        return {
-            sizeMap: {
-                large: 'lg',
-                small: 'sm'
-            }
-        };
-    },
     attached() {
-        this.getBaseData();
+        this.resizeTextarea();
     },
     updated() {
-        this.getBaseData();
-    },
-    getBaseData() {
         this.resizeTextarea();
     },
     resizeTextarea() {
@@ -47,32 +27,13 @@ export default san.defineComponent({
             return;
         }
         // 如果autosize里面传的是字符串对象，需要进行解析
-        if (autosize.toString() === 'false' || autosize.toString() === 'true') {
+        if (typeof autosize === 'boolean') {
             textareaStyles = calculateNodeHeight(this.el, false, null, null);
         }
-        else {
-            const parseObj = this.parseObjString(autosize);
-            if (typeof parseObj === 'object') {
-                const minRows = parseObj.minRows;
-                const maxRows = parseObj.maxRows;
-                textareaStyles = calculateNodeHeight(this.el, false, minRows, maxRows);
-            }
+        else if (typeof autosize === 'object') {
+            textareaStyles = calculateNodeHeight(this.el, false, autosize.minRows, autosize.maxRows);
         }
         this.data.set('styles', textareaStyles);
-    },
-    parseObjString(str) {
-        str = str.replace(/'/g, '');
-        const regExp = /{(.*)}/;
-        let res = regExp.exec(str)[1].split(',');
-        if (!res) {
-            return '';
-        }
-        let obj = {};
-        res.forEach(item => {
-            let temp = item.split(':');
-            obj[temp[0].trim()] = temp[1].toString().trim();
-        });
-        return obj;
     },
     handleKeyDown(e) {
         if (e.keyCode === keyCode.ENTER) {
@@ -92,7 +53,7 @@ export default san.defineComponent({
     },
     template: `
         <textarea
-            class="{{areaClass}}"
+            class="${prefixCls} {{disabled ? '${prefixCls}-disabled': ''}}"
             style="{{styles}}"
             cols="{{cols}}"
             rows="{{rows}}"

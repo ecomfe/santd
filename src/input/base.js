@@ -5,53 +5,43 @@
 
 import san, {DataTypes} from 'san';
 import keyCode from '../core/util/keyCode';
+import {classCreator} from '../core/util';
+const prefixCls = classCreator('input')();
 
 export default san.defineComponent({
     dataTypes: {
         size: DataTypes.string,
-        disabled: DataTypes.bool,
-        prefixCls: DataTypes.string
-    },
-    computed: {
-        baseClass() {
-            const prefixCls = this.data.get('prefixCls');
-            const size = this.data.get('sizeMap')[this.data.get('size')];
-            const disabled = this.data.get('disabled');
-            const className = this.data.get('className');
-            let classArr = [prefixCls];
-
-            className && (classArr = classArr.concat(className));
-            size && classArr.push(`${prefixCls}-${size}`);
-            disabled && classArr.push(`${prefixCls}-disabled`);
-            return classArr;
-        }
+        disabled: DataTypes.bool
     },
     initData() {
         return {
-            type: 'text',
-            sizeMap: {
-                large: 'lg',
-                small: 'sm'
-            }
+            type: 'text'
         };
     },
     inputChange(e) {
         const inputValue = e.target.value;
-        this.dispatch('santd_input_change', inputValue);
+        this.data.set('value', inputValue);
+        this.fire('change', inputValue);
+        this.dispatch('UI:form-item-interact', {fieldValue: inputValue, type: 'change'});
     },
     keydownHander(e) {
         if (e.keyCode === keyCode.ENTER) {
-            this.dispatch('santd_input_pressEnter', e.target.value);
+            const inputValue = e.target.value;
+            this.data.set('value', inputValue);
+            this.fire('pressEnter', inputValue);
+            this.dispatch('UI:form-item-interact', {fieldValue: inputValue, type: 'change'});
         }
     },
     inputOnBlur(e) {
         const inputValue = e.target.value;
-        this.dispatch('santd_input_blur', inputValue);
+        this.data.set('value', inputValue);
+        this.fire('blur', inputValue);
+        this.dispatch('UI:form-item-interact', {fieldValue: inputValue, type: 'blur'});
     },
     template: `
         <input
             placeholder="{{placeholder}}"
-            class="{{baseClass}}}"
+            class="${prefixCls} {{size ? '${prefixCls}-' + size : ''}} {{disabled ? '${prefixCls}-disabled' : ''}}"
             on-input="inputChange($event)"
             on-keydown="keydownHander($event)"
             on-blur="inputOnBlur($event)"
@@ -62,6 +52,7 @@ export default san.defineComponent({
             type="{{type}}"
             tabindex="{{tabIndex}}"
             maxlength="{{maxLength}}"
+            s-ref="input"
         />
     `
 

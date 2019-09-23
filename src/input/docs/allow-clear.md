@@ -6,7 +6,7 @@
 ```html
 <template>
 <div>
-    <s-input placeholder="input with clear icon" allowClear on-change="onChange"/>
+    <s-input placeholder="input with clear icon" allowClear="{{true}}" on-change="onChange"/>
 </div>
 </template>
 <script>

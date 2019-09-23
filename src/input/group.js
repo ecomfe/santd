@@ -12,22 +12,14 @@ export default san.defineComponent({
         size: DataTypes.string,
         compact: DataTypes.bool
     },
-    computed: {
-        className() {
-            const size = this.data.get('size');
-            const compact = this.data.get('compact') || false;
-            let classArr = [prefixCls];
-
-            size === 'large' && classArr.push(`${prefixCls}-lg`);
-            size === 'small' && classArr.push(`${prefixCls}-sm`);
-            compact && classArr.push(`${prefixCls}-compact`);
-
-            return classArr;
-        }
+    initData() {
+        return {
+            size: 'default'
+        };
     },
     template: `
-        <div class="{{className}}">
-            <slot></slot>
+        <div class="${prefixCls} ${prefixCls}-{{size}} {{compact ? '${prefixCls}-compact' : ''}}">
+            <slot />
         </div>
     `
 });
