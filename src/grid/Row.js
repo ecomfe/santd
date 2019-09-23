@@ -104,11 +104,11 @@ export default san.defineComponent({
                 function loopCMPT(list) {
                     list && list.length && list.forEach(item => {
                         if (item instanceof Col) {
-                            item.data.set('colStyle', `padding-left:${gutter};padding-right:${gutter};`);
+                            item.data.set('colStyle', `padding-left:${gutter}px;padding-right:${gutter}px;`);
                         }
                         loopCMPT(item.children);
                     });
-                };
+                }
 
                 loopCMPT(slots);
             }

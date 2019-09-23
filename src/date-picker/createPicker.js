@@ -211,7 +211,7 @@ export default function (theCalendar) {
                         theme="filled"
                         on-click="handleClearSelection"
                     />
-                    <inputicon className="{{prefixCls}}-picker-icon" type="calendar"/>
+                    <inputicon class="{{prefixCls}}-picker-icon" type="calendar"/>
                 </div>
             </s-picker>
         </span>`
