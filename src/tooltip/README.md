@@ -2,7 +2,7 @@
 
 | 参数  | 说明     | 类型    | 默认值 |
 | ---   | ---      | ---     | ---    |
-| title | 提示文字 | string\|SanNode        | 无 |
+| title | 提示文字 | string \| slot        | 无 |
 
 ## 共同的API
 

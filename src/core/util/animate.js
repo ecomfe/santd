@@ -31,9 +31,9 @@ export default san.defineComponent({
         const slot = this.slotChildren[0];
         const showProp = this.data.get('showProp') || 'visible';
         let children = getChildrenFromComponent(slot.children);
-        this.data.set('children', children);
+        this.childs = children.length ? children : [this];
         if (showProp) {
-            children = children.filter(child => child.data.get(showProp));
+            children = this.childs.filter(child => child.data.get(showProp));
         }
         children.forEach(child => {
             this.performAppear(child.id);
@@ -62,14 +62,13 @@ export default san.defineComponent({
         }
     },
     updated() {
-        const children = this.data.get('children');
         const currentlyAnimatingKeys = this.data.get('currentlyAnimatingKeys');
 
         const showProp = this.data.get('showProp');
         let keyToEnter;
         let keyToLeave;
         if (showProp) {
-            children.forEach(child => {
+            this.childs.forEach(child => {
                 if (currentlyAnimatingKeys[child.id]) {
                     return;
                 }
@@ -90,8 +89,7 @@ export default san.defineComponent({
         }
     },
     performAppear(key) {
-        const children = this.data.get('children');
-        children.forEach(child => {
+        this.childs.forEach(child => {
             if (child.id === key) {
                 this.data.set('currentlyAnimatingKeys.' + key, true, {silent: true});
                 this.componentWillAppear(child, this.handleDoneAdding.bind(this, key, 'appear', child));
@@ -99,8 +97,7 @@ export default san.defineComponent({
         });
     },
     performEnter(key) {
-        const children = this.data.get('children');
-        children.forEach(child => {
+        this.childs.forEach(child => {
             if (child.id === key) {
                 this.data.set('currentlyAnimatingKeys.' + key, true, {silent: true});
                 this.componentWillEnter(child, this.handleDoneAdding.bind(this, key, 'enter', child));
@@ -108,8 +105,7 @@ export default san.defineComponent({
         });
     },
     performLeave(key) {
-        const children = this.data.get('children');
-        children.forEach(child => {
+        this.childs.forEach(child => {
             if (child.id === key) {
                 child.el.style.display = 'block';
                 this.data.set('currentlyAnimatingKeys.' + key, true, {silent: true});

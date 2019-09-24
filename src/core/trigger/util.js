@@ -3,7 +3,7 @@
  * @author mayihui@baidu.com
  **/
 
-export default function contains(root, n) {
+export function contains(root, n) {
     let node = n;
     while (node) {
         if (node === root) {

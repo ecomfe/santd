@@ -5,8 +5,8 @@
 
 import san, {DataTypes} from 'san';
 import {alignElement, alignPoint} from 'dom-align';
-import {buffer, restoreFocus} from './utils/index';
-
+import {buffer, restoreFocus} from './util';
+import Animate from '../util/animate';
 
 export default san.defineComponent({
     dataTypes: {
@@ -33,6 +33,7 @@ export default san.defineComponent({
 
     initData() {
         return {
+            ...Animate.prototype.initData(),
             monitorBufferTime: 50,
             monitorWindowResize: false,
             disabled: false
@@ -47,6 +48,7 @@ export default san.defineComponent({
             this.startMonitorWindowResize();
         }
         this.forceAlign();
+        Animate.prototype.attached.bind(this)();
     },
 
     updated() {
@@ -55,6 +57,7 @@ export default san.defineComponent({
         if (visible) {
             this.forceAlign();
         }
+        Animate.prototype.updated.bind(this)();
     },
 
     detached() {
@@ -64,7 +67,7 @@ export default san.defineComponent({
     startMonitorWindowResize() {
         if (!this.bufferMonitor) {
             this.bufferMonitor = buffer(
-                this.forceAlign.bind(this), 
+                this.forceAlign.bind(this),
                 this.data.get('monitorBufferTime')
             );
             window.addEventListener('resize', this.bufferMonitor, false);
@@ -77,7 +80,7 @@ export default san.defineComponent({
             window.removeEventListener('resize', this.bufferMonitor, false);
         }
     },
-    
+
     forceAlign() {
         const {
             disabled,
@@ -98,7 +101,7 @@ export default san.defineComponent({
     },
 
     template: `
-        <div style="position: absolute;" class="{{visible ? '' : hiddenClassName}}">
+        <div style="position: absolute; {{popupStyle}}" class="{{visible ? '' : hiddenClassName}}">
             <div
                 class="{{prefixCls}}-content"
                 on-mouseenter="handleMouseEnter"
@@ -108,6 +111,6 @@ export default san.defineComponent({
             >
                 <slot/>
             </div>
-        </div>
+       </div>
     `
-});
+}, Animate);

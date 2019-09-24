@@ -4,12 +4,10 @@
  **/
 
 import san from 'san';
-import Trigger from '../../core/trigger/index';
+import Trigger from '../../core/trigger';
 import Placement from './placements';
-import Content from './content';
-import inherits from '../../core/util/inherits';
 
-export default inherits(san.defineComponent({
+export default san.defineComponent({
     initData() {
         return {
             mouseEnterDelay: 0,
@@ -18,41 +16,44 @@ export default inherits(san.defineComponent({
             popupAlign: {},
             builtinPlacements: Placement,
             action: ['hover'],
-            popupPlacement: 'right'
+            placement: 'top'
         };
     },
-    computed: {
-        popupVisible() {
-            return this.data.get('visible');
-        },
-        popup() {
-            const prefixCls = this.data.get('prefixCls');
-            const arrowContent = this.data.get('arrowContent');
-            const tooltipPopup = this.data.get('tooltipPopup');
-            const title = this.data.get('title');
-            const initData = tooltipPopup.prototype.initData && tooltipPopup.prototype.initData() || {};
 
-            return san.defineComponent({
-                components: {
-                    content: Content,
-                    arrowcontent: arrowContent,
-                    popup: tooltipPopup
-                },
-                initData() {
-                    return {
-                        title,
-                        ...initData
-                    };
-                },
-                template: `<div>
-                    <div class="${prefixCls}-arrow" key="arrow">
-                        <arrowcontent />
-                    </div>
-                    <content key="content" prefixCls="${prefixCls}">
-                        <popup title="{{title}}" okText="{{okText}}" cancelText="{{cancelText}}" s-ref="pop"></popup>
-                    </content>
-                </div>`
-            });
-        }
-    }
-}), Trigger);
+    components: {
+        's-trigger': Trigger
+    },
+
+    handleVisibleChange(visible) {
+        this.fire('visibleChange', visible);
+    },
+
+    template: `<span>
+        <s-trigger
+            prefixCls="{{prefixCls}}"
+            action="{{action}}"
+            builtinPlacements="{{builtinPlacements}}"
+            popupPlacement="{{placement}}"
+            popupAlign="{{popupAlign}}"
+            popupTransitionName="{{transitionName}}"
+            defaultPopupVisible="{{defaultVisible}}"
+            getPopupContainer="{{getPopupContainer}}"
+            mouseEnterDelay="{{mouseEnterDelay}}"
+            mouseLeaveDelay="{{mouseLeaveDelay}}"
+            popupClassName="{{overlayClassName}}"
+            popupStyle="{{overlayStyle}}"
+            action="{{trigger}}"
+            popupVisible="{{visible}}"
+            on-visibleChange="handleVisibleChange"
+        >
+            <slot />
+            <template slot="popup">
+                <div class="{{prefixCls}}-arrow" key="arrow"></div>
+                <div class="{{prefixCls}}-inner" id="{{id}}" role="tooltip">
+                    <slot name="title" s-if="!title" />
+                    <template s-else>{{title}}</template>
+                </div>
+            </template>
+        </s-trigger>
+    </span>`
+});

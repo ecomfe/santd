@@ -4,18 +4,18 @@
  */
 
 import './style/index.less';
-import san, {DataTypes} from 'san';
+import san from 'san';
 import {classCreator} from '../core/util';
-import baseTooltip from './src/tooltip';
+import BaseTooltip from './src/tooltip';
 import getPlacements from './placements';
-import inherits from '../core/util/inherits';
 
 const prefixCls = classCreator('tooltip')();
 
-export default inherits(san.defineComponent({
+export default san.defineComponent({
     initData() {
         return {
-            prefixCls: prefixCls,
+            ...BaseTooltip.prototype.initData(),
+            prefixCls,
             transitionName: 'zoom-big-fast',
             mouseEnterDelay: 0.1,
             mouseLeaveDelay: 0.1,
@@ -24,6 +24,7 @@ export default inherits(san.defineComponent({
         };
     },
     computed: {
+        ...BaseTooltip.prototype.computed,
         builtinPlacements() {
             const builtinPlacements = this.data.get('placements');
             const arrowPointAtCenter = this.data.get('arrowPointAtCenter');
@@ -34,33 +35,6 @@ export default inherits(san.defineComponent({
                 verticalArrowShift: 8,
                 autoAdjustOverflow
             });
-        },
-        tooltipPopup() {
-            const title = this.data.get('title');
-            if (typeof title === 'string' || typeof title === 'number') {
-                return san.defineComponent({
-                    template: '<span>{{title}}</span>'
-                });
-            }
-            else if (typeof title === 'function') {
-                return title;
-            }
-        },
-        popupPlacement() {
-            return this.data.get('placement') || 'top';
-        },
-        popupVisible() {
-            return this.data.get('visible') || this.data.get('defaultVisible') || false;
-        },
-        popupClassName() {
-            return this.data.get('overlayClassName');
-        },
-        popupStyle() {
-            return this.data.get('overlayStyle');
-        },
-        getTransitionName() {
-            const transitionName = this.data.get('transitionName');
-            return transitionName;
         }
     }
-}), baseTooltip);
+}, BaseTooltip);
