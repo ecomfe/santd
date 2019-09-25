@@ -6,7 +6,8 @@
 ```html
 <template>
     <div>
-        <s-popover title="title" visible="{{visible}}" trigger="click" visible="{{visible}}" on-visibleChange="handleVisibleChange" content="{{content}}">
+        <s-popover title="title" visible="{{visible}}" trigger="click" on-visibleChange="handleVisibleChange">
+            <a slot="content" href="javascript:void(0);" on-click="hide">Close</a>
             <s-button type="primary">Click Me</s-button>
         </s-popover>
     </div>
@@ -22,19 +23,11 @@ export default {
     },
     initData() {
         return {
-            visible: false,
-            content: san.defineComponent({
-                hide() {
-                    this.dispatch('hide');
-                },
-                template: `<div><a href="javascript:void(0);" on-click="hide">Close</a></div>`
-            })
+            visible: false
         }
     },
-    messages: {
-        hide() {
-            this.data.set('visible', false);
-        }
+    hide() {
+        this.data.set('visible', false);
     },
     handleVisibleChange(visible) {
         this.data.set('visible', visible);
