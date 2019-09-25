@@ -6,29 +6,9 @@
 
 ```html
 <template>
-  <div>
-    <s-dropdown trigger="hover" overlay="{{menu}}">
-        <a href="javascript:;">Cascading menu<s-icon type="down" /></a>
-    </s-dropdown>
-  </div>
-</template>
-<script>
-import san from 'san';
-import Menu from 'santd/menu';
-import Icon from 'santd/icon';
-import Button from 'santd/button';
-import DropDown from 'santd/dropdown';
-
-const menus = san.defineComponent({
-    components: {
-        's-menu': Menu,
-        's-menu-item': Menu.Item,
-        's-sub-menu': Menu.Sub,
-        's-icon': Icon
-    },
-    template: `
-        <div>
-            <s-menu prefixCls="san-dropdown">
+    <div>
+        <s-dropdown trigger="hover">
+            <s-menu prefixCls="{{prefixCls}}" slot="overlay">
                 <s-menu-item key="item-1">2nd menu item</s-menu-item>
                 <s-sub-menu title="Sub-Menu" key="sub1">
                     <s-menu-item key="1">3rd menu item</s-menu-item>
@@ -39,19 +19,23 @@ const menus = san.defineComponent({
                     <s-menu-item key="4">6th menu item</s-menu-item>
                 </s-sub-menu>
             </s-menu>
-        </div>
-    `
-});
+            <a href="javascript:;">Cascading menu<s-icon type="down" /></a>
+        </s-dropdown>
+    </div>
+</template>
+<script>
+import Menu from 'santd/menu';
+import Icon from 'santd/icon';
+import Button from 'santd/button';
+import DropDown from 'santd/dropdown';
 
 export default {
     components: {
         's-dropdown': DropDown,
         's-icon': Icon,
-    },
-    initData() {
-        return {
-            menu: menus
-        }
+        's-menu': Menu,
+        's-menu-item': Menu.Item,
+        's-sub-menu': Menu.Sub
     }
 }
 </script>

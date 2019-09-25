@@ -5,27 +5,30 @@
 
 import './style/index.less';
 import san from 'san';
+import Trigger from '../core/trigger';
+import Placements from './placements';
 import {classCreator} from '../core/util';
-import BaseTooltip from './src/tooltip';
-import getPlacements from './placements';
+import {getPlacements} from './util';
 
 const prefixCls = classCreator('tooltip')();
 
 export default san.defineComponent({
     initData() {
         return {
-            ...BaseTooltip.prototype.initData(),
-            prefixCls,
-            transitionName: 'zoom-big-fast',
             mouseEnterDelay: 0.1,
+            destroyTooltipOnHide: false,
             mouseLeaveDelay: 0.1,
+            popupAlign: {},
+            builtinPlacements: Placements,
+            trigger: 'hover',
+            placement: 'top',
+            transitionName: 'zoom-big-fast',
             arrowPointAtCenter: false,
             autoAdjustOverflow: true
         };
     },
 
     computed: {
-        ...BaseTooltip.prototype.computed,
         builtinPlacements() {
             const builtinPlacements = this.data.get('placements');
             const arrowPointAtCenter = this.data.get('arrowPointAtCenter');
@@ -37,5 +40,42 @@ export default san.defineComponent({
                 autoAdjustOverflow
             });
         }
-    }
-}, BaseTooltip);
+    },
+
+    components: {
+        's-trigger': Trigger
+    },
+
+    handleVisibleChange(visible) {
+        this.fire('visibleChange', visible);
+    },
+
+    template: `<span>
+        <s-trigger
+            prefixCls="${prefixCls}"
+            action="{{action}}"
+            builtinPlacements="{{builtinPlacements}}"
+            popupPlacement="{{placement}}"
+            popupAlign="{{popupAlign}}"
+            popupTransitionName="{{transitionName}}"
+            defaultPopupVisible="{{defaultVisible}}"
+            getPopupContainer="{{getPopupContainer}}"
+            mouseEnterDelay="{{mouseEnterDelay}}"
+            mouseLeaveDelay="{{mouseLeaveDelay}}"
+            popupClassName="{{overlayClassName}}"
+            popupStyle="{{overlayStyle}}"
+            action="{{trigger}}"
+            visible="{{visible}}"
+            on-visibleChange="handleVisibleChange"
+        >
+            <slot />
+            <template slot="popup">
+                <div class="${prefixCls}-arrow"></div>
+                <div class="${prefixCls}-inner" id="{{id}}" role="tooltip">
+                    <slot name="title" s-if="!title" />
+                    <template s-else>{{title}}</template>
+                </div>
+            </template>
+        </s-trigger>
+    </span>`
+});

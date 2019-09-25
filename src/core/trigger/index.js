@@ -136,6 +136,11 @@ export default san.defineComponent({
             }
             this._popup.data.set('visible', val);
         });
+
+        this.watch('visible', val => {
+            this.data.set('popupVisible', val);
+            // this.setPopupVisible(val);
+        });
     },
     attached() {
         if (this.data.get('popupVisible')) {
@@ -188,14 +193,11 @@ export default san.defineComponent({
         this.clearDelayTimer();
 
         if (this.data.get('popupVisible') !== visible) {
-            // 先fire出去，让外面拿到可以处理
+            // 如果没有外部传入的visible，设置当前的popVisible为visible，否则会进入visible的watch逻辑
+            if (this.data.get('visible') === undefined) {
+                this.data.set('popupVisible', visible);
+            }
             this.fire('visibleChange', visible);
-            // 这里使用nextTick来拿到外部重新传回来的visible数据
-            this.nextTick(() => {
-                // 如果有visible，用外部传入的visible来控制是否展示
-                const propVisible = this.data.get('visible');
-                this.data.set('popupVisible', propVisible !== undefined ? propVisible : visible);
-            });
         }
         if (alignPoint && e) {
             this.setpoint(e);
