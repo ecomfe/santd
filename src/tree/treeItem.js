@@ -124,9 +124,7 @@ export default san.defineComponent({
             this.searchParentUpward();
         });
     },
-    updated() {
 
-    },
     changeCollapse(e) {
         e.stopPropagation();
         // 如果是点击时异步获取数据
@@ -272,7 +270,6 @@ export default san.defineComponent({
     },
     template: `
         <li class="{{itemClass}}">
-
             <span
                 s-if="{{data.children}}"
                 class="{{leafone}}"
