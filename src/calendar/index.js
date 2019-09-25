@@ -281,6 +281,7 @@ const exportCalendar = san.defineComponent({
                     value="{{mode}}"
                     size="{{fullscreen ? 'default' : 'small'}}"
                     on-change="handleHeaderTypeChange"
+                    name="calendarmode"
                 >
                     <s-radiobutton value="month">{{locale.lang.month}}</s-radiobutton>
                     <s-radiobutton value="year">{{locale.lang.year}}</s-radiobutton>

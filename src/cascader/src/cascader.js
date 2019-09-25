@@ -14,13 +14,15 @@ import arrayTreeFilter from './arraytreefilter';
 
 const prefixCls = classCreator('cascader')();
 
-export default inherits(san.defineComponent({
+export default san.defineComponent({
     initData() {
         return {
+            popupAlign: {},
             disabled: false,
-            popupPlacement: 'bottomLeft',
+            placement: 'bottomLeft',
             builtinPlacements: placements,
             expandTrigger: 'click',
+            trigger: 'click',
             fieldNames: {
                 label: 'label',
                 value: 'value',
@@ -109,6 +111,7 @@ export default inherits(san.defineComponent({
     },
     setPopupVisible(visible) {
         this.data.set('popupVisible', visible);
+        this.fire('visibleChange', visible);
         if (visible && !this.data.get('popupVisible')) {
             this.data.set('activeValue', this.data.get('value'));
         }
@@ -168,5 +171,43 @@ export default inherits(san.defineComponent({
                 payload.value.e
             );
         }
-    }
-}), Trigger);
+    },
+    handleVisibleChange(visible) {
+        this.fire('visibleChange', visible);
+    },
+    components: {
+        's-trigger': Trigger,
+        's-menus': Menus
+    },
+    template: `<span>
+        <s-trigger
+            prefixCls="{{prefixCls}}"
+            builtinPlacements="{{builtinPlacements}}"
+            popupPlacement="{{placement}}"
+            popupAlign="{{popupAlign}}"
+            popupTransitionName="{{transitionName}}"
+            defaultPopupVisible="{{defaultVisible}}"
+            getPopupContainer="{{getPopupContainer}}"
+            mouseEnterDelay="{{mouseEnterDelay}}"
+            mouseLeaveDelay="{{mouseLeaveDelay}}"
+            popupClassName="{{overlayClassName}}"
+            popupStyle="{{overlayStyle}}"
+            action="{{trigger}}"
+            visible="{{popupVisible}}"
+            on-visibleChange="handleVisibleChange"
+        >
+            <slot />
+            <s-menus slot="popup"
+                prefixCls="{{rootPrefixCls || prefixCls}}"
+                options="{{options || []}}"
+                fieldNames="{{fieldNames}}"
+                defaultFieldNames="{{defaultFieldNames}}"
+                activeValue="{{activeValue}}"
+                visible="{{visible}}"
+                expandIcon="{{expandIcon}}"
+                expandTrigger="{{expandTrigger}}"
+                dropdownMenuColumnStyle="{{dropdownMenuColumnStyle}}"
+            />
+        </s-trigger>
+    </span>`
+});
