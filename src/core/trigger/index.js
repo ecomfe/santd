@@ -124,7 +124,7 @@ export default san.defineComponent({
         }
     },
     inited() {
-        const popupVisible = this.data.get('popupVisible') || this.data.get('defaultPopupVisible');
+        const popupVisible = this.data.get('visible') || this.data.get('defaultPopupVisible');
         this.data.set('popupVisible', popupVisible);
 
         const currentDocument = this.data.get('getDocument')();
@@ -138,10 +138,9 @@ export default san.defineComponent({
         });
     },
     attached() {
-        const popupVisible = this.data.get('popupVisible');
-        if (popupVisible) {
+        if (this.data.get('popupVisible')) {
             this.attachPopup();
-            this._popup.data.set('visible', popupVisible);
+            this._popup.data.set('visible', true);
         }
     },
     detached() {
@@ -183,26 +182,20 @@ export default san.defineComponent({
         const hideAction = this.data.get('hideAction');
         return action.indexOf('contextMenu') !== -1 || hideAction.indexOf('contextMenu') !== -1;
     },
-    onClick(e) {
-        if (e && e.preventDefault) {
-            e.preventDefault();
-        }
-        const nextVisible = !this.data.get('popupVisible');
-
-        if (this.isClickToHide() && !nextVisible || nextVisible && this.isClickToShow()) {
-            this.setPopupVisible(nextVisible, e);
-        }
-    },
     setPopupVisible(visible, e) {
         const alignPoint = this.data.get('alignPoint');
 
         this.clearDelayTimer();
 
         if (this.data.get('popupVisible') !== visible) {
-            const propVisible = this.data.get('visible');
-            // 如果有visible，用外部传入的visible来控制是否展示
-            this.data.set('popupVisible', propVisible !== undefined ? propVisible : visible);
+            // 先fire出去，让外面拿到可以处理
             this.fire('visibleChange', visible);
+            // 这里使用nextTick来拿到外部重新传回来的visible数据
+            this.nextTick(() => {
+                // 如果有visible，用外部传入的visible来控制是否展示
+                const propVisible = this.data.get('visible');
+                this.data.set('popupVisible', propVisible !== undefined ? propVisible : visible);
+            });
         }
         if (alignPoint && e) {
             this.setpoint(e);
@@ -228,7 +221,14 @@ export default san.defineComponent({
     },
     handleClick(e, forceTrigger) {
         if (this.isClickToShow() || this.isClickToHide() || forceTrigger) {
-            this.onClick(e);
+            if (e && e.preventDefault) {
+                e.preventDefault();
+            }
+            const nextVisible = !this.data.get('popupVisible');
+
+            if (this.isClickToHide() && !nextVisible || nextVisible && this.isClickToShow()) {
+                this.setPopupVisible(nextVisible, e);
+            }
         }
     },
     handleMouseDown(e) {

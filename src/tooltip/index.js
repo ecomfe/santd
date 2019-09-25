@@ -23,6 +23,7 @@ export default san.defineComponent({
             autoAdjustOverflow: true
         };
     },
+
     computed: {
         ...BaseTooltip.prototype.computed,
         builtinPlacements() {

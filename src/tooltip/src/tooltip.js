@@ -20,10 +20,6 @@ export default san.defineComponent({
         };
     },
 
-    inited() {
-        this.data.set('hasTitle', this.data.get('title') || !!this.sourceSlots.named.title);
-        this.data.set('hasContent', this.data.get('content') || !!this.sourceSlots.named.content);
-    },
 
     components: {
         's-trigger': Trigger
@@ -48,23 +44,23 @@ export default san.defineComponent({
             popupClassName="{{overlayClassName}}"
             popupStyle="{{overlayStyle}}"
             action="{{trigger}}"
-            popupVisible="{{visible}}"
+            visible="{{visible}}"
             on-visibleChange="handleVisibleChange"
         >
             <slot />
             <template slot="popup">
                 <div class="{{prefixCls}}-arrow"></div>
                 <div class="{{prefixCls}}-inner" id="{{id}}" role="tooltip">
-                    <!--<slot name="title" s-if="!title" />
-                    <template s-else>{{title}}</template>-->
-                    <div class="{{prefixCls}}-title" s-if="hasTitle">
+                    <slot name="title" s-if="!title" />
+                    <template s-else>{{title}}</template>
+                    <!--<div class="{{prefixCls}}-title" s-if="hasTitle">
                         <slot name="title" s-if="!title" />
                         <template s-else>{{title}}</template>
                     </div>
                     <div class="{{prefixCls}}-inner-content" s-if="hasContent">
                         <slot name="content" s-if="!content" />
                         <template s-else>{{content}}</template>
-                    </div>
+                    </div>-->
                 </div>
             </template>
         </s-trigger>
