@@ -9,6 +9,7 @@ import Placement from './placements';
 import moment from 'moment';
 import inherits from '../../core/util/inherits';
 import Panel from './panel';
+import Icon from '../../icon';
 
 const noop = function () {};
 
@@ -215,11 +216,17 @@ export default san.defineComponent({
 
         this.data.set('open', open || defaultOpen);
         this.data.set('value', value || defaultValue);
+
+        this.data.set('hasSuffixIcon', !!this.sourceSlots.named.suffixIcon);
+        this.data.set('hasClearIcon', !!this.sourceSlots.named.clearIcon);
     },
     components: {
-        's-trigger': Trigger
+        's-trigger': Trigger,
+        's-icon': Icon,
+        's-panel': Panel
     },
     setOpen(open) {
+        console.log(open);
         this.data.set('open', open);
         this.fire(open ? 'open' : 'close', open);
     },
@@ -268,7 +275,6 @@ export default san.defineComponent({
             prefixCls="{{prefixCls}}-panel"
             popupClassName="{{getPopupClassName}}"
             popupStyle="{{popupStyle}}"
-            popup="{{popup}}"
             popupAlign="{{align}}"
             builtinPlacements="{{builtinPlacements}}"
             popupPlacement="{{popupPlacement}}"
@@ -276,7 +282,7 @@ export default san.defineComponent({
             destroyPopupOnHide
             getPopupContainer="{{getPopupContainer}}"
             popupTransitionName="{{transitionName}}"
-            popupVisible="{{open}}"
+            visible="{{open}}"
             on-visibleChange="handleVisibleChange"
         >
             <span class="{{classes}}" style="{{bodyStyle}}">
@@ -293,22 +299,39 @@ export default san.defineComponent({
                     on-keydown="handleKeyDown"
                     s-ref="picker"
                 />
-                <inputicon s-if="injectComponent.inputIcon" />
-                <span class="{{prefixCls}}-icon" s-else />
-                <clearicon s-if="injectComponent.clearIcon && !disabled && allowClear" on-click="handleClear"/>
-                <template s-else>
-                    <a
-                        s-if="!disabled && value && allowClear && !disabled"
-                        role="button"
-                        class="{{prefixCls}}-clear"
-                        title="{{clearText}}"
-                        tabIndex="0"
-                        on-click="handleClear"
-                    >
-                        <i class="{{prefixCls}}-clear-icon" />
-                    </a>
+                <span class="{{prefixCls}}-icon">
+                    <slot name="suffixIcon" s-if="hasSuffixIcon" />
+                    <s-icon s-else type="clock-circle" class="{{prefixCls}}-clock-icon" />
+                </span>
+                <template s-if="!disabled && allowClear && value">
+                    <slot name="clearIcon" s-if="hasClearIcon" />
+                    <s-icon s-else type="close-circle" class="{{prefixCls}}-clear" theme="filled" on-click="handleClear"/>
                 </template>
-        </span>
+            </span>
+            <s-panel
+                slot="popup"
+                prefixCls="{{prefixCls + '-panel'}}"
+                placeholder="{{placeholder}}"
+                disabledHours="{{disabledHours}}"
+                disabledMinutes="{{disabledMinutes}}"
+                disabledSeconds="{{disabledSeconds}}"
+                hideDisabledOptions="{{hideDisabledOptions}}"
+                inputReadOnly="{{inputReadOnly}}"
+                showHour="{{showHour}}"
+                showMinute="{{showMinute}}"
+                showSecond="{{showSecond}}"
+                defaultOpenValue="{{defaultOpenValue}}"
+                clearText="{{clearText}}"
+                addon="{{addon}}"
+                use12Hours="{{use12Hours}}"
+                focusOnOpen="{{focusOnOpen}}"
+                hourStep="{{hourStep}}"
+                minuteStep="{{minuteStep}}"
+                secondStep="{{secondStep}}"
+                clearIcon="{{clearIcon}}"
+                format="{{getFormat}}"
+                value="{{value}}"
+            />
         </s-trigger>
     </span>`
 });

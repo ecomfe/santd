@@ -139,7 +139,6 @@ export default san.defineComponent({
 
         this.watch('visible', val => {
             this.data.set('popupVisible', val);
-            // this.setPopupVisible(val);
         });
     },
     attached() {

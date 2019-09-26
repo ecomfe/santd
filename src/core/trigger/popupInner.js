@@ -109,7 +109,7 @@ export default san.defineComponent({
                 on-mousedown="handleMouseDown"
                 on-touchstart="handleTouchStart"
             >
-                <slot/>
+                <slot />
             </div>
        </div>
     `

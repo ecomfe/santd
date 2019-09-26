@@ -4,9 +4,8 @@
  */
 
 import './style/index.less';
-import san, {DataTypes} from 'san';
+import san from 'san';
 import {classCreator} from '../core/util';
-import Icon from '../icon';
 import TimePicker from './src/timepicker';
 import inherits from '../core/util/inherits';
 import enUS from './locale/en_US';
@@ -23,6 +22,7 @@ const Locale = inherits(san.defineComponent({
     }
 }), LocaleReceiver);
 
+
 export default inherits(san.defineComponent({
     initData() {
         return {
@@ -35,7 +35,7 @@ export default inherits(san.defineComponent({
     },
     computed: {
         timePlaceholder() {
-            const locale = this.data.get('locale');
+            const locale = this.data.get('locale') || {};
             const placeholder = this.data.get('placeholder');
             return placeholder || locale.placeholder;
         },
@@ -45,53 +45,6 @@ export default inherits(san.defineComponent({
             let classArr = [className];
             !!size && classArr.push(`${prefixCls}-${size}`);
             return classArr.join(' ');
-        },
-        renderInputIcon() {
-            const prefixCls = this.data.get('prefixCls');
-            const suffixIcon = this.data.get('suffixIcon');
-
-            return san.defineComponent({
-                initData() {
-                    return {
-                        prefixCls
-                    };
-                },
-                inited() {
-                    this.data.set('instance', this);
-                },
-                computed: {
-                    hasSuffixIcon() {
-                        const instance = this.data.get('instance');
-                        return instance && instance.components.suffixicon;
-                    }
-                },
-                components: {
-                    suffixicon: suffixIcon,
-                    icon: Icon
-                },
-                template: `<span class="{{prefixCls}}-icon">
-                    <suffixicon s-if="hasSuffixIcon"/>
-                    <icon s-else type="clock-circle" className="{{prefixCls}}-clock-icon" />
-                </span>`
-            });
-        },
-        renderClearIcon() {
-            const prefixCls = this.data.get('prefixCls');
-            const clearIcon = this.data.get('clearIcon');
-
-            if (clearIcon) {
-                return clearIcon;
-            }
-
-            return inherits(san.defineComponent({
-                initData() {
-                    return {
-                        type: 'close-circle',
-                        className: prefixCls + '-clear',
-                        theme: 'filled'
-                    };
-                }
-            }), Icon);
         },
         defaultFormat() {
             const format = this.data.get('format');
