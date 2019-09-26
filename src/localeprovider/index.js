@@ -20,29 +20,32 @@ function setMomentLocale(locale) {
 export default san.defineComponent({
     initData() {
         return {
-            defaultLocale,
-            children: [],
+            locale: defaultLocale,
             localeProvider: true
         };
     },
 
     inited() {
+        this.reveviers = [];
         const locale = this.data.get('locale');
         setMomentLocale(locale);
     },
 
+    disposed() {
+        this.reveviers = null;
+    },
+
     updated() {
-        const children = this.data.get('children');
         const locale = this.data.get('locale');
 
-        children.forEach(child => {
+        this.reveviers.forEach(child => {
             child.data.set('localeContext', locale);
         });
     },
 
     messages: {
         santd_add_locale_receiver(payload) {
-            this.data.push('children', payload.value);
+            this.reveviers.push(payload.value);
         }
     },
 
