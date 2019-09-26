@@ -44,9 +44,7 @@ export default san.defineComponent({
             const expanded = this.data.get('expanded');
             return [`${prefixCls}-switcher`, `${prefixCls}-switcher_${expanded ? 'open' : 'close'}`];
         },
-        leaftwo() {
-            return [`${prefixCls}-switcher`, `${prefixCls}-switcher-noop`];
-        },
+
         // checkbox class
         checkboxClass() {
             const checked = this.data.get('checked'); // 是否被选中
@@ -67,11 +65,6 @@ export default san.defineComponent({
             let classArr = [`${prefixCls}-node-content-wrapper`, `${prefixCls}-node-content-wrapper-${expanded ? 'open' : 'close'}`];
             selected && classArr.push(`${prefixCls}-node-selected`);
             return classArr;
-        },
-        // 子ul
-        ulChildClass() {
-            const expanded = this.data.get('expanded');
-            return [`${prefixCls}-child-tree`, `${prefixCls}-child-tree-${expanded ? 'open' : 'close'}`];
         }
     },
     initData() {
@@ -272,7 +265,7 @@ export default san.defineComponent({
         <li class="{{itemClass}}">
             <span
                 s-if="{{data.children}}"
-                class="{{leafone}}"
+                class="${prefixCls}-switcher ${prefixCls}-switcher_{{expanded ? 'open' : 'close'}}"
                 on-click="changeCollapse($event)"
             >
                 <s-icon
@@ -288,7 +281,7 @@ export default san.defineComponent({
                 <s-icon s-else-if="{{loading}}" type="loading"></s-icon>
                 <s-icon s-else type="caret-down" class="${prefixCls}-switcher-icon"></s-icon>
             </span>
-            <span s-else class="{{leaftwo}}">
+            <span s-else class="${prefixCls}-switcher ${prefixCls}-switcher-noop">
                 <s-icon s-if="{{showLine}}" type="file"></s-icon>
             </span>
             <!--checkbox部分-->
@@ -299,7 +292,7 @@ export default san.defineComponent({
                 <s-icon s-if="{{icon}}" type="{{icon}}"></s-icon>
                 <span class="${prefixCls}-title">{{data.title}}</span>
             </span>
-            <ul class="{{ulChildClass)}}">
+            <ul class="${prefixCls}-child-tree ${prefixCls}-child-tree-{{expanded ? 'open' : 'close'}}">
                 <s-tree-item
                     s-for="item in data.children"
                     data="{{item}}"
