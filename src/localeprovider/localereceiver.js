@@ -31,7 +31,8 @@ export default san.defineComponent({
             return localeCode;
         }
     },
+
     inited() {
-        this.dispatch('addLocaleReceiver', this);
+        this.dispatch('santd_add_locale_receiver', this);
     }
 });

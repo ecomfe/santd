@@ -41,7 +41,7 @@ export default san.defineComponent({
     },
 
     messages: {
-        addLocaleReceiver(payload) {
+        santd_add_locale_receiver(payload) {
             this.data.push('children', payload.value);
         }
     },
