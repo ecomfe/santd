@@ -8,15 +8,6 @@ import defaultLocale from './zh_CN';
 import * as moment from 'moment';
 
 
-function setMomentLocale(locale) {
-    if (locale && locale.locale) {
-        moment.locale(locale.locale);
-    }
-    else {
-        moment.locale('en');
-    }
-}
-
 export default san.defineComponent({
     initData() {
         return {
@@ -27,8 +18,14 @@ export default san.defineComponent({
 
     inited() {
         this.reveviers = [];
+
         const locale = this.data.get('locale');
-        setMomentLocale(locale);
+        if (locale && locale.locale) {
+            moment.locale(locale.locale);
+        }
+        else {
+            moment.locale('en');
+        }
     },
 
     disposed() {
