@@ -7,7 +7,6 @@ import san from 'san';
 import defaultLocale from './zh_CN';
 import * as moment from 'moment';
 
-let locale = defaultLocale;
 
 function setMomentLocale(locale) {
     if (locale && locale.locale) {
@@ -21,15 +20,17 @@ function setMomentLocale(locale) {
 export default san.defineComponent({
     initData() {
         return {
-            locale,
+            defaultLocale,
             children: [],
             localeProvider: true
         };
     },
+
     inited() {
         const locale = this.data.get('locale');
         setMomentLocale(locale);
     },
+
     updated() {
         const children = this.data.get('children');
         const locale = this.data.get('locale');
@@ -38,10 +39,12 @@ export default san.defineComponent({
             child.data.set('localeContext', locale);
         });
     },
+
     messages: {
         addLocaleReceiver(payload) {
             this.data.push('children', payload.value);
         }
     },
+
     template: '<div><slot /></div>'
 });
