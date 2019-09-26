@@ -69,7 +69,7 @@ const headerRender = san.defineComponent({
         <div style="margin-bottom: 10px;">Custom header</div>
         <s-row type="flex" justify="space-between">
             <s-col>
-                <s-group size="small" value="{{type}}" on-change="handleTypeChange">
+                <s-group size="small" value="{{type}}" on-change="handleTypeChange" name="customgroup">
                     <s-radiobutton value="month">Month</s-radiobutton>
                     <s-radiobutton value="year">Year</s-radiobutton>
                 </s-group>

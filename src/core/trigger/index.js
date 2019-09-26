@@ -4,12 +4,8 @@
  **/
 
 import san, {DataTypes} from 'san';
-import Portal from './utils/portal';
 import Popup from './popup';
-import PopupInner from './popupInner';
-import Animate from '../util/animate';
-import inherits from '../util/inherits';
-import {contains} from '../util/dom';
+import {contains} from './util';
 import './style/index';
 
 function isPointsEq(a1, a2, isAlignPoint) {
@@ -45,11 +41,9 @@ export default san.defineComponent({
         showAction: DataTypes.array,
         hideAction: DataTypes.array,
         getPopupClassNameFromAlign: DataTypes.func,
-        popup: DataTypes.func, // 必须是san组件
         popupStyle: DataTypes.oneOfType([DataTypes.string, DataTypes.object]),
         prefixCls: DataTypes.string,
         popupClassName: DataTypes.string,
-        className: DataTypes.string,
         popupPlacement: DataTypes.string,
         builtinPlacements: DataTypes.object,
         popupTransitionName: DataTypes.oneOfType([DataTypes.string, DataTypes.object]),
@@ -69,7 +63,6 @@ export default san.defineComponent({
         defaultPopupVisible: DataTypes.bool,
         maskTransitionName: DataTypes.oneOfType([DataTypes.string, DataTypes.object]),
         maskAnimation: DataTypes.string,
-        stretch: DataTypes.string,
         alignPoint: DataTypes.bool
     },
     initData() {
@@ -100,24 +93,6 @@ export default san.defineComponent({
         };
     },
     computed: {
-        getContainer() {
-            const instance = this.data.get('instance');
-            return () => {
-                const getPopupContainer = this.data.get('getPopupContainer');
-                const getDocument = this.data.get('getDocument');
-                const popupContainer = document.createElement('div');
-
-                popupContainer.style.position = 'absolute';
-                popupContainer.style.top = '0';
-                popupContainer.style.left = '0';
-                popupContainer.style.width = '100%';
-
-                const mountNode = getPopupContainer ? getPopupContainer(instance && instance.el) : getDocument().body;
-                mountNode.appendChild(popupContainer);
-
-                return popupContainer;
-            };
-        },
         getPopupAlign() {
             const popupPlacement = this.data.get('popupPlacement');
             const popupAlign = this.data.get('popupAlign');
@@ -127,59 +102,6 @@ export default san.defineComponent({
                 return getAlignFromPlacement(builtinPlacements, popupPlacement, popupAlign);
             }
             return popupAlign;
-        },
-        getComponent() {
-            const prefixCls = this.data.get('prefixCls');
-            const destroyPopupOnHide = this.data.get('destroyPopupOnHide');
-            const popupClassName = this.data.get('popupClassName');
-            const action = this.data.get('action');
-            const popupAnimation = this.data.get('popupAnimation');
-            const popupTransitionName = this.data.get('popupTransitionName');
-            const popupStyle = this.data.get('popupStyle');
-            const mask = this.data.get('mask');
-            const maskAnimation = this.data.get('maskAnimation');
-            const maskTransitionName = this.data.get('maskTransitionName');
-            const zIndex = this.data.get('zIndex');
-            const popup = this.data.get('popup');
-            const stretch = this.data.get('stretch');
-            const alignPoint = this.data.get('alignPoint');
-            const visible = this.data.get('popupVisible');
-            const point = this.data.get('point');
-            const getClassNameFromAlign = this.data.get('getClassNameFromAlign');
-            const align = this.data.get('getPopupAlign');
-            const getRootDomNode = this.data.get('getRootDomNode');
-            const getTransitionName = this.data.get('getTransitionName');
-
-            return inherits(san.defineComponent({
-                components: {
-                    's-popup': popup,
-                    's-popupinner': PopupInner,
-                    's-animate': Animate
-                },
-                initData() {
-                    return {
-                        prefixCls,
-                        destroyPopupOnHide,
-                        visible,
-                        point: alignPoint && point,
-                        className: popupClassName,
-                        action,
-                        align,
-                        animation: popupAnimation,
-                        getClassNameFromAlign: getClassNameFromAlign,
-                        stretch,
-                        getRootDomNode,
-                        style: popupStyle,
-                        mask,
-                        zIndex,
-                        transitionName: popupTransitionName,
-                        maskAnimation,
-                        maskTransitionName,
-                        getTransitionName,
-                        popup
-                    };
-                }
-            }), Popup);
         },
         getClassNameFromAlign() {
             const that = this;
@@ -199,90 +121,70 @@ export default san.defineComponent({
                 }
                 return className.join(' ');
             };
-        },
-        isClickToShow() {
-            const action = this.data.get('action');
-            const showAction = this.data.get('showAction');
-            return action.indexOf('click') !== -1 || showAction.indexOf('click') !== -1;
-        },
-        isClickToHide() {
-            const action = this.data.get('action');
-            const hideAction = this.data.get('hideAction');
-            return action.indexOf('click') !== -1 || hideAction.indexOf('click') !== -1;
-        },
-        isMouseEnterToShow() {
-            const action = this.data.get('action');
-            const hideAction = this.data.get('hideAction');
-            return action.indexOf('hover') !== -1 || hideAction.indexOf('mouseEnter') !== -1;
-        },
-        isMouseLeaveToHide() {
-            const action = this.data.get('action');
-            const hideAction = this.data.get('hideAction');
-            return action.indexOf('hover') !== -1 || hideAction.indexOf('mouseLeave') !== -1;
-        },
-        isFocusToShow() {
-            const action = this.data.get('action');
-            const hideAction = this.data.get('hideAction');
-            return action.indexOf('focus') !== -1 || hideAction.indexOf('focus') !== -1;
-        },
-        isBlurToHide() {
-            const action = this.data.get('action');
-            const hideAction = this.data.get('hideAction');
-            return action.indexOf('focus') !== -1 || hideAction.indexOf('blur') !== -1;
-        },
-        isContextMenuToShow() {
-            const action = this.data.get('action');
-            const hideAction = this.data.get('hideAction');
-            return action.indexOf('contextMenu') !== -1 || hideAction.indexOf('contextMenu') !== -1;
-        },
-        getRootDomNode() {
-            const instance = this.data.get('instance');
-            const rootDomNode = this.data.get('rootDomNode');
-
-            return rootDomNode || instance && instance.el;
-        },
-        handlePortalUpdate() {
-            const prevPopupVisible = this.data.get('prevPopupVisible');
-            const popupVisible = this.data.get('popupVisible');
-            const afterPopupVisibleChange = this.data.get('afterPopupVisibleChange');
-            return function () {
-                if (prevPopupVisible !== popupVisible) {
-                    afterPopupVisibleChange && afterPopupVisibleChange(popupVisible);
-                }
-            };
         }
     },
-    created() {
-        let popupVisible;
-
-        this.data.set('instance', this);
-        if ('popupVisible' in this.data.get()) {
-            popupVisible = !!this.data.get('popupVisible');
-        }
-        else {
-            popupVisible = !!this.data.get('defaultPopupVisible');
-        }
-
-        this.data.set('prevPopupVisible', popupVisible);
+    inited() {
+        const popupVisible = this.data.get('visible') || this.data.get('defaultPopupVisible');
         this.data.set('popupVisible', popupVisible);
 
         const currentDocument = this.data.get('getDocument')();
         currentDocument.addEventListener('mousedown', this.handleDocumentClick.bind(this));
+
+        this.watch('popupVisible', val => {
+            if (!this._container) {
+                this.attachPopup();
+            }
+            this._popup.data.set('visible', val);
+        });
+
+        this.watch('visible', val => {
+            this.data.set('popupVisible', val);
+        });
+    },
+    attached() {
+        if (this.data.get('popupVisible')) {
+            this.attachPopup();
+            this._popup.data.set('visible', true);
+        }
     },
     detached() {
         this.clearDelayTimer();
+        this.removeContainer();
     },
-    onClick(e) {
-        if (e && e.preventDefault) {
-            e.preventDefault();
-        }
-        const nextVisible = !this.data.get('popupVisible');
-        const isClickToHide = this.data.get('isClickToHide');
-        const isClickToShow = this.data.get('isClickToShow');
-
-        if (isClickToHide && !nextVisible || nextVisible && isClickToShow) {
-            this.setPopupVisible(nextVisible, e);
-        }
+    isClickToShow() {
+        const action = this.data.get('action');
+        const showAction = this.data.get('showAction');
+        return action.indexOf('click') !== -1 || showAction.indexOf('click') !== -1;
+    },
+    isClickToHide() {
+        const action = this.data.get('action');
+        const hideAction = this.data.get('hideAction');
+        return action.indexOf('click') !== -1 || hideAction.indexOf('click') !== -1;
+    },
+    isMouseEnterToShow() {
+        const action = this.data.get('action');
+        const hideAction = this.data.get('hideAction');
+        return action.indexOf('hover') !== -1 || hideAction.indexOf('mouseEnter') !== -1;
+    },
+    isMouseLeaveToHide() {
+        const action = this.data.get('action');
+        const hideAction = this.data.get('hideAction');
+        return action.indexOf('hover') !== -1 || hideAction.indexOf('mouseLeave') !== -1;
+    },
+    isFocusToShow() {
+        const action = this.data.get('action');
+        const hideAction = this.data.get('hideAction');
+        return action.indexOf('focus') !== -1 || hideAction.indexOf('focus') !== -1;
+    },
+    isBlurToHide() {
+        const action = this.data.get('action');
+        const hideAction = this.data.get('hideAction');
+        return action.indexOf('focus') !== -1 || hideAction.indexOf('blur') !== -1;
+    },
+    isContextMenuToShow() {
+        const action = this.data.get('action');
+        const hideAction = this.data.get('hideAction');
+        return action.indexOf('contextMenu') !== -1 || hideAction.indexOf('contextMenu') !== -1;
     },
     setPopupVisible(visible, e) {
         const alignPoint = this.data.get('alignPoint');
@@ -290,9 +192,10 @@ export default san.defineComponent({
         this.clearDelayTimer();
 
         if (this.data.get('popupVisible') !== visible) {
-            const propVisible = this.data.get('visible');
-            // 如果有visible，用外部传入的visible来控制是否展示
-            this.data.set('popupVisible', propVisible !== undefined ? propVisible : visible);
+            // 如果没有外部传入的visible，设置当前的popVisible为visible，否则会进入visible的watch逻辑
+            if (this.data.get('visible') === undefined) {
+                this.data.set('popupVisible', visible);
+            }
             this.fire('visibleChange', visible);
         }
         if (alignPoint && e) {
@@ -318,11 +221,15 @@ export default san.defineComponent({
         }
     },
     handleClick(e, forceTrigger) {
-        const isClickToHide = this.data.get('isClickToHide');
-        const isClickToShow = this.data.get('isClickToShow');
+        if (this.isClickToShow() || this.isClickToHide() || forceTrigger) {
+            if (e && e.preventDefault) {
+                e.preventDefault();
+            }
+            const nextVisible = !this.data.get('popupVisible');
 
-        if (isClickToShow || isClickToHide || forceTrigger) {
-            this.onClick(e);
+            if (this.isClickToHide() && !nextVisible || nextVisible && this.isClickToShow()) {
+                this.setPopupVisible(nextVisible, e);
+            }
         }
     },
     handleMouseDown(e) {
@@ -334,35 +241,31 @@ export default san.defineComponent({
         this.data.set('preTouchTime', Date.now());
     },
     handleMouseEnter(e, forceTrigger) {
-        const isMouseEnterToShow = this.data.get('isMouseEnterToShow');
-        if (isMouseEnterToShow || forceTrigger) {
+        if (this.isMouseEnterToShow() || forceTrigger) {
             const mouseEnterDelay = this.data.get('mouseEnterDelay');
             this.fire('mouseEnter', e);
-            this.setPopupVisible(true);
-            this.delaySetPopupVisible(true, mouseEnterDelay, mouseEnterDelay ? null : e);
+            mouseEnterDelay
+                ? this.delaySetPopupVisible(true, mouseEnterDelay, mouseEnterDelay ? null : e)
+                : this.setPopupVisible(true);
         }
     },
     handleMouseMove(e, forceTrigger) {
-        const isMouseEnterToShow = this.data.get('isMouseEnterToShow');
         const alignPoint = this.data.get('alignPoint');
 
-        if ((isMouseEnterToShow || forceTrigger) && alignPoint) {
+        if ((this.isMouseEnterToShow() || forceTrigger) && alignPoint) {
             this.fire('mouseMove', e);
             this.setPoint(e);
         }
     },
     handleMouseLeave(e) {
-        const isMouseLeaveToHide = this.data.get('isMouseLeaveToHide');
-        if (isMouseLeaveToHide) {
+        if (this.isMouseLeaveToHide()) {
             this.fire('mouseLeave', e);
             const mouseLeaveDelay = this.data.get('mouseLeaveDelay');
             this.delaySetPopupVisible(false, mouseLeaveDelay);
         }
     },
     handleFocus(e, forceTrigger) {
-        const isFocusToShow = this.data.get('isFocusToShow');
-        const isClickToShow = this.data.get('isClickToShow');
-        if (isFocusToShow || (forceTrigger && !isClickToShow)) {
+        if (this.isFocusToShow() || (forceTrigger && !this.isClickToShow())) {
             this.fire('focus', e);
             this.clearDelayTimer();
             this.data.set('focusTime', Date.now());
@@ -370,17 +273,14 @@ export default san.defineComponent({
         }
     },
     handleBlur(e, forceTrigger) {
-        const isBlurToHide = this.data.get('isBlurToHide');
-        const isClickToHide = this.data.get('isClickToHide');
-        if (isBlurToHide || (forceTrigger && !isClickToHide)) {
+        if (this.isBlurToHide() || (forceTrigger && !this.isClickToHide())) {
             this.fire('blur', e);
             this.clearDelayTimer();
             this.delaySetPopupVisible(false, this.data.get('blurDelay'));
         }
     },
     handleContextMenu(e) {
-        const isContextMenuToShow = this.data.get('isContextMenuToShow');
-        if (isContextMenuToShow) {
+        if (this.isContextMenuToShow()) {
             e.preventDefault();
             this.fire('contextMenu', e);
             this.setPopupVisible(true, e);
@@ -434,12 +334,27 @@ export default san.defineComponent({
         }
         return null;
     },
+    getContainer() {
+        const getPopupContainer = this.data.get('getPopupContainer');
+        const getDocument = this.data.get('getDocument');
+        const popupContainer = document.createElement('div');
+
+        popupContainer.style.position = 'absolute';
+        popupContainer.style.top = '0';
+        popupContainer.style.left = '0';
+        popupContainer.style.width = '100%';
+
+        const mountNode = getPopupContainer ? getPopupContainer(this.el) : getDocument().body;
+        mountNode.appendChild(popupContainer);
+
+        return popupContainer;
+    },
     components: {
-        's-portal': Portal
+        's-popup': Popup
     },
-    handleShow() {
+    /*handleShow() {
         this.data.set('show', !this.data.get('show'));
-    },
+    },*/
     messages: {
         santd_popup_save(payload) {
             this.data.set('popupComponent', payload.value);
@@ -453,19 +368,51 @@ export default san.defineComponent({
         },
         santd_popup_mouseEnter(payload) {
             const e = payload.value;
-            if (this.data.get('isMouseEnterToShow')) {
+            if (this.isMouseEnterToShow()) {
                 this.handlePopupMouseEnter(e);
             }
         },
         santd_popup_mouseLeave(payload) {
             const e = payload.value;
-            if (this.data.get('isMouseLeaveToHide')) {
+            if (this.isMouseLeaveToHide()) {
                 this.handlePopupMouseLeave(e);
             }
         },
         santd_popup_mouseDown(payload) {
             const e = payload.value;
             this.handlePopupMouseDown(e);
+        }
+    },
+    getRootDomNode() {
+        return this.el;
+    },
+    attachPopup() {
+        this._container = this.getContainer();
+
+        this._popup = new Popup({
+            owner: this,
+            source: `
+                <x-popup
+                    prefixCls="{{prefixCls}}"
+                    getRootDomNode="{{getRootDomNode()}}"
+                    align="{{getPopupAlign}}"
+                    transitionName="{{popupTransitionName}}"
+                    getClassNameFromAlign="{{getClassNameFromAlign}}"
+                    popupClassName="{{popupClassName}}"
+                    popupStyle="{{popupStyle}}"
+                >
+                    <slot name="popup" />
+                </x-popup>
+            `
+        });
+
+        this._popup.attach(this._container);
+    },
+    removeContainer() {
+        if (this._container) {
+            this._container.parentNode.removeChild(this._container);
+            this._container = null;
+            this.popup = null;
         }
     },
     template: `<span
@@ -477,13 +424,8 @@ export default san.defineComponent({
         on-mouseleave="handleMouseLeave"
         on-contextmenu="handleContextMenu"
         class="{{classes}}"
+        index="1"
     >
-        <slot></slot>
-        <s-portal
-            getContainer="{{getContainer}}"
-            s-if="popupVisible || popupComponent || forceRender"
-            getComponent="{{getComponent}}"
-            didUpdate="{{handlePortalUpdate}}"
-        ></s-portal>
+        <slot />
     </span>`
 });

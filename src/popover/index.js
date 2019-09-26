@@ -5,58 +5,56 @@
 
 import './style/index';
 import san from 'san';
-// 注意公共方法提取到 util，送人玫瑰手有余香~
 import {classCreator} from '../core/util';
 import Tooltip from '../tooltip';
-import inherits from '../core/util/inherits';
 
 const prefixCls = classCreator('popover')();
 
-export default inherits(san.defineComponent({
+export default san.defineComponent({
     initData() {
         return {
-            prefixCls,
+            ...Tooltip.prototype.initData(),
             transitionName: 'zoom-big'
         };
     },
-    computed: {
-        tooltipPopup() {
-            let title = this.data.get('title');
-            let content = this.data.get('content');
-            const prefixCls = this.data.get('prefixCls');
 
-            title = (typeof title === 'string')
-                ? san.defineComponent({template: `<span>${title}</span>`}) : title;
-            content = (typeof content === 'string')
-                ? san.defineComponent({template: `<span>${content}</span>`}) : content;
+    inited() {
+        this.data.set('hasTitle', this.data.get('title') || !!this.sourceSlots.named.title);
+        this.data.set('hasContent', this.data.get('content') || !!this.sourceSlots.named.content);
+    },
 
-            return san.defineComponent({
-                components: {
-                    title,
-                    content
-                },
-                inited() {
-                    this.data.set('instance', this);
-                },
-                computed: {
-                    hasTitle() {
-                        const instance = this.data.get('instance');
-                        return instance && instance.components.title;
-                    }
-                },
-                template: `<div>
-                    <div s-if="hasTitle" class="${prefixCls}-title"><title/></div>
-                    <div class="${prefixCls}-inner-content"><content/></div>
-                </div>`
-            });
-        },
-        getTransitionName() {
-            const transitionName = this.data.get('transitionName');
-            return transitionName;
-        },
-        action() {
-            const trigger = this.data.get('trigger');
-            return (trigger && [trigger]) || ['hover'];
-        }
-    }
-}), Tooltip);
+    template: `<span>
+        <s-trigger
+            prefixCls="${prefixCls}"
+            action="{{action}}"
+            builtinPlacements="{{builtinPlacements}}"
+            popupPlacement="{{placement}}"
+            popupAlign="{{popupAlign}}"
+            popupTransitionName="{{transitionName}}"
+            defaultPopupVisible="{{defaultVisible}}"
+            getPopupContainer="{{getPopupContainer}}"
+            mouseEnterDelay="{{mouseEnterDelay}}"
+            mouseLeaveDelay="{{mouseLeaveDelay}}"
+            popupClassName="{{overlayClassName}}"
+            popupStyle="{{overlayStyle}}"
+            action="{{trigger}}"
+            visible="{{visible}}"
+            on-visibleChange="handleVisibleChange"
+        >
+            <slot />
+            <template slot="popup">
+                <div class="${prefixCls}-arrow"></div>
+                <div class="${prefixCls}-inner" id="{{id}}" role="popover">
+                    <div class="${prefixCls}-title" s-if="hasTitle">
+                        <slot name="title" s-if="!title" />
+                        <template s-else>{{title}}</template>
+                    </div>
+                    <div class="${prefixCls}-inner-content" s-if="hasContent">
+                        <slot name="content" s-if="!content" />
+                        <template s-else>{{content}}</template>
+                    </div>
+                </div>
+            </template>
+        </s-trigger>
+    </span>`
+}, Tooltip);

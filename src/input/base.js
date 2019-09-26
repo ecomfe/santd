@@ -41,7 +41,7 @@ export default san.defineComponent({
     template: `
         <input
             placeholder="{{placeholder}}"
-            class="${prefixCls} {{size ? '${prefixCls}-' + size : ''}} {{disabled ? '${prefixCls}-disabled' : ''}}"
+            class="${prefixCls} {{size ? '${prefixCls}-' + size : ''}} {{disabled ? '${prefixCls}-disabled' : ''}} {{inputClasses}}"
             on-input="inputChange($event)"
             on-keydown="keydownHander($event)"
             on-blur="inputOnBlur($event)"
@@ -55,5 +55,4 @@ export default san.defineComponent({
             s-ref="input"
         />
     `
-
 });

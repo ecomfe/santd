@@ -13,7 +13,8 @@
             on-cancel="handleCancel"
             okText="Yes"
             cancelText="No"
-            on-visibleChange="handleVisibleChange">
+            on-visibleChange="handleVisibleChange"
+        >
             <a href="javascript:void(0);">Delete</a>
         </s-popconfirm>
         <br />

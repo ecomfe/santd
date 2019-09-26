@@ -4,25 +4,30 @@
  */
 
 import './style/index.less';
-import san, {DataTypes} from 'san';
+import san from 'san';
+import Trigger from '../core/trigger';
+import Placements from './placements';
 import {classCreator} from '../core/util';
-import baseTooltip from './src/tooltip';
-import getPlacements from './placements';
-import inherits from '../core/util/inherits';
+import {getPlacements} from './util';
 
 const prefixCls = classCreator('tooltip')();
 
-export default inherits(san.defineComponent({
+export default san.defineComponent({
     initData() {
         return {
-            prefixCls: prefixCls,
-            transitionName: 'zoom-big-fast',
             mouseEnterDelay: 0.1,
+            destroyTooltipOnHide: false,
             mouseLeaveDelay: 0.1,
+            popupAlign: {},
+            builtinPlacements: Placements,
+            trigger: 'hover',
+            placement: 'top',
+            transitionName: 'zoom-big-fast',
             arrowPointAtCenter: false,
             autoAdjustOverflow: true
         };
     },
+
     computed: {
         builtinPlacements() {
             const builtinPlacements = this.data.get('placements');
@@ -34,33 +39,43 @@ export default inherits(san.defineComponent({
                 verticalArrowShift: 8,
                 autoAdjustOverflow
             });
-        },
-        tooltipPopup() {
-            const title = this.data.get('title');
-            if (typeof title === 'string' || typeof title === 'number') {
-                return san.defineComponent({
-                    template: '<span>{{title}}</span>'
-                });
-            }
-            else if (typeof title === 'function') {
-                return title;
-            }
-        },
-        popupPlacement() {
-            return this.data.get('placement') || 'top';
-        },
-        popupVisible() {
-            return this.data.get('visible') || this.data.get('defaultVisible') || false;
-        },
-        popupClassName() {
-            return this.data.get('overlayClassName');
-        },
-        popupStyle() {
-            return this.data.get('overlayStyle');
-        },
-        getTransitionName() {
-            const transitionName = this.data.get('transitionName');
-            return transitionName;
         }
-    }
-}), baseTooltip);
+    },
+
+    components: {
+        's-trigger': Trigger
+    },
+
+    handleVisibleChange(visible) {
+        this.fire('visibleChange', visible);
+    },
+
+    template: `<span>
+        <s-trigger
+            prefixCls="${prefixCls}"
+            action="{{action}}"
+            builtinPlacements="{{builtinPlacements}}"
+            popupPlacement="{{placement}}"
+            popupAlign="{{popupAlign}}"
+            popupTransitionName="{{transitionName}}"
+            defaultPopupVisible="{{defaultVisible}}"
+            getPopupContainer="{{getPopupContainer}}"
+            mouseEnterDelay="{{mouseEnterDelay}}"
+            mouseLeaveDelay="{{mouseLeaveDelay}}"
+            popupClassName="{{overlayClassName}}"
+            popupStyle="{{overlayStyle}}"
+            action="{{trigger}}"
+            visible="{{visible}}"
+            on-visibleChange="handleVisibleChange"
+        >
+            <slot />
+            <template slot="popup">
+                <div class="${prefixCls}-arrow"></div>
+                <div class="${prefixCls}-inner" id="{{id}}" role="tooltip">
+                    <slot name="title" s-if="!title" />
+                    <template s-else>{{title}}</template>
+                </div>
+            </template>
+        </s-trigger>
+    </span>`
+});

@@ -322,7 +322,7 @@ export default san.defineComponent({
                 <span class="{{prefixCls}}-picker-label"><displayrender s-ref="render"></displayrender></span>
                 <s-input
                     tabIndex="-1"
-                    className="{{prefixCls}}-input {{sizeClass}}"
+                    inputClasses="{{prefixCls}}-input {{sizeClass}}"
                     value="{{inputValue}}"
                     disabled="{{disabled}}"
                     readOnly="{{!showSearch}}"
@@ -338,7 +338,7 @@ export default san.defineComponent({
                     s-if="allowClear && !disabled && value.length > 0 || inputValue"
                     type="close-circle"
                     theme="filled"
-                    className="{{prefixCls}}-picker-clear"
+                    class="{{prefixCls}}-picker-clear"
                     on-click="handleClearSelection"
                 />
                 <s-icon type="{{suffixIcon ? suffixIcon : 'down'}}" class="{{arrowClass}}"></s-icon>

@@ -1040,14 +1040,14 @@ export default san.defineComponent({
                 popupPlacement="bottomLeft"
                 allData="{{createdData}}"
                 action="click"
-                popup="{{popupMenu}}"
                 popupClassName="{{popupClass}}"
                 style="display:block"
                 popupStyle="{{popupStyle}}"
                 popupVisible="{{popupVisible || createdData._open}}"
                 on-visibleChange="popupVisibleChange"
             >
-            <slot/>
+                <s-create-menu slot="popup" />
+                <slot/>
                 <div class="{{containerClass}}" on-click="onHeadClick($event)">
                     <div class="${prefixCls}-selection__rendered" on-click="handleOpenState($event)">
                         <s-head

@@ -4,106 +4,108 @@
  */
 
 import './style/index';
-import san, {DataTypes} from 'san';
+import san from 'san';
 import {classCreator} from '../core/util';
 import Tooltip from '../tooltip';
 import Button from '../button';
 import Icon from '../icon';
-import inherits from '../core/util/inherits';
 import LocaleReceiver from '../localeprovider/localereceiver';
 
 const prefixCls = classCreator('popover')();
 
-const Locale = inherits(san.defineComponent({
+const Locale = san.defineComponent({
     initData() {
         return {
             componentName: 'Popconfirm'
         };
     }
-}), LocaleReceiver);
+}, LocaleReceiver);
 
-export default inherits(san.defineComponent({
+
+export default san.defineComponent({
     initData() {
         return {
-            prefixCls,
+            ...Locale.prototype.initData(),
+            ...Tooltip.prototype.initData(),
             transitionName: 'zoom-big',
             trigger: 'click',
-            okType: 'primary',
-            icon: 'exclamation-circle'
+            okType: 'primary'
         };
     },
+
+    inited() {
+        Locale.prototype.inited.bind(this)();
+        this.data.set('hasIcon', !!this.sourceSlots.named.icon);
+    },
+
     computed: {
-        tooltipPopup() {
-            const icon = this.data.get('icon');
-            const title = this.data.get('title');
-            const locale = this.data.get('locale');
-            const cancelText = this.data.get('cancelText') || locale.cancelText;
-            const okType = this.data.get('okType');
-            const okText = this.data.get('okText') || locale.okText;
-            const instance = this.data.get('instance');
+        ...Locale.prototype.computed,
+        ...Tooltip.prototype.computed
+    },
 
-            const Title = (typeof title === 'string')
-                ? san.defineComponent({template: `<span>${title}</span>`}) : title;
-            const PopIcon = (typeof icon === 'string')
-                ? san.defineComponent({
-                    components: {
-                        's-icon': Icon
-                    },
-                    template: `<span><s-icon type="${icon}" themes="filled"/></span>`
-                }) : icon;
+    components: {
+        ...Tooltip.prototype.components,
+        's-button': Button,
+        's-icon': Icon
+    },
 
-            return san.defineComponent({
-                components: {
-                    's-icon': PopIcon,
-                    's-button': Button,
-                    's-title': Title
-                },
-                initData() {
-                    return {
-                        icon,
-                        cancelText,
-                        okType,
-                        okText,
-                        instance
-                    };
-                },
-                handleCancel(e) {
-                    const instance = this.data.get('instance');
-                    instance && instance.fire('cancel', e);
-                    instance && instance.close(e);
-                },
-                handleConfirm(e) {
-                    const instance = this.data.get('instance');
-                    instance && instance.fire('confirm', e);
-                    instance && instance.close(e);
-                },
-                template: `
-                    <div>
-                        <div className="${prefixCls}-inner-content">
-                            <div className="${prefixCls}-message">
-                                <s-icon />
-                                <div className="${prefixCls}-message-title"><s-title /></div>
+    handleCancel(e) {
+        this.fire('cancel', e);
+        this.close(e);
+    },
+
+    handleConfirm(e) {
+        this.fire('confirm', e);
+        this.close(e);
+    },
+
+    close(e) {
+        this.ref('trigger').close(e);
+    },
+
+    template: `<span>
+        <s-trigger
+            prefixCls="${prefixCls}"
+            action="{{action}}"
+            builtinPlacements="{{builtinPlacements}}"
+            popupPlacement="{{placement}}"
+            popupAlign="{{popupAlign}}"
+            popupTransitionName="{{transitionName}}"
+            defaultPopupVisible="{{defaultVisible}}"
+            getPopupContainer="{{getPopupContainer}}"
+            mouseEnterDelay="{{mouseEnterDelay}}"
+            mouseLeaveDelay="{{mouseLeaveDelay}}"
+            popupClassName="{{overlayClassName}}"
+            popupStyle="{{overlayStyle}}"
+            action="{{trigger}}"
+            visible="{{visible}}"
+            on-visibleChange="handleVisibleChange"
+            s-ref="trigger"
+        >
+            <slot />
+            <template slot="popup">
+                <div class="${prefixCls}-arrow"></div>
+                <div class="${prefixCls}-inner" id="{{id}}" role="popconfirm">
+                    <div class="${prefixCls}-inner-content">
+                            <div class="${prefixCls}-message">
+                                <slot name="icon" s-if="hasIcon" />
+                                <s-icon type="{{icon || 'exclamation-circle'}}" theme="filled" s-else />
+                                <div class="${prefixCls}-message-title">
+                                    <slot name="title" s-if="!title" />
+                                    <template s-else>{{title}}</template>
+                                </div>
                             </div>
-                            <div className="${prefixCls}-buttons">
+                            <div class="${prefixCls}-buttons">
                                 <s-button on-click="handleCancel" size="small" noWave>
-                                    {{cancelText}}
+                                    {{cancelText || locale.cancelText}}
                                 </s-button>
                                 <s-button on-click="handleConfirm" type="{{okType}}" size="small" noWave>
-                                    {{okText}}
+                                    {{okText || locale.okText}}
                                 </s-button>
                             </div>
-                        </div>
                     </div>
-                `
-            });
-        },
-        getTransitionName() {
-            const transitionName = this.data.get('transitionName');
-            return transitionName;
-        },
-        action() {
-            const trigger = this.data.get('trigger');
-            return (trigger && [trigger]) || ['click'];
-        }
-    }
-}), inherits(Locale, Tooltip));
+                </div>
+            </template>
+        </s-trigger>
+    </span>`
+}, Tooltip);

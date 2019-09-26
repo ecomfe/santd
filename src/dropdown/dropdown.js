@@ -3,45 +3,56 @@
 * @author mayihui@baidu.com
 */
 
-import san, {DataTypes} from 'san';
+import san from 'san';
 import {classCreator} from '../core/util';
-import inherits from '../core/util/inherits';
-import DropDown from './src/dropdown';
+import Tooltip from '../tooltip';
+import Placement from './placements';
 import './style/index';
 
 const prefixCls = classCreator('dropdown')();
 
-export default inherits(san.defineComponent({
+export default san.defineComponent({
     initData() {
         return {
-            prefixCls
+            ...Tooltip.prototype.initData(),
+            builtinPlacements: Placement,
+            placement: 'bottomLeft',
+            mouseEnterDelay: 0.15,
+            mouseLeaveDelay: 0.1,
+            transitionName: ''
         };
     },
-    computed: {
-        action() {
-            const trigger = this.data.get('trigger');
-            const triggerAction = (trigger && [trigger]) || ['hover'];
-            const disabled = this.data.get('disabled');
 
-            return disabled ? [] : triggerAction;
-        },
-        popupPlacement() {
-            return this.data.get('placement') || 'bottomLeft';
-        },
-        classes() {
-            const className = this.data.get('className');
-            return [className, `${prefixCls}-trigger`].join(' ');
-        },
+    computed: {
         getTransitionName() {
-            const placement = this.data.get('popupPlacement');
+            const placement = this.data.get('placement');
             const transitionName = this.data.get('transitionName');
-            if (transitionName) {
-                return transitionName;
-            }
-            if (placement.indexOf('top') >= 0) {
-                return 'slide-down';
-            }
-            return 'slide-up';
+            return transitionName ? transitionName : placement.indexOf('top') >= 0 ? 'slide-down' : 'slide-up';
         }
-    }
-}), DropDown);
+    },
+
+    template: `<span>
+        <s-trigger
+            prefixCls="${prefixCls}"
+            action="{{action}}"
+            builtinPlacements="{{builtinPlacements}}"
+            popupPlacement="{{placement}}"
+            popupAlign="{{popupAlign}}"
+            popupTransitionName="{{getTransitionName}}"
+            defaultPopupVisible="{{defaultVisible}}"
+            getPopupContainer="{{getPopupContainer}}"
+            mouseEnterDelay="{{mouseEnterDelay}}"
+            mouseLeaveDelay="{{mouseLeaveDelay}}"
+            popupClassName="{{overlayClassName}}"
+            popupStyle="{{overlayStyle}}"
+            action="{{disabled ? [] : trigger}}"
+            visible="{{visible}}"
+            on-visibleChange="handleVisibleChange"
+        >
+            <slot />
+            <template slot="popup">
+                <slot name="overlay" var-prefixCls="{{'${prefixCls}'}}" />
+            </template>
+        </s-trigger>
+    </span>`
+}, Tooltip);

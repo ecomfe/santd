@@ -1,6 +1,6 @@
 <text lang="cn">
-#### 从浮层内关闭
-使用 `visible` 属性控制浮层显示。
+#### 悬停点击弹出窗口
+以下示例显示如何创建可悬停和单击的弹出窗口。
 </text>
 
 ```html
@@ -11,22 +11,23 @@
             visible="{{hovered}}"
             on-visibleChange="handleHoverVisibleChange"
             title="Hover title"
-            content="{{hoverContent}}"
+            content="This is hover content."
         >
             <s-popover
                 title="Click title"
                 trigger="click"
                 visible="{{clicked}}"
                 on-visibleChange="handleClickVisibleChange"
-                content="{{clickContent}}"
             >
+                <template slot="content">
+                    <div>This is click content.</div><a href="javascript:void(0);" on-click="hide">Close</a>
+                </template>
                 <s-button>Hover and click / 悬停并点击</s-button>
             </s-popover>
         </s-popover>
     </div>
 </template>
 <script>
-import san from 'san';
 import Popover from 'santd/popover';
 import Button from 'santd/button';
 export default {
@@ -37,21 +38,12 @@ export default {
     initData() {
         return {
             hovered: false,
-            clicked: false,
-            hoverContent: 'This is hover content.',
-            clickContent: san.defineComponent({
-                hide() {
-                    this.dispatch('hide');
-                },
-                template: `<div><div>This is click content.</div><a href="javascript:void(0);" on-click="hide">Close</a></div>`
-            }),
+            clicked: false
         }
     },
-    messages: {
-        hide() {
-            this.data.set('clicked', false);
-            this.data.set('hovered', false);
-        }
+    hide() {
+        this.data.set('clicked', false);
+        this.data.set('hovered', false);
     },
     handleHoverVisibleChange(visible) {
         this.data.set('hovered', visible);
