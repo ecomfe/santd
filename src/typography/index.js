@@ -3,8 +3,12 @@
  * @author chenkai13 <chenkai13@baidu.com>
  */
 
+import san from 'san';
 import Base from './base';
 import Title from './title';
+import {classCreator} from '../core/util';
+
+const prefixCls = classCreator('typography')();
 
 let Typography = san.defineComponent({
     template: `
