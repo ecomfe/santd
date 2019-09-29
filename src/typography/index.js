@@ -3,9 +3,14 @@
  * @author chenkai13 <chenkai13@baidu.com>
  */
 
-import Typography from './typography';
 import Base from './base';
 import Title from './title';
+
+let Typography = san.defineComponent({
+    template: `
+        <article class="${prefixCls}"><slot /></article>
+    `
+});
 
 Typography.Text = Base.create('text');
 Typography.Title = Title;
