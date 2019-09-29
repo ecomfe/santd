@@ -10,7 +10,7 @@ import tooltip from '../tooltip';
 import copy from 'copy-to-clipboard';
 import {classCreator, getComponentChildren} from '../core/util';
 import inherits from '../core/util/inherits';
-import LocaleReceiver from '../localeprovider/localereceiver';
+import localeReceiver from '../localeprovider/receiver';
 
 const prefixCls = classCreator('typography')();
 
@@ -24,13 +24,6 @@ const isStyleSupport = function (styleName) {
     return false;
 };
 
-const Locale = inherits(san.defineComponent({
-    initData() {
-        return {
-            componentName: 'Text'
-        };
-    }
-}), LocaleReceiver);
 
 const create = function (tag) {
     const content = `
@@ -62,17 +55,24 @@ const create = function (tag) {
         template = `<span>${content}</span>`;
     }
 
-    const base = san.defineComponent({
+    return san.defineComponent({
         template,
         initData() {
             return {
+                componentName: 'Text',
                 clientRendered: false
             };
         },
+
         attached() {
             this.data.set('clientRendered', true);
         },
+
+        inited: localeReceiver.inited,
+
         computed: {
+            ...localeReceiver.computed,
+
             getEllipsis() {
                 const ellipsis = this.data.get('ellipsis');
                 return !ellipsis ? {} : {
@@ -81,6 +81,7 @@ const create = function (tag) {
                     ...(typeof ellipsis === 'object' ? ellipsis : null)
                 };
             },
+
             canUseCSSEllipsis() {
                 const clientRendered = this.data.get('clientRendered');
                 const copyable = this.data.get('copyable');
@@ -98,6 +99,7 @@ const create = function (tag) {
 
                 return isStyleSupport('webkitLineClamp');
             },
+
             classes() {
                 let type = this.data.get('type');
                 let disabled = this.data.get('disabled');
@@ -118,10 +120,12 @@ const create = function (tag) {
                 return classArr;
             }
         },
+
         components: {
             's-icon': icon,
             's-tooltip': tooltip
         },
+
         handleCopy() {
             let copyable = this.data.get('copyable');
             const copyConfig = {
@@ -143,7 +147,6 @@ const create = function (tag) {
             }, 3000);
         }
     });
-    return inherits(base, Locale);
 };
 
 const base = create();
