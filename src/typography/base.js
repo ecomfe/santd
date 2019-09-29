@@ -9,7 +9,6 @@ import icon from '../icon';
 import tooltip from '../tooltip';
 import copy from 'copy-to-clipboard';
 import {classCreator, getComponentChildren} from '../core/util';
-import inherits from '../core/util/inherits';
 import localeReceiver from '../localeprovider/receiver';
 
 const prefixCls = classCreator('typography')();
