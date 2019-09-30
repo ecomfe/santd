@@ -9,23 +9,17 @@ import {classCreator} from '../core/util';
 import TimePicker from './src/timepicker';
 import inherits from '../core/util/inherits';
 import enUS from './locale/en_US';
-import LocaleReceiver from '../localeprovider/localereceiver';
+import localeReceiver from '../localeprovider/receiver';
 
 const prefixCls = classCreator('time-picker')();
-
-const Locale = inherits(san.defineComponent({
-    initData() {
-        return {
-            componentName: 'TimePicker',
-            defaultLocale: enUS
-        };
-    }
-}), LocaleReceiver);
 
 
 export default inherits(san.defineComponent({
     initData() {
         return {
+            componentName: 'TimePicker',
+            defaultLocale: enUS,
+
             align: {
                 offset: [0, -2]
             },
@@ -33,7 +27,12 @@ export default inherits(san.defineComponent({
             transitionName: 'slide-up'
         };
     },
+
+    inited: localeReceiver.inited,
+
     computed: {
+        ...localeReceiver.computed,
+
         timePlaceholder() {
             const locale = this.data.get('locale') || {};
             const placeholder = this.data.get('placeholder');
@@ -99,4 +98,4 @@ export default inherits(san.defineComponent({
         this.data.set('open', open);
         this.fire('openChange', open);
     }
-}), inherits(TimePicker, Locale));
+}), TimePicker);
