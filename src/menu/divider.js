@@ -4,15 +4,11 @@
 */
 
 import san from 'san';
-import Divider from '../divider';
+import {classCreator} from '../core/util';
+const prefixCls = classCreator('menu');
 
 export default san.defineComponent({
-    components: {
-        's-divider': Divider
-    },
     template: `
-        <span>
-            <s-divider style="margin: 0"></s-divider>
-        </span>
+        <li class="${prefixCls}-item-divider" />
     `
 });

@@ -5,74 +5,51 @@
 
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
-const prefixCls = classCreator('menu-item-group')();
+const prefixCls = classCreator('menu')();
 
 export default san.defineComponent({
     dataTypes: {
         title: DataTypes.any
     },
+
     computed: {
-        styles() {
-            const inlineIndent = this.data.get('inlineIndent');
-            if (this.data.get('mode') === 'inline' && !this.data.get('inlineCollapsed')) {
-                const levels = this.data.get('level');
-                return {'padding-left': inlineIndent + levels * inlineIndent + 'px'};
-            }
-        },
-        newTitle() {
-            const title = this.data.get('title');
-            if (typeof title === 'string') {
-                return title;
-            }
-            return '';
-        },
-        classTitle() {
-            const prefix = this.data.get('prefixCls');
-            const newPrefixCls = prefix ? `${prefix}-menu-item-group` : `${prefixCls}`;
-            return [`${newPrefixCls}-title`];
-        },
-        classList() {
-            const prefix = this.data.get('prefixCls');
-            const newPrefixCls = prefix ? `${prefix}-menu-item-group` : `${prefixCls}`;
-            return [`${newPrefixCls}-list`];
+        // 因为menu有其他组件调用传入prefixCls，所以这里需要重新设置menu prefixCls
+        groupPrefixCls() {
+            const rootPrefixCls = this.data.get('prefixCls');
+
+            return (rootPrefixCls ? rootPrefixCls : prefixCls) + '-item-group';
         }
     },
     initData() {
         return {
-            componentPropName: 's-menu-item-group',
             inlineIndent: 24
         };
     },
-    attached() {
-        // 将menuItemGroup 传到menu
-        this.dispatch('itemGroupRender', this);
-        const key = this.data.get('key') || '';
-        const title = this.data.get('title');
-        // 处理传入的组件
-        if (title && typeof title === 'function') {
-            const TitleIcon = title();
-            const renderer = new TitleIcon({
-                data: {
-                    key
-                }
-            });
-            renderer.attach(this.ref('itemGroupTitle'));
-            renderer.parentComponent = this;
-        }
-    },
+
     itemGroupClick(e) {
         e.stopPropagation();
     },
 
+    getTitleStyle(mode) {
+        const inlineIndent = this.data.get('inlineIndent');
+        const level = this.data.get('level');
+
+        return mode === 'inline'
+            ? `padding-left: ${inlineIndent * level}px;`
+            : '';
+    },
+
     template: `
-        <li class="${prefixCls}" on-click="itemGroupClick($event)">
+        <li class="{{groupPrefixCls}}" on-click="itemGroupClick($event)">
             <div
-                class="{{classTitle}}"
-                style="{{styles}}"
-                s-ref="itemGroupTitle"
-            >{{newTitle}}</div>
-            <ul class="{{classList}}">
-                <slot></slot>
+                class="{{groupPrefixCls}}-title"
+                style="{{getTitleStyle(mode)}}"
+            >
+                <slot name="title" s-if="!title" />
+                <template s-else>{{title}}</template>
+            </div>
+            <ul class="{{groupPrefixCls}}-list">
+                <slot />
             </ul>
         </li>
     `

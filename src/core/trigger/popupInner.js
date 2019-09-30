@@ -47,7 +47,7 @@ export default san.defineComponent({
         if (!disabled && monitorWindowResize) {
             this.startMonitorWindowResize();
         }
-        this.forceAlign();
+        // this.forceAlign();
         Animate.prototype.attached.bind(this)();
     },
 
@@ -101,7 +101,7 @@ export default san.defineComponent({
     },
 
     template: `
-        <div style="position: absolute; {{popupStyle}}" class="{{visible ? '' : hiddenClassName}}">
+        <div style="position: absolute; z-index: 1; {{popupStyle}}" class="{{visible ? '' : hiddenClassName}}">
             <div
                 class="{{prefixCls}}-content"
                 on-mouseenter="handleMouseEnter"

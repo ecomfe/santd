@@ -65,6 +65,7 @@ export default san.defineComponent({
         const currentlyAnimatingKeys = this.data.get('currentlyAnimatingKeys');
 
         const showProp = this.data.get('showProp');
+        const visible = this.data.get('visible');
         let keyToEnter;
         let keyToLeave;
         if (showProp) {
@@ -171,7 +172,7 @@ export default san.defineComponent({
     },
     handleDoneLeaving(key, animationType, child) {
         // 解决动画结束后闪一下的问题，设置了子的属性后要到下一次nextTick才会刷新，所以会闪
-        child.el.style.display = '';
+        child.el && (child.el.style.display = '');
         this.data.set('currentlyAnimatingKeys.' + key, false, {silent: true});
     },
     stop() {
@@ -182,6 +183,6 @@ export default san.defineComponent({
         }
     },
     template: `
-        <div><slot /></div>
+        <div class="{{!visible ? hiddenClassName : ''}}"><slot /></div>
     `
 });

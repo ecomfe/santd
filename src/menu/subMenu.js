@@ -5,11 +5,24 @@
 
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
-import Trigger from '../core/trigger/index';
-import {findComponentsLevel} from '../core/util/findCompont';
-const prefixCls = classCreator('menu-submenu')();
+import Trigger from '../core/trigger';
+import Animate from '../core/util/animate';
+import openAnimation from '../core/util/openAnimation';
+const prefixCls = classCreator('menu')();
 
-const BUILT_IN_PLACEMENTS = {
+function loopMenuItem(children = [], keys, ret = {}) {
+    children.forEach(child => {
+        if (keys.includes(child.data.get('key'))) {
+            ret.find = true;
+        }
+        else {
+            loopMenuItem(child.items, keys, ret);
+        }
+    });
+    return ret;
+}
+
+const builtinPlacements = {
     leftTop: {
         points: ['tr', 'tl'],
         offset: [-4, 0],
@@ -51,269 +64,188 @@ export default san.defineComponent({
         title: DataTypes.any,
         inlineIndent: DataTypes.number
     },
-    components: {
-        's-trigger': Trigger
-    },
-    computed: {
-        getRealMenuMode() {
-            const inlineCollapsed = this.data.get('inlineCollapsed');
-            const mode = this.data.get('mode');
-            return inlineCollapsed ? 'vertical' : mode;
-        },
-        popupPlacement() {
-            const mode = this.data.get('getRealMenuMode');
-            return mode === 'horizontal' ? 'bottomCenter' : 'rightTop'
-        },
-        isOpened() {
-            const key = this.data.get('key');
-            const openKeys = this.data.get('openKeys') || [];
-            const collapsed = this.data.get('inlineCollapsed') || false;
-            return openKeys.some(okey => (okey === key && !collapsed));
-        },
-        classes() {
-            const mode = this.data.get('getRealMenuMode');
-            const selected = this.data.get('selected');
-            const disabled = this.data.get('disabled');
-            const prefix = this.data.get('prefixCls');
-            const newPrefixCls = prefix ? `${prefix}-menu-submenu` : `${prefixCls}`;
-            const isOpen = this.data.get('isOpened');
-            let classArr = [newPrefixCls, `${newPrefixCls}-${mode}`];
-            isOpen && classArr.push(`${newPrefixCls}-open`);
-            disabled && classArr.push(`${newPrefixCls}-disabled`);
-            selected && classArr.push(`${newPrefixCls}-selected`);
-            return classArr;
-        },
-        subTitle() {
-            const title = this.data.get('title');
-            return typeof title === 'string' ? title : '';
-        },
-        subMenuTitleClass() {
-            const prefix = this.data.get('prefixCls');
-            const newPrefixCls = prefix ? `${prefix}-menu-submenu` : `${prefixCls}`;
-            return [`${newPrefixCls}-title`];
-        },
-        subMenuArrowClass() {
-            const prefix = this.data.get('prefixCls');
-            const newPrefixCls = prefix ? `${prefix}-menu-submenu` : `${prefixCls}`;
-            return [`${newPrefixCls}-arrow`];
-        },
-        titleStyle() {
-            const inlineIndent = this.data.get('inlineIndent');
-            if (this.data.get('mode') === 'inline') {
-                const level = this.data.get('level');
-                return {'padding-left': inlineIndent + level * inlineIndent + 'px'};
-            }
-        }
-    },
     initData() {
         return {
-            componentPropName: 's-sub-menu',
+            openKeys: [],
+            activeKey: [],
+            openAnimation,
+            isSubMenu: true,
             inlineIndent: 24,
-            mode: 'vertical',
-            placements: BUILT_IN_PLACEMENTS,
-            popup: this.components.injectslot
+            builtinPlacements,
+            trigger: 'hover',
+            transitionName: 'zoom-big',
+            noSubClick: true
         };
     },
-    compiled() {
-        // const parent = this.getTargetComponent('mode');
-        // const parMode = parent.data.get('mode');
-        if (this.getTargetComponent('mode').data.get('mode') === 'inline') {
-            return;
-        }
-        const slots = this.sourceSlots;
-        this.sourceSlots = {};
-        const source = this.source;
-        const scope = this.scope;
-        const owner = this.owner;
-        const that = this;
-        this.components.injectslot = san.defineComponent({
-            components: that.parentComponent.components,
-            compiled() {
-                this.source = source;
-                this.owner = owner;
-                this.sourceSlots = slots;
-                this._initSourceSlots();
-            },
-            initData() {
-                return {
-                    isOpened: true,
-                    mode: 'vertical'
-                };
-            },
-            template: `
-                <ul class="san-menu san-menu-sub san-menu-{{mode}} {{isOpened ? '' : 'san-menu-hidden'}}">
-                    <slot/>
-                </ul>`
-        });
+    computed: {
+        // 因为menu有其他组件调用传入prefixCls，所以这里需要重新设置menu prefixCls
+        menuPrefixCls() {
+            const rootPrefixCls = this.data.get('prefixCls');
 
+            return (rootPrefixCls ? rootPrefixCls : prefixCls) + '-submenu';
+        },
+        classes() {
+            const menuPrefixCls = this.data.get('menuPrefixCls');
+            const mode = this.data.get('mode');
+            const isOpen = this.data.get('isOpen');
+            const isInlineMode = this.data.get('mode') === 'inline';
+            const active = this.data.get('active');
+            const disabled = this.data.get('disabled');
+            const isChildrenSelected = this.data.get('isChildrenSelected');
+
+            let classArr = [menuPrefixCls, `${menuPrefixCls}-${mode}`];
+            isOpen && classArr.push(`${menuPrefixCls}-open`);
+            (active || (isOpen && !isInlineMode)) && classArr.push(`${menuPrefixCls}-active`);
+            disabled && classArr.push(`${menuPrefixCls}-disabled`);
+            isChildrenSelected && classArr.push(`${menuPrefixCls}-selected`);
+
+            return classArr;
+        },
+        isOpen() {
+            const key = this.data.get('key');
+            const noSubClick = this.data.get('noSubClick');
+
+            return this.data.get('openKeys').includes(key) && noSubClick;
+        },
+        active() {
+            const subMenuKey = this.data.get('subMenuKey');
+            if (subMenuKey) {
+                return this.data.get('activeKey')[subMenuKey] === this.data.get('key');
+            }
+        }
     },
     inited() {
-        const parent = this.getTargetComponent('mode');
-        const {
-            mode,
-            inlineIndent,
-            openKeys = [],
-            defaultOpenKeys = [],
-            inlineCollapsed,
-            subMenuCloseDelay,
-            subMenuOpenDelay,
-            forceSubMenuRender = true,
-            prefixCls
-        } = parent.data.get();
-        const newOpenKeys = openKeys.length ? [...openKeys] : [...defaultOpenKeys];
-        this.data.set('mode', mode);
-        this.data.set('inlineIndent', inlineIndent);
-        this.data.set('openKeys', newOpenKeys);
-        this.data.set('defaultOpenKeys', defaultOpenKeys);
-        this.data.set('inlineCollapsed', inlineCollapsed);
-        this.data.set('subMenuCloseDelay', subMenuCloseDelay);
-        this.data.set('subMenuOpenDelay', subMenuOpenDelay);
-        this.data.set('forceSubMenuRender', forceSubMenuRender);
-        this.data.set('prefixCls', prefixCls);
+        this.items = [];
+        this.subMenus = [];
+        this.dispatch('santd_menu_addItem', this);
     },
-    getTargetComponent(attr) {
-        let parent = this.parentComponent;
-        let hasTar = parent.data.get(attr);
-        while (parent && !hasTar) {
-            parent = parent.parentComponent;
-            hasTar = parent && parent.data.get(attr);
-        }
-        return parent;
-    },
-    created() {
-        this.timer = null;
-        const disabled = this.data.get('disabled');
-        // 处理 getPopupContainer
-        const mode = this.data.get('getRealMenuMode');
-        // const parentComponent = this.findTargetCompo('componentPropName');
-        if (disabled) {
-            this.data.set('visible', false);
-        }
-        if (mode !== 'inline') {
-            this.data.set('getPopupContainer', function (triggerNode) {
-                return triggerNode;
+    updated() {
+        let paramsArr = ['mode', 'level', 'selectedKeys', 'openKeys', 'inlineIndent'];
+        this.items.forEach(item => {
+            paramsArr.forEach(param => {
+                let data = this.data.get(param);
+                if (param === 'level') {
+                    data++;
+                }
+                item.data.set(param, data, {force: true});
             });
+        });
+
+        let ret = loopMenuItem(this.items, this.data.get('selectedKeys'), {});
+        this.data.set('isChildrenSelected', !!ret.find);
+        if (this.data.get('mode') === 'inline') {
+            this.data.set('noSubClick', true);
         }
 
+        const mode = this.data.get('mode');
+        this.data.set('triggerSubMenuAction', mode === 'inline' ? 'click' : 'hover');
     },
-    findTargetCompo(compoName) {
-        let tar = this.parentComponent.data.get(compoName) === 's-sub-menu';
-        let parent = this.parentComponent;
-        while (parent && !tar) {
-            parent = parent.parentComponent;
-            tar = parent && parent.data.get(compoName) === 's-sub-menu';
-        }
-        return tar;
-    },
-    attached() {
-        // dispatch this component
-        this.dispatch('subMenuRender', this);
-        let renderer;
-        let TitleRender;
-        const titleComponent = this.data.get('title');
-        const subMenuTitle = this.ref('subMenuTitle');
-        const triggerTitle = this.ref('triggerTitle');
-        if (typeof titleComponent === 'function') {
-            TitleRender = titleComponent();
-        }
-        if (subMenuTitle && TitleRender) {
-            renderer = new TitleRender();
-            renderer.attach(subMenuTitle);
-            renderer.parentComponent = this;
-        }
-        if (triggerTitle && TitleRender) {
-            renderer = new TitleRender();
-            renderer.attach(triggerTitle);
-            renderer.parentComponent = this;
-        }
-        // 获取层级关系
-        const level =  findComponentsLevel(this, 's-sub-menu').length;
-        this.data.set('level', level);
-
-    },
-
     messages: {
-        itemClick(data) {
-            const clickData = data.value;
-            const mode = this.data.get('getRealMenuMode');
-            if (mode !== 'inline') {
-                clickData['fromSub'] = true;
-                this.data.set('popupVisible', false, {force: true});
-                this.dispatch('subMenuSelected', this);
+        santd_menu_addItem(payload) {
+            this.items.push(payload.value);
+        },
+        santd_menu_addSubMenu(payload) {
+            this.subMenus.push(payload.value);
+        },
+        santd_menu_isSelected(payload) {
+            this.data.set('isChildrenSelected', true);
+        },
+        santd_menu_itemClick() {
+            if (this.data.get('mode') !== 'inline') {
+                this.data.set('noSubClick', false);
             }
-            this.dispatch('itemClick', clickData);
         }
     },
-    subMenuClick(e) {
-        e.stopPropagation();
-        const mode = this.data.get('getRealMenuMode');
-        if (mode !== 'inline') {
-            return null;
-        }
+    components: {
+        's-animate': Animate,
+        's-trigger': Trigger
+    },
+    getTitleStyle(mode) {
+        const inlineIndent = this.data.get('inlineIndent');
+        const level = this.data.get('level');
+
+        return mode === 'inline'
+            ? `padding-left: ${inlineIndent * level}px;`
+            : '';
+    },
+    triggerOpenChange(open, type) {
         const key = this.data.get('key');
-        this.dispatch('subMenuClick', key);
-    },
-    subMenuMouseEnter() {
-        // menu title mouseenter
-        const {getRealMenuMode, openKeys, key} = this.data.get();
-        if (getRealMenuMode !== 'inline') {
-            this.data.set('isOpened', true);
+        if (type === 'mouseenter') {
+            this.mouseenterTimeout = setTimeout(() => {
+                this.dispatch('santd_menu_openChange', {key, item: this, trigger: type, open});
+            }, 0);
+        }
+        else {
+            this.dispatch('santd_menu_openChange', {key, item: this, trigger: type, open});
         }
     },
-    subMenuMouseLeave() {
-        // 拿openkeys跟this的keys进行对比，如果不同，则删掉
-        const {getRealMenuMode, openKeys, key} = this.data.get();
-        if (getRealMenuMode !== 'inline') {
-            this.timer = setTimeout(() => {
-                this.data.set('isOpened', false);
-            }, 20);
+    handleTitleClick(e) {
+        if (this.data.get('triggerSubMenuAction') === 'hover') {
+            return;
         }
+
+        this.triggerOpenChange(!this.data.get('isOpen'), 'click');
     },
-    popupMouseEnter() {
-        clearTimeout(this.timer);
-        this.timer = null;
+    handleVisibleChange(visible) {
+        this.data.set('noSubClick', visible);
+        this.triggerOpenChange(visible, visible ? 'mouseenter' : 'mouseleave');
     },
-    popupMouseLeave() {
-        // 下拉框部分mouseleave
-        this.data.set('isOpened', false);
+    getPopupContainer() {
+        return () => this.el;
     },
     template: `
         <li class="{{classes}}"
-            on-click="subMenuClick($event)"
-            on-mouseenter="subMenuMouseEnter"
-            on-mouseleave="subMenuMouseLeave"
+            role="menuitem"
         >
-            <template s-if="getRealMenuMode === 'inline'" >
-                <div class="{{subMenuTitleClass}}" style="{{titleStyle}}">
-                    <span s-ref="subMenuTitle">{{subTitle}}</span>
-                    <i class="{{subMenuArrowClass}}"></i>
-                </div>
-                <ul class="san-menu san-menu-sub san-menu-{{mode}} {{isOpened ? '' : 'san-menu-hidden'}}">
-                    <slot />
-                </ul>
-            </template>
-            <template s-else>
-                <s-trigger
-                    builtinPlacements="{{placements}}"
-                    popupPlacement="{{popupPlacement}}"
-                    action="hover"
-                    popup="{{popup}}"
-                    style="display: block"
-                    visible="{{visible}}"
-                    popupVisible="{{popupVisible}}"
-                    on-popupMouseLeave="popupMouseLeave"
-                    on-popupMouseEnter="popupMouseEnter"
-                    getPopupContainer="{{getPopupContainer}}"
-                    mouseEnterDelay="{{subMenuOpenDelay}}"
-                    mouseLeaveDelay="{{subMenuCloseDelay}}"
-                    forceRender="{{forceSubMenuRender}}"
+            <template s-if="mode === 'inline'">
+                <div
+                    class="{{menuPrefixCls}}-title"
+                    aria-expanded="{{isOpen}}"
+                    aria-haspopup="true"
+                    title="{{title}}"
+                    style="{{getTitleStyle(mode)}}"
+                    on-click="handleTitleClick"
                 >
-                    <div class="{{subMenuTitleClass}}" style="{{titleStyle}}">
-                        <span s-ref="triggerTitle">{{subTitle}}</span>
-                        <i class="{{subMenuArrowClass}}"></i>
-                    </div>
-                </s-trigger>
+                    <slot name="title" s-if="!title" />
+                    <template s-else>{{title}}</template>
+                    <i class="{{menuPrefixCls}}-arrow" />
+                </div>
+                <s-animate hiddenClassName="${prefixCls}-hidden" showProp="visible" visible="{{isOpen}}" animation="{{openAnimation}}">
+                    <ul class="${prefixCls} ${prefixCls}-sub ${prefixCls}-{{mode}}"><slot /></ul>
+                </s-animate>
             </template>
+            <s-trigger
+                s-else
+                prefixCls="${prefixCls}"
+                style="display: block;"
+                popupPlacement="{{mode === 'horizontal' ? 'bottomCenter' : 'rightTop'}}"
+                builtinPlacements="{{builtinPlacements}}"
+                popupAlign="{{popupAlign}}"
+                popupTransitionName="{{transitionName}}"
+                defaultPopupVisible="{{defaultVisible}}"
+                getPopupContainer="{{getPopupContainer()}}"
+                mouseEnterDelay="{{mouseEnterDelay}}"
+                mouseLeaveDelay="{{mouseLeaveDelay}}"
+                popupClassName="{{overlayClassName}}"
+                popupStyle="{{overlayStyle}}"
+                action="hover"
+                visible="{{isOpen}}"
+                on-visibleChange="handleVisibleChange"
+            >
+                <ul class="${prefixCls} ${prefixCls}-sub ${prefixCls}-{{mode}}" slot="popup"><slot /></ul>
+                <div
+                    class="{{menuPrefixCls}}-title"
+                    aria-expanded="{{isOpen}}"
+                    aria-haspopup="true"
+                    title="{{title}}"
+                    style="{{getTitleStyle(mode)}}"
+                    on-click="handleTitleClick"
+                >
+                    <slot name="title" s-if="!title" />
+                    <template s-else>{{title}}</template>
+                    <i class="{{menuPrefixCls}}-arrow" />
+                </div>
+            </s-trigger>
         </li>
     `
 });

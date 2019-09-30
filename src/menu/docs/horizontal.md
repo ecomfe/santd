@@ -6,39 +6,33 @@
 ```html
 <template>
   <div>
-    <s-menu
-        mode="horizontal"
-        theme="light"
-        defaultSelectedKeys="{{['1']}}"
-        inlineCollapsed="{{false}}"
-        on-click="itemClick"
-    >
-        <s-menu-item key="1">
-            <s-icon type="copy"></s-icon>
-             <span>Navigation One</span>
+    <s-menu mode="horizontal" on-click="handleClick" selectedKeys="{{[current]}}">
+        <s-menu-item key="mail">
+            <s-icon type="mail" /> Navigation One
         </s-menu-item>
-        <s-menu-item key="2">
-            <s-icon type="diff"></s-icon>
-            <span>Navigation Two</span>
+        <s-menu-item key="app" disabled>
+            <s-icon type="appstore" /> Navigation Two
         </s-menu-item>
-        <s-sub-menu key="sub1" title="{{subOne}}">
-            <s-menu-item key="4">
-                <s-icon type="file"></s-icon>
-                <span>小标题四</span>
-            </s-menu-item>
-            <s-menu-item key="5">
-                <s-icon type="retweet"></s-icon>
-                <span>小标题五</span>
-            </s-menu-item>
+        <s-sub-menu>
+            <span class="submenu-title-wrapper" slot="title">
+                <s-icon type="setting" />Navigation Three - Submenu
+            </span>
+            <s-menu-item-group title="Item 1">
+                <s-menu-item key="setting1">Option 1</s-menu-item>
+                <s-menu-item key="setting2">Option 2</s-menu-item>
+            </s-menu-item-group>
+            <s-menu-item-group title="Item 2">
+                <s-menu-item key="setting3">Option 3</s-menu-item>
+                <s-menu-item key="setting4">Option 4</s-menu-item>
+            </s-menu-item-group>
         </s-sub-menu>
-        <s-menu-item key="6">
-            <span>Navigation Four-Link</span>
+        <s-menu-item key="alipay">
+            <a href="http://www.baidu.com" target="_blank" rel="noopener noreferrer">Navigation Four - Link</a>
         </s-menu-item>
     </s-menu>
   </div>
 </template>
 <script>
-import san from 'san';
 import Menu from 'santd/menu';
 import Icon from 'santd/icon';
 import Button from 'santd/button';
@@ -47,28 +41,17 @@ export default {
         's-menu': Menu,
         's-sub-menu': Menu.Sub,
         's-menu-item': Menu.Item,
+        's-menu-item-group': Menu.ItemGroup,
         's-icon': Icon
     },
-    initData () {
-      return {
-          subOne: function() {
-              return san.defineComponent({
-                  components: {
-                      's-icon': Icon
-                  },
-                  template: `
-                      <span>
-                          <s-icon type="setting"/>
-                          <span>Navigation Tree-submenu</span>
-                      </span>
-                  `
-              });
-          },
-      }
+    initData() {
+        return {
+            current: 'mail'
+        };
     },
-
-    itemClick(val) {
-        console.log('选中的值是: ', val);
+    handleClick(e) {
+        console.log('click ', e);
+        this.data.set('current', e.key);
     }
 
 }
