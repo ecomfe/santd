@@ -9,8 +9,8 @@ import Radio from '../radio';
 import Select from '../select';
 import Calendar from './src/fullCalendar';
 import './style/index.less';
-import LocaleReceiver from '../localeprovider/localereceiver';
-import inherits from '../core/util/inherits';
+import localeReceiver from '../localeprovider/receiver';
+
 const prefixCls = classCreator('fullcalendar')();
 
 function getMonthsLocale(value) {
@@ -32,7 +32,7 @@ const sanNoop = san.defineComponent({
     template: '<span></span>'
 });
 
-const exportCalendar = san.defineComponent({
+export default san.defineComponent({
     initData() {
         return {
             prefixCls,
@@ -41,10 +41,13 @@ const exportCalendar = san.defineComponent({
             yearSelectOffset: 10,
             yearSelectTotal: 20,
             monthCellRender: sanNoop,
-            dateCellRender: sanNoop
+            dateCellRender: sanNoop,
+            componentName: 'Calendar'
         };
     },
     computed: {
+        ...localeReceiver.computed,
+
         classes() {
             const className = this.data.get('className');
             const fullscreen = this.data.get('fullscreen');
@@ -189,6 +192,8 @@ const exportCalendar = san.defineComponent({
         }
     },
     inited() {
+        localeReceiver.inited.call(this);
+
         const defaultValue = this.data.get('defaultValue');
         const value = this.data.get('value') || defaultValue || moment();
         const localeCode = this.data.get('localeCode');
@@ -302,13 +307,3 @@ const exportCalendar = san.defineComponent({
         </div>
     `
 });
-
-const Locale = inherits(san.defineComponent({
-    initData() {
-        return {
-            componentName: 'Calendar'
-        };
-    }
-}), LocaleReceiver);
-
-export default inherits(Locale, exportCalendar);
