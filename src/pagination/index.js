@@ -8,7 +8,6 @@ import Icon from '../icon';
 import {classCreator} from '../core/util';
 import pagination from './pagination';
 import localeReceiver from '../localeprovider/receiver';
-import inherits from '../core/util/inherits';
 
 const prefixCls = classCreator('pagination')();
 
