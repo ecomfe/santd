@@ -7,7 +7,7 @@ import san from 'san';
 import Icon from '../icon';
 import {classCreator} from '../core/util';
 import pagination from './pagination';
-import LocaleReceiver from '../localeprovider/localereceiver';
+import localeReceiver from '../localeprovider/receiver';
 import inherits from '../core/util/inherits';
 
 const prefixCls = classCreator('pagination')();
@@ -54,7 +54,7 @@ const jumpNextIcon = san.defineComponent({
       </a>`
 });
 
-const Pagination = san.defineComponent({
+export default san.defineComponent({
     components: {
         pagination,
         previcon: prevIcon,
@@ -62,15 +62,29 @@ const Pagination = san.defineComponent({
         jumpprevicon: jumpPrevIcon,
         jumpnexticon: jumpNextIcon
     },
+
     handleShowSizeChange(payload) {
         this.fire('showSizeChange', payload);
     },
+
     handleChange(payload) {
         this.fire('change', payload);
     },
+
     inited() {
         this.data.set('itemRender', !!this.sourceSlots.named.itemRender);
     },
+
+    initData() {
+        return {
+            componentName: 'Pagination'
+        };
+    },
+
+    inited: localeReceiver.inited,
+
+    computed: localeReceiver.computed,
+
     template: `
         <div>
             <pagination
@@ -101,13 +115,3 @@ const Pagination = san.defineComponent({
         </div>
     `
 });
-
-const Locale = inherits(san.defineComponent({
-    initData() {
-        return {
-            componentName: 'Pagination'
-        };
-    }
-}), LocaleReceiver);
-
-export default inherits(Locale, Pagination);
