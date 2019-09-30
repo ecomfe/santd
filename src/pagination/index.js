@@ -72,6 +72,7 @@ export default san.defineComponent({
 
     inited() {
         this.data.set('itemRender', !!this.sourceSlots.named.itemRender);
+        localeReceiver.inited.call(this);
     },
 
     initData() {
@@ -79,8 +80,6 @@ export default san.defineComponent({
             componentName: 'Pagination'
         };
     },
-
-    inited: localeReceiver.inited,
 
     computed: localeReceiver.computed,
 
