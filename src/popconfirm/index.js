@@ -9,24 +9,16 @@ import {classCreator} from '../core/util';
 import Tooltip from '../tooltip';
 import Button from '../button';
 import Icon from '../icon';
-import LocaleReceiver from '../localeprovider/localereceiver';
+import localeReceiver from '../localeprovider/receiver';
 
 const prefixCls = classCreator('popover')();
-
-const Locale = san.defineComponent({
-    initData() {
-        return {
-            componentName: 'Popconfirm'
-        };
-    }
-}, LocaleReceiver);
 
 
 export default san.defineComponent({
     initData() {
         return {
-            ...Locale.prototype.initData(),
             ...Tooltip.prototype.initData(),
+            componentName: 'Popconfirm',
             transitionName: 'zoom-big',
             trigger: 'click',
             okType: 'primary'
@@ -34,12 +26,12 @@ export default san.defineComponent({
     },
 
     inited() {
-        Locale.prototype.inited.bind(this)();
+        localeReceiver.inited.call(this);
         this.data.set('hasIcon', !!this.sourceSlots.named.icon);
     },
 
     computed: {
-        ...Locale.prototype.computed,
+        ...localeReceiver.computed,
         ...Tooltip.prototype.computed
     },
 
