@@ -8,17 +8,10 @@ import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
 import defaultEmptyImg from './empty.svg';
 import simpleEmptyImg from './simple.svg';
-import LocaleReceiver from '../localeprovider/localereceiver';
+import localeReceiver from '../localeprovider/receiver';
 
 const prefixCls = classCreator('empty')();
 
-const Locale = san.defineComponent({
-    initData() {
-        return {
-            componentName: 'Empty'
-        };
-    }
-}, LocaleReceiver);
 
 const Empty = san.defineComponent({
     dataTypes: {
@@ -29,16 +22,18 @@ const Empty = san.defineComponent({
 
     initData() {
         return {
+            componentName: 'Empty',
             image: defaultEmptyImg,
-            simpleEmptyImg,
-            ...Locale.prototype.initData()
+            simpleEmptyImg
         };
     },
 
     inited() {
         this.data.set('hasDescription', !!this.sourceSlots.named.description);
-        Locale.prototype.inited();
+        localeReceiver.inited.call(this);
     },
+
+    computed: localeReceiver.computed,
 
     template: `
         <div class="${prefixCls} {{image === simpleEmptyImg ? '${prefixCls}-normal' : ''}}">
@@ -53,7 +48,7 @@ const Empty = san.defineComponent({
             </p>
         </div>
     `
-}, Locale);
+});
 
 Empty.PRESENTED_IMAGE_DFEAULT = defaultEmptyImg;
 Empty.PRESENTED_IMAGE_SIMPLE = simpleEmptyImg;
