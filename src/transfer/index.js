@@ -9,22 +9,16 @@ import Empty from '../empty';
 import List from './list';
 import Operation from './operation';
 import inherits from '../core/util/inherits';
-import LocaleReceiver from '../localeprovider/localereceiver';
+import localeReceiver from '../localeprovider/receiver';
 
 const prefixCls = classCreator('transfer')();
 const emptyPrefixCls = classCreator('empty')();
 
-const Locale = inherits(san.defineComponent({
-    initData() {
-        return {
-            componentName: 'Transfer'
-        };
-    }
-}), LocaleReceiver);
 
 export default san.defineComponent({
     computed: {
-        ...Locale.prototype.computed,
+        ...localeReceiver.computed,
+
         classes() {
             const disabled = this.data.get('disabled');
             const hasRenderList = this.data.get('hasLeftRenderList') || this.data.get('hsaRightRenderList');
@@ -34,6 +28,7 @@ export default san.defineComponent({
             !!hasRenderList && classArr.push(`${prefixCls}-customize-list`);
             return classArr;
         },
+
         separateDataSource() {
             const dataSource = this.data.get('dataSource');
             const rowKey = this.data.get('rowKey');
@@ -61,24 +56,29 @@ export default san.defineComponent({
             };
         }
     },
+
     initData() {
         return {
-            ...Locale.prototype.initData(),
+            componentName: 'Transfer',
             showSelectAll: true,
             sourceSelectedKeys: [],
             targetSelectedKeys: [],
             operations: []
         };
     },
+
     inited() {
+        localeReceiver.inited.call(this);
         this.data.set('hasFooter', !!this.sourceSlots.named.footer);
         this.data.set('hasRender', !!this.sourceSlots.named.render);
         this.data.set('hasLeftRenderList', !!this.sourceSlots.named.leftRenderList);
         this.data.set('hasRightRenderList', !!this.sourceSlots.named.rightRenderList);
     },
+
     getSelectedKeysName(direction) {
         return direction === 'left' ? 'sourceSelectedKeys' : 'targetSelectedKeys';
     },
+
     handleSelectChange(direction, holder) {
         const sourceSelectedKeys = this.data.get('sourceSelectedKeys');
         const targetSelectedKeys = this.data.get('targetSelectedKeys');
@@ -87,6 +87,7 @@ export default san.defineComponent({
             : {targetSelectedKeys: holder, sourceSelectedKeys}
         );
     },
+
     handleItemSelect(direction, selectedKey, checked) {
         const sourceSelectedKeys = this.data.get('sourceSelectedKeys');
         const targetSelectedKeys = this.data.get('targetSelectedKeys');
@@ -103,12 +104,15 @@ export default san.defineComponent({
 
         this.data.set(this.getSelectedKeysName(direction), holder);
     },
+
     handleLeftItemSelectAll(params) {
         this.handleItemSelectAll('left', params.selectedKeys, params.checkAll);
     },
+
     handleRightItemSelectAll(params) {
         this.handleItemSelectAll('right', params.selectedKeys, params.checkAll);
     },
+
     handleItemSelectAll(direction, selectedKeys, checkAll) {
         const originalSelectedKeys = this.data.get(this.getSelectedKeysName(direction)) || [];
 
@@ -128,12 +132,15 @@ export default san.defineComponent({
 
         this.data.set(this.getSelectedKeysName(direction), mergedCheckedKeys);
     },
+
     handleLeftItemSelect({selectedKey, checked}) {
         this.handleItemSelect('left', selectedKey, checked);
     },
+
     handleRightItemSelect({selectedKey, checked}) {
         this.handleItemSelect('right', selectedKey, checked);
     },
+
     handleMoveTo(direction) {
         const targetKeys = this.data.get('targetKeys') || [];
         const dataSource = this.data.get('dataSource') || [];
@@ -156,9 +163,11 @@ export default san.defineComponent({
         this.handleSelectChange(oppositeDirection, []);
         this.fire('change', {targetKeys: newTargetKeys, direction, moveKeys: newMoveKeys});
     },
+
     handleScroll(direction, e) {
         this.fire('scroll', {direction, e});
     },
+
     handleLeftFilter(value) {
         this.handleFilter('left', value);
     },
@@ -178,10 +187,12 @@ export default san.defineComponent({
     handleClear(direction) {
         this.fire('search', {direction, value: ''});
     },
+
     getTitles(titles, index) {
         const locale = this.data.get('locale');
         return (titles || (locale && locale.titles) || [])[index] || '';
     },
+
     components: {
         's-list': List,
         's-operation': Operation,
@@ -274,4 +285,4 @@ export default san.defineComponent({
             <s-empty slot="notfoundcontent" image="${Empty.PRESENTED_IMAGE_SIMPLE}" class="${emptyPrefixCls}-small"/>
         </s-list>
     </div>`
-}, Locale);
+});
