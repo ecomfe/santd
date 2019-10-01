@@ -8,7 +8,6 @@ import {classCreator} from '../core/util';
 import Empty from '../empty';
 import List from './list';
 import Operation from './operation';
-import inherits from '../core/util/inherits';
 import localeReceiver from '../localeprovider/receiver';
 
 const prefixCls = classCreator('transfer')();
