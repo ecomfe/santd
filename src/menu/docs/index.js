@@ -10,10 +10,11 @@ import Collapsed from './collapsed.md';
 import Horizontal from './horizontal.md';
 import Inline from './inline.md';
 import Current from './current.md';
+import Switch from './switch.md';
 
 
 export default san.defineComponent({
-    components:{
+    components: {
         readme: Readme,
         theme: Theme,
         vertical: Vertical,
@@ -21,20 +22,19 @@ export default san.defineComponent({
         horizontal: Horizontal,
         inline: Inline,
         head: Head,
-        current: Current
-
+        current: Current,
+        switch: Switch
     },
     template: `
         <div>
             <head/>
             <horizontal/>
+            <inline/>
             <current/>
             <vertical/>
             <theme/>
-            <inline/>
-            <vertical/>
-            <collapsed/>
+            <switch/>
             <readme/>
         </div>
     `
-})
+});

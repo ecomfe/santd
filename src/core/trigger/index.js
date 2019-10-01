@@ -35,6 +35,8 @@ function getAlignPopupClassName(builtinPlacements, prefixCls, align, isAlignPoin
     return '';
 }
 
+let documentEventListener = null;
+
 export default san.defineComponent({
     dataTypes: {
         action: DataTypes.oneOfType([DataTypes.string, DataTypes.array]),
@@ -128,7 +130,13 @@ export default san.defineComponent({
         this.data.set('popupVisible', popupVisible);
 
         const currentDocument = this.data.get('getDocument')();
-        currentDocument.addEventListener('mousedown', this.handleDocumentClick.bind(this));
+        const that = this;
+        if (!documentEventListener) {
+            // documentEventListener = currentDocument.addEventListener('mousedown', this.handleDocumentClick.bind(this));
+            documentEventListener = currentDocument.addEventListener('mousedown', function (e) {
+                that.handleDocumentClick(e);
+            });
+        }
 
         this.watch('popupVisible', val => {
             if (!this._container) {
@@ -290,7 +298,10 @@ export default san.defineComponent({
         this.fire('popupMouseEnter');
         this.clearDelayTimer();
     },
-    handlePopupMouseLeave() {
+    handlePopupMouseLeave(e) {
+        if (e.relatedTarget && contains(this.el, e.relatedTarget)) {
+            return;
+        }
         this.fire('popupMouseLeave');
         this.delaySetPopupVisible(false, this.data.get('mouseLeaveDelay'));
     },
@@ -307,7 +318,7 @@ export default san.defineComponent({
         const root = this.el;
         const hasPopupMouseDown = this.data.get('hasPopupMouseDown');
         if (!contains(root, target) && !hasPopupMouseDown) {
-            this.close();
+            this.close(e);
         }
     },
     delaySetPopupVisible(visible, delayS, e) {
@@ -424,7 +435,6 @@ export default san.defineComponent({
         on-mouseleave="handleMouseLeave"
         on-contextmenu="handleContextMenu"
         class="{{classes}}"
-        index="1"
     >
         <slot />
     </span>`
