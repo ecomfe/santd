@@ -10,18 +10,10 @@ import uniqBy from 'lodash/uniqBy';
 import findIndex from 'lodash/findIndex';
 import {classCreator} from '../core/util';
 import {fileToObject, genPercentAdd, getFileItem, removeFileItem} from './utils';
-import LocaleReceiver from '../localeprovider/localereceiver';
-import inherits from '../core/util/inherits';
+import localeReceiver from '../localeprovider/receiver';
 
 const prefixCls = classCreator('upload')();
 
-const Locale = inherits(san.defineComponent({
-    initData() {
-        return {
-            componentName: 'Upload'
-        };
-    }
-}), LocaleReceiver);
 
 const uploadButtonTemplate = `
 <div
@@ -66,8 +58,10 @@ const uploadListTemplate = `
     />
 `;
 
-export default inherits(Locale, san.defineComponent({
+export default san.defineComponent({
     computed: {
+        ...localeReceiver.computed,
+
         dragClass() {
             const fileList = this.data.get('fileList') || [];
             const dragState = this.data.get('dragState');
@@ -84,8 +78,10 @@ export default inherits(Locale, san.defineComponent({
             return classArr;
         }
     },
+
     initData() {
         return {
+            componentName: 'Upload',
             type: 'select',
             multiple: false,
             action: '',
@@ -102,13 +98,17 @@ export default inherits(Locale, san.defineComponent({
             showButton: true
         };
     },
+
     inited() {
+        localeReceiver.inited.call(this);
         this.data.set('fileList', this.data.get('fileList') || this.data.get('defaultFileList') || []);
     },
+
     components: {
         's-uploadlist': UploadList,
         's-upload': Upload
     },
+
     beforeUploadFunc(beforeUpload, prevFileList) {
         return (file, fileList) => {
             if (!beforeUpload) {
@@ -307,4 +307,4 @@ export default inherits(Locale, san.defineComponent({
             ${uploadListTemplate}
         </template>
     </span>`
-}));
+});
