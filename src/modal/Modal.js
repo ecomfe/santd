@@ -8,20 +8,12 @@ import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
 import Dialog from './Dialog';
 import button from '../button';
-import inherits from '../core/util/inherits';
-import LocaleReceiver from '../localeprovider/localereceiver';
+import localeReceiver from '../localeprovider/receiver';
 
 const prefixCls = classCreator('modal')();
 
-const Locale = inherits(san.defineComponent({
-    initData() {
-        return {
-            componentName: 'Modal'
-        };
-    }
-}), LocaleReceiver);
 
-export default inherits(Locale, san.defineComponent({
+export default san.defineComponent({
     dataTypes: {
         okText: DataTypes.string,
         cancelText: DataTypes.string,
@@ -32,10 +24,14 @@ export default inherits(Locale, san.defineComponent({
         closable: DataTypes.bool,
         getContainer: DataTypes.func
     },
+
     components: {
         's-button': button
     },
+
     computed: {
+        ...localeReceiver.computed,
+
         wrapClass() {
             const centered = this.data.get('centered');
             const wrapClassName = this.data.get('wrapClassName');
@@ -44,8 +40,10 @@ export default inherits(Locale, san.defineComponent({
             return classArr.join(' ');
         }
     },
+
     initData() {
         return {
+            componentName: 'Modal',
             width: 520,
             transitionName: 'zoom',
             maskTransitionName: 'fade',
@@ -54,6 +52,9 @@ export default inherits(Locale, san.defineComponent({
             okType: 'primary'
         };
     },
+
+    inited: localeReceiver.inited,
+
     attached() {
         if (!this.dialog) {
             const {getContainer, ...props} = this.data.get();
@@ -87,14 +88,18 @@ export default inherits(Locale, san.defineComponent({
             this.dialog.attach(container);
         }
     },
+
     handleCancel(e) {
         this.fire('cancel', e);
     },
+
     handleOk(e) {
         this.fire('ok', e);
     },
+
     afterClose() {
         this.fire('afterClose');
     },
+    
     template: '<div />'
-}));
+});
