@@ -17,12 +17,9 @@ const contentPrefixCls = `${prefixCls}-confirm`;
 // 判断是否SanComponent, 可能会随着san的版本迭代变更，参考依据如下：
 // https://github.com/baidu/san/blob/36085399ab3d84df3ff8b741bb2f57c483b59acb/src/view/node-type.js
 // https://github.com/baidu/san/blob/9a7cd2e74ecd4f307afd1733aa5b745707edc0c9/src/view/component.js#L278
+// 改成使用传统方式判断 by erik at 2019-10-03
 function isValidComponent(content) {
-    if (typeof content === 'function' && 5 === content.prototype.nodeType) {
-        return true;
-    }
-
-    return false;
+    return content && content.prototype instanceof san.Component;
 }
 
 // 动态加载content组件
