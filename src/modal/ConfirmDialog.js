@@ -86,10 +86,6 @@ export default san.defineComponent({
         </s-dialog>
     </template>`,
 
-    dataTypes: {
-        actionFn: DataTypes.any
-    },
-    
     components: {
         'content-loader': contentLoader,
         's-button': ActionButton,
