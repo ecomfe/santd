@@ -8,16 +8,8 @@ import {classCreator} from '../core/util';
 import icon from '../icon';
 import Dialog from './Dialog';
 import ActionButton from './ActionButton';
-import inherits from '../core/util/inherits';
-import LocaleReceiver from '../localeprovider/localereceiver';
+import localeReceiver from '../localeprovider/receiver';
 
-const Locale = inherits(san.defineComponent({
-    initData() {
-        return {
-            componentName: 'Modal'
-        };
-    }
-}), LocaleReceiver);
 
 const prefixCls = classCreator('modal')();
 const contentPrefixCls = `${prefixCls}-confirm`;
@@ -39,7 +31,7 @@ const contentLoader = san.createComponentLoader(() => new Promise((resolve, reje
     contentFun = {resolve, reject};
 }));
 
-export default inherits(san.defineComponent({
+export default san.defineComponent({
     template: `<template>
         <s-dialog
             prefixCls="{{prefixCls}}"
@@ -93,9 +85,11 @@ export default inherits(san.defineComponent({
             </div>
         </s-dialog>
     </template>`,
+
     dataTypes: {
         actionFn: DataTypes.any
     },
+    
     components: {
         'content-loader': contentLoader,
         's-button': ActionButton,
@@ -106,14 +100,19 @@ export default inherits(san.defineComponent({
         const afterCloseFn = this.data.get('afterClose');
         'function' === typeof afterCloseFn && afterCloseFn();
     },
+
     computed: {
+        ...localeReceiver.computed,
+
         contentIsComponent() {
             const content = this.data.get('content');
             return isValidComponent(content);
         }
     },
+
     initData() {
         return {
+            componentName: 'Modal',
             autoFocusButton: 'ok',
             iconType: 'question-circle',
             maskClosable: false,
@@ -122,9 +121,12 @@ export default inherits(san.defineComponent({
             width: 416
         };
     },
+
+    inited: localeReceiver.inited,
+
     attached() {
         // 处理content是san组件的情况
         const content = this.data.get('content');
         this.data.get('contentIsComponent') && contentFun.resolve(content);
     }
-}), Locale);
+});
