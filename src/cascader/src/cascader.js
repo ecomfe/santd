@@ -5,7 +5,6 @@
 
 
 import san from 'san';
-import inherits from '../../core/util/inherits';
 import Trigger from '../../core/trigger/index';
 import placements from './placements';
 import Menus from './menus';
@@ -62,9 +61,10 @@ export default san.defineComponent({
             const dropdownMenuColumnStyle = this.data.get('dropdownMenuColumnStyle');
 
             if (options && options.length > 0) {
-                return inherits(san.defineComponent({
+                return san.defineComponent({
                     initData() {
                         return {
+                            value: [],
                             prefixCls: rootPrefixCls || prefixCls,
                             options,
                             fieldNames,
@@ -76,8 +76,9 @@ export default san.defineComponent({
                             dropdownMenuColumnStyle
                         };
                     }
-                }), Menus);
+                }, Menus);
             }
+
             return san.defineComponent({
                 template: '<div></div>'
             });
