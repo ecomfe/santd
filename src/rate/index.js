@@ -16,7 +16,6 @@ const prefixCls = classCreator('rate')();
 
 export default san.defineComponent({
     dataTypes: {
-        className: DataTypes.string,
         disabled: DataTypes.bool,
         value: DataTypes.number, // 传入组件的值，受控
         defaultValue: DataTypes.number, // 传入组件的默认值
@@ -67,14 +66,6 @@ export default san.defineComponent({
         });
     },
     computed: {
-        classes() {
-            const className = this.data.get('className');
-            let classArr = [prefixCls];
-
-            className && classArr.push(className);
-            this.data.get('disabled') && classArr.push(`${prefixCls}-disabled`);
-            return classArr;
-        },
         starsProps() {
             const data = this.data;
             let hoverValue = data.get('hoverValue');
@@ -202,7 +193,7 @@ export default san.defineComponent({
     },
     template: `
         <ul
-            class="{{classes}}"
+            class="${prefixCls}{{disabled ? ' ${prefixCls}-disabled' : ''}}"
             on-mouseleave="onMouseLeave"
             tabIndex="{{tabIndex}}"
             on-focus="onFocus"
