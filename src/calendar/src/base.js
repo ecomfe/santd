@@ -14,6 +14,7 @@ export default san.defineComponent({
         visible: DataTypes.bool,
         prefixCls: DataTypes.string
     },
+    
     initData() {
         return {
             visible: true,
@@ -22,6 +23,7 @@ export default san.defineComponent({
             locale: locale
         };
     },
+
     computed: {
         classes() {
             const prefixCls = this.data.get('prefixCls');
@@ -36,16 +38,21 @@ export default san.defineComponent({
             return classArr;
         }
     },
+
     getFormat() {
         const {locale, timePicker, format} = this.data.get('');
-        if (!format) {
-            if (timePicker) {
-                return locale.dateTimeFormat;
-            }
-            return locale.dateFormat;
+
+        if (format) {
+            return format;
         }
-        return format;
+
+        if (timePicker) {
+            return locale.dateTimeFormat;
+        }
+
+        return locale.dateFormat;
     },
+
     focus() {
         if (this.ref('focusEl')) {
             this.ref('focusEl').focus();
@@ -54,16 +61,19 @@ export default san.defineComponent({
             this.el.focus();
         }
     },
+
     handleSelect(value, cause) {
         if (value) {
             this.setValue(value);
         }
         this.setSelectedValue(value, cause);
     },
+
     setSelectedValue(selectedValue, cause) {
         this.data.set('selectedValue', selectedValue);
         this.fire('select', {selectedValue, cause});
     },
+
     setValue(value) {
         const originalValue = this.data.get('value');
 
@@ -72,6 +82,7 @@ export default san.defineComponent({
             this.fire('change', value);
         }
     },
+
     isAllowedDate(value) {
         const disabledDate = this.data.get('disabledDate');
         const disabledTime = this.data.get('disabledTime');
