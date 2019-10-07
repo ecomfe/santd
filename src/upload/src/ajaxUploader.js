@@ -12,7 +12,6 @@ export default san.defineComponent({
         id: DataTypes.string,
         component: DataTypes.string,
         prefixCls: DataTypes.string,
-        className: DataTypes.string,
         multiple: DataTypes.bool,
         directory: DataTypes.bool,
         disabled: DataTypes.bool,
