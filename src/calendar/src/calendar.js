@@ -21,11 +21,6 @@ export default inherits(san.defineComponent({
         's-dateinput': DateInput
     },
     computed: {
-        showTimePicker() {
-            const mode = this.data.get('mode');
-
-            return mode === 'time';
-        },
         injectTimePicker() {
             const timePicker = this.data.get('timePicker');
             const instance = this.data.get('instance');
@@ -115,7 +110,7 @@ export default inherits(san.defineComponent({
         this.fire('clear');
     },
     getTimeConfig(selectedValue, disabledTime, mode) {
-        const showTimePicker = this.data.get('showTimePicker');
+        const showTimePicker = this.data.get('mode') === 'time';
         const timePicker = this.data.get('timePicker');
         if (showTimePicker && timePicker && disabledTime) {
             const config = getTimeConfig(selectedValue, disabledTime);
@@ -153,10 +148,10 @@ export default inherits(san.defineComponent({
                         on-valueChange="setValue"
                         on-panelChange="handlePanelChange"
                         renderFooter="{{renderFooter}}"
-                        showTimePicker="{{showTimePicker}}"
+                        showTimePicker="{{mode === 'time'}}"
                         prefixCls="{{prefixCls}}"
                     />
-                    <div class="{{prefixCls}}-time-picker" s-if="timePicker && showTimePicker">
+                    <div class="{{prefixCls}}-time-picker" s-if="timePicker && mode === 'time'">
                         <div class="{{prefixCls}}-time-picker-panel">
                             <timepicker
                                 value="{{value}}"
@@ -188,7 +183,7 @@ export default inherits(san.defineComponent({
                         prefixCls="{{prefixCls}}"
                         showToday="{{showToday}}"
                         disabledTime="{{disabledTime}}"
-                        showTimePicker="{{showTimePicker}}"
+                        showTimePicker="{{mode === 'time'}}"
                         showDateInput="{{showDateInput}}"
                         timePicker="{{timePicker}}"
                         selectedValue="{{selectedValue}}"
