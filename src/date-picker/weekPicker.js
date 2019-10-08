@@ -3,106 +3,36 @@
  * @author mayihui@baidu.com
  **/
 import san from 'san';
-import Picker from '../calendar/src/picker';
 import Calendar from '../calendar/src/calendar';
 import moment from 'moment';
 import {classCreator} from '../core/util';
-import inherits from '../core/util/inherits';
 import Icon from '../icon';
+import Trigger from '../core/trigger';
+import Placements from '../calendar/src/placements';
 
 const prefixCls = classCreator('calendar')();
 
 export default san.defineComponent({
     computed: {
-        classes() {
-            const className = this.data.get('className');
-            const pickerClass = this.data.get('pickerClass');
-            return [className, pickerClass];
-        },
-        calendar() {
-            const disabledDate = this.data.get('disabledDate');
-            const defaultValue = this.data.get('defaultPickerValue') || moment();
-            const prefixCls = this.data.get('prefixCls');
-            const format = this.data.get('format');
-            const renderFooter = this.data.get('renderFooter');
-            const value = this.data.get('value');
-            const instance = this.data.get('instance');
-            const locale = this.data.get('locale');
-            const localeCode = this.data.get('localeCode');
-            if (localeCode) {
-                moment.locale(localeCode);
-            }
-            if (value && localeCode) {
-                value.locale(localeCode);
-            }
-
-            return inherits(san.defineComponent({
-                initData() {
-                    return {
-                        showWeekNumber: true,
-                        prefixCls,
-                        format,
-                        showDateInput: false,
-                        showToday: false,
-                        disabledDate,
-                        renderFooter,
-                        value: value || defaultValue,
-                        locale: locale.lang
-                    };
-                },
-                onChange(value) {
-                    instance.data.set('value', value);
-                    instance.fire('change', {date: value, dateString: value && value.format(format)});
-                },
-                onPanelChange(value, mode) {
-                    instance.fire('panelChange', {value, mode});
-                },
-                onOk(value) {
-                    instance.fire('ok', value);
-                }
-            }), Calendar);
-        },
         displayValue() {
             const value = this.data.get('value');
             const format = this.data.get('format');
             return value && value.format(format);
-        },
-        injectInputIcon() {
-            const suffixIcon = this.data.get('suffixIcon');
-            const instance = this.data.get('instance');
-
-            let inputIcon;
-            if (typeof suffixIcon === 'function') {
-                inputIcon = suffixIcon;
-            }
-            else if (typeof suffixIcon === 'string') {
-                inputIcon = san.defineComponent({
-                    template: `<span class="{{className}}">
-                            {{suffixIcon}}
-                        </span>`
-                });
-            }
-            else {
-                inputIcon = Icon;
-            }
-            instance && (instance.components.inputicon = inputIcon);
         }
     },
     initData() {
         return {
-            prefixCls,
             allowClear: true,
-            format: 'gggg-wo'
-            // placeholder: '请选择日期'
+            format: 'gggg-wo',
+            placements: Placements,
+            trigger: 'click'
         };
     },
     inited() {
-        this.data.set('instance', this);
-        this.data.set('inputStyle', this.data.get('style'));
-        this.data.set('style', {});
+        this.data.set('defaultValue', this.data.get('defaultPickerValue') || moment());
     },
-    handleCalendarChange(value) {
-        this.data.set('value', value);
+    handleCalendarChange(data) {
+        this.data.set('value', data.value);
     },
     handleOpenChange(open) {
         this.data.set('open', open);
@@ -115,51 +45,73 @@ export default san.defineComponent({
         this.data.set('value', null);
         this.fire('change', {date: null, dateString: null});
     },
-    handleChange(value) {
+    handleChange(data) {
+        const value = data.value;
+        const cause = data.cause || {};
         const format = this.data.get('format');
         this.data.set('value', value, {force: true});
         this.fire('change', {date: value, dateString: value && value.format(format)});
+        if (cause.source === 'keyboard'
+            || cause.source === 'dateInputSelect'
+            || (!this.data.get('showTime') && cause.source !== 'dateInput')
+            || cause.source === 'todayButton'
+        ) {
+            this.handleOpenChange(false);
+        }
     },
     components: {
-        's-picker': Picker,
-        's-icon': Icon
+        's-icon': Icon,
+        's-trigger': Trigger,
+        's-calendar': Calendar
     },
     template: `<span
             id="{{id}}"
-            class="{{classes}}"
+            class="{{pickerClass}}"
         >
-            <s-picker
-                calendar="{{calendar}}"
-                value="{{value}}"
-                prefixCls="{{prefixCls}}-picker-container"
-                style="{{popupStyle}}"
-                transitionName="{{transitionName}}"
+            <s-trigger
+                prefixCls="${prefixCls}-picker-container"
+                popupTransitionName="{{transitionName}}"
                 dropdownClassName="{{dropdownClassName}}"
                 getCalendarContainer="{{getCalendarContainer}}"
-                open="{{open}}"
+                visible="{{open}}"
+                action="{{disabled ? [] : trigger}}"
+                builtinPlacements="{{placements}}"
+                popupPlacement="bottomLeft"
                 on-visibleChange="handleOpenChange"
-                on-change="handleChange"
             >
-                <div>
-                    <input
-                        disabled="{{disabled}}"
-                        readOnly
-                        value="{{displayValue}}"
-                        placeholder="{{placeholder || locale.lang.placeholder}}"
-                        className="{{pickerInputClass}}"
-                        tabIndex="{{tabIndex}}"
-                        name="{{name}}"
-                        style="{{inputStyle}}"
-                    />
-                    <s-icon
-                        s-if="!disabled && allowClear && value"
-                        type="close-circle"
-                        class="{{prefixCls}}-picker-clear"
-                        theme="filled"
-                        on-click="handleClearSelection"
-                    />
-                    <inputicon class="{{prefixCls}}-picker-icon" type="calendar"/>
-                </div>
-            </s-picker>
-        </span>`
+                <s-calendar
+                    slot="popup"
+                    showWeekNumber="{{true}}"
+                    format="{{format}}"
+                    showDateInput="{{false}}"
+                    showToday="{{false}}"
+                    disabledDate="{{disabledDate}}"
+                    value="{{value || defaultValue}}"
+                    locale="{{locale.lang}}"
+                    localeCode="{{localeCode}}"
+                    on-select="handleChange"
+                    on-panelChange="handleCalendarChange"
+                    on-clear="handleClearSelection"
+                />
+                <input
+                    disabled="{{disabled}}"
+                    readOnly
+                    value="{{displayValue}}"
+                    placeholder="{{placeholder || locale.lang.placeholder}}"
+                    class="{{pickerInputClass}}"
+                    tabIndex="{{tabIndex}}"
+                    name="{{name}}"
+                    style="{{inputStyle}}"
+                />
+                <s-icon
+                    s-if="!disabled && allowClear && value"
+                    type="close-circle"
+                    class="${prefixCls}-picker-clear"
+                    theme="filled"
+                    on-click="handleClearSelection"
+                />
+                <s-icon type="calendar" class="${prefixCls}-picker-icon" />
+            </s-trigger>
+        </span>
+    `
 });

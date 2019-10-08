@@ -31,6 +31,7 @@ export default san.defineComponent({
     },
     inited() {
         const format = this.data.get('format');
+        this.data.set('str', formatDate(this.data.get('selectedValue'), format));
         this.watch('selectedValue', val => {
             this.data.set('str', formatDate(val, format));
         });

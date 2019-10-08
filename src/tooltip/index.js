@@ -53,7 +53,6 @@ export default san.defineComponent({
     template: `<span>
         <s-trigger
             prefixCls="${prefixCls}"
-            action="{{action}}"
             builtinPlacements="{{builtinPlacements}}"
             popupPlacement="{{placement}}"
             popupAlign="{{popupAlign}}"

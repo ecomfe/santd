@@ -16,22 +16,30 @@ export default inherits(san.defineComponent({
         };
     },
     inited() {
-        const value = this.data.get('value');
-        const defaultValue = this.data.get('defaultValue');
-        const selectedValue = this.data.get('selectedValue');
-        const defaultSelectedValue = this.data.get('defaultSelectedValue');
+        let value = this.data.get('value') || this.data.get('defaultValue') || moment();
+        let selectedValue = this.data.get('selectedValue') || this.data.get('defaultSelectedValue');
+        const localeCode = this.data.get('localeCode');
 
-        this.data.set('value', value || selectedValue || defaultValue || moment());
-        this.data.set('selectedValue', selectedValue || defaultSelectedValue);
-        this.data.set('instance', this);
+        localeCode && value.locale(localeCode);
+
+        this.data.set('value', value);
+        this.data.set('selectedValue', selectedValue);
         this.data.set('mode', 'month');
 
+        this.watch('value', val => {
+            if (!val) {
+                let value = moment();
+                localeCode && value.locale(localeCode);
+                this.data.set('value', value);
+            }
+        });
+
         this.watch('selectedValue', val => {
+            localeCode && val.locale(localeCode);
             this.data.set('value', val);
         });
     },
     handleMonthSelect(value) {
-        // this.data.set('value', value);
         this.fire('select', value);
         this.dispatch('santd_calendar_select', {value: value, cause: null});
     },

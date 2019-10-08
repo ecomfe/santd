@@ -17,9 +17,18 @@ export default san.defineComponent({
         point: DataTypes.object
     },
     inited() {
+        const destroyPopupOnHide = this.data.get('destroyPopupOnHide');
+        this.data.set('destroy', true);
         this.watch('visible', val => {
             if (!val) {
                 this.data.set('currentAlignClassName', '');
+                // 这里先简单的设置一个timeout来保证动画结束后且destroyPopupOnHide为true时删除popup子节点
+                window.setTimeout(() => {
+                    this.data.set('destroy', !destroyPopupOnHide);
+                }, 500);
+            }
+            else {
+                this.data.set('destroy', true);
             }
         });
     },
@@ -97,7 +106,7 @@ export default san.defineComponent({
                 transitionName="{{transitionName}}"
                 popupStyle="{{popupStyle}}"
             >
-                <slot />
+                <slot s-if="destroy" />
             </s-popupinner>
         </div>
     `

@@ -40,7 +40,7 @@ export default san.defineComponent({
         dates() {
             const prefixCls = this.data.get('prefixCls');
             const locale = this.data.get('locale');
-            const value = this.data.get('value');
+            const value = this.data.get('value') || moment();
             const today = getTodayTime(value);
             const selectedValue = this.data.get('selectedValue');
             const hoverValue = this.data.get('hoverValue');
@@ -175,7 +175,7 @@ export default san.defineComponent({
         },
         weeks() {
             const locale = this.data.get('locale');
-            const value = this.data.get('value');
+            const value = this.data.get('value') || moment();
             const localeData = value.localeData();
             const firstDayOfWeek = localeData.firstDayOfWeek();
             const weekDays = [];

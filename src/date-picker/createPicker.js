@@ -3,104 +3,23 @@
  * @author mayihui@baidu.com
  **/
 import san from 'san';
-import Picker from '../calendar/src/picker';
 import MonthCalendar from '../calendar/src/monthCalendar';
-import moment from 'moment';
 import {classCreator} from '../core/util';
-import inherits from '../core/util/inherits';
+import Trigger from '../core/trigger';
 import Icon from '../icon';
+import Placements from '../calendar/src/placements';
 
 const prefixCls = classCreator('calendar')();
 
-export default function (theCalendar) {
+export default function (calendar) {
     return san.defineComponent({
         computed: {
-            classes() {
-                const className = this.data.get('className');
-                const pickerClass = this.data.get('pickerClass');
-                return [className, pickerClass];
-            },
-            calendar() {
-                const locale = this.data.get('locale');
-                const localeCode = this.data.get('localeCode');
-                const value = this.data.get('value');
-                if (localeCode) {
-                    moment.locale(localeCode);
-                }
-                if (value && localeCode) {
-                    value.locale(localeCode);
-                }
-                const disabledDate = this.data.get('disabledDate');
-                const disabledTime = this.data.get('disabledTime');
-                const timePicker = this.data.get('timePicker');
-                const defaultValue = this.data.get('defaultValue') || moment();
-                const dateInputPlaceholder = this.data.get('placeholder') || locale.lang.placeholder;
-                const prefixCls = this.data.get('prefixCls');
-                const dateRender = this.data.get('dateRender');
-                const format = this.data.get('format');
-                const showToday = this.data.get('showToday');
-                const monthCellContentRender = this.data.get('monthCellContentRender');
-                const renderFooter = this.data.get('renderFooter');
-                const showTime = this.data.get('showTime');
-                let classArr = [];
-                showTime && classArr.push(`${prefixCls}-time`);
-                theCalendar === MonthCalendar && classArr.push(`${prefixCls}-month`);
-                let calendarClassName = classArr.join(' ');
-                const mode = this.data.get('mode');
-                let calendarProps = {};
-                if (mode) {
-                    calendarProps.mode = mode;
-                }
-
-                return inherits(san.defineComponent({
-                    initData() {
-                        return {
-                            disabledDate,
-                            disabledTime: showTime ? disabledTime : null,
-                            timePicker,
-                            defaultValue,
-                            dateInputPlaceholder,
-                            prefixCls,
-                            customClassName: calendarClassName,
-                            dateRender,
-                            format,
-                            showToday,
-                            monthCellContentRender,
-                            renderFooter,
-                            showTime,
-                            locale: locale.lang,
-                            localeCode,
-                            ...calendarProps
-                        };
-                    }
-                }), theCalendar);
-            },
             displayValue() {
                 const value = this.data.get('value');
                 const format = this.data.get('format');
                 return value && value.format(format);
             },
-            injectInputIcon() {
-                const suffixIcon = this.data.get('suffixIcon');
-                const instance = this.data.get('instance');
-
-                let inputIcon;
-                if (typeof suffixIcon === 'function') {
-                    inputIcon = suffixIcon;
-                }
-                else if (typeof suffixIcon === 'string') {
-                    inputIcon = san.defineComponent({
-                        template: `<span class="{{className}}">
-                            {{suffixIcon}}
-                        </span>`
-                    });
-                }
-                else {
-                    inputIcon = Icon;
-                }
-                instance && (instance.components.inputicon = inputIcon);
-            },
-            renderFooter() {
+            /*renderFooter() {
                 const renderExtraFooter = this.data.get('renderExtraFooter');
                 const prefixCls = this.data.get('prefixCls');
                 const instance = this.data.get('instance');
@@ -125,28 +44,46 @@ export default function (theCalendar) {
                         </div>
                     </div>`
                 });
+            },*/
+            calendarClasses() {
+                let classArr = [];
+                const showTime = this.data.get('showTime');
+                showTime && classArr.push(`${prefixCls}-time`);
+                calendar === MonthCalendar && classArr.push(`${prefixCls}-month`);
+
+                return classArr.join(' ');
             }
         },
         initData() {
             return {
                 prefixCls,
                 allowClear: true,
-                showToday: true
+                showToday: true,
+                trigger: 'click',
+                placements: Placements
             };
         },
         inited() {
-            this.data.set('instance', this);
-            const value = this.data.get('value');
-            const defaultValue = this.data.get('defaultValue');
-            this.data.set('value', value || defaultValue);
+            this.data.set('value', this.data.get('value') || this.data.get('defaultValue'));
         },
-        handleChange(value) {
+        handleChange(data) {
             const format = this.data.get('format');
+            const value = data.value;
+            const cause = data.cause || {};
             this.data.set('value', value, {force: false});
             this.fire('change', {date: value, dateString: value && value.format(format)});
             this.dispatch('UI:form-item-interact', {fieldValue: value, type: 'change'});
+
+            if (cause.source === 'keyboard'
+                || cause.source === 'dateInputSelect'
+                || (!this.data.get('showTime') && cause.source !== 'dateInput')
+                || cause.source === 'todayButton'
+            ) {
+                this.handleOpenChange(false);
+            }
         },
         handleOpenChange(open) {
+            this.data.set('open', open);
             this.fire('openChange', open);
         },
         handleClearSelection(e) {
@@ -158,12 +95,14 @@ export default function (theCalendar) {
             this.dispatch('UI:form-item-interact', {fieldValue: '', type: 'change'});
         },
         handleOk(value) {
+            this.data.set('value', value, {force: true});
             this.fire('ok', value);
+            this.handleOpenChange(false);
         },
         components: {
-            's-thecalendar': theCalendar,
-            's-picker': Picker,
-            's-icon': Icon
+            's-calendar': calendar,
+            's-icon': Icon,
+            's-trigger': Trigger
         },
         focus() {
             this.ref('input').focus();
@@ -173,47 +112,61 @@ export default function (theCalendar) {
         },
         template: `<span
             id="{{id}}"
-            class="{{classes}}"
-            style="{{style}} {{!showTime && 'min-width:195px;'}}"
+            class="{{pickerClass}}"
+            style="{{!showTime && 'min-width:195px;'}}"
         >
-            <s-picker
-                calendar="{{calendar}}"
-                value="{{value}}"
-                prefixCls="{{prefixCls}}-picker-container"
-                style="{{popupStyle}}"
-                transitionName="{{transitionName}}"
-                on-visibleChange="handleOpenChange"
-                on-change="handleChange"
-                on-ok="handleOk"
-                disabled="{{disabled}}"
-                open="{{open}}"
-                localeCode="{{localeCode}}"
+            <s-trigger
+                prefixCls="${prefixCls}-picker-container"
+                popupTransitionName="{{transitionName}}"
                 dropdownClassName="{{dropdownClassName}}"
                 getCalendarContainer="{{getCalendarContainer}}"
-                s-ref="picker"
+                visible="{{open}}"
+                action="{{disabled ? [] : trigger}}"
+                builtinPlacements="{{placements}}"
+                popupPlacement="bottomLeft"
+                destroyPopupOnHide="{{true}}"
+                on-visibleChange="handleOpenChange"
             >
-                <div>
-                    <input
-                        disabled="{{disabled}}"
-                        readOnly
-                        value="{{displayValue}}"
-                        placeholder="{{placeholder || locale.lang.placeholder}}"
-                        className="{{pickerInputClass}}"
-                        tabIndex="{{tabIndex}}"
-                        name="{{name}}"
-                        autocomplete="off"
-                        s-ref="input"
-                    />
-                    <s-icon
-                        s-if="!disabled && allowClear && value"
-                        type="close-circle"
-                        class="{{prefixCls}}-picker-clear"
-                        theme="filled"
-                        on-click="handleClearSelection"
-                    />
-                    <inputicon class="{{prefixCls}}-picker-icon" type="calendar"/>
-                </div>
-            </s-picker>
+                <s-calendar
+                    slot="popup"
+                    format="{{format}}"
+                    disabledDate="{{disabledDate}}"
+                    disabledTime="{{showTime ? disabledTime : null}}"
+                    selectedValue="{{value || defaultValue}}"
+                    timePicker="{{timePicker}}"
+                    dateInputPlaceholder="{{dateInputPlaceholder}}"
+                    prefixCls="${prefixCls}"
+                    customClassName="{{calendarClasses}}"
+                    format="{{format}}"
+                    showToday="{{showToday}}"
+                    showTime="{{showTime}}"
+                    locale="{{locale.lang}}"
+                    localeCode="{{localeCode}}"
+                    mode="{{mode}}"
+                    on-select="handleChange"
+                    on-clear="handleClearSelection"
+                    on-ok="handleOk"
+                />
+                <input
+                    disabled="{{disabled}}"
+                    readOnly
+                    value="{{displayValue}}"
+                    placeholder="{{placeholder || locale.lang.placeholder}}"
+                    class="{{pickerInputClass}}"
+                    tabIndex="{{tabIndex}}"
+                    name="{{name}}"
+                    autocomplete="off"
+                    s-ref="input"
+                />
+                <s-icon
+                    s-if="!disabled && allowClear && value"
+                    type="close-circle"
+                    class="${prefixCls}-picker-clear"
+                    theme="filled"
+                    on-click="handleClearSelection"
+                />
+                <s-icon class="${prefixCls}-picker-icon" type="calendar" />
+            </s-trigger>
         </span>`
     });
 }

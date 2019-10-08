@@ -3,11 +3,11 @@
  * @author mayihui@baidu.com
  **/
 import san from 'san';
-import Picker from '../calendar/src/picker';
 import RangeCalendar from '../calendar/src/rangeCalendar';
 import moment from 'moment';
 import {classCreator} from '../core/util';
-import inherits from '../core/util/inherits';
+import Trigger from '../core/trigger';
+import Placements from '../calendar/src/placements';
 import Icon from '../icon';
 import Tag from '../tag';
 
@@ -46,12 +46,7 @@ function pickerValueAdapter(value) {
 
 export default san.defineComponent({
     computed: {
-        classes() {
-            const className = this.data.get('className');
-            const pickerClass = this.data.get('pickerClass');
-            return [className, pickerClass];
-        },
-        renderFooter() {
+        /*renderFooter() {
             const renderExtraFooter = this.data.get('renderExtraFooter');
             const ranges = this.data.get('ranges');
             const prefixCls = this.data.get('prefixCls');
@@ -112,61 +107,7 @@ export default san.defineComponent({
                     </div>
                 </div>`
             });
-        },
-        calendar() {
-            const separator = this.data.get('separator');
-            const format = this.data.get('format');
-            const prefixCls = this.data.get('prefixCls');
-            const showTime = this.data.get('showTime');
-            const ranges = this.data.get('ranges');
-            let classArr = [];
-            showTime && classArr.push(`${prefixCls}-time`);
-            ranges && classArr.push(`${prefixCls}-range-with-ranges`);
-            const calendarClassName = classArr.join(' ');
-            const locale = this.data.get('locale');
-            const renderFooter = this.data.get('renderFooter');
-            const timePicker = this.data.get('timePicker');
-            const disabledDate = this.data.get('disabledDate');
-            const disabledTime = this.data.get('disabledTime');
-            const placeholder = this.data.get('placeholder');
-            const rangePlaceholder = locale && locale.lang.rangePlaceholder;
-            const dateInputPlaceholder = [
-                placeholder && placeholder[0] || rangePlaceholder[0],
-                placeholder && placeholder[1] || rangePlaceholder[1]
-            ];
-            const dateRender = this.data.get('dateRender');
-            const showDate = this.data.get('showDate');
-            const showToday = this.data.get('showToday');
-            const hoverValue = this.data.get('hoverValue');
-            const mode = this.data.get('mode');
-            const localeCode = this.data.get('localeCode');
-            if (localeCode && showDate) {
-                showDate[0].locale(localeCode);
-                showDate[1].locale(localeCode);
-            }
-
-            return inherits(san.defineComponent({
-                initData() {
-                    return {
-                        separator,
-                        format,
-                        prefixCls,
-                        className: calendarClassName,
-                        renderFooter,
-                        timePicker,
-                        disabledDate,
-                        disabledTime,
-                        dateInputPlaceholder,
-                        dateRender,
-                        value: showDate,
-                        showToday,
-                        hoverValue,
-                        propMode: mode,
-                        locale: locale.lang
-                    };
-                }
-            }), RangeCalendar);
-        },
+        },*/
         displayStartValue() {
             const value = this.data.get('value');
             const format = this.data.get('format');
@@ -177,35 +118,27 @@ export default san.defineComponent({
             const format = this.data.get('format');
             return value && value[1] && value[1].format(format);
         },
-        injectInputIcon() {
-            const suffixIcon = this.data.get('suffixIcon');
-            const instance = this.data.get('instance');
+        calendarClasses() {
+            let classArr = [];
+            const showTime = this.data.get('showTime');
+            const ranges = this.data.get('ranges');
 
-            let inputIcon;
-            if (typeof suffixIcon === 'function') {
-                inputIcon = suffixIcon;
-            }
-            else if (typeof suffixIcon === 'string') {
-                inputIcon = san.defineComponent({
-                    template: `<span class="{{className}}">
-                            {{suffixIcon}}
-                        </span>`
-                });
-            }
-            else {
-                inputIcon = Icon;
-            }
-            instance && (instance.components.inputicon = inputIcon);
+            showTime && classArr.push(`${prefixCls}-time`);
+            ranges && classArr.push(`${prefixCls}-range-with-ranges`);
+
+            return classArr.join(' ');
         }
     },
     initData() {
         return {
-            prefixCls,
             allowClear: true,
             showToday: false,
             separator: '~',
             hoverValue: [],
-            disabledTime() {}
+            disabledTime() {},
+            trigger: 'click',
+            placements: Placements
+
         };
     },
     inited() {
@@ -216,18 +149,10 @@ export default san.defineComponent({
 
         this.data.set('value', value || defaultValue || []);
         this.data.set('showDate', pickerValueAdapter(pickerValue || moment()));
-        this.data.set('inputStyle', this.data.get('style'));
-        this.data.set('style', {});
-    },
-    clearHoverValue() {
-        this.data.set('hoverValue', []);
-    },
-    handleCalendarChange(value) {
-        this.data.set('value', value);
     },
     handleOpenChange(open) {
         if (open === false) {
-            this.clearHoverValue();
+            this.data.set('hoverValue', []);
         }
         this.data.set('open', open);
         this.fire('openChange', open);
@@ -237,20 +162,32 @@ export default san.defineComponent({
         e.stopPropagation();
 
         this.data.set('value', []);
-        this.handleChange([]);
+        this.handleChange({selectedValue: []});
         this.dispatch('UI:form-item-interact', {fieldValue: '', type: 'change'});
     },
-    handleChange(value) {
-        this.data.set('value', value);
-        this.data.set('showDate', getShowDateFromValue(value) || this.data.get('showDate'));
+    handleChange(data) {
+        const selectedValue = data.selectedValue;
+        const cause = data.cause || {};
+
+        this.data.set('value', selectedValue);
+        this.data.set('selectedValue', selectedValue);
+        this.data.set('showDate', getShowDateFromValue(selectedValue) || this.data.get('showDate'), {force: true});
         const format = this.data.get('format');
-        const [start, end] = value;
+        const [start, end] = selectedValue;
 
         this.fire('change', {
-            date: value,
+            date: selectedValue,
             dateString: [start && start.format(format) || '', end && end.format(format) || '']
         });
-        this.dispatch('UI:form-item-interact', {fieldValue: value, type: 'change'});
+        this.dispatch('UI:form-item-interact', {fieldValue: selectedValue, type: 'change'});
+
+        if (cause.source === 'keyboard'
+            || cause.source === 'dateInputSelect'
+            || (!this.data.get('showTime') && cause.source !== 'dateInput')
+            || cause.source === 'todayButton'
+        ) {
+            this.handleOpenChange(false);
+        }
     },
     setValue(value, hidePanel) {
         this.handleChange(value);
@@ -270,7 +207,7 @@ export default san.defineComponent({
     },
     handleRangeMouseLeave() {
         if (this.data.get('open')) {
-            this.clearHoverValue();
+            this.data.set('hoverValue', []);
         }
     },
     handleOk(value) {
@@ -279,70 +216,77 @@ export default san.defineComponent({
     handlePanelChange(params) {
         this.fire('panelChange', params);
     },
-    messages: {
-        valueChange(payload) {
-            this.data.set('showDate', payload.value);
-        },
-        hoverChange(payload) {
-            this.data.set('hoverValue', payload.value);
-        },
-        panelChange(payload) {
-            this.fire('panelChange', payload.value);
-        }
-    },
     components: {
-        's-picker': Picker,
-        's-icon': Icon
+        's-icon': Icon,
+        's-trigger': Trigger,
+        's-rangecalendar': RangeCalendar
     },
     template: `<span
             id="{{id}}"
-            class="{{classes}}"
+            class="{{pickerClass}}"
             tabIndex="{{disabled ? -1 : 0}}"
         >
-            <s-picker
-                calendar="{{calendar}}"
-                value="{{value}}"
-                prefixCls="{{prefixCls}}-picker-container"
-                style="{{popupStyle}}"
-                transitionName="{{transitionName}}"
-                open="{{open}}"
+
+            <s-trigger
+                prefixCls="${prefixCls}-picker-container"
+                popupTransitionName="{{transitionName}}"
                 dropdownClassName="{{dropdownClassName}}"
                 getCalendarContainer="{{getCalendarContainer}}"
+                visible="{{open}}"
+                action="{{disabled ? [] : trigger}}"
+                builtinPlacements="{{placements}}"
+                popupPlacement="bottomLeft"
                 on-visibleChange="handleOpenChange"
-                on-change="handleChange"
-                on-panelChange="handlePanelChange"
-                on-ok="handleOk"
-                disabled="{{disabled}}"
             >
+                <s-rangecalendar
+                    prefixCls="${prefixCls}"
+                    slot="popup"
+                    separator="{{separator}}"
+                    format="{{format}}"
+                    className="{{calendarClasses}}"
+                    timePicker="{{timePicker}}"
+                    disabledDate="{{disabledDate}}"
+                    disabledTime="{{disabledTime}}"
+                    dateInputPlaceholder="{{dateInputPlaceholder}}"
+                    value="{{showDate}}"
+                    selectedValue="{{selectedValue}}"
+                    hoverValue="{{hoverValue}}"
+                    showToday="{{showToday}}"
+                    propMode="{{mode}}"
+                    locale="{{locale.lang}}"
+                    localeCode="{{localeCode}}"
+                    on-select="handleChange"
+                    on-panelChange="handlePanelChange"
+                />
                 <div class="{{pickerInputClass}}">
                     <input
                         disabled="{{disabled}}"
                         readOnly
                         value="{{displayStartValue}}"
                         placeholder="{{placeholder && placeholder[0] || locale.lang.rangePlaceholder[0]}}"
-                        className="{{prefixCls}}-range-picker-input"
+                        class="${prefixCls}-range-picker-input"
                         tabIndex="-1"
                         style="{{inputStyle}}"
                     />
-                    <span class="{{prefixCls}}-range-picker-separator">{{separator}}</span>
+                    <span class="${prefixCls}-range-picker-separator">{{separator}}</span>
                     <input
                         disabled="{{disabled}}"
                         readOnly
                         value="{{displayEndValue}}"
                         placeholder="{{placeholder && placeholder[1] || locale.lang.rangePlaceholder[1]}}"
-                        className="{{prefixCls}}-range-picker-input"
+                        class="${prefixCls}-range-picker-input"
                         tabIndex="-1"
                         style="{{inputStyle}}"
                     />
                     <s-icon
                         s-if="!disabled && allowClear && value && (value[0] || value[1])"
                         type="close-circle"
-                        class="{{prefixCls}}-picker-clear"
+                        class="${prefixCls}-picker-clear"
                         theme="filled"
                         on-click="handleClearSelection"
                     />
-                    <inputicon class="{{prefixCls}}-picker-icon" type="calendar"/>
+                    <s-icon class="${prefixCls}-picker-icon" type="calendar" />
                 </div>
-            </s-picker>
+            </s-trigger>
         </span>`
 });

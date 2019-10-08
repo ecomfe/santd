@@ -363,9 +363,6 @@ export default san.defineComponent({
     components: {
         's-popup': Popup
     },
-    /*handleShow() {
-        this.data.set('show', !this.data.get('show'));
-    },*/
     messages: {
         santd_popup_save(payload) {
             this.data.set('popupComponent', payload.value);
@@ -411,6 +408,7 @@ export default san.defineComponent({
                     getClassNameFromAlign="{{getClassNameFromAlign}}"
                     popupClassName="{{popupClassName}}"
                     popupStyle="{{popupStyle}}"
+                    destroyPopupOnHide="{{destroyPopupOnHide}}"
                 >
                     <slot name="popup" />
                 </x-popup>

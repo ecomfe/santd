@@ -30,7 +30,7 @@ export default san.defineComponent({
     attached() {
         const slot = this.slotChildren[0];
         const showProp = this.data.get('showProp') || 'visible';
-        let children = getChildrenFromComponent(slot.children);
+        let children = slot && getChildrenFromComponent(slot.children) || [];
         this.childs = children.length ? children : [this];
         if (showProp) {
             children = this.childs.filter(child => child.data.get(showProp));

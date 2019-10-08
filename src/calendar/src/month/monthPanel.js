@@ -4,7 +4,6 @@
  **/
 
 import san, {DataTypes} from 'san';
-import moment from 'moment';
 import MonthTable from './monthTable';
 
 export default san.defineComponent({
@@ -52,7 +51,7 @@ export default san.defineComponent({
     },
     setAndSelectValue(value) {
         this.data.set('value', value);
-        this.fire('select', value);
+        this.fire('select', {value});
     },
     components: {
         's-monthtable': MonthTable

@@ -5,6 +5,7 @@
 
 import san, {DataTypes} from 'san';
 import {getTodayTime, getMonthName} from '../util/index';
+import moment from 'moment';
 
 const ROW = 4;
 const COL = 3;
@@ -112,7 +113,7 @@ export default san.defineComponent({
         }
 
         if (!disabled) {
-            const next = this.data.get('value').clone();
+            const next = value.clone();
             next.month(monthData.value);
             this.setAndSelectValue(next);
         }

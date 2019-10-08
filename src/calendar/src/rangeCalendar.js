@@ -221,10 +221,14 @@ export default inherits(san.defineComponent({
     inited() {
         const selectedValue = this.data.get('selectedValue') || this.data.get('defaultSelectedValue');
         const value = normalizeAnchor(this.data, true);
+        const localeCode = this.data.get('localeCode');
 
         this.data.set('selectedValue', selectedValue);
         this.data.set('prevSelectedValue', selectedValue);
         this.data.set('firstSelectedValue', null);
+
+        localeCode && value[0].locale(localeCode);
+        localeCode && value[1].locale(localeCode);
         this.data.set('value', value);
         this.data.set('instance', this);
     },
@@ -303,7 +307,6 @@ export default inherits(san.defineComponent({
             prevSelectedValue,
             firstSelectedValue
         } = this.data.get();
-        console.log(prevSelectedValue)
 
         let nextSelectedValue;
         if (type === 'both') {

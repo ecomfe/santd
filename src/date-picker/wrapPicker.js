@@ -27,23 +27,28 @@ const LOCALE_FORMAT_MAPPING = {
     month: 'monthFormat'
 };
 
-const Locale = inherits(san.defineComponent({
+const Locale = san.defineComponent({
     initData() {
         return {
             componentName: 'DatePicker'
         };
     }
-}), LocalReceiver);
+}, LocalReceiver);
 
 export default function (Picker, pickerType) {
     return inherits(san.defineComponent({
         initData() {
             return {
+                ...Locale.prototype.initData(),
                 prefixCls,
                 transitionName: 'slide-up'
             };
         },
+        inited() {
+            Locale.prototype.inited.bind(this)();
+        },
         computed: {
+            ...Locale.prototype.computed,
             format() {
                 const format = this.data.get('format');
                 const showTime = this.data.get('showTime');
@@ -61,9 +66,7 @@ export default function (Picker, pickerType) {
                 const prefixCls = this.data.get('prefixCls');
                 const size = this.data.get('size');
                 const disabled = this.data.get('disabled');
-                let classArr = [`${prefixCls}-picker-input`, inputPrefixCls];
-                size === 'large' && classArr.push(`${inputPrefixCls}-lg`);
-                size === 'small' && classArr.push(`${inputPrefixCls}-sm`);
+                let classArr = [`${prefixCls}-picker-input`, inputPrefixCls, `${inputPrefixCls}-${size}`];
                 disabled && classArr.push(`${inputPrefixCls}-disabled`);
                 return classArr.join(' ');
             },
@@ -134,5 +137,5 @@ export default function (Picker, pickerType) {
                 this.focus();
             }
         }
-    }), inherits(Picker, Locale));
+    }), Picker);
 }
