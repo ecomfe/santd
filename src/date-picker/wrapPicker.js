@@ -8,7 +8,7 @@ import moment from 'moment';
 import inherits from '../core/util/inherits';
 import {classCreator} from '../core/util/index';
 import TimePickerPanel from '../timepicker/src/panel';
-import localReceiver from '../localeprovider/localereceiver';
+import localeReceiver from '../localeprovider/receiver';
 
 const prefixCls = classCreator('calendar')();
 const inputPrefixCls = classCreator('input')();
@@ -29,11 +29,12 @@ export default function (Picker, pickerType) {
                 transitionName: 'slide-up'
             };
         },
-        inited() {
-            localReceiver.prototype.inited.bind(this)();
-        },
+
+        inited: localeReceiver.inited,
+
         computed: {
-            ...localReceiver.prototype.computed,
+            ...localeReceiver.computed,
+
             format() {
                 const format = this.data.get('format');
                 const showTime = this.data.get('showTime');
