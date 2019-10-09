@@ -11,14 +11,11 @@ const COL = 3;
 export default san.defineComponent({
     dataTypes: {
         disabledDate: DataTypes.func,
-        renderFooter: DataTypes.func,
-        rootPrefixCls: DataTypes.string,
         value: DataTypes.object,
         defaultValue: DataTypes.object
     },
     computed: {
         years() {
-            const refresh = this.data.get('refresh');
             const startYear = this.data.get('startYear');
             const previousYear = startYear - 1;
             const years = [];
@@ -81,8 +78,8 @@ export default san.defineComponent({
         });
     },
     template: `
-        <table className="{{prefixCls}}-table" cellSpacing="0" role="grid">
-            <tbody className="{{prefixCls}}-tbody">
+        <table class="{{prefixCls}}-table" cellSpacing="0" role="grid">
+            <tbody class="{{prefixCls}}-tbody">
                 <tr
                     s-for="year, index in years"
                     key="{{index}}"

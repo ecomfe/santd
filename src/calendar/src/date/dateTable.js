@@ -79,11 +79,11 @@ export default san.defineComponent({
                     if (j > 0) {
                         last = current.clone().add(passed - 1, 'days');
                     }
-                    let className = `${prefixCls}-cell`;
+                    let className = [`${prefixCls}-cell`];
                     let disabled = false;
                     let selected = false;
                     if (isSameDay(current, today)) {
-                        className += ` ${prefixCls}-today`;
+                        className.push(`${prefixCls}-today`);
                         dataTable[i].isCurrentWeek = true;
                     }
 
@@ -99,26 +99,20 @@ export default san.defineComponent({
                                 if (isSameDay(current, startValue)) {
                                     selected = true;
                                     dataTable[i].isActiveWeek = true;
-                                    className += ` ${prefixCls}-selected-start-date`;
+                                    className.push(`${prefixCls}-selected-start-date`);
                                 }
                             }
                             if (startValue || endValue) {
                                 if (isSameDay(current, endValue)) {
                                     selected = true;
                                     dataTable[i].isActiveWeek = true;
-                                    className += ` ${prefixCls}-selected-end-date`;
+                                    className.push(`${prefixCls}-selected-end-date`);
                                 }
-                                else if ((startValue === null || startValue === undefined)
-                                    && current.isBefore(endValue, 'day')) {
-                                    className += ` ${prefixCls}-in-range-cell`;
-                                }
-                                else if ((endValue === null || endValue === undefined)
-                                    && current.isAfter(startValue, 'day')) {
-                                    className += ` ${prefixCls}-in-range-cell`;
-                                }
-                                else if (current.isAfter(startValue, 'day')
-                                    && current.isBefore(endValue, 'day')) {
-                                    className += ` ${prefixCls}-in-range-cell`;
+                                else if ((!startValue && current.isBefore(endValue, 'day'))
+                                    || (!endValue && current.isAfter(startValue, 'day'))
+                                    || (current.isAfter(startValue, 'day') && current.isBefore(endValue, 'day'))
+                                ) {
+                                    className.push(`${prefixCls}-in-range-cell`);
                                 }
                             }
                         }
@@ -128,44 +122,23 @@ export default san.defineComponent({
                         dataTable[i].isActiveWeek = true;
                     }
 
-                    if (isSameDay(current, selectedValue)) {
-                        className += ` ${prefixCls}-selected-date`;
-                    }
-
-                    if (isBeforeCurrentMonthYear) {
-                        className += ` ${prefixCls}-last-month-cell`;
-                    }
-
-                    if (isAfterCurrentMonthYear) {
-                        className += ` ${prefixCls}-next-month-btn-day`;
-                    }
-
-                    if (current.clone().endOf('month').date() === current.date()) {
-                        className += ` ${prefixCls}-last-day-of-month`;
-                    }
+                    isSameDay(current, selectedValue) && className.push(`${prefixCls}-selected-date`);
+                    isBeforeCurrentMonthYear && className.push(`${prefixCls}-last-month-cell`);
+                    isAfterCurrentMonthYear && className.push(`${prefixCls}-next-month-btn-day`);
+                    (current.clone().endOf('month').date() === current.date()) && className.push(` ${prefixCls}-last-day-of-month`);
 
                     if (disabledDate) {
                         if (disabledDate(current, value)) {
                             disabled = true;
 
-                            if (!last || !disabledDate(last, value)) {
-                                className += ` ${prefixCls}-disabled-cell-first-of-row`;
-                            }
-
-                            if (!next || !disabledDate(next, value)) {
-                                className += ` ${prefixCls}-disabled-cell-last-of-row`;
-                            }
+                            (!last || !disabledDate(last, value)) && className.push(`${prefixCls}-disabled-cell-first-of-row`);
+                            (!next || !disabledDate(next, value)) && className.push(`${prefixCls}-disabled-cell-last-of-row`);
                         }
                     }
 
-                    if (selected) {
-                        className += ` ${prefixCls}-selected-day`;
-                    }
-
-                    if (disabled) {
-                        className += ` ${prefixCls}-disabled-cell`;
-                    }
-                    dataTable[i].current[j].className = className;
+                    selected && className.push(`${prefixCls}-selected-day`);
+                    disabled && className.push(`${prefixCls}-disabled-cell`);
+                    dataTable[i].current[j].className = className.join(' ');
                     dataTable[i].current[j].selected = selected;
                     dataTable[i].current[j].disabled = disabled;
                     passed++;
@@ -192,47 +165,10 @@ export default san.defineComponent({
                 veryShortWeekdays,
                 weekDays
             };
-        },
-        injectDate() {
-            const instance = this.data.get('instance');
-            const dateRender = this.data.get('dateRender');
-            const contentRender = this.data.get('contentRender');
-
-            let content;
-            if (dateRender) {
-                instance && (instance.components.daterender = dateRender);
-            }
-            else {
-                if (contentRender) {
-                    content = contentRender;
-                }
-                else {
-                    content = san.defineComponent({
-                        computed: {
-                            date() {
-                                return this.data.get('value').date();
-                            }
-                        },
-                        template: '<span>{{date}}</span>'
-                    });
-                }
-                instance && (instance.components.daterender = san.defineComponent({
-                    components: {
-                        's-content': content
-                    },
-                    template: `<div class="{{prefixCls}}-date">
-                        <s-content value="{{value}}"/>
-                    </div>`
-                }));
-            }
         }
     },
     inited() {
-        const value = this.data.get('value');
-        const defaultValue = this.data.get('defaultValue');
-
-        this.data.set('value', value || defaultValue);
-        this.data.set('instance', this);
+        this.data.set('value', this.data.get('value') || this.data.get('defaultValue'));
     },
     handlePreviousYear() {
         this.fire('changeYear', -1);
@@ -246,8 +182,6 @@ export default san.defineComponent({
     setAndSelectValue(value) {
         this.data.set('value', value);
         this.fire('select', value);
-    },
-    components: {
     },
     getTrClassName(date) {
         const prefixCls = this.data.get('prefixCls');
@@ -267,6 +201,9 @@ export default san.defineComponent({
     handleMouseEnter(disabled, value) {
         this.fire('dayHover', value);
     },
+    getDate(value) {
+        return value.date();
+    },
     template: `
         <table class="{{prefixCls}}-table" cellspacing="0" role="grid">
             <thead>
@@ -280,13 +217,12 @@ export default san.defineComponent({
                     </th>
                     <th
                         s-for="day, index in weeks.weekDays"
-                        key="{{index}}"
                         role="columnheader"
                         title="{{day}}"
                         class="{{prefixCls}}-column-header"
                     >
                         <span class="{{prefixCls}}-column-header-inner">
-                        {{weeks.veryShortWeekdays[index]}}
+                            {{weeks.veryShortWeekdays[index]}}
                         </span>
                     </th>
                 </tr>
@@ -294,13 +230,11 @@ export default san.defineComponent({
             <tbody class="{{prefixCls}}-tbody">
                 <tr
                     s-for="date, index in dates"
-                    key="{{index}}"
                     role="row"
                     class="{{getTrClassName(date)}}"
                 >
                     <td
                         s-if="showWeekNumber"
-                        key="{{date.week}}"
                         role="gridcell"
                         class="{{prefixCls}}-week-number-cell"
                     >
@@ -314,7 +248,7 @@ export default san.defineComponent({
                         on-click="handleClick(current.disabled, current.data)"
                         on-mouseenter="handleMouseEnter(current.disabled, current.data)"
                     >
-                        <daterender value="{{current.data}}" prefixCls="{{prefixCls}}"/>
+                        <div class="{{prefixCls}}-date">{{getDate(current.data)}}</div>
                     </td>
                 </tr>
             </tbody>

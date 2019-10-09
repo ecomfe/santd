@@ -130,12 +130,8 @@ export default san.defineComponent({
         this.data.set('popupVisible', popupVisible);
 
         const currentDocument = this.data.get('getDocument')();
-        const that = this;
         if (!documentEventListener) {
-            // documentEventListener = currentDocument.addEventListener('mousedown', this.handleDocumentClick.bind(this));
-            documentEventListener = currentDocument.addEventListener('mousedown', function (e) {
-                that.handleDocumentClick(e);
-            });
+            documentEventListener = currentDocument.addEventListener('mousedown', this.handleDocumentClick.bind(this));
         }
 
         this.watch('popupVisible', val => {

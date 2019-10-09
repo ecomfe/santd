@@ -9,10 +9,8 @@ import {classCreator} from '../core/util';
 import Trigger from '../core/trigger';
 import Placements from '../calendar/src/placements';
 import Icon from '../icon';
-import Tag from '../tag';
 
 const prefixCls = classCreator('calendar')();
-const tagPrefixCls = classCreator('tag')();
 
 function getShowDateFromValue(value, mode) {
     const [start, end] = value;
@@ -138,17 +136,16 @@ export default san.defineComponent({
             disabledTime() {},
             trigger: 'click',
             placements: Placements
-
         };
     },
     inited() {
-        this.data.set('instance', this);
         const value = this.data.get('value');
         const defaultValue = this.data.get('defaultValue');
         const pickerValue = !value || isEmptyArray(value) ? this.data.get('defaultPickerValue') : value;
 
         this.data.set('value', value || defaultValue || []);
         this.data.set('showDate', pickerValueAdapter(pickerValue || moment()));
+        this.data.set('hasExtraFooter', !!this.sourceSlots.named.renderExtraFooter);
     },
     handleOpenChange(open) {
         if (open === false) {
@@ -243,7 +240,7 @@ export default san.defineComponent({
                     slot="popup"
                     separator="{{separator}}"
                     format="{{format}}"
-                    className="{{calendarClasses}}"
+                    class="{{calendarClasses}}"
                     timePicker="{{timePicker}}"
                     disabledDate="{{disabledDate}}"
                     disabledTime="{{disabledTime}}"
@@ -255,9 +252,12 @@ export default san.defineComponent({
                     propMode="{{mode}}"
                     locale="{{locale.lang}}"
                     localeCode="{{localeCode}}"
+                    hasExtraFooter="{{hasExtraFooter}}"
                     on-select="handleChange"
                     on-panelChange="handlePanelChange"
-                />
+                >
+                    <slot name="renderExtraFooter" slot="renderExtraFooter" />
+                </s-rangecalendar>
                 <div class="{{pickerInputClass}}">
                     <input
                         disabled="{{disabled}}"

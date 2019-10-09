@@ -11,7 +11,6 @@ import KeyCode from '../../../core/util/keyCode';
 export default san.defineComponent({
     dataTypes: {
         prefixCls: DataTypes.string,
-        timePicker: DataTypes.func,
         value: DataTypes.object,
         disabledTime: DataTypes.func,
         format: DataTypes.oneOfType([DataTypes.string, DataTypes.arrayOf(DataTypes.string)]),
@@ -19,41 +18,40 @@ export default san.defineComponent({
         disabledDate: DataTypes.func,
         placeholder: DataTypes.string,
         selectedValue: DataTypes.object,
-        clearIcon: DataTypes.func,
         inputMode: DataTypes.string
     },
+
     initData() {
         return {
-            str: '',
+            showDate: '',
             invalid: false,
-            hasFocus: false
+            hasFocus: true
         };
     },
+
     inited() {
         const format = this.data.get('format');
-        this.data.set('str', formatDate(this.data.get('selectedValue'), format));
+        this.data.set('showDate', formatDate(this.data.get('selectedValue'), format));
         this.watch('selectedValue', val => {
-            this.data.set('str', formatDate(val, format));
+            this.data.set('showDate', formatDate(val, format));
         });
     },
+
     attached() {
         if (this.data.get('hasFocus')) {
-            this.ref('input').focus();
+            this.nextTick(() => {
+                this.ref('input').focus();
+            });
         }
     },
-    computed: {
-        invalidClass() {
-            const invalid = this.data.get('invalid');
-            const prefixCls = this.data.get('prefixCls');
-            return invalid ? prefixCls + '-input-invalid' : '';
-        }
-    },
+
     handleClear() {
-        this.data.set('str', '');
+        this.data.set('showDate', '');
         this.fire('clear');
     },
+
     handleChange(e) {
-        const str = e.target.value;
+        const showDate = e.target.value;
         const {
             disabledDate,
             format,
@@ -61,24 +59,23 @@ export default san.defineComponent({
         } = this.data.get();
 
         // 没有内容，合法并直接退出
-        if (!str) {
+        if (!showDate) {
             this.fire('change', null);
             this.data.set('invalid', false);
-            this.data.set('str', '');
+            this.data.set('showDate', '');
             return;
         }
 
         // 不合法直接退出
-        const parsed = moment(str, format, true);
+        const parsed = moment(showDate, format, true);
         if (!parsed.isValid()) {
             this.data.set('invalid', true);
-            this.data.set('str', str);
+            this.data.set('showDate', showDate);
             return;
         }
 
         const value = this.data.get('value').clone();
-        value
-            .year(parsed.year())
+        value.year(parsed.year())
             .month(parsed.month())
             .date(parsed.date())
             .hour(parsed.hour())
@@ -87,7 +84,7 @@ export default san.defineComponent({
 
         if (!value || (disabledDate && disabledDate(value))) {
             this.data.set('invalid', true);
-            this.data.set('str', str);
+            this.data.set('showDate', showDate);
             return;
         }
 
@@ -95,19 +92,11 @@ export default san.defineComponent({
             selectedValue && value && !selectedValue.isSame(value)
         )) {
             this.data.set('invalid', false);
-            this.data.set('str', str);
+            this.data.set('showDate', showDate);
             this.fire('change', value);
         }
     },
-    handleFocus() {
-        this.data.set('hasFocus', true);
-    },
-    handleBlur() {
-        const value = this.data.get('value');
-        const format = this.data.get('format');
-        this.data.set('hasFocus', false);
-        this.data.set('str', formatDate(value, format));
-    },
+
     handleKeyDown(e) {
         const disabledDate = this.data.get('disabledDate');
         const value = this.data.get('value');
@@ -118,25 +107,21 @@ export default san.defineComponent({
             }
         }
     },
+
     template: `
         <div class="{{prefixCls}}-input-wrap">
             <div class="{{prefixCls}}-date-input-wrap">
                 <input
-                    class="{{prefixCls}}-input {{invalidClass}}"
-                    value="{{str}}"
+                    class="{{prefixCls}}-input {{invalid ? prefixCls + '-input-invalid' : ''}}"
+                    value="{{showDate}}"
                     disabled="{{disabled}}"
                     placeholder="{{placeholder}}"
                     on-change="handleChange"
                     on-input="handleChange"
-                    on-focus="handleFocus"
-                    on-blur="handleBlur"
                     on-keydown="handleKeyDown"
                     inputMode="{{inputMode}}"
                     s-ref="input"
                 />
-                <a role="button" title="{{locale.clear}} on-click="handleClear" s-if="showClear">
-                    <span class="{{prefixCls}}-clear-btn"></span>
-                </a>
             </div>
         </div>
     `

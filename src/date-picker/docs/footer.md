@@ -7,21 +7,30 @@
 <template>
     <div>
         <div>
-            <s-datepicker renderExtraFooter="{{extraFooter}}"/>
+            <s-datepicker>
+                <div slot="renderExtraFooter">extra footer</div>
+            </s-datepicker>
             <br /><br />
-            <s-datepicker renderExtraFooter="{{extraFooter}}" showTime />
+            <s-datepicker showTime>
+                <div slot="renderExtraFooter">extra footer</div>
+            </s-datepicker>
             <br /><br />
-            <s-rangepicker renderExtraFooter="{{extraFooter}}" />
+            <s-rangepicker>
+                <div slot="renderExtraFooter">extra footer</div>
+            </s-rangepicker>
             <br /><br />
-            <s-rangepicker renderExtraFooter="{{extraFooter}}" showTime />
+            <s-rangepicker showTime>
+                <div slot="renderExtraFooter">extra footer</div>
+            </s-rangepicker>
             <br /><br />
-            <s-monthpicker renderExtraFooter="{{extraFooter}}" placeholder="Select month" />
+            <s-monthpicker placeholder="Select month">
+                <span slot="renderExtraFooter">extra footer</span>
+            </s-monthpicker>
         </div>
     </div>
 </template>
 
 <script>
-import san from 'san';
 import DatePicker from 'santd/date-picker';
 
 export default {
@@ -29,15 +38,6 @@ export default {
         's-datepicker': DatePicker,
         's-monthpicker': DatePicker.MonthPicker,
         's-rangepicker': DatePicker.RangePicker
-    },
-    initData() {
-        return {
-            extraFooter() {
-                return san.defineComponent({
-                    template: `<span>extra footer</span>`
-                });
-            }
-        }
     },
     handleChange({date, dateString}) {
         console.log(date, dateString);

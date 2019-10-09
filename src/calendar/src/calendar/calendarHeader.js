@@ -4,7 +4,6 @@
  **/
 
 import san, {DataTypes} from 'san';
-import inherits from '../../../core/util/inherits';
 import MonthPanel from '../month/monthPanel';
 import YearPanel from '../year/yearPanel';
 import DecadePanel from '../decade/decadePanel';
@@ -17,8 +16,7 @@ export default san.defineComponent({
         locale: DataTypes.object,
         enablePrev: DataTypes.any,
         enableNext: DataTypes.any,
-        disabledMonth: DataTypes.func,
-        renderFooter: DataTypes.func
+        disabledMonth: DataTypes.func
     },
     initData() {
         return {
@@ -163,34 +161,38 @@ export default san.defineComponent({
                 s-if="mode === 'month'"
                 locale="{{locale}}"
                 value="{{value}}"
-                rootPrefixCls="{{prefixCls}}"
+                prefixCls="{{prefixCls}}"
+                disabledDate="{{disabledMonth}}"
+                hasExtraFooter="{{hasExtraFooter}}"
                 on-select="handleMonthSelect"
                 on-yearPanelShow="showYearPanel('month')"
-                disabledDate="{{disabledMonth}}"
-                cellRender="{{monthCellRender}}"
-                contentRender="{{monthCellContentRender}}"
-                renderFooter="{{renderFooter}}"
                 on-changeYear="goYear"
-            />
+            >
+                <slot name="renderExtraFooter" slot="renderExtraFooter" />
+            </s-monthpanel>
             <s-yearpanel
                 s-if="mode === 'year'"
                 locale="{{locale}}"
                 defaultValue="{{value}}"
                 value="{{value}}"
-                rootPrefixCls="{{prefixCls}}"
-                renderFooter="{{renderFooter}}"
+                prefixCls="{{prefixCls}}"
+                hasExtraFooter="{{hasExtraFooter}}"
                 on-select="handleYearSelect"
                 on-decadePanelShow="showDecadePanel"
-            />
+            >
+                <slot name="renderExtraFooter" slot="renderExtraFooter" />
+            </s-yearpanel>
             <s-decadepanel
                 s-if="mode === 'decade'"
                 locale="{{locale}}"
                 defaultValue="{{value}}"
                 value="{{value}}"
-                rootPrefixCls="{{prefixCls}}"
+                prefixCls="{{prefixCls}}"
+                hasExtraFooter="{{hasExtraFooter}}"
                 on-select="handleDecadeSelect"
-                renderFooter="{{renderFooter}}"
-            />
+            >
+                <slot name="renderExtraFooter" slot="renderExtraFooter" />
+            </s-decadepanel>
         </div>
     `
 });

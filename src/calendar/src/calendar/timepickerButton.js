@@ -5,23 +5,12 @@
 
 import san, {DataTypes} from 'san';
 
-
 export default san.defineComponent({
     dataTypes: {
         prefixCls: DataTypes.string,
         showTimePicker: DataTypes.bool,
         locale: DataTypes.object,
         timePickerDisabled: DataTypes.bool
-    },
-    computed: {
-        classes() {
-            const prefixCls = this.data.get('prefixCls');
-            const timePickerDisabled = this.data.get('timePickerDisabled');
-
-            let classArr = [`${prefixCls}-time-picker-btn`];
-            timePickerDisabled && classArr.push(`${prefixCls}-time-picker-btn-disabled`);
-            return classArr;
-        }
     },
     handleClick() {
         const timePickerDisabled = this.data.get('timePickerDisabled');
@@ -32,7 +21,7 @@ export default san.defineComponent({
     },
     template: `
         <a
-            class="{{classes}}"
+            class="{{prefixCls}}-time-picker-btn {{timePickerDisabled ? prefixCls + '-time-picker-btn-disabled' : ''}}"
             role="button"
             on-click="handleClick"
         >

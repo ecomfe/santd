@@ -8,23 +8,14 @@ import DecadeTable from './decadeTable';
 
 export default san.defineComponent({
     dataTypes: {
-        rootPrefixCls: DataTypes.string,
+        prefixCls: DataTypes.string,
         value: DataTypes.object,
-        defaultValue: DataTypes.object,
-        renderFooter: DataTypes.func
+        defaultValue: DataTypes.object
     },
     inited() {
-        const value = this.data.get('value');
-        const defaultValue = this.data.get('defaultValue');
-
-        this.data.set('value', value || defaultValue);
-        this.data.set('instance', this);
+        this.data.set('value', this.data.get('value') || this.data.get('defaultValue'));
     },
     computed: {
-        prefixCls() {
-            const rootPrefixCls = this.data.get('rootPrefixCls');
-            return rootPrefixCls + '-decade-panel';
-        },
         startYear() {
             const value = this.data.get('value');
             const currentYear = value.year();
@@ -33,14 +24,6 @@ export default san.defineComponent({
         endYear() {
             const startYear = this.data.get('startYear');
             return startYear + 99;
-        },
-        injectFooter() {
-            const renderFooter = this.data.get('renderFooter');
-            const instance = this.data.get('instance');
-
-            if (instance && renderFooter) {
-                instance.components.footer = renderFooter;
-            }
         }
     },
     handlePreviousCentury() {
@@ -65,43 +48,38 @@ export default san.defineComponent({
         's-centurytable': DecadeTable
     },
     template: `
-        <div class="{{prefixCls}}">
-            <div>
-            <div class="{{prefixCls}}-header">
+        <div class="{{prefixCls}}-decade-panel">
+            <div class="{{prefixCls}}-decade-panel-header">
                 <a
-                    class="{{prefixCls}}-prev-century-btn"
+                    class="{{prefixCls}}-decade-panel-prev-century-btn"
                     role="button"
                     on-click="handlePreviousCentury"
                     title="{{locale.previousCentury}}"
                     href="javascript:;"
                 />
-                <div class="{{prefixCls}}-century">
+                <div class="{{prefixCls}}-decade-panel-century">
                     {{startYear}}-{{endYear}}
                 </div>
                 <a
-                    class="{{prefixCls}}-next-century-btn"
+                    class="{{prefixCls}}-decade-panel-next-century-btn"
                     role="button"
                     on-click="handleNextCentury"
                     title="{{locale.nextCentury}}"
                     href="javascript:;"
                 />
             </div>
-            <div class="{{prefixCls}}-body">
+            <div class="{{prefixCls}}-decade-panel-body">
                 <s-centurytable
                     locale="{{locale}}"
                     value="{{value}}"
-                    cellRender="{{cellRender}}"
-                    contentRender="{{contentRender}}"
-                    prefixCls="{{prefixCls}}"
+                    prefixCls="{{prefixCls}}-decade-panel"
                     startYear="{{startYear}}"
                     endYear="{{endYear}}"
-                    rootPrefixCls="{{rootPrefixCls}}"
                     on-select="setAndSelectValue"
                 />
             </div>
-            <div class="{{prefixCls}}-footer" s-if="renderFooter">
-                <footer />
-            </div>
+            <div class="{{prefixCls}}-decade-panel-footer" s-if="hasExtraFooter">
+                <slot name="renderExtraFooter" />
             </div>
         </div>
     `

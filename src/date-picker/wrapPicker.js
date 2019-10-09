@@ -8,7 +8,7 @@ import moment from 'moment';
 import inherits from '../core/util/inherits';
 import {classCreator} from '../core/util/index';
 import TimePickerPanel from '../timepicker/src/panel';
-import LocalReceiver from '../localeprovider/localereceiver';
+import localReceiver from '../localeprovider/localereceiver';
 
 const prefixCls = classCreator('calendar')();
 const inputPrefixCls = classCreator('input')();
@@ -20,35 +20,20 @@ const DEFAULT_FORMAT = {
     month: 'YYYY-MM'
 };
 
-const LOCALE_FORMAT_MAPPING = {
-    date: 'dateFormat',
-    dateTime: 'dateTimeFormat',
-    week: 'weekFormat',
-    month: 'monthFormat'
-};
-
-const Locale = san.defineComponent({
-    initData() {
-        return {
-            componentName: 'DatePicker'
-        };
-    }
-}, LocalReceiver);
-
 export default function (Picker, pickerType) {
     return inherits(san.defineComponent({
         initData() {
             return {
-                ...Locale.prototype.initData(),
+                componentName: 'DatePicker',
                 prefixCls,
                 transitionName: 'slide-up'
             };
         },
         inited() {
-            Locale.prototype.inited.bind(this)();
+            localReceiver.prototype.inited.bind(this)();
         },
         computed: {
-            ...Locale.prototype.computed,
+            ...localReceiver.prototype.computed,
             format() {
                 const format = this.data.get('format');
                 const showTime = this.data.get('showTime');
@@ -87,7 +72,6 @@ export default function (Picker, pickerType) {
                             prefixCls: `${prefixCls}-time-picker`,
                             transitionName: 'slide-up',
                             ...showTime,
-                            // defaultValue: showTime && showTime.defaultValue || moment(),
                             defaultOpenValue: showTime && showTime.defaultValue || moment()
                         };
                     },

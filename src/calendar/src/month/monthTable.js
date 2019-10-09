@@ -5,7 +5,6 @@
 
 import san, {DataTypes} from 'san';
 import {getTodayTime, getMonthName} from '../util/index';
-import moment from 'moment';
 
 const ROW = 4;
 const COL = 3;
@@ -13,15 +12,11 @@ const COL = 3;
 export default san.defineComponent({
     dataTypes: {
         disabledDate: DataTypes.func,
-        renderFooter: DataTypes.func,
-        rootPrefixCls: DataTypes.string,
         value: DataTypes.object,
         defaultValue: DataTypes.object
     },
     computed: {
         months() {
-            const locale = this.data.get('locale');
-            const refresh = this.data.get('refresh');
             const value = this.data.get('value');
 
             const months = [];
@@ -43,43 +38,7 @@ export default san.defineComponent({
                 }
             }
             return months;
-        },
-        injectCell() {
-            const instance = this.data.get('instance');
-            const cellRender = this.data.get('cellRender');
-            const contentRender = this.data.get('contentRender');
-
-            let content;
-            if (cellRender) {
-                instance && (instance.components.cell = cellRender);
-            }
-            else {
-                if (contentRender) {
-                    content = contentRender;
-                }
-                else {
-                    content = san.defineComponent({
-                        computed: {
-                            date() {
-                                return getMonthName(this.data.get('value'));
-                            }
-                        },
-                        template: '<span>{{date}}</span>'
-                    });
-                }
-                instance && (instance.components.cell = san.defineComponent({
-                    components: {
-                        's-content': content
-                    },
-                    template: `<a class="{{prefixCls}}-month">
-                        <s-content value="{{value}}"/>
-                    </a>`
-                }));
-            }
         }
-    },
-    inited() {
-        this.data.set('instance', this);
     },
     getContentClass(monthData) {
         const value = this.data.get('value');
@@ -125,23 +84,24 @@ export default san.defineComponent({
             this.data.set('refresh', Math.random(), {force: true});
         });
     },
+    getMonth(monthData) {
+        return getMonthName(monthData.current);
+    },
     template: `
-        <table className="{{prefixCls}}-table" cellSpacing="0" role="grid">
-            <tbody className="{{prefixCls}}-tbody">
+        <table class="{{prefixCls}}-table" cellSpacing="0" role="grid">
+            <tbody class="{{prefixCls}}-tbody">
                 <tr
                     s-for="month, index in months"
-                    key="{{index}}"
                     role="row"
                 >
                     <td
                         s-for="monthData in month"
                         role="gridcell"
-                        key="{{monthData.value}}"
                         title="{{monthData.title}}"
                         class="{{getContentClass(monthData)}}"
                         on-click="handleChooseMonth(monthData)"
                     >
-                        <cell value="{{monthData.current}}" prefixCls="{{prefixCls}}" rootPrefixCls="{{rootPrefixCls}}" locale="{{locale}}"/>
+                        <a class="{{prefixCls}}-month">{{getMonth(monthData)}}</a>
                     </td>
                 </tr>
             </tbody>

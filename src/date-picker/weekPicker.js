@@ -30,6 +30,7 @@ export default san.defineComponent({
     },
     inited() {
         this.data.set('defaultValue', this.data.get('defaultPickerValue') || moment());
+        this.data.set('hasExtraFooter', !!this.sourceSlots.named.renderExtraFooter);
     },
     handleCalendarChange(data) {
         this.data.set('value', data.value);
@@ -89,10 +90,13 @@ export default san.defineComponent({
                     value="{{value || defaultValue}}"
                     locale="{{locale.lang}}"
                     localeCode="{{localeCode}}"
+                    hasExtraFooter="{{hasExtraFooter}}"
                     on-select="handleChange"
                     on-panelChange="handleCalendarChange"
                     on-clear="handleClearSelection"
-                />
+                >
+                    <slot name="renderExtraFooter" slot="renderExtraFooter" />
+                </s-calendar>
                 <input
                     disabled="{{disabled}}"
                     readOnly

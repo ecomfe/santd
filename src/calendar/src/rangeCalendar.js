@@ -85,23 +85,6 @@ export default inherits(san.defineComponent({
 
             return showOk || showOk !== false && !!timePicker;
         },
-        injectClearIcon() {
-            const instance = this.data.get('instance');
-            const clearIcon = this.data.get('clearIcon');
-
-            if (instance && clearIcon) {
-                instance.components.clearicon = clearIcon;
-                return clearIcon;
-            }
-        },
-        injectFooter() {
-            const instance = this.data.get('instance');
-            const renderFooter = this.data.get('renderFooter');
-
-            if (instance && renderFooter) {
-                instance.components.footer = renderFooter;
-            }
-        },
         hasSelectedValue() {
             const selectedValue = this.data.get('selectedValue') || [];
             return !!selectedValue[1] && !!selectedValue[0];
@@ -227,6 +210,7 @@ export default inherits(san.defineComponent({
         this.data.set('prevSelectedValue', selectedValue);
         this.data.set('firstSelectedValue', null);
 
+        localeCode && moment.locale(localeCode);
         localeCode && value[0].locale(localeCode);
         localeCode && value[1].locale(localeCode);
         this.data.set('value', value);
@@ -464,7 +448,6 @@ export default inherits(san.defineComponent({
                     role="button"
                     on-click="handleClear"
                 >
-                    <clearicon s-if="injectClearIcon" />
                     <span class="{{prefixCls}}-clear-btn" />
                 </a>
                 <div
@@ -487,7 +470,6 @@ export default inherits(san.defineComponent({
                         showTimePicker="{{showTimePicker}}"
                         enablePrev
                         enableNext="{{!isClosestMonths || isMonthYearPanelShow(mode[1])}}"
-                        clearIcon="{{clearIcon}}"
                         mode="{{mode[0]}}"
                         dateRender="{{dateRender}}"
                         disabledDate="{{disabledDate}}"
@@ -513,7 +495,6 @@ export default inherits(san.defineComponent({
                         showTimePicker="{{showTimePicker}}"
                         enableNext
                         enablePrev="{{!isClosestMonths || isMonthYearPanelShow(mode[0])}}"
-                        clearIcon="{{clearIcon}}"
                         mode="{{mode[1]}}"
                         dateRender="{{dateRender}}"
                         disabledDate="{{disabledDate}}"
@@ -527,9 +508,11 @@ export default inherits(san.defineComponent({
                 <div class="{{footerClass}}">
                     <div
                         class="{{prefixCls}}-footer-btn"
-                        s-if="showToday || timePicker || showOkButton || renderFooter"
+                        s-if="showToday || timePicker || showOkButton || hasExtraFooter"
                     >
-                        <footer />
+                        <div class="{{prefixCls}}-footer-extra" s-if="hasExtraFooter">
+                            <slot name="renderExtraFooter" />
+                        </div>
                         <s-todaybutton
                             s-if="showToday"
                             disabled="{{isTodayInView}}"

@@ -26,28 +26,19 @@ export default inherits(san.defineComponent({
         this.data.set('selectedValue', selectedValue);
         this.data.set('mode', 'month');
 
-        this.watch('value', val => {
-            if (!val) {
-                let value = moment();
-                localeCode && value.locale(localeCode);
-                this.data.set('value', value);
-            }
-        });
-
         this.watch('selectedValue', val => {
             localeCode && val.locale(localeCode);
             this.data.set('value', val);
         });
     },
     handleMonthSelect(value) {
-        this.fire('select', value);
-        this.dispatch('santd_calendar_select', {value: value, cause: null});
+        this.fire('select', {value});
     },
     handlePanelChange({value, mode}) {
         if (mode && mode !== 'date') {
             this.data.set('mode', mode);
         }
-        this.dispatch('santd_calendar_panelChange', {value: value || this.data.get('value'), mode});
+        this.fire('panelChange', {value: value || this.data.get('value'), mode});
     },
     components: {
         's-calendarheader': CalendarHeader
@@ -65,13 +56,13 @@ export default inherits(san.defineComponent({
                         value="{{value || defaultValue}}"
                         locale="{{locale}}"
                         disabledMonth="{{disabledDate}}"
-                        monthCellRender="{{monthCellRender}}"
-                        monthCellContentRender="{{monthCellContentRender}}"
-                        renderFooter="{{renderFooter}}"
+                        hasExtraFooter="{{hasExtraFooter}}"
                         on-valueChange="setValue"
                         on-panelChange="handlePanelChange"
                         on-monthSelect="handleMonthSelect"
-                    />
+                    >
+                        <slot name="renderExtraFooter" slot="renderExtraFooter" />
+                    </s-calendarheader>
                 </div>
             </div>
         </div>

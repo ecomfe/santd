@@ -9,17 +9,15 @@ import {isAllowedDate} from './util/index';
 
 export default san.defineComponent({
     dataTypes: {
-        className: DataTypes.string,
         customClassName: DataTypes.string,
         visible: DataTypes.bool,
         prefixCls: DataTypes.string
     },
-    
+
     initData() {
         return {
             visible: true,
             prefixCls: 'calendar',
-            className: '',
             locale: locale
         };
     },
@@ -28,11 +26,10 @@ export default san.defineComponent({
         classes() {
             const prefixCls = this.data.get('prefixCls');
             const customClassName = this.data.get('customClassName');
-            const className = this.data.get('className');
             const visible = this.data.get('visible');
             const showWeekNumber = this.data.get('showWeekNumber');
 
-            let classArr = [prefixCls, customClassName, className];
+            let classArr = [prefixCls, customClassName];
             !visible && classArr.push(`${prefixCls}-hidden`);
             showWeekNumber && classArr.push(`${prefixCls}-week-number`);
             return classArr;

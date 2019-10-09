@@ -6,7 +6,6 @@
 import san, {DataTypes} from 'san';
 import {getTodayTimeStr, getTodayTime, isAllowedDate} from '../util/index';
 
-
 export default san.defineComponent({
     dataTypes: {
         prefixCls: DataTypes.string,
@@ -22,26 +21,16 @@ export default san.defineComponent({
             const disabledDate = this.data.get('disabledDate');
             return disabledDate && !isAllowedDate(getTodayTime(value), disabledDate);
         },
-        classes() {
-            const prefixCls = this.data.get('prefixCls');
-            const disabledToday = this.data.get('disabledToday');
-            const disabled = this.data.get('disabled');
-
-            let classArr = [`${prefixCls}-today-btn`];
-            (disabledToday || disabled) && classArr.push(`${prefixCls}-today-btn-disabled`);
-            return classArr;
-        },
         localeNow() {
             const text = this.data.get('text');
             const timePicker = this.data.get('timePicker');
             const locale = this.data.get('locale');
 
             return (!text && timePicker ? locale.now : text) || locale.today;
-        },
-        title() {
-            const value = this.data.get('value');
-            return value && getTodayTimeStr(value);
         }
+    },
+    getTitle(value) {
+        return value && getTodayTimeStr(value);
     },
     handleToday() {
         const disabled = this.data.get('disabled');
@@ -52,10 +41,10 @@ export default san.defineComponent({
     },
     template: `
         <a
-            class="{{classes}}"
+            class="{{prefixCls}}-today-btn {{(disabledToday || disabled) ? prefixCls + '-today-btn-disabled' : ''}}"
             role="button"
             on-click="handleToday"
-            title="{{title}}"
+            title="{{getTitle(value)}}"
         >
             {{localeNow}}
         </a>

@@ -78,9 +78,6 @@ export default san.defineComponent({
     handlePopupMouseDown(e) {
         this.dispatch('santd_popup_mouseDown', e);
     },
-    handlePopupTouchStart(e) {
-        this.dispatch('santd_popup_mouseDown', e);
-    },
     components: {
         's-animate': Animate,
         's-popupinner': PopupInner
@@ -90,7 +87,6 @@ export default san.defineComponent({
             on-mouseenter="handlePopupMouseEnter"
             on-mouseleave="handlePopupMouseLeave"
             on-mousedown="handlePopupMouseDown"
-            on-touchstart="handlePopupTouchStart"
         >
             <s-popupinner
                 target="{{getAlignTarget}}"

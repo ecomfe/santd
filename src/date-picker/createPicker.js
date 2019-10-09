@@ -19,32 +19,6 @@ export default function (calendar) {
                 const format = this.data.get('format');
                 return value && value.format(format);
             },
-            /*renderFooter() {
-                const renderExtraFooter = this.data.get('renderExtraFooter');
-                const prefixCls = this.data.get('prefixCls');
-                const instance = this.data.get('instance');
-
-                if (!renderExtraFooter) {
-                    return null;
-                }
-
-                return san.defineComponent({
-                    initData() {
-                        return {
-                            prefixCls,
-                            renderExtraFooter
-                        };
-                    },
-                    components: {
-                        's-footer': renderExtraFooter()
-                    },
-                    template: `<div>
-                        <div class="{{prefixCls}}-footer-extra" key="extra" s-if="{{renderExtraFooter}}">
-                            <s-footer />
-                        </div>
-                    </div>`
-                });
-            },*/
             calendarClasses() {
                 let classArr = [];
                 const showTime = this.data.get('showTime');
@@ -65,6 +39,7 @@ export default function (calendar) {
         },
         inited() {
             this.data.set('value', this.data.get('value') || this.data.get('defaultValue'));
+            this.data.set('hasExtraFooter', !!this.sourceSlots.named.renderExtraFooter);
         },
         handleChange(data) {
             const format = this.data.get('format');
@@ -95,7 +70,7 @@ export default function (calendar) {
             this.dispatch('UI:form-item-interact', {fieldValue: '', type: 'change'});
         },
         handleOk(value) {
-            this.data.set('value', value, {force: true});
+            this.data.set('value', value);
             this.fire('ok', value);
             this.handleOpenChange(false);
         },
@@ -132,9 +107,10 @@ export default function (calendar) {
                     format="{{format}}"
                     disabledDate="{{disabledDate}}"
                     disabledTime="{{showTime ? disabledTime : null}}"
-                    selectedValue="{{value || defaultValue}}"
+                    value="{{value || defaultValue}}"
+                    selectedValue="{{value}}"
                     timePicker="{{timePicker}}"
-                    dateInputPlaceholder="{{dateInputPlaceholder}}"
+                    dateInputPlaceholder="{{placeholder || locale.lang.placeholder}}"
                     prefixCls="${prefixCls}"
                     customClassName="{{calendarClasses}}"
                     format="{{format}}"
@@ -143,10 +119,13 @@ export default function (calendar) {
                     locale="{{locale.lang}}"
                     localeCode="{{localeCode}}"
                     mode="{{mode}}"
+                    hasExtraFooter="{{hasExtraFooter}}"
                     on-select="handleChange"
                     on-clear="handleClearSelection"
                     on-ok="handleOk"
-                />
+                >
+                    <slot name="renderExtraFooter" slot="renderExtraFooter" />
+                </s-calendar>
                 <input
                     disabled="{{disabled}}"
                     readOnly

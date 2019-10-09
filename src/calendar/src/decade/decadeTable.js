@@ -10,18 +10,12 @@ const COL = 3;
 
 export default san.defineComponent({
     dataTypes: {
-        renderFooter: DataTypes.func,
-        rootPrefixCls: DataTypes.string,
+        prefixCls: DataTypes.string,
         value: DataTypes.object,
         defaultValue: DataTypes.object
     },
     computed: {
-        prefixCls() {
-            const rootPrefixCls = this.data.get('rootPrefixCls');
-            return rootPrefixCls + '-decade-panel';
-        },
         decades() {
-            const refresh = this.data.get('refresh');
             const startYear = this.data.get('startYear');
             const preYear = startYear - 10;
             const decades = [];
@@ -88,17 +82,15 @@ export default san.defineComponent({
         });
     },
     template: `
-        <table className="{{prefixCls}}-table" cellSpacing="0" role="grid">
-            <tbody className="{{prefixCls}}-tbody">
+        <table class="{{prefixCls}}-table" cellSpacing="0" role="grid">
+            <tbody class="{{prefixCls}}-tbody">
                 <tr
                     s-for="decade, index in decades"
-                    key="{{index}}"
                     role="row"
                 >
                     <td
                         s-for="decadeData in decade"
                         role="gridcell"
-                        key="{{decadeData.startDecade}}"
                         class="{{getContentClass(decadeData)}}"
                         on-click="handleChooseCentury(decadeData)"
                     >

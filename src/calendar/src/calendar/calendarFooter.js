@@ -18,33 +18,8 @@ export default san.defineComponent({
         selectedValue: DataTypes.object,
         showOk: DataTypes.bool,
         value: DataTypes.object,
-        renderFooter: DataTypes.func,
         mode: DataTypes.string,
         defaultValue: DataTypes.object
-    },
-    computed: {
-        classes() {
-            const prefixCls = this.data.get('prefixCls');
-            const hasOkBtn = this.data.get('hasOkBtn');
-            let classArr = [`${prefixCls}-footer`];
-            hasOkBtn && classArr.push(`${prefixCls}-footer-show-ok`);
-            return classArr;
-        },
-        hasOkBtn() {
-            const showOk = this.data.get('showOk');
-            const timePicker = this.data.get('timePicker');
-            return showOk === true || showOk !== false && !!timePicker;
-        },
-        injectFooter() {
-            const renderFooter = this.data.get('renderFooter');
-            const instance = this.data.get('instance');
-            if (instance && renderFooter) {
-                instance.components.footer = renderFooter;
-            }
-        }
-    },
-    inited() {
-        this.data.set('instance', this);
     },
     components: {
         's-todaybutton': TodayButton,
@@ -64,12 +39,12 @@ export default san.defineComponent({
         this.fire('openTimePicker');
     },
     template: `
-        <div class="{{classes}}">
+        <div class="{{prefixCls}}-footer {{(showOk && timePicker) ? prefixCls + '-footer-show-ok' : ''}}">
             <span
-                s-if="showToday || timePicker || hasOkBtn || renderFooter"
+                s-if="showToday || timePicker || showOk || hasExtraFooter"
                 class="{{prefixCls}}-footer-btn"
             >
-                <footer s-if="renderFooter" />
+                <slot name="renderExtraFooter" />
                 <s-todaybutton
                     prefixCls="{{prefixCls}}"
                     value="{{value}}"
@@ -91,7 +66,7 @@ export default san.defineComponent({
                 />
                 <s-okbutton
                     prefixCls="{{prefixCls}}"
-                    s-if="hasOkBtn"
+                    s-if="showOk || timePicker"
                     locale="{{locale}}"
                     okDisabled="{{okDisabled}}"
                     on-ok="handleOk"

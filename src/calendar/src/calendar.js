@@ -20,15 +20,6 @@ export default inherits(san.defineComponent({
         's-datetable': DateTable,
         's-dateinput': DateInput
     },
-    computed: {
-        injectTimePicker() {
-            const timePicker = this.data.get('timePicker');
-            const instance = this.data.get('instance');
-            if (instance && timePicker) {
-                instance.components.timepicker = timePicker;
-            }
-        }
-    },
     initData() {
         return {
             visible: true,
@@ -46,30 +37,16 @@ export default inherits(san.defineComponent({
         let selectedValue = this.data.get('selectedValue') || this.data.get('defaultSelectedValue');
         const localeCode = this.data.get('localeCode');
 
-        localeCode && value.locale(localeCode);
+        // 如果有国际化编码，对moment进行国际化处理
+        localeCode && moment.locale(localeCode);
+        localeCode && value && value.locale(localeCode);
 
         this.data.set('mode', mode || 'date');
         this.data.set('value', value);
         this.data.set('selectedValue', selectedValue);
-        this.data.set('instance', this);
-
-        this.watch('value', val => {
-            if (!val) {
-                let value = moment();
-                localeCode && value.locale(localeCode);
-                this.data.set('value', value);
-            }
-        });
-
-        this.watch('selectedValue', val => {
-            localeCode && val.locale(localeCode);
-            this.data.set('value', val);
-        });
-
-        this.watch('localeCode', val => {
-            this.data.set('value', this.data.get('value').locale(val).clone());
-        });
     },
+
+    // 处理日期点击事件
     handleDateTableSelect(value) {
         const selectedValue = this.data.get('selectedValue');
         const timePicker = this.data.get('timePicker');
@@ -80,11 +57,15 @@ export default inherits(san.defineComponent({
             }
         }
         this.fire('select', {value});
-        this.dispatch('santd_calendar_select', {value, cause: null});
+        // this.dispatch('santd_calendar_select', {value, cause: null});
     },
+
+    // 处理弹出层中的输入框输入事件
     handleDateInputChange(value) {
-        this.fire('select', {value, cause: {source: 'dateInput'}});
-        this.dispatch('santd_calendar_select', {value: value.clone(), cause: null});
+        if (value) {
+            this.fire('select', {value, cause: {source: 'dateInput'}});
+            // this.dispatch('santd_calendar_select', {value: value.clone(), cause: null});
+        }
     },
     handlePanelChange({value, mode}) {
         this.data.set('mode', mode);
@@ -136,7 +117,6 @@ export default inherits(san.defineComponent({
                 <s-dateinput
                     s-if="showDateInput"
                     format="{{getFormat()}}"
-                    key="date-input"
                     value="{{value || defaultValue}}"
                     locale="{{locale}}"
                     placeholder="{{dateInputPlaceholder}}"
@@ -147,7 +127,6 @@ export default inherits(san.defineComponent({
                     selectedValue="{{selectedValue}}"
                     on-clear="handleDateInputClear"
                     on-change="handleDateInputChange"
-                    clearIcon="{{clearIcon}}"
                     inputMode="{{inputMode}}"
                 />
                 <div class="{{prefixCls}}-date-panel">
@@ -157,10 +136,12 @@ export default inherits(san.defineComponent({
                         value="{{value || defaultValue}}"
                         on-valueChange="setValue"
                         on-panelChange="handlePanelChange"
-                        renderFooter="{{renderFooter}}"
                         showTimePicker="{{mode === 'time'}}"
                         prefixCls="{{prefixCls}}"
-                    />
+                        hasExtraFooter="{{hasExtraFooter}}"
+                    >
+                        <slot name="renderExtraFooter" slot="renderExtraFooter" />
+                    </s-calendarheader>
                     <div class="{{prefixCls}}-time-picker" s-if="timePicker && mode === 'time'">
                         <div class="{{prefixCls}}-time-picker-panel">
                             <timepicker
@@ -188,7 +169,6 @@ export default inherits(san.defineComponent({
                     <s-calendarfooter
                         showOk="{{showOk}}"
                         mode="{{mode}}"
-                        renderFooter="{{renderFooter}}"
                         locale="{{locale}}"
                         prefixCls="{{prefixCls}}"
                         showToday="{{showToday}}"
@@ -200,11 +180,14 @@ export default inherits(san.defineComponent({
                         value="{{value}}"
                         disabledDate="{{disabledDate}}"
                         okDisabled="{{showOk !== false && (!selectedValue || !isAllowedDate(selectedValue))}}"
+                        hasExtraFooter="{{hasExtraFooter}}"
                         on-today="handleToday"
                         on-ok="handleOk"
                         on-openTimePicker="handleOpenTimePicker"
                         on-closeTimePicker="handleCloseTimePicker"
-                    />
+                    >
+                        <slot name="renderExtraFooter" slot="renderExtraFooter" />
+                    </s-calendarfooter>
                 </div>
             </div>
         </div>

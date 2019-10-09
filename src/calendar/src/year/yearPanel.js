@@ -8,23 +8,14 @@ import YearTable from './yearTable';
 
 export default san.defineComponent({
     dataTypes: {
-        rootPrefixCls: DataTypes.string,
+        prefixCls: DataTypes.string,
         value: DataTypes.object,
-        defaultValue: DataTypes.object,
-        renderFooter: DataTypes.func
+        defaultValue: DataTypes.object
     },
     inited() {
-        const value = this.data.get('value');
-        const defaultValue = this.data.get('defaultValue');
-
-        this.data.set('value', value || defaultValue);
-        this.data.set('instance', this);
+        this.data.set('value', this.data.get('value') || this.data.get('defaultValue'));
     },
     computed: {
-        prefixCls() {
-            const rootPrefixCls = this.data.get('rootPrefixCls');
-            return rootPrefixCls + '-year-panel';
-        },
         startYear() {
             const value = this.data.get('value');
             const currentYear = value.year();
@@ -33,14 +24,6 @@ export default san.defineComponent({
         endYear() {
             const startYear = this.data.get('startYear');
             return startYear + 9;
-        },
-        injectFooter() {
-            const renderFooter = this.data.get('renderFooter');
-            const instance = this.data.get('instance');
-
-            if (instance && renderFooter) {
-                instance.components.footer = renderFooter;
-            }
         }
     },
     handlePreviousDecade() {
@@ -64,52 +47,48 @@ export default san.defineComponent({
     components: {
         's-yeartable': YearTable
     },
-    template: `
-        <div class="{{prefixCls}}">
-            <div>
-            <div class="{{prefixCls}}-header">
+    template: `<div class="{{prefixCls}}-year-panel">
+        <div>
+            <div class="{{prefixCls}}-year-panel-header">
                 <a
-                    class="{{prefixCls}}-prev-decade-btn"
+                    class="{{prefixCls}}-year-panel-prev-decade-btn"
                     role="button"
                     on-click="handlePreviousDecade"
                     title="{{locale.previousDecade}}"
                     href="javascript:;"
                 />
                 <a
-                    class="{{prefixCls}}-decade-select"
+                    class="{{prefixCls}}-year-panel-decade-select"
                     role="button"
                     on-click="handleDecadePanelShow"
                     title="{{locale.decadeSelect}}"
                     href="javascript:;"
                 >
-                    <span class="{{prefixCls}}-decade-select-content">{{startYear}}-{{endYear}}</span>
-                    <span class="{{prefixCls}}-decade-select-arrow">x</span>
+                    <span class="{{prefixCls}}-year-panel-decade-select-content">{{startYear}}-{{endYear}}</span>
                 </a>
                 <a
-                    class="{{prefixCls}}-next-decade-btn"
+                    class="{{prefixCls}}-year-panel-next-decade-btn"
                     role="button"
                     on-click="handleNextDecade"
                     title="{{locale.nextDecade}}"
                     href="javascript:;"
                 />
             </div>
-            <div class="{{prefixCls}}-body">
+            <div class="{{prefixCls}}-year-panel-body">
                 <s-yeartable
                     locale="{{locale}}"
                     value="{{value}}"
                     cellRender="{{cellRender}}"
                     contentRender="{{contentRender}}"
-                    prefixCls="{{prefixCls}}"
-                    rootPrefixCls="{{rootPrefixCls}}"
+                    prefixCls="{{prefixCls}}-year-panel"
                     startYear="{{startYear}}"
                     endYear="{{endYear}}"
                     on-select="setAndSelectValue"
                 />
             </div>
-            <div class="{{prefixCls}}-footer" s-if="renderFooter">
-                <footer />
-            </div>
+            <div class="{{prefixCls}}-year-panel-footer" s-if="hasExtraFooter">
+                <slot name="renderExtraFooter" />
             </div>
         </div>
-    `
+    </div>`
 });
