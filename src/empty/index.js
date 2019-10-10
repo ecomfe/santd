@@ -36,7 +36,7 @@ const Empty = san.defineComponent({
     computed: localeReceiver.computed,
 
     template: `
-        <div class="${prefixCls} {{image === simpleEmptyImg ? '${prefixCls}-normal' : ''}}">
+        <div class="${prefixCls}{{image === simpleEmptyImg ? ' ${prefixCls}-normal' : ''}}{{small ? ' ${prefixCls}-small' : ''}}">
             <div class="${prefixCls}-image" style="{{imageStyle}}">
                 <img s-if="image" src="{{image}}" alt="{{description || locale.description || 'empty'}}" />
             </div>

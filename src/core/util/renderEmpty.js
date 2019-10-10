@@ -6,7 +6,6 @@ import san from 'san';
 import Empty from '../../empty';
 import {classCreator} from './index';
 
-const prefixCls = classCreator('empty');
 
 export default function (componentName) {
     switch (componentName) {
@@ -29,7 +28,7 @@ export default function (componentName) {
                 initData() {
                     let data = Empty.prototype.initData();
                     data.image = Empty.PRESENTED_IMAGE_SIMPLE;
-                    data.className = prefixCls + '-small';
+                    data.small = true;
                     return data;
                 }
             }, Empty);
