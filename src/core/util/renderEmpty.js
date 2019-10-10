@@ -13,26 +13,28 @@ export default function (componentName) {
     switch (componentName) {
         case 'Table':
         case 'List':
-            return inherits(san.defineComponent({
+            return san.defineComponent({
                 initData() {
-                    return {
-                        image: Empty.PRESENTED_IMAGE_SIMPLE
-                    };
+                    let data = Empty.prototype.initData();
+                    data.image = Empty.PRESENTED_IMAGE_SIMPLE;
+                    return data;
                 }
-            }), Empty);
+            }, Empty);
+            
         case 'Select':
         case 'TreeSelect':
         case 'Cascader':
         case 'Transfer':
         case 'Mentions':
-            return inherits(san.defineComponent({
+            return san.defineComponent({
                 initData() {
-                    return {
-                        image: Empty.PRESENTED_IMAGE_SIMPLE,
-                        className: prefixCls + '-small'
-                    };
+                    let data = Empty.prototype.initData();
+                    data.image = Empty.PRESENTED_IMAGE_SIMPLE;
+                    data.className = prefixCls + '-small';
+                    return data;
                 }
-            }), Empty);
+            }, Empty);
+
         default:
             return Empty;
     }
