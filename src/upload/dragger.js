@@ -5,12 +5,12 @@
 
 import san from 'san';
 import Upload from './upload';
-import inherits from '../core/util/inherits';
 
-export default inherits(san.defineComponent({
+export default san.defineComponent({
     initData() {
-        return {
-            type: 'drag'
-        };
+        let data = Upload.prototype.initData();
+        data.type = 'drag';
+
+        return data;
     }
-}), Upload);
+}, Upload)
