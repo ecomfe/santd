@@ -42,20 +42,25 @@ export default function (Picker, pickerType) {
 
                 return format || DEFAULT_FORMAT[mergedPickerType];
             },
+
             pickerClass() {
                 const size = this.data.get('size');
                 let classArr = [`${prefixCls}-picker`];
-                !!size && classArr.push(`${prefixCls}-picker-${size}`);
+                size && classArr.push(`${prefixCls}-picker-${size}`);
                 return classArr.join(' ');
             },
+
             pickerInputClass() {
                 const prefixCls = this.data.get('prefixCls');
                 const size = this.data.get('size');
                 const disabled = this.data.get('disabled');
-                let classArr = [`${prefixCls}-picker-input`, inputPrefixCls, `${inputPrefixCls}-${size}`];
+                let classArr = [`${prefixCls}-picker-input`, inputPrefixCls];
+
+                size && classArr.push(`${inputPrefixCls}-${size}`);
                 disabled && classArr.push(`${inputPrefixCls}-disabled`);
                 return classArr.join(' ');
             },
+
             timePicker() {
                 const showTime = this.data.get('showTime');
                 const timeFormat = (showTime && showTime.format) || 'HH:mm:ss';

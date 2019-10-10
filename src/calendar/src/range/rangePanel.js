@@ -17,13 +17,6 @@ export default san.defineComponent({
         's-dateinput': DateInput
     },
     computed: {
-        classes() {
-            const prefixCls = this.data.get('prefixCls');
-            const rangeClassName = prefixCls + '-range';
-            const direction = this.data.get('direction');
-
-            return [`${rangeClassName}-part`, `${rangeClassName}-${direction}`];
-        },
         injectTimePicker() {
             const timePicker = this.data.get('timePicker');
             const instance = this.data.get('instance');
@@ -36,7 +29,6 @@ export default san.defineComponent({
         return {
             visible: true,
             prefixCls: 'san-calendar',
-            className: '',
             showToday: true,
             showDateInput: true,
             timePicker: null,
@@ -90,7 +82,7 @@ export default san.defineComponent({
         }
     },
     template: `
-        <div class="{{classes}}">
+        <div class="{{prefixCls}}-range-part {{prefixCls}}-range-{{direction}}">
             <div class="{{prefixCls}}-panel" key="panel">
                 <s-dateinput
                     s-if="showDateInput"
@@ -104,7 +96,6 @@ export default san.defineComponent({
                     value="{{value || defaultValue}}"
                     showClear="{{false}}"
                     selectedValue="{{dateInputValue(selectedValue)}}"
-                    clearIcon="{{clearIcon}}"
                     on-clear="handleDateInputClear"
                     on-change="handleDateInputChange"
                 />
@@ -113,7 +104,6 @@ export default san.defineComponent({
                         locale="{{locale}}"
                         mode="{{mode}}"
                         value="{{value || defaultValue}}"
-                        renderFooter="{{renderFooter}}"
                         showTimePicker="{{showTimePicker}}"
                         prefixCls="{{prefixCls}}"
                         enableNext="{{enableNext}}"
@@ -142,12 +132,14 @@ export default san.defineComponent({
                             showTimePicker="{{showTimePicker}}"
                             selectedValue="{{selectedValue}}"
                             prefixCls="{{prefixCls}}"
-                            dateRender="{{dateRender}}"
                             disabledDate="{{disabledDate}}"
                             showWeekNumber="{{showWeekNumber}}"
+                            hasDateRender="{{hasDateRender}}"
                             on-select="handleDateTableSelect"
                             on-dayHover="handleDayHover"
-                        />
+                        >
+                            <slot name="dateRender" slot="dateRender" var-current="{{current}}" />
+                        </s-datetable>
                     </div>
                 </div>
             </div>

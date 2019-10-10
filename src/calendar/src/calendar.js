@@ -160,11 +160,13 @@ export default inherits(san.defineComponent({
                             value="{{value || defaultValue}}"
                             selectedValue="{{selectedValue}}"
                             prefixCls="{{prefixCls}}"
-                            dateRender="{{dateRender}}"
                             disabledDate="{{disabledDate}}"
                             showWeekNumber="{{showWeekNumber}}"
+                            hasDateRender="{{hasDateRender}}"
                             on-select="handleDateTableSelect"
-                        />
+                        >
+                            <slot name="dateRender" slot="dateRender" var-current="{{current}}" />
+                        </s-datetable>
                     </div>
                     <s-calendarfooter
                         showOk="{{showOk}}"

@@ -40,7 +40,7 @@ export default {
             value1: moment('2019/01/01', dateFormat),
             value2: moment('01/01/2019', dateFormatList[0]),
             value3: moment('2019/01/01', monthFormat),
-            value4: [moment('2019/06/06', dateFormat), moment('2019/06/06', dateFormat)]
+            value4: [moment('2019/10/01', dateFormat), moment('2019/10/20', dateFormat)]
         };
     }
 }

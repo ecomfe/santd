@@ -74,15 +74,8 @@ export default san.defineComponent({
         if (!disabled) {
             const next = value.clone();
             next.month(monthData.value);
-            this.setAndSelectValue(next);
+            this.fire('select', next);
         }
-    },
-    setAndSelectValue(value) {
-        this.data.set('value', value);
-        this.fire('select', value);
-        this.nextTick(() => {
-            this.data.set('refresh', Math.random(), {force: true});
-        });
     },
     getMonth(monthData) {
         return getMonthName(monthData.current);

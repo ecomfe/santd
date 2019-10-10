@@ -12,8 +12,7 @@ export default san.defineComponent({
         locale: DataTypes.object
     },
     handleClick() {
-        const disabled = this.data.get('okDisabled');
-        if (!disabled) {
+        if (!this.data.get('disabled')) {
             this.fire('ok');
         }
     },

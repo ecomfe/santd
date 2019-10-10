@@ -40,6 +40,7 @@ export default function (calendar) {
         inited() {
             this.data.set('value', this.data.get('value') || this.data.get('defaultValue'));
             this.data.set('hasExtraFooter', !!this.sourceSlots.named.renderExtraFooter);
+            this.data.set('hasDateRender', !!this.sourceSlots.named.dateRender);
         },
         handleChange(data) {
             const format = this.data.get('format');
@@ -120,11 +121,13 @@ export default function (calendar) {
                     localeCode="{{localeCode}}"
                     mode="{{mode}}"
                     hasExtraFooter="{{hasExtraFooter}}"
+                    hasDateRender="{{hasDateRender}}"
                     on-select="handleChange"
                     on-clear="handleClearSelection"
                     on-ok="handleOk"
                 >
                     <slot name="renderExtraFooter" slot="renderExtraFooter" />
+                    <slot name="dateRender" slot="dateRender" var-current="{{current}}" />
                 </s-calendar>
                 <input
                     disabled="{{disabled}}"

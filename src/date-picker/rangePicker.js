@@ -44,68 +44,6 @@ function pickerValueAdapter(value) {
 
 export default san.defineComponent({
     computed: {
-        /*renderFooter() {
-            const renderExtraFooter = this.data.get('renderExtraFooter');
-            const ranges = this.data.get('ranges');
-            const prefixCls = this.data.get('prefixCls');
-            const instance = this.data.get('instance');
-
-            if (!renderExtraFooter && !ranges) {
-                return null;
-            }
-
-            return san.defineComponent({
-                computed: {
-                    operations() {
-                        const ranges = this.data.get('ranges');
-                        return Object.keys(ranges || {});
-                    }
-                },
-                initData() {
-                    return {
-                        ranges,
-                        prefixCls,
-                        tagPrefixCls,
-                        renderExtraFooter
-                    };
-                },
-                components: {
-                    's-tag': Tag,
-                    's-footer': renderExtraFooter && renderExtraFooter()
-                },
-                handleRangeClick(value) {
-                    instance.handleRangeClick(value);
-                },
-                handleMouseEnter(value) {
-                    instance.data.set('hoverValue', value);
-                },
-                handleMouseLeave() {
-                    instance.handleRangeMouseLeave();
-                },
-                template: `<div>
-                    <div
-                        s-if="operations && operations.length"
-                        class="{{prefixCls}}-footer-extra {{prefixCls}}-range-quick-selector"
-                        key="range"
-                    >
-                        <s-tag
-                            s-for="operation in operations"
-                            key="{{operation}}"
-                            prefixCls="{{tagPrefixCls}}"
-                            color="blue"
-                            on-click="handleRangeClick(ranges[operation])"
-                            on-mouseenter="handleMouseEnter(ranges[operation])"
-                            on-mouseleave="handleMouseLeave"
-                        >
-                            {{operation}}
-                        </s-tag>
-                    </div>
-                    <div class="{{prefixCls}}-footer-extra" key="extra" s-if="{{renderExtraFooter}}">
-                        <s-footer />
-                    </div>
-                </div>`
-            });
-        },*/
         displayStartValue() {
             const value = this.data.get('value');
             const format = this.data.get('format');
@@ -146,6 +84,7 @@ export default san.defineComponent({
         this.data.set('value', value || defaultValue || []);
         this.data.set('showDate', pickerValueAdapter(pickerValue || moment()));
         this.data.set('hasExtraFooter', !!this.sourceSlots.named.renderExtraFooter);
+        this.data.set('hasDateRender', !!this.sourceSlots.named.dateRender);
     },
     handleOpenChange(open) {
         if (open === false) {
@@ -209,6 +148,7 @@ export default san.defineComponent({
     },
     handleOk(value) {
         this.fire('ok', value);
+        this.handleOpenChange(false);
     },
     handlePanelChange(params) {
         this.fire('panelChange', params);
@@ -233,6 +173,7 @@ export default san.defineComponent({
                 action="{{disabled ? [] : trigger}}"
                 builtinPlacements="{{placements}}"
                 popupPlacement="bottomLeft"
+                destroyPopupOnHide="{{true}}"
                 on-visibleChange="handleOpenChange"
             >
                 <s-rangecalendar
@@ -244,19 +185,23 @@ export default san.defineComponent({
                     timePicker="{{timePicker}}"
                     disabledDate="{{disabledDate}}"
                     disabledTime="{{disabledTime}}"
-                    dateInputPlaceholder="{{dateInputPlaceholder}}"
+                    dateInputPlaceholder="{{dateInputPlaceholder || locale.lang.rangePlaceholder}}"
                     value="{{showDate}}"
-                    selectedValue="{{selectedValue}}"
+                    selectedValue="{{value}}"
                     hoverValue="{{hoverValue}}"
                     showToday="{{showToday}}"
-                    propMode="{{mode}}"
+                    mode="{{mode}}"
                     locale="{{locale.lang}}"
                     localeCode="{{localeCode}}"
                     hasExtraFooter="{{hasExtraFooter}}"
+                    hasDateRender="{{hasDateRender}}"
+                    ranges="{{ranges}}"
                     on-select="handleChange"
                     on-panelChange="handlePanelChange"
+                    on-ok="handleOk"
                 >
                     <slot name="renderExtraFooter" slot="renderExtraFooter" />
+                    <slot name="dateRender" slot="dateRender" var-current="{{current}}" />
                 </s-rangecalendar>
                 <div class="{{pickerInputClass}}">
                     <input
