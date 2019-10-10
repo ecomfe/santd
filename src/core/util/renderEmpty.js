@@ -5,7 +5,6 @@
 import san from 'san';
 import Empty from '../../empty';
 import {classCreator} from './index';
-import inherits from './inherits';
 
 const prefixCls = classCreator('empty');
 
@@ -20,7 +19,7 @@ export default function (componentName) {
                     return data;
                 }
             }, Empty);
-            
+
         case 'Select':
         case 'TreeSelect':
         case 'Cascader':
