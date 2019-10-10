@@ -33,7 +33,7 @@ export default san.defineComponent({
         vertical: DataTypes.bool
     },
     computed: {
-        elements() {
+        points() {
             const marks = this.data.get('marks');
             const dots = this.data.get('dots');
             const step = this.data.get('step');
@@ -78,10 +78,9 @@ export default san.defineComponent({
     },
     template: `<div class="{{prefixCls}}-step">
         <span
-            s-for="point in elements"
+            s-for="point in points"
             class="pointClass(point)"
             style="pointStyle(point)"
-            key="{{point}}"
         />
     </div>`
 });
