@@ -54,7 +54,7 @@ export default san.defineComponent({
     },
     attached() {
         this.handleMouseUpListener = document.addEventListener('mouseup', this.handleMouseUp);
-        this.dispatch('saveHandle', this);
+        this.dispatch('santd_slider_handle_save', this);
     },
     detached() {
         if (this.handleMouseUpListener) {

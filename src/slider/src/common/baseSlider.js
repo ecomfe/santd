@@ -198,7 +198,7 @@ export default san.defineComponent({
         's-marks': Marks
     },
     messages: {
-        saveHandle(payload) {
+        santd_slider_handle_save(payload) {
             const instance = payload.value;
             const index = instance.data.get('index') || 0;
 
