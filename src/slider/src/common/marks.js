@@ -11,8 +11,6 @@ export default san.defineComponent({
         vertical: DataTypes.bool,
         marks: DataTypes.object,
         included: DataTypes.bool,
-        upperBound: DataTypes.number,
-        lowerBound: DataTypes.number,
         max: DataTypes.number,
         min: DataTypes.number
     },
@@ -38,12 +36,12 @@ export default san.defineComponent({
     },
     markClass(point) {
         const included = this.data.get('included');
-        const upperBound = this.data.get('upperBound');
-        const lowerBound = this.data.get('lowerBound');
+        const max = this.data.get('max');
+        const min = this.data.get('min');
         const prefixCls = this.data.get('prefixCls');
 
-        const isActive = (!included && point === upperBound)
-            || (included && point <= upperBound && point >= lowerBound);
+        const isActive = (!included && point === max)
+            || (included && point <= max && point >= min);
 
         let classArr = [`${prefixCls}-text`];
         isActive && classArr.push(`${prefixCls}-text-active`);

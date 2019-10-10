@@ -351,11 +351,5 @@ export default inherits(san.defineComponent({
         }
         this.data.set('handles', null);
         this.fire('end');
-    },
-    getLowerBound() {
-        return this.data.get('min');
-    },
-    getUpperBound() {
-        return this.data.get('max');
     }
 }), BaseSlider);

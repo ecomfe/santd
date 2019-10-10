@@ -24,8 +24,6 @@ export default san.defineComponent({
         dotStyle: DataTypes.object,
         min: DataTypes.number,
         max: DataTypes.number,
-        upperBound: DataTypes.number,
-        lowerBound: DataTypes.number,
         included: DataTypes.bool,
         dots: DataTypes.bool,
         step: DataTypes.number,
@@ -44,12 +42,12 @@ export default san.defineComponent({
     },
     pointClass(point) {
         const included = this.data.get('included');
-        const upperBound = this.data.get('upperBound');
-        const lowerBound = this.data.get('lowerBound');
+        const max = this.data.get('max');
+        const min = this.data.get('min');
         const prefixCls = this.data.get('prefixCls');
 
-        const isActive = (!included && point === upperBound)
-            || (included && point <= upperBound && point >= lowerBound);
+        const isActive = (!included && point === max)
+            || (included && point <= max && point >= min);
 
         let classArr = [`${prefixCls}-dot`];
         isActive && classArr.push(`${prefixCls}-dot-active`);
@@ -60,14 +58,12 @@ export default san.defineComponent({
         const vertical = this.data.get('vertical');
         const dotStyle = this.data.get('dotStyle') || {};
         const activeDotStyle = this.data.get('activeDotStyle') || {};
-        const upperBound = this.data.get('upperBound');
-        const lowerBound = this.data.get('lowerBound');
         const max = this.data.get('max');
         const min = this.data.get('min');
         const range = max - min;
 
-        const isActive = (!included && point === upperBound)
-            || (included && point <= upperBound && point >= lowerBound);
+        const isActive = (!included && point === max)
+            || (included && point <= max && point >= min);
 
         const offset = `${Math.abs(point - min) / range * 100}%`;
         let style = vertical ? {bottom: offset, ...dotStyle} : {left: offset, ...dotStyle};

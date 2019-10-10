@@ -221,8 +221,6 @@ export default san.defineComponent({
             dots="{{dots}}"
             step="{{step}}"
             included="{{included}}"
-            lowerBound="{{getLowerBound()}}"
-            upperBound="{{getUpperBound()}}"
             max="{{max}}"
             min="{{min}}"
             dotStyle="{{dotStyle}}"
@@ -234,8 +232,6 @@ export default san.defineComponent({
             vertical="{{vertical}}"
             marks="{{marks}}"
             included="{{included}}"
-            lowerBound="{{getLowerBound()}}"
-            upperBound="{{getUpperBound()}}"
             max="{{max}}"
             min="{{min}}"
         />
