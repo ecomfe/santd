@@ -41,12 +41,13 @@ export default function (calendar) {
             this.data.set('value', this.data.get('value') || this.data.get('defaultValue'));
             this.data.set('hasExtraFooter', !!this.sourceSlots.named.renderExtraFooter);
             this.data.set('hasDateRender', !!this.sourceSlots.named.dateRender);
+            this.data.set('hasSuffixIcon', !!this.sourceSlots.named.suffixIcon);
         },
         handleChange(data) {
             const format = this.data.get('format');
             const value = data.value;
             const cause = data.cause || {};
-            this.data.set('value', value, {force: false});
+            this.data.set('value', value.clone(), {force: true});
             this.fire('change', {date: value, dateString: value && value.format(format)});
             this.dispatch('UI:form-item-interact', {fieldValue: value, type: 'change'});
 
@@ -105,6 +106,7 @@ export default function (calendar) {
             >
                 <s-calendar
                     slot="popup"
+                    style="{{popupStyle}}"
                     format="{{format}}"
                     disabledDate="{{disabledDate}}"
                     disabledTime="{{showTime ? disabledTime : null}}"
@@ -130,6 +132,7 @@ export default function (calendar) {
                     <slot name="dateRender" slot="dateRender" var-current="{{current}}" />
                 </s-calendar>
                 <input
+                    style="{{showTime ? 'min-width: 195px;' : ''}}"
                     disabled="{{disabled}}"
                     readOnly
                     value="{{displayValue}}"
@@ -147,7 +150,10 @@ export default function (calendar) {
                     theme="filled"
                     on-click="handleClearSelection"
                 />
-                <s-icon class="${prefixCls}-picker-icon" type="calendar" />
+                <span class="{{prefixCls}}-picker-icon" s-if="hasSuffixIcon">
+                    <slot name="suffixIcon" />
+                </span>
+                <s-icon class="${prefixCls}-picker-icon" type="calendar" s-else />
             </s-trigger>
         </span>`
     });

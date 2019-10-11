@@ -15,8 +15,7 @@
 | ---                  | ---                                                                        | ---                                                     | ---     |
 | allowClear           | 是否显示清除按钮                                                           | boolean                                                 | true    |
 | autoFocus            | 自动获取焦点                                                               | boolean                                                 | false   |
-| className            | 选择器 className                                                           | string                                                  | ''      |
-| dateRender           | 自定义日期单元格的内容                                                     | function(currentDate: moment, today: moment) => SanNode | -       |
+| dateRender           | 自定义日期单元格的内容                                                     | slot | -       |
 | disabled             | 禁用                                                                       | boolean                                                 | false   |
 | disabledDate         | 不可选择的日期                                                             | (currentDate: moment) => boolean                        | -       |
 | dropdownClassName    | 额外的弹出日历 className                                                   | string                                                  | ''      |
@@ -25,7 +24,7 @@
 | placeholder          | 输入框提示文字                                                             | string\|RangePicker[]         | - |
 | popupStyle                 | 额外的弹出日历样式      | object                                                  | {} |
 | size               | 输入框大小，`large` 高度为 40px，`small` 为 24px，默认是 32px | string                                                  | -       |
-| suffixIcon               | 自定义的选择框后缀图标 | SanNode                                                  | -       |
+| suffixIcon               | 自定义的选择框后缀图标 | slot                                                  | -       |
 | on-openChange               | 弹出日历和关闭日历的回调 | function(status)                                                  | -       |
 | on-panelChange               | 日历面板切换的回调 | function({value, mode})                                                  | -       |
 
@@ -44,7 +43,7 @@
 | disabledTime         | 不可选择的时间                                                                                    | function(date) => boolean             | -             |
 | format               | 设置日期格式，为数组时支持多格式匹配，展示以第一个为准。配置参考 [moment.js](http://momentjs.com) | string\|string[]      | 'YYYY-MM-DD'     |
 | mode                 | 日期面板的状态                                                                                    | `time` `date` `month` `year` `decade` | 'date'        |
-| renderExtraFooter    | 在面板中添加额外的页脚                                                                            | (mode) => SanNode                     | -             |
+| renderExtraFooter    | 在面板中添加额外的页脚                                                                            | slot                     | -             |
 | showTime             | 增加时间选择功能                                                                                  | Object\|boolean               | - |
 | showTime.defaultValue    | 设置用户选择日期时默认的时分秒                                                                          | [moment](http://momentjs.com)                                | moment()            |
 | showToday |  是否展示“今天”按钮                                                           | boolean                     | true             |
@@ -60,8 +59,7 @@
 | defaultValue         | 默认日期                | [moment](http://momentjs.com)         | -             |
 | disabledTime         | 不可选择的时间                                                                                    | function(date) => boolean             | -             |
 | format               | 设置日期格式，配置参考 [moment.js](http://momentjs.com) | string      | 'YYYY-MM'     |
-| monthCellContentRender       | 自定义的月份内容渲染方法 | function(date, locale): SanNode      | -     |
-| renderExtraFooter    | 在面板中添加额外的页脚                                                                            | (mode) => SanNode                     | -             |
+| renderExtraFooter    | 在面板中添加额外的页脚                                                                            | slot                     | -             |
 | value    | 日期                                                                          | [moment](http://momentjs.com)                                | -            |
 | on-change          | 时间发生变化的回调                                                                                    | function({date: moment, dateString: string}) | -     |
 
@@ -71,7 +69,7 @@
 | ---                  | ---                                                                                               | ---                                   | ---           |
 | defaultValue         | 默认日期                | [moment](http://momentjs.com)         | -             |
 | format               | 设置日期格式，配置参考 [moment.js](http://momentjs.com) | string      | 'YYYY-wo'     |
-| renderExtraFooter    | 在面板中添加额外的页脚                                                                            | (mode) => SanNode                     | -             |
+| renderExtraFooter    | 在面板中添加额外的页脚                                                                            | slot                     | -             |
 | value    | 日期                                                                          | [moment](http://momentjs.com)                                | -            |
 | on-change          | 时间发生变化的回调                                                                                    | function({date: moment, dateString: string}) | -     |
 
@@ -83,7 +81,7 @@
 | disabledTime          | 不可选择的时间                                                                                    | function(date: [moment, moment], partial: `'start'\|'end'`)       | -            |
 | format                | 展示的日期格式 | string | 'YYYY-MM-DD HH:mm:ss' |
 | ranges                  | 预设时间范围快捷选择                                                                                    |  { [range: string]: moment[] } \| { [range: string]: () => moment[] }             | -   |
-| renderExtraFooter     | 在面板中添加额外的页脚                                                                            | (mode) => SanNode                                  | -        |
+| renderExtraFooter     | 在面板中添加额外的页脚                                                                            | slot                               | -        |
 | separator     | 设置分隔符                                                                            | string                                  | '~'        |
 | showTime              | 增加时间选择功能                                                                                  | Object\|boolean  | -            |
 | showTime.defaultValue | 设置用户选择日期时默认的时分秒                                                                    | [moment](http://momentjs.com)[]                      | [moment(), moment()] |

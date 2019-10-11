@@ -6,6 +6,7 @@
 import san, {DataTypes} from 'san';
 import locale from './locale/en_US';
 import {isAllowedDate} from './util/index';
+import TimePickerPanel from '../../timepicker/src/panel';
 
 export default san.defineComponent({
     dataTypes: {
@@ -18,8 +19,13 @@ export default san.defineComponent({
         return {
             visible: true,
             prefixCls: 'calendar',
-            locale: locale
+            locale: locale,
+            timeFormat: 'HH:mm:ss'
         };
+    },
+
+    components: {
+        's-timepicker': TimePickerPanel
     },
 
     computed: {
@@ -33,17 +39,44 @@ export default san.defineComponent({
             !visible && classArr.push(`${prefixCls}-hidden`);
             showWeekNumber && classArr.push(`${prefixCls}-week-number`);
             return classArr;
+        },
+        showHour() {
+            const showTime = this.data.get('showTime') || {};
+            const format = showTime.format || this.data.get('timeFormat');
+            return format.indexOf('H') > -1 || format.indexOf('h') > -1 || format.indexOf('k') > -1;
+        },
+        showMinute() {
+            const showTime = this.data.get('showTime') || {};
+            const format = showTime.format || this.data.get('timeFormat');
+            return format.indexOf('m') > -1;
+        },
+        showSecond() {
+            const showTime = this.data.get('showTime') || {};
+            const format = showTime.format || this.data.get('timeFormat');
+            return format.indexOf('s') > -1;
+        },
+        columns() {
+            const showHour = this.data.get('showHour');
+            const showMinute = this.data.get('showMinute');
+            const showSecond = this.data.get('showSecond');
+            const use12Hours = this.data.get('use12Hours');
+            let column = 0;
+            showHour && ++column;
+            showMinute && ++column;
+            showSecond && ++column;
+            use12Hours && ++column;
+            return column;
         }
     },
 
     getFormat() {
-        const {locale, timePicker, format} = this.data.get('');
+        const {locale, showTime, format} = this.data.get('');
 
         if (format) {
             return format;
         }
 
-        if (timePicker) {
+        if (showTime) {
             return locale.dateTimeFormat;
         }
 
@@ -75,7 +108,7 @@ export default san.defineComponent({
         const originalValue = this.data.get('value');
 
         this.data.set('value', value);
-        if (originalValue && value && !originalValue.isSame(value) || (!originalValue && value) || (originalValue && !value)) {
+        if (originalValue && value && !originalValue.isSame(value) || originalValue || value) {
             this.fire('change', value);
         }
     },

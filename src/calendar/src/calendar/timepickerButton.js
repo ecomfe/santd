@@ -10,18 +10,17 @@ export default san.defineComponent({
         prefixCls: DataTypes.string,
         showTimePicker: DataTypes.bool,
         locale: DataTypes.object,
-        timePickerDisabled: DataTypes.bool
+        disabled: DataTypes.bool
     },
     handleClick() {
-        const timePickerDisabled = this.data.get('timePickerDisabled');
         const showTimePicker = this.data.get('showTimePicker');
-        if (!timePickerDisabled) {
+        if (!this.data.get('disabled')) {
             this.fire(showTimePicker ? 'closeTimePicker' : 'openTimePicker');
         }
     },
     template: `
         <a
-            class="{{prefixCls}}-time-picker-btn {{timePickerDisabled ? prefixCls + '-time-picker-btn-disabled' : ''}}"
+            class="{{prefixCls}}-time-picker-btn {{disabled ? prefixCls + '-time-picker-btn-disabled' : ''}}"
             role="button"
             on-click="handleClick"
         >

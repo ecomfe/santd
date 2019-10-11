@@ -16,22 +16,12 @@ export default san.defineComponent({
         's-datetable': DateTable,
         's-dateinput': DateInput
     },
-    computed: {
-        injectTimePicker() {
-            const timePicker = this.data.get('timePicker');
-            const instance = this.data.get('instance');
-            if (instance && timePicker) {
-                instance.components.timepicker = timePicker;
-            }
-        }
-    },
     initData() {
         return {
             visible: true,
             prefixCls: 'san-calendar',
             showToday: true,
             showDateInput: true,
-            timePicker: null,
             focusablePanel: true
         };
     },
@@ -45,7 +35,6 @@ export default san.defineComponent({
         this.data.set('mode', mode || 'date');
         this.data.set('value', value || defaultValue || moment());
         this.data.set('selectedValue', selectedValue || defaultSelectedValue);
-        this.data.set('instance', this);
     },
     handleDateTableSelect(value) {
         this.fire('select', value);
@@ -75,8 +64,7 @@ export default san.defineComponent({
     },
     getTimeConfig(selectedValue, disabledTime, mode) {
         const showTimePicker = this.data.get('showTimePicker');
-        const timePicker = this.data.get('timePicker');
-        if (showTimePicker && timePicker && disabledTime) {
+        if (showTimePicker && disabledTime) {
             const config = getTimeConfig(selectedValue, disabledTime);
             return config[mode];
         }
@@ -89,7 +77,6 @@ export default san.defineComponent({
                     format="{{format}}"
                     locale="{{locale}}"
                     prefixCls="{{prefixCls}}"
-                    timePicker="{{timePicker}}"
                     disabledDate="{{disabledDate}}"
                     placeholder="{{placeholder}}"
                     disabledTime="{{disabledTime}}"
@@ -112,16 +99,9 @@ export default san.defineComponent({
                         on-valueChange="handleValueChange"
                         on-panelChange="handlePanelChange"
                     />
-                    <div class="{{prefixCls}}-time-picker" s-if="timePicker && showTimePicker">
+                    <div class="{{prefixCls}}-time-picker" s-if="showTimePicker">
                         <div class="{{prefixCls}}-time-picker-panel">
-                            <timepicker
-                                value="{{dateInputValue(selectedValue)}}"
-                                locale="{{locale}}"
-                                disabledHours="{{getTimeConfig(selectedValue, disabledTime, 'disabledHours')}}"
-                                disabledMinutes="{{getTimeConfig(selectedValue, disabledTime, 'disabledMinutes')}}"
-                                disabledSeconds="{{getTimeConfig(selectedValue, disabledTime, 'disabledSeconds')}}"
-                                on-change="handleInputChange"
-                            />
+                            <slot name="timepicker" />
                         </div>
                     </div>
                     <div class="{{prefixCls}}-body">
