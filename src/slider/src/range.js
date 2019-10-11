@@ -335,7 +335,9 @@ export default inherits(san.defineComponent({
         this.handleChange({bounds: nextBounds});
     },
     handleMove(e, position) {
-        utils.pauseEvent(e);
+        e.stopPropagation();
+        e.preventDefault();
+        
         // const oldValue = this.data.get('value');
         const value = this.calcValueByPos(position);
         const handles = this.data.get('handles');

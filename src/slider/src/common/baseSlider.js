@@ -181,7 +181,9 @@ export default san.defineComponent({
                 const handlePosition = utils.getHandleCenterPosition(vertical, e.target);
                 this.dragOffset = 0;
                 this.handleStart(handlePosition);
-                utils.pauseEvent(e);
+                
+                e.stopPropagation();
+                e.preventDefault();
                 this.fire('focus', e);
             }
         }

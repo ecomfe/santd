@@ -76,11 +76,6 @@ export function ensureValuePrecision(val, props) {
     return step === null ? closestPoint : parseFloat(closestPoint.toFixed(getPrecision(step)));
 }
 
-export function pauseEvent(e) {
-    e.stopPropagation();
-    e.preventDefault();
-}
-
 export function calculateNextValue(func, value, props) {
     const operations = {
         increase: (a, b) => a + b,
@@ -117,4 +112,3 @@ export function getKeyboardValueMutator(e) {
         default: return undefined;
     }
 }
-

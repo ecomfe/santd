@@ -122,7 +122,9 @@ export default inherits(san.defineComponent({
         this.handleChange(value);
     },
     handleMove(e, position) {
-        utils.pauseEvent(e);
+        e.stopPropagation();
+        e.preventDefault();
+        
         // const oldValue = this.data.get('value');
         const value = this.calcValueByPos(position);
         if (value !== this.data.get('value')) {
