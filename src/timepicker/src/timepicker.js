@@ -226,7 +226,6 @@ export default san.defineComponent({
         's-panel': Panel
     },
     setOpen(open) {
-        console.log(open);
         this.data.set('open', open);
         this.fire(open ? 'open' : 'close', open);
     },

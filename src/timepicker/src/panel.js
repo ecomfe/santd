@@ -33,12 +33,6 @@ function toNearestValidTime(time, hourOptions, minuteOptions, secondOptions) {
 
 export default san.defineComponent({
     computed: {
-        classes() {
-            const prefixCls = this.data.get('prefixCls');
-            const className = this.data.get('className');
-
-            return [className, prefixCls + '-inner'];
-        },
         isAM() {
             const defaultOpenValue = this.data.get('defaultOpenValue');
             const value = this.data.get('value');
@@ -91,25 +85,17 @@ export default san.defineComponent({
             const secondOptions = this.data.get('secondOptions');
 
             return defaultOpenValue && toNearestValidTime(defaultOpenValue, hourOptions, minuteOptions, secondOptions);
-        },
-        injectAddon() {
-            const addon = this.data.get('addon') || function () {};
-            const instance = this.data.get('instance');
-            if (instance) {
-                instance.components.addon = addon(instance);
-            }
         }
     },
     inited() {
-        this.data.set('instance', this);
+        this.data.set('hasAddon', !!this.sourceSlots.named.addon);
     },
     components: {
         's-header': Header,
         's-combobox': ComboBox
     },
     handleChange(value) {
-        this.data.set('value', value);
-        this.data.set('refresh', Math.random());
+        this.data.set('value', value.clone());
         this.fire('change', value);
         this.dispatch('change', value);
     },
@@ -125,7 +111,7 @@ export default san.defineComponent({
     handleKeyDown(e) {
         this.fire('keydown', e);
     },
-    template: `<div class="{{classes}}">
+    template: `<div class="{{prefixCls}}-inner">
         <s-header
           clearText="{{clearText}}"
           prefixCls="{{prefixCls}}"
@@ -143,7 +129,6 @@ export default san.defineComponent({
           focusOnOpen="{{focusOnOpen}}"
           inputReadOnly="{{inputReadOnly}}"
           clearIcon="{{clearIcon}}"
-          refresh="{{refresh}}"
           on-esc="handleEsc"
           on-keydown="handleKeyDown"
           on-change="handleChange"
@@ -164,11 +149,10 @@ export default san.defineComponent({
           disabledSeconds="{{disabledSeconds}}"
           use12Hours="{{use12Hours}}"
           isAM="{{isAM}}"
-          refresh="{{refresh}}"
           on-change="handleChange"
           on-ampmChange="handleAmpmChange"
           on-currentSelectPanelChange="handleCurrentSelectPanelChange"
         />
-        <addon />
+        <slot name="addon" s-if="hasAddon" />
     </div>`
 });
