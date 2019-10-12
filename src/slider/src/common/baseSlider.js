@@ -8,7 +8,6 @@ import Steps from './steps';
 import Marks from './marks';
 import Handle from '../handle';
 import * as utils from '../utils';
-import inherits from '../../../core/util/inherits';
 
 export default san.defineComponent({
     dataTypes: {
@@ -20,7 +19,6 @@ export default san.defineComponent({
         className: DataTypes.string,
         prefixCls: DataTypes.string,
         disabled: DataTypes.bool,
-        handle: DataTypes.func,
         dots: DataTypes.bool,
         vertical: DataTypes.bool,
         style: DataTypes.object,
@@ -39,21 +37,6 @@ export default san.defineComponent({
             max: 100,
             step: 1,
             marks: {},
-            handle({index, ...restProps}) {
-                delete restProps.dragging;
-                if (restProps.value === null) {
-                    return null;
-                }
-
-                return inherits(san.defineComponent({
-                    initData() {
-                        return {
-                            ...restProps
-                        };
-                    }
-                }), Handle);
-                // return <Handle {...restProps} key={index} />;
-            },
             included: true,
             disabled: false,
             dots: false,
