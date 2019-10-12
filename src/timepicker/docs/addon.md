@@ -14,22 +14,6 @@
 <script>
 import timepicker from 'santd/timepicker';
 import button from 'santd/button'
-import moment from 'moment';
-import san from 'san';
-
-const addon = function () {
-    return san.defineComponent({
-        template: `
-            <template>
-                <s-button type="primary" size="small" on-click="handleClose">OK</s-button>
-            </template>
-        `,
-        handleClose: this.handleClose.bind(this),
-        components: {
-            's-button': button
-        }
-    });
-}
 
 export default {
     components: {
@@ -38,15 +22,13 @@ export default {
     },
     initData() {
         return {
-            open: false,
-            addon: addon.bind(this)
+            open: false
         };
     },
     handleClose() {
         this.data.set('open', false);
     },
     handleOpenChange(open) {
-        console.log(open)
         this.data.set('open', open);
     }
 }

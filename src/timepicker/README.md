@@ -2,9 +2,8 @@
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| addon | 选择框底部显示自定义的内容 | function | 无 |
+| addon | 选择框底部显示自定义的内容 | slot | 无 |
 | allowClear | 是否展示清除按钮 | boolean | `true` |
-| className | 选择器类名 | string | 无 |
 | defaultOpenValue | 当 defaultValue/value 不存在时，可以设置面板打开时默认选中的值 | [moment](http://momentjs.com/) | moment() |
 | defaultValue | 默认时间 | [moment](http://momentjs.com/) | 无 |
 | disabled | 禁用全部操作 | boolean | `false` |
@@ -20,10 +19,10 @@
 | open | 面板是否打开 | boolean | `false` |
 | placeholder | 没有值的时候显示的内容 | string | "请选择时间" |
 | popupClassName | 弹出层类名 | string | 无 |
-| popupStyle | 弹出层样式对象 | object | 无 |
+| popupStyle | 弹出层样式对象 | string | 无 |
 | secondStep | 秒选项间隔 | number | 1 |
-| suffixIcon | 自定义的选择框后缀图标 | SanNode | |
-| clearIcon | 自定义的清除图标 | SanNode |  |
+| suffixIcon | 自定义的选择框后缀图标 | slot | |
+| clearIcon | 自定义的清除图标 | slot |  |
 | use12Hours | 使用 12 小时制，为 true 时 `format` 默认为 `h:mm:ss a` | boolean | `false` |
 | value | 当前时间 | [moment](http://momentjs.com/) | 无 |
 | on-hange | 时间发生变化的回调 | function(time: moment, timeString: string): void | 无 |
