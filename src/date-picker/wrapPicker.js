@@ -4,10 +4,7 @@
  **/
 
 import san from 'san';
-import moment from 'moment';
-import inherits from '../core/util/inherits';
 import {classCreator} from '../core/util/index';
-import TimePickerPanel from '../timepicker/src/panel';
 import localeReceiver from '../localeprovider/receiver';
 
 const prefixCls = classCreator('calendar')();
@@ -21,19 +18,25 @@ const DEFAULT_FORMAT = {
 };
 
 export default function (Picker, pickerType) {
-    return inherits(san.defineComponent({
+    return san.defineComponent({
         initData() {
             return {
+                ...Picker.prototype.initData(),
                 componentName: 'DatePicker',
                 prefixCls,
-                transitionName: 'slide-up'
+                transitionName: 'slide-up',
+                timeFormat: 'HH:mm:ss'
             };
         },
 
-        inited: localeReceiver.inited,
+        inited() {
+            localeReceiver.inited.bind(this)();
+            Picker.prototype.inited.bind(this)();
+        },
 
         computed: {
             ...localeReceiver.computed,
+            ...Picker.prototype.computed,
 
             format() {
                 const format = this.data.get('format');
@@ -59,67 +62,17 @@ export default function (Picker, pickerType) {
                 size && classArr.push(`${inputPrefixCls}-${size}`);
                 disabled && classArr.push(`${inputPrefixCls}-disabled`);
                 return classArr.join(' ');
-            },
-
-            timePicker() {
-                const showTime = this.data.get('showTime');
-                const timeFormat = (showTime && showTime.format) || 'HH:mm:ss';
-                const prefixCls = this.data.get('prefixCls');
-
-                if (!showTime) {
-                    return null;
-                }
-
-                return inherits(san.defineComponent({
-                    initData() {
-                        return {
-                            format: timeFormat,
-                            use12Hours: showTime && showTime.use12Hours,
-                            prefixCls: `${prefixCls}-time-picker`,
-                            transitionName: 'slide-up',
-                            ...showTime,
-                            defaultOpenValue: showTime && showTime.defaultValue || moment()
-                        };
-                    },
-                    computed: {
-                        className() {
-                            const columns = this.data.get('columns');
-                            return `${prefixCls}-time-picker-column-${columns}`;
-                        },
-                        columns() {
-                            const showHour = this.data.get('showHour');
-                            const showMinute = this.data.get('showMinute');
-                            const showSecond = this.data.get('showSecond');
-                            const use12Hours = this.data.get('use12Hours');
-                            let column = 0;
-                            showHour && ++column;
-                            showMinute && ++column;
-                            showSecond && ++column;
-                            use12Hours && ++column;
-                            return column;
-                        },
-                        showHour() {
-                            const format = this.data.get('format');
-                            return format.indexOf('H') > -1 || format.indexOf('h') > -1 || format.indexOf('k') > -1;
-                        },
-                        showMinute() {
-                            const format = this.data.get('format');
-                            return format.indexOf('m') > -1;
-                        },
-                        showSecond() {
-                            const format = this.data.get('format');
-                            return format.indexOf('s') > -1;
-                        }
-                    }
-                }), TimePickerPanel);
             }
         },
+
         focus() {
             this.ref('input').focus();
         },
+
         blur() {
             this.ref('input').blur();
         },
+
         attached() {
             const autoFocus = this.data.get('autoFocus');
             const disabled = this.data.get('disabled');
@@ -127,5 +80,5 @@ export default function (Picker, pickerType) {
                 this.focus();
             }
         }
-    }), Picker);
+    }, Picker);
 }

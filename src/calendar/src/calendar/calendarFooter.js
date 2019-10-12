@@ -14,9 +14,7 @@ export default san.defineComponent({
         showDateInput: DataTypes.bool,
         disabledDate: DataTypes.func,
         disabledTime: DataTypes.func,
-        timePicker: DataTypes.func,
         selectedValue: DataTypes.object,
-        showOk: DataTypes.bool,
         value: DataTypes.object,
         mode: DataTypes.string,
         defaultValue: DataTypes.object
@@ -39,9 +37,9 @@ export default san.defineComponent({
         this.fire('openTimePicker');
     },
     template: `
-        <div class="{{prefixCls}}-footer {{(showOk && timePicker) ? prefixCls + '-footer-show-ok' : ''}}">
+        <div class="{{prefixCls}}-footer {{showTime ? prefixCls + '-footer-show-ok' : ''}}">
             <span
-                s-if="showToday || timePicker || showOk || hasExtraFooter"
+                s-if="showToday || showTime || hasExtraFooter"
                 class="{{prefixCls}}-footer-btn"
             >
                 <slot name="renderExtraFooter" />
@@ -55,7 +53,7 @@ export default san.defineComponent({
                     on-today="handleToday"
                 />
                 <s-timepickerbutton
-                    s-if="timePicker"
+                    s-if="showTime"
                     locale="{{locale}}"
                     prefixCls="{{prefixCls}}"
                     showTimePicker="{{showTimePicker}}"
@@ -66,9 +64,9 @@ export default san.defineComponent({
                 />
                 <s-okbutton
                     prefixCls="{{prefixCls}}"
-                    s-if="showOk || timePicker"
+                    s-if="showTime"
                     locale="{{locale}}"
-                    okDisabled="{{okDisabled}}"
+                    disabled="{{disabled}}"
                     on-ok="handleOk"
                 />
             </span>

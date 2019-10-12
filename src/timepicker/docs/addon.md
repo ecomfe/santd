@@ -6,7 +6,9 @@
 ```html
 <template>
     <div>
-        <s-timepicker addon="{{addon}}" open="{{open}}" on-openChange="handleOpenChange"/>
+        <s-timepicker addon="{{addon}}" open="{{open}}" on-openChange="handleOpenChange">
+            <s-button type="primary" size="small" on-click="handleClose" slot="addon">Ok</s-button>
+        </s-timepicker>
     </div>
 </template>
 <script>
@@ -31,7 +33,8 @@ const addon = function () {
 
 export default {
     components: {
-        's-timepicker': timepicker
+        's-timepicker': timepicker,
+        's-button': button
     },
     initData() {
         return {

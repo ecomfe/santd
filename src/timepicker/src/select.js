@@ -41,13 +41,6 @@ export default san.defineComponent({
         };
     },
     computed: {
-        classes() {
-            const prefixCls = this.data.get('prefixCls');
-            const active = this.data.get('active');
-            let classArr = [`${prefixCls}-select`];
-            active && classArr.push(`${prefixCls}-select-active`);
-            return classArr;
-        },
         renderOptions() {
             const options = this.data.get('options');
             const prefixCls = this.data.get('prefixCls');
@@ -67,8 +60,8 @@ export default san.defineComponent({
             this.scrollToSelected(120);
         });
         window.setTimeout(() => {
-            this.scrollToSelected(120);
-        }, 50);
+            this.scrollToSelected(0);
+        }, 0);
     },
     scrollToSelected(duration) {
         const selectedIndex = this.data.get('selectedIndex');
@@ -97,7 +90,7 @@ export default san.defineComponent({
         const type = this.data.get('type');
         this.fire('select', {type, itemValue});
     },
-    template: `<div class="{{classes}}"
+    template: `<div class="{{prefixCls}}-select {{active ? prefixCls + '-select-active' : ''}}"
         on-mouseenter="handleMouseEnter"
         on-mouseleave="handleMouseLeave">
         <ul s-ref="list">
@@ -106,7 +99,6 @@ export default san.defineComponent({
                 role="button"
                 on-click="handleClick(option.value)"
                 class="{{option.className}}"
-                key="{{index}}"
                 disabled="{{option.disabled}}"
             >
                 {{option.value}}

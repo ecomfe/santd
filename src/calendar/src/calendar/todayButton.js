@@ -10,7 +10,6 @@ export default san.defineComponent({
     dataTypes: {
         prefixCls: DataTypes.string,
         value: DataTypes.object,
-        timePicker: DataTypes.func,
         locale: DataTypes.object,
         disabledDate: DataTypes.func,
         text: DataTypes.string
@@ -23,10 +22,10 @@ export default san.defineComponent({
         },
         localeNow() {
             const text = this.data.get('text');
-            const timePicker = this.data.get('timePicker');
+            const showTime = this.data.get('showTime');
             const locale = this.data.get('locale');
 
-            return (!text && timePicker ? locale.now : text) || locale.today;
+            return (!text && showTime ? locale.now : text) || locale.today;
         }
     },
     getTitle(value) {

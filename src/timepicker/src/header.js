@@ -29,28 +29,12 @@ export default san.defineComponent({
         };
     },
     computed: {
-        inputClass() {
-            const prefixCls = this.data.get('prefixCls');
-            const invalid = this.data.get('invalid');
-            let classArr = [`${prefixCls}-input`];
-            invalid && classArr.push(`${prefixCls}-input-invalid`);
-            return classArr.join(' ');
-        }
-    },
-    inited() {
-        const value = this.data.get('value');
-        const format = this.data.get('format');
-
-        this.data.set('str', value && value.format(format) || '');
-
-        this.watch('value', val => {
-            this.data.set('str', val && val.format(format) || '');
-        });
-
-        this.watch('refresh', val => {
+        showTime() {
             const value = this.data.get('value');
-            this.data.set('str', value && value.format(format) || '');
-        });
+            const format = this.data.get('format');
+
+            return value && value.format(format);
+        }
     },
     attached() {
         const focusOnOpen = this.data.get('focusOnOpen');
@@ -66,8 +50,7 @@ export default san.defineComponent({
         this.fire('keydown', e);
     },
     handleChange(e) {
-        const str = e.target.value;
-        this.data.set('str', str);
+        const inputValue = e.target.value;
         const {
             format,
             hourOptions,
@@ -78,10 +61,10 @@ export default san.defineComponent({
             disabledSeconds
         } = this.data.get();
 
-        if (str) {
+        if (inputValue) {
             const originalValue = this.data.get('value');
             const value = this.data.get('value') || this.data.get('defaultOpenValue');
-            const parsed = moment(str, format, true);
+            const parsed = moment(inputValue, format, true);
             if (!parsed.isValid()) {
                 this.data.set('invalid', true);
                 return;
@@ -139,12 +122,12 @@ export default san.defineComponent({
     },
     template: `<div class="{{prefixCls}}-input-wrap">
         <input
-            className="{{inputClass}}"
-            value="{{str}}"
+            class="{{prefixCls}}-input {{invalid ? prefixCls + '-input-invalid' : ''}}"
+            value="{{showTime}}"
             placeholder="{{placeholder}}"
             readOnly="{{!!inputReadOnly}}"
             on-change="handleChange"
-            on-keydown="handleKeyDown"a
+            on-keydown="handleKeyDown"
             s-ref="input"
         />
     </div>`

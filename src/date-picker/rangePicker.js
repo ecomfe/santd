@@ -85,6 +85,7 @@ export default san.defineComponent({
         this.data.set('showDate', pickerValueAdapter(pickerValue || moment()));
         this.data.set('hasExtraFooter', !!this.sourceSlots.named.renderExtraFooter);
         this.data.set('hasDateRender', !!this.sourceSlots.named.dateRender);
+        this.data.set('hasSuffixIcon', !!this.sourceSlots.named.suffixIcon);
     },
     handleOpenChange(open) {
         if (open === false) {
@@ -178,11 +179,12 @@ export default san.defineComponent({
             >
                 <s-rangecalendar
                     prefixCls="${prefixCls}"
+                    style="{{popupStyle}}"
                     slot="popup"
                     separator="{{separator}}"
                     format="{{format}}"
                     class="{{calendarClasses}}"
-                    timePicker="{{timePicker}}"
+                    showTime="{{showTime}}"
                     disabledDate="{{disabledDate}}"
                     disabledTime="{{disabledTime}}"
                     dateInputPlaceholder="{{dateInputPlaceholder || locale.lang.rangePlaceholder}}"
@@ -222,6 +224,7 @@ export default san.defineComponent({
                         class="${prefixCls}-range-picker-input"
                         tabIndex="-1"
                         style="{{inputStyle}}"
+                        s-ref="input"
                     />
                     <s-icon
                         s-if="!disabled && allowClear && value && (value[0] || value[1])"
@@ -230,7 +233,10 @@ export default san.defineComponent({
                         theme="filled"
                         on-click="handleClearSelection"
                     />
-                    <s-icon class="${prefixCls}-picker-icon" type="calendar" />
+                    <span class="{{prefixCls}}-picker-icon" s-if="hasSuffixIcon">
+                        <slot name="suffixIcon" />
+                    </span>
+                    <s-icon class="${prefixCls}-picker-icon" type="calendar" s-else />
                 </div>
             </s-trigger>
         </span>`

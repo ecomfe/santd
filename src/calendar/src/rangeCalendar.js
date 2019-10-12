@@ -15,7 +15,7 @@ import TimePickerButton from './calendar/timepickerButton';
 import Tag from '../../tag';
 import inherits from '../../core/util/inherits';
 import moment from 'moment';
-import {syncTime, getTodayTime, isAllowedDate} from './util';
+import {syncTime, getTodayTime, isAllowedDate, getTimeConfig} from './util';
 
 function isEmptyArray(arr) {
     return Array.isArray(arr) && (arr.length === 0 || arr.every(i => !i));
@@ -123,7 +123,7 @@ export default inherits(san.defineComponent({
             }
             let startValue = value[0].clone();
             // keep selectedTime when select date
-            if (selectedValue[0] && this.data.get('timePicker')) {
+            if (selectedValue[0] && this.data.get('showTime')) {
                 startValue = startValue.clone();
                 syncTime(selectedValue[0], startValue);
             }
@@ -150,7 +150,7 @@ export default inherits(san.defineComponent({
             }
             let endValue = value[1] ? value[1].clone() : value[0].clone().add(1, 'month');
             // keep selectedTime when select date
-            if (selectedValue[1] && this.data.get('timePicker')) {
+            if (selectedValue[1] && this.data.get('showTime')) {
                 syncTime(selectedValue[1], endValue);
             }
             if (showTimePicker) {
@@ -198,12 +198,12 @@ export default inherits(san.defineComponent({
     },
     fireSelectValueChange(selectedValue, direct, cause) {
         const {
-            timePicker,
+            showTime,
             prevSelectedValue
         } = this.data.get();
 
-        if (timePicker && timePicker.prototype.initData().defaultValue) {
-            const timePickerDefaultValue = timePicker.prototype.initData().defaultValue;
+        if (showTime && showTime.defaultValue) {
+            const timePickerDefaultValue = showTime.defaultValue;
             if (!prevSelectedValue[0] && selectedValue[0]) {
                 syncTime(timePickerDefaultValue[0], selectedValue[0]);
             }
@@ -224,7 +224,7 @@ export default inherits(san.defineComponent({
         }
     },
     compare(v1, v2) {
-        if (this.data.get('timePicker')) {
+        if (this.data.get('showTime')) {
             return v1.diff(v2);
         }
         return v1.diff(v2, 'days');
@@ -354,6 +354,14 @@ export default inherits(san.defineComponent({
         this.handleInputSelect('right', value);
     },
 
+    getTimeConfig(selectedValue, disabledTime, mode) {
+        const showTimePicker = this.data.get('showTimePicker');
+        if (showTimePicker && disabledTime) {
+            const config = getTimeConfig(selectedValue, disabledTime);
+            return config[mode];
+        }
+    },
+
     updated() {
         this.data.set('prevSelectedValue', this.data.get('selectedValue'));
     },
@@ -388,7 +396,6 @@ export default inherits(san.defineComponent({
                         format="{{getFormat()}}"
                         placeholder="{{dateInputPlaceholder[0]}}"
                         showDateInput="{{showDateInput}}"
-                        timePicker="{{timePicker}}"
                         showTimePicker="{{showTimePicker}}"
                         enablePrev
                         enableNext="{{!isClosestMonths || isMonthYearPanelShow(mode[1])}}"
@@ -402,6 +409,23 @@ export default inherits(san.defineComponent({
                         on-inputChange="handleStartInputChange"
                     >
                         <slot name="dateRender" slot="dateRender" var-current="{{current}}" />
+                        <s-timepicker
+                            slot="timepicker"
+                            class="{{prefixCls}}-time-picker-column-{{columns}}"
+                            showHour="{{showHour}}"
+                            showMinute="{{showMinute}}"
+                            showSecond="{{showSecond}}"
+                            use12Hours="{{showTime && showTime.use12Hours}}"
+                            hideDisabledOptions="{{showTime && showTime.hideDisabledOptions}}"
+                            defaultOpenValue="{{showTime && showTime.defaultValue && showTime.defaultValue[0] || getStartValue}}"
+                            prefixCls="{{prefixCls}}-time-picker"
+                            columns="{{columns}}"
+                            disabledHours="{{getTimeConfig(selectedValue, disabledStartTime, 'disabledHours')}}"
+                            disabledMinutes="{{getTimeConfig(selectedValue, disabledStartTime, 'disabledMinutes')}}"
+                            disabledSeconds="{{getTimeConfig(selectedValue, disabledStartTime, 'disabledSeconds')}}"
+                            on-change="handleStartInputChange"
+                            value="{{getStartValue}}"
+                        />
                     </s-rangepanel>
                     <span class="{{prefixCls}}-range-middle">{{seperator}}</span>
                     <s-rangepanel
@@ -415,7 +439,6 @@ export default inherits(san.defineComponent({
                         format="{{getFormat()}}"
                         placeholder="{{dateInputPlaceholder[1]}}"
                         showDateInput="{{showDateInput}}"
-                        timePicker="{{timePicker}}"
                         showTimePicker="{{showTimePicker}}"
                         enableNext
                         enablePrev="{{!isClosestMonths || isMonthYearPanelShow(mode[0])}}"
@@ -429,11 +452,28 @@ export default inherits(san.defineComponent({
                         on-inputChange="handleEndInputChange"
                     >
                         <slot name="dateRender" slot="dateRender" var-current="{{current}}" />
+                        <s-timepicker
+                            slot="timepicker"
+                            class="{{prefixCls}}-time-picker-column-{{columns}}"
+                            showHour="{{showHour}}"
+                            showMinute="{{showMinute}}"
+                            showSecond="{{showSecond}}"
+                            use12Hours="{{showTime && showTime.use12Hours}}"
+                            hideDisabledOptions="{{showTime && showTime.hideDisabledOptions}}"
+                            defaultOpenValue="{{showTime && showTime.defaultValue && showTime.defaultValue[1] || getEndValue}}"
+                            prefixCls="{{prefixCls}}-time-picker"
+                            columns="{{columns}}"
+                            disabledHours="{{getTimeConfig(selectedValue, disabledEndTime, 'disabledHours')}}"
+                            disabledMinutes="{{getTimeConfig(selectedValue, disabledEndTime, 'disabledMinutes')}}"
+                            disabledSeconds="{{getTimeConfig(selectedValue, disabledEndTime, 'disabledSeconds')}}"
+                            on-change="handleEndInputChange"
+                            value="{{getEndValue}}"
+                        />
                     </s-rangepanel>
                 </div>
                 <div
-                    class="{{prefixCls}}-footer {{prefixCls}}-range-bottom {{showOk || timePicker ? prefixCls + '-footer-show-ok' : ''}}"
-                    s-if="showToday || timePicker || showOk || hasExtraFooter || ranges"
+                    class="{{prefixCls}}-footer {{prefixCls}}-range-bottom {{showTime ? prefixCls + '-footer-show-ok' : ''}}"
+                    s-if="showToday || showTime || hasExtraFooter || ranges"
                 >
                     <div class="{{prefixCls}}-footer-btn">
                         <div s-if="rangesName.length" class="{{prefixCls}}-footer-extra {{prefixCls}}-range-quick-selector">
@@ -458,20 +498,19 @@ export default inherits(san.defineComponent({
                             disabledDate="{{disabledDate}}"
                             locale="{{locale}}"
                             prefixCls="{{prefixCls}}"
-                            timePicker="{{timePicker}}"
                             on-today="handleToday"
                         />
                         <s-timepickerbutton
-                            s-if="timePicker"
+                            s-if="showTime"
                             locale="{{locale}}"
                             showTimePicker="{{showTimePicker}}"
-                            timePickerDisabled="{{!hasSelectedValue || !!hoverValue.length}}"
+                            disabled="{{!hasSelectedValue || !!hoverValue.length}}"
                             prefixCls="{{prefixCls}}"
                             on-openTimePicker="handleTimePicker(true)"
                             on-closeTimePicker="handleTimePicker(false)"
                         />
                         <s-okbutton
-                            s-if="showOk || timePicker"
+                            s-if="showTime"
                             locale="{{locale}}"
                             prefixCls="{{prefixCls}}"
                             disabled="{{!isAllowedDateAndTime || !hasSelectedValue || !!hoverValue.length}}"

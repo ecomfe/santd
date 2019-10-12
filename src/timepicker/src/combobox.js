@@ -54,7 +54,6 @@ export default san.defineComponent({
             const disabledHours = this.data.get('disabledHours') || function () {};
             const showHour = this.data.get('showHour');
             const use12Hours = this.data.get('use12Hours');
-            const refresh = this.data.get('refresh');
 
             if (!showHour) {
                 return false;
@@ -84,7 +83,6 @@ export default san.defineComponent({
             const minuteOptions = this.data.get('minuteOptions');
             const disabledMinutes = this.data.get('disabledMinutes') || function () {};
             const showMinute = this.data.get('showMinute');
-            const refresh = this.data.get('refresh');
 
             if (!showMinute) {
                 return false;
@@ -103,7 +101,6 @@ export default san.defineComponent({
             const secondOptions = this.data.get('secondOptions');
             const disabledSeconds = this.data.get('disabledSeconds') || function () {};
             const showSecond = this.data.get('showSecond');
-            const refresh = this.data.get('refresh');
 
             if (!showSecond) {
                 return false;

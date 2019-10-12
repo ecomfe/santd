@@ -31,6 +31,7 @@ export default san.defineComponent({
     inited() {
         this.data.set('defaultValue', this.data.get('defaultPickerValue') || moment());
         this.data.set('hasExtraFooter', !!this.sourceSlots.named.renderExtraFooter);
+        this.data.set('hasSuffixIcon', !!this.sourceSlots.named.suffixIcon);
     },
     handleCalendarChange(data) {
         this.data.set('value', data.value);
@@ -82,6 +83,7 @@ export default san.defineComponent({
             >
                 <s-calendar
                     slot="popup"
+                    style="{{popupStyle}}"
                     showWeekNumber="{{true}}"
                     format="{{format}}"
                     showDateInput="{{false}}"
@@ -106,6 +108,7 @@ export default san.defineComponent({
                     tabIndex="{{tabIndex}}"
                     name="{{name}}"
                     style="{{inputStyle}}"
+                    s-ref="input"
                 />
                 <s-icon
                     s-if="!disabled && allowClear && value"
@@ -114,7 +117,10 @@ export default san.defineComponent({
                     theme="filled"
                     on-click="handleClearSelection"
                 />
-                <s-icon type="calendar" class="${prefixCls}-picker-icon" />
+                <span class="{{prefixCls}}-picker-icon" s-if="hasSuffixIcon">
+                    <slot name="suffixIcon" />
+                </span>
+                <s-icon class="${prefixCls}-picker-icon" type="calendar" s-else />
             </s-trigger>
         </span>
     `
