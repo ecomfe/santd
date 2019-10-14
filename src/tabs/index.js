@@ -156,6 +156,7 @@ const Tabs = san.defineComponent({
             tabBarData.push(tabPane.data.get());
         });
         this.data.set('tabBarData', tabBarData);
+        this.data.set('tabPanes', this.tabPanes);
     },
     attached() {
         this.updateTab();
@@ -166,6 +167,9 @@ const Tabs = san.defineComponent({
         });
     },
     messages: {
+        santd_tabs_tabClick(payload) {
+            this.handleTabClick(payload.value);
+        },
         santd_tabs_addTabPane(payload) {
             this.tabPanes.push(payload.value);
             this.updateTab();
@@ -189,11 +193,12 @@ const Tabs = san.defineComponent({
         's-tabbar': ScrollableInkTabBar
     },
     template: `
-        <div class="{{classes}}">
+        <div class="{{classes}}"><slot name="tab"/>
             <template s-if="tabPosition === 'bottom'">
                 <div class="{{contentClasses}}"><slot /></div>
                 <slot name="renderTabBar" var-props="{{props}}" s-if="hasRenderTabBar" />
                 <s-tabbar
+                    tabPanes="{{tabPanes}}"
                     tabBarData="{{tabBarData}}"
                     activeKey="{{activeKey}}"
                     tabBarGutter="{{tabBarGutter}}"
@@ -216,6 +221,7 @@ const Tabs = san.defineComponent({
             <template s-else>
                 <slot name="renderTabBar" var-props="{{props}}" s-if="hasRenderTabBar" />
                 <s-tabbar
+                    tabPanes="{{tabPanes}}"
                     tabBarData="{{tabBarData}}"
                     activeKey="{{activeKey}}"
                     tabBarGutter="{{tabBarGutter}}"
