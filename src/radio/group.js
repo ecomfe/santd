@@ -91,6 +91,10 @@ export default san.defineComponent({
         }
     },
 
+    attached() {
+        this.updated();
+    },
+
     template: `
         <div class="${prefixCls}-group ${prefixCls}-group-{{buttonStyle}} {{size ? '${prefixCls}-group-' + size : ''}}">
             <s-radio
