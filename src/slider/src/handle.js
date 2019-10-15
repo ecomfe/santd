@@ -18,17 +18,6 @@ export default san.defineComponent({
         tabIndex: DataTypes.number
     },
 
-    computed: {
-        index() {
-            const tabIndex = this.data.get('tabIndex');
-            const disabled = this.data.get('disabled');
-            if (disabled || tabIndex === null) {
-                return null;
-            }
-            return tabIndex || 0;
-        }
-    },
-
     initData() {
         return {
             clickFocused: false
@@ -84,8 +73,8 @@ export default san.defineComponent({
     },
 
     template: `<div
-        tabIndex="{{index}}"
-        class="{{clickFocused ？ '{{prefixCls}}-handle-click-focused' : ''}}"
+        tabIndex="{{(disabled || tabIndex == null) ? '' : tabIndex}}"
+        class="{{clickFocused ? prefixCls + '-handle-click-focused' : ''}}"
         style="{{vertical ? 'bottom' : 'left'}}:{{offset}}%;"
         on-blur="handleBlur"
         on-keydown="handleKeyDown"
