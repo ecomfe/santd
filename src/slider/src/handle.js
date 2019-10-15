@@ -17,6 +17,7 @@ export default san.defineComponent({
         value: DataTypes.number,
         tabIndex: DataTypes.number
     },
+    
     computed: {
         index() {
             const tabIndex = this.data.get('tabIndex');
@@ -25,65 +26,65 @@ export default san.defineComponent({
                 return null;
             }
             return tabIndex || 0;
-        },
-        bodyStyle() {
-            const vertical = this.data.get('vertical');
-            const offset = this.data.get('offset');
-            const style = this.data.get('style');
-
-            const positionStyle = vertical ? {bottom: `${offset}%`} : {left: `${offset}%`};
-
-            return {
-                ...style,
-                ...positionStyle
-            };
         }
     },
+
     initData() {
         return {
             clickFocused: false
         };
     },
+
     attached() {
         this.handleMouseUpListener = document.addEventListener('mouseup', this.handleMouseUp);
         this.dispatch('santd_slider_handle_save', this);
     },
+
     detached() {
         if (this.handleMouseUpListener) {
             document.removeEventListener('mouseup', this.handleMouseUp);
         }
     },
+
     handleBlur() {
         this.setClickFocus(false);
     },
+
     handleKeyDown() {
         this.setClickFocus(false);
     },
+
     handleMouseDown() {
         this.focus();
     },
+
     handleMouseUp() {
         if (document.activeElement === this.el) {
             this.setClickFocus(true);
         }
     },
+
     setClickFocus(focused) {
         this.data.set('clickFocused', focused);
     },
+
     clickFocus() {
         this.setClickFocus(true);
         this.focus();
     },
+
     focus() {
         this.el.focus();
     },
+
     blur() {
         this.el.blur();
     },
+
     template: `<div
         tabIndex="{{index}}"
         class="{{clickFocused ？ '{{prefixCls}}-handle-click-focused' : ''}}"
-        style="{{bodyStyle}}"
+        style="{{vertical ? 'bottom' : 'left'}}:{{offset}}%;"
         on-blur="handleBlur"
         on-keydown="handleKeyDown"
         on-mousedown="handleMouseDown"
