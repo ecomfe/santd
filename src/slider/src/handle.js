@@ -26,14 +26,6 @@ export default san.defineComponent({
             }
             return tabIndex || 0;
         },
-        classes() {
-            const className = this.data.get('className');
-            const prefixCls = this.data.get('prefixCls');
-
-            let classArr = [className];
-            this.data.get('clickFocused') && classArr.push(`${prefixCls}-handle-click-focused`);
-            return classArr;
-        },
         bodyStyle() {
             const vertical = this.data.get('vertical');
             const offset = this.data.get('offset');
@@ -90,7 +82,7 @@ export default san.defineComponent({
     },
     template: `<div
         tabIndex="{{index}}"
-        class="{{classes}}"
+        class="{{clickFocused ？ '{{prefixCls}}-handle-click-focused' : ''}}"
         style="{{bodyStyle}}"
         on-blur="handleBlur"
         on-keydown="handleKeyDown"
