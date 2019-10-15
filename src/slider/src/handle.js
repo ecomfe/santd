@@ -17,7 +17,7 @@ export default san.defineComponent({
         value: DataTypes.number,
         tabIndex: DataTypes.number
     },
-    
+
     computed: {
         index() {
             const tabIndex = this.data.get('tabIndex');
@@ -36,14 +36,16 @@ export default san.defineComponent({
     },
 
     attached() {
-        this.handleMouseUpListener = document.addEventListener('mouseup', this.handleMouseUp);
+        if (!this._mouseUpHandler) {
+            this._mouseUpHandler = this.handleMouseUp.bind(this);
+        }
+
+        document.addEventListener('mouseup', this._mouseUpHandler);
         this.dispatch('santd_slider_handle_save', this);
     },
 
     detached() {
-        if (this.handleMouseUpListener) {
-            document.removeEventListener('mouseup', this.handleMouseUp);
-        }
+        document.removeEventListener('mouseup', this._mouseUpHandler);
     },
 
     handleBlur() {
