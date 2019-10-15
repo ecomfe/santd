@@ -6,7 +6,6 @@
 import san, {DataTypes} from 'san';
 import Steps from './steps';
 import Marks from './marks';
-import Handle from '../handle';
 import * as utils from '../utils';
 
 export default san.defineComponent({
