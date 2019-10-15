@@ -7,7 +7,7 @@
 <template>
 <div>
     <s-layout>
-        <s-sider collapsed="{{collapsed}}" collapsible trigger="{{noTrigger}}">
+        <s-sider collapsed="{{collapsed}}" collapsible="{{true}}" trigger="{{noTrigger}}">
             <div class="logo" />
             <s-menu theme="dark" mode="inline" inlineCollapsed="{{collapsed}}" defaultSelectedKeys="{{['1']}}">
                 <s-menuitem key="1">
@@ -22,7 +22,11 @@
                     <s-icon type="upload" />
                     <span>nav 3</span>
                 </s-menuitem>
-                <s-submenu key="sub1" placement="right-start" title="{{subOne}}">
+                <s-submenu key="sub1">
+                    <template slot="title">
+                        <s-icon type="search" />
+                        <span>Navigation Two</span>
+                    </template>
                     <s-menuitem key="4">
                         <s-icon type="file"></s-icon>
                         <span>小标题4</span>
@@ -59,20 +63,7 @@ export default {
     initData(){
         return {
             noTrigger: null,
-            collapsed: false,
-            subOne: function() {
-                return san.defineComponent({
-                    components: {
-                        's-icon': Icon
-                    },
-                    template: `
-                        <span>
-                            <s-icon type="search"/>
-                            <span>Navigation Two</span>
-                        </span>
-                    `
-                })
-            }
+            collapsed: false
         }
     },
     toggleCollapsed () {

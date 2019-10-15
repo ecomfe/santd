@@ -6,7 +6,7 @@
 ```html
 <template>
     <div>
-        <s-skeleton active/>
+        <s-skeleton active="{{true}}"/>
     </div>
 </template>
 

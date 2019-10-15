@@ -6,9 +6,9 @@
 ```html
 <template>
     <div>
-        <s-timepicker use12Hours on-change="handleChange"/>
-        <s-timepicker use12Hours format="h:mm:ss A" on-change="handleChange"/>
-        <s-timepicker use12Hours format="h:mm a" on-change="handleChange"/>
+        <s-timepicker use12Hours="{{true}}" on-change="handleChange"/>
+        <s-timepicker use12Hours="{{true}}" format="h:mm:ss A" on-change="handleChange"/>
+        <s-timepicker use12Hours="{{true}}" format="h:mm a" on-change="handleChange"/>
     </div>
 </template>
 <script>

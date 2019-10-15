@@ -17,29 +17,29 @@
         <s-formitem label="Warning" validateStatus="warning">
             <s-input placeholder="warning" id="warning"></s-input>
         </s-formitem>
-        <s-formitem label="Validating" validateStatus="validating" help="The information is being validated..." hasFeedback>
+        <s-formitem label="Validating" validateStatus="validating" help="The information is being validated..." hasFeedback="{{true}}">
             <s-input placeholder="I'm the content is being validated" id="validating"></s-input>
         </s-formitem>
-        <s-formitem label="Success" validateStatus="success" hasFeedback>
+        <s-formitem label="Success" validateStatus="success" hasFeedback="{{true}}">
             <s-input placeholder="I'm the content" id="success"></s-input>
         </s-formitem>
-        <s-formitem label="Warning" validateStatus="warning" hasFeedback>
+        <s-formitem label="Warning" validateStatus="warning" hasFeedback="{{true}}">
             <s-input placeholder="warning" id="warning2"></s-input>
         </s-formitem>
-        <s-formitem label="Fail" validateStatus="error" help="Should be combination of numbers & alphabets" hasFeedback>
+        <s-formitem label="Fail" validateStatus="error" help="Should be combination of numbers & alphabets" hasFeedback="{{true}}">
             <s-input placeholder="unavailable choice" id="error2"></s-input>
         </s-formitem>
-        <s-formitem label="Success" validateStatus="success" hasFeedback>
+        <s-formitem label="Success" validateStatus="success" hasFeedback="{{true}}">
             <s-datepicker style="width: 100%;"></s-datepicker>
         </s-formitem>
-        <s-formitem label="Success" validateStatus="success" hasFeedback>
+        <s-formitem label="Success" validateStatus="success" hasFeedback="{{true}}">
             <s-select defaultValue="1">
                 <s-selectoption value="1">Option 1</s-selectoption>
                 <s-selectoption value="2">Option 1</s-selectoption>
                 <s-selectoption value="3">Option 1</s-selectoption>
             </s-select>
         </s-formitem>
-        <s-formitem label="Validating" validateStatus="validating" help="The information is being validated..." hasFeedback>
+        <s-formitem label="Validating" validateStatus="validating" help="The information is being validated..." hasFeedback="{{true}}">
             <s-cascader defaultValue={{['1']}} options="{{[]}}"></s-cascader>
         </s-formitem>
         <s-formitem label="inline" style="margin-bottom: 0;">
@@ -51,7 +51,7 @@
                 <s-datepicker></s-datepicker>
             </s-formitem>
         </s-formitem>
-        <s-formitem label="Success" validateStatus="success" hasFeedback>
+        <s-formitem label="Success" validateStatus="success" hasFeedback="{{true}}">
             <s-inputnumber style="width: 100%;"></s-inputnumber>
         </s-formitem>
       </s-form>

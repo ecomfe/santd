@@ -13,7 +13,7 @@
         </s-radiogroup>
         <br />
         <br />
-        <s-descriptions title="Custom Size" bordered size="{{size}}">
+        <s-descriptions title="Custom Size" bordered="{{true}}" size="{{size}}">
             <s-descriptionsitem label="Product">Cloud Database</s-descriptionsitem>
             <s-descriptionsitem label="Billing Mode">Prepaid</s-descriptionsitem>
             <s-descriptionsitem label="time">18:00:00</s-descriptionsitem>

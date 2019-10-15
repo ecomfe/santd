@@ -14,9 +14,9 @@
             <s-button>OK</s-button>
         </s-buttongroup>
         <s-buttongroup>
-            <s-button disabled>L</s-button>
-            <s-button disabled>M</s-button>
-            <s-button disabled>R</s-button>
+            <s-button disabled="{{true}}">L</s-button>
+            <s-button disabled="{{true}}">M</s-button>
+            <s-button disabled="{{true}}">R</s-button>
         </s-buttongroup>
         <s-buttongroup>
             <s-button>L</s-button>

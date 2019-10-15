@@ -9,7 +9,7 @@
         <s-switch on-change='onChange' />
         <s-card
             title="Card title"
-            hoverable
+            hoverable="{{true}}"
             style="width: 300px;margin-top: 16px;"
             loading="{{loading}}"
         >

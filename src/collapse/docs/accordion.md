@@ -6,7 +6,7 @@
 ```html
 <template>
     <div>
-    <s-collapse accordion defaultActiveKey="{{['1']}}">
+    <s-collapse accordion="{{true}}" defaultActiveKey="{{['1']}}">
         <s-panel header="This is panel header 1" key="1">
             <p>
                 A dog is a type of domesticated animal.

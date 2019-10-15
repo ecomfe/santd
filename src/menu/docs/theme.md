@@ -7,7 +7,7 @@
 <template>
 <div>
   <div style="margin: 30px 0;">
-      <s-switch on-change='switchChange' defaultChecked />
+      <s-switch on-change='switchChange' defaultChecked="{{true}}" />
   </div>
   <div style="width:256px;">
     <s-menu

@@ -8,7 +8,7 @@ tree受控操作示例
   <div>
     <s-tree
         data="{{data}}"
-        checkable
+        checkable="{{true}}"
         defaultExpandedKeys="{{defexpandedKeys}}"
         defaultCheckedKeys="{{checkedKeys}}"
         on-select="onSelect"

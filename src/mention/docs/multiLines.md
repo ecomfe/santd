@@ -9,7 +9,7 @@
     <s-mention
         style="width: 100%; height: 100px;"
         baseStyle="{{{width: '100%', height: '100px'}}}"
-        multiLines
+        multiLines="{{true}}"
         defaultSuggestions="{{suggestions}}"
     />
   </div>

@@ -14,7 +14,7 @@
                     <s-menu-item key="1">3rd menu item</s-menu-item>
                     <s-menu-item key="2">4th menu item</s-menu-item>
                 </s-sub-menu>
-                <s-sub-menu title="disabled sub menu" disabled key="sub2">
+                <s-sub-menu title="disabled sub menu" disabled="{{true}}" key="sub2">
                     <s-menu-item key="3">5th menu item</s-menu-item>
                     <s-menu-item key="4">6th menu item</s-menu-item>
                 </s-sub-menu>

@@ -5,7 +5,7 @@ Switch 失效状态
 ```html
 <template>
     <div>
-        <s-switch disabled="{{disabled}}" defaultChecked/>
+        <s-switch disabled="{{disabled}}" defaultChecked="{{true}}"/>
         <br /><br />
         <s-button type="primary" on-click="handleToggle">Toggle disabled</s-button>
     </div>

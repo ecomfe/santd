@@ -17,7 +17,7 @@
         <div style="margin-top: 16px;">
             <s-group defaultValue="a" buttonStyle="solid" name="button2">
                 <s-button value="a">Hangzhou</s-button>
-                <s-button value="b" disabled>Shanghai</s-button>
+                <s-button value="b" disabled="{{true}}">Shanghai</s-button>
                 <s-button value="c">Beijing</s-button>
                 <s-button value="d">Chengdu</s-button>
             </s-group>

@@ -8,10 +8,10 @@
   <div style="width: 300px;">
       <s-form on-submit="handleSubmit" className="login-form">
         <s-formitem decorator="{{userNameDecorator}}">
-            <s-input placeholder="username" decorator="{{userNameDecorator}}" prefix="{{userPrefix}}"></s-input>
+            <s-input placeholder="username" decorator="{{userNameDecorator}}"></s-input>
         </s-formitem>
         <s-formitem decorator="{{passwordDecorator}}">
-            <s-input placeholder="password" type="password" decorator="{{passwordDecorator}}" prefix="{{passPrefix}}"></s-input>
+            <s-input placeholder="password" type="password" decorator="{{passwordDecorator}}"></s-input>
         </s-formitem>
         <s-formitem decorator="{{rememberDecorator}}">
             <s-checkbox decorator="{{rememberDecorator}}">Remember me</s-checkbox>

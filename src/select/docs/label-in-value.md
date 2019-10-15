@@ -7,7 +7,7 @@
 ```html
 <template>
     <div>
-        <s-select labelInValue defaultValue="{{ { key: 'lucy' } }}" style="width: 120px;" on-change="onChange">
+        <s-select labelInValue="{{true}}" defaultValue="{{ { key: 'lucy' } }}" style="width: 120px;" on-change="onChange">
             <s-select-option value="jake">Jake(001)</s-select-option>
             <s-select-option value="lucy">Lucy(002)</s-select-option>
             <s-select-option value="jason">Jason</s-select-option>

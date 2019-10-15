@@ -6,7 +6,7 @@
 ```html
 <template>
     <div>
-        <s-list bordered itemLayout="horizontal" dataSource="{{listData}}">
+        <s-list bordered="{{true}}" itemLayout="horizontal" dataSource="{{listData}}">
             <s-list-item slot="renderItem">
                 <ul class="{{prefixCls}}-item-action" slot="actions">
                     <li><a href="javascript:;" on-click="showDrawer">View Profile</a></li>

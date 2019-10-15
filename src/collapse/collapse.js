@@ -82,6 +82,10 @@ let Collapse = san.defineComponent({
         }
     },
 
+    attached() {
+        this.updated();
+    },
+
     template: `
         <div class="${prefixCls} {{bordered ? '' : '${prefixCls}-borderless'}}" role="{{accordion ? 'tablist' : ''}}">
             <slot />

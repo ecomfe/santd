@@ -10,7 +10,7 @@
         <br /><br />
         <s-checkboxgroup options="{{options}}" defaultValue="{{['Pear']}}" on-change="handleChange"></s-checkboxgroup>
         <br /><br />
-        <s-checkboxgroup options="{{optionsWithDisabled}}" disabled defaultValue="{{['Apple']}}" on-change="handleChange"></s-checkboxgroup>
+        <s-checkboxgroup options="{{optionsWithDisabled}}" disabled="{{true}}" defaultValue="{{['Apple']}}" on-change="handleChange"></s-checkboxgroup>
     </div>
 </template>
 

@@ -6,13 +6,13 @@
 ```html
 <template>
     <div>
-        <s-badge dot>
+        <s-badge dot="{{true}}">
           <s-icon type="notification" />
       </s-badge>
-        <s-badge count={{0}} dot>
+        <s-badge count={{0}} dot="{{true}}">
           <s-icon type="notification" />
       </s-badge>
-        <s-badge dot>
+        <s-badge dot="{{true}}">
           <a href="#">Link something</a>
       </s-badge>
     </div>

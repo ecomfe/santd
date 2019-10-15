@@ -10,7 +10,7 @@
         <s-formitem label="Plain Text">
             <span class="san-form-text">China</span>
         </s-formitem>
-        <s-formitem label="Select" hasFeedback>
+        <s-formitem label="Select" hasFeedback="{{true}}">
             <s-select placeholder="Please select a country" decorator="{{selectDecorator}}">
                 <s-selectoption value="china">China</s-selectoption>
                 <s-selectoption value="usa">U.S.A</s-selectoption>

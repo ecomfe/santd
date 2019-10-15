@@ -7,7 +7,7 @@
 <template>
   <div>
     <s-tree
-        showLine
+        showLine="{{true}}"
         defaultExpandedKeys="{{['0-0-0']}}"
         on-select="onSelect"
     >

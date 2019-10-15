@@ -13,7 +13,7 @@
             width="{{720}}"
             on-close="onClose"
         >
-            <s-form layout="vertical" hideRequiredMark>
+            <s-form layout="vertical" hideRequiredMark="{{true}}">
                 <s-row gutter="16">
                     <s-col span="12">
                         <s-item label="Name">

@@ -12,7 +12,7 @@
             on-change="handleChange"
             operations="{{['to Right', 'to Left']}}"
             listStyle="width: 250px; height: 300px;"
-            showSearch
+            showSearch="{{true}}"
         >
             <span slot="footer">
                 <s-button size="small" style="float: right; margin: 5px;" on-click="getMock">

@@ -8,7 +8,7 @@
     <div>
         <s-descriptions
             title="Responsive Descriptions"
-            bordered
+            bordered="{{true}}"
             column="{{{xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1}}}"
         >
             <s-descriptionsitem label="Product">Cloud Database</s-descriptionsitem>

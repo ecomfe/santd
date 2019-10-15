@@ -8,9 +8,9 @@
 <template>
   <div>
     <s-tree-directory
-        multiple
-        blockNode
-        defaultExpandAll
+        multiple="{{true}}"
+        blockNode="{{true}}"
+        defaultExpandAll="{{true}}"
         expandAction="{{false}}"
         on-select="onSelect"
     >

@@ -6,9 +6,9 @@ checkbox不可用。
 ```html
 <template>
     <div class="checkbox-demo">
-        <s-checkbox defaultChecked="{{false}}" disabled />
+        <s-checkbox defaultChecked="{{false}}" disabled="{{true}}" />
         <br />
-        <s-checkbox defaultChecked disabled />
+        <s-checkbox defaultChecked="{{true}}" disabled="{{true}}" />
     </div>
 </template>
 

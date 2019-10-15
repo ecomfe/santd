@@ -20,12 +20,14 @@ export default san.defineComponent({
             const disabled = this.data.get('disabled');
             const active = this.data.get('active');
             const isSelected = this.data.get('isSelected');
+            let rootPrefixCls = this.data.get('rootPrefixCls');
+            rootPrefixCls = rootPrefixCls && rootPrefixCls + '-item' || prefixCls;
 
-            let classArr = [prefixCls];
+            let classArr = [rootPrefixCls];
 
-            !disabled && active && classArr.push(`${prefixCls}-active`);
-            isSelected && classArr.push(`${prefixCls}-selected`);
-            disabled && classArr.push(`${prefixCls}-disabled`);
+            !disabled && active && classArr.push(`${rootPrefixCls}-active`);
+            isSelected && classArr.push(`${rootPrefixCls}-selected`);
+            disabled && classArr.push(`${rootPrefixCls}-disabled`);
 
             return classArr;
         },

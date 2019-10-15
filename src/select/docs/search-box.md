@@ -7,7 +7,7 @@
 <template>
     <div>
         <s-select
-            showSearch
+            showSearch="{{true}}"
             value="{{value}}"
             showArrow="{{false}}"
             filterOption="{{false}}"

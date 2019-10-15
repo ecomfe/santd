@@ -7,7 +7,7 @@
 <template>
   <div>
     <s-tree
-        checkable
+        checkable="{{true}}"
         defaultExpandedKeys="{{['0-0-0', '0-0-1']}}"
         defaultSelectedKeys="{{['0-0-0', '0-0-1']}}"
         defaultCheckedKeys="{{['0-0-1']}}"
@@ -15,8 +15,8 @@
         on-check="onCheck"
     >
         <s-tree-node title="parent 1" key="0-0">
-            <s-tree-node title="parent 1-0" key="0-0-0" disabled>
-                <s-tree-node title="leaf" key="0-0-0-0" disableCheckbox/>
+            <s-tree-node title="parent 1-0" key="0-0-0" disabled="{{true}}">
+                <s-tree-node title="leaf" key="0-0-0-0" disableCheckbox="{{true}}"/>
                 <s-tree-node title="leaf" key="0-0-0-1"/>
             </s-tree-node>
             <s-tree-node title="parent 1-1" key="0-0-1">

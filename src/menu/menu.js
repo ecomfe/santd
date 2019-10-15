@@ -39,12 +39,15 @@ export default san.defineComponent({
         };
     },
     computed: {
+        rootPrefixCls() {
+            let rootPrefixCls = this.data.get('prefixCls');
+            return rootPrefixCls ? rootPrefixCls + '-menu' : prefixCls;
+        },
         classes() {
-            const rootPrefixCls = this.data.get('prefixCls');
             const mode = this.data.get('mode');
             const theme = this.data.get('theme');
             const inlineCollapsed = this.data.get('inlineCollapsed');
-            const menuPrefixCls = rootPrefixCls ? rootPrefixCls + '-menu' : prefixCls;
+            const menuPrefixCls = this.data.get('rootPrefixCls');
 
             let classArr = [menuPrefixCls, `${menuPrefixCls}-root`];
             !!mode && classArr.push(`${menuPrefixCls}-${mode}`);
@@ -68,7 +71,7 @@ export default san.defineComponent({
         this.updateItems();
     },
     updateItems() {
-        let paramsArr = ['mode', 'level', 'selectedKeys', 'openKeys'];
+        let paramsArr = ['mode', 'level', 'selectedKeys', 'openKeys', 'rootPrefixCls'];
         this.items.forEach(item => {
             paramsArr.forEach(param => {
                 item.data.set(param, this.data.get(param), {force: true});

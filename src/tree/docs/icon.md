@@ -7,8 +7,8 @@
 <template>
   <div>
     <s-tree
-        showIcon
-        defaultExpandAll
+        showIcon="{{true}}"
+        defaultExpandAll="{{true}}"
         defaultSelectedKeys="{{['0-0-0']}}"
         switcherIcon="{{switcher}}"
     >

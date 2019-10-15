@@ -10,7 +10,7 @@
         <s-menu-item key="mail">
             <s-icon type="mail" /> Navigation One
         </s-menu-item>
-        <s-menu-item key="app" disabled>
+        <s-menu-item key="app" disabled="{{true}}">
             <s-icon type="appstore" /> Navigation Two
         </s-menu-item>
         <s-sub-menu>

@@ -7,13 +7,13 @@
 <template>
     <div style="height: 300px;">
         <div style="height: 300px; float: left; margin-left: 70px;">
-            <s-slider vertical defaultValue="{{30}}" />
+            <s-slider vertical="{{true}}" defaultValue="{{30}}" />
         </div>
         <div style="height: 300px; float: left; margin-left: 70px;">
-            <s-slider vertical range defaultValue="{{[20,50]}}" step="{{10}}" />
+            <s-slider vertical="{{true}}" range defaultValue="{{[20,50]}}" step="{{10}}" />
         </div>
         <div style="height: 300px; float: left; margin-left: 70px;">
-            <s-slider vertical range defaultValue="{{[26, 37]}}" marks="{{marks}}" />
+            <s-slider vertical="{{true}}" range defaultValue="{{[26, 37]}}" marks="{{marks}}" />
         </div>
     </div>
 </template>

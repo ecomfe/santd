@@ -8,8 +8,8 @@
     <div>
         <s-tag>Tag 1</s-tag>
         <s-tag><a href="http://www.baidu.com/">Link</a></s-tag>
-        <s-tag closable on-close="handleLog">Tag 2</s-tag>
-        <s-tag closable on-close="handlePreventDefault">Prevent Default</s-tag>
+        <s-tag closable="{{true}}" on-close="handleLog">Tag 2</s-tag>
+        <s-tag closable="{{true}}" on-close="handlePreventDefault">Prevent Default</s-tag>
     </div>
 </template>
 <script>

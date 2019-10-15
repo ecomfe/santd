@@ -7,7 +7,7 @@
 <template>
     <div>
         <s-pagination size="small" total="{{50}}"></s-pagination>
-        <s-pagination size="small" total="{{50}}" showSizeChanger showQuickJumper></s-pagination>
+        <s-pagination size="small" total="{{50}}" showSizeChanger="{{true}}" showQuickJumper="{{true}}"></s-pagination>
         <s-pagination size="small" total="{{50}}" showTotal="{{showTotal}}"></s-pagination>
     </div>
 </template>

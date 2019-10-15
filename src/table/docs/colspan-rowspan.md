@@ -11,7 +11,7 @@
         <s-table
             columns="{{columns}}"
             dataSource="{{data}}"
-            bordered
+            bordered="{{true}}"
         ></s-table>
     </div>
 </template>

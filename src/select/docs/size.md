@@ -19,7 +19,7 @@
         >
             <s-select-option value="jake" title="jake">Jake</s-select-option>
             <s-select-option value="lucy">Lucy</s-select-option>
-            <s-select-option value="disabled" disabled>Disabled</s-select-option>
+            <s-select-option value="disabled" disabled="{{true}}">Disabled</s-select-option>
             <s-select-option value="jason">Jason</s-select-option>
         </s-select>
         <br/>

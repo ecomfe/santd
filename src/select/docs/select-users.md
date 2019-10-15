@@ -8,7 +8,7 @@
     <div>
         <s-select
             mode="multiple"
-            labelInValue
+            labelInValue="{{true}}"
             value="{{value}}"
             placeholder="Select users"
             notFoundContent="{{fetching ? notContent : 'null'}}"

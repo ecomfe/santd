@@ -7,12 +7,12 @@
 <template>
   <div>
     <s-tree-select
-        showSearch
+        showSearch="{{true}}"
         style="width: 300px;"
         dropdownStyle="{{ {'max-height': '200px', overflow: 'auto'} }}"
-        treeDefaultExpandAll
-        allowClear
-        multiple
+        treeDefaultExpandAll="{{true}}"
+        allowClear="{{true}}"
+        multiple="{{true}}"
         placeholder="Please select"
         on-change="onChange"
         on-search="onSearch"

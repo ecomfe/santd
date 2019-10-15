@@ -9,7 +9,7 @@
         <s-switcher checked="{{!loading}}" on-change="onChange"/>
         <s-list itemLayout="vertical" size="large" dataSource="{{listData}}">
             <s-list-item slot="renderItem" key="{{item.title}}">
-                <s-skeleton loading="{{loading}}" active avatar/>
+                <s-skeleton loading="{{loading}}" active="{{true}}" avatar="{{true}}"/>
                 <ul slot="actions" class="{{prefixCls}}-item-action" s-if="!loading">
                     <li><s-icon type="star-o" style="margin-right: 8px;" />156</li>
                     <li><s-icon type="like-o" style="margin-right: 8px;" />156</li>

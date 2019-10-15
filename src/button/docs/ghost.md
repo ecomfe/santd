@@ -6,11 +6,11 @@
 ```html
 <template>
   <div style="background: rgb(190, 200, 200); padding: 20px 20px 12px;">
-    <s-button type="primary" ghost>Primary</s-button>
-    <s-button type="default" ghost>Default</s-button>
-    <s-button type="danger" ghost>Danger</s-button>
-    <s-button type="dashed" ghost>Dashed</s-button>
-    <s-button type="link" ghost>Link</s-button>
+    <s-button type="primary" ghost="{{true}}">Primary</s-button>
+    <s-button type="default" ghost="{{true}}">Default</s-button>
+    <s-button type="danger" ghost="{{true}}">Danger</s-button>
+    <s-button type="dashed" ghost="{{true}}">Dashed</s-button>
+    <s-button type="link" ghost="{{true}}">Link</s-button>
   </div>
 </template>
 <script>
