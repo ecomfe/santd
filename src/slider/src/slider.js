@@ -4,9 +4,9 @@
  **/
 
 import san, {DataTypes} from 'san';
-import BaseSlider from './common/baseSlider';
+import BaseSlider from './base';
 import inherits from '../../core/util/inherits';
-import Track from './common/track';
+import Track from './track';
 import * as utils from './utils';
 
 export default inherits(san.defineComponent({
@@ -124,7 +124,7 @@ export default inherits(san.defineComponent({
     handleMove(e, position) {
         e.stopPropagation();
         e.preventDefault();
-        
+
         // const oldValue = this.data.get('value');
         const value = this.calcValueByPos(position);
         if (value !== this.data.get('value')) {
