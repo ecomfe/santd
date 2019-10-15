@@ -11,7 +11,7 @@
             dataSource="{{data}}"
             title={{title}}
             footer={{footer}}
-            bordered
+            bordered="{{true}}"
         ></s-table>
     </div>
 </template>

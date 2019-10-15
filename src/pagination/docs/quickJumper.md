@@ -6,9 +6,9 @@
 ```html
 <template>
     <div>
-        <s-pagination total="{{500}}" showQuickJumper defaultCurrent="{{2}}" on-change="handleChange"></s-pagination>
+        <s-pagination total="{{500}}" showQuickJumper="{{true}}" defaultCurrent="{{2}}" on-change="handleChange"></s-pagination>
         <br/>
-        <s-pagination total="{{500}}" showQuickJumper defaultCurrent="{{2}}" on-change="handleChange" disabled></s-pagination>
+        <s-pagination total="{{500}}" showQuickJumper="{{true}}" defaultCurrent="{{2}}" on-change="handleChange" disabled="{{true}}"></s-pagination>
     </div>
 </template>
 <script>

@@ -6,7 +6,7 @@
 ```html
 <template>
   <div>
-    <s-pagination simple total="{{50}}" defaultCurrent="{{2}}"></s-pagination>
+    <s-pagination simple="{{true}}" total="{{50}}" defaultCurrent="{{2}}"></s-pagination>
   </div>
 </template>
 <script>

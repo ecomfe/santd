@@ -8,15 +8,15 @@
     <div>
       <s-tree-select
           style="width: 300px;"
-          treeCheckable
+          treeCheckable="{{true}}"
           dropdownStyle="{{ {'max-height': '200px', overflow: 'auto'} }}"
           treeData="{{treeData}}"
-          treeDefaultExpandAll
+          treeDefaultExpandAll="{{true}}"
           showCheckedStrategy="{{SHOW_PARENT}}"
           value="{{values}}"
           placeholder="Please select"
           on-change="onChange"
-          labelInValue
+          labelInValue="{{true}}"
       >
       </s-tree-select>
     </div>

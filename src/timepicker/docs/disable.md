@@ -6,7 +6,7 @@
 ```html
 <template>
     <div>
-        <s-timepicker defaultValue="{{defaultValue}}" disabled/>
+        <s-timepicker defaultValue="{{defaultValue}}" disabled="{{true}}"/>
     </div>
 </template>
 <script>

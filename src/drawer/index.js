@@ -21,10 +21,10 @@ const styleType = DataTypes.oneOfType([DataTypes.string, DataTypes.object]);
 export default san.defineComponent({
     template: `
         <div class="${prefixCls} ${prefixCls}-{{placement}} {{visible ? '${prefixCls}-open' : ''}}" style="z-index:{{zIndex}};">
-            <div s-if="{{mask}}" class="${prefixCls}-mask" style="{{maskStyle | css}}" on-click="onMaskClick"></div>
-            <div class="${prefixCls}-content-wrapper" style="{{wrapStyle | css}}">
+            <div s-if="{{mask}}" class="${prefixCls}-mask" style="{{maskStyle}}" on-click="onMaskClick"></div>
+            <div class="${prefixCls}-content-wrapper" style="{{wrapStyle}}">
                 <div class="${prefixCls}-content">
-                    <div class="${prefixCls}-wrapper-body" style="{{containerStyle | css}}">
+                    <div class="${prefixCls}-wrapper-body" style="{{containerStyle}}">
                         <div s-if="{{title}}" class="${prefixCls}-header">
                             <div class="${prefixCls}-title">{{title}}</div>
                         </div>
@@ -38,7 +38,7 @@ export default san.defineComponent({
                                 <s-icon type="close" />
                             </span>
                         </button>
-                        <div class="${prefixCls}-body" style="{{bodyStyle | css}}">
+                        <div class="${prefixCls}-body" style="{{bodyStyle}}">
                             <slot />
                         </div>
                     </div>

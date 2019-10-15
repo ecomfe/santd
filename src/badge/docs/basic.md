@@ -7,7 +7,7 @@
 <template>
     <div>
         <s-badge count="{{5}}"><a href="#" class="head-example"></a></s-badge>
-        <s-badge showZero count="{{0}}"><a href="#" class="head-example"></a></s-badge>
+        <s-badge showZero="{{true}}" count="{{0}}"><a href="#" class="head-example"></a></s-badge>
         <s-badge>
             <s-icon slot="count" type="clock-circle" style="color: #f5222d;"></s-icon>
             <a href="#" class="head-example"></a>

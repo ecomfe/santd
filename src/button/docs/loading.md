@@ -6,10 +6,10 @@
 ```html
 <template>
     <div>
-        <s-button type="primary" loading>
+        <s-button type="primary" loading="{{true}}">
           Loading
         </s-button>
-        <s-button type="primary" size="small" loading>
+        <s-button type="primary" size="small" loading="{{true}}">
           Loading
         </s-button>
         <br />
@@ -20,8 +20,8 @@
           Click me!
         </s-button>
         <br />
-        <s-button shape="circle" loading />
-        <s-button type="primary" shape="circle" loading />
+        <s-button shape="circle" loading="{{true}}" />
+        <s-button type="primary" shape="circle" loading="{{true}}" />
     </div>
 </template>
 <script>

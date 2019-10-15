@@ -6,7 +6,7 @@
 ```html
 <template>
     <div>
-        <s-skeleton avatar paragraph="{{paragraph}}"/>
+        <s-skeleton avatar="{{true}}" paragraph="{{paragraph}}"/>
     </div>
 </template>
 

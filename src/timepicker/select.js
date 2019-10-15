@@ -4,7 +4,7 @@
  **/
 
 import san, {DataTypes} from 'san';
-import getRequestAnimationFrame from '../../core/util/getRequestAnimationFrame';
+import getRequestAnimationFrame from '../core/util/getRequestAnimationFrame';
 
 const raf = getRequestAnimationFrame();
 

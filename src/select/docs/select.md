@@ -7,7 +7,7 @@
 <template>
     <div>
         <s-select
-            showSearch
+            showSearch="{{true}}"
             style="width: 200px;"
             placeholder="Select a person"
             on-change="onChange"

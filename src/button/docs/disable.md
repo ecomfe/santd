@@ -7,23 +7,23 @@
 <template>
     <div>
         <s-button type="primary">Primary</s-button>
-        <s-button type="primary" disabled>Primary(disabled)</s-button>
+        <s-button type="primary" disabled="{{true}}">Primary(disabled)</s-button>
         <br />
         <s-button type="default">Default</s-button>
-        <s-button type="default" disabled>Default(disabled)</s-button>
+        <s-button type="default" disabled="{{true}}">Default(disabled)</s-button>
         <br />
         <s-button type="danger">Danger</s-button>
-        <s-button type="danger" disabled>Danger(disabled)</s-button>
+        <s-button type="danger" disabled="{{true}}">Danger(disabled)</s-button>
         <br />
         <s-button type="dashed">Dashed</s-button>
-        <s-button type="dashed" disabled>Dashed(disabled)</s-button>
+        <s-button type="dashed" disabled="{{true}}">Dashed(disabled)</s-button>
         <br />
         <s-button type="link">Link</s-button>
-        <s-button type="link" disabled>Link(disabled)</s-button>
+        <s-button type="link" disabled="{{true}}">Link(disabled)</s-button>
         <br />
         <div style="padding: 8px 8px 0 8px; background: rgb(190, 200, 200)">
-            <s-button ghost>Ghost</s-button>
-            <s-button ghost disabled>Ghost(disabled)</s-button>
+            <s-button ghost="{{true}}">Ghost</s-button>
+            <s-button ghost="{{true}}" disabled="{{true}}">Ghost(disabled)</s-button>
         </div>
     </div>
 </template>

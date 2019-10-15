@@ -15,7 +15,7 @@
             <s-list-item slot="renderItem" actions="{{['edit', 'more']}}">
                 <a slot="edit">edit</a>
                 <a slot="more">more</a>
-                <s-skeleton avatar loading="{{item.loading}}" active>
+                <s-skeleton avatar="{{true}}" loading="{{item.loading}}" active="{{true}}">
                     <s-list-item-meta description="San Design, a design language for background applications, is refined by Baidu App Team">
                         <s-avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" slot="avatar"></s-avatar>
                         <a href="#" slot="title">{{item.title}}</a>

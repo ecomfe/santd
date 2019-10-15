@@ -6,7 +6,7 @@
 ```html
 <template>
     <div class="san-rate">
-        <s-rate defaultValue="{{2}}" disabled />
+        <s-rate defaultValue="{{2}}" disabled="{{true}}" />
     </div>
 </template>
 <script>

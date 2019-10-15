@@ -5,12 +5,12 @@
 ```html
 <template>
     <div>
-        <s-switch defaultChecked on-change='onChange'>
+        <s-switch defaultChecked="{{true}}" on-change='onChange'>
             <template slot='checkedChildren'>N</template>
             <template slot='unCheckedChildren'>Y</template>
         </s-switch><br />
-         <s-switch defaultChecked disabled on-change='onChange' checkedChildren="1" unCheckedChildren="0" /><br />
-         <s-switch defaultChecked on-change='onChange'><br />
+         <s-switch defaultChecked="{{true}}" disabled="{{true}}" on-change='onChange' checkedChildren="1" unCheckedChildren="0" /><br />
+         <s-switch defaultChecked="{{true}}" on-change='onChange'><br />
             <s-icon slot='checkedChildren' type="check" />
             <s-icon slot='unCheckedChildren' type="login" />
         </s-switch>

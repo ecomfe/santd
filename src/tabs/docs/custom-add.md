@@ -13,7 +13,7 @@
             activeKey="{{activeKey}}"
             type="editable-card"
             on-edit="handleEdit"
-            hideAdd
+            hideAdd="{{true}}"
         >
             <s-tabpane
                 s-for="pane in panes"

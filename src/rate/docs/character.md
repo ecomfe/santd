@@ -6,13 +6,13 @@
 ```html
 <template>
     <div class="san-rate">
-        <s-rate allowHalf>
+        <s-rate allowHalf="{{true}}">
             <s-icon type="heart" theme="filled" slot="character" />
         </s-rate>
         <br />
-        <s-rate character="A" allowHalf />
+        <s-rate character="A" allowHalf="{{true}}" />
         <br />
-        <s-rate character="好" allowHalf />
+        <s-rate character="好" allowHalf="{{true}}" />
     </div>
 </template>
 <script>

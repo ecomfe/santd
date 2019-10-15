@@ -7,19 +7,19 @@
 <template>
   <div>
     <s-tree-select
-        showSearch
+        showSearch="{{true}}"
         style="width: 300px;"
         dropdownStyle="{{ {'max-height': '200px', overflow: 'auto'} }}"
-        treeDefaultExpandAll
-        allowClear
+        treeDefaultExpandAll="{{true}}"
+        allowClear="{{true}}"
         value="{{['leaf-1']}}"
         placeholder="Please select"
         on-change="onChange"
-        labelInValue
+        labelInValue="{{true}}"
     >
         <s-tree-select-node value="parent-1" title="parent 1" key="0-0">
-            <s-tree-select-node value="parent-1-0" title="parent 1-0" key="0-0-0" disabled>
-                <s-tree-select-node value="leaf-1" title="leaf0-1" key="0-0-0-0" disableCheckbox/>
+            <s-tree-select-node value="parent-1-0" title="parent 1-0" key="0-0-0" disabled="{{true}}">
+                <s-tree-select-node value="leaf-1" title="leaf0-1" key="0-0-0-0" disableCheckbox="{{true}}"/>
                 <s-tree-select-node value="leaf-2" title="leaf0-2" key="0-0-0-1"/>
             </s-tree-select-node>
             <s-tree-select-node value="parent-1-1" title="parent 1-1" key="0-0-1">

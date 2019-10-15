@@ -8,10 +8,10 @@
   <div>
       <s-form layout="inline" on-submit="handleSubmit">
         <s-formitem validateStatus="{{userNameError ? 'error' : ''}}" help="{{userNameError}}">
-            <s-input placeholder="username" decorator="{{userNameDecorator}}" prefix="{{userPrefix}}"></s-input>
+            <s-input placeholder="username" decorator="{{userNameDecorator}}"></s-input>
         </s-formitem>
         <s-formitem validateStatus="{{passwordError ? 'error': ''}}" help="{{passwordError}}">
-            <s-input placeholder="password" type="password" decorator="{{passwordDecorator}}" prefix="{{passPrefix}}"></s-input>
+            <s-input placeholder="password" type="password" decorator="{{passwordDecorator}}"></s-input>
         </s-formitem>
         <s-formitem>
             <s-button type="primary" htmlType="submit" disabled="{{submitDisabled}}">Log in</s-button>

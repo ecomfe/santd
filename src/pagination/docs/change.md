@@ -6,9 +6,9 @@
 ```html
 <template>
     <div>
-        <s-pagination total="{{500}}" showSizeChanger defaultCurrent="{{3}}" on-showSizeChange="handleShowSizeChange"></s-pagination>
+        <s-pagination total="{{500}}" showSizeChanger="{{true}}" defaultCurrent="{{3}}" on-showSizeChange="handleShowSizeChange"></s-pagination>
         <br/>
-        <s-pagination total="{{500}}" showSizeChanger defaultCurrent="{{3}}" on-showSizeChange="handleShowSizeChange" disabled></s-pagination>
+        <s-pagination total="{{500}}" showSizeChanger="{{true}}" defaultCurrent="{{3}}" on-showSizeChange="handleShowSizeChange" disabled="{{true}}"></s-pagination>
     </div>
 </template>
 <script>

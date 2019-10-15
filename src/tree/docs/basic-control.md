@@ -8,7 +8,7 @@
 <template>
   <div>
     <s-tree
-        checkable
+        checkable="{{true}}"
         treeNodeData = "{{data}}"
         expandedKeys="{{['0-0-0', '0-0-1']}}"
         autoExpandParent="{{true}}"

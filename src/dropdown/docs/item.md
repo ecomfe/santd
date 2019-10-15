@@ -8,11 +8,11 @@
     <div>
         <s-dropdown>
             <s-menu prefixCls="{{prefixCls}}" slot="overlay">
-                <s-menu-item s-for="n,index in data" key="'{{index}}'">
+                <s-menu-item s-for="n,index in data" key="{{index}}">
                     <a href="http://www.baidu.com" target="_blank">{{n}} menu item</a>
                 </s-menu-item>
-                <s-menu-divider/>
-                <s-menu-item disabled>3rd menu item（disabled）</s-menu-item>
+                <s-menu-divider />
+                <s-menu-item disabled="{{true}}">3rd menu item（disabled）</s-menu-item>
             </s-menu>
             <a href="javascript:;">Hover me<s-icon type="down" /></a>
         </s-dropdown>

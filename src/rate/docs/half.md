@@ -7,7 +7,7 @@
 ```html
 <template>
     <div class="san-rate">
-        <s-rate allowHalf defaultValue="{{2.5}}" />
+        <s-rate allowHalf="{{true}}" defaultValue="{{2.5}}" />
     </div>
 </template>
 <script>

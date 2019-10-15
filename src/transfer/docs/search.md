@@ -10,7 +10,7 @@
             dataSource="{{mockData}}"
             targetKeys="{{targetKeys}}"
             filterOption="{{filterOption}}"
-            showSearch
+            showSearch="{{true}}"
             on-change="handleChange"
             on-search="handleSearch"
         />

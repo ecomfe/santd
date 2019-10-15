@@ -18,7 +18,11 @@
         <s-layout>
             <s-sider width="{{200}}" style="{{{background: '#fff'}}}">
                 <s-menu mode="inline" defaultSelectedKeys="{{['3']}}" defaultOpenKeys="{{['sub1']}}">
-                    <s-sub-menu key="sub1" title="{{subOne}}">
+                    <s-sub-menu key="sub1">
+                        <template slot="title">
+                            <s-icon type="form" />
+                            <span>Navigation One</span>
+                        </template>
                         <s-menu-item key="1">
                             <span>option1</span></s-menu-item>
                         <s-menu-item key="2">
@@ -28,7 +32,11 @@
                         <s-menu-item key="4">
                             <span>option4</span></s-menu-item>
                     </s-sub-menu>
-                    <s-sub-menu key="sub2" title="{{subTwo}}">
+                    <s-sub-menu key="sub2">
+                        <template slot="title">
+                            <s-icon type="copy" />
+                            <span>Navigation Two</span>
+                        </template>
                         <s-menu-item key="5">
                             <span>option5</span></s-menu-item>
                         <s-menu-item key="6">
@@ -49,38 +57,10 @@
 </div>
 </template>
 <script>
-import san from 'san';
 import Layout from 'santd/layout';
 import Menu from 'santd/menu';
 import Icon from 'santd/icon';
 import Breadcrumb from 'santd/breadcrumb';
-
-const subMenuOne = function() {
-    return san.defineComponent({
-        components: {
-            's-icon': Icon
-        },
-        template: `
-            <span>
-                <s-icon type="form" />
-                <span>Navigation One</span>
-            </span>
-        `
-    });
-};
-const subMeneTwo = function() {
-    return san.defineComponent({
-        components: {
-            's-icon': Icon
-        },
-        template: `
-            <span>
-                <s-icon type="copy" />
-                <span>Navigation Two</span>
-            </span>
-        `
-    });
-};
 
 export default {
     components: {
@@ -97,9 +77,7 @@ export default {
     },
     initData(){
         return {
-            inlineCollapsed: false,
-            subOne: subMenuOne,
-            subTwo: subMeneTwo
+            inlineCollapsed: false
         }
     },
     toggleCollapsed () {

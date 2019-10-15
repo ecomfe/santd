@@ -111,6 +111,7 @@ export default san.defineComponent({
     },
     template: `
         <div style="{{tabBarPosition === 'left' || tabBarPosition === 'right' ? 'height:100%;float:' + tabBarPosition : ''}}">
+        <slot name="tab" />
             <div
                 role="tablist"
                 class="{{classes}}"
@@ -133,6 +134,7 @@ export default san.defineComponent({
                     tabBarPosition="{{tabBarPosition}}"
                 >
                     <s-tabbartabsnode
+                        tabPanes="{{tabPanes}}"
                         tabBarData="{{tabBarData}}"
                         type="{{type}}"
                         closable="{{closable}}"

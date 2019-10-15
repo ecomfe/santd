@@ -80,7 +80,7 @@ export default san.defineComponent({
     computed: {
         // 因为menu有其他组件调用传入prefixCls，所以这里需要重新设置menu prefixCls
         menuPrefixCls() {
-            const rootPrefixCls = this.data.get('prefixCls');
+            const rootPrefixCls = this.data.get('rootPrefixCls');
 
             return (rootPrefixCls ? rootPrefixCls : prefixCls) + '-submenu';
         },

@@ -5,7 +5,7 @@
 ```html
 <template>
     <div>
-        <s-switch on-change='onChange' defaultChecked />
+        <s-switch on-change='onChange' defaultChecked="{{true}}" />
     </div>
 </template>
 <script>

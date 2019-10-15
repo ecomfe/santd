@@ -19,7 +19,7 @@
         </s-modal>
         <br/><br/>
         <s-button type="primary" on-click="setModal2Visible(true)">Vertically centered modal dialog</s-button>
-        <s-modal centered
+        <s-modal centered="{{true}}"
             title="Vertically centered modal dialog"
             visible="{=modal2Visible=}"
             on-ok="setModal2Visible(false)"

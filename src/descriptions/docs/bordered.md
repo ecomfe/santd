@@ -6,7 +6,7 @@
 ```html
 <template>
     <div>
-        <s-descriptions title="User Info" bordered>
+        <s-descriptions title="User Info" bordered="{{true}}">
             <s-descriptionsitem label="Product">Cloud Database</s-descriptionsitem>
             <s-descriptionsitem label="Billing Mode">Prepaid</s-descriptionsitem>
             <s-descriptionsitem label="Automatic Renewal">YES</s-descriptionsitem>

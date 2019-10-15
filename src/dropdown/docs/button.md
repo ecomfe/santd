@@ -14,7 +14,7 @@
             </s-menu>
             DropDown
         </s-dropdownbutton>
-        <s-dropdownbutton trigger="click" disabled>
+        <s-dropdownbutton trigger="click" disabled="{{true}}">
             <s-menu prefixCls="{{prefixCls}}" slot="overlay">
                 <s-menu-item key="1">1st menu item</s-menu-item>
                 <s-menu-item key="2">2nd memu item</s-menu-item>

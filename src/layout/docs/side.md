@@ -9,7 +9,7 @@
 <template>
 <div style="height: 360px; overflow-y: auto;">
     <s-layout style="{{{'min-height': '100vh'}}}">
-        <s-sider collapsible collapsed="{{collapsed}}" on-collapse="handleCollapse">
+        <s-sider collapsible="{{true}}" collapsed="{{collapsed}}" on-collapse="handleCollapse">
             <div class="logo" />
             <s-menu
                 theme="dark"

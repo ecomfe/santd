@@ -18,7 +18,7 @@
             <a href="javascript:void(0);">Delete</a>
         </s-popconfirm>
         <br />
-        Whether directly execute: <s-switch defaultChecked on-change="handleChangeCondition"></s-switch>
+        Whether directly execute: <s-switch defaultChecked="{{true}}" on-change="handleChangeCondition"></s-switch>
     </div>
 </template>
 <script>

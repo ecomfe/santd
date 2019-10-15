@@ -10,7 +10,7 @@
             <s-badge count="1"><s-avatar shape="square" icon="user" /></s-badge>
         </span>
         <span>
-            <s-badge dot><s-avatar shape="square" icon="user" /></s-badge>
+            <s-badge dot="{{true}}"><s-avatar shape="square" icon="user" /></s-badge>
         </span>
     </div>
 </template>

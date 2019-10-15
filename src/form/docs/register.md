@@ -23,7 +23,7 @@
             <s-cascader options={{residences}} decorator="{{residenceDecorator}}"></s-cascader>
         </s-formitem>
         <s-formitem label="Phone Number">
-            <s-input decorator="{{phoneNumberDecorator}}" addonBefore="{{addonBefore}}"></s-input>
+            <s-input decorator="{{phoneNumberDecorator}}"></s-input>
         </s-formitem>
         <s-formitem label="Captcha" extra="We must make sure that you are a human.">
             <s-row gutter={{8}}>

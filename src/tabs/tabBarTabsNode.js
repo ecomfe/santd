@@ -10,6 +10,13 @@ import {classCreator} from '../core/util';
 
 const prefixCls = classCreator('tabs')();
 
+const customTab = san.defineComponent({
+    inited() {
+        this.sourceSlots.named.tab = this.data.get('slot');
+    },
+    template: `<span><slot name="tab" /></span>`
+});
+
 export default san.defineComponent({
     computed: {
         tabBars() {
@@ -30,6 +37,10 @@ export default san.defineComponent({
                     style: style
                 };
             });
+        },
+        slots() {
+            const tabPanes = this.data.get('tabPanes') || [];
+            return tabPanes.map(pane => pane.sourceSlots.named.tab).filter(pane => pane);
         }
     },
     handleTabClick(e, key, disabled) {
@@ -37,6 +48,7 @@ export default san.defineComponent({
             return;
         }
         this.fire('tabClick', {key, e});
+        this.dispatch('santd_tabs_tabClick', {key, e});
     },
     handleRemoveTab(key, e) {
         e.stopPropagation();
@@ -49,7 +61,8 @@ export default san.defineComponent({
         });
     },
     components: {
-        's-icon': Icon
+        's-icon': Icon,
+        's-customtab': customTab
     },
     template: `
         <div>
@@ -64,7 +77,12 @@ export default san.defineComponent({
                 on-click="handleTabClick($event, tabBar.key, tabBar.disabled)"
             >
                 <div class="{{tabBar.closable ? '${prefixCls}-tab-uncloseable' : ''}}" s-if="type === 'editable-card'">
-                    {{tabBar.tab}}
+                    <template s-if="slots && slots.length">
+                        <s-customtab slot="{{slots[index]}}" />
+                    </template>
+                    <template s-else>
+                        {{tabBar.tab}}
+                    </template>
                     <s-icon
                         type="close"
                         class="${prefixCls}-close-x"
@@ -73,7 +91,12 @@ export default san.defineComponent({
                     />
                 </div>
                 <template s-else>
-                    {{tabBar.tab}}
+                    <template s-if="slots && slots.length">
+                        <s-customtab slot="{{slots[index]}}" />
+                    </template>
+                    <template s-else>
+                        {{tabBar.tab}}
+                    </template>
                 </template>
             </div>
         </div>

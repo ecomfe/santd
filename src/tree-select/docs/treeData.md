@@ -10,7 +10,7 @@
         style="width: 300px;"
         dropdownStyle="{{ {'max-height': '200px', overflow: 'auto'} }}"
         treeData="{{treeData}}"
-        treeDefaultExpandAll
+        treeDefaultExpandAll="{{true}}"
         value="{{['0-0']}}"
         placeholder="Please select"
         on-change="onChange"

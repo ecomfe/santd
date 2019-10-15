@@ -5,9 +5,9 @@
 ```html
 <template>
     <div>
-        <s-switch defaultChecked />
+        <s-switch defaultChecked="{{true}}" />
         <br />
-        <s-switch defaultChecked size="small" />
+        <s-switch defaultChecked="{{true}}" size="small" />
     </div>
 </template>
 <script>

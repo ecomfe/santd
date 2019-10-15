@@ -39,7 +39,7 @@ export default san.defineComponent({
             <desc/>
             <basic/>
             <disabled/>
-            <!--<icon/>-->
+            <icon/>
             <slide/>
             <extra/>
             <size/>

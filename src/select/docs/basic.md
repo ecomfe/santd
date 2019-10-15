@@ -13,13 +13,13 @@
         >
             <s-select-option value="jake">Jake</s-select-option>
             <s-select-option value="lucy">Lucy</s-select-option>
-            <s-select-option value="tom" disabled>Tom</s-select-option>
+            <s-select-option value="tom" disabled="{{true}}">Tom</s-select-option>
             <s-select-option value="jason">Jason</s-select-option>
         </s-select>
-        <s-select defaultValue="lucy" style="width: 120px; display:inline-block;" on-change="onChange" disabled>
+        <s-select defaultValue="lucy" style="width: 120px; display:inline-block;" on-change="onChange" disabled="{{true}}">
             <s-select-option value="lucy">Lucy</s-select-option>
         </s-select>
-        <s-select defaultValue="lucy" style="width: 120px; display:inline-block;" loading>
+        <s-select defaultValue="lucy" style="width: 120px; display:inline-block;" loading="{{true}}">
             <s-select-option value="lucy">Lucy</s-select-option>
         </s-select>
     </div>

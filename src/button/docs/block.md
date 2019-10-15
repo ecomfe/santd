@@ -6,11 +6,11 @@ block属性将使按钮适合其父宽度。
 ```html
 <template>
     <div>
-        <s-button type="primary" block>Primary</s-button>
-        <s-button block>Default</s-button>
-        <s-button type="danger" block>Danger</s-button>
-        <s-button type="dashed" block>Dashed</s-button>
-        <s-button type="link" block>Link</s-button>
+        <s-button type="primary" block="{{true}}">Primary</s-button>
+        <s-button block="{{true}}">Default</s-button>
+        <s-button type="danger" block="{{true}}">Danger</s-button>
+        <s-button type="dashed" block="{{true}}">Dashed</s-button>
+        <s-button type="link" block="{{true}}">Link</s-button>
     </div>
 </template>
 <script>

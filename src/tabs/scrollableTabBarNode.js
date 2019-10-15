@@ -279,6 +279,7 @@ export default san.defineComponent({
                 <div class="${prefixCls}-nav-scroll">
                     <div class="${prefixCls}-nav ${prefixCls}-nav-{{scrollAnimated ? 'animated' : 'no-animated'}}" s-ref="nav">
                         <slot />
+                        <slot name="tab" />
                     </div>
                 </div>
             </div>

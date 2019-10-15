@@ -8,7 +8,7 @@ Radio不可用。
     <div>
         <s-radio value="{{3}}" disabled="{{disabled}}">Disabled</s-radio>
         <br/>
-        <s-radio value="{{3}}" disabled="{{disabled}}" defaultChecked>Disabled</s-radio>
+        <s-radio value="{{3}}" disabled="{{disabled}}" defaultChecked="{{true}}">Disabled</s-radio>
         <div style="margin-top: 20px;">
             <s-button on-click="toggleDisabled">Toggle Disabled</s-button>
         </div>

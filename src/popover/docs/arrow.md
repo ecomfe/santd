@@ -13,7 +13,7 @@
             </template>
             <s-button>Align edge / 边缘对齐</s-button>
         </s-popover>
-        <s-popover title="Title" placement="topLeft" arrowPointAtCenter>
+        <s-popover title="Title" placement="topLeft" arrowPointAtCenter="{{true}}">
             <template slot="content">
                 <p>Content</p>
                 <p>Content</p>

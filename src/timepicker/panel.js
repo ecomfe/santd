@@ -87,9 +87,6 @@ export default san.defineComponent({
             return defaultOpenValue && toNearestValidTime(defaultOpenValue, hourOptions, minuteOptions, secondOptions);
         }
     },
-    inited() {
-        this.data.set('hasAddon', !!this.sourceSlots.named.addon);
-    },
     components: {
         's-header': Header,
         's-combobox': ComboBox
@@ -97,7 +94,6 @@ export default san.defineComponent({
     handleChange(value) {
         this.data.set('value', value.clone());
         this.fire('change', value);
-        this.dispatch('change', value);
     },
     handleAmpmChange(ampm) {
         this.fire('ampmChange', ampm);
@@ -128,7 +124,6 @@ export default san.defineComponent({
           disabledSeconds="{{disabledSeconds}}"
           focusOnOpen="{{focusOnOpen}}"
           inputReadOnly="{{inputReadOnly}}"
-          clearIcon="{{clearIcon}}"
           on-esc="handleEsc"
           on-keydown="handleKeyDown"
           on-change="handleChange"
@@ -153,6 +148,8 @@ export default san.defineComponent({
           on-ampmChange="handleAmpmChange"
           on-currentSelectPanelChange="handleCurrentSelectPanelChange"
         />
-        <slot name="addon" s-if="hasAddon" />
+        <div class="{{prefixCls}}-addon" s-if="hasAddon">
+            <slot name="addon" />
+        </div>
     </div>`
 });
