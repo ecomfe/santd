@@ -111,7 +111,7 @@ export default san.defineComponent({
         's-slider': Slider,
         's-range': Range
     },
-    template: `<div style="{{vertical && 'height: 100%;'}}">
+    template: `<div style="{{vertical ? 'height: 100%;' : ''}}">
         <s-range
             s-if="range"
             tipFormatter="{{tipFormatter}}"
