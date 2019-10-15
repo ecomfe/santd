@@ -68,7 +68,7 @@ export default san.defineComponent({
                             <s-handle
                                 prefixCls="{{prefixCls}}"
                                 offset="{{offset}}"
-                                className="{{className}}"
+                                class="{{className}}"
                                 vertical="{{vertical}}"
                                 s-ref="handle"
                                 on-mouseenter="native:handleMouseEnter"
