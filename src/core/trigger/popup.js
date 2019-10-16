@@ -78,6 +78,9 @@ export default san.defineComponent({
     handlePopupMouseDown(e) {
         this.dispatch('santd_popup_mouseDown', e);
     },
+    refresh() {
+        this.ref('popupinner').forceAlign();
+    },
     components: {
         's-animate': Animate,
         's-popupinner': PopupInner
@@ -101,6 +104,7 @@ export default san.defineComponent({
                 showProp="visible"
                 transitionName="{{transitionName}}"
                 popupStyle="{{popupStyle}}"
+                s-ref="popupinner"
             >
                 <slot s-if="destroy" />
             </s-popupinner>

@@ -50,6 +50,10 @@ export default san.defineComponent({
         this.fire('visibleChange', visible);
     },
 
+    refresh() {
+        this.ref('trigger').refresh();
+    },
+
     template: `<span>
         <s-trigger
             prefixCls="${prefixCls}"
@@ -63,9 +67,11 @@ export default san.defineComponent({
             mouseLeaveDelay="{{mouseLeaveDelay}}"
             popupClassName="{{overlayClassName}}"
             popupStyle="{{overlayStyle}}"
+            rootDomNode="{{rootDomNode}}"
             action="{{trigger}}"
             visible="{{visible}}"
             on-visibleChange="handleVisibleChange"
+            s-ref="trigger"
         >
             <slot />
             <template slot="popup">

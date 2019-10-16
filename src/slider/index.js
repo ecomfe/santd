@@ -85,7 +85,9 @@ export default san.defineComponent({
             const handles = slider.ref('handles');
             const tooltip = handles.ref('tooltip');
             tooltip.data.set('title', value);
-            tooltip.data.set('rootDomNode', handles.ref('handle').el);
+            this.nextTick(() => {
+                tooltip.refresh();
+            });
         }
     },
     handleEnd() {

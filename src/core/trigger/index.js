@@ -388,7 +388,7 @@ export default san.defineComponent({
         }
     },
     getRootDomNode() {
-        return this.el;
+        return this.data.get('rootDomNode') || this.el;
     },
     attachPopup() {
         this._container = this.getContainer();
@@ -419,6 +419,9 @@ export default san.defineComponent({
             this._container = null;
             this.popup = null;
         }
+    },
+    refresh() {
+        this._popup && this._popup.refresh();
     },
     template: `<span
         on-click="handleClick"
