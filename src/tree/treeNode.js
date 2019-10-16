@@ -6,6 +6,7 @@
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
 import Icon from '../icon';
+import Checkbox from '../checkbox';
 const prefixCls = classCreator('tree')();
 
 const getComputedKeys = (targetKeys = [], key) => {
@@ -18,20 +19,23 @@ const getComputedKeys = (targetKeys = [], key) => {
     return keysFlag;
 };
 
-const defaultTitle = san.defineComponent({
-    initData() {
-        return {
-            title: ''
-        };
-    },
-    template: `
-        <span>{{title}}</span>
-    `
-});
+let paramArr = [
+    'selectedKeys',
+    'expandedKeys',
+    'checkedKeys',
+    'halfCheckedKeys',
+    'rootCheckable',
+    'rootSelecable',
+    'switcherIcon',
+    'defaultExpandAll',
+    'autoExpandParent',
+    'showLine'
+];
 
 export default san.defineComponent({
     components: {
         's-icon': Icon,
+        's-checkbox': Checkbox,
         's-tree-node': 'self'
     },
     dataTypes: {
@@ -43,381 +47,324 @@ export default san.defineComponent({
         selectable: DataTypes.bool,
         title: DataTypes.any
     },
+    initData() {
+        return {
+            selectable: true,
+            disabled: false,
+            loading: false
+        };
+    },
     computed: {
-        isLeaf2() {
-            const isLeaf = this.data.get('isLeaf');
-            const loadData = this.data.get('treeData.loadData');
-            const hasChildren = this.data.get('hasChildren');
-            if (isLeaf === false) {
-                return false;
-            }
-            const res = isLeaf || (!loadData && !hasChildren);
-            return res;
+        selected() {
+            return getComputedKeys(this.data.get('selectedKeys'), this.data.get('key'));
         },
-        itemClass() {
-            const expandedKeys = this.data.get('treeData.expandedKeys');
-            const selectedKeys = this.data.get('treeData.selectedKeys');
-            const checkedKeys = this.data.get('treeData.checkedKeys');
-            const selfChecked = this.data.get('checked');
-            const key = this.data.get('key');
+
+        expanded() {
+            return getComputedKeys(this.data.get('expandedKeys'), this.data.get('key'));
+        },
+
+        checked() {
+            return getComputedKeys(this.data.get('checkedKeys'), this.data.get('key'));
+        },
+
+        indeterminate() {
+            return getComputedKeys(this.data.get('halfCheckedKeys'), this.data.get('key'));
+        },
+
+        classes() {
+            const expanded = this.data.get('expanded');
             const disabled = this.data.get('disabled');
-            const expanded = getComputedKeys(expandedKeys, key);
-            const halfChecked = this.data.get('halfChecked');
-            const selected = getComputedKeys(selectedKeys, key);
-            const checked = this.data.get('checked') || getComputedKeys(checkedKeys, key);
-            const filterTreeNode = this.data.get('isFilter');
-            
+            const checked = this.data.get('checked');
+            const selected = this.data.get('selected');
+
             let classArr = [`${prefixCls}-treenode-switcher-${expanded ? 'open' : 'close'}`];
             disabled && classArr.push(`${prefixCls}-treenode-disabled`);
             checked && classArr.push(`${prefixCls}-treenode-checkbox-checked`);
-            halfChecked && classArr.push(`${prefixCls}-treenode-checkbox-indeterminate`);
             selected && !disabled && classArr.push(`${prefixCls}-treenode-selected`);
-            filterTreeNode && classArr.push('filter-node');
             return classArr;
         },
+
         checkboxClass() {
-            const checkedKeys = this.data.get('treeData.checkedKeys');
-            const key = this.data.get('key');
-            const selfChecked = this.data.get('checked');
-            const checked = selfChecked !== '' ? selfChecked : getComputedKeys(checkedKeys, key);
-            const halfChecked = this.data.get('halfChecked');
-            const disabled = this.data.get('disabled') || this.data.get('treeData.disabled');
-            const disableCheckbox = this.data.get('disableCheckbox');
+            const checked = this.data.get('checked');
+            const disabled = this.data.get('disabled');
 
             let classArr = [`${prefixCls}-checkbox`];
             checked && classArr.push(`${prefixCls}-checkbox-checked`);
-            !checked && halfChecked && classArr.push(`${prefixCls}-checkbox-indeterminate`);
-            (disabled || disableCheckbox) && classArr.push(`${prefixCls}-checkbox-disabled`);
+            disabled && classArr.push(`${prefixCls}-checkbox-disabled`);
             return classArr;
         },
-        // icon + title
-        iconTitleClass() {
-            const expandedKeys = this.data.get('treeData.expandedKeys');
-            const selectedKeys = this.data.get('treeData.selectedKeys');
-            const disabled = this.data.get('disabled') || this.data.get('treeData.disabled');
-            const key = this.data.get('key');
-            const expanded = getComputedKeys(expandedKeys, key);
-            const selected = getComputedKeys(selectedKeys, key);
 
-            let classArr = [`${prefixCls}-node-content-wrapper`, `${prefixCls}-node-content-wrapper-${expanded ? 'open' : 'close'}`];
+        titleClass() {
+            const disabled = this.data.get('disabled');
+            const hasChild = this.data.get('hasChild');
+            const selected = this.data.get('selected');
+            const expanded = this.data.get('expanded');
+            const checkable = this.data.get('checkable');
+
+            let classArr = [
+                `${prefixCls}-node-content-wrapper`,
+                `${prefixCls}-node-content-wrapper-${hasChild ? expanded ? 'open' : 'close' : 'normal'}`
+            ];
             selected && !disabled && classArr.push(`${prefixCls}-node-selected`);
             return classArr;
         },
-        ulChildClass() {
-            const expandedKeys = this.data.get('treeData.expandedKeys');
-            const key = this.data.get('key');
-            const expanded = getComputedKeys(expandedKeys, key);
-            return [`${prefixCls}-child-tree`, `${prefixCls}-child-tree-${expanded ? 'open' : 'close'}`];
-        },
-        switcherCls() {
-            const expandedKeys = this.data.get('treeData.expandedKeys');
-            const key = this.data.get('key');
-            const expanded = getComputedKeys(expandedKeys, key);
-            return [`${prefixCls}-switcher`, `${prefixCls}-switcher_${expanded ? 'open' : 'close'}`];
-        }
 
-    },
-    initData() {
-        return {
-            componentPropName: 's-tree-node',
-            hasChildren: false,
-            checked: '',
-            children: [],
-            checkedNodes: [],
-            halfCheckedNodes: [],
-            nodeChildren: [],
-            loading: false,
-            selectable: true
-        };
-    },
-    compiled() {
-        const titles = this.findTargetCompo('customTitle');
-        this.components.autotitle = titles || defaultTitle;
-        this.components.switchericon = this.findTargetCompo('switcherIcon');
-        this.components.treenodeicon = this.findTargetCompo('treeNodeIcon');
+        showExpandIcon() {
+            return this.data.get('hasChild')
+                || !this.data.get('isLeaf')
+                && this.data.get('loadData')
+                && !this.data.get('loading');
+        }
     },
     inited() {
-        this.child = [];
-        this.checkedNodes = [];
-        this.halfCheckedNodes = [];
-        this.flag = true;
-    },
-    created() {
-        this.watch('treeData', data => {
-            // 先设置为空，防止chekedNodes累加
-            this.data.set('checkedNodes', []);
-            this.child.forEach(child => {
-                child.data.set('treeData', data);
-            });
-            this.updateTreeNode();
+        this.treeNodes = [];
+
+        this.data.set('hasTitle', !!this.sourceSlots.named.title);
+        this.data.set('hasIcon', !!this.sourceSlots.named.icon);
+        const slots = this.sourceSlots;
+        this.data.set('hasChild', !!(slots.noname && slots.noname.filter(slot => !slot.textExpr).length));
+        paramArr.forEach((param) => {
+            this.data.set(param, this.parentComponent.data.get(param));
+        });
+        const switcherIcon = this.parentComponent.data.get('switcherIcon');
+        if (switcherIcon) {
+            this.sourceSlots.named.switcherIcon = switcherIcon;
+            this.data.set('hasSwitcherIcon', true);
+        }
+
+        this.dispatch('santd_tree_addTreeNode', this);
+
+        this.watch('treeData', val => {
+            this.data.set('loading', false);
         });
     },
-    updateTreeNode() {
-        const {expandedKeys, selectedKeys, checkedKeys, filterTreeNode} = this.data.get('treeData');
-        const key = this.data.get('key');
-        const expanded = getComputedKeys(expandedKeys, key);
-        this.data.set('checked', '');
-        // 赋值给icon用
-        this.data.set('expanded', expanded);
-        // 处理 CheckedKeys
-        this.setPropsOfCheckedkeys();
-        if (typeof filterTreeNode === 'function') {
-            this.data.set('isFilter', filterTreeNode(this));
-        }
+    updated() {
+        // 每次父组件有数据更新就扔给子节点一份去更新
+        this.treeNodes.forEach(node => {
+            paramArr.forEach(param => {
+                node.data.set(param, this.data.get(param));
+            });
+        });
     },
-
-    setPropsOfCheckedkeys() {
-        const updateCheckState = this.treeCheckStateManage();
-        this.dispatch('checkedNodesUpdate', updateCheckState);
-    },
-    attached() {
-        this.dispatch('treeNodeComplete', this);
-        setTimeout(() => {
-            const showIcon = this.data.get('treeData.showIcon');
-            const Icon = this.data.get('icon');
-            const ref = this.ref('titleIconRef');
-            if (showIcon && ref && typeof Icon === 'function') {
-                ref.innerHTML = '';
-                const renderer = new Icon();
-                renderer.attach(ref);
-                renderer.parentComponent = this;
-            }
-        }, 0);
-
-    },
-    findTargetCompo(compoName) {
-        let tar = this.parentComponent.data.get(compoName);
-        let parent = this.parentComponent;
-        while (parent && !tar) {
-            parent = parent.parentComponent;
-            tar = parent && parent.data.get(compoName) || '';
-        }
-        return tar;
-    },
-    // handleCheck() {
-    //     const changeData = this.data.get('checkedChange');
-    //     const children = this.data.get('children');
-    //     children.forEach(child => {
-    //         child.data.set('checked', changeData.checked);
-    //     });
-    // },
     messages: {
-        treeNodeComplete(comp) {
-            this.child.push(comp.value);
-            if (!comp.value.data.get('disabled')) {
-                this.data.push('children', comp.value);
-            }
-            this.data.set('hasChildren', true);
+        santd_tree_addTreeNode(payload) {
+            // 每个节点单独管理自己的子节点并dispatch自己到父节点上
+            this.treeNodes.push(payload.value);
         },
-        checkedNodesUpdate(updataValue) {
-            const value = updataValue.value;
+        santd_tree_checkTreeNode(payload) {
             const key = this.data.get('key');
-            if (value.checked) {
-                this.data.push('checkedNodes', updataValue.target);
-            }
-            if (value.halfChecked) {
-                this.data.push('halfCheckedNodes', updataValue.target);
-            }
-        },
-        allLoopCheckState(resData) {
-            let nodes = this.data.get('checkedNodes');
             const disabled = this.data.get('disabled');
-            const {data, compo} = resData.value;
-            let findItemIndex = null;
-            for (let i = 0; i < nodes.length; i++) {
-                if (nodes[i] === compo) {
-                    findItemIndex = i;
-                }
-            }
-            findItemIndex === null
-                ? data.checked === true ? this.data.push('checkedNodes', compo) : null
-                : this.data.splice('checkedNodes', [findItemIndex, 1]);
-            if (!disabled) {
-                this.itemCheckedFn(data);
-            }
+            let checkedKeys = payload.value.checkedKeys;
+            let halfCheckedKeys = payload.value.halfCheckedKeys;
+            const checkedIndex = checkedKeys.indexOf(key);
+            const halfCheckedIndex = halfCheckedKeys.indexOf(key);
+            let treeNodes = this.treeNodes.filter(node => !node.data.get('disabled'));
+            let allChildChecked = treeNodes.every(node => checkedKeys.includes(node.data.get('key')));
+
+            // 判断checked的情况
+            allChildChecked && !disabled && checkedIndex === -1 && checkedKeys.push(key);
+            !allChildChecked && !disabled && checkedIndex > -1 && checkedKeys.splice(checkedIndex, 1);
+
+            // 判断半选的情况
+            !allChildChecked && treeNodes.length !== 1 && halfCheckedIndex === -1 && halfCheckedKeys.push(key);
+            (treeNodes.every(node => {
+                const key = node.data.get('key');
+                return !checkedKeys.includes(key) && !halfCheckedKeys.includes(key);
+            }) || allChildChecked)
+                && halfCheckedIndex > -1
+                && treeNodes.length !== 1
+                && halfCheckedKeys.splice(halfCheckedIndex, 1);
+
+            this.dispatch('santd_tree_checkTreeNode', {...payload.value, checkedKeys, halfCheckedKeys});
         },
-        saveComponentData(data) {
-            const value = data.value;
+        santd_tree_expandTreeNode(payload) {
+            const key = this.data.get('key');
+            let expandedKeys = payload.value.expandedKeys;
+            let childExpanded = this.treeNodes.some(node => expandedKeys.includes(node.data.get('key')));
+            const index = expandedKeys.indexOf(key);
 
+            childExpanded && index === -1 && expandedKeys.push(key);
+            this.dispatch('santd_tree_expandTreeNode', {...payload.value, expandedKeys});
         }
     },
-
-    // 点击switcher
-    onExpand(e) {
-        const children = this.data.get('children');
-        const expanded = this.data.get('expanded');
-        this.dispatch('switcherExpand', {compo: this, key: this.data.get('key')});
-        this.dispatch('onNodeExpand', {compo: this, expanded: !expanded});
-        this.dispatch('expandedChange', e);
-    },
-    onItemClick(e) {
-        // 点击具体条目
-        const isTreeSelect = this.data.get('treeData.isTreeSelect');
-        const multiple = this.data.get('treeData.multiple');
+    handleNodeClick(e) {
         const disabled = this.data.get('disabled');
-        const selectable = this.data.get('selectable');
-        if (isTreeSelect) {
-            this.handleCheckClick();
-            return false;
-        }
+        const selectable = this.data.get('selectable') || this.data.get('rootSelecable');
+
         if (disabled || !selectable) {
-            return false;
+            return;
         }
-        const isDirectory = this.data.get('treeData.isDirectory');
-        const onClick = this.data.get('treeData.onClick');
-        if (isDirectory && onClick) {
-            onClick(e, this);
-            return false;
-        }
-        if (multiple) {
-            this.dispatch('multipleItemClick', this);
-        } else {
-            // 单选
-            this.dispatch('singleItemClick', this);
-        }
+
+        this.dispatch('santd_tree_clickTreeNode', {
+            event: 'select',
+            nativeEvent: e,
+            node: this,
+            selected: this.data.get('selected'),
+            key: this.data.get('key')
+        });
     },
 
-    /**
-    * 处理checked点击
-    * @param {Object} event对象
-    */
-    handleCheckClick(evt) {
-        const disabled = this.data.get('disabled') || this.data.get('treeData.disabled');
-        const disableCheckbox = this.data.get('disableCheckbox');
-        const checkStrictly = this.data.get('treeData.checkStrictly');
-        let childrenCompo = [];
-        if (disabled) {
-            return false;
+    handleNodeCheck(e) {
+        const checked = e.target.checked;
+        const key = this.data.get('key');
+        let checkedKeys = this.data.get('checkedKeys').concat();
+        const index = checkedKeys.indexOf(key);
+        const hasChild = this.data.get('hasChild');
+        let halfCheckedKeys = this.data.get('halfCheckedKeys').concat();
+
+        !checked && index > -1 && checkedKeys.splice(index, 1);
+        checked && index === -1 && checkedKeys.push(key);
+
+        if (hasChild) {
+            halfCheckedKeys.splice(halfCheckedKeys.indexOf(key), 1);
+            checkedKeys = this.updateChildCheck(this.treeNodes, checkedKeys, checked);
+            halfCheckedKeys = this.updateChildHalfCheck(this.treeNodes, halfCheckedKeys);
         }
-        if (!disableCheckbox) {
-            this.data.set('checked', !this.data.get('checked'));
-            if (!checkStrictly) {
-                this.data.set('checkedNodes', []);
-                this.itemCheckedFn();
-                this.loopChildChecked(this.data.get('checked'));
+
+        this.dispatch('santd_tree_checkTreeNode', {
+            event: 'check',
+            checked: this.data.get('checked'),
+            nativeEvent: e,
+            node: this,
+            checkedKeys,
+            halfCheckedKeys
+        });
+    },
+
+    handleNodeExpand(e) {
+        const key = this.data.get('key');
+        const loadData = this.data.get('loadData');
+        if (loadData && !this.data.get('treeData')) {
+            this.data.set('loading', true);
+            loadData(this);
+        }
+        let expandedKeys = this.data.get('expandedKeys').concat();
+        const index = expandedKeys.indexOf(key);
+
+        index > -1 && expandedKeys.splice(index, 1);
+        index === -1 && expandedKeys.push(key);
+
+        this.dispatch('santd_tree_expandTreeNode', {
+            event: 'expand',
+            expanded: this.data.get('expanded'),
+            node: this,
+            nativeEvent: e,
+            expandedKeys
+        });
+    },
+
+    updateChildCheck(treeNodes, checkedKeys, checked) {
+        treeNodes.filter(node => !node.data.get('disabled')).forEach(node => {
+            const key = node.data.get('key');
+            const index = checkedKeys.indexOf(key);
+
+            !checkedKeys.includes(key) && checked && checkedKeys.push(key);
+            checkedKeys.includes(key) && !checked && checkedKeys.splice(index, 1);
+            node.treeNodes && node.treeNodes.length && this.updateChildCheck(node.treeNodes, checkedKeys, checked);
+        });
+        return checkedKeys;
+    },
+
+    updateChildHalfCheck(treeNodes, halfCheckedKeys) {
+        treeNodes.filter(node => {
+            return !node.data.get('disabled');
+        }).forEach(node => {
+            const key = node.data.get('key');
+            const index = halfCheckedKeys.indexOf(key);
+
+            halfCheckedKeys.includes(key) && halfCheckedKeys.splice(index, 1);
+
+            node.treeNodes && node.treeNodes.length && this.updateChildHalfCheck(node.treeNodes, halfCheckedKeys);
+        });
+        return halfCheckedKeys;
+    },
+
+    attached() {
+        const key = this.data.get('key');
+        let checkedKeys = this.data.get('checkedKeys');
+        let expandedKeys = this.data.get('expandedKeys');
+
+        if (checkedKeys.includes(key)) {
+            const hasChild = this.data.get('hasChild');
+            if (hasChild && !this.data.get('disabled')) {
+                checkedKeys = this.updateChildCheck(this.treeNodes, checkedKeys, true);
             }
-            this.dispatch('checkedChange', evt);
-        }
-    },
-    itemCheckedFn(data) {
-        const resultData = this.treeCheckStateManage(data);
-        if (!resultData.strictly) {
-            this.dispatch('allLoopCheckState', {data: resultData, compo: this});
-        }
-    },
-
-    /**
-    * 向下递归子组件状态
-    * @param {boolean} 当前组件的选中状态
-    *
-    */
-    loopChildChecked(checked) {
-        const children = this.data.get('children');
-        function loop(children) {
-            children.forEach(child => {
-                if (child.data.get('children').length) {
-                    loop(child.data.get('children'), checked);
-                }
-                child.data.set('checked', checked);
+            this.nextTick(() => {
+                this.dispatch('santd_tree_checkTreeNode', {
+                    event: 'init',
+                    checkedKeys: checkedKeys.concat(),
+                    halfCheckedKeys: this.data.get('halfCheckedKeys').concat()
+                });
             });
         }
-        return loop(children, checked);
-    },
 
-    /**
-    * 处理checkedKeys
-    * @param {Object} 传入处理好的checked状态
-    *
-    * @return {Object}
-    */
-    treeCheckStateManage(data = {}) {
-        const checkedKeys = this.data.get('treeData.checkedKeys');
-        const key = this.data.get('key');
-        const title = this.data.get('title');
-        const checked = data.checked !== undefined ?  data.checked : this.data.get('checked');
-        let isChecked = checked !== ''
-            ? checked
-            : getComputedKeys(checkedKeys, key);
-        const checkedNodes = this.data.get('checkedNodes') || [];
-        const children = this.data.get('children');
-        const disabled = this.data.get('disabled');
-        const checkStrictly = this.data.get('treeData.checkStrictly');
-        let halfChecked = data.halfChecked || false;
-        let strictly = false;
-        const exchangeData = [];
-        if (!checkStrictly) {
-            if (checkedNodes.length && checkedNodes.length === children.length) {
-                isChecked = true;
-            } else if ((checkedNodes.length) && !disabled) {
-                halfChecked = true;
-                isChecked = false;
-            } else if (disabled) {
-                strictly = true; // 如果用严格模式，父子组件间不进行关联
-            }
-            if (isChecked && !disabled) {
-                // 如果选中，需要让子组件也选中
-                this.data.set('checkedNodes', children);
-                children.forEach(child => {
-                    child.data.set('checked', isChecked);
+        if (expandedKeys.includes(key)) {
+            this.nextTick(() => {
+                this.dispatch('santd_tree_expandTreeNode', {
+                    event: 'init',
+                    expandedKeys: expandedKeys.concat()
                 });
-            }
+            });
         }
-        this.data.set('checked', isChecked);
-        this.data.set('halfChecked', halfChecked);
-        return {checked: isChecked, halfChecked, strictly};
-    },
-    syncLoadData() {
 
+        if (this.data.get('defaultExpandAll') && this.data.get('hasChild')) {
+            this.dispatch('santd_tree_expandAll', key);
+        }
     },
+
     template: `
-        <li class="{{itemClass}}">
-            <!--switcher-->
+        <li class="{{classes}}">
             <span
-                s-if="!isLeaf2"
-                class="{{switcherCls}}"
-                on-click="onExpand($event)"
+                class="${prefixCls}-switcher ${prefixCls}-switcher_{{showExpandIcon ? expanded ? 'open' : 'close' : 'noop'}}"
+                on-click="handleNodeExpand"
             >
-                <s-icon s-if="treeData.showLine" type="{{expanded ? 'minus-square' : 'plus-square'}}"></s-icon>
-                <span s-else class="${prefixCls}-switcher-icon">
-                    <s-icon s-if="loading" type="loading"></s-icon>
-                    <switchericon s-else-if="treeData.switcherIcon"/>
-
-                    <s-icon s-else type="caret-down" theme="filled"></s-icon>
+                <span class="${prefixCls}-switcher-{{showLine ? 'line-icon' : 'icon'}}" s-if="hasSwitcherIcon && showExpandIcon">
+                    <slot name="switcherIcon" var-expanded="{{expanded}}"/>
+                </span>
+                <s-icon type="caret-down" theme="filled" class="${prefixCls}-switcher-icon" s-else-if="showExpandIcon" />
+                <s-icon type="file" class="${prefixCls}-switcher-line-icon" s-else-if="showLine" />
+                <s-icon type="loading" class="${prefixCls}-switcher-loading-icon" s-if="loading" />
+            </span>
+            <s-checkbox
+                checked="{{checked}}"
+                indeterminate="{{indeterminate}}"
+                s-if="{{checkable || rootCheckable}}"
+                disabled="{{disabled || disableCheckbox}}"
+                on-change="handleNodeCheck"
+                s-ref="checkbox"
+            />
+            <span class="{{titleClass}}" on-click="handleNodeClick($event)">
+                <span class="${prefixCls}-iconEle ${prefixCls}-tree-icon__customize" s-if="hasIcon">
+                    <slot name="icon" var-selected="{{selected}}" />
+                </span>
+                <span class="${prefixCls}-title">
+                    <slot name="title" s-if="hasTitle" var-searchValue="{{treeData.searchValue}}" />
+                    <template s-else>{{title}}</template>
                 </span>
             </span>
-            <span s-else-if="isLeaf2" class="${prefixCls}-switcher ${prefixCls}-switcher-noop">
-                <s-icon s-if="treeData.showLine" type="file" class="${prefixCls}-switcher-line-icon"></s-icon>
-            </span>
-            <!--checkbox-->
-            <span s-if="treeData.checkable" class="{{checkboxClass}}" on-click="handleCheckClick($event)">
-                <span class="${prefixCls}-checkbox-inner"></span>
-            </span>
-            <!--icon+title-->
-            <span class="{{iconTitleClass}}" on-click="onItemClick($event)">
-                <span s-ref="titleIconRef">
-                    <treenodeicon isLeaf="{{isLeaf2}}" expanded="{{expanded}}"></treenodeicon>
-                </span>
-                <span class="${prefixCls}-title" s-ref="autoTitleRef">
-                    <autotitle title="{{title}}" searchValue="{{treeData.searchValue}}"></autotitle>
-                </span>
-            </span>
-            <ul class="{{ulChildClass)}}">
+            <ul class="${prefixCls}-child-tree ${prefixCls}-child-tree-{{expanded ? 'open' : 'close'}}">
                 <s-tree-node
-                    s-if="nodeChildren && treeNodeData"
-                    s-for="child in nodeChildren"
-                    treeData="{{treeData}}"
-                    treeNodeData="{{treeNodeData}}"
-                    nodeChildren="{{child.children}}"
-                    title="{{child.title}}"
-                    value="{{child.value}}"
-                    key="{{child.key}}"
-                    isLeaf="{{child.isLeaf}}"
-                    disableCheckbox="{{child.disableCheckbox}}"
-                    disabled="{{child.disabled}}"
-                    selectable="{{child.selectable}}"
-                >
-                </s-tree-node>
-                <slot s-else></slot>
+                    s-if="treeData"
+                    s-for="tree in treeData"
+                    selectedKeys="{{selectedKeys}}"
+                    expandedKeys="{{expandedKeys}}"
+                    checkedKeys="{{checkedKeys}}"
+                    halfCheckedKeys="{{halfCheckedKeys}}"
+                    defaultExpandAll="{{defaultExpandAll}}"
+                    autoExpandParent="{{autoExpandParent}}"
+                    rootCheckable="{{rootCheckable}}"
+                    rootSelectable="{{rootSelectable}}"
+                    showLine="{{showLine}}"
+                    title="{{tree.title}}"
+                    key="{{tree.key}}"
+                    value="{{tree.value}}"
+                    isLeaf="{{tree.isLeaf}}"
+                    checkable="{{tree.checkable || rootCheckable}}"
+                    disabled="{{tree.disabled || disabled}}"
+                    selectable="{{tree.selectable || rootSelectable}}"
+                    loadData="{{loadData}}"
+                />
+                <slot s-else />
             </ul>
         </li>
     `

@@ -10,7 +10,7 @@
         checkable="{{true}}"
         defaultExpandedKeys="{{['0-0-0', '0-0-1']}}"
         defaultSelectedKeys="{{['0-0-0', '0-0-1']}}"
-        defaultCheckedKeys="{{['0-0-1']}}"
+        defaultCheckedKeys="{{['0-0-0', '0-0-1']}}"
         on-select="onSelect"
         on-check="onCheck"
     >
@@ -20,10 +20,9 @@
                 <s-tree-node title="leaf" key="0-0-0-1"/>
             </s-tree-node>
             <s-tree-node title="parent 1-1" key="0-0-1">
-                <s-tree-node title="leaf001" key="0-0-1-0"/>
-                <s-tree-node title="leaf002" key="0-0-2-0"/>
-            </s-tree-node>
-            <s-tree-node title="parent 1-2" key="0-0-2">
+                <s-tree-node key="0-0-1-0">
+                    <span slot="title" style="color:#1890ff">sss</span>
+                </s-tree-node>
             </s-tree-node>
         </s-tree-node>
     </s-tree>
@@ -36,11 +35,11 @@ export default {
         's-tree': Tree,
         's-tree-node': Tree.TreeNode
     },
-    onSelect(val) {
-        console.log('select items: ', val)
+    onSelect({selectedKeys, info}) {
+        console.log('selected', selectedKeys, info);
     },
-    onCheck(values) {
-        console.log('check:', values)
+    onCheck({checkedKeys, info}) {
+        console.log('onCheck', checkedKeys, info);
     }
 }
 </script>

@@ -30,14 +30,16 @@
 </template>
 <script>
 import Tree from 'santd/tree';
+import Icon from 'santd/icon';
 
 export default {
     components: {
         's-tree': Tree,
-        's-tree-node': Tree.TreeNode
+        's-tree-node': Tree.TreeNode,
+        's-icon': Icon
     },
-    onSelect(key) {
-        console.log('selectKey: ', key);
+    onSelect({selectedKeys, info}) {
+        console.log('selected', selectedKeys, info);
     }
 }
 </script>

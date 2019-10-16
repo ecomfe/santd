@@ -10,64 +10,29 @@
         showIcon="{{true}}"
         defaultExpandAll="{{true}}"
         defaultSelectedKeys="{{['0-0-0']}}"
-        switcherIcon="{{switcher}}"
     >
-        <s-tree-node title="parent 1" key="0-0" icon="{{titleIcon}}">
-            <s-tree-node title="parent 1-0" key="0-0-0" icon="{{titleIcon}}"/>
-            <s-tree-node title="parent 1-1" key="0-0-1" icon="{{sadIcon}}" />
+        <s-icon type="down" slot="switcherIcon" />
+        <s-tree-node title="parent 1" key="0-0">
+            <s-icon slot="icon" type="smile-o" />
+            <s-tree-node title="leaf" key="0-0-0">
+                <s-icon slot="icon" type="meh-o" />
+            </s-tree-node>
+            <s-tree-node title="leaf" key="0-0-1">
+                <s-icon slot="icon" type="{{selected ? 'frown' : 'frown-o'}}" />
+            </s-tree-node>
         </s-tree-node>
     </s-tree>
   </div>
 </template>
 <script>
-import san from 'san';
 import Tree from 'santd/tree';
 import Icon from 'santd/icon';
-
-const switcherIcon = san.defineComponent({
-    components: {
-        's-icon': Icon
-    },
-    template: `
-        <span>
-            <s-icon type="down"></s-icon>
-        </span>
-    `
-});
-
-const titleIcon = san.defineComponent({
-    components: {
-        's-icon': Icon
-    },
-    template: `
-        <span>
-            <s-icon type="smile-o"></s-icon>
-        </span>
-    `
-});
-
-const sadIcon = san.defineComponent({
-    components: {
-        's-icon': Icon
-    },
-    template: `
-        <span>
-            <s-icon type="frown-o"></s-icon>
-        </span>
-    `
-});
 
 export default {
     components: {
         's-tree': Tree,
-        's-tree-node': Tree.TreeNode
-    },
-    initData() {
-        return {
-            switcher: switcherIcon,
-            titleIcon: titleIcon,
-            sadIcon: sadIcon
-        }
+        's-tree-node': Tree.TreeNode,
+        's-icon': Icon
     }
 }
 </script>

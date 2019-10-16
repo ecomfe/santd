@@ -4,7 +4,7 @@
 */
 
 import san, {DataTypes} from 'san';
-import Tree from './newTree';
+import Tree from './tree';
 import Icon from '../icon';
 import './style/index';
 
