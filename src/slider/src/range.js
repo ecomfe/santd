@@ -9,12 +9,14 @@ import inherits from '../../core/util/inherits';
 import Track from './track';
 import Handle from './handle';
 import * as utils from './utils';
+import {classCreator} from '../../core/util';
+
+const prefixCls = classCreator('slider')();
 
 export default inherits(san.defineComponent({
     computed: {
         injectTracks() {
             const instance = this.data.get('instance');
-            const prefixCls = this.data.get('prefixCls');
             const vertical = this.data.get('vertical');
             const included = this.data.get('included');
             const bounds = this.data.get('bounds') || [];
@@ -27,7 +29,6 @@ export default inherits(san.defineComponent({
                         return {
                             tracks: bounds.slice(0, -1),
                             offsets,
-                            prefixCls,
                             vertical,
                             included,
                             trackStyle
@@ -39,13 +40,12 @@ export default inherits(san.defineComponent({
                     template: `<span>
                         <s-track
                             s-for="track, index in tracks"
-                            prefixCls="{{prefixCls}}-track {{prefixCls}}-track-{{index + 1}}"
                             vertical="{{vertical}}"
                             included="{{included}}"
                             offset="{{offsets[index]}}"
                             length="{{offsets[index + 1] - offsets[index]}}"
                             style="{{trackStyle[index]}}"
-                            key="{{index + 1}}"
+                            index="{{index + 1}}"
                         />
                     </span>`
                 });
@@ -56,7 +56,6 @@ export default inherits(san.defineComponent({
             }
         },
         injectHandles() {
-            const prefixCls = this.data.get('prefixCls');
             const instance = this.data.get('instance');
             const vertical = this.data.get('vertical');
             const value = this.data.get('value');
@@ -77,7 +76,6 @@ export default inherits(san.defineComponent({
                     const handleClassName = prefixCls + '-handle';
                     return {
                         className: [handleClassName, handleClassName + '-' + (i + 1)].join(' '),
-                        prefixCls,
                         vertical,
                         offset: offsets[i],
                         value: v,
@@ -106,7 +104,6 @@ export default inherits(san.defineComponent({
                         <s-handle
                             s-for="data, index in handleData"
                             s-ref="handle-{{index}}"
-                            prefixCls="{{data.prefixCls}}"
                             className="{{data.className}}"
                             vertical="{{data.vertical}}"
                             offset="{{data.offset}}"

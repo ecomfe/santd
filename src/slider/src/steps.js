@@ -4,6 +4,9 @@
  **/
 
 import san, {DataTypes} from 'san';
+import {classCreator} from '../../core/util';
+
+const prefixCls = classCreator('slider-step')();
 
 const calcPoints = (marks, dots, step, min, max) => {
     const points = Object.keys(marks).map(parseFloat).sort((a, b) => a - b);
@@ -19,7 +22,6 @@ const calcPoints = (marks, dots, step, min, max) => {
 
 export default san.defineComponent({
     dataTypes: {
-        prefixCls: DataTypes.string,
         activeDotStyle: DataTypes.object,
         dotStyle: DataTypes.object,
         min: DataTypes.number,
@@ -44,7 +46,6 @@ export default san.defineComponent({
         const included = this.data.get('included');
         const max = this.data.get('max');
         const min = this.data.get('min');
-        const prefixCls = this.data.get('prefixCls');
 
         const isActive = (!included && point === max)
             || (included && point <= max && point >= min);
@@ -72,11 +73,11 @@ export default san.defineComponent({
         }
         return style;
     },
-    template: `<div class="{{prefixCls}}-step">
+    template: `<div class="${prefixCls}">
         <span
             s-for="point in points"
-            class="pointClass(point)"
-            style="pointStyle(point)"
+            class="{{pointClass(point)}}"
+            style="{{pointStyle(point)}}"
         />
     </div>`
 });

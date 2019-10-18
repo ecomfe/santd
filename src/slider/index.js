@@ -5,19 +5,16 @@
 
 import './style/index.less';
 import san from 'san';
-import {classCreator} from '../core/util';
 import Tooltip from '../tooltip';
 import Slider from './src/slider';
 import Range from './src/range';
 import Handle from './src/handle';
 
-const prefixCls = classCreator('slider')();
 
 export default san.defineComponent({
     initData() {
         const that = this;
         return {
-            prefixCls,
             tipFormatter(value) {
                 return value.toString();
             }
@@ -61,7 +58,6 @@ export default san.defineComponent({
         <s-range
             s-if="range"
             tipFormatter="{{tipFormatter}}"
-            prefixCls="{{prefixCls}}"
             defaultValue="{{defaultValue}}"
             disabled="{{disabled}}"
             min="{{min}}"
@@ -82,7 +78,6 @@ export default san.defineComponent({
         <s-slider
             s-else
             tipFormatter="{{tipFormatter}}"
-            prefixCls="{{prefixCls}}"
             defaultValue="{{defaultValue}}"
             disabled="{{disabled}}"
             min="{{min}}"

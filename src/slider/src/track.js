@@ -4,10 +4,12 @@
  **/
 
 import san, {DataTypes} from 'san';
+import {classCreator} from '../../core/util';
+
+const prefixCls = classCreator('slider-track')();
 
 export default san.defineComponent({
     dataTypes: {
-        prefixCls: DataTypes.string,
         length: DataTypes.number,
         offset: DataTypes.number,
         vertical: DataTypes.bool
@@ -25,5 +27,5 @@ export default san.defineComponent({
         }
     },
 
-    template: '<div class="{{prefixCls}}" style="{{bodyStyle}}"></div>'
+    template: `<div class="${prefixCls}{{index ? ' ${prefixCls}' + index : ''}}" style="{{bodyStyle}}"></div>`
 });

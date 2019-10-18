@@ -9,12 +9,14 @@ import inherits from '../../core/util/inherits';
 import Track from './track';
 import Handle from './handle';
 import * as utils from './utils';
+import {classCreator} from '../../core/util';
+
+const prefixCls = classCreator('slider')();
 
 export default inherits(san.defineComponent({
     computed: {
         injectTracks() {
             const instance = this.data.get('instance');
-            const prefixCls = this.data.get('prefixCls');
             const vertical = this.data.get('vertical');
             const included = this.data.get('included');
             const value = this.data.get('value');
@@ -38,7 +40,6 @@ export default inherits(san.defineComponent({
             }
         },
         injectHandles() {
-            const prefixCls = this.data.get('prefixCls');
             const instance = this.data.get('instance');
             const vertical = this.data.get('vertical');
             const value = this.data.get('value');
@@ -53,8 +54,6 @@ export default inherits(san.defineComponent({
 
             if (instance) {
                 const initData = {
-                    className: prefixCls + '-handle',
-                    prefixCls,
                     vertical,
                     offset: instance.calcOffset(value),
                     value,

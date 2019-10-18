@@ -7,6 +7,9 @@ import san, {DataTypes} from 'san';
 import Steps from './steps';
 import Marks from './marks';
 import * as utils from './utils';
+import {classCreator} from '../../core/util';
+
+const prefixCls = classCreator('slider')();
 
 export default san.defineComponent({
     dataTypes: {
@@ -16,7 +19,6 @@ export default san.defineComponent({
         marks: DataTypes.object,
         included: DataTypes.bool,
         className: DataTypes.string,
-        prefixCls: DataTypes.string,
         disabled: DataTypes.bool,
         dots: DataTypes.bool,
         vertical: DataTypes.bool,
@@ -30,7 +32,7 @@ export default san.defineComponent({
     },
     initData() {
         return {
-            prefixCls: 'san-slider',
+            prefixCls,
             className: '',
             min: 0,
             max: 100,
@@ -52,7 +54,6 @@ export default san.defineComponent({
     },
     computed: {
         classes() {
-            const prefixCls = this.data.get('prefixCls');
             const className = this.data.get('className');
             const disabled = this.data.get('disabled');
             const vertical = this.data.get('vertical');
@@ -196,10 +197,9 @@ export default san.defineComponent({
         on-focus="handleFocus"
         on-blur="handleBlur"
     >
-        <div class="{{prefixCls}}-rail" />
+        <div class="${prefixCls}-rail" />
         <tracks s-ref="tracks" s-if="included" />
         <s-steps
-            prefixCls="{{prefixCls}}"
             vertical="{{vertical}}"
             marks="{{marks}}"
             dots="{{dots}}"
@@ -212,7 +212,6 @@ export default san.defineComponent({
         />
         <handles s-ref="handles" />
         <s-marks
-            prefixCls="{{prefixCls}}-mark"
             vertical="{{vertical}}"
             marks="{{marks}}"
             included="{{included}}"

@@ -4,10 +4,12 @@
  **/
 
 import san, {DataTypes} from 'san';
+import {classCreator} from '../../core/util';
+
+const prefixCls = classCreator('slider-mark')();
 
 export default san.defineComponent({
     dataTypes: {
-        prefixCls: DataTypes.string,
         vertical: DataTypes.bool,
         marks: DataTypes.object,
         included: DataTypes.bool,
@@ -38,7 +40,6 @@ export default san.defineComponent({
         const included = this.data.get('included');
         const max = this.data.get('max');
         const min = this.data.get('min');
-        const prefixCls = this.data.get('prefixCls');
 
         const isActive = (!included && point === max)
             || (included && point <= max && point >= min);
@@ -75,7 +76,7 @@ export default san.defineComponent({
     handleClickLabel(e, point) {
         this.fire('clickLabel', {e, point});
     },
-    template: `<div class="{{prefixCls}}">
+    template: `<div class="${prefixCls}">
         <span
             s-for="element in elements"
             class="{{markClass(element.point)}}"
