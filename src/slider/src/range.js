@@ -73,9 +73,7 @@ export default inherits(san.defineComponent({
             if (instance) {
                 const offsets = bounds.map(v => instance.calcOffset(v));
                 const initData = bounds.map((v, i) => {
-                    const handleClassName = prefixCls + '-handle';
                     return {
-                        className: [handleClassName, handleClassName + '-' + (i + 1)].join(' '),
                         vertical,
                         offset: offsets[i],
                         value: v,
@@ -104,7 +102,7 @@ export default inherits(san.defineComponent({
                         <s-handle
                             s-for="data, index in handleData"
                             s-ref="handle-{{index}}"
-                            className="{{data.className}}"
+                            index="{{index + 1}}"
                             vertical="{{data.vertical}}"
                             offset="{{data.offset}}"
                             value="{{data.value}}"

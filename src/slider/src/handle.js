@@ -55,7 +55,7 @@ export default san.defineComponent({
             this._mouseUpHandler = this.handleMouseUp.bind(this);
         }
 
-        this.data.set('rootDomNode', this.ref('handle'));
+        this.data.set('rootDomNode', this. ref('handle'));
         document.addEventListener('mouseup', this._mouseUpHandler);
         this.dispatch('santd_slider_handle_save', this);
     },
@@ -120,7 +120,7 @@ export default san.defineComponent({
                 <div
                     s-ref="handle"
                     tabIndex="{{(disabled || tabIndex == null) ? '' : tabIndex}}"
-                    class="${prefixCls}{{clickFocused ? ' ${prefixCls}-click-focused' : ''}}"
+                    class="${prefixCls}{{index ? ' ${prefixCls}-' + index : ''}}{{clickFocused ? ' ${prefixCls}-click-focused' : ''}}"
                     style="{{vertical ? 'bottom' : 'left'}}:{{offset}}%;"
                     on-blur="handleBlur"
                     on-keydown="handleKeyDown"
