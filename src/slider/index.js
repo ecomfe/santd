@@ -20,63 +20,7 @@ export default san.defineComponent({
             prefixCls,
             tipFormatter(value) {
                 return value.toString();
-            },
-            handle: san.defineComponent({
-                initData() {
-                    return {
-                        visibles: []
-                    };
-                },
-                attached() {
-                    this.data.set('rootDomNode', this.ref('handle').el);
-                },
-                components: {
-                    's-tooltip': Tooltip,
-                    's-handle': Handle
-                },
-                computed: {
-                    isTipFormatter() {
-                        const tipFormatter = this.data.get('tipFormatter');
-                        const visibles = this.data.get('visibles');
-                        const dragging = this.data.get('dragging');
-                        const index = this.data.get('index');
-
-                        return tipFormatter ? visibles[index] || dragging : false;
-                    },
-                    title() {
-                        const tipFormatter = this.data.get('tipFormatter');
-                        const value = this.data.get('value');
-                        return tipFormatter ? tipFormatter(value) : '';
-                    }
-                },
-                handleMouseEnter() {
-                    const index = this.data.get('index');
-                    this.data.set('visibles[' + index + ']', true);
-                },
-                handleMouseLeave() {
-                    const index = this.data.get('index');
-                    this.data.set('visibles[' + index + ']', false);
-                },
-                template: `<span>
-                        <s-tooltip
-                            rootDomNode="{{rootDomNode}}"
-                            title="{{title}}"
-                            s-ref="tooltip"
-                            visible="{{tooltipVisible || tooltipVisible === undefined && isTipFormatter)}}"
-                        >
-                            <s-handle
-                                prefixCls="{{prefixCls}}"
-                                offset="{{offset}}"
-                                class="{{className}}"
-                                vertical="{{vertical}}"
-                                s-ref="handle"
-                                on-mouseenter="native:handleMouseEnter"
-                                on-mouseleave="native:handleMouseLeave"
-                            />
-                        </s-tooltip>
-                    </span>
-                `
-            })
+            }
         };
     },
     handleMove(value) {
