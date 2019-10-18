@@ -9,19 +9,26 @@
   <div>
     <s-tree-directory
         multiple="{{true}}"
-        blockNode="{{true}}"
         defaultExpandAll="{{true}}"
-        expandAction="{{false}}"
         on-select="onSelect"
+        on-expand="onExpand"
     >
-        <s-tree-node title="parent 1" key="0-0">
-            <s-tree-node title="parent 1-0" key="0-0-0">
-                <s-tree-node title="leaf" key="0-0-0-0"/>
-                <s-tree-node title="leaf" key="0-0-0-1"/>
+        <s-tree-node title="parent 0" key="0-0">
+            <s-icon type="{{isLeaf ? 'file' : expanded ? 'folder-open' : 'folder'}}" slot="icon" />
+            <s-tree-node title="leaf 0-0" key="0-0-0">
+                <s-icon type="{{isLeaf ? 'file' : expanded ? 'folder-open' : 'folder'}}" slot="icon" />
             </s-tree-node>
-            <s-tree-node title="parent 1-1" key="0-0-1">
-                <s-tree-node title="leaf001" key="0-0-1-0"/>
-                <s-tree-node title="leaf002" key="0-0-2-0"/>
+            <s-tree-node title="leaf 0-1" key="0-0-1">
+                <s-icon type="{{isLeaf ? 'file' : expanded ? 'folder-open' : 'folder'}}" slot="icon" />
+            </s-tree-node>
+        </s-tree-node>
+        <s-tree-node title="parent 1" key="0-1">
+            <s-icon type="{{isLeaf ? 'file' : expanded ? 'folder-open' : 'folder'}}" slot="icon" />
+            <s-tree-node title="leaf 1-0" key="0-1-0">
+                <s-icon type="{{isLeaf ? 'file' : expanded ? 'folder-open' : 'folder'}}" slot="icon" />
+            </s-tree-node>
+            <s-tree-node title="leaf 1-1" key="0-1-1">
+                <s-icon type="{{isLeaf ? 'file' : expanded ? 'folder-open' : 'folder'}}" slot="icon" />
             </s-tree-node>
         </s-tree-node>
     </s-tree-directory>
@@ -29,13 +36,19 @@
 </template>
 <script>
 import Tree from 'santd/tree';
+import Icon from 'santd/icon';
+
 export default {
     components: {
         's-tree-directory': Tree.Directory,
-        's-tree-node': Tree.TreeNode
+        's-tree-node': Tree.TreeNode,
+        's-icon': Icon
     },
-    onSelect(value) {
-        console.log('slected::::', value);
+    onSelect({selectedKeys, info}) {
+        console.log('Trigger slected', selectedKeys, info);
+    },
+    onExpand() {
+        console.log('Trigger Expand');
     }
 }
 </script>
