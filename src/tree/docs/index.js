@@ -33,12 +33,12 @@ export default san.defineComponent({
             <desc/>
             <basic/>
             <control/>
+            <search/>
             <icon/>
             <async/>
             <line/>
             <switcher/>
-            <!--<search/>
-            <directory/>-->
+            <directory/>
             <readme/>
         </div>
     `

@@ -4,27 +4,48 @@
 */
 
 import san, {DataTypes} from 'san';
-import Tree from './tree';
+import Tree, {traverseNodesKey} from './tree';
 import Icon from '../icon';
 import './style/index';
 
-const dirIcon = san.defineComponent({
-    components: {
-        's-icon': Icon
-    },
-    initData() {
-        return {
-            isLeaf: false,
-            expanded: true
-        };
-    },
-    template: `
-        <span>
-            <s-icon s-if="isLeaf" type="file"></s-icon>
-            <s-icon s-else type="{{expanded ? 'folder-open' : 'folder'}}"></s-icon>
-        </span>
-    `
-});
+const calcRangeKeys = function (root, expandedKeys = [], startKey, endKey) {
+    let keys = [];
+    let record;
+
+    if (!startKey || !endKey) {
+        return keys;
+    }
+    if (startKey && startKey === endKey) {
+        return [startKey];
+    }
+
+    traverseNodesKey(root, key => {
+        if (record === false) {
+            return false;
+        }
+        if (key === startKey || key === endKey) {
+            keys.push(key);
+            if (record === undefined) {
+                record = true;
+            }
+            else if (record === true) {
+                record = false;
+                return false;
+            }
+        }
+        else if (record === true) {
+            keys.push(key);
+        }
+
+        if (expandedKeys.indexOf(key) === -1) {
+            return false;
+        }
+
+        return true;
+    });
+
+    return keys;
+};
 
 export default san.defineComponent({
     dataTypes: {
@@ -37,7 +58,6 @@ export default san.defineComponent({
         defaultCheckedKeys: DataTypes.array,
         defaultExpandAll: DataTypes.bool,
         defaultExpandedKeys: DataTypes.array,
-        defaultExpandParent: DataTypes.bool,
         defaultSelectedKeys: DataTypes.array,
         disabled: DataTypes.bool,
         draggable: DataTypes.bool,
@@ -50,97 +70,134 @@ export default san.defineComponent({
         switcherIcon: DataTypes.func,
         showLine: DataTypes.bool
     },
+
     components: {
-        's-tree': Tree
+        's-tree': Tree,
+        's-icon': Icon
     },
+
     initData() {
         return {
-            dirIcon: dirIcon,
             expandAction: 'click',
-            onClick: this.onClick.bind(this)
+            showIcon: true
         };
     },
-    inited() {
-        this.timeout = null;
-        this.newSelectedKeys = [];
-        this.selectedNodes = [];
-    },
-    created() {
-        const props = this.data.get();
-        this.data.set('props', props);
-    },
-    attached() {
-    },
-    onSelect(nativeEvent, node) {
-        const {multiple} = this.data.get();
+
+    handleNodeSelect(selectedKeys, info) {
+        const {multiple, expandedKeys} = this.data.get();
+        const nativeEvent = info.nativeEvent;
         const ctrlPick = nativeEvent.ctrlKey || nativeEvent.metaKey;
         const shiftPick = nativeEvent.shiftKey;
-        const nodeKey = node.data.get('key');
-        let delKey = [];
-        const newState = {};
+        const eventKey = info.node.data.get('key');
+
+        let newSelectedKeys = [];
         if (multiple && ctrlPick) {
-            // ctrl + click
-            delKey = this.newSelectedKeys.filter(key => {
-                return key === nodeKey;
-            });
-            if (delKey.length) {
-                this.newSelectedKeys.splice(this.newSelectedKeys.indexOf(nodeKey), 1);
-                this.selectedNodes.splice(this.selectedNodes.indexOf(node), 1);
-            } else {
-                this.newSelectedKeys.push(nodeKey);
-                this.selectedNodes.push(node);
-            }
-        } else if (multiple && shiftPick) {
-            // shift + click
-        } else {
-            // single click
-            this.newSelectedKeys = [nodeKey];
-            this.selectedNodes = [node];
+            newSelectedKeys = selectedKeys;
+            this.lastSelectedKey = eventKey;
+            this.cachedSelectedKeys = newSelectedKeys;
         }
-        this.data.merge('props', {selectedKeys: [...this.newSelectedKeys]});
+        else if (multiple && shiftPick) {
+            console.log(eventKey, this.lastSelectedKey, expandedKeys)
+            newSelectedKeys = Array.from(
+                new Set([
+                    ...(this.cachedSelectedKeys || []),
+                    ...calcRangeKeys(this.ref('tree').treeNodes, expandedKeys, eventKey, this.lastSelectedKey)
+                ])
+            );
+        }
+        else {
+            newSelectedKeys = [info.node.data.get('key')];
+            this.lastSelectedKey = eventKey;
+            this.cachedSelectedKeys = newSelectedKeys;
+        }
+        this.data.set('selectedKeys', newSelectedKeys);
         this.fire('select', {
-            selectedKeys: this.newSelectedKeys,
-            e: {
-                selected: multiple ? !delKey.length : true,
-                selectedNodes: multiple ? this.selectedNodes : node,
-                node: node
+            selectedKeys: newSelectedKeys,
+            info: {
+                selected: true,
+                node: info.node,
+                nativeEvent: info.nativeEvent
             }
         });
     },
+
     // 点击具体item
-    onClick(event, node) {
-        const expandAction = this.data.get('expandAction');
-        this.onSelect(event, node);
-        this.onDebounceExpand(event, node);
+    handleNodeClick({selectedKeys, info}) {
+        this.handleNodeSelect(selectedKeys, info);
+        if (info.node.data.get('hasChild')) {
+            this.handleDebounceExpand(selectedKeys, info);
+        }
     },
+
+    handleNodeExpand({expandedKeys, info}) {
+        this.data.set('expandedKeys', expandedKeys);
+    },
+
     // 处理展开
-    onDebounceExpand(event, node) {
+    handleDebounceExpand(selectedKeys, info) {
         const expandAction = this.data.get('expandAction');
-        if (expandAction === false) {
-            return false;
+        if (expandAction === 'click') {
+            this.expandFolderNode(info);
         }
-        this.simpleDebounce(this.expandFolderNode.bind(this), 200, {event, node});
+        this.fire('expand', {
+            expandedKeys: this.data.get('expandedKeys'),
+            info
+        });
     },
-    simpleDebounce(fn, delay, {event = '', node = null}) {
-        if (this.timeout) {
-            clearTimeout(this.timeout);
-            this.timeout = null;
-        }
-        this.timeout = setTimeout(() => {
-            fn(event, node);
-        }, delay);
+
+    // 处理多选
+    handleNodeCheck(payload) {
+        this.fire('check', payload);
     },
-    expandFolderNode(event, node) {
-        const isLeaf = node.data.get('isLeaf');
-        if (isLeaf || event.shiftKey || event.metaKey || event.ctrlKey) {
+
+    // 处理数据加载完毕
+    handleNodeLoaded(payload) {
+        this.fire('load', payload);
+    },
+
+    handleExpandAll(expandedKeys) {
+        this.data.set('expandedKeys', expandedKeys);
+    },
+
+    expandFolderNode(info) {
+        const isLeaf = !info.node.data.get('hasChild');
+        const nativeEvent = info.nativeEvent;
+        if (isLeaf || nativeEvent.shiftKey || nativeEvent.metaKey || nativeEvent.ctrlKey) {
             // 说明不是要展开，而是要选中某项
             return false;
         }
-        node.onExpand();
+        info.node.handleNodeExpand(event);
     },
+
     template: `
         <div>
-            <s-tree isDirectory treeNodeIcon="{{dirIcon}}" s-bind="{{props}}"><slot></slot></s-tree>
+            <s-tree
+                autoExpandParent="{{autoExpandParent}}"
+                blockNode="{{blockNode}}"
+                checkable="{{checkable}}"
+                checkedKeys="{{checkedKeys}}"
+                defaultCheckedKeys="{{defaultCheckedKeys}}"
+                defaultExpandAll="{{defaultExpandAll}}"
+                defaultExpandedKeys="{{defaultExpandedKeys}}"
+                defaultSelectedKeys="{{defaultSelectedKeys}}"
+                disabled="{{disabled}}"
+                expandedKeys="{{expandedkeys}}"
+                loadData="{{loadData}}"
+                multiple="{{multiple}}"
+                selectable="{{selectable}}"
+                selectedKeys="{{selectedKeys}}"
+                showIcon="{{showIcon}}"
+                showLine="{{showLine}}"
+                isDirectory="{{true}}"
+                on-select="handleNodeClick"
+                on-expand="handleNodeExpand"
+                on-expandAll="handleExpandAll"
+                on-check="handleNodeCheck"
+                on-load="handleNodeLoaded"
+                s-ref="tree"
+            >
+                <slot />
+            </s-tree>
         </div>
     `
 });

@@ -13,11 +13,18 @@
     ></s-input-search>
     <s-tree
         autoExpandParent="{{autoExpand}}"
-        treeNodeData="{{treeData}}"
+        treeData="{{treeData}}"
         expandedKeys="{{expandedKeys}}"
-        customTitle="{{customTitle}}"
         searchValue="{{searchValue}}"
     >
+        <template slot="title">
+            <span s-if="isTitles(title, searchValue)">
+                {{beforeStr(title, searchValue)}}
+                <span style="color: #f50">{{searchValue}}</span>
+                {{afterStr(title, searchValue)}}
+            </span>
+            <span s-else>{{title}}</span>
+        </template>
     </s-tree>
   </div>
 </template>
@@ -25,42 +32,6 @@
 import san from 'san';
 import Tree from 'santd/tree';
 import Input from 'santd/input';
-
-const cusTitle = san.defineComponent({
-    initData() {
-        return {
-            title: '',
-            searchValue: ''
-        }
-    },
-    computed: {
-        isTitles() {
-            const title = this.data.get('title');
-            const searchValue = this.data.get('searchValue');
-            return searchValue ? title.indexOf(searchValue) > -1 : false;
-        },
-        beforeStr() {
-            const title = this.data.get('title');
-            const searchValue = this.data.get('searchValue');
-            return searchValue ? title.substr(0, title.indexOf(searchValue)) : '';
-        },
-        afterStr() {
-            const title = this.data.get('title');
-            const searchValue = this.data.get('searchValue');
-            return searchValue ? title.substr(title.indexOf(searchValue) + searchValue.length) : '';
-        }
-    },
-    template: `
-        <span>
-            <span s-if="isTitles">
-              {{beforeStr}}
-              <span style="color: #f50">{{searchValue}}</span>
-              {{afterStr}}
-            </span>
-            <span s-else>{{title}}</span>
-        </span>
-    `
-});
 
 const x = 3;
 const y = 2;
@@ -129,19 +100,27 @@ export default {
             autoExpand: true,
             expandedKeys: [],
             searchValue: '',
-            treeData: gData,
-            customTitle: cusTitle,
+            treeData: gData
         }
     },
+    isTitles(title, searchValue) {
+        return searchValue ? title.indexOf(searchValue) > -1 : false;
+    },
+    beforeStr(title, searchValue) {
+        return searchValue ? title.substr(0, title.indexOf(searchValue)) : '';
+    },
+    afterStr(title, searchValue) {
+        return searchValue ? title.substr(title.indexOf(searchValue) + searchValue.length) : '';
+    },
     onInputChange (value) {
-      const expandedKeys = dataList.map((item) => {
-        if (item.key.indexOf(value) > -1) {
-          return getParentKey(item.key, gData)
-        }
-        return null;
-      }).filter((item, i, self) => item && self.indexOf(item) === i);
-      this.data.set('expandedKeys', expandedKeys);
-      this.data.set('searchValue', value);
+        const expandedKeys = dataList.map((item) => {
+            if (item.key.indexOf(value) > -1) {
+                return getParentKey(item.key, gData)
+            }
+            return null;
+        }).filter((item, i, self) => item && self.indexOf(item) === i);
+        this.data.set('expandedKeys', expandedKeys);
+        this.data.set('searchValue', value);
     }
 }
 </script>

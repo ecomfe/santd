@@ -68,7 +68,7 @@ export default {
         this.data.set('autoExpandParent', false);
     },
     onCheck({checkedKeys, info}) {
-        console.log('onCheck', checkedKeys);
+        console.log('onCheck', checkedKeys, info);
         this.data.set('checkedKeys', checkedKeys);
     }
 }
