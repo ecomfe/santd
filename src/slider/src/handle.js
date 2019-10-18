@@ -4,10 +4,14 @@
  **/
 
 import san, {DataTypes} from 'san';
+import Tooltip from '../../tooltip';
+import {classCreator} from '../../core/util';
+
+const prefixCls = classCreator('slider-handle')();
+
 
 export default san.defineComponent({
     dataTypes: {
-        prefixCls: DataTypes.string,
         className: DataTypes.string,
         vertical: DataTypes.bool,
         offset: DataTypes.number,
@@ -18,9 +22,31 @@ export default san.defineComponent({
         tabIndex: DataTypes.number
     },
 
+    components: {
+        's-tooltip': Tooltip
+    },
+
+    computed: {
+        isTipFormatter() {
+            const tipFormatter = this.data.get('tipFormatter');
+            const visibles = this.data.get('visibles');
+            const dragging = this.data.get('dragging');
+            const index = this.data.get('index');
+
+            return tipFormatter ? visibles[index] || dragging : false;
+        },
+
+        title() {
+            const tipFormatter = this.data.get('tipFormatter');
+            const value = this.data.get('value');
+            return tipFormatter ? tipFormatter(value) : '';
+        }
+    },
+
     initData() {
         return {
-            clickFocused: false
+            clickFocused: false,
+            visibles: []
         };
     },
 
@@ -29,6 +55,7 @@ export default san.defineComponent({
             this._mouseUpHandler = this.handleMouseUp.bind(this);
         }
 
+        this.data.set('rootDomNode', this.ref('handle'));
         document.addEventListener('mouseup', this._mouseUpHandler);
         this.dispatch('santd_slider_handle_save', this);
     },
@@ -55,6 +82,16 @@ export default san.defineComponent({
         }
     },
 
+    handleMouseEnter() {
+        const index = this.data.get('index');
+        this.data.set('visibles[' + index + ']', true);
+    },
+
+    handleMouseLeave() {
+        const index = this.data.get('index');
+        this.data.set('visibles[' + index + ']', false);
+    },
+
     setClickFocus(focused) {
         this.data.set('clickFocused', focused);
     },
@@ -72,17 +109,30 @@ export default san.defineComponent({
         this.el.blur();
     },
 
-    template: `<div
-        tabIndex="{{(disabled || tabIndex == null) ? '' : tabIndex}}"
-        class="{{clickFocused ? prefixCls + '-handle-click-focused' : ''}}"
-        style="{{vertical ? 'bottom' : 'left'}}:{{offset}}%;"
-        on-blur="handleBlur"
-        on-keydown="handleKeyDown"
-        on-mousedown="handleMouseDown"
-        role="slider"
-        aria-valuemin="{{min}}"
-        aria-valuemax="{{max}}"
-        aria-valuenow="{{value}}"
-        aria-disabled="{{!!disabled}}"
-    />`
+    template: `
+        <span>
+            <s-tooltip
+                rootDomNode="{{rootDomNode}}"
+                title="{{title}}"
+                s-ref="tooltip"
+                visible="{{tooltipVisible || tooltipVisible === undefined && isTipFormatter)}}"
+            >
+                <div
+                    s-ref="handle"
+                    tabIndex="{{(disabled || tabIndex == null) ? '' : tabIndex}}"
+                    class="${prefixCls}{{clickFocused ? ' ${prefixCls}-click-focused' : ''}}"
+                    style="{{vertical ? 'bottom' : 'left'}}:{{offset}}%;"
+                    on-blur="handleBlur"
+                    on-keydown="handleKeyDown"
+                    on-mousedown="handleMouseDown"
+                    on-mouseenter="handleMouseEnter"
+                    on-mouseleave="handleMouseLeave"
+                    role="slider"
+                    aria-valuemin="{{min}}"
+                    aria-valuemax="{{max}}"
+                    aria-valuenow="{{value}}"
+                    aria-disabled="{{!!disabled}}"
+                />
+            </s-tooltip>
+        </span>`
 });

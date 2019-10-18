@@ -7,6 +7,7 @@ import san, {DataTypes} from 'san';
 import BaseSlider from './base';
 import inherits from '../../core/util/inherits';
 import Track from './track';
+import Handle from './handle';
 import * as utils from './utils';
 
 export default inherits(san.defineComponent({
@@ -38,7 +39,6 @@ export default inherits(san.defineComponent({
         },
         injectHandles() {
             const prefixCls = this.data.get('prefixCls');
-            const handleGenerator = this.data.get('handle');
             const instance = this.data.get('instance');
             const vertical = this.data.get('vertical');
             const value = this.data.get('value');
@@ -74,7 +74,7 @@ export default inherits(san.defineComponent({
                             ...initData
                         };
                     }
-                }), handleGenerator);
+                }), Handle);
                 instance.nextTick(() => {
                     const handles = instance.ref('handles');
                     for (let key in initData) {
