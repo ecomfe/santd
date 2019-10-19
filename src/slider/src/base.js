@@ -18,7 +18,6 @@ export default san.defineComponent({
         step: DataTypes.number,
         marks: DataTypes.object,
         included: DataTypes.bool,
-        className: DataTypes.string,
         disabled: DataTypes.bool,
         dots: DataTypes.bool,
         vertical: DataTypes.bool,
@@ -32,8 +31,6 @@ export default san.defineComponent({
     },
     initData() {
         return {
-            prefixCls,
-            className: '',
             min: 0,
             max: 100,
             step: 1,
@@ -54,12 +51,11 @@ export default san.defineComponent({
     },
     computed: {
         classes() {
-            const className = this.data.get('className');
             const disabled = this.data.get('disabled');
             const vertical = this.data.get('vertical');
             const marks = this.data.get('marks');
 
-            let classArr = [prefixCls, className];
+            let classArr = [];
             Object.keys(marks).length && classArr.push(`${prefixCls}-with-marks`);
             disabled && classArr.push(`${prefixCls}-disabled`);
             vertical && classArr.push(`${prefixCls}-vertical`);
@@ -191,7 +187,7 @@ export default san.defineComponent({
         }
     },
     template: `<div
-        class="{{classes}}"
+        class="${prefixCls} {{classes}}"
         on-mousedown="handleMouseDown"
         on-mouseup="handleMouseUp"
         on-focus="handleFocus"
