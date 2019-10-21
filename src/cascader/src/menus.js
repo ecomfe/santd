@@ -5,7 +5,6 @@
 
 import san from 'san';
 import arrayTreeFilter from './arraytreefilter';
-import toStyle from 'to-style';
 
 export default san.defineComponent({
     initData() {
@@ -20,29 +19,30 @@ export default san.defineComponent({
         };
     },
     inited() {
-        this.data.set('instance', this);
+        this.data.set('fieldNames', this.data.get('fieldNames') || this.data.get('defaultFieldNames') || []);
     },
     computed: {
-        getShowOptions() {
-            const instance = this.data.get('instance');
-            const options = this.data.get('options');
+        getActiveOptions() {
             const activeValue = this.data.get('activeValue');
-            let result = instance && instance.getActiveOptions() || [];
+            const options = this.data.get('options');
+            const fieldNames = this.data.get('fieldNames');
 
-            result = result.map(activeOption => {
-                return activeOption[instance && instance.getFieldName('children')];
-            }).filter(activeOption => {
-                return !!activeOption;
-            });
+            return arrayTreeFilter(
+                options,
+                (o, level) => o[fieldNames.value] === activeValue[level],
+                {childrenKeyName: fieldNames.children}
+            );
+        },
+        getShowOptions() {
+            const options = this.data.get('options');
+            const fieldNames = this.data.get('fieldNames');
+            let result = this.data.get('getActiveOptions') || [];
+
+            result = result.map(activeOption => activeOption[fieldNames.children])
+                .filter(activeOption => !!activeOption);
+
             result.unshift(options);
-            return result.map((options, index) => {
-                return options.map(option => {
-                    if (instance) {
-                        option.className = instance.getMenuItemClass(option, index);
-                    }
-                    return option;
-                });
-            });
+            return result;
         }
     },
     updated() {
@@ -56,9 +56,8 @@ export default san.defineComponent({
     },
     getFieldName(name) {
         const fieldNames = this.data.get('fieldNames');
-        const defaultFieldNames = this.data.get('defaultFieldNames');
 
-        return fieldNames[name] || defaultFieldNames[name];
+        return fieldNames[name];
     },
     getActiveOptions(values) {
         const activeValue = values || this.data.get('activeValue');
@@ -141,7 +140,7 @@ export default san.defineComponent({
             <li
                 s-for="option, subIndex in options"
                 key="{{getLabel(option, 'value')}}"
-                class="{{option.className}}"
+                class="{{getMenuItemClass(options, index)}}"
                 on-click="handleClick($event, option, index)"
                 on-mouseenter="handleMouseEnter($event, option, index)"
                 on-mouseleave="handleMouseLeave($event, option, index)"
