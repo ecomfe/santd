@@ -31,12 +31,7 @@ export default san.defineComponent({
         };
     },
     inited() {
-        let initialValue;
-        const value = this.data.get('value');
-        const defaultValue = this.data.get('defaultValue');
-
-        initialValue = value || defaultValue || [];
-        this.data.set('activeValue', initialValue);
+        this.data.set('activeValue', this.data.set('value') || this.data.get('defaultValue') || []);
         this.watch('popupVisible', val => {
             if (val) {
                 const value = this.data.get('value');
@@ -45,54 +40,9 @@ export default san.defineComponent({
         });
     },
     computed: {
-        prefixCls() {
-            const rootPrefixCls = this.data.get('rootPrefixCls');
-            return (rootPrefixCls ? rootPrefixCls : prefixCls) + '-menus';
-        },
-        popup() {
-            const rootPrefixCls = this.data.get('rootPrefixCls');
-            const options = this.data.get('options');
-            const fieldNames = this.data.get('fieldNames');
-            const defaultFieldNames = this.data.get('defaultFieldNames');
-            const activeValue = this.data.get('activeValue');
-            const popupVisible = this.data.get('popupVisible');
-            const expandIcon = this.data.get('expandIcon');
-            const expandTrigger = this.data.get('expandTrigger');
-            const dropdownMenuColumnStyle = this.data.get('dropdownMenuColumnStyle');
-
-            if (options && options.length > 0) {
-                return san.defineComponent({
-                    initData() {
-                        return {
-                            value: [],
-                            prefixCls: rootPrefixCls || prefixCls,
-                            options,
-                            fieldNames,
-                            defaultFieldNames,
-                            activeValue,
-                            visible: popupVisible,
-                            expandIcon,
-                            expandTrigger,
-                            dropdownMenuColumnStyle
-                        };
-                    }
-                }, Menus);
-            }
-
-            return san.defineComponent({
-                template: '<div></div>'
-            });
-        },
         popupVisible() {
             const disabled = this.data.get('disabled');
             return disabled ? false : this.data.get('visible');
-        },
-        action() {
-            const disabled = this.data.get('disabled');
-            return disabled ? [] : ['click'];
-        },
-        getTransitionName() {
-            return this.data.get('transitionName');
         }
     },
     getFieldName(name) {
@@ -182,7 +132,7 @@ export default san.defineComponent({
     },
     template: `<span>
         <s-trigger
-            prefixCls="{{prefixCls}}"
+            prefixCls="${prefixCls}-menus"
             builtinPlacements="{{builtinPlacements}}"
             popupPlacement="{{placement}}"
             popupAlign="{{popupAlign}}"
@@ -193,13 +143,13 @@ export default san.defineComponent({
             mouseLeaveDelay="{{mouseLeaveDelay}}"
             popupClassName="{{overlayClassName}}"
             popupStyle="{{overlayStyle}}"
-            action="{{trigger}}"
+            action="{{disabled ? [] : trigger}}"
             visible="{{popupVisible}}"
             on-visibleChange="handleVisibleChange"
         >
             <slot />
             <s-menus slot="popup"
-                prefixCls="{{rootPrefixCls || prefixCls}}"
+                prefixCls="{{rootPrefixCls}}"
                 options="{{options || []}}"
                 fieldNames="{{fieldNames}}"
                 defaultFieldNames="{{defaultFieldNames}}"

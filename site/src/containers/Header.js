@@ -55,31 +55,33 @@ export default class Header extends Component {
                             </a>
                         </s-menu-item>
                         <s-sub-menu key="3" title="生态" target="_blank">
-                            <s-menu-item key="4">
-                                <a href="http://pro.ant.design" class="header-link" target="_blank">
-                                    Ant Design Pro v4
-                                </a>
-                            </s-menu-item>
-                            <s-menu-item key="5">
-                                <a href="http://ng.ant.design" class="header-link" target="_blank">
-                                    Ant Design of Angular
-                                </a>
-                            </s-menu-item>
-                            <s-menu-item key="6">
-                                <a href="http://vue.ant.design" class="header-link" target="_blank">
-                                    Ant Design of Vue
-                                </a>
-                            </s-menu-item>
-                            <s-menu-item key="7">
-                                <a href="https://www.yuque.com/ant-design/course" class="header-link" target="_blank">
-                                    Ant Design 实战教程
-                                </a>
-                            </s-menu-item>
-                            <s-menu-item key="8">
-                                <s-badge dot>
-                                    <a href="/" class="header-link">Ant Design of San</a>
-                                </s-badge>
-                            </s-menu-item>
+                            <s-menu-item-group title="Item 1">
+                                <s-menu-item key="4">
+                                    <a href="http://pro.ant.design" class="header-link" target="_blank">
+                                        Ant Design Pro v4
+                                    </a>
+                                </s-menu-item>
+                                <s-menu-item key="5">
+                                    <a href="http://ng.ant.design" class="header-link" target="_blank">
+                                        Ant Design of Angular
+                                    </a>
+                                </s-menu-item>
+                                <s-menu-item key="6">
+                                    <a href="http://vue.ant.design" class="header-link" target="_blank">
+                                        Ant Design of Vue
+                                    </a>
+                                </s-menu-item>
+                                <s-menu-item key="7">
+                                    <a href="https://www.yuque.com/ant-design/course" class="header-link" target="_blank">
+                                        Ant Design 实战教程
+                                    </a>
+                                </s-menu-item>
+                                <s-menu-item key="8">
+                                    <a href="/" class="header-link">
+                                        <s-badge dot>Ant Design of San</s-badge>
+                                    </a>
+                                </s-menu-item>
+                            </s-menu-item-group>
                         </s-sub-menu>
                     </s-menu>
                 </s-col>

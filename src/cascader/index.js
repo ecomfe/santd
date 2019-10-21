@@ -13,9 +13,6 @@ import './style/index';
 
 const prefixCls = classCreator('cascader')();
 const inputPrefixCls = classCreator('input')();
-const defaultDisplayRender = function (label) {
-    return label.join(' / ');
-};
 
 function getFilledFieldNames(fieldNames = {}) {
     const names = {
@@ -90,6 +87,7 @@ export default san.defineComponent({
             allowClear: true,
             disabled: false,
             options: [],
+            size: 'default',
             popupPlacement: 'bottomLeft',
             transitionName: 'slide-up',
             dropdownMenuColumnStyle: {}
@@ -97,33 +95,19 @@ export default san.defineComponent({
     },
     computed: {
         pickerClass() {
-            const className = this.data.get('className');
             const inputValue = this.data.get('inputValue');
             const disabled = this.data.get('disabled');
             const size = this.data.get('size');
             const showSearch = this.data.get('showSearch');
             const inputFocused = this.data.get('inputFocused');
 
-            let classArr = [className, `${prefixCls}-picker`];
+            let classArr = [`${prefixCls}-picker`];
             inputValue && classArr.push(`${prefixCls}-picker-with-value`);
             disabled && classArr.push(`${prefixCls}-picker-disabled`);
             size && classArr.push(`${prefixCls}-picker-${size}`);
             showSearch && classArr.push(`${prefixCls}-picker-show-search`);
             inputFocused && classArr.push(`${prefixCls}-picker-focused`);
 
-            return classArr;
-        },
-        sizeClass() {
-            const size = this.data.get('size');
-            let classArr = [];
-            size === 'large' && classArr.push(`${inputPrefixCls}-lg`);
-            size === 'small' && classArr.push(`${inputPrefixCls}-sm`);
-            return classArr;
-        },
-        arrowClass() {
-            const popupVisible = this.data.get('popupVisible');
-            let classArr = [`${prefixCls}-picker-arrow`];
-            popupVisible && classArr.push(`${prefixCls}-picker-arrow-expand`);
             return classArr;
         },
         filteredOptions() {
@@ -179,55 +163,28 @@ export default san.defineComponent({
                 disabled: true
             }];
         },
-        getLabel() {
+        selectedOptions() {
             const options = this.data.get('options');
-            const displayRender = this.data.get('displayRender') || defaultDisplayRender;
-
             const names = getFilledFieldNames(this.data.get('fieldNames') || {});
             const value = this.data.get('value') || [];
             const unwrappedValue = Array.isArray(value[0]) ? value[0] : value;
-            const selectedOptions = arrayTreeFilter(
+
+            return arrayTreeFilter(
                 options,
                 (o, level) => o[names.value] === unwrappedValue[level],
                 {childrenKeyName: names.children}
             );
-            const label = selectedOptions.map(o => o[names.label]);
-            const instance = this.data.get('instance');
-            if (instance) {
-                const render = displayRender(label, selectedOptions);
-                if (typeof render === 'string') {
-                    instance && (instance.components.displayrender = san.defineComponent({
-                        initData() {
-                            return {
-                                text: render
-                            };
-                        },
-                        template: '<span>{{text}}</span>'
-                    }));
-                    const ref = instance.ref('render');
-                    ref && ref.data.set('text', render);
-                }
-                else if (typeof render === 'function') {
-                    instance && (instance.components.displayrender = render);
-                    const ref = instance.ref('render');
-                    ref && ref.data.set('label', label);
-                    ref && ref.data.set('selectedOptions', selectedOptions);
-                }
-            }
         },
-        hasSlot() {
-            const instance = this.data.get('instance');
-            return instance && instance.sourceSlots.noname && instance.sourceSlots.noname.length;
+        label() {
+            const selectedOptions = this.data.get('selectedOptions');
+            const names = getFilledFieldNames(this.data.get('fieldNames') || {});
+            return selectedOptions.map(o => o[names.label]);
         }
     },
     inited() {
-        this.data.set('bodyStyle', this.data.get('style'));
-        this.data.set('style', {});
-
         const value = this.data.get('value');
         const defaultValue = this.data.get('defaultValue');
         this.data.set('value', value || defaultValue || []);
-        this.data.set('instance', this);
 
         const loadData = this.data.get('loadData');
         loadData && this.data.set('loadData', loadData.bind(this.parentComponent));
@@ -235,6 +192,8 @@ export default san.defineComponent({
         const showSearch = this.data.get('showSearch');
         const options = this.data.get('options');
         showSearch && this.data.set('flattenOptions', flattenTree(options, this.data.get()));
+        this.data.set('hasSlot', this.sourceSlots.noname && this.sourceSlots.noname.filter(item => !item.textExpr).length);
+        this.data.set('hasDisplayRender', !!this.sourceSlots.named.displayRender);
 
         this.watch('inputValue', val => {
             const showSearch = this.data.get('showSearch');
@@ -243,6 +202,9 @@ export default san.defineComponent({
                 : 'auto'
             );
         });
+    },
+    defaultDisplayRender(label) {
+        return label.join(' / ');
     },
     handleChange({value, selectedOptions}) {
         this.data.set('inputValue', '');
@@ -318,11 +280,19 @@ export default san.defineComponent({
             transitionName="{{transitionName}}"
         >
             <slot s-if="hasSlot" />
-            <span class="{{pickerClass}}" style="{{bodyStyle}}" s-else>
-                <span class="{{prefixCls}}-picker-label"><displayrender s-ref="render"></displayrender></span>
+            <span class="{{pickerClass}}" style="{{pickerStyle}}" s-else>
+                <span class="{{prefixCls}}-picker-label">
+                    <slot
+                        s-if="hasDisplayRender"
+                        name="displayRender"
+                        var-label="{{label}}"
+                        var-selectedOptions="{{selectedOptions}}"
+                    />
+                    <template s-else>{{defaultDisplayRender(label)}}</template>
+                </span>
                 <s-input
                     tabIndex="-1"
-                    inputClasses="{{prefixCls}}-input {{sizeClass}}"
+                    inputClasses="{{prefixCls}}-input ${inputPrefixCls}-{{size}}"
                     value="{{inputValue}}"
                     disabled="{{disabled}}"
                     readOnly="{{!showSearch}}"
@@ -341,7 +311,10 @@ export default san.defineComponent({
                     class="{{prefixCls}}-picker-clear"
                     on-click="handleClearSelection"
                 />
-                <s-icon type="{{suffixIcon ? suffixIcon : 'down'}}" class="{{arrowClass}}"></s-icon>
+                <s-icon
+                    type="{{suffixIcon ? suffixIcon : 'down'}}"
+                    class="${prefixCls}-picker-arrow {{popupVisible ? '${prefixCls}-picker-arrow-expand' : ''}}"
+                />
             </span>
         </s-cascader>
     </div>`

@@ -12,13 +12,21 @@ Layout.Sider 支持响应式布局。
         <s-sider breakpoint="lg" collapsedWidth="0" on-collapse="handleCollapse">
             <div class="logo" />
             <s-menu theme="dark" mode="inline" defaultSelectedKeys="{{['3']}}">
-                <s-submenu key="sub1" title="{{subOne}}">
+                <s-submenu key="sub1">
+                    <template slot="title">
+                        <s-icon type="form" />
+                        <span>Navigation One</span>
+                    </template>
                     <s-menuitem key="1"><span>option1</span></s-menuitem>
                     <s-menuitem key="2"><span>option2</span></s-menuitem>
                     <s-menuitem key="3"><span>option3</span></s-menuitem>
                     <s-menuitem key="4"><span>option4</span></s-menuitem>
                 </s-submenu>
-                <s-submenu key="sub2" title="{{subTwo}}">
+                <s-submenu key="sub2">
+                    <template slot="title">
+                        <s-icon type="copy" />
+                        <span>Navigation Two</span>
+                    </template>
                     <s-menuitem key="5"><span>option5</span></s-menuitem>
                     <s-menuitem key="6"><span>option6</span></s-menuitem>
                     <s-menuitem key="7"><span>option7</span></s-menuitem>
@@ -35,38 +43,9 @@ Layout.Sider 支持响应式布局。
 </template>
 
 <script>
-import san from 'san';
 import Layout from 'santd/layout';
 import Menu from 'santd/menu';
 import Icon from 'santd/icon';
-
-const subMenuOne = function() {
-    return san.defineComponent({
-        components: {
-            's-icon': Icon
-        },
-        template: `
-            <span>
-                <s-icon type="form" />
-                <span>Navigation One</span>
-            </span>
-        `
-    });
-};
-
-const subMeneTwo = function() {
-    return san.defineComponent({
-        components: {
-            's-icon': Icon
-        },
-        template: `
-            <span>
-                <s-icon type="copy" />
-                <span>Navigation Two</span>
-            </span>
-        `
-    });
-};
 
 export default {
     components: {
@@ -79,12 +58,6 @@ export default {
         's-submenu': Menu.Sub,
         's-menuitem': Menu.Item,
         's-icon': Icon
-    },
-    initData() {
-        return {
-            subOne: subMenuOne,
-            subTwo: subMeneTwo
-        }
     },
     handleCollapse(status) {
         console.log(status);

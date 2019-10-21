@@ -10,12 +10,17 @@
             options="{{options}}"
             on-change="onChange"
             defaultValue="{{defaultValue}}"
-            displayRender="{{displayRender}}"
-        />
+        >
+            <template s-for="item, index in label" slot="displayRender">
+                <span s-if="index === label.length - 1">
+                    {{item}} (<a href="javascript:;" on-click="handleAreaClick($event, item, selectedOptions[index])">{{selectedOptions[index].code}}</a>)
+                </span>
+                <span s-else>{{item}} / </span>
+            </template>
+        </s-cascader>
     </div>
 </template>
 <script>
-import san from 'san';
 import Cascader from 'santd/cascader';
 
 const options = [{
@@ -51,29 +56,7 @@ export default {
     initData() {
         return {
             options: options,
-            defaultValue: ['zhejiang', 'hangzhou', 'xihu'],
-            displayRender(label, selectedOptions) {
-                return san.defineComponent({
-                    initData() {
-                        return {
-                            label: label,
-                            selectedOptions: selectedOptions
-                        };
-                    },
-                    handleAreaClick(e, item, option) {
-                        e.stopPropagation();
-                        console.log('clicked', label, option);
-                    },
-                    template: `<span>
-                        <template s-for="item, index in label">
-                            <span s-if="index === label.length - 1">
-                                {{item}} (<a href="javascript:;" on-click="handleAreaClick($event, item, selectedOptions[index])">{{selectedOptions[index].code}}</a>)
-                            </span>
-                            <span s-else>{{item}} / </span>
-                        </template>
-                    </span>`
-                });
-            }
+            defaultValue: ['zhejiang', 'hangzhou', 'xihu']
         };
     },
     onChange(value) {

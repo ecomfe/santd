@@ -34,16 +34,11 @@ async function deploy() {
 
         spinner = ora('git clone santd');
         spinner.start();
-        // 3. 进入output 拷贝代码库
-        await execa('git', ['clone', 'git@github.com:ecomfe/santd.git'], {cwd: output});
-        // 4. santd 切换分支gh-pages
-        await execa('git', ['fetch', 'origin'], {cwd: `${output}/santd`});
-        spinner.succeed();
-        spinner = ora('switched to branch gh-pages\n');
-        await execa('git', ['checkout', '-b', 'gh-pages', 'origin/gh-pages'], {cwd: `${output}/santd`});
+        // 3. 拷贝分支gh-pages代码到本地
+        await execa('git', ['clone', '-b', 'gh-pages', 'git@github.com:ecomfe/santd.git'], {cwd: `${output}`});
         spinner.succeed();
 
-        // 5. 确认名称和邮箱：git config user.name git config user.email
+        // 4. 确认名称和邮箱：git config user.name git config user.email
         let name = await execa('git', ['config', 'user.name'], {cwd: `${output}/santd`});
         let email = await execa('git', ['config', 'user.email'], {cwd: `${output}/santd`});
 
@@ -80,9 +75,9 @@ async function deploy() {
             console.log(chalk.green('\ngit config success!\n'));
         }
 
-        // 6. 移动文档文件
+        // 5. 移动文档文件
         fs.copySync(`${output}/site/`, `${output}/santd/`);
-        // 7. git提交，提前输入提交commit信息，默认：update site + 日期
+        // 6. git提交，提前输入提交commit信息，默认：update site + 日期
         let answer2 = await inquirer.prompt([
             {
                 type: 'input',
@@ -91,7 +86,7 @@ async function deploy() {
                 default: 'update site, date:' + new Date().toLocaleDateString().replace(/\//g, '-')
             }
         ]);
-
+        console.log(chalk.green('\nstart push...'));
         // git add. git commit -m '增加提示' git push origin gh-pages
         await execa('git', ['add', '.'], {cwd: `${output}/santd`});
         await execa('git', ['commit', '-m', answer2.commitmsg], {cwd: `${output}/santd`});

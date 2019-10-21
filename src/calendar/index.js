@@ -24,14 +24,6 @@ function getMonthsLocale(value) {
     return months;
 }
 
-function zeroFixed(v) {
-    return v < 10 ? `0${v}` : `${v}`;
-}
-
-const sanNoop = san.defineComponent({
-    template: '<span></span>'
-});
-
 export default san.defineComponent({
     initData() {
         return {
@@ -40,8 +32,6 @@ export default san.defineComponent({
             mode: 'month',
             yearSelectOffset: 10,
             yearSelectTotal: 20,
-            monthCellRender: sanNoop,
-            dateCellRender: sanNoop,
             componentName: 'Calendar'
         };
     },
@@ -49,11 +39,9 @@ export default san.defineComponent({
         ...localeReceiver.computed,
 
         classes() {
-            const className = this.data.get('className');
             const fullscreen = this.data.get('fullscreen');
 
             let classArr = [prefixCls];
-            className && classArr.push(className);
             fullscreen && classArr.push(`${prefixCls}-fullscreen`);
             return classArr;
         },
@@ -110,54 +98,6 @@ export default san.defineComponent({
                 options.push({label: index + (locale.year === '年' ? '年' : ''), value: String(index)});
             }
             return options;
-        },
-        injectHeader() {
-            const headerRender = this.data.get('headerRender');
-            const instance = this.data.get('instance');
-            if (headerRender) {
-                instance && (instance.components.headerrender = headerRender);
-            }
-            return headerRender;
-        },
-        customDateCellRender() {
-            const dateCellRender = this.data.get('dateCellRender');
-            return san.defineComponent({
-                computed: {
-                    date() {
-                        const value = this.data.get('value');
-                        return zeroFixed(value.date());
-                    }
-                },
-                components: {
-                    datecellrender: dateCellRender
-                },
-                template: `<div class="{{prefixCls}}-date">
-                    <div class="{{prefixCls}}-value">{{date}}</div>
-                    <div class="{{prefixCls}}-content">
-                        <datecellrender value="{{value}}" prefixCls="{{prefixCls}}" />
-                    </div>
-                </div>`
-            });
-        },
-        customMonthCellRender() {
-            const monthCellRender = this.data.get('monthCellRender');
-            return san.defineComponent({
-                computed: {
-                    month() {
-                        const value = this.data.get('value');
-                        return value.localeData().monthsShort(value);
-                    }
-                },
-                components: {
-                    monthcellrender: monthCellRender
-                },
-                template: `<div class="{{rootPrefixCls}}-month">
-                    <div class="{{rootPrefixCls}}-value">{{month}}</div>
-                    <div class="{{rootPrefixCls}}-content">
-                        <monthcellrender value="{{value}}" prefixCls="{{rootPrefixCls}}" />
-                    </div>
-                </div>`
-            });
         }
     },
     setValue(value, way) {
@@ -203,7 +143,7 @@ export default san.defineComponent({
             value.locale(localeCode);
         }
         this.data.set('value', value);
-        this.data.set('instance', this);
+        this.data.set('hasHeaderRender', !!this.sourceSlots.named.headerRender);
 
         this.watch('localeCode', val => {
             moment.locale(val);
@@ -247,11 +187,12 @@ export default san.defineComponent({
     },
     template: `
         <div class="{{classes}}">
-            <headerrender
-                s-if="injectHeader"
-                type="{{mode}}"
-                value="{{value}}"
-                locale="{{locale.lang}}"
+            <slot
+                s-if="hasHeaderRender"
+                name="headerRender"
+                var-type="{{mode}}"
+                var-value="{{value}}"
+                var-locale="{{locale.lang}}"
                 on-typeChange="handleHeaderTypeChange"
                 on-yearChange="handleYearChange"
                 on-monthChange="handleMonthChange"
@@ -299,11 +240,22 @@ export default san.defineComponent({
                 showHeader="{{false}}"
                 value="{{value}}"
                 locale="{{locale.lang}}"
-                monthCellRender="{{monthFullCellRender || customMonthCellRender}}"
-                dateCellRender="{{dateFullCellRender || customDateCellRender}}"
                 fullscreen="{{fullscreen}}"
                 on-select="handleSelect"
-            />
+            >
+            <div class="{{prefixCls}}-date" slot="customDateCellRender">
+                <div class="{{prefixCls}}-value">{{date}}</div>
+                <div class="{{prefixCls}}-content">
+                    <slot name="dateCellRender" var-value="{{value}}" />
+                </div>
+            </div>
+            <div class="{{rootPrefixCls}}-month" slot="customMonthCellRender">
+                <div class="{{rootPrefixCls}}-value">{{month}}</div>
+                <div class="{{rootPrefixCls}}-content">
+                    <slot name="monthCellRender" var-value="{{value}}"/>
+                </div>
+            </div>
+            </s-calendar>
         </div>
     `
 });
