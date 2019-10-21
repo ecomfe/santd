@@ -94,7 +94,14 @@ export default san.defineComponent({
                         class="{{getContentClass(monthData)}}"
                         on-click="handleChooseMonth(monthData)"
                     >
-                        <a class="{{prefixCls}}-month">{{getMonth(monthData)}}</a>
+                        <slot
+                            name="monthRender"
+                            var-rootPrefixCls="{{rootPrefixCls}}"
+                            var-month="{{getMonth(monthData)}}"
+                            var-value="{{monthData.current}}"
+                            s-if="hasMonthRender"
+                        />
+                        <a class="{{prefixCls}}-month" s-else>{{getMonth(monthData)}}</a>
                     </td>
                 </tr>
             </tbody>

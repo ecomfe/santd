@@ -1,16 +1,27 @@
 <text lang="cn">
 #### 通知事项日历
-一个复杂的应用示例，用插槽 `dateContent` 和 `monthContent` 函数来自定义需要追加的渲染的数据。
+一个复杂的应用示例，用插槽 `dateCellRender` 和 `monthCellRender` 来自定义需要追加的渲染的数据。
 </text>
 
 ```html
 <template>
     <div>
-        <s-calendar dateCellRender="{{dateCellRender}}" monthCellRender="{{monthCellRender}}" />
+        <s-calendar>
+            <ul class="events" slot="dateCellRender">
+                <li s-for="item in getListData(value)">
+                    <s-badge status="{{item.type}}" text="{{item.content}}" />
+                </li>
+            </ul>
+            <template slot="monthCellRender">
+                <div class="notes-month" s-if="getMonthData(value)">
+                    <section>{{getMonthData(value)}}</section>
+                    <span>Backlog number</span>
+                </div>
+            </template>
+        </s-calendar>
     </div>
 </template>
 <script>
-import san from 'san';
 import Calendar from 'santd/calendar';
 import Badge from 'santd/badge';
 import moment from 'moment';
@@ -54,39 +65,14 @@ function getMonthData(value) {
 
 export default {
     components: {
-        's-calendar': Calendar
+        's-calendar': Calendar,
+        's-badge': Badge
     },
-    initData() {
-        return {
-            dateCellRender: san.defineComponent({
-                computed: {
-                    listData() {
-                        const value = this.data.get('value');
-                        return getListData(value);
-                    }
-                },
-                components: {
-                    's-badge': Badge
-                },
-                template: `<ul class="events">
-                    <li s-for="item in listData">
-                        <s-badge status="{{item.type}}" text="{{item.content}}" />
-                    </li>
-                </ul>`
-            }),
-            monthCellRender: san.defineComponent({
-                computed: {
-                    num() {
-                        const value = this.data.get('value');
-                        return getMonthData(value);
-                    }
-                },
-                template: `<div><div class="notes-month" s-if="num">
-                    <section>{{num}}</section>
-                    <span>Backlog number</span>
-                </div><div>`
-            })
-        }
+    getListData(value) {
+        return getListData(value);
+    },
+    getMonthData(value) {
+        return getMonthData(value);
     }
 }
 </script>

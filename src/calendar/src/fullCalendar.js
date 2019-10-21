@@ -7,7 +7,6 @@ import san, {DataTypes} from 'san';
 import Base from './base';
 import DateTable from './date/dateTable';
 import MonthTable from './month/monthTable';
-import CalendarHeader from './fullCalendarHeader';
 import inherits from '../../core/util/inherits';
 import moment from 'moment';
 
@@ -24,30 +23,6 @@ export default inherits(san.defineComponent({
             showHeader: true
         };
     },
-    computed: {
-        className() {
-            const prefixCls = this.data.get('prefixCls');
-            const fullscreen = this.data.get('fullscreen');
-            let classArr = [`${prefixCls}-full`];
-
-            fullscreen && classArr.push(`${prefixCls}-fullscreen`);
-            return classArr.join(' ');
-        },
-        injectHeader() {
-            const headerRender = this.data.get('headerRender');
-            const value = this.data.get('value');
-            const type = this.data.get('type');
-            const locale = this.data.get('locale');
-            const instance = this.data.get('instance');
-            const headerComponent = this.data.get('headerComponent');
-            if (headerRender) {
-                instance && (instance.components.calendarheader = headerRender(value, type, locale));
-            }
-            else {
-                instance && (instance.components.calendarheader = headerComponent || CalendarHeader);
-            }
-        }
-    },
     inited() {
         const type = this.data.get('type');
         const defaultType = this.data.get('defaultType');
@@ -59,7 +34,8 @@ export default inherits(san.defineComponent({
         this.data.set('type', type || defaultType);
         this.data.set('value', value || defaultValue || moment());
         this.data.set('selectedValue', selectedValue || defaultSelectedValue);
-        this.data.set('instance', this);
+        this.data.set('hasMonthCellRender', !!this.sourceSlots.named.customMonthCellRender);
+        this.data.set('hasDateCellRender', !!this.sourceSlots.named.customDateCellRender);
     },
     handleSelect(value) {
         this.data.set('value', value);
@@ -75,7 +51,7 @@ export default inherits(san.defineComponent({
     },
     template: `
         <div
-            class="{{classes}}"
+            class="{{prefixCls}} {{prefixCls}}-full {{fullscreen ? prefixCls + '-fullscreen': ''}}"
             tabIndex="0"
         >
             <calendarheader
@@ -93,25 +69,41 @@ export default inherits(san.defineComponent({
             <div key="calendar-body" class="{{prefixCls}}-calendar-body">
             <s-datetable
                 s-if="type === 'date'"
-                dateRender="{{dateCellRender}}"
-                contentRender="{{dateCellContentRender}}"
                 locale="{{locale}}"
                 prefixCls="{{prefixCls}}"
                 value="{{value}}"
                 disabledDate="{{disabledDate}}"
+                hasDateRender="{{hasDateCellRender}}"
                 on-select="handleSelect"
-            />
+            >
+                <slot
+                    name="customDateCellRender"
+                    slot="dateRender"
+                    var-rootPrefixCls="{{rootPrefixCls}}"
+                    var-prefixCls="{{prefixCls}}"
+                    var-date="{{date}}"
+                    var-value="{{value}}"
+                />
+            </s-datetable>
             <s-monthtable
                 s-else
-                cellRender="{{monthCellRender}}"
-                contentRender="{{contentRender}}"
                 locale="{{locale}}"
                 prefixCls="{{prefixCls}}-month-panel"
                 rootPrefixCls="{{prefixCls}}"
                 value="{{value}}"
                 disabledDate="{{disabledDate}}"
+                hasMonthRender="{{hasMonthCellRender}}"
                 on-select="handleMonthSelect"
-            />
+            >
+                <slot
+                    name="customMonthCellRender"
+                    slot="monthRender"
+                    var-rootPrefixCls="{{rootPrefixCls}}"
+                    var-prefixCls="{{prefixCls}}"
+                    var-month="{{month}}"
+                    var-value="{{value}}"
+                />
+            </s-monthtable>
             </div>
         </div>
     `

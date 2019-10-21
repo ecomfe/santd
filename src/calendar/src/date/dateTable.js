@@ -248,7 +248,13 @@ export default san.defineComponent({
                         on-click="handleClick(current.disabled, current.data)"
                         on-mouseenter="handleMouseEnter(current.disabled, current.data)"
                     >
-                        <slot name="dateRender" s-if="hasDateRender" var-current="{{current.data}}" />
+                        <slot
+                            s-if="hasDateRender"
+                            name="dateRender"
+                            var-current="{{current.data}}"
+                            var-date="{{getDate(current.data)}}"
+                            var-value="{{current.data}}"
+                        />
                         <div class="{{prefixCls}}-date" s-else>{{getDate(current.data)}}</div>
                     </td>
                 </tr>
