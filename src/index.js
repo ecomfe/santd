@@ -61,3 +61,4 @@ export {default as Upload} from './upload';
 export {default as LocaleProvider} from './localeprovider';
 export {default as Result} from './result';
 export {default as Descriptions} from './descriptions';
+export {default as Typograph} from './typography';
