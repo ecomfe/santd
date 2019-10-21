@@ -150,10 +150,11 @@ export default san.defineComponent({
         santd_menu_isSelected(payload) {
             this.data.set('isChildrenSelected', true);
         },
-        santd_menu_itemClick() {
+        santd_menu_itemClick(payload) {
             if (this.data.get('mode') !== 'inline') {
                 this.data.set('noSubClick', false);
             }
+            this.dispatch('santd_menu_itemClick', payload.value);
         }
     },
     components: {

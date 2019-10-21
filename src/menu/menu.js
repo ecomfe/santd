@@ -34,7 +34,6 @@ export default san.defineComponent({
             subMenuCloseDelay: 0.1,
             subMenuOpenDelay: 0,
             defaultOpenKeys: [],
-            openKeys: [],
             level: 1
         };
     },

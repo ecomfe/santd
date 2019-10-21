@@ -12,7 +12,7 @@ export default class Navigator extends Component {
             <s-menu mode="inline"
                 defaultOpenKeys="{{defaultOpenKeys}}"
                 selectedKeys="{{selectedKeys}}"
-                on-click="onClick"
+                on-click="handleClick"
             >
                 <s-sub-menu s-for="item in routes"
                     key="{{item.key}}"
@@ -61,7 +61,7 @@ export default class Navigator extends Component {
         }
     };
 
-    onClick(item) {
+    handleClick(item) {
         this.fire('redirect', item);
     }
 }
