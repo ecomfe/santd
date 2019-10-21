@@ -45,7 +45,6 @@ const Result = san.defineComponent({
         's-unauthorized': unauthorized
     },
     inited() {
-        this.data.set('instance', this);
         this.data.set('hasIcon', !!this.sourceSlots.named.icon);
         this.data.set('hasExtra', !!this.sourceSlots.named.extra);
 
