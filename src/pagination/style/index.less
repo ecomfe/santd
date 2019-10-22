@@ -2,32 +2,9 @@
 @import "../../core/styles/mixins/index";
 @import "../../input/style/mixin";
 
-@pagination-prefix-cls: ~"@{ant-prefix}-pagination";
-@san-select: ~"san-select";
+@prefix-cls: ~"@{ant-prefix}-pagination";
 
-.@{san-select}-selection {
-  outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  box-sizing: border-box;
-  display: block;
-  background-color: #fff;
-  border-radius: 4px;
-  border: 1px solid #d9d9d9;
-  border-top-width: 1.02px;
-  height: 32px;
-  line-height: 32px;
-  padding: 0 11px;
-}
-.@{san-select}-selection--single {
-
-  position: relative;
-  cursor: pointer;
-}
-
-.@{pagination-prefix-cls} {
+.@{prefix-cls} {
   .reset-component;
   display:inline-block;
   ul,
