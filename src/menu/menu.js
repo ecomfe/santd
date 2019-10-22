@@ -131,6 +131,6 @@ export default san.defineComponent({
         }
     },
     template: `
-        <ul class="{{classes}}"><slot /></ul>
+        <ul class="{{classes}}" role="{{role || 'menu'}}"><slot/></ul>
     `
 });
