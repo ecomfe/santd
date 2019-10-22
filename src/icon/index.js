@@ -20,6 +20,9 @@ const icon = san.defineComponent({
     components: {
         's-icon': sanicon
     },
+    dataTypes: {
+        tabIndex: DataTypes.number
+    },
     computed: {
         classes() {
             const type = this.data.get('type');
@@ -64,13 +67,18 @@ const icon = san.defineComponent({
     },
     inited() {
         this.data.set('hasComponent', !!this.sourceSlots.named.component);
+
+        let iconTabIndex = this.data.get('tabIndex');
+        if (iconTabIndex === undefined && this.listeners.click) {
+            this.data.set('iconTabIndex', -1);
+        }
     },
     handleClick(e) {
         this.fire('click', e);
     },
     template: `<i
         aria-label="{{type && '图标: ' + type}}"
-        tabIndex="{{tabIndex === undefined ? -1 : tabIndex}}"
+        tabindex="{{iconTabIndex}}"
         on-click="handleClick"
         class="{{classes}}"
     >
