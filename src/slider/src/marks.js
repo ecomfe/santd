@@ -36,18 +36,16 @@ export default san.defineComponent({
             });
         }
     },
-    markClass(point) {
-        const included = this.data.get('included');
-        const max = this.data.get('max');
-        const min = this.data.get('min');
+    
+    markClass(point, included, max, min) {
+        if ((!included && point === max)
+            || (included && point <= max && point >= min)) {
+            return ` ${prefixCls}-text-active`;
+        }
 
-        const isActive = (!included && point === max)
-            || (included && point <= max && point >= min);
-
-        let classArr = [`${prefixCls}-text`];
-        isActive && classArr.push(`${prefixCls}-text-active`);
-        return classArr;
+        return '';
     },
+
     markStyle(point) {
         const vertical = this.data.get('vertical');
         const max = this.data.get('max');
@@ -76,12 +74,12 @@ export default san.defineComponent({
     handleClickLabel(e, point) {
         this.fire('clickLabel', {e, point});
     },
+
     template: `<div class="${prefixCls}">
         <span
             s-for="element in elements"
-            class="{{markClass(element.point)}}"
+            class="${prefixCls}-text{{markClass(element.point, included, max, min)}}"
             style="{{markStyle(element.point)}}"
-            key="{{element.point}}"
             on-mousedown="handleClickLabel($event, point)"
             on-touchstart="handleClickLabel($event, point)"
         >{{element.markLabel}}</span>
