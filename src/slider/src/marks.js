@@ -67,7 +67,7 @@ export default san.defineComponent({
 
     template: `<div class="${prefixCls}">
         <span
-            s-for="mark in marksArr"
+            s-for="mark in marksArr trackBy mark.point"
             class="${prefixCls}-text{{markClass(mark.point, included, max, min)}}"
             style="{{mark.style}}{{markStyle(mark.point, vertical, max, min)}}"
             on-mousedown="handleClickLabel($event, point)"
