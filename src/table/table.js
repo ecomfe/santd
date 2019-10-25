@@ -4,21 +4,519 @@
  **/
 
 import san, {DataTypes} from 'san';
-import Table from './src/table';
+import isEmpty from 'lodash/isEmpty';
 import Icon from '../icon';
 import Spin from '../spin';
 import Pagination from '../pagination';
 import {classCreator} from '../core/util';
-import shallowEqual from 'shallowequal';
-import SelectionBox from './SelectionBox';
-import SelectionCheckboxAll from './SelectionCheckboxAll';
-import FilterDropdown from './filterDropdown';
 import renderEmpty from '../core/util/renderEmpty';
+import Dropdown from '../dropdown';
+import Menu from '../menu';
+import Radio from '../radio';
+import Checkbox from '../checkbox';
+import Button from '../button';
 import './style/index';
 
 const prefixCls = classCreator('table')();
 
-const flatArray = (data = [], childrenName = 'children') => {
+const renderTemplate = `
+    <!--配置展开图标-->
+    <template s-if="isTree && columnIndex === 0">
+        <span class="${prefixCls}-row-indent indent-level-{{item.level}}" style="padding-left: {{item.level * indentSize}}px;"></span>
+        <span
+            class="${prefixCls}-row-expand-icon ${prefixCls}-row-{{item.children ? item.collapsed ? 'collapsed' : 'expanded' : 'spaced'}}"
+            on-click="handleTreeExpand(item)"
+        ></span>
+    </template>
+    <!--配置scoped slot-->
+    <slot
+        s-if="column.scopedSlots.render && !column.children"
+        name="{{column.scopedSlots.render}}"
+        var-text="{{column.scopedSlots.render === 'render' ? item[column.key || column.dataIndex] : item[column.scopedSlots.render]}}"
+        var-record="{{item}}"
+        var-index="{{index}}"
+        var-column="{{column}}"
+    />
+    <template s-else>{{column.children || item[column.key || column.dataIndex] | raw}}</template>
+`;
+
+const titleTemplate = `
+                        <!--配置title slot-->
+                        <slot s-if="column.slots.title" name="{{column.slots.title}}" />
+                        <template s-else>{{column.title}}</template>
+`;
+
+const tableInnerTemplate = `
+    <div s-if="scroll.y" class="${prefixCls}-header ${prefixCls}-hide-scrollbar">
+        <table class="{{scroll.x ? '${prefixCls}-fixed' : ''}}" style="width: {{scroll.x || '100%'}}">
+        </table>
+    </div>
+    <div
+        s-if="!virtualScroll"
+        class="${prefixCls}-body"
+    >
+        <table classs="{{scroll.x ? '${prefixCls}-fixed' : ''}}" style="width: {{scroll.x}}">
+            <thead class="${prefixCls}-thead">
+                <tr class="${prefixCls}-row">
+                    <th s-if="hasExpandedRowRender" class="${prefixCls}-expand-icon-th"></th>
+                    <th s-for="column, columnIndex in processedColumns" class="{{getThClass(column)}}">
+                        <!--配置sorter-->
+                        <span class="${prefixCls}-header-column">
+                            <div class="${prefixCls}-column-sorters" s-if="column.sorter" on-click="handleSorter(column, columnIndex)">
+                                <span class="${prefixCls}-column-title">${titleTemplate}</span>
+                                <span class="${prefixCls}-column-sorter">
+                                    <div class="${prefixCls}-column-sorter-inner {{hasSorterIcon(column, 'ascend') && hasSorterIcon(column, 'descend') ? '${prefixCls}-column-sorter-inner-full' : ''}}">
+                                        <s-icon type="caret-up" class="${prefixCls}-column-sorter-up {{column.sortOrder === 'ascend' ? 'on' : 'off'}}" s-if="hasSorterIcon(column, 'ascend')"/>
+                                        <s-icon type="caret-down" class="${prefixCls}-column-sorter-down {{column.sortOrder === 'descend' ? 'on' : 'off'}}" s-if="hasSorterIcon(column, 'descend')"/>
+                                    </div>
+                                </span>
+                            </div>
+                            <template s-else>${titleTemplate}</template>
+                        </span>
+
+
+                        <!--配置filterIcon slot-->
+                        <s-dropdown
+                            dropdownClassName="${prefixCls}-filter-icon"
+                            placement="bottomRight"
+                            trigger="click"
+                            overlayClassName="${prefixCls}-filter-dropdown"
+                            visible="{{column.filterVisible}}"
+                            on-visibleChange="handleFilterVisibleChange($event, column, columnIndex)"
+                            s-if="column.scopedSlots.filterIcon || column.filters"
+                        >
+                            <slot name="{{column.scopedSlots.filterIcon}}"/>
+                            <slot
+                                slot="overlay"
+                                name="{{column.scopedSlots.filterDropdown}}"
+                                var-selectedKeys="{{selectedKeys[column.key || column.dataIndex] || []}}"
+                                var-column="{{column}}"
+                                s-if="column.scopedSlots.filterIcon"
+                            />
+                                <s-icon type="filter" s-if="column.filters"/>
+                            <template slot="overlay">
+                                <s-menu
+                                    prefixCls="{{prefixCls}}"
+                                    s-if="column.filters"
+                                    multiple="{{column.filterMultiple !== false ? true : false}}"
+                                    selectedKeys="{{selectedKeys[column.key || column.dataIndex] || []}}"
+                                    on-select="setSelectedKeys($event.selectedKeys, column)"
+                                    on-deselect="setSelectedKeys($event.selectedKeys, column)"
+                                >
+                                    <s-menu-item s-for="filter in column.filters" key="{{filter.value}}">
+                                        <s-checkbox checked="{{getFilterChecked(selectedKeys[column.key || column.dataIndex], filter.value)}}" s-if="column.filterMultiple !== false" />
+                                        <s-radio checked="{{getFilterChecked(selectedKeys[column.key || column.dataIndex], filter.value)}}" s-else/>
+                                        {{filter.text}}
+                                    </s-menu-item>
+                                </s-menu>
+                                <div class="${prefixCls}-filter-dropdown-btns" s-if="column.filters">
+                                    <a class="${prefixCls}-filter-dropdown-link confirm" on-click="confirm">确定</a>
+                                    <a class="${prefixCls}-filter-dropdown-link clear" on-click="clearFilter(column)">取消</a>
+                                </div>
+                            </template>
+                        </s-dropdown>
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="${prefixCls}-tbody">
+                <template s-for="item, index in data">
+                <tr class="${prefixCls}-row" style="display: {{item.level === 0 || item.expanded ? '' : 'none;'}}">
+                    <template s-for="column, columnIndex in getColumns(processedColumns, item, index)">
+                        <td s-if="hasExpandedRowRender && columnIndex === 0" class="${prefixCls}-row-expand-icon-cell">
+                            <span class="${prefixCls}-row-expand-icon ${prefixCls}-row-{{item.expandedRow ? 'expanded' : 'collapsed'}}" on-click="handleExpandRow(item)"></span>
+                        </td>
+                        <td s-if="column.attrs.colSpan" colspan="{{column.attrs.colSpan}}" class="{{getThClass(column)}}">${renderTemplate}</td>
+                        <td s-else-if="column.attrs.rowSpan" rowspan="{{column.attrs.rowSpan}}" class="{{getThClass(column)}}">${renderTemplate}</td>
+                        <td
+                            s-else-if="column.attrs.colSpan && column.attrs.rowSpan"
+                            colspan="{{column.attrs.colSpan}}"
+                            rowspan="{{column.attrs.rowSpan}}"
+                            class="{{getThClass(column)}}"
+                        >${renderTemplate}</td>
+                        <td s-else class="{{getThClass(column)}}">${renderTemplate}</td>
+                    </template>
+                </tr>
+                <tr
+                    s-if="hasExpandedRowRender"
+                    class="${prefixCls}-expanded-row"
+                    style="display: {{item.expandedRow ? '' : 'none'}}"
+                >
+                    <td></td>
+                    <td colspan="{{processedColumns.length}}" >
+                        <slot name="expandedRowRender" var-record="{{item}}"/>
+                    </td>
+                </tr>
+                </template>
+            </tbody>
+        </table>
+    </div>
+    <div class="${prefixCls}-footer" s-if="hasFooter">
+        <slot name="footer" s-if="!footer" />
+        <template s-else>{{footer}}</template>
+    </div>
+`;
+
+export default san.defineComponent({
+    dataTypes: {
+        loading: DataTypes.bool,
+        scroll: DataTypes.object,
+        size: DataTypes.string,
+        title: DataTypes.string,
+        data: DataTypes.array,
+        // pagination: DataTypes.object
+    },
+    initData() {
+        return {
+            loading: false,
+            scroll: {},
+            size: 'default',
+            data: [],
+            pagination: {
+                current: 1,
+                pageSize: 10
+            },
+            selectedKeys: {},
+            indentSize: 20,
+            expandedKeys: []
+        };
+    },
+    computed: {
+        classes() {
+            const scroll = this.data.get('scroll');
+            const size = this.data.get('size');
+            const bordered = this.data.get('bordered');
+            let classArr = [prefixCls];
+
+            (scroll.x || scroll.y) && classArr.push(`${prefixCls}-fixed-header`);
+            bordered && classArr.push(`${prefixCls}-bordered`);
+            size && classArr.push(`${prefixCls}-${size}`);
+
+            return classArr;
+        }
+    },
+    inited() {
+        this.rowSpanArr = {};
+        let data = this.prepareRenderData(this.data.get('data') || []);
+
+        this.data.set('data', data);
+        this.data.set('originalData', data.concat());
+        this.data.set('filteredData', data.concat());
+        this.data.set('processedColumns', this.processColumns(this.data.get('columns')));
+        this.data.set('hasTitle', !!this.sourceSlots.named.title || this.data.get('title'));
+        this.data.set('hasFooter', !!this.sourceSlots.named.footer || this.data.get('footer'));
+        this.data.set('hasExpandedRowRender', !!this.sourceSlots.named.expandedRowRender);
+
+        this.watch('columns', val => {
+            this.data.set('processedColumns', this.processColumns(val));
+            this.confirm();
+            const sortColumn = this.data.get('sortColumn') || {};
+            const sortColumnIndex = this.data.get('sortColumnIndex');
+            let sortDirections = sortColumn.sortDirections || ['ascend', 'descend'];
+            const sortOrderIndex = sortDirections.indexOf(sortColumn.sortOrder);
+            if (sortOrderIndex !== -1 && sortColumn.sortOrder) {
+                sortColumn.sortOrder = sortDirections[sortOrderIndex - 1];
+            }
+            else {
+                sortColumn.sortOrder = sortDirections[sortDirections.length - 1];
+            }
+            this.handleSorter(sortColumn, sortColumnIndex);
+        });
+    },
+    components: {
+        's-spin': Spin,
+        's-dropdown': Dropdown,
+        's-icon': Icon,
+        's-menu': Menu,
+        's-menu-item': Menu.Item,
+        's-radio': Radio,
+        's-button': Button,
+        's-checkbox': Checkbox
+    },
+    // 针对columns中的各种配置项做预处理
+    processColumns(columns) {
+        /*let sortColumn = this.data.get('sortColumn');
+        let sortColumnIndex = this.data.get('sortColumnIndex');*/
+        let sortColumn;
+        let sortColumnIndex;
+        const selectedKeys = this.data.get('selectedKeys');
+        columns = columns.map((column, index) => {
+            const key = column.key || column.dataIndex;
+            if (!sortColumn && column.defaultSortOrder || column.sortOrder) {
+                column.sortOrder = column.sortOrder || column.defaultSortOrder;
+                sortColumn = column;
+                sortColumnIndex = index;
+            }
+            // 处理有filteredValue的情况，如果有，扔到selectedKeys里面
+            if (column.filteredValue && Array.isArray(column.filteredValue)) {
+                let selectedKey = selectedKeys[key] || [];
+                this.data.set(`selectedKeys.${key}`, selectedKey.concat(column.filteredValue));
+            }
+            else if (column.filteredValue === null && selectedKeys[key]) {
+                delete selectedKeys[key];
+                this.data.set('selectedKeys', selectedKeys);
+            }
+            column.filteredValue = [];
+            column.filterVisible = false;
+            return column;
+        });
+        if (sortColumn) {
+            this.data.set('sortColumn', sortColumn);
+            this.data.set('sortColumnIndex', sortColumnIndex);
+        }
+        return columns;
+    },
+    // 这里对原始数据针对column中的配置进行处理
+    prepareRenderData(data) {
+        data = this.flattenData(data);
+        console.log(data);
+        return data;
+    },
+    getColumns(columns, item, dataIndex) {
+        let colSpanIndex = 0;
+        let colSpan;
+        let result = [];
+
+        columns.forEach((column, i) => {
+            let render = column.render;
+            let newColumn = {
+                ...column
+            };
+            if (render && typeof render === 'function') {
+                let itemAttrs = render(item[column.key || column.dataIndex], item, dataIndex);
+                newColumn.children = itemAttrs.children || itemAttrs;
+                newColumn.attrs = itemAttrs.attrs || {};
+            }
+            // 把rowspan的数据存起来，方便后面filter column，把不展示的值过滤出去
+            if (newColumn.attrs && newColumn.attrs.rowSpan) {
+                this.rowSpanArr[i] = {
+                    startIndex: dataIndex,
+                    rowSpan: newColumn.attrs && newColumn.attrs.rowSpan
+                };
+            }
+            result.push(newColumn);
+        });
+        result = result.filter((column, index) => {
+            // 过滤rowspan对应的column,rowspan需要跨行过滤
+            if (this.rowSpanArr[index]) {
+                if (this.rowSpanArr[index].startIndex === dataIndex) {
+                    this.rowSpanArr[index].rowSpan = this.rowSpanArr[index].rowSpan - 1;
+                    return true;
+                }
+                else if (this.rowSpanArr[index].startIndex < dataIndex && this.rowSpanArr[index].rowSpan !== 0) {
+                    this.rowSpanArr[index].rowSpan = this.rowSpanArr[index].rowSpan - 1;
+                    return false;
+                }
+            }
+            // 过滤colspan对应的column,colspan只需要对行前行进行过滤
+            if (column.attrs && !!column.attrs.colSpan) {
+                colSpan = column.attrs.colSpan;
+                colSpanIndex++;
+                return true;
+            }
+            else if (colSpanIndex < colSpan) {
+                colSpanIndex++;
+                return false;
+            }
+            return true;
+        });
+        return result;
+    },
+    getThClass(column) {
+        let classArr = [];
+        const filterIcon = column.scopedSlots && column.scopedSlots.filterIcon;
+        const sorter = column.sorter;
+        const filters = column.filters;
+
+        (filterIcon || sorter || filters) && classArr.push(`${prefixCls}-column-has-actions`);
+        (filterIcon || filters) && classArr.push(`${prefixCls}-column-has-filters`);
+        sorter && classArr.push(`${prefixCls}-column-has-sorters`);
+        return classArr;
+    },
+    setSelectedKeys(keys, column) {
+        const key = column.key || column.dataIndex;
+        let selectedKeys = this.data.get('selectedKeys');
+        if (keys && keys.length) {
+            selectedKeys[key] = keys;
+        }
+        else {
+            delete selectedKeys[key];
+        }
+        this.data.set('selectedKeys', selectedKeys, {force: true});
+    },
+    filterColumn(column) {
+
+    },
+    confirm() {
+        const selectedKeys = this.data.get('selectedKeys');
+        const columns = this.data.get('processedColumns');
+        let data = this.data.get('originalData');
+
+        columns.forEach((column, index) => {
+            const key = column.key || column.dataIndex;
+
+            // 如果有onFilter，对数据进行过滤
+            if (column.onFilter && !isEmpty(selectedKeys) && selectedKeys[key]) {
+                let filterData = selectedKeys[key];
+                filterData.forEach(value => {
+                    data = data.filter(item => column.onFilter(value, item));
+                });
+            }
+            this.handleFilterVisibleChange(false, column, index);
+        });
+
+        this.data.set('data', data);
+        this.data.set('filteredData', data);
+        this.handleChange();
+    },
+    handleChange() {
+        this.fire('change', {
+            filters: this.data.get('selectedKeys')
+        });
+    },
+    handleFilterVisibleChange(visible, column, index) {
+        this.data.set(`processedColumns.${index}.filterVisible`, visible);
+    },
+    clearFilter(column) {
+        this.setSelectedKeys([], column);
+        this.confirm();
+    },
+    flattenData(data = []) {
+        if (!data.length) {
+            return;
+        }
+        let result = [];
+        let isTree = false;
+
+        function loop(data, level) {
+            ++level;
+            data.forEach((item, index) => {
+                item.level = level;
+                !!item.children && (isTree = true);
+                item.children && (item.collapsed = true);
+                result.push(item);
+                loop(item.children || [], level);
+            });
+        }
+
+        loop(data, -1);
+        this.data.set('isTree', isTree);
+        return result;
+    },
+    getExpandStyle(item) {
+        return (item.level === 0 || item.expanded) ? '' : 'display: none;';
+    },
+    handleTreeExpand(expandItem) {
+        let data = this.data.get('data');
+        let children = expandItem.children.map(item => item.key);
+        data = data.map(item => {
+            if (expandItem.key === item.key) {
+                item.collapsed = !item.collapsed;
+            }
+            if (children.includes(item.key)) {
+                item.expanded = !item.expanded;
+            }
+            return {
+                ...item
+            };
+        });
+        this.data.set('data', data);
+    },
+    handleExpandRow(expandItem) {
+        let data = this.data.get('data');
+        data = data.map(item => {
+            if (expandItem.key === item.key) {
+                item.expandedRow = !item.expandedRow;
+            }
+            return {
+                ...item
+            };
+        });
+        this.data.set('data', data);
+    },
+    hasSorterIcon(column, name) {
+        const sortDirections = column.sortDirections || [];
+        if (!sortDirections.length) {
+            return true;
+        }
+        return sortDirections.includes(name);
+    },
+    handleSorter(column, columnIndex) {
+        let sortColumn = this.data.get('sortColumn');
+        let sortColumnIndex = this.data.get('sortColumnIndex');
+        const sortDirections = column.sortDirections || ['ascend', 'descend'];
+        const sortIndex = sortDirections.indexOf(column.sortOrder);
+
+        // 如果当前点击的是之前已经排序的组件
+        if (column === sortColumn) {
+            column.sortOrder = sortDirections[sortIndex + 1];
+            this.data.set(`processedColumns.${columnIndex}`, {...column});
+            this.data.set('sortColumn', column);
+        }
+        else {
+            (column.sortOrder = sortDirections[sortIndex + 1]);
+            sortColumn && (sortColumn.sortOrder = undefined);
+            this.data.set(`processedColumns.${sortColumnIndex}`, {...sortColumn});
+            this.data.set(`processedColumns.${columnIndex}`, {...column});
+            this.data.set('sortColumn', column);
+            this.data.set('sortColumnIndex', columnIndex);
+        }
+        let data = this.data.get('filteredData').concat();
+
+        if (column.sortOrder) {
+            const sortFn = this.getSorterFn(column);
+            data = this.recursiveSort(data, sortFn);
+        }
+        else {
+            data = this.data.get('filteredData');
+        }
+        this.data.set('data', data);
+    },
+    getSorterFn(column) {
+        if (!column || !column.sortOrder || typeof column.sorter !== 'function') {
+            return;
+        }
+
+        return (a, b) => {
+            const result = column.sorter(a, b, column.sortOrder);
+            if (result !== 0) {
+                return column.sortOrder === 'descend' ? -result : result;
+            }
+            return 0;
+        };
+    },
+    recursiveSort(data, sorterFn) {
+        const childrenColumnName = this.data.get('childrenColumnName') || 'children';
+        return data.sort(sorterFn).map(item =>
+            item[childrenColumnName]
+                ? {
+                    ...item,
+                    [childrenColumnName]: this.recursiveSort(item[childrenColumnName], sorterFn)
+                }
+                : item,
+        );
+    },
+    getFilterChecked(selectedKeys = [], value) {
+        return selectedKeys.indexOf(value.toString()) > -1;
+    },
+    template: `<div class="{{classes}}">
+        <s-spin spinning="{{loading}}" delay="{{loadingDelay}}">
+            <template slot="content">
+                <div class="${prefixCls}-title" s-if="hasTitle">
+                    <slot name="title" s-if="!title" />
+                    <template s-else>{{title}}</template>
+                </div>
+                <div class="${prefixCls}-content">
+                    <div class="${prefixCls}-scroll" s-if="scroll.x || scroll.y">
+                        ${tableInnerTemplate}
+                    </div>
+                    <template s-else>${tableInnerTemplate}</template>
+                </div>
+            </template>
+        </s-spin>
+    </div> `
+});
+
+/*const flatArray = (data = [], childrenName = 'children') => {
     const result = [];
     const loop = array => {
         array.forEach(item => {
@@ -628,17 +1126,6 @@ export default san.defineComponent({
 
         const params = this.prepareParamsArguments();
         this.fire('change', params);
-
-        /*const { onChange } = this.props;
-        if (onChange) {
-            onChange.apply(
-                null,
-                this.prepareParamsArguments({
-                    ...this.state,
-                    ...newState,
-                }),
-            );
-        }*/
     },
     prepareParamsArguments() {
         const {
@@ -902,4 +1389,4 @@ export default san.defineComponent({
             </s-spin>
         </div>
     `
-});
+});*/

@@ -103,7 +103,7 @@ export default san.defineComponent({
     template: `
         <div style="position: absolute; z-index: 1; {{popupStyle}}" class="{{visible ? '' : hiddenClassName}}">
             <div
-                class="{{prefixCls}}-content"
+                class="{{popupClassName}} {{prefixCls}}-content"
                 on-mouseenter="handleMouseEnter"
                 on-mouseleave="handleMouseLeave"
                 on-mousedown="handleMouseDown"

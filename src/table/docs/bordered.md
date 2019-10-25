@@ -8,37 +8,34 @@
     <div>
         <s-table
             columns="{{columns}}"
-            dataSource="{{data}}"
-            title={{title}}
-            footer={{footer}}
+            data="{{data}}"
             bordered="{{true}}"
-        ></s-table>
+        >
+            <template slot="name">
+                <a href="javascript:;">{{text}}</a>
+            </template>
+            <template slot="title">
+                Header
+            </template>
+            <template slot="footer">
+                Footer
+            </template>
+        </s-table>
     </div>
 </template>
 <script>
-import san from 'san';
-import table from 'santd/table';
+import Table from 'santd/table';
 export default {
     components: {
-        's-table': table,
+        's-table': Table,
     },
     initData() {
         return {
-            title() {
-                return 'Header'
-            },
-            footer() {
-                return 'Footer'
-            },
             columns: [
                 {
                     title: 'Name',
                     dataIndex: 'name',
-                    render() {
-                        return san.defineComponent({
-                            template: `<a href="javascript:;">{{text}}</a>`
-                        });
-                    }
+                    scopedSlots: {render: 'name'}
                 },
                 {
                     title: 'Cash Assets',
@@ -70,4 +67,10 @@ export default {
     },
 }
 </script>
+<style>
+    th.column-money,
+    td.column-money {
+        text-align: right !important;
+    }
+</style>
 ```

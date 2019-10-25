@@ -1,17 +1,20 @@
 <text lang="cn">
-#### 筛选和排序
-对某一列数据进行筛选，使用列的 `filters` 属性来指定需要筛选菜单的列，`onFilter` 用于筛选当前数据，`filterMultiple` 用于指定多选和单选。
+#### 可控的筛选和排序
+使用受控属性对筛选和排序状态进行控制。
 
-对某一列数据进行排序，通过指定列的 `sorter` 函数即可启动排序按钮。`sorter: function(rowA, rowB) { ... }`， rowA、rowB 为比较的两个行数据。
-
-`sortDirections: ['ascend' | 'descend']` 改变每列可用的排序方式，切换排序时按数组内容依次切换，设置在table props上时对所有列生效。
-
-使用 `defaultSortOrder` 属性，设置列的默认排序顺序。
+> 1. columns 中赋值了 filteredValue 和 sortOrder 属性即视为受控模式。
+> 2. 只支持同时对一列进行排序，请保证只有一列的 sortOrder 属性是生效的。
+> 3. 务必指定 column.key。
 </text>
 
 ```html
 <template>
     <div>
+        <div class="table-operations">
+            <s-button on-click="setAgeSort">Sort age</s-button>
+            <s-button on-click="clearFilters">Clear filters</s-button>
+            <s-button on-click="clearAll">Clear filters and sorters</s-button>
+        </div>
         <s-table
             columns="{{columns}}"
             data="{{data}}"
@@ -20,17 +23,61 @@
     </div>
 </template>
 <script>
-import san from 'san';
 import Table from 'santd/table';
+import Button from 'santd/button';
 export default {
     components: {
-        's-table': Table
+        's-table': Table,
+        's-button': Button
     },
-    handleChange(pagination, filters, sorter) {
+    handleChange({pagination, filters, sorter}) {
         console.log('params', pagination, filters, sorter);
+    },
+    clearFilters() {
+        let columns = this.data.get('columns');
+        columns = columns.map((column, index) => {
+            if (column.onFilter) {
+                column.filteredValue = null;
+            }
+            return {
+                ...column
+            };
+        });
+        this.data.set('columns', columns);
+    },
+    clearAll() {
+        let columns = this.data.get('columns');
+        columns = columns.map(column => {
+            if (column.dataIndex === 'age') {
+                delete column.sortOrder;
+            }
+            if (column.onFilter) {
+                column.filteredValue = null;
+            }
+            return {
+                ...column
+            };
+        });
+
+        this.data.set('columns', columns);
+    },
+    setAgeSort() {
+        let columns = this.data.get('columns');
+        columns = columns.map(column => {
+            if (column.dataIndex === 'age') {
+                column.sortOrder = 'descend';
+            }
+            return {
+                ...column
+            };
+        });
+
+        this.data.set('columns', columns);
     },
     initData() {
         return {
+            filteredInfo: null,
+            sortedInfo: null,
             columns: [{
                 title: 'Name',
                 dataIndex: 'name',
@@ -51,7 +98,6 @@ export default {
             }, {
                 title: 'Age',
                 dataIndex: 'age',
-                defaultSortOrder: 'descend',
                 sorter(a, b) {
                     return a.age - b.age;
                 }
@@ -99,4 +145,13 @@ export default {
     }
 }
 </script>
+<style>
+.table-operations {
+  margin-bottom: 16px;
+}
+
+.table-operations > button {
+  margin-right: 8px;
+}
+</style>
 ```
