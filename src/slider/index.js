@@ -18,7 +18,31 @@ import {classCreator} from '../core/util';
 const prefixCls = classCreator('slider')();
 
 function tipFormatter(value) {
-    return value.toString();
+    return String(value);
+}
+
+function ensureValueInRange(val, min, max) {
+    if (val < min) {
+        return min;
+    }
+
+    if (val > max) {
+        return max;
+    }
+
+    return val;
+}
+
+function getPrecision(step) {
+    let stepString = String(step);
+    let precision = 0;
+    let dotIndex = stepString.indexOf('.');
+
+    if (dotIndex >= 0) {
+        precision = stepString.length - dotIndex - 1;
+    }
+
+    return precision;
 }
 
 export default san.defineComponent({
@@ -112,6 +136,12 @@ export default san.defineComponent({
 
     inited() {
         this.handlesRefs = {};
+
+        let min = this.data.get('min');
+        let value = this.data.get('value');
+        if (!value) {
+            this.data.set('value', this.data.get('defaultValue') || [min, min]);
+        }
     },
 
     handleBlur(e) {
@@ -231,6 +261,8 @@ export default san.defineComponent({
         return nextValue;
     }
 });
+
+
 
 /*
 
