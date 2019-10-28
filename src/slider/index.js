@@ -33,6 +33,26 @@ function ensureValueInRange(val, min, max) {
     return val;
 }
 
+
+function ensureValuePrecision(val, step, marks, min, max) {
+    const points = Object.keys(marks).map(parseFloat);
+
+    if (step !== null) {
+        const maxSteps = Math.floor((max - min) / step);
+        const steps = Math.min((val - min) / step, maxSteps);
+
+        points.push(Math.round(steps) * step + min);
+    }
+    const diffs = points.map(point => Math.abs(val - point));
+
+    let closestPoint = points[diffs.indexOf(Math.min(...diffs))];
+    if (!isFinite(closestPoint)) {
+        closestPoint = 0;
+    }
+
+    return step === null ? closestPoint : closestPoint.toFixed(getPrecision(step)) - 0;
+}
+
 function getPrecision(step) {
     let stepString = String(step);
     let precision = 0;
@@ -45,14 +65,32 @@ function getPrecision(step) {
     return precision;
 }
 
+function isEventFromHandle(eventTarget, handles) {
+    for (let key in handles) {
+        let handle = handles[key];
+        if (handle && handle.el  === eventTarget) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+function getHandleCenterPosition(vertical, eventTarget) {
+    const coords = eventTarget.getBoundingClientRect();
+    return vertical
+        ? coords.top + (coords.height * 0.5)
+        : window.pageXOffset + coords.left + (coords.width * 0.5);
+}
+
 export default san.defineComponent({
     template: `<div
         style="{{vertical ? 'height: 100%;' : ''}}"
         class="${prefixCls} {{classes}}"
-        on-mousedown="handleMouseDown"
-        on-mouseup="handleMouseUp"
-        on-focus="handleFocus"
-        on-blur="handleBlur"
+        on-mousedown="rootMouseDown"
+        on-mouseup="rootMouseUp"
+        on-focus="rootFocus"
+        on-blur="rootBlur"
     >
         <div class="${prefixCls}-rail" />
         <s-track
@@ -111,6 +149,37 @@ export default san.defineComponent({
             disabled && classArr.push(`${prefixCls}-disabled`);
             vertical && classArr.push(`${prefixCls}-vertical`);
             return classArr;
+        },
+
+        bounds() {
+            let value = this.data.get('value');
+            let min = this.data.get('min');
+            let max = this.data.get('max');
+            let step = this.data.get('step');
+            let marks = this.data.get('marks');
+
+            if (value) {
+                return value.map(v => ensureValuePrecision(ensureValueInRange(v, min, max), step, marks, min, max));
+            }
+        },
+
+        recent() {
+            let bounds = this.data.get('bounds');
+            let max = this.data.get('max');
+
+            return bounds[0] === max ? 0 : bounds.length - 1;
+        },
+
+        tracks() {
+            return this.data.get('bounds').slice(0, -1);
+        },
+
+        trackOffsets() {
+            let min = this.data.get('min');
+            let max = this.data.get('max');
+            let bounds = this.data.get('bounds');
+
+            return bounds.map(v => (v - min) / (max - min) * 100);
         }
     },
 
@@ -144,44 +213,43 @@ export default san.defineComponent({
         }
     },
 
-    handleBlur(e) {
-        const disabled = this.data.get('disabled');
-        if (!disabled) {
+    rootBlur(e) {
+        if (!this.data.get('disabled')) {
             this.handleEnd();
             this.fire('blur', e);
         }
     },
 
-    handleFocus(e) {
+    rootFocus(e) {
         const disabled = this.data.get('disabled');
-        if (!disabled) {
+
+        if (!disabled && isEventFromHandle(e.target, this.handlesRefs)) {
+            e.stopPropagation();
+            e.preventDefault();
+
             const vertical = this.data.get('vertical');
-            if (utils.isEventFromHandle(e, this.handlesRefs.el)) {
-                const handlePosition = utils.getHandleCenterPosition(vertical, e.target);
-                this.dragOffset = 0;
-                this.handleStart(handlePosition);
-                
-                e.stopPropagation();
-                e.preventDefault();
-                this.fire('focus', e);
-            }
+            const handlePosition = getHandleCenterPosition(vertical, e.target);
+
+            this.dragOffset = 0;
+            this.handleStart(handlePosition);
+            
+            this.fire('focus', e);
         }
     },
 
-    handleMouseDown(e) {
-        const disabled = this.data.get('disabled');
-        if (!disabled) {
+    rootMouseDown(e) {
+        if (!this.data.get('disabled')) {
             if (e.button !== 0) {
                 return;
             }
 
-            const isVertical = this.data.get('vertical');
-            let position = utils.getMousePosition(isVertical, e);
-            if (!utils.isEventFromHandle(e, this.handlesRefs.el)) {
+            let vertical = this.data.get('vertical');
+            let position = vertical ? e.clientY : e.pageX;
+            if (!isEventFromHandle(e, this.handlesRefs)) {
                 this.dragOffset = 0;
             }
             else {
-                const handlePosition = utils.getHandleCenterPosition(isVertical, e.target);
+                const handlePosition = getHandleCenterPosition(vertical, e.target);
                 this.dragOffset = position - handlePosition;
                 position = handlePosition;
             }
@@ -191,17 +259,7 @@ export default san.defineComponent({
         }
     },
 
-    handleMouseMove(e) {
-        if (!this.el) {
-            this.handleEnd();
-            return;
-        }
-
-        const position = utils.getMousePosition(this.data.get('vertical'), e);
-        this.handleMove(e, position - this.dragOffset);
-    },
-
-    handleMouseUp() {
+    rootMouseUp() {
         const disabled = this.data.get('disabled');
         if (!disabled) {
             const prevMovedHandleIndex = this.data.get('prevMovedHandleIndex');
@@ -211,16 +269,58 @@ export default san.defineComponent({
         }
     },
 
+    handleMouseMove(e) {
+        if (!this.el) {
+            this.handleEnd();
+            return;
+        }
+
+        const position = this.data.get('vertical') ? e.clientY : e.pageX;
+        this.handleMove(e, position - this.dragOffset);
+    },
+
+    handleMove(e, position) {
+        e.stopPropagation();
+        e.preventDefault();
+
+        // const oldValue = this.data.get('value');
+        const value = this.calcValueByPos(position);
+        const handles = this.data.get('handles');
+        if (this.data.get('bounds')[handles] !== value) {
+            this.moveTo(value);
+        }
+    },
+
+
+    handleEnd() {
+        this.removeDocumentEvents();
+        if (this.data.get('handles') !== null) {
+            this.fire('afterChange', this.data.get('value'));
+        }
+        this.data.set('handles', null);
+
+        // this.fire('end');
+        if (!this.data.get('range')) {
+            this.ref('handles').data.set('visible', false);
+        }
+    },
+
     addDocumentMouseEvents() {
-        this.mouseMove = this.handleMouseMove.bind(this);
-        this.end = this.handleEnd.bind(this);
-        this.document.addEventListener('mousemove', this.mouseMove);
-        this.document.addEventListener('mouseup', this.end);
+        if (this.el) {
+            this._mouseMoveHandler = this.handleMouseMove.bind(this);
+            this._endHandler = this.handleEnd.bind(this);
+            this.el.ownerDocument.addEventListener('mousemove', this._mouseMoveHandler);
+            this.el.ownerDocument.addEventListener('mouseup', this._endHandler);
+        }
     },
 
     removeDocumentEvents() {
-        this.mouseMove && this.document.removeEventListener('mousemove', this.mouseMove);
-        this.end && this.document.removeEventListener('mouseup', this.end);
+        if (this.el && this._endHandler) {
+            this.el.ownerDocument.removeEventListener('mousemove', this._mouseMoveHandler);
+            this.el.ownerDocument.removeEventListener('mouseup', this._endHandler);
+
+            this._endHandler = this._mouseMoveHandler = null;
+        }
     },
 
     calcOffset(value) {
