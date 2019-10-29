@@ -269,6 +269,57 @@ export default san.defineComponent({
         }
     },
 
+    handleStart(position) {
+        const bounds = this.data.get('bounds');
+        this.fire('beforeChange', bounds);
+
+        const value = this.calcValueByPos(position);
+        this.startValue = value;
+        this.startPosition = position;
+
+        const closestBound = this.getClosestBound(value);
+        this.prevMovedHandleIndex = this.getBoundNeedMoving(value, closestBound);
+
+        this.data.set('handles', this.prevMovedHandleIndex);
+        this.data.set('recent', this.prevMovedHandleIndex);
+
+        const nextBounds = [...bounds];
+        nextBounds[this.prevMovedHandleIndex] = value;
+        this.handleChange({bounds: nextBounds});
+    },
+
+    getClosestBound(value) {
+        const bounds = this.data.get('bounds');
+        let closestBound = 0;
+        for (let i = 1; i < bounds.length - 1; ++i) {
+            if (value >= bounds[i]) {
+                closestBound = i;
+            }
+        }
+        if (Math.abs(bounds[closestBound + 1] - value) < Math.abs(bounds[closestBound] - value)) {
+            closestBound += 1;
+        }
+        return closestBound;
+    },
+
+    getBoundNeedMoving(value, closestBound) {
+        const {
+            bounds,
+            recent
+        } = this.data.get();
+        let boundNeedMoving = closestBound;
+        const isAtTheSamePoint = (bounds[closestBound + 1] === bounds[closestBound]);
+
+        if (isAtTheSamePoint && bounds[recent] === bounds[closestBound]) {
+            boundNeedMoving = recent;
+        }
+
+        if (isAtTheSamePoint && (value !== bounds[closestBound + 1])) {
+            boundNeedMoving = value < bounds[closestBound + 1] ? closestBound : closestBound + 1;
+        }
+        return boundNeedMoving;
+    },
+
     handleMouseMove(e) {
         if (!this.el) {
             this.handleEnd();
@@ -289,6 +340,42 @@ export default san.defineComponent({
         if (this.data.get('bounds')[handles] !== value) {
             this.moveTo(value);
         }
+    },
+
+    moveTo(value) {
+        const bounds = this.data.get('bounds');
+        const handles = this.data.get('handles');
+        const recent = this.data.get('recent');
+
+        const nextBounds = [...bounds];
+        const handle = handles === null ? recent : handles;
+        nextBounds[handle] = value;
+        let nextHandle = handle;
+        if (this.data.get('pushable') !== false) {
+            this.pushSurroundingHandles(nextBounds, nextHandle);
+        }
+        else if (this.data.get('allowCross')) {
+            nextBounds.sort((a, b) => a - b);
+            nextHandle = nextBounds.indexOf(value);
+        }
+        this.handleChange({
+            recent: nextHandle,
+            handles: nextHandle,
+            bounds: nextBounds
+        });
+    },
+
+    handleChange(state) {
+        ['handles', 'recent'].forEach(item => {
+            if (state[item]) {
+                this.data.set(item, state[item]);
+            }
+        });
+
+        const changedValue = state.bounds;
+        this.data.set('bounds', state.bounds);
+
+        this.fire('change', changedValue);
     },
 
 
@@ -331,11 +418,13 @@ export default san.defineComponent({
         const ratio = (value - min) / (max - min);
         return ratio * 100;
     },
+
     getSliderStart() {
         const rect = this.el.getBoundingClientRect();
 
         return this.data.get('vertical') ? rect.top : (rect.left + window.pageXOffset);
     },
+
     getSliderLength() {
         const slider = this.el;
         if (!slider) {
@@ -345,6 +434,7 @@ export default san.defineComponent({
         const coords = slider.getBoundingClientRect();
         return this.data.get('vertical') ? coords.height : coords.width;
     },
+
     calcValue(offset) {
         const {
             vertical,
@@ -355,6 +445,7 @@ export default san.defineComponent({
         const value = vertical ? (1 - ratio) * (max - min) + min : ratio * (max - min) + min;
         return value;
     },
+
     calcValueByPos(position) {
         const pixelOffset = position - this.getSliderStart();
         const nextValue = this.trimAlignValue(this.calcValue(pixelOffset));
