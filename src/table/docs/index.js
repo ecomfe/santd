@@ -58,25 +58,24 @@ export default san.defineComponent({
             <basic/>
             <bordered/>
             <colspan/>
+            <ajax/>
+            <filter/>
             <editablecell/>
             <editablerow/>
             <children/>
             <expandedrowrender/>
-            <expandedtable/>
-            <filter/>
+            <fixedheadercolumn/>
+            <fixedcolumn/>
+            <fixedheader/>
+            <columnschildren/>
             <filtersort/>
+            <expandedtable/>
             <controlfiltersort/>
-            <!--<rowselection/>
             <rowselectionoperation/>
             <rowselectioncustom/>
-            <ajax/>
+            <rowselection/>
             <size/>
-            <fixedheader/>
-            <fixedcolumn/>
-            <fixedheadercolumn/>
-            <columnschildren/>
-            <dynamic/>
-            <readme/>-->
+            <readme/>
         </div>
     `
 });

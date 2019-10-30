@@ -9,7 +9,7 @@
         <s-table
             rowSelection="{{rowSelection}}"
             columns="{{columns}}"
-            dataSource="{{data}}"
+            data="{{data}}"
         ></s-table>
     </div>
 </template>
@@ -50,17 +50,17 @@ export default {
                 selections: [{
                     key: 'all-data',
                     text: 'Select All Data.',
-                    onSelect: this.handleSelectAll.bind(this)
+                    handleSelect: this.handleSelectAll.bind(this)
                 }, {
                     key: 'odd',
                     text: 'Select Odd Row.',
-                    onSelect: this.handleSelectOdd.bind(this)
+                    handleSelect: this.handleSelectOdd.bind(this)
                 }, {
                     key: 'even',
                     text: 'Select Even Row.',
-                    onSelect: this.handleSelectEven.bind(this)
+                    handleSelect: this.handleSelectEven.bind(this)
                 }],
-                onChange: this.handleSelectChange.bind(this)
+                handleChange: this.handleSelectChange.bind(this)
             }
         }
     },

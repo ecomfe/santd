@@ -9,9 +9,11 @@
         <s-table
             rowSelection="{{rowSelection}}"
             columns="{{columns}}"
-            dataSource="{{data}}"
+            data="{{data}}"
             on-change="onChange"
-        ></s-table>
+        >
+            <a slot="name" href="javascript:;">{{text}}</a>
+        </s-table>
     </div>
 </template>
 <script>
@@ -26,11 +28,7 @@ export default {
             columns: [{
                 title: 'Name',
                 dataIndex: 'name',
-                render() {
-                    return san.defineComponent({
-                        template: `<a href="javascript:;">{{text}}</a>`
-                    });
-                }
+                scopedSlots: {render: 'name'}
             }, {
                 title: 'Age',
                 dataIndex: 'age',
@@ -60,12 +58,12 @@ export default {
                 address: 'Sidney No. 1 Lake Park',
             }],
             rowSelection: {
-                onChange(selectedRowKeys, selectedRows) {
+                handleChange(selectedRowKeys, selectedRows) {
                     console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
                 },
                 getCheckboxProps(record) {
                     return {
-                        disabled: record.name === 'Disabled User',
+                        disabled: record.name === 'Joe Black',
                         name: record.name
                     };
                 }

@@ -48,9 +48,7 @@ export default {
     clearAll() {
         let columns = this.data.get('columns');
         columns = columns.map(column => {
-            if (column.dataIndex === 'age') {
-                delete column.sortOrder;
-            }
+            delete column.sortOrder;
             if (column.onFilter) {
                 column.filteredValue = null;
             }

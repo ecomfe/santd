@@ -9,13 +9,13 @@
         <h4>Middle size table</h4>
         <s-table
             columns="{{columns}}"
-            dataSource="{{data}}"
+            data="{{data}}"
             size="middle"
         ></s-table>
-        <h4>Small size table</h4>
+        <h4 style="margin-top: 16px;">Small size table</h4>
         <s-table
             columns="{{columns}}"
-            dataSource="{{data}}"
+            data="{{data}}"
             size="small"
         ></s-table>
     </div>
@@ -66,7 +66,4 @@ export default {
     },
 }
 </script>
-<style>
-#components-table-demo-size h4 { margin-bottom: 16px; }
-</style>
 ```

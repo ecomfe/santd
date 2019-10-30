@@ -22,7 +22,7 @@
         <s-table
             rowSelection="{{rowSelection}}"
             columns="{{columns}}"
-            dataSource="{{data}}"
+            data="{{data}}"
         ></s-table>
         </div>
     </div>
@@ -63,18 +63,18 @@ export default {
             data: data,
             rowSelection: {
                 selectedRowKeys: [],
-                onChange: this.handleSelectChange.bind(this)
+                handleChange: this.handleSelectChange.bind(this)
             }
         }
     },
     handleSelectChange(selectedRowKeys, selectedRows) {
-        console.log('selectedRowKeys: changed: ', selectedRowKeys);
-        this.data.set('rowSelection.selectedRowKeys', selectedRowKeys);
+        console.log('selectedRowKeys: changed: ', selectedRowKeys, selectedRows);
+        this.data.set('rowSelection.selectedRowKeys', selectedRowKeys, {force: true});
     },
     handleStart() {
         this.data.set('loading', true);
         window.setTimeout(() => {
-            this.data.set('rowSelection.selectedRowKeys', []);
+            this.data.set('rowSelection.selectedRowKeys', [], {force: true});
             this.data.set('loading', false);
         }, 1000);
     },

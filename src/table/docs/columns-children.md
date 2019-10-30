@@ -8,7 +8,7 @@
     <div>
         <s-table
             columns="{{columns}}"
-            dataSource="{{data}}"
+            data="{{data}}"
             size="middle"
             bordered="{{true}}"
             scroll="{{ {x: '130%', y: '240px'} }}"
@@ -23,15 +23,15 @@ const columns = [{
   title: 'Name',
   dataIndex: 'name',
   key: 'name',
-  width: 150,
-  fixed: 'left'
+  width: '100px',
+  left: '0px'
 }, {
   title: 'Other',
   children: [{
     title: 'Age',
     dataIndex: 'age',
     key: 'age',
-    width: 200,
+    width: '200px',
     sorter: (a, b) => a.age - b.age
   }, {
     title: 'Address',
@@ -39,19 +39,19 @@ const columns = [{
       title: 'Street',
       dataIndex: 'street',
       key: 'street',
-      width: 200
+      width: '200px'
     }, {
       title: 'Block',
       children: [{
         title: 'Building',
         dataIndex: 'building',
         key: 'building',
-        width: 100,
+        width: '100px',
       }, {
         title: 'Door No.',
         dataIndex: 'number',
         key: 'number',
-        width: 100,
+        width: '100px',
       }]
     }]
   }]
@@ -61,17 +61,19 @@ const columns = [{
     title: 'Company Address',
     dataIndex: 'companyAddress',
     key: 'companyAddress',
+    width: '200px'
   }, {
     title: 'Company Name',
     dataIndex: 'companyName',
     key: 'companyName',
+    width: '200px'
   }]
 }, {
   title: 'Gender',
   dataIndex: 'gender',
   key: 'gender',
-  width: 80,
-  fixed: 'right'
+  width: '100px',
+  right: '0px'
 }];
 
 const data = [];
