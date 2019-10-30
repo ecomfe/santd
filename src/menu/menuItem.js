@@ -73,8 +73,9 @@ export default san.defineComponent({
             e
         };
         this.dispatch('santd_menu_itemClick', info);
+
         if (multiple) {
-            this.dispatch('santd_meun_' + isSelected ? 'itemDeselect' : 'itemSelect', info);
+            this.dispatch(`santd_menu_${isSelected ? 'itemDeselect' : 'itemSelect'}`, info);
         }
         else {
             this.dispatch('santd_menu_itemSelect', info);

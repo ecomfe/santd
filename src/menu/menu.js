@@ -70,7 +70,7 @@ export default san.defineComponent({
         this.updateItems();
     },
     updateItems() {
-        let paramsArr = ['mode', 'level', 'selectedKeys', 'openKeys', 'rootPrefixCls'];
+        let paramsArr = ['mode', 'level', 'selectedKeys', 'openKeys', 'rootPrefixCls', 'multiple'];
         this.items.forEach(item => {
             paramsArr.forEach(param => {
                 item.data.set(param, this.data.get(param), {force: true});
@@ -91,6 +91,22 @@ export default san.defineComponent({
         this.data.set('selectedKeys', selectedKeys);
         this.updateItems();
         this.fire('select', {...selectInfo, selectedKeys});
+    },
+    handleDeselect(selectInfo) {
+        if (!this.data.get('selectable')) {
+            return;
+        }
+
+        const selectedKeys = this.data.get('selectedKeys');
+        const selectedKey = selectInfo.key;
+        const index = selectedKeys.indexOf(selectedKey);
+        if (index !== -1) {
+            selectedKeys.splice(index, 1);
+        }
+
+        this.data.set('selectedKeys', selectedKeys);
+        this.updateItems();
+        this.fire('deselect', {...selectInfo, selectedKeys});
     },
     handleOpenChange(event) {
         const openKeys = this.data.get('openKeys').concat();
@@ -122,6 +138,9 @@ export default san.defineComponent({
         },
         santd_menu_itemSelect(payload) {
             this.handleSelect(payload.value);
+        },
+        santd_menu_itemDeselect(payload) {
+            this.handleDeselect(payload.value);
         },
         santd_menu_itemClick(payload) {
             this.fire('click', payload.value);
