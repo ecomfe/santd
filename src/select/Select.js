@@ -476,7 +476,7 @@ export default san.defineComponent({
     getLabelFromOption(option) {
         const optionLabelProp = this.getOptionLabelProp(this.props);
         if (optionLabelProp === 'children') {
-            return option.el.textContent.trim();
+            return option.el ? option.el.textContent.trim() : '';
         }
         return option.data.get(optionLabelProp);
     },
