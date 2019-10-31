@@ -10,7 +10,11 @@ const contentTemplate = `
     <!--配置展开图标-->
     <template s-if="isTree && columnIndex === 0">
         <span class="${prefixCls}-row-indent indent-level-{{item.level}}" style="padding-left: {{item.level * indentSize}}px;"></span>
+        <span on-click="handleTreeExpand(item)" s-if="hasExpandIcon && item.collapsed !== undefined">
+            <slot name="expandIcon" var-record="{{item}}"/>
+        </span>
         <span
+            s-else
             class="${prefixCls}-row-expand-icon ${prefixCls}-row-{{item.collapsed !== undefined ? item.collapsed ? 'collapsed' : 'expanded' : 'spaced'}}"
             on-click="handleTreeExpand(item)"
         ></span>
@@ -41,7 +45,10 @@ export default {
         </td>
         <template s-for="column, columnIndex in getColumns(tdColumns, item, index)">
             <td s-if="hasExpandedRowRender && columnIndex === 0" class="${prefixCls}-row-expand-icon-cell">
-                <span class="${prefixCls}-row-expand-icon ${prefixCls}-row-{{item.expandedRow ? 'expanded' : 'collapsed'}}" on-click="handleExpandRow(item)"></span>
+                <span on-click="handleExpandRow(item)" s-if="hasExpandIcon">
+                    <slot name="expandIcon" var-record="{{item}}"/>
+                </span>
+                <span class="${prefixCls}-row-expand-icon ${prefixCls}-row-{{item.expandedRow ? 'expanded' : 'collapsed'}}" on-click="handleExpandRow(item)" s-else></span>
             </td>
             <td s-if="column.attrs.colSpan" colspan="{{column.attrs.colSpan}}" class="{{getThClass(column)}}" style="{{getThStyle(column)}}">${contentTemplate}</td>
             <td s-else-if="column.attrs.rowSpan" rowspan="{{column.attrs.rowSpan}}" class="{{getThClass(column)}}" style="{{getThStyle(column)}}">${contentTemplate}</td>

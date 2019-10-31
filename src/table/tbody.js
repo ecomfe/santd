@@ -11,7 +11,11 @@ export default {
     template: `
         <tbody class="${prefixCls}-tbody">
             <template s-for="item, index in renderData" s-if="renderData.length">
-            <tr class="${prefixCls}-row" style="display: {{item.level === 0 || item.expanded ? '' : 'none;'}}">
+            <tr
+                class="${prefixCls}-row"
+                style="display: {{item.level === 0 || item.expanded ? '' : 'none;'}}"
+                on-click="handleRowClick(item)"
+            >
                 ${Td.template}
             </tr>
             <tr

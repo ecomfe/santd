@@ -99,7 +99,8 @@ export default {
             data,
             columns,
             innerColumns,
-            innerData
+            innerData,
+            expandedRowKeys: []
         }
     }
 }
