@@ -1,31 +1,13 @@
 <text lang="cn">
 #### 树形数据展示
-表格支持树形数据的展示，当数据中有 `children` 字段时会自动展示为树形表格，如果不需要或配置为其他字段可以用 `childrenColumnName` 进行配置。
+表格支持树形数据的展示，当数据中有 `children` 字段时会自动展示为树形表格。
 可以通过设置 `indentSize` 以控制每一层的缩进宽度。
 </text>
 
 ```html
 <template>
     <div>
-        <s-table data="{{data}}" columns="{{columns}}">
-            <a slot="name" href="javascript:;">{{text}}</a>
-            <span slot="customTitle"><s-icon type="smile-o" /> Name</span>
-            <span slot="tags">
-                <s-tag
-                    s-for="tag in text"
-                    color="{{tag ==='loser' ? 'volcano' : (tag.length > 5 ? 'geekblue' : 'green')}}"
-                >
-                    {{tag}}
-                </s-tag>
-            </span>
-            <span slot="action">
-                <a href="javascript:;">Invite 一 {{record.name}}</a>
-                <s-divider type="vertical" />
-                <a href="javascript:;">Delete</a>
-                <s-divider type="vertical" />
-                <a href="javascript:;" class="san-dropdown-link"> More actions <s-icon type="down" /> </a>
-            </span>
-        </s-table>
+        <s-table data="{{data}}" columns="{{columns}}"></s-table>
     </div>
 </template>
 <script>

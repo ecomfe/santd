@@ -94,7 +94,10 @@ export default san.defineComponent({
             expandedKeys: [],
             selectedRows: [],
             selectedRowKeys: [],
-            scrollPosition: 'left'
+            scrollPosition: 'left',
+            defaultExpandAllRows: false,
+            defaultExpandedRowKeys: [],
+            expandRowByClick: false
         };
     },
     computed: {
@@ -118,6 +121,7 @@ export default san.defineComponent({
         const pagination = this.data.get('pagination');
         let data = this.data.get('data') || [];
 
+        this.data.set('expandedRowKeys', this.data.get('expandedRowKeys') || this.data.get('defaultExpandedRowKeys'));
         this.data.set('originalData', data.concat());
         this.data.set('filteredData', data.concat());
         if (pagination !== false) {
@@ -129,6 +133,7 @@ export default san.defineComponent({
         this.data.set('hasTitle', !!this.sourceSlots.named.title || this.data.get('title'));
         this.data.set('hasFooter', !!this.sourceSlots.named.footer || this.data.get('footer'));
         this.data.set('hasExpandedRowRender', !!this.sourceSlots.named.expandedRowRender);
+        this.data.set('hasExpandIcon', !!this.sourceSlots.named.expandIcon);
 
         this.watch('columns', val => {
             this.processColumns(val);
@@ -145,9 +150,11 @@ export default san.defineComponent({
 
         this.watch('data', val => {
             this.data.set('originalData', val);
-            this.data.set('filteredData', val);
-            val = this.flattenData(this.getPaginationData(val));
-            this.data.set('renderData', val);
+            this.refreshData();
+        });
+
+        this.watch('expandedRowKeys', val => {
+            this.refreshData();
         });
     },
     components: {
@@ -244,6 +251,11 @@ export default san.defineComponent({
 
         this.data.set('thColumns', thColumns);
         this.data.set('tdColumns', tdColumns);
+    },
+    refreshData() {
+        let data = this.data.get('filteredData');
+        data = this.flattenData(this.getPaginationData(data));
+        this.data.set('renderData', data);
     },
     // 获取当前分页的数据
     getPaginationData(data) {
@@ -404,8 +416,15 @@ export default san.defineComponent({
         data = isEmpty(selectedKeys) ? data : filteredData;
 
         this.data.set('filteredData', data);
-        this.data.set('renderData', this.flattenData(this.getPaginationData(data)));
+        this.refreshData();
         this.handleChange();
+    },
+    handleRowClick(record) {
+        if (!this.data.get('expandRowByClick')) {
+            return;
+        }
+        this.data.get('hasExpandedRowRender') && this.handleExpandRow(record);
+        'collapsed' in record && this.handleTreeExpand(record);
     },
     // 执行复选框选中时候的操作
     handleSelections({key, selectedKeys}) {
@@ -481,26 +500,29 @@ export default san.defineComponent({
         if (!data.length) {
             return [];
         }
+        const expandedRowKeys = this.data.get('expandedRowKeys');
         let result = [];
         let isTree = false;
 
-        function loop(data, level) {
+        let loop = (data, level) => {
             ++level;
             data.forEach((item, index) => {
                 item.level = level;
                 !!item.children && (isTree = true);
                 item.children && (item.collapsed = true);
-                result.push(item);
+                if (this.data.get('defaultExpandAllRows') || expandedRowKeys.includes(item.key)) {
+                    item.expanded = true;
+                    item.children && (item.collapsed = false);
+                    item.expandedRow = true;
+                }
+                result.push({...item});
                 loop(item.children || [], level);
             });
-        }
+        };
 
         loop(data, -1);
         this.data.set('isTree', isTree);
         return result;
-    },
-    getExpandStyle(item) {
-        return (item.level === 0 || item.expanded) ? '' : 'display: none;';
     },
     // 展开有children的数据
     handleTreeExpand(expandItem) {
@@ -628,7 +650,8 @@ export default san.defineComponent({
         return selectedRowKeys.includes(item.key);
     },
     getIndeterminate(selectedRowKeys, data) {
-        return !this.getAllChecked(data, selectedRowKeys) && !!selectedRowKeys.length && data.some(item => selectedRowKeys.includes(item.key));
+        return !this.getAllChecked(data, selectedRowKeys)
+            && data.some(item => selectedRowKeys.includes(item.key));
     },
     // selection全选时候的操作
     handleSelectionAll(e) {
@@ -666,8 +689,7 @@ export default san.defineComponent({
     // 点击分页时候的操作
     handlePaginationChange(payload) {
         this.data.set('pagination.current', payload.page);
-        let data = this.getPaginationData(this.data.get('filteredData'));
-        this.data.set('renderData', this.flattenData(data), {force: true});
+        this.refreshData();
         this.handleChange();
     },
     template: `<div>
