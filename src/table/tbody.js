@@ -21,7 +21,7 @@ export default {
             <tr
                 s-if="hasExpandedRowRender"
                 class="${prefixCls}-expanded-row"
-                style="display: {{item.expandedRow ? '' : 'none'}}"
+                style="display: {{item.expanded ? '' : 'none'}}"
             >
                 <td></td>
                 <td colspan="{{tdColumns.length}}" >

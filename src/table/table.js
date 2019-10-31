@@ -21,16 +21,53 @@ import './style/index';
 
 const prefixCls = classCreator('table')();
 
-function getLeafCountTree(column) {
+function getLeafCount(column) {
     if (!column.children || !column.children.length) {
         return 1;
     }
     let leafCount = 0;
     column.children.forEach(item => {
-        leafCount += getLeafCountTree(item);
+        leafCount += getLeafCount(item);
     });
-    column.colspan = leafCount;
     return leafCount;
+}
+
+// 深度遍历数据，并返回所有经过处理的数据
+function dfsData(data, callback, result = [], level = -1) {
+    level++;
+    data.forEach(item => {
+        item = typeof callback === 'function'
+            ? callback({...item}, level)
+            : {...item};
+        item && result.push(item);
+        dfsData(item && item.children || [], callback, result, level);
+    });
+    return result;
+}
+
+// 广度优先遍历，返回一个具有层级关系的二维数组
+function bfsData(data, callback, result = [], level = 0) {
+    if (!result[level]) {
+        result[level] = [];
+    }
+    let stack = [];
+    data.forEach(item => {
+        item = typeof callback === 'function'
+            ? callback({...item}, level)
+            : {...item};
+        item && result[level].push(item);
+        if (item && item.children) {
+            stack = stack.concat(item.children);
+        }
+    });
+    if (stack.length) {
+        level++;
+        level = bfsData(stack, callback, result, level).level;
+    }
+    return {
+        data: result,
+        level
+    };
 }
 
 const colgroupTemplate = `
@@ -60,7 +97,7 @@ const tableInnerTemplate = `
             </template>
             ${Tbody.template}
         </table>
-        <div class="${prefixCls}-placeholder" s-if="!renderData.length">
+        <div class="${prefixCls}-placeholder" s-if="!renderData.length && !loading">
             <s-empty />
         </div>
     </div>
@@ -118,18 +155,12 @@ export default san.defineComponent({
     },
     inited() {
         this.rowSpanArr = {};
-        const pagination = this.data.get('pagination');
-        let data = this.data.get('data') || [];
+        let data = this.data.get('data').concat() || [];
 
         this.data.set('expandedRowKeys', this.data.get('expandedRowKeys') || this.data.get('defaultExpandedRowKeys'));
-        this.data.set('originalData', data.concat());
-        this.data.set('filteredData', data.concat());
-        if (pagination !== false) {
-            data = this.getPaginationData(data);
-        }
-        data = this.flattenData(data);
-        this.data.set('renderData', data.concat());
-        this.processColumns(this.data.get('columns'));
+        this.data.set('originalData', data);
+        this.initRenderData(data);
+        this.processColumns();
         this.data.set('hasTitle', !!this.sourceSlots.named.title || this.data.get('title'));
         this.data.set('hasFooter', !!this.sourceSlots.named.footer || this.data.get('footer'));
         this.data.set('hasExpandedRowRender', !!this.sourceSlots.named.expandedRowRender);
@@ -150,11 +181,11 @@ export default san.defineComponent({
 
         this.watch('data', val => {
             this.data.set('originalData', val);
-            this.refreshData(val);
+            this.initRenderData(val);
         });
 
         this.watch('expandedRowKeys', val => {
-            this.refreshData();
+            this.initRenderData();
         });
     },
     components: {
@@ -170,24 +201,26 @@ export default san.defineComponent({
         's-empty': renderEmpty('Table')
     },
     // 针对columns中的各种配置项做处理
-    processColumns(columns) {
+    processColumns() {
+        let columns = this.data.get('columns');
         let sortColumn;
         let sortColumnIndex;
         const selectedKeys = this.data.get('selectedKeys');
 
-        let tdColumns = [];
-        let thColumns = [];
-        let level = 0;
+        let thColumns = bfsData(columns, column => {
+            let leafCount = getLeafCount(column);
+            leafCount !== 1 && (column.colspan = leafCount);
+            column.filterVisible = false;
+            return column;
+        });
 
-        // 广度遍历columns，拿到所有的thColumns， 因为有colspan和rowspan，所以用二维数组来分不同的层
-        let getThColumns = data => {
-            if (!thColumns[level]) {
-                thColumns[level] = [];
-            }
-            let stack = [];
-            data.forEach((column, index) => {
-                // 拿到当前节点下所有children的数量，用来写入colspan
-                getLeafCountTree(column);
+        // 设置th的rowspan
+        let level = thColumns.level;
+        let thColumnsData = thColumns.data.map(thColumn => {
+            thColumn.map((column, index) => {
+                if (!column.children) {
+                    column.rowspan = level + 1;
+                }
                 const key = column.key || column.dataIndex;
                 // 获取默认的sortColumn
                 if ((!sortColumn && (column.defaultSortOrder || column.sorter === true)) || column.sortOrder) {
@@ -204,25 +237,6 @@ export default san.defineComponent({
                     delete selectedKeys[key];
                     this.data.set('selectedKeys', selectedKeys);
                 }
-                column.filterVisible = false;
-                thColumns[level].push(column);
-                if (column.children) {
-                    stack = stack.concat(column.children);
-                }
-            });
-            if (stack.length) {
-                level++;
-                getThColumns(stack);
-            }
-        };
-        getThColumns(columns, level);
-
-        // 设置th的rowspan
-        thColumns = thColumns.map(thColumn => {
-            thColumn.map(column => {
-                if (!column.children) {
-                    column.rowspan = level + 1;
-                }
                 return column;
             });
             level--;
@@ -230,18 +244,7 @@ export default san.defineComponent({
         });
 
         // 深度遍历columns，把children打平供显示数据使用
-        function getTdColumns(data) {
-            data.forEach(column => {
-                if (!column.children) {
-                    tdColumns.push(column);
-                }
-                if (column.children) {
-                    getTdColumns(column.children);
-                }
-            });
-        }
-
-        getTdColumns(columns.concat());
+        let tdColumns = dfsData(columns, item => item).filter(item => !item.children);
 
         if (sortColumn) {
             this.data.set('sortColumn', sortColumn);
@@ -249,33 +252,32 @@ export default san.defineComponent({
             this.runSorter(sortColumn, sortColumnIndex);
         }
 
-        this.data.set('thColumns', thColumns);
+        this.data.set('thColumns', thColumnsData);
         this.data.set('tdColumns', tdColumns);
     },
-    refreshData(value) {
+    initRenderData(value) {
+        const pagination = this.data.get('pagination');
         let data = value || this.data.get('filteredData');
-        data = this.flattenData(this.getPaginationData(data));
+        if (pagination !== false) {
+            data = this.getPaginationData(data);
+        }
+        data = this.getFlattenData(data);
+        if (value) {
+            this.data.set('filteredData', data);
+        }
         this.data.set('renderData', data);
+        this.data.set('isTree', data.some(item => item.children));
     },
     // 获取当前分页的数据
     getPaginationData(data) {
-        let current;
-        let pageSize;
-
-        if (this.data.get('pagination') === false) {
-            pageSize = Number.MAX_VALUE;
-            current = 1;
-        }
-        else {
-            pageSize = this.data.get('pagination.pageSize');
-            current = this.data.get('pagination.current');
-        }
+        const pageSize = this.data.get('pagination.pageSize');
+        const current = this.data.get('pagination.current');
 
         if (data.length > pageSize || pageSize === Number.MAX_VALUE) {
             data = data.filter((item, i) => i >= (current - 1) * pageSize && i < current * pageSize);
         }
 
-        return data.concat();
+        return data;
     },
     // 获取当前column的rolspan和rowspan
     getColumns(columns, item, dataIndex) {
@@ -416,7 +418,7 @@ export default san.defineComponent({
         data = isEmpty(selectedKeys) ? data : filteredData;
 
         this.data.set('filteredData', data);
-        this.refreshData();
+        this.initRenderData();
         this.handleChange();
     },
     handleRowClick(record) {
@@ -496,32 +498,22 @@ export default san.defineComponent({
         this.confirm();
     },
     // 打平数据，用于data有children时候的展示
-    flattenData(data = []) {
-        if (!data.length) {
+    getFlattenData(data) {
+        if (!data) {
             return [];
         }
         const expandedRowKeys = this.data.get('expandedRowKeys');
-        let result = [];
-        let isTree = false;
+        const defaultExpandAllRows = this.data.get('defaultExpandAllRows');
+        let result = dfsData(data, (item, level) => {
+            item.level = level;
+            item.children && (item.collapsed = true);
+            if (defaultExpandAllRows || expandedRowKeys.includes(item.key)) {
+                item.expanded = true;
+                item.children && (item.collapsed = false);
+            }
+            return item;
+        });
 
-        let loop = (data, level) => {
-            ++level;
-            data.forEach((item, index) => {
-                item.level = level;
-                !!item.children && (isTree = true);
-                item.children && (item.collapsed = true);
-                if (this.data.get('defaultExpandAllRows') || expandedRowKeys.includes(item.key)) {
-                    item.expanded = true;
-                    item.children && (item.collapsed = false);
-                    item.expandedRow = true;
-                }
-                result.push({...item});
-                loop(item.children || [], level);
-            });
-        };
-
-        loop(data, -1);
-        this.data.set('isTree', isTree);
         return result;
     },
     // 展开有children的数据
@@ -546,7 +538,7 @@ export default san.defineComponent({
         let data = this.data.get('renderData');
         data = data.map(item => {
             if (expandItem.key === item.key) {
-                item.expandedRow = !item.expandedRow;
+                item.expanded = !item.expanded;
             }
             return {
                 ...item
@@ -562,15 +554,12 @@ export default san.defineComponent({
         return sortDirections.includes(name);
     },
     runSorter(column, sortColumn) {
-        let data = this.data.get('filteredData').concat();
+        let filteredData = this.data.get('filteredData');
 
-        if (column.sortOrder) {
-            const sortFn = this.getSorterFn(column);
-            data = this.recursiveSort(data, sortFn);
-        }
-        else {
-            data = this.data.get('filteredData');
-        }
+        let data = column.sortOrder
+            ? this.recursiveSort(filteredData, this.getSorterFn(column))
+            : filteredData;
+
         this.data.set('renderData', data);
     },
     // 点击排序时候的处理
@@ -689,7 +678,7 @@ export default san.defineComponent({
     // 点击分页时候的操作
     handlePaginationChange(payload) {
         this.data.set('pagination.current', payload.page);
-        this.refreshData();
+        this.initRenderData();
         this.handleChange();
     },
     template: `<div>

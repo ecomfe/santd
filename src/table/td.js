@@ -48,7 +48,7 @@ export default {
                 <span on-click="handleExpandRow(item)" s-if="hasExpandIcon">
                     <slot name="expandIcon" var-record="{{item}}"/>
                 </span>
-                <span class="${prefixCls}-row-expand-icon ${prefixCls}-row-{{item.expandedRow ? 'expanded' : 'collapsed'}}" on-click="handleExpandRow(item)" s-else></span>
+                <span class="${prefixCls}-row-expand-icon ${prefixCls}-row-{{item.expanded ? 'expanded' : 'collapsed'}}" on-click="handleExpandRow(item)" s-else></span>
             </td>
             <td s-if="column.attrs.colSpan" colspan="{{column.attrs.colSpan}}" class="{{getThClass(column)}}" style="{{getThStyle(column)}}">${contentTemplate}</td>
             <td s-else-if="column.attrs.rowSpan" rowspan="{{column.attrs.rowSpan}}" class="{{getThClass(column)}}" style="{{getThStyle(column)}}">${contentTemplate}</td>
