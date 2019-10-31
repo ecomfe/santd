@@ -150,7 +150,7 @@ export default san.defineComponent({
 
         this.watch('data', val => {
             this.data.set('originalData', val);
-            this.refreshData();
+            this.refreshData(val);
         });
 
         this.watch('expandedRowKeys', val => {
@@ -252,8 +252,8 @@ export default san.defineComponent({
         this.data.set('thColumns', thColumns);
         this.data.set('tdColumns', tdColumns);
     },
-    refreshData() {
-        let data = this.data.get('filteredData');
+    refreshData(value) {
+        let data = value || this.data.get('filteredData');
         data = this.flattenData(this.getPaginationData(data));
         this.data.set('renderData', data);
     },
