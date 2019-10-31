@@ -13,11 +13,13 @@
         <s-table
             rowSelection="{{rowSelection}}"
             columns="{{columns}}"
-            dataSource="{{data}}"
+            data="{{data}}"
             on-change="handleTableChange"
             loading="{{loading}}"
             pagination="{{pagination}}"
-        ></s-table>
+        >
+            <a href="javascript:;" slot="name">{{text.first}} {{text.last}}</a>
+        </s-table>
     </div>
 </template>
 <script>
@@ -32,7 +34,6 @@ export default {
         this.fetch();
     },
     handleTableChange(payload) {
-        console.log(payload, 'wwww')
         this.data.set('pagination', payload.pagination);
         this.fetch({
             page: payload.pagination.current,
@@ -54,7 +55,7 @@ export default {
             }).then(res => {
                 this.data.set('loading', false);
                 this.data.set('data', res.data.results);
-                this.data.set('pagination.total', 200);
+                this.data.set('pagination.total', 200, {force: true});
             });
     },
     initData() {
@@ -64,11 +65,7 @@ export default {
                 title: 'Name',
                 dataIndex: 'name',
                 sorter: true,
-                render() {
-                    return san.defineComponent({
-                        template: `<a href="javascript:;">{{text.first}} {{text.last}}</a>`
-                    });
-                },
+                scopedSlots: {render: 'name'},
                 width: '20%'
             }, {
                 title: 'Gender',

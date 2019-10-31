@@ -48,6 +48,7 @@ export default san.defineComponent({
             action="{{disabled ? [] : trigger}}"
             visible="{{visible}}"
             on-visibleChange="handleVisibleChange"
+            class="{{dropdownClassName}}"
         >
             <slot />
             <template slot="popup">

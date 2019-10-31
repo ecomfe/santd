@@ -45,10 +45,10 @@ export default san.defineComponent({
             const currentAlignClassName = this.data.get('currentAlignClassName');
             const align = this.data.get('align');
             const getClassNameFromAlign = this.data.get('getClassNameFromAlign');
-            const popupClassName = this.data.get('popupClassName');
+            // const popupClassName = this.data.get('popupClassName');
 
             let classArr = [prefixCls, currentAlignClassName || getClassNameFromAlign(align)];
-            popupClassName && classArr.push(popupClassName);
+            // popupClassName && classArr.push(popupClassName);
 
             return classArr;
         }
@@ -104,6 +104,7 @@ export default san.defineComponent({
                 showProp="visible"
                 transitionName="{{transitionName}}"
                 popupStyle="{{popupStyle}}"
+                popupClassName="{{popupClassName}}"
                 s-ref="popupinner"
             >
                 <slot s-if="destroy" />

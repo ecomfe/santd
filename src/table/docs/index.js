@@ -9,7 +9,8 @@ import RowSelection from './row-selection.md';
 import RowSelectionOperation from './row-selection-operation.md';
 import RowSelectionCustom from './row-selection-custom.md';
 import FilterSort from './filter-sort.md';
-// import FilterSortControl from './filter-sort-control.md'; 可控排序和筛选无法实现
+import ControlFilterSort from './control-filter-sort.md';
+import Filter from './filter.md';
 import Ajax from './ajax.md';
 import Size from './size.md';
 import Bordered from './bordered.md';
@@ -23,6 +24,7 @@ import EditableCell from './editable-cell.md';
 import EditableRow from './editable-row.md';
 import ExpandedTable from './expanded-table.md';
 import Dynamic from './dynamic.md';
+import Children from './children.md';
 
 export default san.defineComponent({
     components: {
@@ -32,7 +34,9 @@ export default san.defineComponent({
         rowselection: RowSelection,
         rowselectionoperation: RowSelectionOperation,
         rowselectioncustom: RowSelectionCustom,
+        filter: Filter,
         filtersort: FilterSort,
+        controlfiltersort: ControlFilterSort,
         ajax: Ajax,
         size: Size,
         bordered: Bordered,
@@ -45,29 +49,32 @@ export default san.defineComponent({
         editablecell: EditableCell,
         editablerow: EditableRow,
         expandedtable: ExpandedTable,
-        dynamic: Dynamic
+        dynamic: Dynamic,
+        children: Children
     },
     template: `
         <div>
             <desc/>
             <basic/>
-            <rowselection/>
-            <rowselectionoperation/>
-            <rowselectioncustom/>
-            <!--<filtersort/>-->
-            <ajax/>
-            <size/>
             <bordered/>
-            <expandedrowrender/>
             <colspan/>
-            <fixedheader/>
-            <fixedcolumn/>
-            <fixedheadercolumn/>
-            <columnschildren/>
+            <ajax/>
+            <filter/>
             <editablecell/>
             <editablerow/>
+            <children/>
+            <expandedrowrender/>
+            <fixedheadercolumn/>
+            <fixedcolumn/>
+            <fixedheader/>
+            <columnschildren/>
+            <filtersort/>
             <expandedtable/>
-            <dynamic/>
+            <controlfiltersort/>
+            <rowselectionoperation/>
+            <rowselectioncustom/>
+            <rowselection/>
+            <size/>
             <readme/>
         </div>
     `

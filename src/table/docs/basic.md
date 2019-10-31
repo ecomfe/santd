@@ -1,97 +1,71 @@
 <text lang="cn">
 #### 基本用法
-最后一列是各种操作
+简单的表格，最后一列是各种操作。
 </text>
 
 ```html
 <template>
     <div>
-        <s-table
-            columns="{{columns}}"
-            dataSource="{{data}}"
-        ></s-table>
+        <s-table data="{{data}}" columns="{{columns}}">
+            <a slot="name" href="javascript:;">{{text}}</a>
+            <span slot="customTitle"><s-icon type="smile-o" /> Name</span>
+            <span slot="tags">
+                <s-tag
+                    s-for="tag in text"
+                    color="{{tag ==='loser' ? 'volcano' : (tag.length > 5 ? 'geekblue' : 'green')}}"
+                >
+                    {{tag}}
+                </s-tag>
+            </span>
+            <span slot="action">
+                <a href="javascript:;">Invite 一 {{record.name}}</a>
+                <s-divider type="vertical" />
+                <a href="javascript:;">Delete</a>
+                <s-divider type="vertical" />
+                <a href="javascript:;" class="san-dropdown-link"> More actions <s-icon type="down" /> </a>
+            </span>
+        </s-table>
     </div>
 </template>
 <script>
 import san from 'san';
-import santable from 'santd/table';
+import Table from 'santd/table';
 import tag from 'santd/tag';
 import divider from 'santd/divider';
+import Icon from 'santd/icon';
 
 export default {
     components: {
-        's-table': santable,
+        's-table': Table,
+        's-thead': Table.Thead,
+        's-tbody': Table.Tbody,
+        's-th': Table.Th,
+        's-tr': Table.Tr,
+        's-td': Table.Td,
         's-divider': divider,
-        's-tag': tag
+        's-tag': tag,
+        's-icon': Icon
     },
     initData() {
         return {
             columns: [{
-                title: 'Name',
                 dataIndex: 'name',
-                key: 'name',
-                render() {
-                    return san.defineComponent({
-                        template: `<a href="javascript:;">{{text}}</a>`
-                    });
-
-                }
+                slots: {title: 'customTitle'},
+                scopedSlots: {render: 'name'}
             }, {
                 title: 'Age',
-                dataIndex: 'age',
-                key: 'age',
+                dataIndex: 'age'
             }, {
                 title: 'Address',
-                dataIndex: 'address',
-                key: 'address',
+                dataIndex: 'address'
             }, {
                 title: 'Tags',
-                key: 'tags',
                 dataIndex: 'tags',
-                render() {
-                    return san.defineComponent({
-                        components: {
-                            's-tag': tag
-                        },
-                        computed: {
-                            tags() {
-                                const text = this.data.get('text');
-                                return text.map(tag => {
-                                    let color = tag.length > 5 ? 'geekblue' : 'green';
-                                    if (tag === 'loser') {
-                                        color = 'volcano';
-                                    }
-                                    return {
-                                        text: tag,
-                                        color: color
-                                    };
-                                });
-                            }
-                        },
-                        template: `
-                            <span>
-                                <s-tag s-for="tag in tags" color="{{tag.color}}" key="{{tag.text}}">{{tag.text}}</s-tag>
-                            </span>
-                        `
-                    });
-                }
+                scopedSlots: {render: 'tags'}
             }, {
                 title: 'Action',
                 key: 'action',
-                render(text, record) {
-                    return san.defineComponent({
-                        components: {
-                            's-divider': divider
-                        },
-                        template: `
-                            <span>
-                                <a href="javascript:;">Invite {{record.name}}</a>
-                                <s-divider type="vertical"></s-divider>
-                                <a href="javascript:;">Delete</a>
-                            </span>
-                        `
-                    });
-                }
+                scopedSlots: {render: 'action'}
             }],
             data: [
                 {

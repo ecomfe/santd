@@ -1,0 +1,98 @@
+@table-prefix-cls: ~'@{ant-prefix}-table';
+
+.box-shadow-left() {
+  .@{table-prefix-cls}-right-sticky {
+    box-shadow: -6px 0 6px 0px rgba(0, 0, 0, .05);
+  }
+}
+
+.box-shadow-right() {
+  .@{table-prefix-cls}-left-sticky {
+    box-shadow: 6px 0 6px 0px rgba(0, 0, 0, .05);
+  }
+}
+
+.border-left() {
+  .@{table-prefix-cls}-right-sticky,
+  .@{table-prefix-cls}-right-sticky {
+    border-right: @border-width-base @border-style-base @border-color-split;
+  }
+}
+
+.border-right() {
+  tr > th:first-child.@{table-prefix-cls}-left-sticky,
+  tr > td:first-child.@{table-prefix-cls}-left-sticky {
+    border-left: @border-width-base @border-style-base @border-color-split;
+  }
+}
+
+.@{table-prefix-cls}-scroll-position-middle,
+.@{table-prefix-cls}-scroll-position-left {
+  .@{table-prefix-cls}-left-sticky + .@{table-prefix-cls}-right-sticky {
+    box-shadow: none;
+  }
+}
+
+.@{table-prefix-cls}-scroll-position-middle,
+.@{table-prefix-cls}-scroll-position-right {
+  table {
+    &.@{table-prefix-cls}-fixed {
+      border-left: none;
+    }
+  }
+}
+
+.@{table-prefix-cls}-left-sticky,
+.@{table-prefix-cls}-right-sticky {
+  position: sticky !important;
+  z-index: 1;
+  background: @component-background;
+}
+
+.@{table-prefix-cls}-tbody {
+  & > tr {
+    &:hover {
+      & > td {
+        &.@{table-prefix-cls}-left-sticky {
+          background: @table-row-hover-bg;
+        }
+
+        &.@{table-prefix-cls}-right-sticky {
+          background: @table-row-hover-bg;
+        }
+      }
+    }
+  }
+}
+
+.@{table-prefix-cls}-thead > tr > th .@{table-prefix-cls}-column-sorters > san-dropdown {
+  position: static !important;
+}
+
+.@{table-prefix-cls}-scroll-position-middle {
+  .box-shadow-right;
+  .box-shadow-left;
+}
+
+.@{table-prefix-cls}-scroll-position-left {
+    .box-shadow-left;
+}
+
+.@{table-prefix-cls}-scroll-position-right {
+  .box-shadow-right;
+}
+
+.@{table-prefix-cls}-bordered:not(.@{table-prefix-cls}-small) {
+  &.@{table-prefix-cls}-scroll-position-middle {
+    .border-right;
+    .border-left;
+  }
+
+  &.@{table-prefix-cls}-scroll-position-left {
+    .border-left;
+  }
+
+  &.@{table-prefix-cls}-scroll-position-right {
+    .border-right;
+  }
+}

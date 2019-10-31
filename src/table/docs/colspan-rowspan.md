@@ -10,24 +10,24 @@
     <div>
         <s-table
             columns="{{columns}}"
-            dataSource="{{data}}"
+            data="{{data}}"
             bordered="{{true}}"
-        ></s-table>
+        />
     </div>
 </template>
 <script>
-import san from 'san';
 import table from 'santd/table';
 const renderContent = (value, row, index) => {
     const obj = {
         children: value,
-        props: {}
+        attrs: {}
     };
-    if (index === 4) {
-        obj.props.colSpan = 0;
+    if (index === 1) {
+        obj.attrs.colSpan = 2;
     }
     return obj;
 };
+
 const data = [{
     key: '1',
     name: 'John Brown',
@@ -64,20 +64,18 @@ const data = [{
     phone: 18900010002,
     address: 'Dublin No. 2 Lake Park',
 }];
+
 const columns = [
     {
         title: 'Name',
         dataIndex: 'name',
         render: (text, row, index) => {
-            const children = san.defineComponent({
-                template: `<a href="javascript:;">{{text}}</a>`
-            });
             if (index < 4) {
-                return children;
+                return text;
             }
             return {
-                children: children,
-                props: {
+                children: text,
+                attrs: {
                     colSpan: 5
                 }
             }
@@ -91,20 +89,19 @@ const columns = [
     {
         title: 'Home Phone',
         dataIndex: 'tel',
-        colSpan: 2,
         render: (value, row, index) => {
             const obj = {
                 children: value,
-                props: {}
+                attrs: {}
             };
             if (index === 2) {
-                obj.props.rowSpan = 2;
+                obj.attrs.rowSpan = 2;
             }
             if (index ===3) {
-                obj.props.rowSpan = 0;
+                obj.attrs.rowSpan = 0;
             }
             if (index === 4) {
-                obj.props.colSpan = 0;
+                obj.attrs.colSpan = 0;
             }
             return obj;
         }
@@ -112,13 +109,10 @@ const columns = [
     {
         title: 'Phone',
         dataIndex: 'phone',
-        colSpan: 0,
-        render: renderContent
     },
     {
         title: 'Address',
-        dataIndex: 'address',
-        render: renderContent
+        dataIndex: 'address'
     }
 ]
 export default {
@@ -130,7 +124,7 @@ export default {
             columns: columns,
             data: data
         }
-    },
+    }
 }
 </script>
 ```
