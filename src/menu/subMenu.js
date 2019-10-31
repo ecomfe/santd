@@ -120,7 +120,7 @@ export default san.defineComponent({
         this.dispatch('santd_menu_addItem', this);
     },
     updated() {
-        let paramsArr = ['mode', 'level', 'selectedKeys', 'openKeys', 'inlineIndent'];
+        let paramsArr = ['mode', 'level', 'selectedKeys', 'openKeys', 'inlineIndent', 'rootPrefixCls'];
         this.items.forEach(item => {
             paramsArr.forEach(param => {
                 let data = this.data.get(param);
@@ -188,6 +188,9 @@ export default san.defineComponent({
         this.triggerOpenChange(!this.data.get('isOpen'), 'click');
     },
     handleVisibleChange(visible) {
+        if (this.data.get('disabled')) {
+            return;
+        }
         this.data.set('noSubClick', visible);
         this.triggerOpenChange(visible, visible ? 'mouseenter' : 'mouseleave');
     },
@@ -212,7 +215,7 @@ export default san.defineComponent({
                     <i class="{{menuPrefixCls}}-arrow" />
                 </div>
                 <s-animate hiddenClassName="${prefixCls}-hidden" showProp="visible" visible="{{isOpen}}" animation="{{openAnimation}}">
-                    <ul class="${prefixCls} ${prefixCls}-sub ${prefixCls}-{{mode}}"><slot /></ul>
+                    <ul class="${prefixCls} {{rootPrefixCls}}-sub ${prefixCls}-{{mode}}"><slot /></ul>
                 </s-animate>
             </template>
             <s-trigger
@@ -233,7 +236,7 @@ export default san.defineComponent({
                 visible="{{isOpen}}"
                 on-visibleChange="handleVisibleChange"
             >
-                <ul class="${prefixCls} ${prefixCls}-sub ${prefixCls}-{{mode}}" slot="popup"><slot /></ul>
+                <ul class="${prefixCls} {{rootPrefixCls}}-sub ${prefixCls}-{{mode}}" slot="popup"><slot /></ul>
                 <div
                     class="{{menuPrefixCls}}-title"
                     aria-expanded="{{isOpen}}"
