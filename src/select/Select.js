@@ -161,9 +161,9 @@ export default san.defineComponent({
         firstActiveValue: DataTypes.bool,
         getPopupContainer: DataTypes.func,
         labelInValue: DataTypes.bool,
-        maxTagCount: DataTypes.bool,
-        maxTagTextLength: DataTypes.bool,
-        maxTagPlaceholder: DataTypes.bool,
+        maxTagCount: DataTypes.number,
+        maxTagTextLength: DataTypes.number,
+        maxTagPlaceholder: DataTypes.func,
         mode: DataTypes.oneOf([
             'default',
             'multiple',
