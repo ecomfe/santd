@@ -35,7 +35,7 @@ export default san.defineComponent({
         this.watch('popupVisible', val => {
             if (val) {
                 const value = this.data.get('value');
-                this.data.set('activeValue', value);
+                value && this.data.set('activeValue', value);
             }
         });
     },
