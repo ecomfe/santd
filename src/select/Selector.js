@@ -34,7 +34,7 @@ export default san.defineComponent({
                     class="${prefixCls}-search ${prefixCls}-search--inline"
                     style="display: {{context.open ? 'block' : 'none'}}"
                 >
-                    <s-input context="{{context}}" inputValue="{=inputValue=}"/>
+                    <s-input context="{{context}}" inputValue="{=inputValue=}" />
                 </div>
             </template>
             <template s-else>
@@ -46,7 +46,7 @@ export default san.defineComponent({
                     <slot name="removeIcon" slot="removeIcon">
                         <s-icon type="close" class="${prefixCls}-remove-icon"/>
                     </slot>
-                    <s-input slot="input" context="{{context}}" inputValue="{=inputValue=}"/>
+                    <s-input slot="input" context="{{context}}" inputValue="{=inputValue=}" />
                 </s-multiple-selector>
             </template>
         </div>

@@ -85,7 +85,7 @@ export default san.defineComponent({
                     on-mouseup="markMouseLeave"
                     on-mouseout="markMouseLeave"
                 >
-                    <s-selector context="{{context}}" inputValue="{=inputValue=}">
+                    <s-selector context="{{context}}" inputValue="{=inputValue=}" isAutoComplete="{{isAutoComplete}}">
                         <slot name="removeIcon"/>
                     </s-selector>
                     <span
@@ -565,6 +565,7 @@ export default san.defineComponent({
 
     setOpenState(open, config = {}) {
         const {needFocus, fireSearch} = config;
+        const isAutoComplete = this.data.get('isAutoComplete');
         const props = this.data.get();
 
         if (props.open === open) {
@@ -581,7 +582,7 @@ export default san.defineComponent({
 
         // clear search input value when open is false in singleMode.
         // https://github.com/ant-design/ant-design/issues/16572
-        if (!open && props.modeConfig.single && props.showSearch) {
+        if (!open && props.modeConfig.single && props.showSearch && !isAutoComplete) {
             this.setInputValue('', fireSearch);
         }
         if (!open) {
@@ -598,7 +599,7 @@ export default san.defineComponent({
         });
     },
 
-    setState(props, config = {}) {
+    setState(props, config) {
         if ('context' in props) {
             console.log('context is forbidden to setState'); // eslint-disable-line
             return;
@@ -736,7 +737,7 @@ export default san.defineComponent({
         }
         this.setInputValue(val);
         this.setState({open: true});
-        if (modeConfig.combobox) {
+        if (modeConfig.combobox || this.data.get('isAutoComplete')) {
             this.fireChange([val]);
         }
     },
@@ -864,9 +865,7 @@ export default san.defineComponent({
                     this.setInputValue('');
                 }
                 else {
-                    // why not use setState?
-                    // https://github.com/ant-design/ant-design/issues/14262
-                    this.setState({inputValue: ''});
+                    // this.setState({inputValue: ''});
                     if ($input) {
                         $input.value = '';
                     }

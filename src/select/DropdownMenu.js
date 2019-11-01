@@ -294,6 +294,9 @@ export default san.defineComponent({
             if (autoClearSearchValue) {
                 this.owner.setInputValue(inputValue, false);
             }
+            else {
+                this.owner.setInputValue(selectedValue, true);
+            }
         }
     },
 

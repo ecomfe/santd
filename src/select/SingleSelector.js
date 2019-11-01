@@ -31,6 +31,9 @@ export default san.defineComponent({
                 info.title = toTitle(info.title || info.label);
                 return info;
             }
+            return {
+                label: this.data.get('inputValue')
+            };
         },
 
         style() {
