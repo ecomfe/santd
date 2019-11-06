@@ -9,11 +9,8 @@ import get from 'lodash/get';
 import set from 'lodash/set';
 import eq from 'lodash/eq';
 import {
-  argumentContainer,
-  identity,
   normalizeValidateRules,
   getValidateTriggers,
-  getValueFromEvent,
   hasRules,
   getParams,
   isEmptyObject,
@@ -28,12 +25,9 @@ export default function (options = {}, mixins = {}) {
         validateMessages,
         onFieldsChange,
         onValuesChange,
-        mapProps,
         mapPropsToFields,
-        fieldNameProp,
         fieldMetaProp,
-        fieldDataProp,
-        name: formName
+        fieldDataProp
     } = options;
     return function (wrappedComponent) {
         return san.defineComponent({
@@ -372,7 +366,6 @@ export default function (options = {}, mixins = {}) {
                         firstFields: !!fieldMeta.validateFirst
                     }
                 });
-                // this.data.set('form', this, {force: true});
             },
 
             onCollect(innerName, action, ...args) {
@@ -482,14 +475,6 @@ export default function (options = {}, mixins = {}) {
                         decoratorComponent.data.set('value', props.value || '');
                     }
                 });
-                /*if (ns) {
-                    const names = Array.isArray(ns) ? ns : [ns];
-                    const clearedFieldMetaCache = this.data.get('clearedFieldMetaCache');
-                    names.forEach(name => delete clearedFieldMetaCache[name]);
-                }
-                else {
-                    this.data.set('clearedFieldMetaCache', {});
-                }*/
             },
 
             setDecoratorPropValue(decorator, decoratorComponent, options) {
@@ -550,15 +535,6 @@ export default function (options = {}, mixins = {}) {
                             });
                         });
                     }
-                    /*const children = this.data.get('children') || {};
-                    children[payload.value.id] = payload.value;
-                    const decorator = payload.value.data.get('decorator');
-                    if (decorator) {
-                        this.data.set('instances.' + decorator.name, payload.value);
-                        this.data.set('domFields.' + decorator.name, true);
-                    }
-                    this.data.set('children', children);
-                    this.data.set('form', this, {force: true});*/
                 },
                 santd_formitem_remove(payload) {
                     const formItem = payload.value;
@@ -573,53 +549,8 @@ export default function (options = {}, mixins = {}) {
                             }
                         });
                     }
-                    // children[payload.value.id] = payload.value;
-                    /*const decorator = payload.value.data.get('decorator');
-                    if (decorator && decorator.name) {
-                        const fieldsStore = this.data.get('fieldsStore');
-                        const fieldMeta = fieldsStore.getFieldMeta(decorator.name);
-                        if (!fieldMeta.preserve && decorator.name) {
-                            this.clearField(decorator.name);
-                        }
-                    }*/
                 }
             }
         }, san.defineComponent(wrappedComponent));
-    };
-    return function (wrappedComponent) {
-        let initData = wrappedComponent.initData;
-        let created = wrappedComponent.created;
-        wrappedComponent.created = function () {
-            /*this.watch('form', val => {
-                const children = this.data.get('children');
-                for (let i in children) {
-                    if (children[i] && children[i].data) {
-                        children[i].data.set('form', this, {force: true});
-                    }
-                }
-            });*/
-        };
-        wrappedComponent.getFieldInstance = function (name) {
-            const instances = this.data.get('instances');
-            return instances[name];
-        };
-
-        wrappedComponent.cleanUpUselessFields = function () {
-            const fieldsStore = this.data.get('fieldsStore');
-            const fieldList = fieldsStore.getAllFieldsName();
-            const removedList = fieldList.filter(field => {
-                const fieldMeta = fieldsStore.getFieldMeta(field);
-                return !this.data.get('renderFields.' + field)
-                    && !this.data.get('domFields.' + field)
-                    && !fieldMeta.preserve;
-            });
-            if (removedList.length) {
-                removedList.forEach(this.clearField.bind(this));
-            }
-            this.data.set('renderFields', {});
-        };
-        wrappedComponent.messages = {
-        };
-        return wrappedComponent;
     };
 }

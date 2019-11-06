@@ -201,14 +201,14 @@ export default san.defineComponent({
                 <s-col
                     s-if="hasLabel"
                     class="${prefixCls}-item-label {{labelAlign === 'left' ? '${prefixCls}-item-label-left' : ''}}"
-                    s-bind="{{labelCol}}"
+                    s-bind="{{labelCol || {}}}"
                 >
                     <label htmlFor="{{id || htmlFor}}" title="{{hasLabel ? label || '' : ''}}" class="{{labelClassName}}">
                         <slot name="label" s-if="!label" />
                         <template s-else>{{label}}</template>
                     </label>
                 </s-col>
-                <s-col s-bind="{{wrapperCol}}" class="${prefixCls}-item-control-wrapper">
+                <s-col s-bind="{{wrapperCol || {}}}" class="${prefixCls}-item-control-wrapper">
                     <div class="{{validateWrapperClassName}}">
                         <div class="${prefixCls}-item-children">
                             <slot />
