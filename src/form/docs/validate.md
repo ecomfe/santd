@@ -34,14 +34,14 @@
             <s-slider marks="{{{0: 'A', 20: 'B', 40: 'C', 60: 'D', 80: 'E', 100: 'F'}}}"></s-slider>
         </s-formitem>
         <s-formitem label="Radio.Group">
-            <s-radiogroup decorator="{{radioGroupDecorator}}">
+            <s-radiogroup decorator="{{radioGroupDecorator}}" name="radiogroup">
                 <s-radio value="a">item 1</s-radio>
                 <s-radio value="b">item 2</s-radio>
                 <s-radio value="c">item 3</s-radio>
             </s-radiogroup>
         </s-formitem>
         <s-formitem label="Radio.Button">
-            <s-radiogroup decorator="{{radioButtonDecorator}}">
+            <s-radiogroup decorator="{{radioButtonDecorator}}" name="radiobutton">
                 <s-radiobutton value="a">item 1</s-radiobutton>
                 <s-radiobutton value="b">item 2</s-radiobutton>
                 <s-radiobutton value="c">item 3</s-radiobutton>

@@ -8,10 +8,14 @@
   <div>
       <s-form layout="inline" on-submit="handleSubmit">
         <s-formitem validateStatus="{{userNameError ? 'error' : ''}}" help="{{userNameError}}">
-            <s-input placeholder="username" decorator="{{userNameDecorator}}"></s-input>
+            <s-input placeholder="username" decorator="{{userNameDecorator}}">
+                <s-icon type="user" style="color: rgba(0, 0, 0, .25);" slot="prefix" />
+            </s-input>
         </s-formitem>
         <s-formitem validateStatus="{{passwordError ? 'error': ''}}" help="{{passwordError}}">
-            <s-input placeholder="password" type="password" decorator="{{passwordDecorator}}"></s-input>
+            <s-input placeholder="password" type="password" decorator="{{passwordDecorator}}">
+                <s-icon type="lock" style="color: rgba(0, 0, 0, .25);" slot="prefix" />
+            </s-input>
         </s-formitem>
         <s-formitem>
             <s-button type="primary" htmlType="submit" disabled="{{submitDisabled}}">Log in</s-button>
@@ -20,7 +24,6 @@
   </div>
 </template>
 <script>
-import san from 'san';
 import Form from 'santd/form';
 import Input from 'santd/input';
 import Icon from 'santd/icon';
@@ -49,41 +52,14 @@ export default Form.create({})({
         },
         submitDisabled() {
             const form = this.data.get('form');
-            return form && hasErrors(form.getFieldsError())
+            return form && hasErrors(form.getFieldsError());
         }
     },
     attached() {
-        const form = this.data.get('form');
-        form.validateFields();
+        this.validateFields();
     },
     initData () {
         return {
-            userPrefix() {
-                const Prefix = san.defineComponent({
-                    components: {
-                        's-icon': Icon
-                    },
-                    template: `
-                        <div>
-                            <s-icon type="user"></s-icon>
-                        </div>
-                    `
-                });
-                return new Prefix();
-            },
-            passPrefix() {
-                const Prefix = san.defineComponent({
-                    components: {
-                        's-icon': Icon
-                    },
-                    template: `
-                        <div>
-                            <s-icon type="lock"></s-icon>
-                        </div>
-                    `
-                });
-                return new Prefix();
-            },
             userNameDecorator: {
                 name: 'userName',
                 rules: [{required: true, message: 'Please input your username!'}]

@@ -68,7 +68,7 @@ export default san.defineComponent({
         hidePlaceholder() {
             let hidden = false;
             const inputValue = this.data.get('inputValue');
-            const {value, modeConfig} = this.data.get('context');
+            const {value = '', modeConfig} = this.data.get('context');
 
             if (inputValue || value.length) {
                 hidden = true;

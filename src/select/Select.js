@@ -675,6 +675,7 @@ export default san.defineComponent({
         // const props = this.data.get();
         this.setState({value}); // mark: this.forcePopupAlign
         this.fire('change', value);
+        this.dispatch('UI:form-item-interact', {fieldValue: value, type: 'change'});
         // const vls = this.getVLForOnChange(value);
         // const options = this.getOptionsBySingleValue(value);
         // if (props.onChange) {

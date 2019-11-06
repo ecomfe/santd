@@ -83,8 +83,7 @@ export default Form.create({name: 'customized_form_controls'})({
     },
     handleSubmit(e) {
         e.preventDefault();
-        const form = this.data.get('form');
-        form.validateFields((err, values) => {
+        this.validateFields((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
             }

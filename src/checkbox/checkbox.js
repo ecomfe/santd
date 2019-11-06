@@ -112,6 +112,12 @@ export default san.defineComponent({
         this.dispatch('santd_checkbox_toggleOption', {
             value: this.data.get('value')
         });
+
+        // 提交数据给form表单使用
+        this.dispatch('UI:form-item-interact', {
+            fieldValue: checked,
+            type: 'change'
+        });
     },
 
     handleClick(e) {

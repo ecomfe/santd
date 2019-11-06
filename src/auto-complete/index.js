@@ -36,6 +36,7 @@ let AutoComplete = san.defineComponent({
 
     onChange(value) {
         this.fire('change', value);
+        this.dispatch('UI:form-item-interact', {fieldValue: value, type: 'change'});
     },
 
     onBlur(value) {

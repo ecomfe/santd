@@ -10,20 +10,36 @@
         <s-formitem label="E-mail">
             <s-input decorator="{{emailDecorator}}"></s-input>
         </s-formitem>
-        <s-formitem label="Password">
-            <s-input type="password" decorator="{{passwordDecorator}}"></s-input>
+        <s-formitem label="Password" hasFeedBack="{{true}}">
+            <s-input-password decorator="{{passwordDecorator}}" />
         </s-formitem>
-        <s-formitem label="Confirm Password">
-            <s-input type="password" decorator="{{confirmPasswordDecorator}}"></s-input>
+        <s-formitem label="Confirm Password" hasFeedBack="{{true}}">
+            <s-input-password decorator="{{confirmPasswordDecorator}}" />
         </s-formitem>
-        <s-formitem label="Nickname">
+        <s-formitem >
+            <span slot="label">
+                Nickname&nbsp;
+                <s-tooltip title="What do you want others to call you?">
+                    <s-icon type="question-circle-o" />
+                </s-tooltip>
+            </span>
             <s-input decorator="{{nicknameDecorator}}"></s-input>
         </s-formitem>
         <s-formitem label="Habitual Residence">
             <s-cascader options={{residences}} decorator="{{residenceDecorator}}"></s-cascader>
         </s-formitem>
         <s-formitem label="Phone Number">
-            <s-input decorator="{{phoneNumberDecorator}}"></s-input>
+            <s-input decorator="{{phoneNumberDecorator}}">
+                <s-select style="width: 70px;" slot="addonBefore" decorator="{{phonePrefixDecorator}}">
+                    <s-select-option value="86">+86</s-select-option>
+                    <s-select-option value="87">+87</s-select-option>
+                </s-select>
+            </s-input>
+        </s-formitem>
+        <s-formitem label="website">
+            <s-autocomplete placeholder="website" on-search="handleWebsiteSearch" decorator="{{websiteDecorator}}">
+                <s-select-option s-for="website in websites" value="{{website}}">{{website}}</s-select-option>
+            </s-autocomplete>
         </s-formitem>
         <s-formitem label="Captcha" extra="We must make sure that you are a human.">
             <s-row gutter={{8}}>
@@ -45,7 +61,6 @@
   </div>
 </template>
 <script>
-import san from 'san';
 import form from 'santd/form';
 import Input from 'santd/input';
 import Icon from 'santd/icon';
@@ -55,6 +70,8 @@ import Cascader from 'santd/cascader';
 import Select from 'santd/select';
 import Row from 'santd/row';
 import Col from 'santd/col';
+import Tooltip from 'santd/tooltip';
+import AutoComplete from 'santd/auto-complete';
 
 const residences = [{
     value: 'zhejiang',
@@ -85,6 +102,7 @@ export default form.create({name: 'register'})({
         's-form': form,
         's-formitem': form.FormItem,
         's-input': Input,
+        's-input-password': Input.Password,
         's-icon': Icon,
         's-button': Button,
         's-checkbox': Checkbox,
@@ -92,7 +110,9 @@ export default form.create({name: 'register'})({
         's-select': Select,
         's-select-option': Select.Option,
         's-row': Row,
-        's-col': Col
+        's-col': Col,
+        's-tooltip': Tooltip,
+        's-autocomplete': AutoComplete
     },
     initData () {
         return {
@@ -134,22 +154,13 @@ export default form.create({name: 'register'})({
                 name: 'phone',
                 rules: [{required: true, message: 'Please input your phone number!'}]
             },
-            addonBefore() {
-                const BeforeComponent = san.defineComponent({
-                    components: {
-                        's-select': Select,
-                        's-select-option': Select.Option
-                    },
-                    template: `
-                        <div>
-                            <s-select defaultValue="+86">
-                              <s-select-option value="+86">+86</s-select-option>
-                              <s-select-option value="+87">+87</s-select-option>
-                            </s-select>
-                        <div>
-                    `
-                });
-                return new BeforeComponent();
+            phonePrefixDecorator: {
+                name: 'prefix',
+                initialValue: '86'
+            },
+            websiteDecorator: {
+                name: 'website',
+                rules: [{required: true, message: 'Please input website!'}]
             },
             captchaDecorator: {
                 name: 'captcha',
@@ -188,10 +199,19 @@ export default form.create({name: 'register'})({
             callback();
         }
     },
+    handleWebsiteSearch(value){
+        let list;
+        if (!value) {
+            list = [];
+        }
+        else {
+            list = ['.com', '.org', '.net'].map(domain => `${value}${domain}`);
+        }
+        this.data.set('websites', list);
+    },
     handleSubmit(e) {
         e.preventDefault();
-        const form = this.data.get('form');
-        form.validateFieldsAndScroll((err, values) => {
+        this.validateFieldsAndScroll((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
             }

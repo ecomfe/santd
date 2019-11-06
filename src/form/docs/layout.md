@@ -8,7 +8,7 @@
     <div>
         <s-form layout="{{formLayout}}">
             <s-formitem label="Form Layout" labelCol="{{formItemLayout.labelCol}}" wrapperCol="{{formItemLayout.wrapperCol}}">
-                <s-radiogroup defaultValue="horizontal" value="{{formLayout}}" on-change="handleFormLayoutChange">
+                <s-radiogroup defaultValue="horizontal" value="{{formLayout}}" on-change="handleFormLayoutChange" name="layout">
                     <s-radiobutton value="horizontal">Horizontal</s-radiobutton>
                     <s-radiobutton value="vertical">Vertical</s-radiobutton>
                     <s-radiobutton value="inline">Inline</s-radiobutton>

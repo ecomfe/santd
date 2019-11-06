@@ -149,3 +149,29 @@ export function hasRules(validate) {
 export function startsWith(str, prefix) {
     return str.lastIndexOf(prefix, 0) === 0;
 }
+
+export function getComputedStyle(el, prop) {
+    const getComputedStyle = window.getComputedStyle;
+    const style = getComputedStyle
+        ? getComputedStyle(el)
+        : el.currentStyle;
+    if (style) {
+        return style[prop.replace(/-(\w)/gi, (word, letter) => letter.toUpperCase())];
+    }
+    return undefined;
+}
+
+export function getScrollableContainer(node) {
+    let currentNode = node;
+    let nodeName;
+    while ((nodeName = currentNode.nodeName.toLowerCase()) !== 'body') {
+        const overflowY = getComputedStyle(currentNode, 'overflowY');
+        if (currentNode !== node
+            && (overflowY === 'auto' || overflowY === 'scroll')
+            && currentNode.scrollHeight > currentNode.clientHeight) {
+            return currentNode;
+        }
+        currentNode = currentNode.parentNode;
+    }
+    return nodeName === 'body' ? currentNode.ownerDocument : currentNode;
+}

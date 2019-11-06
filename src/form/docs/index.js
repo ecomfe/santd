@@ -13,13 +13,13 @@ import Modal from './modal.md';
 import Dynamic from './dynamic-form-item.md';
 import CustomForm from './custom-form.md';
 import Data from './data.md';
+import Date from './date.md';
 import CustomData from './custom-data.md';
 import CustomValidate from './custom-validate.md';
 import Coordinated from './coordinated.md';
 import Layout from './layout.md';
 import DynamicRule from './dynamic-rule.md';
 import Validate from './validate.md';
-import Date from './date.md';
 
 export default san.defineComponent({
     components: {
@@ -32,14 +32,14 @@ export default san.defineComponent({
         modal: Modal,
         dynamic: Dynamic,
         customform: CustomForm,
+        date: Date,
         data: Data,
         customdata: CustomData,
         customvalidate: CustomValidate,
         coordinated: Coordinated,
         layout: Layout,
         dynamicrule: DynamicRule,
-        validate: Validate,
-        date: Date
+        validate: Validate
     },
     template: `
         <div>
@@ -54,10 +54,10 @@ export default san.defineComponent({
             <customform/>
             <data/>
             <customdata/>
+            <customvalidate/>
             <coordinated/>
             <layout/>
             <dynamicrule/>
-            <customvalidate/>
             <validate/>
             <readme/>
         </div>
