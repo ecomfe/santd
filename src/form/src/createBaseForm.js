@@ -33,7 +33,6 @@ export default function (options = {}, mixins = {}) {
         fieldNameProp,
         fieldMetaProp,
         fieldDataProp,
-        formPropName = 'form',
         name: formName
     } = options;
     return function (wrappedComponent) {
@@ -100,12 +99,9 @@ export default function (options = {}, mixins = {}) {
                 if (onFieldsChange) {
                     const changedFields = Object.keys(fields)
                         .reduce((acc, name) => set(acc, name, this.fieldsStore.getField(name)), {});
-                    onFieldsChange({
-                        [formPropName]: this
-                    }, changedFields, this.fieldsStore.getNestedAllFields());
+                    onFieldsChange(this, changedFields, this.fieldsStore.getNestedAllFields());
                 }
-                // this.data.set('refresh', Math.random());
-                // this.data.set('form', this, {force: true});
+                this.data.set('form', this, {force: true});
             },
 
             setFieldsValue(changedValues, callback) {
@@ -124,9 +120,7 @@ export default function (options = {}, mixins = {}) {
                 this.setFields(newFields, callback);
                 if (onValuesChange) {
                     const allValues = this.fieldsStore.getAllValues();
-                    onValuesChange({
-                        [formPropName]: this
-                    }, changedValues, allValues);
+                    onValuesChange(this, changedValues, allValues);
                 }
                 Object.keys(newFields).forEach(name => {
                     let decoratorComponent = this.getDecoratorComponent(name);
@@ -134,7 +128,6 @@ export default function (options = {}, mixins = {}) {
                         decoratorComponent.data.set('value', newFields[name].value || '');
                     }
                 });
-                this.data.set('form', this, {force: true});
             },
 
             validateFieldsInternal(fields, {fieldNames, action, options = {}}, callback) {
@@ -343,16 +336,14 @@ export default function (options = {}, mixins = {}) {
                     fieldMeta.originalProps[action](...args);
                 }
                 const value = fieldMeta.getValueFromEvent
-                    ? fieldMeta.getValueFromEvent(args[2].value)
+                    ? fieldMeta.getValueFromEvent(args[2].e)
                     : args[2].value;
                 if (onValuesChange && value !== this.fieldsStore.getFieldValue(name)) {
                     const valuesAll = this.fieldsStore.getAllValues();
                     const valuesAllSet = {};
                     valuesAll[name] = value;
                     Object.keys(valuesAll).forEach(key => set(valuesAllSet, key, valuesAll[key]));
-                    onValuesChange({
-                        [formPropName]: this
-                    }, set({}, name, value), valuesAllSet);
+                    onValuesChange(this, set({}, name, value), valuesAllSet);
                 }
                 const field = this.fieldsStore.getField(name);
                 return ({
@@ -381,7 +372,7 @@ export default function (options = {}, mixins = {}) {
                         firstFields: !!fieldMeta.validateFirst
                     }
                 });
-                this.data.set('form', this, {force: true});
+                // this.data.set('form', this, {force: true});
             },
 
             onCollect(innerName, action, ...args) {
@@ -459,7 +450,6 @@ export default function (options = {}, mixins = {}) {
                     inputProps[fieldDataProp] = this.fieldsStore.getField(name);
                 }
 
-                // console.log(inputProps);
                 // This field is rendered, record it
                 // this.data.set('renderFields.' + name, inputProps);
                 this.renderFields[name] = inputProps;
@@ -502,8 +492,14 @@ export default function (options = {}, mixins = {}) {
                 }*/
             },
 
-            setDecoratorPropValue(decorator, decoratorComponent) {
+            setDecoratorPropValue(decorator, decoratorComponent, options) {
                 let props = this.getFieldProps(decorator.name, decorator);
+                let name = options.name;
+
+                if (name) {
+                    name += decorator.name ? `-${decorator.name}` : '';
+                    decoratorComponent.data.set('id', name);
+                }
 
                 const value = this.fieldsStore.getFieldValue(decorator.name);
                 if (value === undefined) {
@@ -529,14 +525,6 @@ export default function (options = {}, mixins = {}) {
             },
 
             messages: {
-                santd_form_add(payload) {
-                    let form = payload.value;
-                    let labelCol = form.data.get('labelCol') || {};
-                    let wrapperCol = form.data.get('wrapperCol') || {};
-
-                    this.data.set('labelCol', labelCol);
-                    this.data.set('wrapperCol', wrapperCol, {force: true});
-                },
                 santd_form_change(payload) {
                     const {name, action} = payload.value;
                     if (!name) {
@@ -555,10 +543,10 @@ export default function (options = {}, mixins = {}) {
                     if (decoratorComponents && decoratorComponents.length) {
                         decoratorComponents.forEach(decoratorComponent => {
                             let decorator = decoratorComponent.data.get('decorator');
-                            this.setDecoratorPropValue(decorator, decoratorComponent);
+                            this.setDecoratorPropValue(decorator, decoratorComponent, options);
 
                             decoratorComponent.watch('decorator', val => {
-                                this.setDecoratorPropValue(val, decoratorComponent);
+                                this.setDecoratorPropValue(val, decoratorComponent, options);
                             });
                         });
                     }

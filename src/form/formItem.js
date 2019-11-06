@@ -30,24 +30,29 @@ export default san.defineComponent({
         labelAlign: DataTypes.oneOf(['left', 'right']),
         labelCol: DataTypes.object,
         wrapperCol: DataTypes.object,
-        help: DataTypes.string,
+        help: DataTypes.oneOfType([DataTypes.string, DataTypes.array]),
         extra: DataTypes.string,
         validateStatus: DataTypes.oneOf(['success', 'warning', 'error', 'validating', '']),
         hasFeedback: DataTypes.bool,
         required: DataTypes.bool,
         colon: DataTypes.bool,
         prop: DataTypes.string,
-        decorator: DataTypes.object
+        decorator: DataTypes.object,
+        htmlFor: DataTypes.string
     },
     initData() {
         return {
             validateState: false,
             showMessage: true,
-            fieldData: ''
+            fieldData: '',
+            labelCol: {},
+            wrapperCol: {}
         };
     },
     inited() {
         this.data.set('hasLabel', !!this.sourceSlots.named.label || this.data.get('label'));
+        this.data.set('hasExtra', !!this.sourceSlots.named.extra || this.data.get('extra'));
+        this.data.set('hasHelpSlot', !!this.sourceSlots.named.help);
     },
     components: {
         's-row': Row,
@@ -74,35 +79,10 @@ export default san.defineComponent({
         labelClassName() {
             const required = this.data.get('isRequired');
             const colon = this.data.get('colon');
-            const form = this.data.get('form');
-            const formColon = form && form.data.get('colon');
-            const computedColon = formColon !== undefined ? formColon : colon;
             let classArr = [];
             required && classArr.push(`${prefixCls}-item-required`);
-            !computedColon && classArr.push(`${prefixCls}-item-no-colon`);
+            !colon && classArr.push(`${prefixCls}-item-no-colon`);
             return classArr;
-        },
-        labelColClassName() {
-            const labelCol = this.data.get('labelCol');
-            const labelAlign = this.data.get('labelAlign');
-            const labelClsBasic = prefixCls + '-item-label';
-            const form = this.data.get('form');
-            const align = labelAlign ? labelAlign : (form && form.data.get('labelAlign'));
-            let classArr = [labelClsBasic];
-            align === 'left' && classArr.push(`${labelClsBasic}-left`);
-            return classArr;
-        },
-        mergedWrapperCol() {
-            const wrapperCol = this.data.get('wrapperCol');
-            const form = this.data.get('form');
-
-            return wrapperCol ? wrapperCol : (form && form.data.get('wrapperCol')) || {};
-        },
-        mergedLabelCol() {
-            const labelCol = this.data.get('labelCol');
-            const form = this.data.get('form');
-
-            return labelCol ? labelCol : (form && form.data.get('labelCol')) || {};
         },
         getValidateStatus() {
             const name = this.data.get('name');
@@ -208,49 +188,42 @@ export default san.defineComponent({
                     this.dispatch('santd_form_change', {
                         name: decoratorComponent.data.get('decorator').name,
                         value: item.value.fieldValue,
-                        action: item.value.type
+                        action: item.value.type,
+                        e: item.value.e
                     });
                 }
             });
         }
     },
     template: `
-        <div key="row" class="${prefixCls}-item {{getHelpMessage ? '${prefixCls}-item-with-help' : ''}}">
+        <div key="row" class="${prefixCls}-item {{getHelpMessage || hasHelpSlot ? '${prefixCls}-item-with-help' : ''}}">
             <s-row>
                 <s-col
                     s-if="hasLabel"
-                    class="{{labelColClassName}}"
-                    s-bind="{{mergedLabelCol}}"
+                    class="${prefixCls}-item-label {{labelAlign === 'left' ? '${prefixCls}-item-label-left' : ''}}"
+                    s-bind="{{labelCol}}"
                 >
-                    <label htmlFor="{{id}}" title="{{hasLabel ? label || '' : ''}}" class="{{labelClassName}}">
+                    <label htmlFor="{{id || htmlFor}}" title="{{hasLabel ? label || '' : ''}}" class="{{labelClassName}}">
                         <slot name="label" s-if="!label" />
                         <template s-else>{{label}}</template>
                     </label>
                 </s-col>
-                <s-col
-                    s-bind="{{mergedWrapperCol}}"
-                    class="${prefixCls}-item-control-wrapper"
-                >
+                <s-col s-bind="{{wrapperCol}}" class="${prefixCls}-item-control-wrapper">
                     <div class="{{validateWrapperClassName}}">
                         <div class="${prefixCls}-item-children">
-                            <slot></slot>
-                            <span
-                                s-if="hasFeedback && iconType"
-                                class="${prefixCls}-item-children-icon"
-                            ><s-icon
-                                type="{{iconType}}"
-                                theme="{{iconType === 'loading' ? 'outlined' : 'filled'}}"
-                            ></s-icon></span>
+                            <slot />
+                            <span s-if="hasFeedback && iconType" class="${prefixCls}-item-children-icon">
+                                <s-icon type="{{iconType}}" theme="{{iconType === 'loading' ? 'outlined' : 'filled'}}" />
+                            </span>
                         </div>
-                        <div
-                            s-if="getHelpMessage"
-                            class="${prefixCls}-explain"
-                            key="help"
-                        >{{getHelpMessage}}</div>
-                        <div
-                            s-if="extra"
-                            class="${prefixCls}-extra"
-                        >{{extra}}</div>
+                        <div s-if="getHelpMessage || hasHelpSlot" class="${prefixCls}-explain" key="help">
+                            <slot name="help" s-if="hasHelpSlot" />
+                            <template s-else>{{getHelpMessage}}</template>
+                        </div>
+                        <div s-if="hasExtra" class="${prefixCls}-extra">
+                            <slot name="extra" s-if="!extra" />
+                            <template s-else>{{extra}}</template>
+                        </div>
                     </div>
                 </s-col>
             </s-row>

@@ -115,7 +115,7 @@ export default san.defineComponent({
             isReset = value === this.data.get('sValue');
         }
         this.onMouseLeave();
-        this.changeValue(isReset ? 0 : value);
+        this.changeValue(isReset ? 0 : value, event);
         this.data.set('cleanedValue', isReset ? value : null);
     },
     onFocus() {
@@ -147,7 +147,7 @@ export default san.defineComponent({
             } else {
                 sValue += 1;
             }
-            this.changeValue(sValue);
+            this.changeValue(sValue, event);
             event.preventDefault();
         } else if (event.keyCode === KeyCode.LEFT && sValue > 0) {
             if (allowHalf) {
@@ -155,7 +155,7 @@ export default san.defineComponent({
             } else {
                 sValue -= 1;
             }
-            this.changeValue(sValue);
+            this.changeValue(sValue, event);
             event.preventDefault();
         }
         this.fire('keydown', event);
@@ -185,11 +185,11 @@ export default san.defineComponent({
             this.el.blur();
         }
     },
-    changeValue(value) {
+    changeValue(value, e) {
         this.data.set('sValue', value);
         this.data.set('value', value);
         this.fire('change', value);
-        this.dispatch('UI:form-item-interact', {fieldValue: value, type: 'change'});
+        this.dispatch('UI:form-item-interact', {fieldValue: value, type: 'change', e});
     },
     template: `
         <ul

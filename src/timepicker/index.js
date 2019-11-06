@@ -188,7 +188,7 @@ export default san.defineComponent({
         this.fire('click');
         this.setValue(null);
         this.handleVisibleChange(false);
-        this.dispatch('UI:form-item-interact', {fieldValue: '', type: 'change'});
+        this.dispatch('UI:form-item-interact', {fieldValue: '', type: 'change', e});
     },
     handleChange(value) {
         this.data.set('value', value.clone());

@@ -21,18 +21,18 @@ import Input from 'santd/input';
 
 const CustomizedForm = Form.create({
     name: 'global_state',
-    onFieldsChange(props, changedFields) {
-        props.form.fire('change', changedFields);
+    onFieldsChange(form, changedFields, allFields) {
+        form.fire('change', changedFields);
     },
-    mapPropsToFields(props) {
-        const username = props.data.get('username');
+    mapPropsToFields(form) {
+        const username = form.data.get('username');
         return {
             username: Form.createFormField({
                 value: username.value
             })
         };
     },
-    onValuesChange(_, values) {
+    onValuesChange(form, values, allValues) {
         console.log(values);
     }
 })({

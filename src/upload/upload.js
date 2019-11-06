@@ -110,7 +110,7 @@ export default san.defineComponent({
     },
 
     beforeUploadFunc(beforeUpload, prevFileList) {
-        return (file, fileList) => {
+        return (file, fileList, e) => {
             if (!beforeUpload) {
                 return true;
             }
@@ -119,7 +119,8 @@ export default san.defineComponent({
             if (result === false) {
                 this.handleChange({
                     file,
-                    fileList: uniqBy(prevFileList.concat(fileList.map(fileToObject)), item => item.uid)
+                    fileList: uniqBy(prevFileList.concat(fileList.map(fileToObject)), item => item.uid),
+                    e
                 });
                 return false;
             }
@@ -167,7 +168,7 @@ export default san.defineComponent({
             this.autoUpdateProgress(targetItem);
         }
     },
-    handleError({err, ret, file}) {
+    handleError({err, ret, file, e}) {
         this.clearProgressTimer();
         const fileList = this.data.get('fileList');
         const targetItem = getFileItem(file, fileList);
@@ -182,7 +183,8 @@ export default san.defineComponent({
         this.data.set('fileList[' + fileIndex + ']', targetItem);
         this.handleChange({
             file: {...targetItem},
-            fileList
+            fileList,
+            e
         });
     },
     handleProgress({e, file}) {
@@ -196,12 +198,12 @@ export default san.defineComponent({
         const fileIndex = findIndex(fileList, ({uid}) => uid === targetItem.uid);
         this.data.set('fileList[' + fileIndex + ']', targetItem);
         this.handleChange({
-            event: e,
+            e,
             file: {...targetItem},
             fileList
         });
     },
-    handleSuccess({ret, file}) {
+    handleSuccess({ret, file, e}) {
         this.clearProgressTimer();
         try {
             if (typeof ret === 'string') {
@@ -221,13 +223,14 @@ export default san.defineComponent({
         this.data.set('fileList[' + fileIndex + ']', targetItem);
         this.handleChange({
             file: {...targetItem},
-            fileList
+            fileList,
+            e
         });
     },
     handleChange(info) {
         this.data.set('fileList', [...info.fileList]);
         this.fire('change', info);
-        this.dispatch('UI:form-item-interact', {fieldValue: info, type: 'change'});
+        this.dispatch('UI:form-item-interact', {fieldValue: info, type: 'change', e: info.e});
     },
     handleRemove(file) {
         const status = file.status;

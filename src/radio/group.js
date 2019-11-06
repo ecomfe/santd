@@ -80,7 +80,7 @@ export default san.defineComponent({
             const option = payload.value;
             this.data.set('value', option.value);
             this.fire('change', option.event);
-            this.dispatch('UI:form-item-interact', {fieldValue: option.value, type: 'change'});
+            this.dispatch('UI:form-item-interact', {fieldValue: option.value, type: 'change', e: payload.value.e});
         },
 
         santd_radio_add(payload) {
