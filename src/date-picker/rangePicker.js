@@ -100,7 +100,7 @@ export default san.defineComponent({
 
         this.data.set('value', []);
         this.handleChange({selectedValue: []});
-        this.dispatch('UI:form-item-interact', {fieldValue: '', type: 'change'});
+        this.dispatch('UI:form-item-interact', {fieldValue: '', type: 'change', e});
     },
     handleChange(data) {
         const selectedValue = data.selectedValue;

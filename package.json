@@ -1,7 +1,7 @@
 {
     "name": "santd",
     "version": "1.0.0-alpha.38",
-    "description": "san UI dedign",
+    "description": "san UI design",
     "scripts": {
         "start": "cross-env NODE_ENV=development node scripts/preview.js",
         "release:dist": "cross-env NODE_ENV=development node scripts/release.js",

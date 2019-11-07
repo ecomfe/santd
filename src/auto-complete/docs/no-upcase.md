@@ -22,7 +22,7 @@ import input from 'santd/input';
 
 const dataSource = ['Burns Bay Road', 'Downing Street', 'Wall Street'];
 const filterOption = function (inputValue, option) {
-    return option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1;
+    return option.data.get('value').toUpperCase().indexOf(inputValue.toUpperCase()) !== -1;
 };
 
 export default {

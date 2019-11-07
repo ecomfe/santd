@@ -84,7 +84,8 @@ export default san.defineComponent({
             // 提交数据给form表单使用
             this.dispatch('UI:form-item-interact', {
                 fieldValue: this.data.get('value'),
-                type: 'change'
+                type: 'change',
+                e: payload.value.e
             });
         },
 

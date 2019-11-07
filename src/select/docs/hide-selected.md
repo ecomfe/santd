@@ -11,16 +11,21 @@
             placeholder="Inserted are removed"
             value="{{selectedItems}}"
             style="width: 100%;"
-            on-change="onChange"
+            on-change="handleChange"
         >
-            <s-select-option s-for="d,index in selectTarget" value="{{d}}">{{d}}</s-select-option>
+            <s-select-option
+                s-for="item in filteredOptions trackBy item"
+                value="{{item}}"
+            >{{item}}</s-select-option>
         </s-select>
     </div>
 </template>
+
 <script>
+
 import Select from 'santd/select';
 
-const OPTIONS = ['Apples', 'Nails', 'Helicopters', 'Bananas'];
+const OPTIONS = ['Apples', 'Nails', 'Bananas', 'Helicopters'];
 
 export default {
     components: {
@@ -28,22 +33,18 @@ export default {
         's-select-option': Select.Option
     },
     computed: {
-        selectTarget() {
-            let selectedItems = this.data.get('selectedItems');
-            const res = OPTIONS.filter(item => {
-                return !selectedItems.includes(item);
-            });
-            console.log('过滤的结果', res);
-            return res;
+        filteredOptions() {
+            const selectedItems = this.data.get('selectedItems');
+            return OPTIONS.filter(o => !selectedItems.includes(o));
         }
     },
     initData() {
         return {
             selectedItems: []
-        }
+        };
     },
-    onChange(value) {
-        this.data.set('selectedItems', value);
+    handleChange(selectedItems) {
+        this.data.set('selectedItems', selectedItems);
     }
 }
 </script>

@@ -8,100 +8,99 @@
     <div>
         <s-table
             columns="{{columns}}"
-            dataSource="{{data}}"
-            expandedRowRender="{{expandedRowRender}}"
-        ></s-table>
+            data="{{data}}"
+        >
+            <a slot="operation" href="javascript:;">Publish</a>
+            <s-table
+                slot="expandedRowRender"
+                columns="{{innerColumns}}"
+                data="{{innerData}}"
+                pagination="{{false}}"
+            >
+                <span slot="status"><s-badge status="success" />Finished</span>
+                <span slot="operation" class="table-operation">
+                    <a href="javascript:;">Pause</a>
+                    <a href="javascript:;">Stop</a>
+                    <s-dropdown>
+                        <s-menu slot="overlay" prefixCls="{{prefixCls}}">
+                            <s-menu-item>Action 1</s-menu-item>
+                            <s-menu-item>Action 2</s-menu-item>
+                        </s-menu>
+                        <a href="javascript:;"> More <s-icon type="down" /> </a>
+                    </s-dropdown>
+                </span>
+            </s-table>
+        </s-table>
     </div>
 </template>
 <script>
 import san from 'san';
-import table from 'santd/table';
+import Table from 'santd/table';
+import Badge from 'santd/badge';
+import Dropdown from 'santd/dropdown';
+import Menu from 'santd/menu';
+
+const columns = [
+    {title: 'Name', dataIndex: 'name', key: 'name'},
+    {title: 'Platform', dataIndex: 'platform', key: 'platform'},
+    {title: 'Version', dataIndex: 'version', key: 'version'},
+    {title: 'Upgraded', dataIndex: 'upgradeNum', key: 'upgradeNum'},
+    {title: 'Creator', dataIndex: 'creator', key: 'creator'},
+    {title: 'Date', dataIndex: 'createdAt', key: 'createdAt'},
+    {title: 'Action', key: 'operation', scopedSlots: {render: 'operation'}}
+];
+
+const data = [];
+for (let i = 0; i < 3; ++i) {
+    data.push({
+    key: i,
+    name: 'Screem',
+    platform: 'iOS',
+    version: '10.3.4.5654',
+    upgradeNum: 500,
+    creator: 'Jack',
+    createdAt: '2014-12-24 23:12:00'
+    });
+}
+
+const innerColumns = [
+    {title: 'Date', dataIndex: 'date', key: 'date'},
+    {title: 'Name', dataIndex: 'name', key: 'name'},
+    {title: 'Status', key: 'state', scopedSlots: {render: 'status'}},
+    {title: 'Upgrade Status', dataIndex: 'upgradeNum', key: 'upgradeNum'},
+    {
+        title: 'Action',
+        dataIndex: 'operation',
+        key: 'operation',
+        scopedSlots: {render: 'operation'}
+    }
+];
+
+const innerData = [];
+for (let i = 0; i < 3; ++i) {
+    innerData.push({
+        key: i,
+        date: '2014-12-24 23:12:00',
+        name: 'This is production name',
+        upgradeNum: 'Upgraded: 56'
+    });
+}
 
 export default {
     components: {
-        's-table': table
+        's-table': Table,
+        's-badge': Badge,
+        's-dropdown': Dropdown,
+        's-menu': Menu,
+        's-menu-item': Menu.Item
     },
     initData() {
         return {
-            expandedRowRender() {
-                const columns = [
-                    { title: 'Date', dataIndex: 'date', key: 'date' },
-                    { title: 'Name', dataIndex: 'name', key: 'name' },
-                    { title: 'Upgrade Status', dataIndex: 'upgradeNum', key: 'upgradeNum' }
-                ];
-                const data = [];
-                for (let i = 0; i < 3; ++i) {
-                    data.push({
-                        key: i,
-                        date: '2014-12-24 23:12:00',
-                        name: 'This is production name',
-                        upgradeNum: 'Upgraded: 56',
-                    });
-                }
-                return san.defineComponent({
-                    components: {
-                        's-table': table
-                    },
-                    initData() {
-                        return {
-                            columns: columns,
-                            data: data
-                        };
-                    },
-                    template: `
-                        <div>
-                            <s-table columns="{{columns}}" dataSource="{{data}}"></s-table>
-                        </div>
-                    `
-                })
-            },
-            columns: [{
-                title: 'Name',
-                dataIndex: 'name',
-                key: 'name'
-            }, {
-                title: 'Age',
-                dataIndex: 'age',
-                key: 'age',
-            }, {
-                title: 'Address',
-                dataIndex: 'address',
-                key: 'address',
-            }, {
-                title: 'Action',
-                key: 'x',
-                dataIndex: '',
-                render() {
-                    return san.defineComponent({
-                        template: `
-                            <a href="javascript:;">delete</a>
-                        `
-                    });
-                }
-            }],
-            data: [
-                {
-                    key: '1',
-                    name: 'Jim Green',
-                    age: 24,
-                    address: 'London No. 1 Lake Park',
-                    description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.'
-                },
-                {
-                    key: '2',
-                    name: 'Joe Black',
-                    age: 30,
-                    address: 'Sydney No. 1 Lake Park',
-                    description: 'My name is Jim Green, I am 42 years old, living in London No. 1 Lake Park.'
-                },
-                {
-                    key: '3',
-                    name: 'Jon Snow',
-                    age: 26,
-                    address: 'Ottawa No. 2 Lake Park',
-                    description: 'My name is Joe Black, I am 32 years old, living in Sidney No. 1 Lake Park.'
-                }
-            ]
+            data,
+            columns,
+            innerColumns,
+            innerData,
+            expandedRowKeys: []
         }
     }
 }

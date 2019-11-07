@@ -66,9 +66,8 @@ export default Form.create({name: 'dynamic_form_item'})({
             }
         }
     },
-    created() {
-        const form = this.data.get('form');
-        form && form.getFieldDecorator({name: 'keys', initialValue: []});
+    inited() {
+        this.getFieldProps('keys', {initialValue: []});
     },
     computed: {
         keys() {
@@ -94,8 +93,7 @@ export default Form.create({name: 'dynamic_form_item'})({
     },
     handleSubmit(e) {
         e.preventDefault();
-        const form = this.data.get('form');
-        form.validateFields((err, values) => {
+        this.validateFields((err, values) => {
             if (!err) {
                 const { keys, names } = values;
                 console.log('Received values of form: ', values);
@@ -104,22 +102,20 @@ export default Form.create({name: 'dynamic_form_item'})({
         });
     },
     handleAdd() {
-        const form = this.data.get('form');
-        const keys = form.getFieldValue('keys');
+        const keys = this.getFieldValue('keys');
         const nextKeys = keys.concat(id++);
 
-        form.setFieldsValue({
+        this.setFieldsValue({
             keys: nextKeys
         });
     },
     handleRemove(k) {
-        const form = this.data.get('form');
-        const keys = form.getFieldValue('keys');
+        const keys = this.getFieldValue('keys');
         if (keys.length === 1) {
             return;
         }
 
-        form.setFieldsValue({
+        this.setFieldsValue({
             keys: keys.filter(key => key !== k)
         })
     }

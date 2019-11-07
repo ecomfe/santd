@@ -82,7 +82,7 @@
       color: @text-color;
       white-space: nowrap;
       cursor: pointer;
-      transition: all 0.3s;
+      // transition: all 0.3s;
       line-height: 22px;
 
       > .anticon:first-child {
@@ -109,6 +109,9 @@
 
       &:hover {
         background-color: @item-hover-bg;
+        > a {
+            color: @text-color;
+        }
       }
 
       &-disabled {

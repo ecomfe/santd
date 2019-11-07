@@ -25,7 +25,7 @@ export default san.defineComponent({
             <basic/>
             <option/>
             <upcase/>
-            <custom/>
+            <!--<custom/>-->
             <lookup/>
             <unlookup/>
             <readme/>

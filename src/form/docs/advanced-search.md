@@ -53,14 +53,12 @@ const AdvancedSearchForm = {
     },
     handleSearch(e) {
         e.preventDefault();
-        const form = this.data.get('form');
-        form.validateFields((err, values) => {
+        this.validateFields((err, values) => {
             console.log('Received values of form: ', values);
         });
     },
     handleReset() {
-        const form = this.data.get('form');
-        form.resetFields();
+        this.resetFields();
     },
     handleToggle() {
         const expand = this.data.get('expand');

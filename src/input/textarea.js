@@ -45,11 +45,11 @@ export default san.defineComponent({
             this.resizeTextarea();
         });
         this.fire('inputChange', e.target.value);
-        this.dispatch('UI:form-item-interact', {fieldValue: e.target.value, type: 'change'});
+        this.dispatch('UI:form-item-interact', {fieldValue: e.target.value, type: 'change', e});
     },
     handleBlur(e) {
         this.fire('textareaBlur', e.target.value);
-        this.dispatch('UI:form-item-interact', {fieldValue: e.target.value, type: 'change'});
+        this.dispatch('UI:form-item-interact', {fieldValue: e.target.value, type: 'change', e});
     },
     template: `
         <textarea

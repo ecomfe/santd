@@ -3,50 +3,14 @@
  * @author mayihui@baidu.com
  **/
 
-import san from 'san';
 import scrollIntoView from 'dom-scroll-into-view';
 import createBaseForm from './createBaseForm';
-import {getParams} from './utils';
+import {getParams, getScrollableContainer} from './utils';
 import has from 'lodash/has';
-
-function computedStyle(el, prop) {
-    const getComputedStyle = window.getComputedStyle;
-    const style = getComputedStyle
-        ? getComputedStyle(el)
-        : el.currentStyle;
-    if (style) {
-        return style
-        [
-            // Switch to camelCase for CSSOM
-            // DEV: Grabbed from jQuery
-            // https://github.com/jquery/jquery/blob/1.9-stable/src/css.js#L191-L194
-            // https://github.com/jquery/jquery/blob/1.9-stable/src/core.js#L593-L597
-            prop.replace(/-(\w)/gi, (word, letter) => {
-                return letter.toUpperCase();
-            })
-        ];
-    }
-    return undefined;
-}
-
-function getScrollableContainer(n) {
-    let node = n;
-    let nodeName;
-    while ((nodeName = node.nodeName.toLowerCase()) !== 'body') {
-        const overflowY = computedStyle(node, 'overflowY');
-        if (node !== n
-            && (overflowY === 'auto' || overflowY === 'scroll')
-            && node.scrollHeight > node.clientHeight) {
-            return node;
-        }
-        node = node.parentNode;
-    }
-    return nodeName === 'body' ? node.ownerDocument : node;
-}
 
 const mixin = {
     validateFieldsAndScroll(ns, opt, cb) {
-        const {names, callback, options} = getParams(ns, opt, cb);
+        const {names, options} = getParams(ns, opt, cb);
         const that = this;
 
         const newCb = function (error, values) {
@@ -80,7 +44,6 @@ const mixin = {
                 }
             }
         };
-
         return this.validateFields(names, options, newCb);
     }
 };

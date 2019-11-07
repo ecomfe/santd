@@ -227,6 +227,7 @@ class FieldsStore {
     }
 
     getFieldsError(names) {
+        names = Array.isArray(names) ? names : undefined;
         return this.getNestedFields(names, this.getFieldError);
     }
 

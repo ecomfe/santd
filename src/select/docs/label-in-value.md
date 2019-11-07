@@ -7,26 +7,29 @@
 ```html
 <template>
     <div>
-        <s-select labelInValue="{{true}}" defaultValue="{{ { key: 'lucy' } }}" style="width: 120px;" on-change="onChange">
-            <s-select-option value="jake">Jake(001)</s-select-option>
-            <s-select-option value="lucy">Lucy(002)</s-select-option>
-            <s-select-option value="jason">Jason</s-select-option>
+        <s-select
+            labelInValue="{{true}}"
+            defaultValue="{{{key: 'lucy'}}}"
+            style="width: 120px;"
+            on-change="handleChange"
+        >
+            <s-select-option value="jack">Jack (100)</s-select-option>
+            <s-select-option value="lucy">Lucy (101)</s-select-option>
         </s-select>
     </div>
 </template>
+
 <script>
+
 import Select from 'santd/select';
+
 export default {
     components: {
         's-select': Select,
         's-select-option': Select.Option
     },
-    initData() {
-        return {
-        }
-    },
-    onChange(value) {
-        console.log('value is: ', value);
+    handleChange(value) {
+        console.log(value); // { key: "lucy", label: "Lucy (101)" }
     }
 }
 </script>

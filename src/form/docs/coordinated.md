@@ -11,12 +11,12 @@
             <s-input decorator="{{noteDecorator}}"></s-input>
         </s-formitem>
         <s-formitem label="Gender">
-            <s-select placeholder="select a option and change input test above" on-change="handleSelectChange" decorator="{{genderDecorator}}">
+            <s-select on-change="handleSelectChange" decorator="{{genderDecorator}}">
                 <s-selectoption value="male">male</s-selectoption>
                 <s-selectoption value="female">female</s-selectoption>
             </s-select>
         </s-formitem>
-        <s-formitem>
+        <s-formitem wrapperCol="{{{span: 12, offset: 5}}}">
             <s-button type="primary" htmlType="submit">Submit</s-button>
         </s-formitem>
       </s-form>
@@ -59,10 +59,8 @@ export default Form.create({name: 'coordinated'})({
         });
     },
     handleSelectChange(value) {
-        console.log(value);
-        const form = this.data.get('form');
-        form.setFieldsValue({
-            note: `Hi, ${value === 'male' ? 'man' : 'lady'}!`
+        this.setFieldsValue({
+            note: `Hi, ${value[0] === 'male' ? 'man' : 'lady'}!`
         });
     }
 })

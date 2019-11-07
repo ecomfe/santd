@@ -8,42 +8,54 @@
     <div>
         <s-table
             columns="{{columns}}"
-            dataSource="{{data}}"
-        ></s-table>
+            data="{{data}}"
+        >
+            <div slot="name">
+                <s-input s-if="record.editable" style="margin: -5px 0;" value="{{text}}" on-change="handleChange($event, column, index)" />
+                <template s-else>{{text}}</template>
+            </div>
+            <div slot="age">
+                <s-input s-if="record.editable" style="margin: -5px 0;" value="{{text}}" on-change="handleChange($event, column, index)" />
+                <template s-else>{{text}}</template>
+            </div>
+            <div slot="address">
+                <s-input s-if="record.editable" style="margin: -5px 0;" value="{{text}}" on-change="handleChange($event, column, index)" />
+                <template s-else>{{text}}</template>
+            </div>
+            <div class="editable-row-operations" slot="operation">
+                <span s-if="record.editable">
+                    <a on-click="handleSave(index)">Save</a>
+                    <s-popconfirm title="Sure to cancel?" on-confirm="handleCancel(index)">
+                        <a>Cancel</a>
+                    </s-popconfirm>
+                </span>
+                <span s-else>
+                    <a on-click="handleEdit(index)">Edit</a>
+                </span>
+            </div>
+        </s-table>
     </div>
 </template>
 <script>
-import san from 'san';
-import santable from 'santd/table';
-import input from 'santd/input';
-import popconfirm from 'santd/popconfirm';
-
-const editableCell = san.defineComponent({
-    components: {
-        's-input': input
-    },
-    handleChange(value) {
-        this.fire('change', value);
-    },
-    template: `<div>
-        <s-input s-if="editable" value="{{text}}" on-change="handleChange"/>
-        <div on-click="handleEdit" s-else>
-            {{text}}
-        </div>
-    </div>`
-});
+import Table from 'santd/table';
+import Input from 'santd/input';
+import Popconfirm from 'santd/popconfirm';
 
 export default {
     components: {
-        's-table': santable
+        's-table': Table,
+        's-input': Input,
+        's-popconfirm': Popconfirm
     },
     handleEdit(key) {
-        const data = this.data.get('data');
+        let data = this.data.get('data');
         const editable = data[key].editable || false;
         this.data.apply('data', (items) => {
             return items.map(item => {
                 item.editable = item.key == key;
-                return item;
+                return {
+                    ...item
+                };
             });
         });
     },
@@ -53,15 +65,18 @@ export default {
         this.data.apply('data', (items) => {
             return items.map(item => {
                 item.editable = item.key == key && false;
-                return item;
+                return {
+                    ...item
+                };
             });
         });
     },
-    handleChange(payload) {
+    handleChange(value, column, index) {
         const data = this.data.get('data');
         const newData = [...data];
-        if (newData[payload.key]) {
-            newData[payload.key][payload.name] = payload.value;
+        console.log(column);
+        if (newData[index]) {
+            newData[index][column.key] = value;
         }
         this.data.set('newData', newData);
     },
@@ -69,7 +84,9 @@ export default {
         const data = this.data.get('newData') || this.data.get('data');
         const newData = data.map(item => {
             item.editable = false;
-            return item;
+            return {
+                ...item
+            };
         });
         this.data.set('data', newData);
     },
@@ -80,82 +97,21 @@ export default {
                 title: 'Name',
                 dataIndex: 'name',
                 key: 'name',
-                render(text, record) {
-                    return san.defineComponent({
-                        components: {
-                            's-editablecell': editableCell
-                        },
-                        handleChange(value) {
-                            const record = this.data.get('record');
-                            that.handleChange({key: record.key, value: value, name: 'name'});
-                        },
-                        template: `<div><s-editablecell text="{{text}}" editable="{{record.editable}}" on-change="handleChange"></s-editablecell></div>`
-                    });
-
-                }
+                scopedSlots: {render: 'name'}
             }, {
                 title: 'Age',
                 dataIndex: 'age',
                 key: 'age',
-                render(text, record) {
-                    return san.defineComponent({
-                        components: {
-                            's-editablecell': editableCell
-                        },
-                        handleChange(value) {
-                            const record = this.data.get('record');
-                            that.handleChange({key: record.key, value: value, name: 'age'});
-                        },
-                        template: `<div><s-editablecell text="{{text}}" editable="{{record.editable}}" on-change="handleChange"></s-editablecell></div>`
-                    });
-                }
+                scopedSlots: {render: 'age'}
             }, {
                 title: 'Address',
                 dataIndex: 'address',
                 key: 'address',
-                render(text, record) {
-                    return san.defineComponent({
-                        components: {
-                            's-editablecell': editableCell
-                        },
-                        handleChange(value) {
-                            const record = this.data.get('record');
-                            that.handleChange({key: record.key, value: value, name: 'address'});
-                        },
-                        template: `<div><s-editablecell text="{{text}}" editable="{{record.editable}}" on-change="handleChange"></s-editablecell></div>`
-                    });
-                }
+                scopedSlots: {render: 'address'}
             }, {
                 title: 'Action',
                 key: 'action',
-                render(text, record) {
-                    return san.defineComponent({
-                        handleEdit() {
-                            const record = this.data.get('record');
-                            that.handleEdit(record.key);
-                        },
-                        handleCancel() {
-                            const record = this.data.get('record');
-                            that.handleCancel(record.key);
-                        },
-                        handleSave() {
-                            const record = this.data.get('record');
-                            that.handleSave(record.key);
-                        },
-                        components: {
-                            's-popconfirm': popconfirm
-                        },
-                        template: `
-                            <div>
-                                <span s-if="record.editable">
-                                    <a href="javascript:;" on-click="handleSave">Save</a>
-                                    <a href="javascript:;" on-click="handleCancel">Cancel</a>
-                                </span>
-                                <a href="javascript:;" s-else on-click="handleEdit">Edit</a>
-                            </div>
-                        `
-                    });
-                }
+                scopedSlots: {render: 'operation'}
             }],
             data: [
                 {

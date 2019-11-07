@@ -13,19 +13,18 @@
 <template>
     <div>
         <s-table
-            rowSelection="{{rowSelection}}"
             columns="{{columns}}"
-            dataSource="{{data}}"
+            data="{{data}}"
             on-change="handleChange"
         ></s-table>
     </div>
 </template>
 <script>
 import san from 'san';
-import table from 'santd/table';
+import Table from 'santd/table';
 export default {
     components: {
-        's-table': table
+        's-table': Table
     },
     handleChange(pagination, filters, sorter) {
         console.log('params', pagination, filters, sorter);
@@ -41,16 +40,6 @@ export default {
                 }, {
                     text: 'Jim',
                     value: 'Jim'
-                }, {
-                    text: 'Submenu',
-                    value: 'Submenu',
-                    children: [{
-                        text: 'Green',
-                        value: 'Green'
-                    }, {
-                        text: 'Black',
-                        value: 'Black'
-                    }]
                 }],
                 onFilter(value, record) {
                     return record.name.indexOf(value) === 0;
@@ -76,7 +65,7 @@ export default {
                     text: 'New York',
                     value: 'New York'
                 }],
-                filterMultiple: true,
+                filterMultiple: false,
                 onFilter(value, record) {
                     return record.address.indexOf(value) === 0;
                 },

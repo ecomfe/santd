@@ -22,21 +22,21 @@ export default san.defineComponent({
         const inputValue = e.target.value;
         this.data.set('value', inputValue);
         this.fire('change', inputValue);
-        this.dispatch('UI:form-item-interact', {fieldValue: inputValue, type: 'change'});
+        this.dispatch('UI:form-item-interact', {fieldValue: inputValue, type: 'change', e});
     },
     keydownHander(e) {
         if (e.keyCode === keyCode.ENTER) {
             const inputValue = e.target.value;
             this.data.set('value', inputValue);
             this.fire('pressEnter', inputValue);
-            this.dispatch('UI:form-item-interact', {fieldValue: inputValue, type: 'change'});
+            this.dispatch('UI:form-item-interact', {fieldValue: inputValue, type: 'change', e});
         }
     },
     inputOnBlur(e) {
         const inputValue = e.target.value;
         this.data.set('value', inputValue);
         this.fire('blur', inputValue);
-        this.dispatch('UI:form-item-interact', {fieldValue: inputValue, type: 'blur'});
+        this.dispatch('UI:form-item-interact', {fieldValue: inputValue, type: 'blur', e});
     },
     template: `
         <input

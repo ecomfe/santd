@@ -69,7 +69,7 @@ export default function (calendar) {
 
             this.data.set('value', null);
             this.fire('change', {date: null, dateString: null});
-            this.dispatch('UI:form-item-interact', {fieldValue: '', type: 'change'});
+            this.dispatch('UI:form-item-interact', {fieldValue: '', type: 'change', e});
         },
         handleOk(value) {
             this.data.set('value', value);

@@ -6,7 +6,7 @@
 ```html
 <template>
   <div>
-  	<s-auto-complete
+    <s-auto-complete
         on-search="handleSearch"
         on-select="handleSelect"
         dataSource="{{dataSource}}"
@@ -30,7 +30,6 @@ import input from 'santd/input';
 export default {
     components: {
         's-auto-complete': autoComplete,
-        's-input': input,
         's-textarea': input.TextArea
     },
     initData() {

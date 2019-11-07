@@ -26,38 +26,6 @@ let AutoComplete = san.defineComponent({
         open: DataTypes.bool
     },
 
-    compiled() {
-        const slots = this.sourceSlots.named;
-        if (Object.keys(slots).length) {
-            this.sourceSlots.named = [];
-            const source = this.source;
-            const owner = this.owner;
-            
-            this.components.injectslot = san.defineComponent({
-                components: this.parentComponent.components,
-                compiled() {
-                    this.source = source;
-                    this.owner = owner;
-                    this.sourceSlots.named = slots;
-                    this._initSourceSlots();
-                },
-                template: `
-                    <span>
-                        <slot name="custom" s-bind="{{{value}}}"></slot>
-                    </span>`
-            });
-        }
-        else {
-            this.components.injectslot = null;
-        }
-    },
-
-    initData() {
-        return {
-            injectslot: this.components.injectslot || null
-        };
-    },
-
     onSearch(value) {
         this.fire('search', value);
     },
@@ -68,6 +36,7 @@ let AutoComplete = san.defineComponent({
 
     onChange(value) {
         this.fire('change', value);
+        this.dispatch('UI:form-item-interact', {fieldValue: value, type: 'change'});
     },
 
     onBlur(value) {
@@ -85,7 +54,7 @@ let AutoComplete = san.defineComponent({
     template: `
         <div>
             <s-select
-                showSearch
+                showSearch="{{true}}"
                 allowClear="{{allowClear}}"
                 autoFocus="{{autoFocus}}"
                 classNames="auto-complete"
@@ -93,14 +62,15 @@ let AutoComplete = san.defineComponent({
                 showArrow="{{false}}"
                 placeholder="{{placeholder}}"
                 on-search="onSearch"
-                notFoundContent="null"
-                isAutoComplete
-                inputElement="{{injectslot}}"
+                notFoundContent="{{null}}"
+                autoClearSearchValue="{{false}}"
                 value="{{value}}"
                 filterOption="{{filterOption}}"
                 defaultValue="{{defalutValue}}"
                 open="{{open}}"
                 defaultOpen="{{defaultOpen}}"
+                optionFilterProp="children"
+                isAutoComplete="{{true}}"
                 on-select="onSelect"
                 on-change="onChange"
                 on-blur="onBlur"

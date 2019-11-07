@@ -32,7 +32,6 @@
   </div>
 </template>
 <script>
-import san from 'san';
 import Form from 'santd/form';
 import Button from 'santd/button';
 import DatePicker from 'santd/date-picker';
@@ -90,8 +89,7 @@ export default Form.create({name: 'time_related_controls'})({
     },
     handleSubmit(e) {
         e.preventDefault();
-        const form = this.data.get('form');
-        form.validateFields((err, values) => {
+        this.validateFields((err, values) => {
             const rangeValue = values['rangePicker'];
             const rangeTimeValue = values['rangeTimePicker'];
             const results = {

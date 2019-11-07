@@ -431,7 +431,6 @@ export default san.defineComponent({
         on-mousemove="handleMouseMove"
         on-mouseleave="handleMouseLeave"
         on-contextmenu="handleContextMenu"
-        class="{{classes}}"
     >
         <slot />
     </span>`

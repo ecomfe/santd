@@ -9,7 +9,7 @@
     <div>
         <s-table
             columns="{{columns}}"
-            dataSource="{{data}}"
+            data="{{data}}"
             scroll="{{ {y: '240px'} }}"
         ></s-table>
     </div>
@@ -36,12 +36,12 @@ export default {
                 {
                     title: 'Name',
                     dataIndex: 'name',
-                    width: 150
+                    width: '150px'
                 },
                 {
                     title: 'Age',
                     dataIndex: 'age',
-                    width: 150
+                    width: '150px'
                 },
                 {
                     title: 'Address',

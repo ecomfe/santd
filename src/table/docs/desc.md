@@ -10,10 +10,10 @@
 
 ## 如何使用
 
-指定表格的数据源 dataSource 为一个数组。
+指定表格的数据源 data 为一个数组。
 
 ```js
-const dataSource = [{
+const data = [{
   key: '1',
   name: '胡彦斌',
   age: 32,
@@ -39,7 +39,7 @@ const columns = [{
   key: 'address',
 }];
 
-<Table dataSource={dataSource} columns={columns} />
+<Table data={data} columns={columns} />
 ```
 
 ## 代码演示

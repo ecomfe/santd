@@ -9,20 +9,35 @@
         <s-button type="primary" on-click="handleAdd">Add</s-button>
         <s-table
             columns="{{columns}}"
-            dataSource="{{data}}"
-        ></s-table>
+            data="{{data}}"
+        >
+            <template slot="name">
+                <s-editablecell text="{{text}}" />
+            </template>
+            <template slot="operation">
+                <s-popconfirm
+                    s-if="data.length"
+                    title="Sure to delete?"
+                    on-confirm="handleDelete(index)"
+                >
+                    <a href="javascript:;">Delete</a>
+                </s-popconfirm>
+            </template>
+        </s-table>
     </div>
 </template>
 <script>
 import san from 'san';
-import santable from 'santd/table';
-import button from 'santd/button';
-import input from 'santd/input';
-import popconfirm from 'santd/popconfirm';
+import Table from 'santd/table';
+import Button from 'santd/button';
+import Input from 'santd/input';
+import Popconfirm from 'santd/popconfirm';
+import Icon from 'santd/icon';
 
-const editableCell = san.defineComponent({
+const EditableCell = san.defineComponent({
     components: {
-        's-input': input
+        's-input': Input,
+        's-icon': Icon
     },
     initData() {
         return {
@@ -39,18 +54,24 @@ const editableCell = san.defineComponent({
             this.handleEdit();
         }
     },
-    template: `<div>
-        <s-input s-if="editable" value="{{text}}" on-blur="handleSave"/>
-        <div on-click="handleEdit" s-else>
+    template: `<div class="editable-cell">
+        <div class="editable-cell-input-wrapper" s-if="editable">
+            <s-input value="{{text}}" on-blur="handleSave"/>
+            <s-icon type="check" class="editable-cell-icon-check" />
+        </div>
+        <div class="editable-cell-text-wrapper" s-else>
             {{text}}
+            <s-icon type="edit" class="editable-cell-icon" on-click="handleEdit"/>
         </div>
     </div>`
 });
 
 export default {
     components: {
-        's-table': santable,
-        's-button': button
+        's-table': Table,
+        's-button': Button,
+        's-popconfirm': Popconfirm,
+        's-editablecell': EditableCell
     },
     handleAdd() {
         const count = this.data.get('count');
@@ -72,18 +93,13 @@ export default {
     initData() {
         const that = this;
         return {
+            count: 2,
             columns: [{
                 title: 'Name',
                 dataIndex: 'name',
-                key: 'name',
-                render(text, record) {
-                    return san.defineComponent({
-                        components: {
-                            's-editablecell': editableCell
-                        },
-                        template: `<div><s-editablecell text="{{text}}"></s-editablecell></div>`
-                    });
-
+                width: '30%',
+                scopedSlots: {
+                    render: 'name'
                 }
             }, {
                 title: 'Age',
@@ -96,26 +112,10 @@ export default {
             }, {
                 title: 'Action',
                 key: 'action',
-                render(text, record) {
-                    return san.defineComponent({
-                        handleDelete() {
-                            const record = this.data.get('record');
-                            that.handleDelete(record.key);
-                        },
-                        components: {
-                            's-popconfirm': popconfirm
-                        },
-                        template: `
-                            <span>
-                                <s-popconfirm title="Sure to delete?" on-confirm="handleDelete">
-                                    <a href="javascript:;">Delete</a>
-                                </s-popconfirm>
-                            </span>
-                        `
-                    });
+                scopedSlots: {
+                    render: 'operation'
                 }
             }],
-            count: 2,
             data: [
                 {
                     key: '0',
@@ -133,4 +133,48 @@ export default {
     }
 }
 </script>
+<style>
+  .editable-cell {
+    position: relative;
+  }
+
+  .editable-cell-input-wrapper,
+  .editable-cell-text-wrapper {
+    padding-right: 24px;
+  }
+
+  .editable-cell-text-wrapper {
+    padding: 5px 24px 5px 5px;
+  }
+
+  .editable-cell-icon,
+  .editable-cell-icon-check {
+    position: absolute;
+    right: 0;
+    width: 20px;
+    cursor: pointer;
+  }
+
+  .editable-cell-icon {
+    line-height: 18px;
+    display: none;
+  }
+
+  .editable-cell-icon-check {
+    line-height: 28px;
+  }
+
+  .editable-cell:hover .editable-cell-icon {
+    display: inline-block;
+  }
+
+  .editable-cell-icon:hover,
+  .editable-cell-icon-check:hover {
+    color: #108ee9;
+  }
+
+  .editable-add-btn {
+    margin-bottom: 8px;
+  }
+</style>
 ```

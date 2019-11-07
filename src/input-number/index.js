@@ -264,7 +264,7 @@ export default san.defineComponent({
         formatInput = this.inputDisplayValueFormat(input);
         this.data.set('inputDisplayValue', formatInput);
         this.fire('change', input);
-        this.dispatch('UI:form-item-interact', {fieldValue: input, type: 'change'});
+        this.dispatch('UI:form-item-interact', {fieldValue: input, type: 'change', e});
     },
 
     focus() {

@@ -10,18 +10,23 @@
             showSearch="{{true}}"
             style="width: 200px;"
             placeholder="Select a person"
-            on-change="onChange"
             optionFilterProp="children"
             filterOption="{{filterOption}}"
+            on-change="onChange"
+            on-focus="onFocus"
+            on-blur="onBlur"
+            on-search="onSearch"
         >
-            <s-select-option value="jake">Jake</s-select-option>
+            <s-select-option value="jack">Jack</s-select-option>
             <s-select-option value="lucy">Lucy</s-select-option>
-            <s-select-option value="jason">Jason</s-select-option>
+            <s-select-option value="tom">Tom</s-select-option>
         </s-select>
     </div>
 </template>
+
 <script>
 import Select from 'santd/select';
+
 export default {
     components: {
         's-select': Select,
@@ -29,13 +34,23 @@ export default {
     },
     initData() {
         return {
-            filterOption: function(inputValue, option) {
-                return option.value.toLowerCase().indexOf(inputValue.toLowerCase()) > -1;
+            filterOption(inputValue, option) {
+                // console.log({inputValue, option});
+                return option.data.get('value').toLowerCase().indexOf(inputValue.toLowerCase()) >= 0;
             }
         }
     },
     onChange(value) {
-        console.log('value is: ', value);
+        console.log(`selected ${value}`);
+    },
+    onBlur() {
+        console.log('blur');
+    },
+    onFocus() {
+        console.log('focus');
+    },
+    onSearch(val) {
+        console.log('search:', val);
     }
 }
 </script>

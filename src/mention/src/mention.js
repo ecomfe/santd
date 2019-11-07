@@ -101,7 +101,7 @@ export default san.defineComponent({
         setTimeout(function () {
             $this.hideSug();
         }, 300);
-        this.dispatch('UI:form-item-interact', {fieldValue: e.target.textContent, type: 'blur'});
+        this.dispatch('UI:form-item-interact', {fieldValue: e.target.textContent, type: 'blur', e});
         this.fire('blur', e);
     },
     onInput(e) {
@@ -111,7 +111,7 @@ export default san.defineComponent({
         }
         this.showList(e);
         this.fire('change', e.target.textContent);
-        this.dispatch('UI:form-item-interact', {fieldValue: e.target.textContent, type: 'change'});
+        this.dispatch('UI:form-item-interact', {fieldValue: e.target.textContent, type: 'change', e});
     },
     onKeydown(e) {
         const keyCode = e.keyCode;

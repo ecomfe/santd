@@ -1,12 +1,14 @@
 /**
-* @file select选择框入口文件
-* @author fuqiangqiang@baidu.com
-*/
+ * @file 组件 select 下拉选择器
+ * @author
+ */
 
-import Select from './select';
-import Option from './options';
-import Group from './option-group';
+import './style/index.less';
+import Select from './Select';
+import Option from './Option';
+import OptGroup from './OptGroup';
 
 Select.Option = Option;
-Select.Group = Group;
+Select.OptGroup = OptGroup;
+
 export default Select;

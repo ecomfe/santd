@@ -45,6 +45,8 @@
 @text-color-warning: @gold-7;
 @text-color-danger: @red-7;
 @text-color-inverse: @white;
+@icon-color             : inherit;
+@icon-color-hover       : fade(@black, 75%);
 @heading-color-dark     : fade(#fff, 100%);
 @text-color-dark        : fade(#fff, 85%);
 @text-color-secondary-dark: fade(#fff, 65%);
@@ -300,6 +302,9 @@
 // ---
 @select-border-color: @border-color-base;
 @select-item-selected-font-weight: 600;
+@select-dropdown-bg: @component-background;
+@select-item-selected-bg: @background-color-light;
+@select-item-active-bg: @item-active-bg;
 
 // Tooltip
 // ---
@@ -391,12 +396,18 @@
 @table-header-bg: @background-color-light;
 @table-header-color: @heading-color;
 @table-header-sort-bg: @background-color-base;
-@table-body-sort-bg: rgba(0, 0, 0, .01);
+@table-body-sort-bg: rgba(0, 0, 0, 0.01);
 @table-row-hover-bg: @primary-1;
+@table-selected-row-color: inherit;
 @table-selected-row-bg: #fafafa;
+@table-body-selected-sort-bg: @table-selected-row-bg;
+@table-selected-row-hover-bg: @table-selected-row-bg;
 @table-expanded-row-bg: #fbfbfb;
 @table-padding-vertical: 16px;
 @table-padding-horizontal: 16px;
+@table-border-radius-base: @border-radius-base;
+@table-footer-bg: @background-color-light;
+@table-footer-color: @heading-color;
 
 // Tag
 // --

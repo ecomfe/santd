@@ -13,11 +13,17 @@ export default {
     DELETE: 46,
     ENTER: 13,
 
-    ARROW_UP: 38,
-    ARROW_DOWN: 40,
     ARROW_LEFT: 37,
+    ARROW_UP: 38,
     ARROW_RIGHT: 39,
+    ARROW_DOWN: 40,
+
+    LEFT: 37,
+    UP: 38,
+    RIGHT: 39,
+    DOWN: 40,
 
     TAB: 9,
-    ESC: 27
+    ESC: 27,
+    SPACE: 32
 };

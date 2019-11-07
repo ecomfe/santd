@@ -37,7 +37,6 @@ export default Form.create({name: 'dynamic_rule'})({
         's-checkbox': Checkbox
     },
     initData () {
-        const that = this;
         return {
             checkNick: false,
             formItemLayout: {
@@ -65,9 +64,8 @@ export default Form.create({name: 'dynamic_rule'})({
     },
     handleChange(e) {
         this.data.set('checkNick', e.target.checked);
-        const form = this.data.get('form');
         this.nextTick(() => {
-            form.validateFields(['nickname'], {force: true});
+            this.validateFields(['nickname'], {force: true});
         })
     },
     handleCheck() {

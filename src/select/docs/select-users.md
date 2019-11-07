@@ -1,6 +1,6 @@
 <text lang="cn">
 #### 搜索用户
-一个带有远程搜索，节流控制，请求时序控制，加载状态的多选示例。
+一个带有远程搜索，防抖控制，请求时序控制，加载状态的多选示例。
 </text>
 
 ```html
@@ -11,86 +11,72 @@
             labelInValue="{{true}}"
             value="{{value}}"
             placeholder="Select users"
-            notFoundContent="{{fetching ? notContent : 'null'}}"
             filterOption="{{false}}"
             style="width: 100%;"
-            on-change="onChange"
-            on-search="handleSearch"
+            on-search="fetchUser"
+            on-change="handleChange"
         >
-            <s-select-option s-for="d in data" value="{{d.value}}">{{d.text}}</s-select-option>
+            <s-select-option
+                s-for="d in data"
+                value="{{d.value}}"
+            >{{d.text}}</s-select-option>
+            <s-spin s-if="fetching" slot="notFoundContent" size="small"/>
         </s-select>
     </div>
 </template>
+
 <script>
 import san from 'san';
 import Select from 'santd/select';
-import jsonp from 'fetch-jsonp';
-import querystring from 'querystring';
 import Spin from 'santd/spin';
-let timeout;
-let currentValue;
+import debounce from 'lodash/debounce';
+import jsonp from 'fetch-jsonp';
 
 export default {
     components: {
         's-select': Select,
-        's-select-option': Select.Option
+        's-select-option': Select.Option,
+        's-spin': Spin
     },
     inited() {
+        this.lastFetchId = 0;
+        this.fetchUser = debounce(this.fetchUser, 800);
     },
     initData() {
         return {
-            fetching: false,
-            notContent() {
-                return san.defineComponent({
-                    components: {
-                        's-spin': Spin
-                    },
-                    template: `
-                        <span>
-                            <s-spin size="small"></s-spin>
-                        </span>
-                    `
-                });
-            }
-        }
+            data: [],
+            value: [],
+            fetching: false
+        };
     },
-    handleSearch(value) {
-        this.fetch(value, data => {
-            this.data.set('data', data);
+    setState(object) {
+        Object.keys(object).forEach(key => {
+            this.data.set(key, object[key]);
         });
     },
-    onChange(value) {
-        this.data.set('data', []);
+    handleChange(value) {
+        this.setState({
+            value,
+            data: [],
+            fetching: false
+        });
     },
-    fetch(value, callback) {
-        const self = this;
-        if (timeout) {
-          clearTimeout(timeout);
-          timeout = null;
-        }
-        function fake() {
-          self.data.set('data', []);
-          self.data.set('fetching', true);
-          jsonp(`https://randomuser.me/api/?results=5`)
-            .then(response => response.json())
-            .then((d) => {
-                const result = d.results;
-                console.log('result', result);
-                const data = [];
-                result.forEach((user) => {
-                  data.push({
-                      text: `${user.name.first} ${user.name.last}`,
-                      value: user.login.username
-                  });
-                });
-                self.data.set('fetching', false);
-                callback(data);
-            });
-        }
-
-        timeout = setTimeout(() => {
-            fake()
-        }, 800);
+    fetchUser(value) {
+        console.log('fetching user', value);
+        this.lastFetchId += 1;
+        const fetchId = this.lastFetchId;
+        this.setState({data: [], fetching: true});
+        jsonp('https://randomuser.me/api/?results=5').then(response => response.json()).then(body => {
+            if (fetchId !== this.lastFetchId) {
+                // for fetch callback order
+                return;
+            }
+            const data = body.results.map(user => ({
+                text: `${user.name.first} ${user.name.last}`,
+                value: user.login.username
+            }));
+            this.setState({data, fetching: false});
+        });
     }
 }
 </script>

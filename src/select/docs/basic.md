@@ -6,37 +6,41 @@
 ```html
 <template>
     <div>
-        <s-select
-            defaultValue="lucy"
-            style="width:120px;"
-            on-change="onChange"
-        >
-            <s-select-option value="jake">Jake</s-select-option>
+        <s-select defaultValue="lucy" style="width: 120px;" on-change="handleChange">
+            <s-select-option value="jack">Jack</s-select-option>
             <s-select-option value="lucy">Lucy</s-select-option>
-            <s-select-option value="tom" disabled="{{true}}">Tom</s-select-option>
-            <s-select-option value="jason">Jason</s-select-option>
+            <s-select-option value="disabled" disabled="{{true}}">Disabled</s-select-option>
+            <s-select-option value="yiminghe">Yiminghe</s-select-option>
         </s-select>
-        <s-select defaultValue="lucy" style="width: 120px; display:inline-block;" on-change="onChange" disabled="{{true}}">
+        <s-select defaultValue="lucy" style="width: 120px;" disabled="{{true}}">
             <s-select-option value="lucy">Lucy</s-select-option>
         </s-select>
-        <s-select defaultValue="lucy" style="width: 120px; display:inline-block;" loading="{{true}}">
+        <s-select defaultValue="lucy" style="width: 120px;" loading="{{true}}">
             <s-select-option value="lucy">Lucy</s-select-option>
         </s-select>
     </div>
 </template>
+
 <script>
-import san from 'san';
 import Select from 'santd/select';
-import Icon from 'santd/icon';
+
 export default {
     components: {
         's-select': Select,
-        's-select-option': Select.Option,
-        's-icon': Icon
+        's-select-option': Select.Option
     },
-    onChange(value) {
-        console.log('value is: ', value);
+    handleChange(value) {
+        console.log(`selected ${value}`);
+    },
+    test(e) {
+        console.log({e})
     }
 }
 </script>
+
+<style>
+.code-box-demo .san-select {
+    margin: 0 8px 10px 0;
+}
+</style>
 ```

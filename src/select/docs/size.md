@@ -6,35 +6,62 @@
 ```html
 <template>
     <div>
-        <s-radio-group value="{{size}}" on-change="onRadioChange($event)" button-style="outline">
+        <s-radio-group defaultValue="{{size}}" name="size" on-change="handleSizeChange">
             <s-radio-button value="large">Large</s-radio-button>
             <s-radio-button value="default">Default</s-radio-button>
             <s-radio-button value="small">Small</s-radio-button>
         </s-radio-group>
         <br/><br/>
         <s-select
-            defaultValue="lucy"
-            style="width:120px;"
+            defaultValue="a10"
+            style="width: 200px;"
             size="{{size}}"
+            on-change="handleChange"
         >
-            <s-select-option value="jake" title="jake">Jake</s-select-option>
-            <s-select-option value="lucy">Lucy</s-select-option>
-            <s-select-option value="disabled" disabled="{{true}}">Disabled</s-select-option>
-            <s-select-option value="jason">Jason</s-select-option>
+            <s-select-option
+                s-for="val in children"
+                value="{{val}}"
+            >{{val}}</s-select-option>
         </s-select>
         <br/>
-        <s-select defaultValue="{{['test1']}}" mode="multiple" style="width: 100%;" size="{{size}}">
-            <s-select-option s-for="i in baseData" value="{{i}}">{{i}}</s-select-option>
+        <s-select
+            mode="multiple"
+            size="{{size}}"
+            placeholder="Please select"
+            style="width: 100%;"
+            defaultValue="{{['a10', 'c12']}}"
+            on-change="handleChange"
+        >
+            <s-select-option
+                s-for="val in children"
+                value="{{val}}"
+            >{{val}}</s-select-option>
         </s-select>
         <br/>
-        <s-select defaultValue="{{['test1']}}" mode="tags" style="width: 100%;" size="{{size}}">
-            <s-select-option s-for="i in baseData" value="{{i}}">{{i}}</s-select-option>
+        <s-select
+            mode="tags"
+            size="{{size}}"
+            placeholder="Please select"
+            style="width: 100%;"
+            defaultValue="{{['a10', 'c12']}}"
+        >
+            <s-select-option
+                s-for="val in children"
+                value="{{val}}"
+            >{{val}}</s-select-option>
         </s-select>
     </div>
 </template>
+
 <script>
-import Select from 'santd/select';
 import Radio from 'santd/radio';
+import Select from 'santd/select';
+
+const children = [];
+for (let i = 10; i < 36; i++) {
+    children.push(i.toString(36) + i);
+}
+
 export default {
     components: {
         's-select': Select,
@@ -44,12 +71,14 @@ export default {
     },
     initData() {
         return {
-            baseData: ['test1','test2 ','test3','test4'],
+            children,
             size: 'default'
-        }
+        };
     },
-    onRadioChange(e) {
-        console.log(e.target.value);
+    handleChange(value) {
+        console.log(`selected ${value}`);
+    },
+    handleSizeChange(e) {
         this.data.set('size', e.target.value);
     }
 }

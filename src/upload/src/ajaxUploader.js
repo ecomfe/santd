@@ -59,7 +59,7 @@ export default san.defineComponent({
             }
         }
     },
-    uploadFiles(files) {
+    uploadFiles(files, e) {
         const postFiles = Array.prototype.slice.call(files);
         postFiles
             .map(file => {
@@ -67,32 +67,32 @@ export default san.defineComponent({
                 return file;
             })
             .forEach(file => {
-                this.upload(file, postFiles);
+                this.upload(file, postFiles, e);
             });
     },
-    upload(file, fileList) {
+    upload(file, fileList, e) {
         if (!this.data.get('beforeUpload')) {
             // always async in case use react state to keep fileList
-            return setTimeout(() => this.post(file), 0);
+            return setTimeout(() => this.post(file, e), 0);
         }
 
-        const before = this.data.get('beforeUpload')(file, fileList);
+        const before = this.data.get('beforeUpload')(file, fileList, e);
         if (before && before.then) {
             before.then(processedFile => {
                 const processedFileType = Object.prototype.toString.call(processedFile);
                 if (processedFileType === '[object File]' || processedFileType === '[object Blob]') {
-                    return this.post(processedFile);
+                    return this.post(processedFile, e);
                 }
-                return this.post(file);
+                return this.post(file, e);
             }).catch(e => {
                 console && console.log(e); // eslint-disable-line
             });
         }
         else if (before !== false) {
-            setTimeout(() => this.post(file), 0);
+            setTimeout(() => this.post(file, e), 0);
         }
     },
-    post(file) {
+    post(file, event) {
         if (!this._isMounted) {
             return;
         }
@@ -123,13 +123,13 @@ export default san.defineComponent({
                     const reqs = this.data.get('reqs');
                     delete reqs[uid];
                     this.data.set('reqs', reqs);
-                    this.fire('success', {ret, file, xhr});
+                    this.fire('success', {ret, file, xhr, e: event});
                 },
                 onError: (err, ret) => {
                     const reqs = this.data.get('reqs');
                     delete reqs[uid];
                     this.data.set('reqs', reqs);
-                    this.fire('error', {err, ret, file});
+                    this.fire('error', {err, ret, file, e: event});
                 }
             });
             this.data.set('reqs[' + uid + ']', req);
@@ -147,19 +147,20 @@ export default san.defineComponent({
             traverseFileTree(
                 e.dataTransfer.items,
                 this.uploadFiles,
-                innerFile => attrAccept(innerFile, this.data.get('accept'))
+                innerFile => attrAccept(innerFile, this.data.get('accept')),
+                e
             );
         }
         else {
             const files = Array.prototype.slice.call(e.dataTransfer.files).filter(
                 file => attrAccept(file, this.data.get('accept'))
             );
-            this.uploadFiles(files);
+            this.uploadFiles(files, e);
         }
     },
     handleChange(e) {
         const files = e.target.files;
-        this.uploadFiles(files);
+        this.uploadFiles(files, e);
         this.reset();
     },
     abort(file) {

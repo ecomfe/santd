@@ -1,19 +1,34 @@
 <text lang="cn">
 #### 多选
-多选，从已有条目中选择
+多选，从已有条目中选择。
 </text>
 
 ```html
 <template>
     <div>
-        <s-select defaultValue="{{defValue}}" mode="multiple" style="width: 100%;" placeholder="Please select" on-change="onChange">
-            <s-select-option s-for="i in baseData" value="{{i.value}}">{{i.label}}</s-select-option>
+        <s-select
+            mode="multiple"
+            style="width: 100%;"
+            placeholder="Please select"
+            defaultValue="{{['a10', 'c12']}}"
+            on-change="handleChange"
+        >
+            <s-select-option
+                s-for="val in children"
+                value="{{val}}"
+            >{{val}}</s-select-option>
         </s-select>
     </div>
 </template>
+
 <script>
 import Select from 'santd/select';
-let data = [{label: 'test1', value: 't1'}, {label: 'test2', value: 't2'}, {label: 'test3', value: 't3'}];
+
+const children = [];
+for (let i = 10; i < 36; i++) {
+    children.push(i.toString(36) + i);
+}
+
 export default {
     components: {
         's-select': Select,
@@ -21,12 +36,11 @@ export default {
     },
     initData() {
         return {
-            defValue: ['t1', 't3'],
-            baseData: data
-        }
+            children
+        };
     },
-    onChange(value) {
-        console.log('value is: ', value);
+    handleChange(value) {
+        console.log(`selected ${value}`);
     }
 }
 </script>
