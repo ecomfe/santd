@@ -113,7 +113,20 @@ export default san.defineComponent({
             dotStyle="{{dotStyle}}"
             activeDotStyle="{{activeDotStyle}}"
         />
-        <handles s-ref="handles" />
+        <s-handle
+            s-for="bound, index in bounds"
+            s-ref="handle-{{index}}"
+            index="{{index + 1}}"
+            vertical="{{vertical}}"
+            offset="{{trackOffsets[index]}}"
+            value="{{bound}}"
+            dragging="{{index === handleIndex}}"
+            tabIndex="{{tabIndex[i] || 0}}"
+            min="{{min}}"
+            max="{{max}}"
+            disabled="{{disabled}}"
+            tipFormatter="{{tipFormatter}}"
+        />
         <s-marks
             vertical="{{vertical}}"
             marks="{{marks}}"
@@ -126,7 +139,8 @@ export default san.defineComponent({
     components: {
         's-steps': Steps,
         's-marks': Marks,
-        's-track': Track
+        's-track': Track,
+        's-handle': Handle
     },
 
     messages: {
@@ -280,7 +294,7 @@ export default san.defineComponent({
         const closestBound = this.getClosestBound(value);
         this.prevMovedHandleIndex = this.getBoundNeedMoving(value, closestBound);
 
-        this.data.set('handles', this.prevMovedHandleIndex);
+        this.data.set('handleIndex', this.prevMovedHandleIndex);
         this.data.set('recent', this.prevMovedHandleIndex);
 
         const nextBounds = [...bounds];
@@ -336,31 +350,34 @@ export default san.defineComponent({
 
         // const oldValue = this.data.get('value');
         const value = this.calcValueByPos(position);
-        const handles = this.data.get('handles');
-        if (this.data.get('bounds')[handles] !== value) {
+        const handleIndex = this.data.get('handleIndex');
+        if (this.data.get('bounds')[handleIndex] !== value) {
             this.moveTo(value);
         }
     },
 
     moveTo(value) {
         const bounds = this.data.get('bounds');
-        const handles = this.data.get('handles');
+        const handleIndex = this.data.get('handleIndex');
         const recent = this.data.get('recent');
 
         const nextBounds = [...bounds];
-        const handle = handles === null ? recent : handles;
-        nextBounds[handle] = value;
-        let nextHandle = handle;
+        if (handleIndex === null) {
+            handleIndex = recent;
+        }
+        nextBounds[handleIndex] = value;
+        
         if (this.data.get('pushable') !== false) {
-            this.pushSurroundingHandles(nextBounds, nextHandle);
+            this.pushSurroundingHandles(nextBounds, handleIndex);
         }
         else if (this.data.get('allowCross')) {
             nextBounds.sort((a, b) => a - b);
-            nextHandle = nextBounds.indexOf(value);
+            handleIndex = nextBounds.indexOf(value);
         }
+
         this.handleChange({
             recent: nextHandle,
-            handles: nextHandle,
+            handleIndex: handleIndex,
             bounds: nextBounds
         });
     },
@@ -453,7 +470,7 @@ export default san.defineComponent({
     
 
     handleChange(state) {
-        ['handles', 'recent'].forEach(item => {
+        ['handleIndex', 'recent'].forEach(item => {
             if (state[item]) {
                 this.data.set(item, state[item]);
             }
@@ -468,10 +485,10 @@ export default san.defineComponent({
 
     handleEnd() {
         this.removeDocumentEvents();
-        if (this.data.get('handles') !== null) {
+        if (this.data.get('handleIndex') !== null) {
             this.fire('afterChange', this.data.get('value'));
         }
-        this.data.set('handles', null);
+        this.data.set('handleIndex', null);
 
         // this.fire('end');
         if (!this.data.get('range')) {
