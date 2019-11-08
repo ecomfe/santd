@@ -65,13 +65,15 @@ export default san.defineComponent({
 
     attached() {
         this._scroll = this.handleScroll.bind(this);
-        on(window, 'scroll', this._scroll);
-        
+        let node = this.data.get('target')();
+        on(node, 'scroll', this._scroll);
+
         this.handleScroll();
     },
 
     disposed() {
-        off(window, 'scroll', this._scroll);
+        let node = this.data.get('target')();
+        off(node, 'scroll', this._scroll);
         this._scroll = null;
     },
 
