@@ -7,11 +7,10 @@ import './style/index.less';
 import san from 'san';
 import Tooltip from '../tooltip';
 import Slider from './src/slider';
-import Range from './src/range';
 import Handle from './src/handle';
 import Steps from './src/steps';
 import Marks from './src/marks';
-import Track from './track';
+import Track from './src/track';
 import * as utils from './src/utils';
 import {classCreator} from '../core/util';
 
@@ -172,20 +171,24 @@ export default san.defineComponent({
             let step = this.data.get('step');
             let marks = this.data.get('marks');
 
-            if (value) {
+            if (value instanceof Array) {
                 return value.map(v => ensureValuePrecision(ensureValueInRange(v, min, max), step, marks, min, max));
             }
         },
 
-        recent() {
-            let bounds = this.data.get('bounds');
-            let max = this.data.get('max');
+        // recent() {
+        //     let bounds = this.data.get('bounds');
+        //     let max = this.data.get('max');
 
-            return bounds[0] === max ? 0 : bounds.length - 1;
-        },
+        //     return bounds && bounds[0] === max ? 0 : bounds.length - 1;
+        // },
 
         tracks() {
-            return this.data.get('bounds').slice(0, -1);
+            let bounds = this.data.get('bounds');
+
+            if (bounds) {
+                return bounds.slice(0, -1);
+            }
         },
 
         trackOffsets() {
@@ -193,7 +196,9 @@ export default san.defineComponent({
             let max = this.data.get('max');
             let bounds = this.data.get('bounds');
 
-            return bounds.map(v => (v - min) / (max - min) * 100);
+            if (bounds) {
+                return bounds.map(v => (v - min) / (max - min) * 100);
+            }
         }
     },
 
