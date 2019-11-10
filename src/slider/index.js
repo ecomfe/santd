@@ -272,9 +272,9 @@ export default san.defineComponent({
                 this.dragOffset = position - handlePosition;
                 position = handlePosition;
             }
-            this.removeDocumentEvents();
+            this.removeDocMouseListeners();
             this.handleStart(position);
-            this.addDocumentMouseEvents();
+            this.addDocMouseListeners();
         }
     },
 
@@ -489,7 +489,7 @@ export default san.defineComponent({
 
 
     handleEnd() {
-        this.removeDocumentEvents();
+        this.removeDocMouseListeners();
         if (this.data.get('handleIndex') !== null) {
             this.fire('afterChange', this.data.get('value'));
         }
@@ -501,7 +501,7 @@ export default san.defineComponent({
         }
     },
 
-    addDocumentMouseEvents() {
+    addDocMouseListeners() {
         if (this.el) {
             this._mouseMoveHandler = this.handleMouseMove.bind(this);
             this._endHandler = this.handleEnd.bind(this);
@@ -510,7 +510,7 @@ export default san.defineComponent({
         }
     },
 
-    removeDocumentEvents() {
+    removeDocMouseListeners() {
         if (this.el && this._endHandler) {
             this.el.ownerDocument.removeEventListener('mousemove', this._mouseMoveHandler);
             this.el.ownerDocument.removeEventListener('mouseup', this._endHandler);
