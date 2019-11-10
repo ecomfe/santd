@@ -381,7 +381,7 @@ export default san.defineComponent({
         }
 
         this.handleChange({
-            recent: nextHandle,
+            recent: handleIndex,
             handleIndex: handleIndex,
             bounds: nextBounds
         });
@@ -556,9 +556,14 @@ export default san.defineComponent({
     },
 
     calcValueByPos(position) {
+        let value = this.data.get('value');
+        let min = this.data.get('min');
+        let max = this.data.get('max');
+        let step = this.data.get('step');
+        let marks = this.data.get('marks');
+
         const pixelOffset = position - this.getSliderStart();
-        const nextValue = this.trimAlignValue(this.calcValue(pixelOffset));
-        return nextValue;
+        return ensureValuePrecision(ensureValueInRange(this.calcValue(pixelOffset), min, max), step, marks, min, max);
     }
 });
 
