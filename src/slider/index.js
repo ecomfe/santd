@@ -94,12 +94,11 @@ export default san.defineComponent({
         <div class="${prefixCls}-rail" />
         <s-track
             s-if="included"
-            s-for="track, index in tracks"
             vertical="{{vertical}}"
             included="{{included}}"
-            offset="{{trackOffsets[index]}}"
-            length="{{trackOffsets[index + 1] - trackOffsets[index]}}"
-            index="{{index + 1}}"
+            offset="{{track.offset}}"
+            length="{{track.len}}"
+            index="{{track.index}}"
         />
         <s-steps
             vertical="{{vertical}}"
@@ -117,7 +116,7 @@ export default san.defineComponent({
             s-ref="handle-{{index}}"
             index="{{index + 1}}"
             vertical="{{vertical}}"
-            offset="{{trackOffsets[index]}}"
+            offset="{{(bound - min) / (max - min) * 100}}"
             value="{{bound}}"
             dragging="{{index === handleIndex}}"
             tabIndex="{{tabIndex[i] || 0}}"
@@ -173,7 +172,6 @@ export default san.defineComponent({
 
             if (!(value instanceof Array)) {
                 value = [value];
-                
             }
 
             return value.map(v => ensureValuePrecision(ensureValueInRange(v, min, max), step, marks, min, max));
@@ -186,27 +184,26 @@ export default san.defineComponent({
         //     return bounds && bounds[0] === max ? 0 : bounds.length - 1;
         // },
 
-        tracks() {
+        track() {
             let range = this.data.get('range');
             let bounds = this.data.get('bounds');
-
-            if (!range) {
-                return [1];
-            }
-
-            if (bounds) {
-                return bounds.slice(0, -1);
-            }
-        },
-
-        trackOffsets() {
             let min = this.data.get('min');
             let max = this.data.get('max');
-            let bounds = this.data.get('bounds');
 
-            if (bounds) {
-                return bounds.map(v => (v - min) / (max - min) * 100);
+            if (range) {
+                if (bounds) {
+                    return {
+                        offset: (bounds[0] - min) / (max - min) * 100,
+                        len: (bounds[1] - bounds[0] - min) / (max - min) * 100,
+                        index: 1
+                    };
+                }
             }
+
+            return {
+                offset: 0,
+                len: (bounds[0] - min) / (max - min) * 100
+            };
         }
     },
 
