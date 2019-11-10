@@ -171,9 +171,12 @@ export default san.defineComponent({
             let step = this.data.get('step');
             let marks = this.data.get('marks');
 
-            if (value instanceof Array) {
-                return value.map(v => ensureValuePrecision(ensureValueInRange(v, min, max), step, marks, min, max));
+            if (!(value instanceof Array)) {
+                value = [value];
+                
             }
+
+            return value.map(v => ensureValuePrecision(ensureValueInRange(v, min, max), step, marks, min, max));
         },
 
         // recent() {
@@ -184,7 +187,12 @@ export default san.defineComponent({
         // },
 
         tracks() {
+            let range = this.data.get('range');
             let bounds = this.data.get('bounds');
+
+            if (!range) {
+                return [1];
+            }
 
             if (bounds) {
                 return bounds.slice(0, -1);
@@ -496,9 +504,6 @@ export default san.defineComponent({
         this.data.set('handleIndex', null);
 
         // this.fire('end');
-        if (!this.data.get('range')) {
-            this.ref('handles').data.set('visible', false);
-        }
     },
 
     addDocMouseListeners() {
@@ -517,15 +522,6 @@ export default san.defineComponent({
 
             this._endHandler = this._mouseMoveHandler = null;
         }
-    },
-
-    calcOffset(value) {
-        const {
-            min,
-            max
-        } = this.data.get();
-        const ratio = (value - min) / (max - min);
-        return ratio * 100;
     },
 
     getSliderStart() {
