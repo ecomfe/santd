@@ -294,22 +294,37 @@ export default san.defineComponent({
     },
 
     handleStart(position) {
-        const bounds = this.data.get('bounds');
-        this.fire('beforeChange', bounds);
+        if (this.data.get('range')) {
+            const bounds = this.data.get('bounds');
+            this.fire('beforeChange', bounds);
 
-        const value = this.calcValueByPos(position);
-        this.startValue = value;
-        this.startPosition = position;
+            const value = this.calcValueByPos(position);
+            this.startValue = value;
+            this.startPosition = position;
 
-        const closestBound = this.getClosestBound(value);
-        this.prevMovedHandleIndex = this.getBoundNeedMoving(value, closestBound);
+            const closestBound = this.getClosestBound(value);
+            this.prevMovedHandleIndex = this.getBoundNeedMoving(value, closestBound);
 
-        this.data.set('handleIndex', this.prevMovedHandleIndex);
-        this.data.set('recent', this.prevMovedHandleIndex);
+            this.data.set('handleIndex', this.prevMovedHandleIndex);
+            this.data.set('recent', this.prevMovedHandleIndex);
 
-        const nextBounds = [...bounds];
-        nextBounds[this.prevMovedHandleIndex] = value;
-        this.handleChange({bounds: nextBounds});
+            const nextBounds = [...bounds];
+            nextBounds[this.prevMovedHandleIndex] = value;
+            this.handleChange({bounds: nextBounds});
+        }
+        else {
+            this.fire('beforeChange', this.data.get('value'));
+            this.data.set('handleIndex', 0);
+
+            const max = this.data.get('max');
+            let value = Math.min(this.calcValueByPos(position), max);
+
+            this.startValue = value;
+            this.startPosition = position;
+
+            this.data.set('value', value);
+            this.fire('change', value);
+        }
     },
 
     getClosestBound(value) {
@@ -359,10 +374,20 @@ export default san.defineComponent({
         e.preventDefault();
 
         // const oldValue = this.data.get('value');
-        const value = this.calcValueByPos(position);
-        const handleIndex = this.data.get('handleIndex');
-        if (this.data.get('bounds')[handleIndex] !== value) {
-            this.moveTo(value);
+        let value = this.calcValueByPos(position);
+
+        if (this.data.get('range')) {
+            const handleIndex = this.data.get('handleIndex');
+            if (this.data.get('bounds')[handleIndex] !== value) {
+                this.moveTo(value);
+            }
+        }
+        else {
+            value = Math.min(value, this.data.get('max'));
+            if (value !== this.data.get('value')) {
+                this.fire('change', value);
+                this.fire('move', value);
+            }
         }
     },
 
@@ -499,8 +524,6 @@ export default san.defineComponent({
             this.fire('afterChange', this.data.get('value'));
         }
         this.data.set('handleIndex', null);
-
-        // this.fire('end');
     },
 
     addDocMouseListeners() {
