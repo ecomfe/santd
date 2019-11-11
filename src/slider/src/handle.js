@@ -82,16 +82,6 @@ export default san.defineComponent({
         }
     },
 
-    handleMouseEnter() {
-        const index = this.data.get('index');
-        this.data.set('visibles[' + index + ']', true);
-    },
-
-    handleMouseLeave() {
-        const index = this.data.get('index');
-        this.data.set('visibles[' + index + ']', false);
-    },
-
     setClickFocus(focused) {
         this.data.set('clickFocused', focused);
     },
@@ -125,8 +115,6 @@ export default san.defineComponent({
                     on-blur="handleBlur"
                     on-keydown="handleKeyDown"
                     on-mousedown="handleMouseDown"
-                    on-mouseenter="handleMouseEnter"
-                    on-mouseleave="handleMouseLeave"
                     role="slider"
                     aria-valuemin="{{min}}"
                     aria-valuemax="{{max}}"
