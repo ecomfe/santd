@@ -560,26 +560,24 @@ export default san.defineComponent({
         return this.data.get('vertical') ? coords.height : coords.width;
     },
 
-    calcValue(offset) {
-        const {
+    calcValueByPos(position) {
+        let {
             vertical,
             min,
-            max
+            max,
+            step,
+            marks
         } = this.data.get();
-        const ratio = Math.abs(Math.max(offset, 0) / this.getSliderLength());
-        const value = vertical ? (1 - ratio) * (max - min) + min : ratio * (max - min) + min;
-        return value;
-    },
 
-    calcValueByPos(position) {
-        let value = this.data.get('value');
-        let min = this.data.get('min');
-        let max = this.data.get('max');
-        let step = this.data.get('step');
-        let marks = this.data.get('marks');
 
         const pixelOffset = position - this.getSliderStart();
-        return ensureValuePrecision(ensureValueInRange(this.calcValue(pixelOffset), min, max), step, marks, min, max);
+        const ratio = Math.abs(Math.max(pixelOffset, 0) / this.getSliderLength());
+        return ensureValuePrecision(
+            ensureValueInRange(
+                vertical ? (1 - ratio) * (max - min) + min : ratio * (max - min) + min, 
+                min, 
+                max), 
+            step, marks, min, max);
     }
 });
 
