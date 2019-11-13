@@ -123,6 +123,7 @@ export default san.defineComponent({
             min="{{min}}"
             max="{{max}}"
             disabled="{{disabled}}"
+            tooltipVisible="{{tooltipVisible}}"
             tipFormatter="{{tipFormatter}}"
         />
         <s-marks
@@ -385,8 +386,9 @@ export default san.defineComponent({
         else {
             value = Math.min(value, this.data.get('max'));
             if (value !== this.data.get('value')) {
+                this.data.set('value', value);
                 this.fire('change', value);
-                this.fire('move', value);
+                // this.fire('move', value);
             }
         }
     },

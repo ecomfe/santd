@@ -27,13 +27,12 @@ export default san.defineComponent({
     },
 
     computed: {
-        isTipFormatter() {
+        isTipVisible() {
+            const tooltipVisible = this.data.get('tooltipVisible');
             const tipFormatter = this.data.get('tipFormatter');
-            const visibles = this.data.get('visibles');
             const dragging = this.data.get('dragging');
-            const index = this.data.get('index');
 
-            return tipFormatter ? visibles[index] || dragging : false;
+            return tooltipVisible || tipFormatter && dragging;
         },
 
         title() {
@@ -45,8 +44,7 @@ export default san.defineComponent({
 
     initData() {
         return {
-            clickFocused: false,
-            visibles: []
+            clickFocused: false
         };
     },
 
@@ -62,6 +60,15 @@ export default san.defineComponent({
 
     detached() {
         document.removeEventListener('mouseup', this._mouseUpHandler);
+    },
+
+    updated() {
+        if (this.data.get('isTipVisible')) {
+            let tooltip = this.ref('tooltip');
+            if (tooltip) {
+                tooltip.refresh();
+            }
+        }
     },
 
     handleBlur() {
@@ -105,7 +112,7 @@ export default san.defineComponent({
                 rootDomNode="{{rootDomNode}}"
                 title="{{title}}"
                 s-ref="tooltip"
-                visible="{{tooltipVisible || tooltipVisible === undefined && isTipFormatter)}}"
+                visible="{{isTipVisible}}"
             >
                 <div
                     s-ref="handle"
