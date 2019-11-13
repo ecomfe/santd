@@ -7,11 +7,10 @@
 <template>
   <div>
     <s-tree-select
-        style="width: 300px;"
+        style="width: 100%;"
         dropdownStyle="{{ {'max-height': '200px', overflow: 'auto'} }}"
         treeData="{{treeData}}"
         treeDefaultExpandAll="{{true}}"
-        value="{{['0-0']}}"
         placeholder="Please select"
         on-change="onChange"
     >

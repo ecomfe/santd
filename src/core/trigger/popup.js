@@ -51,6 +51,31 @@ export default san.defineComponent({
             // popupClassName && classArr.push(popupClassName);
 
             return classArr;
+        },
+        getPopupStyle() {
+            const targetWidth = this.data.get('targetWidth');
+            const targetHeight = this.data.get('targetHeight');
+            const stretch = this.data.get('stretch');
+            let popupStyle = this.data.get('popupStyle');
+            let sizeStyle = {};
+
+            if (stretch.indexOf('height') !== -1) {
+                sizeStyle.height = `${targetHeight}px`;
+            }
+            else if (stretch.indexOf('minHeight') !== -1) {
+                sizeStyle['min-height'] = `${targetHeight}px`;
+            }
+            if (stretch.indexOf('width') !== -1) {
+                sizeStyle.width = `${targetWidth}px`;
+            }
+            else if (stretch.indexOf('minWidth') !== -1) {
+                sizeStyle['min-width'] = `${targetWidth}px`;
+            }
+
+            return {
+                ...sizeStyle,
+                ...popupStyle
+            };
         }
     },
     getPopupDomNode() {
@@ -65,6 +90,18 @@ export default san.defineComponent({
             this.data.set('currentAlignClassName', currentAlignClassName);
         }
         this.fire('align', {source, result});
+    },
+    updated() {
+        const visible = this.data.get('visible');
+        const stretch = this.data.get('stretch');
+
+        if (visible && stretch) {
+            let rootNode = this.data.get('getRootDomNode');
+            if (rootNode) {
+                this.data.set('targetWidth', rootNode.offsetWidth);
+                this.data.set('targetHeight', rootNode.offsetHeight);
+            }
+        }
     },
     attached() {
         this.dispatch('santd_popup_save', this);
@@ -103,7 +140,7 @@ export default san.defineComponent({
                 visible="{{visible}}"
                 showProp="visible"
                 transitionName="{{transitionName}}"
-                popupStyle="{{popupStyle}}"
+                popupStyle="{{getPopupStyle}}"
                 popupClassName="{{popupClassName}}"
                 s-ref="popupinner"
             >

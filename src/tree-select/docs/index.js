@@ -9,6 +9,7 @@ import Desc from './desc.md';
 import Multiple from './multiple.md';
 import Checkable from './checkable.md';
 import TreeData from './treeData.md';
+import LoadData from './loadData.md';
 
 export default san.defineComponent({
     components: {
@@ -17,13 +18,15 @@ export default san.defineComponent({
         basic: Basic,
         multiple: Multiple,
         checkable: Checkable,
-        treedata: TreeData
+        treedata: TreeData,
+        loaddata: LoadData
     },
     template: `
         <div>
             <desc/>
             <basic/>
             <treeData/>
+            <loaddata/>
             <multiple/>
             <checkable/>
             <readme/>

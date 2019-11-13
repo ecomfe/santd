@@ -22,8 +22,8 @@ const getComputedKeys = (targetKeys = [], key) => {
 let paramArr = [
     'selectedKeys',
     'expandedKeys',
-    'checkedKeys',
-    'halfCheckedKeys',
+    'allCheckedKeys',
+    'allHalfCheckedKeys',
     'rootCheckable',
     'rootSelecable',
     'rootDisabled',
@@ -70,11 +70,11 @@ export default san.defineComponent({
         },
 
         checked() {
-            return getComputedKeys(this.data.get('checkedKeys'), this.data.get('key'));
+            return getComputedKeys(this.data.get('allCheckedKeys'), this.data.get('key'));
         },
 
         indeterminate() {
-            return getComputedKeys(this.data.get('halfCheckedKeys'), this.data.get('key'));
+            return getComputedKeys(this.data.get('allHalfCheckedKeys'), this.data.get('key'));
         },
 
         classes() {
@@ -130,9 +130,7 @@ export default san.defineComponent({
         const treeData = this.data.get('treeData') || [];
         this.data.set('hasChild', !!treeData.length);
 
-        paramArr.forEach((param) => {
-            this.data.set(param, this.parentComponent.data.get(param));
-        });
+        paramArr.forEach(param => this.data.set(param, this.parentComponent.data.get(param)));
 
         const switcherIcon = this.parentComponent.data.get('switcherIcon');
         if (switcherIcon) {
@@ -165,33 +163,6 @@ export default san.defineComponent({
             if (this.treeNodes.length) {
                 this.data.set('hasChild', true);
             }
-        },
-        // 处理复选框点击时候的情况，自己完成之后扔给父级继续处理
-        santd_tree_checkTreeNode(payload) {
-            const key = this.data.get('key');
-            const disabled = this.data.get('rootDisabled') || this.data.get('disabled');
-            let checkedKeys = payload.value.checkedKeys;
-            let halfCheckedKeys = payload.value.halfCheckedKeys;
-            const checkedIndex = checkedKeys.indexOf(key);
-            const halfCheckedIndex = halfCheckedKeys.indexOf(key);
-            let treeNodes = this.treeNodes.filter(node => !this.data.get('rootDisabled') && !node.data.get('disabled'));
-            let allChildChecked = treeNodes.every(node => checkedKeys.includes(node.data.get('key')));
-
-            // 判断checked的情况
-            allChildChecked && !disabled && checkedIndex === -1 && checkedKeys.push(key);
-            !allChildChecked && !disabled && checkedIndex > -1 && checkedKeys.splice(checkedIndex, 1);
-
-            // 判断半选的情况
-            !allChildChecked && !disabled && treeNodes.length !== 1 && halfCheckedIndex === -1 && halfCheckedKeys.push(key);
-            (treeNodes.every(node => {
-                const key = node.data.get('key');
-                return !checkedKeys.includes(key) && !halfCheckedKeys.includes(key);
-            }) || allChildChecked)
-                && halfCheckedIndex > -1
-                && treeNodes.length !== 1
-                && halfCheckedKeys.splice(halfCheckedIndex, 1);
-
-            this.dispatch('santd_tree_checkTreeNode', {...payload.value, checkedKeys, halfCheckedKeys});
         }
     },
 
@@ -215,29 +186,11 @@ export default san.defineComponent({
 
     // 点击复选框时候的事件
     handleNodeCheck(e) {
-        const checked = e.target.checked;
-        const key = this.data.get('key');
-        let checkedKeys = this.data.get('checkedKeys').concat();
-        const index = checkedKeys.indexOf(key);
-        const hasChild = this.data.get('hasChild');
-        let halfCheckedKeys = this.data.get('halfCheckedKeys').concat();
-
-        !checked && index > -1 && checkedKeys.splice(index, 1);
-        checked && index === -1 && checkedKeys.push(key);
-
-        if (hasChild) {
-            halfCheckedKeys.splice(halfCheckedKeys.indexOf(key), 1);
-            checkedKeys = this.updateChildCheck(this.treeNodes, checkedKeys, checked);
-            halfCheckedKeys = this.updateChildHalfCheck(this.treeNodes, halfCheckedKeys);
-        }
-
         this.dispatch('santd_tree_checkTreeNode', {
             event: 'check',
-            checked: this.data.get('checked'),
+            checked: e.target.checked,
             nativeEvent: e,
-            node: this,
-            checkedKeys,
-            halfCheckedKeys
+            node: this
         });
     },
 
@@ -265,50 +218,7 @@ export default san.defineComponent({
         });
     },
 
-    // 当点击父节点时打开或关闭所有子节点的checkbox
-    updateChildCheck(treeNodes, checkedKeys, checked) {
-        treeNodes.filter(node => !this.data.get('rootDisabled') && !node.data.get('disabled')).forEach(node => {
-            const key = node.data.get('key');
-            const index = checkedKeys.indexOf(key);
-
-            !checkedKeys.includes(key) && checked && checkedKeys.push(key);
-            checkedKeys.includes(key) && !checked && checkedKeys.splice(index, 1);
-            node.treeNodes && node.treeNodes.length && this.updateChildCheck(node.treeNodes, checkedKeys, checked);
-        });
-        return checkedKeys;
-    },
-
-    // 当父节点的状态改变，处理所有子节点的半选状态
-    updateChildHalfCheck(treeNodes, halfCheckedKeys) {
-        treeNodes.filter(node => !this.data.get('rootDisabled') && !node.data.get('disabled')).forEach(node => {
-            const key = node.data.get('key');
-            const index = halfCheckedKeys.indexOf(key);
-
-            halfCheckedKeys.includes(key) && halfCheckedKeys.splice(index, 1);
-
-            node.treeNodes && node.treeNodes.length && this.updateChildHalfCheck(node.treeNodes, halfCheckedKeys);
-        });
-        return halfCheckedKeys;
-    },
-
     attached() {
-        const key = this.data.get('key');
-        let checkedKeys = this.data.get('checkedKeys');
-
-        if (checkedKeys.includes(key)) {
-            const hasChild = this.data.get('hasChild');
-            if (hasChild && !this.data.get('rootDisabled') && !this.data.get('disabled')) {
-                checkedKeys = this.updateChildCheck(this.treeNodes, checkedKeys, true);
-            }
-            this.nextTick(() => {
-                this.dispatch('santd_tree_checkTreeNode', {
-                    event: 'init',
-                    checkedKeys: checkedKeys.concat(),
-                    halfCheckedKeys: this.data.get('halfCheckedKeys').concat()
-                });
-            });
-        }
-
         if (this.data.get('defaultExpandAll') && this.data.get('hasChild')) {
             this.dispatch('santd_tree_expandAll', this.data.get('key'));
         }
@@ -349,9 +259,8 @@ export default san.defineComponent({
                     s-if="treeData"
                     s-for="tree in treeData"
                     selectedKeys="{{selectedKeys}}"
-                    expandedKeys="{{expandedKeys}}"
-                    checkedKeys="{{checkedKeys}}"
-                    halfCheckedKeys="{{halfCheckedKeys}}"
+                    allCheckedKeys="{{allCheckedKeys}}"
+                    allHalfCheckedKeys="{{allHalfCheckedKeys}}"
                     defaultExpandAll="{{defaultExpandAll}}"
                     autoExpandParent="{{autoExpandParent}}"
                     showLine="{{showLine}}"

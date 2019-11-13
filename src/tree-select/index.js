@@ -5,9 +5,9 @@
 
 import {SHOW_ALL, SHOW_PARENT, SHOW_CHILD} from './treeStrategies';
 import TreeSelect from './tree-select';
-import TreeSelectNode from './tree-node';
+import TreeNode from '../tree/treeNode';
 
-TreeSelect.TreeSelectNode = TreeSelectNode;
+TreeSelect.TreeNode = TreeNode;
 TreeSelect.SHOW_ALL = SHOW_ALL;
 TreeSelect.SHOW_PARENT = SHOW_PARENT;
 TreeSelect.SHOW_CHILD = SHOW_CHILD;

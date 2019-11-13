@@ -65,7 +65,8 @@ export default san.defineComponent({
         defaultPopupVisible: DataTypes.bool,
         maskTransitionName: DataTypes.oneOfType([DataTypes.string, DataTypes.object]),
         maskAnimation: DataTypes.string,
-        alignPoint: DataTypes.bool
+        alignPoint: DataTypes.bool,
+        stretch: DataTypes.string
     },
     initData() {
         return {
@@ -405,6 +406,7 @@ export default san.defineComponent({
                     popupClassName="{{popupClassName}}"
                     popupStyle="{{popupStyle}}"
                     destroyPopupOnHide="{{destroyPopupOnHide}}"
+                    stretch="{{stretch}}"
                 >
                     <slot name="popup" />
                 </x-popup>

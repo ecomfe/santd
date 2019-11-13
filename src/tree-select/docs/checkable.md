@@ -7,14 +7,14 @@
 <template>
     <div>
       <s-tree-select
-          style="width: 300px;"
+          style="width: 100%;"
           treeCheckable="{{true}}"
           dropdownStyle="{{ {'max-height': '200px', overflow: 'auto'} }}"
           treeData="{{treeData}}"
           treeDefaultExpandAll="{{true}}"
           showCheckedStrategy="{{SHOW_PARENT}}"
-          value="{{values}}"
           placeholder="Please select"
+          allowClear="{{true}}"
           on-change="onChange"
           labelInValue="{{true}}"
       >

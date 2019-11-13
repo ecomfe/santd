@@ -26,7 +26,7 @@ export default {
                             placement="bottomLeft"
                             visible="{{rowSelection.visible}}"
                             on-visibleChange="handleRowSelectionVisible"
-                            dropdownClassName="${prefixCls}-selection-down ${dropdownPrefixCls}-trigger"
+                            className="${prefixCls}-selection-down ${dropdownPrefixCls}-trigger"
                         >
                             <s-menu prefixCls="{{prefixCls}}" slot="overlay" on-select="handleSelections">
                                 <s-menu-item s-for="selection in rowSelection.selections" key="{{selection.key}}">

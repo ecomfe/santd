@@ -33,7 +33,7 @@ export default san.defineComponent({
 
     template: `<span>
         <s-trigger
-            prefixCls="${prefixCls}"
+            prefixCls="{{prefixCls ? prefixCls : '${prefixCls}'}}"
             action="{{action}}"
             builtinPlacements="{{builtinPlacements}}"
             popupPlacement="{{placement}}"
@@ -47,8 +47,12 @@ export default san.defineComponent({
             popupStyle="{{overlayStyle}}"
             action="{{disabled ? [] : trigger}}"
             visible="{{visible}}"
+            popupVisible="{{popupVisible}}"
             on-visibleChange="handleVisibleChange"
-            class="{{dropdownClassName}}"
+            class="{{className}}"
+            stretch="{{stretch}}"
+            rootDomNode="{{rootDomNode}}"
+            s-ref="trigger"
         >
             <slot />
             <template slot="popup">

@@ -4,9 +4,9 @@
 */
 
 import san, {DataTypes} from 'san';
-import {classCreator} from '../../core/util';
-import KEYCODE from '../../core/util/keyCode';
-import Icon from '../../icon';
+import {classCreator} from '../core/util';
+import KEYCODE from '../core/util/keyCode';
+import Icon from '../icon';
 const prefixCls = classCreator('select')();
 
 export default san.defineComponent({
@@ -34,21 +34,16 @@ export default san.defineComponent({
             disabled && classArr.push(`${prefixCls}-selection__choice__disabled`);
             return classArr;
         },
-        multipleTitles() {
-            const maxTagContent = this.data.get('maxTagContent');
-            const maxTagCount = this.data.get('maxTagCount');
-            const title = this.data.get('title');
-            let defaultMaxTag = title;
-            if (!title || !title.length) {
-                return '';
-            }
-            if (title.length > maxTagCount) {
-                defaultMaxTag = title.filter((val, index) => {
-                    return index < maxTagCount;
-                });
-                defaultMaxTag.push(maxTagContent);
-            }
-            return defaultMaxTag;
+        multipleValue() {
+            let value = this.data.get('value').concat();
+            let result;
+            const maxTagCount = this.data.get('maxTagCount') || Number.MAX_VALUE;
+            const maxTagPlaceholder = this.data.get('maxTagPlaceholder');
+
+            result = value.filter((item, index) => index < maxTagCount);
+
+            value.length > maxTagCount && result.push({title: `+ ${value.length} ${maxTagPlaceholder || '...'}`});
+            return result;
         }
     },
     initData() {
@@ -86,29 +81,28 @@ export default san.defineComponent({
             }
         }
     },
+    removeValue(e, index) {
+        e.stopPropagation();
+        this.fire('removeValue', index);
+    },
     template: `
-        <div>
-            <div
-                unselectable="on"
-                class="${prefixCls}-selection__placeholder"
-                style="{{placeholderStyles}}"
-            >{{placeholder}}</div>
-
             <ul>
                 <li
-                    s-for="content, index in multipleTitles"
+                    s-for="value, index in multipleValue"
                     class="${prefixCls}-selection__choice"
                     style="user-select: none;"
                 >
                     <div class="{{mulClasses}}">
-                        {{content}}
+                        <template s-if="value.title">
+                            {{value.title}}
+                        </template>
+                        <slot s-else />
                     </div>
                     <span
                         s-if="!disabled && index < maxTagCount"
                         class="${prefixCls}-selection__choice__remove"
                         title="{{content}}"
-                        s-ref="removeIconRef-{{index}}"
-                        on-click="closeHandler($event)"
+                        on-click="removeValue($event, index)"
                     >
                         <s-icon type="close"></s-icon>
                     </span>
@@ -130,6 +124,5 @@ export default san.defineComponent({
                     </div>
                 </li>
             </ul>
-        </div>
     `
 });

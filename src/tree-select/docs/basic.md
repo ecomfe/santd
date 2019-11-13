@@ -7,26 +7,22 @@
 <template>
   <div>
     <s-tree-select
-        showSearch="{{true}}"
-        style="width: 300px;"
+        style="width: 100%;"
         dropdownStyle="{{ {'max-height': '200px', overflow: 'auto'} }}"
         treeDefaultExpandAll="{{true}}"
         allowClear="{{true}}"
-        value="{{['leaf-1']}}"
         placeholder="Please select"
         on-change="onChange"
-        labelInValue="{{true}}"
     >
-        <s-tree-select-node value="parent-1" title="parent 1" key="0-0">
-            <s-tree-select-node value="parent-1-0" title="parent 1-0" key="0-0-0" disabled="{{true}}">
-                <s-tree-select-node value="leaf-1" title="leaf0-1" key="0-0-0-0" disableCheckbox="{{true}}"/>
-                <s-tree-select-node value="leaf-2" title="leaf0-2" key="0-0-0-1"/>
+        <s-tree-select-node value="parent 1" title="parent 1" key="0-1">
+            <s-tree-select-node value="parent 1-0" title="parent 1-0" key="0-1-1">
+                <s-tree-select-node value="leaf1" title="my leaf" key="random" />
+                <s-tree-select-node value="leaf2" title="your leaf" key="random1" />
             </s-tree-select-node>
-            <s-tree-select-node value="parent-1-1" title="parent 1-1" key="0-0-1">
-                <s-tree-select-node value="leaf-3" title="leaf1-1" key="0-0-1-0"/>
-                <s-tree-select-node value="leaf-4" title="leaf1-2" key="0-0-2-0"/>
-            </s-tree-select-node>
-            <s-tree-select-node value="parent-1-2" title="parent 1-2" key="0-0-2">
+            <s-tree-select-node value="parent 1-1" title="parent 1-1" key="random2">
+                <s-tree-select-node value="sss" key="random3">
+                    <b style="color: #08c;" slot="title">sss</b>
+                </s-tree-select-node>
             </s-tree-select-node>
         </s-tree-select-node>
     </s-tree-select>
@@ -41,7 +37,7 @@ import Icon from 'santd/icon';
 export default {
     components: {
         's-tree-select': TreeSelect,
-        's-tree-select-node': TreeSelect.TreeSelectNode
+        's-tree-select-node': TreeSelect.TreeNode
     },
     onChange(value) {
         console.log('选择的单一值是: ', value);

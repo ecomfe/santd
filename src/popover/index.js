@@ -39,6 +39,7 @@ export default san.defineComponent({
             popupStyle="{{overlayStyle}}"
             action="{{trigger}}"
             visible="{{visible}}"
+            s-ref="trigger"
             on-visibleChange="handleVisibleChange"
         >
             <slot />

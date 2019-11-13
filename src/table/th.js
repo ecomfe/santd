@@ -29,7 +29,7 @@ export default {
         </span>
         <!--配置filterIcon slot-->
         <s-dropdown
-            dropdownClassName="${prefixCls}-filter-icon"
+            className="${prefixCls}-filter-icon"
             placement="bottomRight"
             trigger="click"
             overlayClassName="${prefixCls}-filter-dropdown"
