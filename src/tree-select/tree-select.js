@@ -273,9 +273,6 @@ export default san.defineComponent({
     handleTreeExpand({expandedKeys, info}) {
         this.fire('expand', expandedKeys);
     },
-    handlePlaceholderClick(e) {
-        return;
-    },
     handleVisibleChange(visible) {
         this.data.set('visible', visible);
     },

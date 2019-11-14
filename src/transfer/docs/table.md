@@ -9,6 +9,7 @@
         <s-transfer
             disabled="{{disabled}}"
             dataSource="{{mockData}}"
+            sourceKeys="{{sourceKeys}}"
             targetKeys="{{targetKeys}}"
             showSelectAll="{{false}}"
             showSearch="{{showSearch}}"
@@ -21,7 +22,8 @@
                 filteredItems="{{filteredItems}}"
                 selectedKeys="{{selectedKeys}}"
                 disabled="{{disabled}}"
-            />
+            >
+            </s-transfertable>
             <s-transfertable
                 slot="rightRenderList"
                 direction="{{direction}}"
@@ -67,14 +69,7 @@ const leftTableColumns = [{
 }, {
     dataIndex: 'tag',
     title: 'Tag',
-    render() {
-        return san.defineComponent({
-            components: {
-                's-tag': Tag
-            },
-            template: `<span><s-tag>{{text}}</s-tag></span>`
-        });
-    },
+    scopedSlots: {render: 'tag'}
 }, {
     dataIndex: 'description',
     title: 'Description',
@@ -94,51 +89,61 @@ import Tag from 'santd/tag';
 
 const transferTable = san.defineComponent({
     components: {
-        's-table': Table
+        's-table': Table,
+        's-tag': Tag
+    },
+    initData() {
+        return {
+            rowSelection: {
+                selectedRowKeys: [],
+                handleSelect: this.handleSelectItem.bind(this),
+                handleSelectAll: this.handleSelectAll.bind(this),
+                getCheckboxProps(record) {
+                    return {
+                        disabled: record.disabled
+                    };
+                }
+            }
+        }
     },
     inited() {
-        this.data.set('instance', this);
+        this.watch('selectedKeys', val => {
+            this.data.set('rowSelection.selectedRowKeys', val);
+        });
+
+        this.watch('disabled', val => {
+            this.data.set('rowSelection.getCheckboxProps', (record) => { 
+                return { 
+                    disabled: val || record.disabled
+                }
+            })
+        })
     },
     computed: {
         columns() {
             const direction = this.data.get('direction');
             return direction === 'left' ? leftTableColumns : rightTableColumns;
-        },
-        rowSelection() {
-            const disabled = this.data.get('disabled');
-            const selectedKeys = this.data.get('selectedKeys');
-            const instance = this.data.get('instance');
-            return {
-                getCheckboxProps(item) {
-                    return {
-                        disabled: disabled || item.disabled
-                    }
-                },
-                onSelectAll(selected, selectedRows) {
-                    const treeSelectedKeys = selectedRows
-                        .filter(item => !item.disabled)
-                        .map(({key}) => key);
-
-                    const diffKeys = selected
-                        ? difference(treeSelectedKeys, selectedKeys)
-                        : difference(selectedKeys, treeSelectedKeys);
-
-                    instance.dispatch('santd_transfer_itemSelectAll', {selectedKey: diffKeys, checked: selected})
-                },
-                onSelect(params, selected) {
-                    instance.dispatch('santd_transfer_itemSelect', {selectedKey: params.key, checked: selected});
-                },
-                selectedRowKeys: selectedKeys
-            }
         }
+    },
+    handleSelectAll(selectedRows, checked) {
+        const treeSelectedKeys = selectedRows.map(({key}) => key);
+
+        this.dispatch('santd_transfer_itemSelectAll', {selectedKeys: treeSelectedKeys, checkAll: checked});
+    },
+    handleSelectItem(record, checked) {
+        this.dispatch('santd_transfer_itemSelect', {selectedKey: record.key, checked});
     },
     template: `<div>
         <s-table
             columns="{{columns}}"
-            dataSource="{{filteredItems}}"
+            data="{{filteredItems}}"
             size="small"
             rowSelection="{{rowSelection}}"
-        />
+        >
+            <span slot="tag">
+                <s-tag>{{text}}</s-tag>
+            </span>
+        </s-table>
     </div>`
 });
 
@@ -162,15 +167,7 @@ export default {
     },
     handleChange({targetKeys}) {
         this.data.set('targetKeys', targetKeys);
-    },
-    handleSearch(param) {
-        console.log('on-search', param);
-    },
-    handleSelectChange({sourceSelectedKeys, targetSelectedKeys}) {
-        this.data.set('selectedKeys', [...sourceSelectedKeys, ...targetSelectedKeys]);
-
-        console.log('sourceSelectedKeys: ', sourceSelectedKeys);
-        console.log('targetSelectedKeys: ', targetSelectedKeys);
+        this.data.set('selectedKeys', []);
     },
     handleDisable(disable) {
         this.data.set('disabled', disable);

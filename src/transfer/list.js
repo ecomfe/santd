@@ -92,10 +92,13 @@ export default san.defineComponent({
     },
     messages: {
         santd_transfer_itemSelect(payload) {
-            this.handleItemSelect(payload.value);
+            this.fire('itemSelect', payload.value);
         },
         santd_transfer_itemSelectAll(payload) {
-            this.handleItemSelectAll();
+            this.fire('itemSelectAll', {
+                selectedKeys: payload.value.selectedKeys,
+                checkAll: payload.value.checkAll
+            });
         }
     },
     template: `<div class="${prefixCls} {{hasFooter ? '${prefixCls}-with-footer' : ''}}">

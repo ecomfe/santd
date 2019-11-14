@@ -173,10 +173,12 @@ export default san.defineComponent({
             sortColumn && this.runSorter(sortColumn);
         });
 
-        this.watch('rowSelection.selectedRowKeys', val => {
+        this.watch('rowSelection', val => {
             let activeData = this.getActiveRows(this.data.get('renderData'));
-            this.data.set('selectedRowKeys', val);
-            this.data.set('selectedRows', activeData.filter(item => val.includes(item.key)));
+            let selectedRowKeys = val.selectedRowKeys;
+            this.data.set('selectedRowKeys', selectedRowKeys);
+            this.data.set('selectedRows', activeData.filter(item => selectedRowKeys.includes(item.key)));
+            this.initRenderData();
         });
 
         this.watch('data', val => {
@@ -626,7 +628,14 @@ export default san.defineComponent({
     },
     getAllChecked(data, selectedRowKeys) {
         let activeRows = this.getActiveRows(data);
+        if (!activeRows.length) {
+            return false;
+        }
         return activeRows.every(item => selectedRowKeys.includes(item.key));
+    },
+    getAllDisabled(data, selectedRowKeys) {
+        let activeRows = this.getActiveRows(data);
+        return !activeRows.length;
     },
     handleSelectionChange(selectedRowKeys, selectedRows) {
         let rowSelection = this.data.get('rowSelection');
@@ -645,18 +654,23 @@ export default san.defineComponent({
     // selection全选时候的操作
     handleSelectionAll(e) {
         const checked = e.target.checked;
+        let handleSelectAll = this.data.get('rowSelection.handleSelectAll');
         let activeRows = this.getActiveRows(this.data.get('renderData'));
         let selectedRows = checked ? activeRows : [];
         let selectedRowKeys = selectedRows.map(item => item.key);
 
         this.data.set('selectedRowKeys', selectedRowKeys, {force: true});
         this.data.set('selectedRows', selectedRows);
+        if (typeof handleSelectAll === 'function') {
+            handleSelectAll(selectedRows, checked);
+        }
         this.handleSelectionChange(selectedRowKeys, selectedRows);
     },
     // 复选框单选时候的操作
     handleSelection(e, item) {
         let selectedRows = this.data.get('selectedRows');
         let selectedRowKeys = this.data.get('selectedRowKeys');
+        let handleSelect = this.data.get('rowSelection.handleSelect');
 
         const index = selectedRowKeys.indexOf(item.key);
         const checked = e.target.checked;
@@ -668,6 +682,10 @@ export default san.defineComponent({
         else if (!checked && index > -1) {
             selectedRowKeys.splice(index, 1);
             selectedRows.splice(index, 1);
+        }
+
+        if (typeof handleSelect === 'function') {
+            handleSelect(item, checked, selectedRows, e);
         }
 
         this.handleSelectionChange(selectedRowKeys, selectedRows);

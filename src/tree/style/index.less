@@ -5,6 +5,7 @@
 @import "./directory";
 
 @tree-prefix-cls: ~'@{ant-prefix}-tree';
+@san-prefix-cls: ~'@{ant-prefix}';
 @tree-showline-icon-color: @text-color-secondary;
 @tree-node-padding: 4px;
 
@@ -255,13 +256,11 @@
       .@{tree-prefix-cls}-node-content-wrapper {
         width: ~'calc(100% - 24px)';
       }
-      span {
-        &.@{tree-prefix-cls}-checkbox {
+        .@{san-prefix-cls}-checkbox-wrapper {
           + .@{tree-prefix-cls}-node-content-wrapper {
             width: ~'calc(100% - 46px)';
           }
         }
-      }
     }
   }
 }

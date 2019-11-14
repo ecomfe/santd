@@ -16,6 +16,7 @@ export default {
                     <div class="${prefixCls}-selection">
                         <s-checkbox
                             checked="{{getAllChecked(renderData, selectedRowKeys)}}"
+                            disabled="{{getAllDisabled(renderData, selectedRowKeys)}}"
                             indeterminate="{{getIndeterminate(selectedRowKeys, renderData)}}"
                             on-change="handleSelectionAll($event)"
                         />

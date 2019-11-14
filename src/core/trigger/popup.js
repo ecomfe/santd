@@ -55,7 +55,7 @@ export default san.defineComponent({
         getPopupStyle() {
             const targetWidth = this.data.get('targetWidth');
             const targetHeight = this.data.get('targetHeight');
-            const stretch = this.data.get('stretch');
+            const stretch = this.data.get('stretch') || '';
             let popupStyle = this.data.get('popupStyle');
             let sizeStyle = {};
 

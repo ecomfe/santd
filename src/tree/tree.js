@@ -118,6 +118,7 @@ export default san.defineComponent({
         this.watch('checkedKeys', val => {
             this.data.set('allCheckedKeys', isPlainObject(val) ? val.checked : val);
             this.data.set('allHalfCheckedKeys', isPlainObject(val) ? val.halfChecked : []);
+            this.updateTreeNodes();
         });
 
         // 拿到需要传递给子组件的属性名

@@ -58,24 +58,20 @@ const transferTree = san.defineComponent({
         's-tree': Tree,
         's-treenode': Tree.TreeNode
     },
-    inited() {
-        this.data.set('instance', this);
-    },
     computed: {
         checkedKeys() {
-            const instance = this.data.get('instance');
             const selectedKeys = this.data.get('selectedKeys');
             const targetKeys = this.data.get('targetKeys');
             return [...selectedKeys, ...targetKeys];
         }
     },
-    handleCheck({e}) {
-        const selectedKey = e.node.data.get('key');
+    handleCheck({info}) {
+        const selectedKey = info.node.data.get('key');
         const checkedKeys = this.data.get('checkedKeys');
         this.dispatch('santd_transfer_itemSelect', {selectedKey, checked: !isChecked(checkedKeys, selectedKey)});
     },
-    handleSelect({e}) {
-        const selectedKey = e.node.data.get('key');
+    handleSelect({info}) {
+        const selectedKey = info.node.data.get('key');
         const checkedKeys = this.data.get('checkedKeys');
         this.dispatch('santd_transfer_itemSelect', {selectedKey, checked: !isChecked(checkedKeys, selectedKey)});
     },
@@ -86,7 +82,6 @@ const transferTree = san.defineComponent({
         <s-tree
             blockNode
             checkable
-            checkStrictly
             defaultExpandAll
             checkedKeys="{{checkedKeys}}"
             on-check="handleCheck"
