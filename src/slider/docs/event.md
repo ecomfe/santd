@@ -7,7 +7,7 @@
 <template>
     <div>
         <s-slider defaultValue="{{30}}" on-change="handleChange" on-afterChange="handleAfterChange" />
-        <s-slider range step="{{10}}" defaultValue="{{[20, 50]}}" on-change="handleChange" on-afterChange="handleAfterChange" />
+        <s-slider range="{{true}}" step="{{10}}" defaultValue="{{[20, 50]}}" on-change="handleChange" on-afterChange="handleAfterChange" />
     </div>
 </template>
 <script>

@@ -110,6 +110,7 @@ export default san.defineComponent({
         <span>
             <s-tooltip
                 rootDomNode="{{rootDomNode}}"
+                transitionName="zoom-down"
                 title="{{title}}"
                 s-ref="tooltip"
                 visible="{{isTipVisible}}"

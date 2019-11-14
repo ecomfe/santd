@@ -388,8 +388,8 @@ export default san.defineComponent({
             this.handlePopupMouseDown(e);
         }
     },
-    getRootDomNode() {
-        return this.data.get('rootDomNode') || this.el;
+    getRootDomNode(rootDomNode) {
+        return rootDomNode || this.el;
     },
     attachPopup() {
         this._container = this.getContainer();
@@ -399,7 +399,7 @@ export default san.defineComponent({
             source: `
                 <x-popup
                     prefixCls="{{prefixCls}}"
-                    getRootDomNode="{{getRootDomNode()}}"
+                    getRootDomNode="{{getRootDomNode(rootDomNode)}}"
                     align="{{getPopupAlign}}"
                     transitionName="{{popupTransitionName}}"
                     getClassNameFromAlign="{{getClassNameFromAlign}}"

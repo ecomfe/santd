@@ -6,7 +6,7 @@
 ```html
 <template>
     <div>
-        <s-slider defaultValue="{{30}}" tooltipVisible />
+        <s-slider defaultValue="{{30}}" tooltipVisible="{{true}}" />
     </div>
 </template>
 <script>

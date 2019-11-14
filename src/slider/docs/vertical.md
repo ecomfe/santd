@@ -10,10 +10,10 @@
             <s-slider vertical="{{true}}" defaultValue="{{30}}" />
         </div>
         <div style="height: 300px; float: left; margin-left: 70px;">
-            <s-slider vertical="{{true}}" range defaultValue="{{[20,50]}}" step="{{10}}" />
+            <s-slider vertical="{{true}}" range="{{true}}" defaultValue="{{[20,50]}}" step="{{10}}" />
         </div>
         <div style="height: 300px; float: left; margin-left: 70px;">
-            <s-slider vertical="{{true}}" range defaultValue="{{[26, 37]}}" marks="{{marks}}" />
+            <s-slider vertical="{{true}}" range="{{true}}" defaultValue="{{[26, 37]}}" marks="{{marks}}" />
         </div>
     </div>
 </template>

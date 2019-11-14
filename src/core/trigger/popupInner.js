@@ -47,7 +47,6 @@ export default san.defineComponent({
         if (!disabled && monitorWindowResize) {
             this.startMonitorWindowResize();
         }
-        // this.forceAlign();
         Animate.prototype.attached.bind(this)();
     },
 
@@ -57,7 +56,9 @@ export default san.defineComponent({
         if (visible) {
             this.forceAlign();
         }
-        Animate.prototype.updated.bind(this)();
+        this.nextTick(() => {
+            Animate.prototype.updated.bind(this)();
+        });
     },
 
     detached() {

@@ -7,7 +7,7 @@
 <template>
     <div>
         <s-slider defaultValue="{{30}}" disabled="{{disabled}}" />
-        <s-slider range defaultValue="{{[20, 50]}}" disabled="{{disabled}}" />
+        <s-slider range="{{true}}" defaultValue="{{[20, 50]}}" disabled="{{disabled}}" />
         Disabled <s-switch size="small" checked="{{disabled}}" on-change='handleDisabledChange'/>
     </div>
 </template>

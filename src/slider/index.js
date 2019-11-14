@@ -5,13 +5,10 @@
 
 import './style/index.less';
 import san from 'san';
-import Tooltip from '../tooltip';
-import Slider from './src/slider';
 import Handle from './src/handle';
 import Steps from './src/steps';
 import Marks from './src/marks';
 import Track from './src/track';
-import * as utils from './src/utils';
 import {classCreator} from '../core/util';
 
 const prefixCls = classCreator('slider')();
@@ -123,8 +120,10 @@ export default san.defineComponent({
             min="{{min}}"
             max="{{max}}"
             disabled="{{disabled}}"
-            tooltipVisible="{{tooltipVisible}}"
+            tooltipVisible="{{tooltipVisible || rangeTooltipVisible[index]}}"
             tipFormatter="{{tipFormatter}}"
+            on-mouseenter="native:handleTooltipVisibleChange(index, true)"
+            on-mouseleave="native:handleTooltipVisibleChange(index, false)"
         />
         <s-marks
             vertical="{{vertical}}"
@@ -144,10 +143,10 @@ export default san.defineComponent({
 
     messages: {
         santd_slider_handle_save(payload) {
-            const instance = payload.value;
-            const index = instance.data.get('index') || 0;
+            const component = payload.value;
+            const index = component.data.get('index') || 0;
 
-            this.handlesRefs[index] = instance;
+            this.handlesRefs[index] = component;
         }
     },
 
@@ -223,7 +222,7 @@ export default san.defineComponent({
             railStyle: {},
             dotStyle: {},
             activeDotStyle: {},
-
+            rangeTooltipVisible: [],
             tipFormatter
         };
     },
@@ -257,7 +256,7 @@ export default san.defineComponent({
 
             this.dragOffset = 0;
             this.handleStart(handlePosition);
-            
+
             this.fire('focus', e);
         }
     },
@@ -326,6 +325,10 @@ export default san.defineComponent({
             this.data.set('value', value);
             this.fire('change', value);
         }
+    },
+
+    handleTooltipVisibleChange(index, visible) {
+        this.data.set('rangeTooltipVisible[' + index + ']', visible);
     },
 
     getClosestBound(value) {
@@ -403,7 +406,7 @@ export default san.defineComponent({
             handleIndex = recent;
         }
         nextBounds[handleIndex] = value;
-        
+
         if (this.data.get('pushable') !== false) {
             this.pushSurroundingHandles(nextBounds, handleIndex);
         }
@@ -503,8 +506,8 @@ export default san.defineComponent({
         }
         return this._getPointsCache.points;
     },
-    
-    
+
+
 
     handleChange(state) {
         ['handleIndex', 'recent'].forEach(item => {
@@ -576,101 +579,9 @@ export default san.defineComponent({
         const ratio = Math.abs(Math.max(pixelOffset, 0) / this.getSliderLength());
         return ensureValuePrecision(
             ensureValueInRange(
-                vertical ? (1 - ratio) * (max - min) + min : ratio * (max - min) + min, 
-                min, 
-                max), 
+                vertical ? (1 - ratio) * (max - min) + min : ratio * (max - min) + min,
+                min,
+                max),
             step, marks, min, max);
     }
 });
-
-
-
-/*
-
-export default san.defineComponent({
-    initData() {
-        const that = this;
-        return {
-            tipFormatter(value) {
-                return value.toString();
-            }
-        };
-    },
-    handleMove(value) {
-        const slider = this.ref('slider');
-        if (!this.data.get('range')) {
-            const handles = slider.ref('handles');
-            const tooltip = handles.ref('tooltip');
-            tooltip.data.set('title', value);
-            this.nextTick(() => {
-                tooltip.refresh();
-            });
-        }
-    },
-    handleEnd() {
-        const slider = this.ref('slider');
-        if (!this.data.get('range')) {
-            const handles = slider.ref('handles');
-            handles.data.set('visible', false);
-        }
-    },
-    handleChange(value) {
-        this.fire('change', value);
-    },
-    handleAfterChange(value) {
-        this.fire('afterChange', value);
-    },
-    focus() {
-        this.ref('slider').focus();
-    },
-    blur() {
-        this.ref('slider').blur();
-    },
-    components: {
-        's-slider': Slider,
-        's-range': Range
-    },
-    template: `<div style="{{vertical ? 'height: 100%;' : ''}}">
-        <s-range
-            s-if="range"
-            tipFormatter="{{tipFormatter}}"
-            defaultValue="{{defaultValue}}"
-            disabled="{{disabled}}"
-            min="{{min}}"
-            max="{{max}}"
-            step="{{step}}"
-            vertical="{{vertical}}"
-            marks="{{marks}}"
-            value="{{value}}"
-            included="{{included}}"
-            tooltipVisible="{{tooltipVisible}}"
-            dots="{{dots}}"
-            on-move="handleMove"
-            on-end="handleEnd"
-            on-change="handleChange"
-            on-afterChange="handleAfterChange"
-            s-ref="range"
-        />
-        <s-slider
-            s-else
-            tipFormatter="{{tipFormatter}}"
-            defaultValue="{{defaultValue}}"
-            disabled="{{disabled}}"
-            min="{{min}}"
-            max="{{max}}"
-            step="{{step}}"
-            vertical="{{vertical}}"
-            marks="{{marks}}"
-            value="{{value}}"
-            included="{{included}}"
-            tooltipVisible="{{tooltipVisible}}"
-            dots="{{dots}}"
-            on-move="handleMove"
-            on-end="handleEnd"
-            on-change="handleChange"
-            on-afterChange="handleAfterChange"
-            s-ref="slider"
-        />
-    </div>`
-});
-*/

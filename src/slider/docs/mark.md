@@ -8,7 +8,7 @@
     <div>
         <h4>included=true</h4>
         <s-slider marks="{{marks}}" defaultValue="{{37}}" />
-        <s-slider range marks="{{marks}}" defaultValue="{{[26, 37]}}" />
+        <s-slider range="{{true}}" marks="{{marks}}" defaultValue="{{[26, 37]}}" />
         <h4>included=false</h4>
         <s-slider marks="{{marks}}" included="{{false}}" defaultValue="{{37}}" />
         <h4>marks & step</h4>
