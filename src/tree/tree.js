@@ -115,14 +115,23 @@ export default san.defineComponent({
             this.updateTreeNodes();
         });
 
+        // 受控状态下监听checkedKeys，如果变化fire到上一层处理
         this.watch('checkedKeys', val => {
-            this.data.set('allCheckedKeys', isPlainObject(val) ? val.checked : val);
-            // 如果外部只传入了checkedKeys的时候，需要重新计算halfCheckedKeys
-            let halfChecked;
-            if (Array.isArray(val)) {
-                halfChecked = this.getAllCheckedKeys(this.treeNodes, val.concat()).halfCheckedKeys;
+            const checkStrictly = this.data.get('checkStrictly');
+            let checkedKeys = isPlainObject(val) ? val.checked : val || [];
+            let halfCheckedKeys;
+            // 如果有父子关联，拿到整个链上的数据
+            if (!checkStrictly) {
+                let allKeys = this.getAllCheckedKeys(this.treeNodes, checkedKeys.concat());
+                this.data.set('allCheckedKeys', allKeys.checkedKeys);
+                this.data.set('allHalfCheckedKeys', allKeys.halfCheckedKeys);
             }
-            this.data.set('allHalfCheckedKeys', isPlainObject(val) ? val.halfChecked : halfChecked);
+            // 没有关联的话直接返回当前数据
+            else {
+                halfCheckedKeys = isPlainObject(val) ? val.halfChecked : [] || [];
+                this.data.set('allCheckedKeys', checkedKeys);
+                this.data.set('allHalfCheckedKeys', halfCheckedKeys);
+            }
             this.updateTreeNodes();
         });
 
@@ -143,7 +152,8 @@ export default san.defineComponent({
 
             if (!allKeys.checkedKeys.includes(checkedKey)) {
                 let keys = this.getChangedCheckedKeys(treeNodes, checkedKey, true, [], [], checkStrictly);
-                allKeys.checkedKeys = allKeys.checkedKeys.concat(keys.checkedKeys);
+                // 这里需要对数据进行去重
+                allKeys.checkedKeys = Array.from(new Set(allKeys.checkedKeys.concat(keys.checkedKeys)));
                 allKeys.halfCheckedKeys = keys.halfCheckedKeys;
             }
         }
@@ -212,9 +222,9 @@ export default san.defineComponent({
         }
         const checkStrictly = this.data.get('checkStrictly');
         !checkStrictly && this.nextTick(() => {
-            let allKeys = this.getAllCheckedKeys(this.treeNodes, this.data.get('allCheckedKeys'));
-            this.data.set('allCheckedKeys', allKeys.checkedKeys.concat());
-            this.data.set('allHalfCheckedKeys', allKeys.halfCheckedKeys.concat());
+            let allKeys = this.getAllCheckedKeys(this.treeNodes, this.data.get('allCheckedKeys').concat());
+            this.data.set('allCheckedKeys', allKeys.checkedKeys);
+            this.data.set('allHalfCheckedKeys', allKeys.halfCheckedKeys);
             this.updateTreeNodes();
         });
     },
@@ -285,15 +295,25 @@ export default san.defineComponent({
             const key = info.node.data.get('key');
             const checked = info.checked;
             const checkStrictly = this.data.get('checkStrictly');
-            let checkedKeys = this.data.get('allCheckedKeys');
-            let halfCheckedKeys = this.data.get('halfCheckedKeys');
 
+            let checkedKeys = this.data.get('allCheckedKeys');
+            let halfCheckedKeys = checkStrictly ? [] : this.data.get('allHalfCheckedKeys');
             let allKeys = this.getChangedCheckedKeys(this.treeNodes, key, checked, checkedKeys, halfCheckedKeys, checkStrictly);
-            this.data.set('allCheckedKeys', allKeys.checkedKeys.concat());
-            this.data.set('allHalfCheckedKeys', allKeys.halfCheckedKeys.concat());
+
+            // 非受控状态下，所有数据都走内部的allCheckedKeys和allHalfCheckedKeys
+            if (!('checkedKeys' in this.data.get())) {
+                checkedKeys = allKeys.checkedKeys;
+                halfCheckedKeys = allKeys.halfCheckedKeys;
+                this.data.set('allCheckedKeys', checkedKeys);
+                this.data.set('allHalfCheckedKeys', halfCheckedKeys);
+            }
+            // 受控状态不保存数据，由外部传入的checkedKeys经过处理后拿到
+            else {
+                checkedKeys = allKeys.checkedKeys;
+            }
             this.updateTreeNodes();
             if (payload.value.event === 'check') {
-                this.fire('check', {checkedKeys: allKeys.checkedKeys, info: payload.value});
+                this.fire('check', {checkedKeys: checkedKeys, info: payload.value});
             }
         },
         // 展开节点的处理

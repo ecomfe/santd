@@ -217,7 +217,7 @@ export default san.defineComponent({
         // todo
         return;
     },
-    handleTreeCheck({checkedKeys, info}) {
+    handleTreeCheck({checkedKeys, info = {}}, inited) {
         let checkedData = this.getIncludeData(checkedKeys);
         let filteredData = [];
         let removedKeys = [];
@@ -245,12 +245,13 @@ export default san.defineComponent({
         let selectedValue = this.getRenderData(filteredData);
         this.data.set('selectedValue', selectedValue);
         this.data.set('selectedKeys', []);
-        this.repaint(true);
+        this.data.set('checkedKeys', filteredData.map(item => item.key));
+        !inited && this.repaint(true);
 
         if (info.checked) {
             this.fire('select', {info});
         }
-        this.fire('change', {value: selectedValue.map(data => data.key), node: info.node, info});
+        !inited && this.fire('change', {value: selectedValue.map(data => data.key), node: info.node, info});
     },
     handleTreeSelect({selectedKeys, info}) {
         const treeCheckable = this.data.get('treeCheckable');
@@ -296,27 +297,16 @@ export default san.defineComponent({
         this.data.removeAt('selectedValue', index);
     },
     getIncludeData(data = []) {
-        return this.dataList.filter(item => {
-            return data.includes(item.key);
-        });
-    },
-    getKeys(nodes) {
-        return nodes.map(item => item.key);
+        return this.dataList.filter(item => data.includes(item.key));
     },
     attached() {
         this.data.set('popupVisible', null);
         this.nextTick(() => {
-            const treeCheckable = this.data.get('treeCheckable');
-            let tree = this.ref('tree');
-            let data = this.getData(tree.treeNodes);
+            this.data.set('checkedKeys', this.data.get('value'));
+            let data = this.getData(this.ref('tree').treeNodes);
             this.dataList = data.dataList;
             this.treeData = data.treeData;
-
-            let allKeys = tree.getAllCheckedKeys(tree.treeNodes, this.data.get('value'));
-            let selectedData = this.getIncludeData(allKeys.checkedKeys);
-            let selectedValue = this.getRenderData(selectedData);
-            this.data.set('selectedValue', selectedValue);
-            this.data.set('checkedKeys', {checked: allKeys.checkedKeys, halfChecked: allKeys.halfCheckedKeys});
+            this.handleTreeCheck({checkedKeys: this.data.get('value')}, true);
         });
     },
     template: `<div class="{{wrapClass}}">

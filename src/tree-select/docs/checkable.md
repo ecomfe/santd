@@ -15,8 +15,8 @@
           showCheckedStrategy="{{SHOW_PARENT}}"
           placeholder="Please select"
           allowClear="{{true}}"
+          value="{{value}}"
           on-change="onChange"
-          labelInValue="{{true}}"
       >
       </s-tree-select>
     </div>
@@ -28,28 +28,28 @@ import TreeSelect from 'santd/tree-select';
 const treeData = [{
   title: 'Node1',
   value: '0-0',
-  key: '0-0-key',
+  key: '0-0',
   children: [{
     title: 'Child Node1',
     value: '0-0-0',
-    key: '0-0-0-key',
+    key: '0-0-0',
   }],
 }, {
   title: 'Node2',
   value: '0-1',
-  key: '0-1-key',
+  key: '0-1',
   children: [{
     title: 'Child Node3',
     value: '0-1-0',
-    key: '0-1-0-key',
+    key: '0-1-0',
   }, {
     title: 'Child Node4',
     value: '0-1-1',
-    key: '0-1-1-key',
+    key: '0-1-1',
   }, {
     title: 'Child Node5',
     value: '0-1-2',
-    key: '0-1-2-key',
+    key: '0-1-2',
   }],
 }];
 
@@ -59,7 +59,7 @@ export default {
     },
     initData() {
         return {
-            values: ['0-1'],
+            value: ['0-1'],
             treeData: treeData,
             SHOW_PARENT: TreeSelect.SHOW_PARENT
         }
