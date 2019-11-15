@@ -8,7 +8,6 @@ import san from 'san';
 import Handle from './src/handle';
 import Steps from './src/steps';
 import Marks from './src/marks';
-import Track from './src/track';
 import {classCreator} from '../core/util';
 
 const prefixCls = classCreator('slider')();
@@ -89,14 +88,11 @@ export default san.defineComponent({
         on-blur="rootBlur"
     >
         <div class="${prefixCls}-rail" />
-        <s-track
+        <div 
             s-if="included"
-            vertical="{{vertical}}"
-            included="{{included}}"
-            offset="{{track.offset}}"
-            length="{{track.len}}"
-            index="{{track.index}}"
-        />
+            class="${prefixCls}-track{{track.index ? ' ${prefixCls}' + track.index + '-track' : ''}}"
+            style="{{vertical ? 'bottom' : 'left'}}:{{track.offset}}%;{{vertical ? 'height' : 'width'}}:{{track.len}}%;"
+        ></div>
         <s-steps
             vertical="{{vertical}}"
             marks="{{marks}}"
@@ -137,7 +133,6 @@ export default san.defineComponent({
     components: {
         's-steps': Steps,
         's-marks': Marks,
-        's-track': Track,
         's-handle': Handle
     },
 
