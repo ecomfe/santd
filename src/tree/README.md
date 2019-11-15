@@ -2,30 +2,31 @@
 
 ### tree组件
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| autoExpandParent | 是否自动展开父节点 | boolean | true |
-| blockNode | 是否节点占据一行 | boolean | false |
-| checkable | 节点前添加 Checkbox 复选框 | boolean | false |
-| checkedKeys | (受控）选中复选框的树节点（注意：父子节点有关联，如果传入父节点key，则子节点自动选中；相应当子节点key都传入，父节点也自动选中。| [] | [] |
-| defaultCheckedKeys| 默认选中复选框的树节点| string[] | [] |
-| defaultExpandAll | 默认展开所有树节点 | boolean | false |
-| defaultExpandedKeys | 默认展开指定的树节点 | string[] | [] |
-| defaultSelectedKeys| 默认选中的树节点| string[]| [] |
-| disabled | 将树禁用 | boolean | false |
-| expandedKeys | （受控）展开指定的树节点 | string[] | [] |
-| loadData | 异步加载数据 | function(node) | - |
-| multiple | 支持点选多个节点（节点本身）| boolean | false |
-| selectable | 是否可选中| boolean | true |
-| selectedKeys | （受控）设置选中的树节点| string[] | - |
-| showIcon | 是否展示 TreeNode title 前的图标，没有默认样式，如设置为 true，需要自行定义图标相关样式 | boolean | false |
-| switcherIcon | 自定义树节点的展开/折叠图标 | slot | - |
-| showLine | 是否展示连接线| boolean | false |
-| on-load | 节点加载完毕时触发 | function({loadedKeys, info: {event, node}}) | - |
-| on-check | 点击复选框触发 | function({checkedKeys, info: {checked, checkedKeys, node, event, nativeEvent, halfCheckedKeys}}) | - |
-| on-expand | 展开/收起节点时触发 | function({expandedKeys, info: {expanded, node}}) | - |
-| on-select | 点击树节点触发 | function({selectedKeys, info: {selected, selectedKeys, node, event}}) | - |
-| treeData | 节点的配置描述, 具体项与TreeNode props一致，可见下表 | array | -- |
+| 参数                | 说明                                                                                                                            | 类型                                                                                             | 默认值 |
+| ---                 | ---                                                                                                                             | ---                                                                                              | ---    |
+| autoExpandParent    | 是否自动展开父节点                                                                                                              | boolean                                                                                          | true   |
+| blockNode           | 是否节点占据一行                                                                                                                | boolean                                                                                          | false  |
+| checkable           | 节点前添加 Checkbox 复选框                                                                                                      | boolean                                                                                          | false  |
+| checkedKeys         | (受控）选中复选框的树节点（注意：父子节点有关联，如果传入父节点key，则子节点自动选中；相应当子节点key都传入，父节点也自动选中。 | string[] \| {checked: string[], halfChecked: string[]}                                                                                               | []     |
+| checkStrictly       | checkable 状态下节点选择完全受控（父子节点选中状态不再关联）                                                                    | boolean                                                                                               | false     |
+| defaultCheckedKeys  | 默认选中复选框的树节点                                                                                                          | string[]                                                                                         | []     |
+| defaultExpandAll    | 默认展开所有树节点                                                                                                              | boolean                                                                                          | false  |
+| defaultExpandedKeys | 默认展开指定的树节点                                                                                                            | string[]                                                                                         | []     |
+| defaultSelectedKeys | 默认选中的树节点                                                                                                                | string[]                                                                                         | []     |
+| disabled            | 将树禁用                                                                                                                        | boolean                                                                                          | false  |
+| expandedKeys        | （受控）展开指定的树节点                                                                                                        | string[]                                                                                         | []     |
+| loadData            | 异步加载数据                                                                                                                    | function(node)                                                                                   | -      |
+| multiple            | 支持点选多个节点（节点本身）                                                                                                    | boolean                                                                                          | false  |
+| selectable          | 是否可选中                                                                                                                      | boolean                                                                                          | true   |
+| selectedKeys        | （受控）设置选中的树节点                                                                                                        | string[]                                                                                         | -      |
+| showIcon            | 是否展示 TreeNode title 前的图标，没有默认样式，如设置为 true，需要自行定义图标相关样式                                         | boolean                                                                                          | false  |
+| switcherIcon        | 自定义树节点的展开/折叠图标                                                                                                     | slot                                                                                             | -      |
+| showLine            | 是否展示连接线                                                                                                                  | boolean                                                                                          | false  |
+| on-load             | 节点加载完毕时触发                                                                                                              | function({loadedKeys, info: {event, node}})                                                      | -      |
+| on-check            | 点击复选框触发                                                                                                                  | function({checkedKeys, info: {checked, checkedKeys, node, event, nativeEvent, halfCheckedKeys}}) | -      |
+| on-expand           | 展开/收起节点时触发                                                                                                             | function({expandedKeys, info: {expanded, node}})                                                 | -      |
+| on-select           | 点击树节点触发                                                                                                                  | function({selectedKeys, info: {selected, selectedKeys, node, event}})                            | -      |
+| treeData            | 节点的配置描述, 具体项与TreeNode props一致，可见下表                                                                            | array                                                                                            | --     |
 
 ### TreeNode props
 

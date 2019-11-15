@@ -77,7 +77,8 @@ export default san.defineComponent({
             autoExpandParent: true,
             halfCheckedKeys: [],
             allCheckedKeys: [],
-            allHalfCheckedKeys: []
+            allHalfCheckedKeys: [],
+            checkStrictly: false
         };
     },
     inited() {
@@ -130,7 +131,8 @@ export default san.defineComponent({
     },
 
     // 根据传入的checkedKeys值把上下游节点所有符合的值都取到
-    getAllCheckedKeys(treeNodes, checkedKeys = [], halfCheckedKeys = [], checked) {
+    getAllCheckedKeys(treeNodes, checkedKeys = []) {
+        const checkStrictly = this.data.get('checkStrictly');
         let checkedKey;
         let allKeys = {
             checkedKeys: [],
@@ -140,7 +142,7 @@ export default san.defineComponent({
             checkedKey = checkedKeys.shift();
 
             if (!allKeys.checkedKeys.includes(checkedKey)) {
-                let keys = this.getChangedCheckedKeys(treeNodes, checkedKey, true, halfCheckedKeys);
+                let keys = this.getChangedCheckedKeys(treeNodes, checkedKey, true, [], [], checkStrictly);
                 allKeys.checkedKeys = allKeys.checkedKeys.concat(keys.checkedKeys);
                 allKeys.halfCheckedKeys = keys.halfCheckedKeys;
             }
@@ -159,41 +161,43 @@ export default san.defineComponent({
         return nodes;
     },
 
-    getChangedCheckedKeys(treeNodes, key, isCheck, checkedKeys = [], halfCheckedKeys = []) {
+    getChangedCheckedKeys(treeNodes, key, isCheck, checkedKeys = [], halfCheckedKeys = [], checkStrictly) {
         let checkedNodes = this.getCheckedNodes(this.treeNodes, [key]);
         checkedNodes.forEach(node => {
             checkedKeys = toggleArrayData(isCheck, checkedKeys, node.data.get('key'));
-            let parent = node.parentComponent;
-            // 找到后不断遍历父节点，把需要改变状态的父节点的key都拿到
-            while (parent && parent !== this && !parent.data.get('disabled')) {
-                // 先过滤掉是disabled状态的节点
-                let treeNodes = parent.treeNodes.filter(node => {
-                    return !this.data.get('disabled') && !node.data.get('disabled');
-                });
-                const parentKey = parent.data.get('key');
-                const allChecked = treeNodes.every(node => checkedKeys.includes(node.data.get('key')));
-                // 如果是子是全选状态，把父的key也放到selected中
-                checkedKeys = toggleArrayData(allChecked && isCheck, checkedKeys, parentKey);
+            if (!checkStrictly) {
+                let parent = node.parentComponent;
+                // 找到后不断遍历父节点，把需要改变状态的父节点的key都拿到
+                while (parent && parent !== this && !parent.data.get('disabled')) {
+                    // 先过滤掉是disabled状态的节点
+                    let treeNodes = parent.treeNodes.filter(node => {
+                        return !this.data.get('disabled') && !node.data.get('disabled');
+                    });
+                    const parentKey = parent.data.get('key');
+                    const allChecked = treeNodes.every(node => checkedKeys.includes(node.data.get('key')));
+                    // 如果是子是全选状态，把父的key也放到selected中
+                    checkedKeys = toggleArrayData(allChecked && isCheck, checkedKeys, parentKey);
 
-                const halfChecked = !treeNodes.every(node => checkedKeys.includes(node.data.get('key')))
-                    && treeNodes.some(node => {
-                        const key = node.data.get('key');
-                        return checkedKeys.includes(key) || halfCheckedKeys.includes(key);
-                    }
-                );
-                // 如果子不是全选是半选，把父放到halfSelectedKeys里面
-                halfCheckedKeys = toggleArrayData(halfChecked, halfCheckedKeys, parentKey);
-                parent = parent.parentComponent;
-            }
-            // 处理完父节点，处理子节点，找到所有的子节点，添加或者删除在checkedKeys里面
-            const disabled = this.data.get('disabled') || node.data.get('disabled');
-            !disabled && traverseNodesKey(node.treeNodes, (key, node) => {
-                const disabled = this.data.get('disabled') || node.data.get('disabled');
-                if (!disabled) {
-                    checkedKeys = toggleArrayData(isCheck, checkedKeys, key);
+                    const halfChecked = !treeNodes.every(node => checkedKeys.includes(node.data.get('key')))
+                        && treeNodes.some(node => {
+                            const key = node.data.get('key');
+                            return checkedKeys.includes(key) || halfCheckedKeys.includes(key);
+                        }
+                        );
+                    // 如果子不是全选是半选，把父放到halfSelectedKeys里面
+                    halfCheckedKeys = toggleArrayData(halfChecked, halfCheckedKeys, parentKey);
+                    parent = parent.parentComponent;
                 }
-                return !disabled;
-            });
+                // 处理完父节点，处理子节点，找到所有的子节点，添加或者删除在checkedKeys里面
+                const disabled = this.data.get('disabled') || node.data.get('disabled');
+                !disabled && traverseNodesKey(node.treeNodes, (key, node) => {
+                    const disabled = this.data.get('disabled') || node.data.get('disabled');
+                    if (!disabled) {
+                        checkedKeys = toggleArrayData(isCheck, checkedKeys, key);
+                    }
+                    return !disabled;
+                });
+            }
         });
         return {
             checkedKeys,
@@ -204,8 +208,10 @@ export default san.defineComponent({
     attached() {
         if (this.data.get('autoExpandParent')) {
             this.autoExpand();
+            this.updateTreeNodes();
         }
-        this.nextTick(() => {
+        const checkStrictly = this.data.get('checkStrictly');
+        !checkStrictly && this.nextTick(() => {
             let allKeys = this.getAllCheckedKeys(this.treeNodes, this.data.get('allCheckedKeys'));
             this.data.set('allCheckedKeys', allKeys.checkedKeys.concat());
             this.data.set('allHalfCheckedKeys', allKeys.halfCheckedKeys.concat());
@@ -278,10 +284,11 @@ export default san.defineComponent({
             let info = payload.value;
             const key = info.node.data.get('key');
             const checked = info.checked;
+            const checkStrictly = this.data.get('checkStrictly');
             let checkedKeys = this.data.get('allCheckedKeys');
             let halfCheckedKeys = this.data.get('halfCheckedKeys');
 
-            let allKeys = this.getChangedCheckedKeys(this.treeNodes, key, checked, checkedKeys, halfCheckedKeys);
+            let allKeys = this.getChangedCheckedKeys(this.treeNodes, key, checked, checkedKeys, halfCheckedKeys, checkStrictly);
             this.data.set('allCheckedKeys', allKeys.checkedKeys.concat());
             this.data.set('allHalfCheckedKeys', allKeys.halfCheckedKeys.concat());
             this.updateTreeNodes();
