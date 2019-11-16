@@ -172,13 +172,6 @@ export default san.defineComponent({
             return value.map(v => ensureValuePrecision(ensureValueInRange(v, min, max), step, marks, min, max));
         },
 
-        // recent() {
-        //     let bounds = this.data.get('bounds');
-        //     let max = this.data.get('max');
-
-        //     return bounds && bounds[0] === max ? 0 : bounds.length - 1;
-        // },
-
         track() {
             let range = this.data.get('range');
             let bounds = this.data.get('bounds');
@@ -366,7 +359,6 @@ export default san.defineComponent({
         e.stopPropagation();
         e.preventDefault();
 
-        // const oldValue = this.data.get('value');
         let value = this.calcValueByPos(position);
 
         if (this.data.get('range')) {
@@ -380,7 +372,6 @@ export default san.defineComponent({
             if (value !== this.data.get('value')) {
                 this.data.set('value', value);
                 this.fire('change', value);
-                // this.fire('move', value);
             }
         }
     },
@@ -398,10 +389,6 @@ export default san.defineComponent({
 
         if (this.data.get('pushable') !== false) {
             this.pushSurroundingHandles(nextBounds, handleIndex);
-        }
-        else if (this.data.get('allowCross')) {
-            nextBounds.sort((a, b) => a - b);
-            handleIndex = nextBounds.indexOf(value);
         }
 
         this.handleChange({
