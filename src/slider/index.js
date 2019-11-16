@@ -116,10 +116,10 @@ export default san.defineComponent({
             min="{{min}}"
             max="{{max}}"
             disabled="{{disabled}}"
-            tooltipVisible="{{tooltipVisible || rangeTooltipVisible[index]}}"
+            tooltipVisible="{{tooltipVisible || activeHandleIndex === index}}"
             tipFormatter="{{tipFormatter}}"
-            on-mouseenter="native:handleTooltipVisibleChange(index, true)"
-            on-mouseleave="native:handleTooltipVisibleChange(index, false)"
+            on-mouseenter="native:updateActiveHandleIndex(index, true)"
+            on-mouseleave="native:updateActiveHandleIndex(index, false)"
         />
         <s-marks
             vertical="{{vertical}}"
@@ -217,7 +217,6 @@ export default san.defineComponent({
             railStyle: {},
             dotStyle: {},
             activeDotStyle: {},
-            rangeTooltipVisible: [],
             tipFormatter
         };
     },
@@ -322,8 +321,8 @@ export default san.defineComponent({
         }
     },
 
-    handleTooltipVisibleChange(index, visible) {
-        this.data.set('rangeTooltipVisible[' + index + ']', visible);
+    updateActiveHandleIndex(index, visible) {
+        this.data.set('activeHandleIndex', visible ? index : null);
     },
 
     getClosestBound(value) {
