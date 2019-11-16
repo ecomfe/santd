@@ -364,7 +364,21 @@ export default san.defineComponent({
         if (this.data.get('range')) {
             const handleIndex = this.data.get('handleIndex');
             if (this.data.get('bounds')[handleIndex] !== value) {
-                this.moveTo(value);
+                const bounds = this.data.get('bounds');
+                const recent = this.data.get('recent');
+
+                const nextBounds = [...bounds];
+                if (handleIndex === null) {
+                    handleIndex = recent;
+                }
+                nextBounds[handleIndex] = value;
+
+
+                this.handleChange({
+                    recent: handleIndex,
+                    handleIndex: handleIndex,
+                    bounds: nextBounds
+                });
             }
         }
         else {
@@ -375,115 +389,6 @@ export default san.defineComponent({
             }
         }
     },
-
-    moveTo(value) {
-        const bounds = this.data.get('bounds');
-        const handleIndex = this.data.get('handleIndex');
-        const recent = this.data.get('recent');
-
-        const nextBounds = [...bounds];
-        if (handleIndex === null) {
-            handleIndex = recent;
-        }
-        nextBounds[handleIndex] = value;
-
-        if (this.data.get('pushable') !== false) {
-            this.pushSurroundingHandles(nextBounds, handleIndex);
-        }
-
-        this.handleChange({
-            recent: handleIndex,
-            handleIndex: handleIndex,
-            bounds: nextBounds
-        });
-    },
-
-
-    pushSurroundingHandles(bounds, handle) {
-        const value = bounds[handle];
-        let {pushable: threshold} = this.data.get();
-        threshold = Number(threshold);
-
-        let direction = 0;
-        if (bounds[handle + 1] - value < threshold) {
-            direction = +1; // push to right
-        }
-        if (value - bounds[handle - 1] < threshold) {
-            direction = -1; // push to left
-        }
-
-        if (direction === 0) {
-            return;
-        }
-
-        const nextHandle = handle + direction;
-        const diffToNext = direction * (bounds[nextHandle] - value);
-        if (!this.pushHandle(bounds, nextHandle, direction, threshold - diffToNext)) {
-            // revert to original value if pushing is impossible
-            bounds[handle] = bounds[nextHandle] - (direction * threshold);
-        }
-    },
-
-    pushHandle(bounds, handle, direction, amount) {
-        const originalValue = bounds[handle];
-        let currentValue = bounds[handle];
-        while (direction * (currentValue - originalValue) < amount) {
-            if (!this.pushHandleOnePoint(bounds, handle, direction)) {
-                // can't push handle enough to create the needed `amount` gap, so we
-                // revert its position to the original value
-                bounds[handle] = originalValue;
-                return false;
-            }
-            currentValue = bounds[handle];
-        }
-        // the handle was pushed enough to create the needed `amount` gap
-        return true;
-    },
-
-    pushHandleOnePoint(bounds, handle, direction) {
-        const points = this.getPoints();
-        const pointIndex = points.indexOf(bounds[handle]);
-        const nextPointIndex = pointIndex + direction;
-        if (nextPointIndex >= points.length || nextPointIndex < 0) {
-            // reached the minimum or maximum available point, can't push anymore
-            return false;
-        }
-        const nextHandle = handle + direction;
-        const nextValue = points[nextPointIndex];
-        const {pushable: threshold} = this.data.get();
-        const diffToNext = direction * (bounds[nextHandle] - nextValue);
-        if (!this.pushHandle(bounds, nextHandle, direction, threshold - diffToNext)) {
-            // couldn't push next handle, so we won't push this one either
-            return false;
-        }
-        // push the handle
-        bounds[handle] = nextValue;
-        return true;
-    },
-
-    getPoints() {
-        const {
-            marks,
-            step,
-            min,
-            max
-        } = this.data.get();
-        const cache = this._getPointsCache;
-        if (!cache || cache.marks !== marks || cache.step !== step) {
-            const pointsObject = {...marks};
-            if (step !== null) {
-                for (let point = min; point <= max; point += step) {
-                    pointsObject[point] = point;
-                }
-            }
-            const points = Object.keys(pointsObject).map(parseFloat);
-            points.sort((a, b) => a - b);
-            this._getPointsCache = {marks, step, points};
-        }
-        return this._getPointsCache.points;
-    },
-
-
 
     handleChange(state) {
         ['handleIndex', 'recent'].forEach(item => {
