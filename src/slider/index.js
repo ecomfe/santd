@@ -293,17 +293,15 @@ export default san.defineComponent({
             this.fire('beforeChange', bounds);
 
             const value = this.calcValueByPos(position);
-            this.startValue = value;
-            this.startPosition = position;
 
-            const closestBound = this.getClosestBound(value);
-            this.prevMovedHandleIndex = this.getBoundNeedMoving(value, closestBound);
+            let closestBound = this.getClosestBound(value);
+            let handleIndex = this.getBoundNeedMoving(value, closestBound);
 
-            this.data.set('handleIndex', this.prevMovedHandleIndex);
-            this.data.set('recent', this.prevMovedHandleIndex);
+            this.data.set('handleIndex', handleIndex);
+            this.data.set('recent', handleIndex);
 
             const nextBounds = [...bounds];
-            nextBounds[this.prevMovedHandleIndex] = value;
+            nextBounds[handleIndex] = value;
             this.handleChange({bounds: nextBounds});
         }
         else {
@@ -312,9 +310,6 @@ export default san.defineComponent({
 
             const max = this.data.get('max');
             let value = Math.min(this.calcValueByPos(position), max);
-
-            this.startValue = value;
-            this.startPosition = position;
 
             this.data.set('value', value);
             this.fire('change', value);
