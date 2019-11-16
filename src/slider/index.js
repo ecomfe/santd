@@ -287,7 +287,10 @@ export default san.defineComponent({
 
             const value = this.calcValueByPos(position);
 
-            let closestBound = this.getClosestBound(value);
+            let closestBound = 0;
+            if (Math.abs(bounds[0] - value) > Math.abs(bounds[1] - value)) {
+                closestBound = 1;
+            }
             let handleIndex = this.getBoundNeedMoving(value, closestBound);
 
             this.data.set('handleIndex', handleIndex);
@@ -311,20 +314,6 @@ export default san.defineComponent({
 
     updateActiveHandleIndex(index, visible) {
         this.data.set('activeHandleIndex', visible ? index : null);
-    },
-
-    getClosestBound(value) {
-        const bounds = this.data.get('bounds');
-        let closestBound = 0;
-        for (let i = 1; i < bounds.length - 1; ++i) {
-            if (value >= bounds[i]) {
-                closestBound = i;
-            }
-        }
-        if (Math.abs(bounds[closestBound + 1] - value) < Math.abs(bounds[closestBound] - value)) {
-            closestBound += 1;
-        }
-        return closestBound;
     },
 
     getBoundNeedMoving(value, closestBound) {
