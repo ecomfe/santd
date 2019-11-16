@@ -90,7 +90,7 @@ export default san.defineComponent({
         <div class="${prefixCls}-rail" />
         <div 
             s-if="included"
-            class="${prefixCls}-track{{track.index ? ' ${prefixCls}' + track.index + '-track' : ''}}"
+            class="${prefixCls}-track{{track.index ? ' ${prefixCls}-track-' + track.index : ''}}"
             style="{{vertical ? 'bottom' : 'left'}}:{{track.offset}}%;{{vertical ? 'height' : 'width'}}:{{track.len}}%;"
         ></div>
         <s-steps
