@@ -296,10 +296,8 @@ export default san.defineComponent({
             }
 
             this.data.set('handleIndex', handleIndex);
-
-            const nextBounds = [...bounds];
-            nextBounds[handleIndex] = value;
-            this.handleChange({bounds: nextBounds});
+            this.data.set('value[' + handleIndex + ']', value);
+            this.fire('change', this.data.get('value'));
         }
         else {
             this.fire('beforeChange', this.data.get('value'));
@@ -336,16 +334,8 @@ export default san.defineComponent({
         if (this.data.get('range')) {
             const handleIndex = this.data.get('handleIndex');
             if (this.data.get('bounds')[handleIndex] !== value) {
-                const bounds = this.data.get('bounds');
-
-                const nextBounds = [...bounds];
-                nextBounds[handleIndex] = value;
-
-
-                this.handleChange({
-                    handleIndex: handleIndex,
-                    bounds: nextBounds
-                });
+                this.data.set('value[' + handleIndex + ']', value);
+                this.fire('change', this.data.get('value'));
             }
         }
         else {
@@ -356,18 +346,6 @@ export default san.defineComponent({
             }
         }
     },
-
-    handleChange(state) {
-        if (state.handleIndex) {
-            this.data.set('handleIndex', state.handleIndex);
-        }
-
-        const changedValue = state.bounds;
-        this.data.set('bounds', state.bounds);
-
-        this.fire('change', changedValue);
-    },
-
 
     handleEnd() {
         this.removeDocMouseListeners();
