@@ -296,7 +296,6 @@ export default san.defineComponent({
             }
 
             this.data.set('handleIndex', handleIndex);
-            this.data.set('recent', handleIndex);
 
             const nextBounds = [...bounds];
             nextBounds[handleIndex] = value;
@@ -338,17 +337,12 @@ export default san.defineComponent({
             const handleIndex = this.data.get('handleIndex');
             if (this.data.get('bounds')[handleIndex] !== value) {
                 const bounds = this.data.get('bounds');
-                const recent = this.data.get('recent');
 
                 const nextBounds = [...bounds];
-                if (handleIndex === null) {
-                    handleIndex = recent;
-                }
                 nextBounds[handleIndex] = value;
 
 
                 this.handleChange({
-                    recent: handleIndex,
                     handleIndex: handleIndex,
                     bounds: nextBounds
                 });
@@ -364,11 +358,9 @@ export default san.defineComponent({
     },
 
     handleChange(state) {
-        ['handleIndex', 'recent'].forEach(item => {
-            if (state[item]) {
-                this.data.set(item, state[item]);
-            }
-        });
+        if (state.handleIndex) {
+            this.data.set('handleIndex', state.handleIndex);
+        }
 
         const changedValue = state.bounds;
         this.data.set('bounds', state.bounds);
