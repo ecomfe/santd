@@ -103,21 +103,21 @@ export default san.defineComponent({
             activeDotStyle="{{activeDotStyle}}"
         />
         <s-handle
-            s-for="bound, index in bounds"
-            s-ref="handle-{{index}}"
-            index="{{index + 1}}"
+            s-for="v, i in handles trackBy i"
+            s-ref="handle-{{i}}"
+            index="{{i + 1}}"
             vertical="{{vertical}}"
-            offset="{{(bound - min) / (max - min) * 100}}"
-            value="{{bound}}"
-            dragging="{{index === handleIndex}}"
-            tabIndex="{{tabIndex[i] || 0}}"
+            offset="{{(v - min) / (max - min) * 100}}"
+            value="{{v}}"
+            dragging="{{i === handleIndex}}"
+            tabIndex="{{0}}"
             min="{{min}}"
             max="{{max}}"
             disabled="{{disabled}}"
-            tooltipVisible="{{tooltipVisible || activeHandleIndex === index}}"
+            tooltipVisible="{{tooltipVisible || activeHandleIndex === i}}"
             tipFormatter="{{tipFormatter}}"
-            on-mouseenter="native:updateActiveHandleIndex(index, true)"
-            on-mouseleave="native:updateActiveHandleIndex(index, false)"
+            on-mouseenter="native:updateActiveHandleIndex(i, true)"
+            on-mouseleave="native:updateActiveHandleIndex(i, false)"
         />
         <s-marks
             vertical="{{vertical}}"
@@ -156,40 +156,29 @@ export default san.defineComponent({
             return classArr;
         },
 
-        bounds() {
+        track() {
+            let range = this.data.get('range');
             let value = this.data.get('value');
             let min = this.data.get('min');
             let max = this.data.get('max');
-            let step = this.data.get('step');
-            let marks = this.data.get('marks');
 
-            if (!(value instanceof Array)) {
-                value = [value];
-            }
-
-            return value.map(v => ensureValuePrecision(ensureValueInRange(v, min, max), step, marks, min, max));
-        },
-
-        track() {
-            let range = this.data.get('range');
-            let bounds = this.data.get('bounds');
-            let min = this.data.get('min');
-            let max = this.data.get('max');
-
-            if (range) {
-                if (bounds) {
-                    return {
-                        offset: (bounds[0] - min) / (max - min) * 100,
-                        len: (bounds[1] - bounds[0] - min) / (max - min) * 100,
+            if (value != null) {
+                return range
+                    ? {
+                        offset: (value[0] - min) / (max - min) * 100,
+                        len: (value[1] - value[0] - min) / (max - min) * 100,
                         index: 1
-                    };
+                    }
+                    : {
+                    offset: 0,
+                    len: (value - min) / (max - min) * 100
                 }
             }
+        },
 
-            return {
-                offset: 0,
-                len: (bounds[0] - min) / (max - min) * 100
-            };
+        handles() {
+            let value = this.data.get('value');
+            return this.data.get('range') ? value : [value];
         }
     },
 
@@ -215,11 +204,34 @@ export default san.defineComponent({
     inited() {
         this.handlesRefs = {};
 
-        let min = this.data.get('min');
-        let value = this.data.get('value');
-        if (!value) {
-            this.data.set('value', this.data.get('defaultValue') || [min, min]);
+        let {
+            min,
+            value,
+            range,
+        } = this.data.get();
+
+
+        if (value == null) {
+            value = this.data.get('defaultValue') || (range ? [min, min] : min);
         }
+        else if (range) {
+            value = value.map(v => this.correctValue(v));
+        }
+        else {
+            value = this.correctValue(value);
+        }
+        this.data.set('value', value);
+    },
+
+    correctValue(value) {
+         let {
+            min,
+            max,
+            step,
+            marks
+        } = this.data.get();
+
+        return ensureValuePrecision(ensureValueInRange(value, min, max), step, marks, min, max)
     },
 
     rootBlur(e) {
@@ -270,16 +282,16 @@ export default san.defineComponent({
 
     handleStart(position) {
         if (this.data.get('range')) {
-            const bounds = this.data.get('bounds');
-            this.fire('beforeChange', bounds);
+            let values = this.data.get('value');
+            this.fire('beforeChange', values);
 
             const value = this.calcValueByPos(position);
 
             let handleIndex = 0;
-            if (bounds[0] === bounds[1]) {
-                handleIndex = value < bounds[1] ? 0 : 1;
+            if (values[0] === values[1]) {
+                handleIndex = value < values[1] ? 0 : 1;
             }
-            else if (Math.abs(bounds[0] - value) > Math.abs(bounds[1] - value)) {
+            else if (Math.abs(values[0] - value) > Math.abs(values[1] - value)) {
                 handleIndex = 1;
             }
 
@@ -323,7 +335,7 @@ export default san.defineComponent({
             let handleIndex = this.data.get('handleIndex');
             let values = this.data.get('value').slice(0);
 
-            if (this.data.get('bounds')[handleIndex] !== value) {
+            if (values[handleIndex] !== value) {
                 values[handleIndex] = value;
                 if (values[0] > values[1]) {
                     this.data.set('handleIndex', handleIndex ? 0 : 1);
@@ -397,14 +409,8 @@ export default san.defineComponent({
             marks
         } = this.data.get();
 
-
-        const pixelOffset = position - this.getSliderStart();
-        const ratio = Math.abs(Math.max(pixelOffset, 0) / this.getSliderLength());
-        return ensureValuePrecision(
-            ensureValueInRange(
-                vertical ? (1 - ratio) * (max - min) + min : ratio * (max - min) + min,
-                min,
-                max),
-            step, marks, min, max);
+        const ratio = Math.abs(Math.max(position - this.getSliderStart(), 0) / this.getSliderLength());
+        let value = vertical ? (1 - ratio) * (max - min) + min : ratio * (max - min) + min;
+        return this.correctValue(value);
     }
 });
