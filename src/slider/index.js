@@ -287,11 +287,13 @@ export default san.defineComponent({
 
             const value = this.calcValueByPos(position);
 
-            let closestBound = 0;
-            if (Math.abs(bounds[0] - value) > Math.abs(bounds[1] - value)) {
-                closestBound = 1;
+            let handleIndex = 0;
+            if (bounds[0] === bounds[1]) {
+                handleIndex = value < bounds[1] ? 0 : 1;
             }
-            let handleIndex = this.getBoundNeedMoving(value, closestBound);
+            else if (Math.abs(bounds[0] - value) > Math.abs(bounds[1] - value)) {
+                handleIndex = 1;
+            }
 
             this.data.set('handleIndex', handleIndex);
             this.data.set('recent', handleIndex);
@@ -314,24 +316,6 @@ export default san.defineComponent({
 
     updateActiveHandleIndex(index, visible) {
         this.data.set('activeHandleIndex', visible ? index : null);
-    },
-
-    getBoundNeedMoving(value, closestBound) {
-        const {
-            bounds,
-            recent
-        } = this.data.get();
-        let boundNeedMoving = closestBound;
-        const isAtTheSamePoint = (bounds[closestBound + 1] === bounds[closestBound]);
-
-        if (isAtTheSamePoint && bounds[recent] === bounds[closestBound]) {
-            boundNeedMoving = recent;
-        }
-
-        if (isAtTheSamePoint && (value !== bounds[closestBound + 1])) {
-            boundNeedMoving = value < bounds[closestBound + 1] ? closestBound : closestBound + 1;
-        }
-        return boundNeedMoving;
     },
 
     handleMouseMove(e) {
