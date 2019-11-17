@@ -83,9 +83,7 @@ export default san.defineComponent({
         style="{{vertical ? 'height: 100%;' : ''}}"
         class="${prefixCls} {{classes}}"
         on-mousedown="rootMouseDown"
-        on-mouseup="rootMouseUp"
         on-focus="rootFocus"
-        on-blur="rootBlur"
     >
         <div class="${prefixCls}-rail" />
         <div 
@@ -270,16 +268,6 @@ export default san.defineComponent({
         }
     },
 
-    rootMouseUp() {
-        const disabled = this.data.get('disabled');
-        if (!disabled) {
-            const prevMovedHandleIndex = this.data.get('prevMovedHandleIndex');
-            if (this.handlesRefs[prevMovedHandleIndex]) {
-                this.handlesRefs[prevMovedHandleIndex].clickFocus();
-            }
-        }
-    },
-
     handleStart(position) {
         if (this.data.get('range')) {
             const bounds = this.data.get('bounds');
@@ -332,10 +320,17 @@ export default san.defineComponent({
         let value = this.calcValueByPos(position);
 
         if (this.data.get('range')) {
-            const handleIndex = this.data.get('handleIndex');
+            let handleIndex = this.data.get('handleIndex');
+            let values = this.data.get('value').slice(0);
+
             if (this.data.get('bounds')[handleIndex] !== value) {
-                this.data.set('value[' + handleIndex + ']', value);
-                this.fire('change', this.data.get('value'));
+                values[handleIndex] = value;
+                if (values[0] > values[1]) {
+                    this.data.set('handleIndex', handleIndex ? 0 : 1);
+                    values = [values[1], values[0]];
+                }
+                this.data.set('value', values);
+                this.fire('change', values);
             }
         }
         else {
@@ -349,10 +344,14 @@ export default san.defineComponent({
 
     handleEnd() {
         this.removeDocMouseListeners();
-        if (this.data.get('handleIndex') !== null) {
+
+        let handleIndex = this.data.get('handleIndex');
+        if (this.data.get('handleIndex') != null) {
+            this.data.set('handleIndex', null);
+
+            this.ref('handle-' + handleIndex).clickFocus();
             this.fire('afterChange', this.data.get('value'));
         }
-        this.data.set('handleIndex', null);
     },
 
     addDocMouseListeners() {
