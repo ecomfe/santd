@@ -3,4 +3,4 @@
  * @author wangyongqing01@baidu.com
  */
 
-export const CLASSNAME_PREFIX = 'san';
+export const CLASSNAME_PREFIX = 'santd';

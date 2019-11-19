@@ -10,7 +10,7 @@
             <s-select-option value="jack">Jack</s-select-option>
             <s-select-option value="lucy">Lucy</s-select-option>
             <s-select-option value="disabled" disabled="{{true}}">Disabled</s-select-option>
-            <s-select-option value="yiminghe">Yiminghe</s-select-option>
+            <s-select-option value="frank">Frank</s-select-option>
         </s-select>
         <s-select defaultValue="lucy" style="width: 120px;" disabled="{{true}}">
             <s-select-option value="lucy">Lucy</s-select-option>

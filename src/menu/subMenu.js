@@ -70,7 +70,7 @@ export default san.defineComponent({
             activeKey: [],
             openAnimation,
             isSubMenu: true,
-            inlineIndent: 24,
+            inlineIndent: 16,
             builtinPlacements,
             trigger: 'hover',
             transitionName: 'zoom-big',

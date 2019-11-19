@@ -7,7 +7,7 @@
 <template>
     <div id="custom">
         <s-back-top>
-            <div className="san-back-top-inner">UP</div>
+            <div class="santd-back-top-inner">UP</div>
         </s-back-top>
         Scroll down to see the bottom-right<strong style="color: #1088e9;"> blue </strong>button.
     </div>
@@ -21,10 +21,10 @@ export default {
 }
 </script>
 <style type="text/css">
-    #custom .san-back-top {
+    #custom .santd-back-top {
       bottom: 100px;
     }
-    #custom .san-back-top-inner {
+    #custom .santd-back-top-inner {
       height: 40px;
       width: 40px;
       line-height: 40px;

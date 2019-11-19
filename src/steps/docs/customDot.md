@@ -11,7 +11,7 @@
             <s-step title="In Progress" description="You can hover on the dot." />
             <s-step title="Waiting" description="You can hover on the dot." />
             <s-step title="Waiting" description="You can hover on the dot." />
-            <s-popover content="step {{index}} status: {{status}}" slot="progressDot" style="float:left;width:100%;height:100%;">
+            <s-popover content="step {{index}} status: {{status}}" slot="progressDot" popoverStyle="width:100%;height:100%;display:inline-block;">
                 <span class="{{prefixCls}}-icon-dot" />
             </s-popover>
       </s-steps>

@@ -20,9 +20,4 @@ export default {
 }
 </script>
 
-<style>
-.code-box .san-alert {
-    margin-bottom: 16px;
-}
-</style>
 ```

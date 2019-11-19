@@ -24,7 +24,8 @@ export default san.defineComponent({
             placement: 'top',
             transitionName: 'zoom-big-fast',
             arrowPointAtCenter: false,
-            autoAdjustOverflow: true
+            autoAdjustOverflow: true,
+            useDomNodeForce: false
         };
     },
 
@@ -68,6 +69,8 @@ export default san.defineComponent({
             popupClassName="{{overlayClassName}}"
             popupStyle="{{overlayStyle}}"
             rootDomNode="{{rootDomNode}}"
+            useDomNodeForce="{{useDomNodeForce}}"
+            style="{{tooltipStyle}}"
             action="{{trigger}}"
             visible="{{visible}}"
             on-visibleChange="handleVisibleChange"

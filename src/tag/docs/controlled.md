@@ -7,7 +7,7 @@
 <template>
     <div>
         <s-tag closable="{{true}}" visible="{{isVisible}}" on-close="onClose">Movies</s-tag>
-        <br>
+        <br /><br />
         <s-button size="small" on-click="handleClick">Toggle</s-button>
     </div>
 </template>

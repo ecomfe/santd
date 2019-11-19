@@ -7,7 +7,10 @@
 <template>
 <div>
   <div style="margin: 30px 0;">
-      <s-switch on-change='switchChange' defaultChecked="{{true}}" />
+      <s-switch on-change='switchChange' defaultChecked="{{true}}">
+        <template slot='checkedChildren'>Dark</template>
+        <template slot='unCheckedChildren'>Light</template>
+      </s-switch>
   </div>
   <div style="width:256px;">
     <s-menu

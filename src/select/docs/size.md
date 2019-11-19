@@ -14,7 +14,7 @@
         <br/><br/>
         <s-select
             defaultValue="a10"
-            style="width: 200px;"
+            style="width: 200px; margin-bottom: 10px;"
             size="{{size}}"
             on-change="handleChange"
         >
@@ -28,7 +28,7 @@
             mode="multiple"
             size="{{size}}"
             placeholder="Please select"
-            style="width: 100%;"
+            style="width: 100%; margin-bottom: 10px;"
             defaultValue="{{['a10', 'c12']}}"
             on-change="handleChange"
         >

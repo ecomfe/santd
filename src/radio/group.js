@@ -48,7 +48,7 @@ export default san.defineComponent({
                     };
 
                 radioOption.disabled = option.disabled != null ? option.disabled : disabled;
-                radioOption.checked = (value === option.value);
+                radioOption.checked = (value === radioOption.value);
                 return radioOption;
             });
         }

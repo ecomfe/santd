@@ -24,7 +24,7 @@ export default {
 }
 </script>
 <style>
-.example-input .san-input {
+.example-input .santd-input {
     width: 200px;
     margin: 0 8px 8px 0;
   }

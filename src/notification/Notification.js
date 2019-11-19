@@ -74,7 +74,7 @@ const Notification = san.defineComponent({
     },
     initData() {
         return {
-            prefixCls: 'san-notification',
+            prefixCls: 'santd-notification',
             animation: 'fade',
             style: {
                 top: '65px',

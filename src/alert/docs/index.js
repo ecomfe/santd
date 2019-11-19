@@ -15,6 +15,7 @@ import Banner from './banner.md';
 import Smooth from './smooth-closed.md';
 import Custom from './custom-icon.md';
 import Readme from '../README.md';
+import './index.less';
 
 export default san.defineComponent({
     template: `

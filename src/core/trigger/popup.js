@@ -33,22 +33,13 @@ export default san.defineComponent({
         });
     },
     computed: {
-        getAlignTarget() {
-            const point = this.data.get('point');
-            if (point) {
-                return point;
-            }
-            return this.data.get('getRootDomNode');
-        },
         classes() {
             const prefixCls = this.data.get('prefixCls');
             const currentAlignClassName = this.data.get('currentAlignClassName');
             const align = this.data.get('align');
             const getClassNameFromAlign = this.data.get('getClassNameFromAlign');
-            // const popupClassName = this.data.get('popupClassName');
 
             let classArr = [prefixCls, currentAlignClassName || getClassNameFromAlign(align)];
-            // popupClassName && classArr.push(popupClassName);
 
             return classArr;
         },
@@ -129,7 +120,7 @@ export default san.defineComponent({
             on-mousedown="handlePopupMouseDown"
         >
             <s-popupinner
-                target="{{getAlignTarget}}"
+                target="{{point ? point : getRootDomNode}}"
                 key="popup"
                 monitorWindowResize="{{monitorWindowResize}}"
                 align="{{align}}"

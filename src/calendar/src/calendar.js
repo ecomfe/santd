@@ -23,7 +23,7 @@ export default inherits(san.defineComponent({
     initData() {
         return {
             visible: true,
-            prefixCls: 'san-calendar',
+            prefixCls: 'santd-calendar',
             showToday: true,
             showDateInput: true,
             focusablePanel: true

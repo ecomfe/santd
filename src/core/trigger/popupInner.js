@@ -51,14 +51,16 @@ export default san.defineComponent({
     },
 
     updated() {
-        // 暂时每次都同步
         const visible = this.data.get('visible');
+        const target = this.data.get('target');
+
+        if (!target) {
+            return;
+        }
         if (visible) {
             this.forceAlign();
         }
-        this.nextTick(() => {
-            Animate.prototype.updated.bind(this)();
-        });
+        Animate.prototype.updated.bind(this)();
     },
 
     detached() {
@@ -102,7 +104,7 @@ export default san.defineComponent({
     },
 
     template: `
-        <div style="position: absolute; z-index: 1; {{popupStyle}}" class="{{visible ? '' : hiddenClassName}}">
+        <div style="position: absolute; z-index: 1000; {{popupStyle}}" class="{{visible ? '' : hiddenClassName}}">
             <div
                 class="{{popupClassName}} {{prefixCls}}-content"
                 on-mouseenter="handleMouseEnter"

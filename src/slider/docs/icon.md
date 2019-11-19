@@ -45,7 +45,7 @@ export default {
     padding: 0px 30px;
 }
 
-.icon-wrapper .san-icon {
+.icon-wrapper .santd-icon {
     position: absolute;
     top: -2px;
     width: 16px;
@@ -55,11 +55,11 @@ export default {
     color: rgba(0, 0, 0, 0.25);
 }
 
-.icon-wrapper .san-icon:first-child {
+.icon-wrapper .santd-icon:first-child {
     left: 0;
 }
 
-.icon-wrapper .san-icon:last-child {
+.icon-wrapper .santd-icon:last-child {
     right: 0;
 }
 </style>

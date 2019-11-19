@@ -7,9 +7,9 @@
 ```html
 <template>
 <div>
-    <s-layout className="layout">
+    <s-layout class="layout">
         <s-header>
-        <div className="logo" />
+        <div class="logo" />
         <s-menu
             theme="dark"
             mode="horizontal"
@@ -22,14 +22,14 @@
         </s-menu>
         </s-header>
         <s-content style="padding: 0 50px;">
-            <s-breadcrumb separator="/" style="margin: 16px 0">
+            <s-breadcrumb style="margin: 16px 0">
                 <s-brcrumbitem href="www.baidu.com">Home</s-brcrumbitem>
                 <s-brcrumbitem href="#">List</s-brcrumbitem>
                 <s-brcrumbitem>App</s-brcrumbitem>
             </s-breadcrumb>
             <div style="background: #fff; padding: 24px; min-height: 280px">Content</div>
         </s-content>
-        <s-footer style="text-align: center">Santd ©2018 Created by Baidu</s-footer>
+        <s-footer style="text-align: center">Santd ©2019 Created by Baidu</s-footer>
     </s-layout>
 </div>
 </template>
@@ -48,12 +48,12 @@ export default {
         's-menu': Menu,
         's-menuitem': Menu.Item,
         's-breadcrumb': Breadcrumb,
-        's-brcrumbitem': Breadcrumb.BrcrumbItem
+        's-brcrumbitem': Breadcrumb.Item
     }
 }
 </script>
 <style>
-#components-layout-demo-top .logo {
+.logo {
     width: 120px;
     height: 31px;
     background: rgba(255,255,255,.2);

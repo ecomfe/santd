@@ -2,23 +2,24 @@
 @import "../../core/styles/mixins/index";
 
 @result-prefix-cls: ~'@{ant-prefix}-result';
+@icon-prefix-cls: ~'@{ant-prefix}-icon';
 
 .@{result-prefix-cls} {
   padding: 48px 32px;
   // status color
-  &-success &-icon .san-icon {
+  &-success &-icon .@{icon-prefix-cls} {
     color: @success-color;
   }
 
-  &-error &-icon .san-icon {
+  &-error &-icon .@{icon-prefix-cls} {
     color: @error-color;
   }
 
-  &-info &-icon .san-icon {
+  &-info &-icon .@{icon-prefix-cls} {
     color: @info-color;
   }
 
-  &-warning &-icon .san-icon {
+  &-warning &-icon .@{icon-prefix-cls} {
     color: @warning-color;
   }
 
@@ -33,7 +34,7 @@
     margin-bottom: 24px;
     text-align: center;
 
-    .san-icon {
+    .@{icon-prefix-cls} {
       font-size: 72px;
     }
   }

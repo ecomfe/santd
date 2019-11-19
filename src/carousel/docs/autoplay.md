@@ -30,7 +30,7 @@ export default {
 }
 </script>
 <style>
-.san-carousel .slick-slide {
+.santd-carousel .slick-slide {
     text-align: center;
     height: 160px;
     line-height: 160px;
@@ -38,7 +38,7 @@ export default {
     overflow: hidden;
 }
 
-.san-carousel .slick-slide h3 {
+.santd-carousel .slick-slide h3 {
     color: #fff;
 }
 </style>

@@ -37,6 +37,7 @@ export default san.defineComponent({
             mouseLeaveDelay="{{mouseLeaveDelay}}"
             popupClassName="{{overlayClassName}}"
             popupStyle="{{overlayStyle}}"
+            style="{{popoverStyle}}"
             action="{{trigger}}"
             visible="{{visible}}"
             s-ref="trigger"

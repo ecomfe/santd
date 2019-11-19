@@ -10,15 +10,15 @@
 | forceSubMenuRender | 在子菜单展示之前就渲染进 DOM | boolean | true |
 | inlineCollapsed | inline 时菜单是否收起状态 | boolean | - |
 | inlineIndent | inline 模式的菜单缩进宽度 | number | 24 |
-| mode | 菜单类型，现在支持垂直、水平、和内嵌模式三种 | string<br>`vertical`<br>`horizontal`<br>`inline` | `vertical` |
+| mode | 菜单类型，现在支持垂直、水平、和内嵌模式三种 | string `vertical` `horizontal` `inline` | `vertical` |
 | multiple | 是否允许多选 | boolean | false |
 | openKeys | 当前展开的 SubMenu 菜单项 key 数组 | [] \| string[] | - |
 | selectable | 是否允许选中 | boolean | true |
 | selectedKeys | 当前选中的菜单项 key | string(单选) \| []（多选） | - |
-| style	| 根节点样式 | object | - |
+| style | 根节点样式 | object | - |
 | subMenuCloseDelay | 用户鼠标离开子菜单后关闭延时，单位：秒 | number | 0.1 |
 | subMenuOpenDelay | 用户鼠标进入子菜单后开启延时，单位：秒 | number | 0 |
-| theme | 主题颜色 | string<br>`dark`<br>`light` | `light` |
+| theme | 主题颜色 | string `dark` `light` | `light` |
 
 
 ### Menu事件
@@ -44,7 +44,7 @@
 | --- | --- | --- | --- |
 | disabled | 是否禁用 | boolean | false |
 | key | 唯一标识 | string | - |
-| title | 子菜单项值	| sanComponentInstance | - |
+| title | 子菜单项值 | slot | - |
 | on-titleClick | 点击子菜单标题 | function(key) |
 
 
@@ -52,8 +52,7 @@
 
 | 属性 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| children(暂未实现) | 子菜单的菜单项 | Array<MenuItem\|SubMenu> | - |
-| title | 子菜单项值	| string \| sanComponentInstance | - |
+| title | 子菜单项值 | string \| slot | - |
 
 ### Menu.Divider
 

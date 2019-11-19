@@ -67,21 +67,34 @@ let form = san.defineComponent({
     },
     updated() {
         this.items.forEach(item => {
-            item.data.set('form', this, {force: true});
+            item.data.set('form', this.form || this, {force: true});
         });
     },
     attached() {
         this.updated();
         this.dispatch('santd_form_add', this);
     },
+    getForm() {
+        let component = this.parentComponent;
+        let form;
+        while (component) {
+            if (component.fieldsStore) {
+                form = component;
+                break;
+            }
+            component = component.parentComponent;
+        }
+        return form;
+    },
     messages: {
         santd_formitem_add(payload) {
-            let parentComponent = this.parentComponent;
+            if (!this.form) {
+                this.form = this.getForm();
+            }
             let formItem = payload.value;
-            // formItem.data.set('labelAlign', this.data.get('labelAlign'));
             this.setFormProps(formItem);
             // 判断如果父组件不是create出来的form，自己持有子组件
-            if (!parentComponent.fieldsStore) {
+            if (!this.form) {
                 this.items.push(formItem);
             }
             else {

@@ -45,7 +45,7 @@ function normalizeAnchor(data, init) {
 export default inherits(san.defineComponent({
     initData() {
         return {
-            prefixCls: 'san-calendar',
+            prefixCls: 'santd-calendar',
             type: 'both',
             seperator: '~',
             defaultSelectedValue: [],

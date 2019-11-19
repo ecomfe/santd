@@ -2,8 +2,11 @@
  * @file 组件 Nav
  * @author zhangtingting12 <zhangtingting12@baidu.com>
  */
-import '../style/index.less';
 import san from 'san';
+import {classCreator} from '../../core/util';
+import '../style/index.less';
+
+const prefixCls = classCreator('dropdown')();
 
 export default san.defineComponent({
     handleClick() {
@@ -12,7 +15,7 @@ export default san.defineComponent({
         this.dispatch('santd_mention_itemSelect', dispatchData);
     },
 
-    template: `<div class="san-dropdown-menu-item" on-click="handleClick">
+    template: `<div class="${prefixCls}-menu-item" on-click="handleClick">
             <slot></slot>
         </div>`
 });

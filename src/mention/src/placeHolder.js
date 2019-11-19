@@ -7,8 +7,8 @@ import san from 'san';
 
 export default san.defineComponent({
     template: `
-        <div className="public-DraftEditorPlaceholder-root">
-            <div className="public-DraftEditorPlaceholder-inner"><slot></slot></div>
+        <div class="public-DraftEditorPlaceholder-root">
+            <div class="public-DraftEditorPlaceholder-inner"><slot /></div>
         </div>
     `
 });

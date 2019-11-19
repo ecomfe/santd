@@ -10,7 +10,7 @@ Layout.Sider 支持响应式布局。
 <div>
     <s-layout>
         <s-sider breakpoint="lg" collapsedWidth="0" on-collapse="handleCollapse">
-            <div class="logo" />
+            <div class="responsive-logo" />
             <s-menu theme="dark" mode="inline" defaultSelectedKeys="{{['3']}}">
                 <s-submenu key="sub1">
                     <template slot="title">
@@ -66,7 +66,7 @@ export default {
 </script>
 
 <style>
-#components-layout-demo-responsive .logo {
+.responsive-logo {
     height: 32px;
     background: rgba(255,255,255,.2);
     margin: 16px;

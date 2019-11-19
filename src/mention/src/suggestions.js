@@ -57,13 +57,13 @@ export default san.defineComponent({
         }
     },
     template: `
-        <div className="${prefixCls}-wrapper" style="{{innerStyle}}">
-            <div className="${prefixCls}-content ${prefixDropCls}-menu" s-ref="nav-area">
+        <div class="${prefixCls}-wrapper" style="{{innerStyle}}">
+            <div class="${prefixCls}-content ${prefixDropCls}-menu" s-ref="nav-area">
                 <customsuggestions s-if="{{customSuggestions}}" />
                 <template s-else>
                     <s-nav s-if="{{suggestions && suggestions.length}}" s-for="item in suggestions">{{item}}</s-nav>
                     <s-icon s-else-if="{{loading}}" type="loading" style="display:block;margin:0 auto;" />
-                    <div s-else className="${prefixCls}-notfound">{{notFoundContent}}</div>
+                    <div s-else class="${prefixCls}-notfound">{{notFoundContent}}</div>
                 </template>
             </div>
         </div>

@@ -66,7 +66,8 @@ export default san.defineComponent({
         maskTransitionName: DataTypes.oneOfType([DataTypes.string, DataTypes.object]),
         maskAnimation: DataTypes.string,
         alignPoint: DataTypes.bool,
-        stretch: DataTypes.string
+        stretch: DataTypes.string,
+        useDomNodeForce: DataTypes.bool
     },
     initData() {
         return {
@@ -92,7 +93,8 @@ export default san.defineComponent({
             showAction: [],
             hideAction: [],
             show: true,
-            state: {}
+            state: {},
+            useDomNodeForce: false
         };
     },
     computed: {
@@ -389,7 +391,8 @@ export default san.defineComponent({
         }
     },
     getRootDomNode(rootDomNode) {
-        return rootDomNode || this.el;
+        const useDomNodeForce = this.data.get('useDomNodeForce');
+        return rootDomNode || (!useDomNodeForce && this.el);
     },
     attachPopup() {
         this._container = this.getContainer();

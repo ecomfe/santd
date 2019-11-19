@@ -184,11 +184,11 @@ export default san.defineComponent({
     },
     template: `
         <div class="${prefixCls}-wrapper {{disabled ? 'disabled' : ''}}">
-            <div className="${prefixCls}-editor">
+            <div class="${prefixCls}-editor">
                 <s-placeholder s-if="{{!value && placeholder}}">{{placeholder}}</s-placeholder>
                 <div s-ref="mention-editor"
                     style="{{editorStyle}}"
-                    className="${prefixCls}-editor-wrapper"
+                    class="${prefixCls}-editor-wrapper"
                     contenteditable="{{!disabled && !readOnly}}"
                     on-focus="onFocus($event)"
                     on-blur="onBlur($event)"

@@ -8,7 +8,7 @@
 <div>
     <s-layout>
         <s-sider collapsed="{{collapsed}}" collapsible="{{true}}" trigger="{{noTrigger}}">
-            <div class="logo" />
+            <div class="trigger-logo" />
             <s-menu theme="dark" mode="inline" inlineCollapsed="{{collapsed}}" defaultSelectedKeys="{{['1']}}">
                 <s-menuitem key="1">
                     <s-icon type="user" />
@@ -72,7 +72,7 @@ export default {
 }
 </script>
 <style>
-#components-layout-demo-custom-trigger .trigger {
+.trigger {
     font-size: 18px;
     line-height: 64px;
     padding: 0 24px;
@@ -80,11 +80,11 @@ export default {
     transition: color .3s;
 }
 
-#components-layout-demo-custom-trigger .trigger:hover {
+.trigger:hover {
     color: #1890ff;
 }
 
-#components-layout-demo-custom-trigger .logo {
+.trigger-logo {
     height: 32px;
     background: rgba(255,255,255,.2);
     margin: 16px;

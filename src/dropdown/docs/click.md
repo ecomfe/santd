@@ -7,7 +7,7 @@
 <template>
     <div>
         <s-dropdown trigger="click">
-            <s-menu prefixCls="san-dropdown" slot="overlay">
+            <s-menu prefixCls="{{prefixCls}}" slot="overlay">
                 <s-menu-item s-for="n,index in data" key="'{{index}}'">
                     <a href="http://www.baidu.com" target="_blank">{{n}} menu item</a>
                 </s-menu-item>

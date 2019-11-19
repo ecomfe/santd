@@ -118,7 +118,7 @@ function notice(args) {
         onClick,
         ...props
     } = args;
-    const outerPrefixCls = args.prefixCls || 'san-notification';
+    const outerPrefixCls = args.prefixCls || 'santd-notification';
     const prefixCls = `${outerPrefixCls}-notice`;
     const duration = args.duration === undefined ? defaultDuration : args.duration;
 

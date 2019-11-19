@@ -56,19 +56,17 @@ export default san.defineComponent({
         this.data.set('rootDomNode', this. ref('handle'));
         document.addEventListener('mouseup', this._mouseUpHandler);
         this.dispatch('santd_slider_handle_save', this);
+
+        this.watch('offset', val => {
+            this.nextTick(() => {
+                let tooltip = this.ref('tooltip');
+                tooltip.refresh();
+            });
+        });
     },
 
     detached() {
         document.removeEventListener('mouseup', this._mouseUpHandler);
-    },
-
-    updated() {
-        if (this.data.get('isTipVisible')) {
-            let tooltip = this.ref('tooltip');
-            if (tooltip) {
-                tooltip.refresh();
-            }
-        }
     },
 
     handleBlur() {
@@ -110,6 +108,7 @@ export default san.defineComponent({
         <span>
             <s-tooltip
                 rootDomNode="{{rootDomNode}}"
+                useDomNodeForce="{{true}}"
                 transitionName="zoom-down"
                 title="{{title}}"
                 s-ref="tooltip"

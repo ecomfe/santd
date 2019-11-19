@@ -7,7 +7,8 @@ import san from 'san';
 import Readme from '../README.md';
 import Basic from './basic.md';
 import CustomTrigger from './custom-trigger.md';
-import Topside from './top-side-2.md';
+import Topside2 from './top-side-2.md';
+import Topside3 from './top-side-3.md';
 import Top from './top.md';
 import Responsive from './responsive.md';
 import Desc from './desc.md';
@@ -21,7 +22,8 @@ export default san.defineComponent({
         readme: Readme,
         basic: Basic,
         custom: CustomTrigger,
-        topside: Topside,
+        topside2: Topside2,
+        topside3: Topside3,
         top: Top,
         response: Responsive,
         desc: Desc,
@@ -33,7 +35,8 @@ export default san.defineComponent({
             <desc/>
             <basic/>
             <top/>
-            <topside/>
+            <topside2/>
+            <topside3/>
             <custom/>
             <response/>
             <readme/>

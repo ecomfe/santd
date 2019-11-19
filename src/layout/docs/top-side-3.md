@@ -1,6 +1,6 @@
 <text lang="cn">
-#### 顶部-侧边布局-通栏
-同样拥有顶部导航及侧边栏，区别是两边未留边距，多用于应用型的网站。
+#### 顶部-侧边布局
+拥有顶部导航及侧边栏的页面，多用于展示类网站。
 </text>
 
 ```html
@@ -15,8 +15,14 @@
                 <s-menu-item key="3">Nav 3</s-menu-item>
             </s-menu>
         </s-header>
-        <s-layout>
-            <s-sider width="{{200}}" style="{{{background: '#fff'}}}">
+        <s-content style="padding: 0 50px;">
+            <s-breadcrumb style="{{{margin: '16px 0'}}}">
+                <s-brcrumbitem href="www.baidu.com">Home</s-brcrumbitem>
+                <s-brcrumbitem href="#">List</s-brcrumbitem>
+                <s-brcrumbitem>App</s-brcrumbitem>
+            </s-breadcrumb>
+            <s-layout style="padding: 24px 0; background: #fff;">
+                <s-sider width="{{200}}" style="background: #fff">
                 <s-menu mode="inline" defaultSelectedKeys="{{['3']}}" defaultOpenKeys="{{['sub1']}}">
                     <s-sub-menu key="sub1">
                         <template slot="title">
@@ -45,14 +51,11 @@
                             <span>option7</span></s-menu-item>
                     </s-sub-menu>
                 </s-menu>
-            </s-sider>
-            <s-layout style="{{{padding: '0 24px 24px'}}}">
-                <s-breadcrumb style="{{{margin: '16px 0'}}}">
-                    <s-brcrumbitem href="www.baidu.com">Home</s-brcrumbitem>
-                    <s-brcrumbitem href="#">List</s-brcrumbitem>
-                    <s-brcrumbitem>App</s-brcrumbitem></s-breadcrumb>
-                <s-content style="{{{padding: '24px', background: '#fff', minHeight: '280px'}}}">Content</s-content></s-layout>
-        </s-layout>
+                </s-sider>
+                <s-content style="padding: 0 24px; min-height: 280px">Content</s-content>
+            </s-layout>
+        </s-content>
+        <s-footer style="text-align: center;">Santd @2019 Created by Baidu</s-footer>
     </s-layout>
 </div>
 </template>
@@ -68,6 +71,7 @@ export default {
         's-header': Layout.Header,
         's-content': Layout.Content,
         's-sider': Layout.Sider,
+        's-footer': Layout.Footer,
         's-menu': Menu,
         's-sub-menu': Menu.Sub,
         's-menu-item': Menu.Item,
@@ -79,9 +83,6 @@ export default {
         return {
             inlineCollapsed: false
         }
-    },
-    toggleCollapsed () {
-        this.data.set('inlineCollapsed', !this.data.get('inlineCollapsed'));
     }
 }
 </script>

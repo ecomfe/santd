@@ -7,8 +7,8 @@
 <template>
     <div>
         <s-list bordered="{{true}}" itemLayout="horizontal" dataSource="{{listData}}">
-            <s-list-item slot="renderItem">
-                <ul class="{{prefixCls}}-item-action" slot="actions">
+            <s-list-item slot="renderItem" actions="{{['profile']}}">
+                <ul class="{{prefixCls}}-item-action" slot="profile">
                     <li><a href="javascript:;" on-click="showDrawer">View Profile</a></li>
                 </ul>
                 <s-list-item-meta description="Progresser AFX">
@@ -24,8 +24,8 @@
             width="{{640}}"
             on-close="onClose"
         >
-            <p style="{{pStyle | css}} margin-bottom: 24px;">User Profile</p>
-            <p style="{{pStyle | css}}">Personal</p>
+            <p style="margin-bottom: 16px; font-size: 16px; line-height: 24px; color: rgba(0,0,0, 0.85);">User Profile</p>
+            <p style="margin-bottom: 16px; font-size: 16px; line-height: 24px; color: rgba(0,0,0, 0.85);">Personal</p>
             <s-row>
                 <s-col span="{{12}}">
                     <s-item title="Full Name" content="Lily"/>
@@ -57,7 +57,7 @@
             </s-row>
 
             <s-divider/>
-            <p style="{{pStyle | css}}">Company</p>
+            <p style="margin-bottom: 16px; font-size: 16px; line-height: 24px; color: rgba(0,0,0, 0.85);">Company</p>
 
             <s-row>
                 <s-col span="{{12}}">
@@ -84,7 +84,7 @@
             </s-row>
 
             <s-divider/>
-            <p style="{{pStyle | css}}">Contacts</p>
+            <p style="margin-bottom: 16px; font-size: 16px; line-height: 24px; color: rgba(0,0,0, 0.85);">Contacts</p>
 
             <s-row>
                 <s-col span="{{12}}">
@@ -117,30 +117,11 @@ import san from 'san';
 
 const uiItem = san.defineComponent({
     template: `
-        <div style="{{dStyle | css}}">
-            <p style="{{pStyle | css}}">{{title}}:</p>
+        <div style="font-size: 14px; line-height: 22px; margin-bottom: 7px; color: rgba(0, 0, 0, 0.65)">
+            <p style="margin-right: 8px; margin-bottom: 0; display: inline-block; color: rgba(0, 0, 0, 0.85)">{{title}}:</p>
             <slot name="contet">{{content}}</slot>
         </div>
-    `,
-    filters:  {
-        css: drawer.prototype.filters.css
-    },
-    initData() {
-        return {
-            dStyle: {
-                fontSize: '14px',
-                lineHeight: '22px',
-                marginBottom: '7px',
-                color: 'rgba(0,0,0,0.65)'
-            },
-            pStyle: {
-                marginRight: '8px',
-                marginBottom: '0',
-                display: 'inline-block',
-                color: 'rgba(0,0,0,0.85)'
-            }
-        }
-    }
+    `
 });
 
 export default {
@@ -163,13 +144,6 @@ export default {
         return {
             visible: false,
             placement: 'right',
-            pStyle: {
-                display: 'block',
-                marginBottom: '16px',
-                fontSize: '16px',
-                lineHeight: '24px',
-                color: 'rgba(0,0,0,.85)'
-            },
             listData: [{
                 name: 'Lily'
             }, {

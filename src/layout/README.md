@@ -18,7 +18,6 @@
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| className | 容器 className | string | - |
 | hasSider | 表示子元素里有 Sider，一般不用指定。可用于服务端渲染时避免样式闪动 | boolean | - |
 | style | layout样式 | CSSProperties | - |
 
@@ -31,7 +30,6 @@
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | breakpoint | 触发响应式布局的断点 | `Enum { 'xs', 'sm', 'md', 'lg', 'xl', 'xxl' }` | - |
-| className | 容器 class | string | - |
 | collapsed | 当前收起状态 | boolean | - |
 | collapsedWidth | 收缩宽度，设置为 0 会出现特殊 trigger | number | 80 |
 | collapsible | 是否可收起 | boolean | false |

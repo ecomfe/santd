@@ -32,6 +32,7 @@ export default san.defineComponent({
         const showProp = this.data.get('showProp') || 'visible';
         let children = slot && getChildrenFromComponent(slot.children) || [];
         this.childs = children.length ? children : [this];
+        return;
         if (showProp) {
             children = this.childs.filter(child => child.data.get(showProp));
         }
@@ -65,7 +66,6 @@ export default san.defineComponent({
         const currentlyAnimatingKeys = this.data.get('currentlyAnimatingKeys');
 
         const showProp = this.data.get('showProp');
-        const visible = this.data.get('visible');
         let keyToEnter;
         let keyToLeave;
         if (showProp) {

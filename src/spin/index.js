@@ -32,7 +32,7 @@ function isValidComponent(content) {
 
 const SpinDot = san.defineComponent({
     template: `
-        <span class="san-spin-dot san-spin-dot-spin">
+        <span class="${prefixCls}-dot ${prefixCls}-dot-spin">
             <i/>
             <i/>
             <i/>

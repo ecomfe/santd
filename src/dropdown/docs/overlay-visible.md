@@ -7,7 +7,7 @@
 <template>
     <div>
         <s-dropdown visible="{{visible}}" on-visibleChange="onVisibleChange">
-            <s-menu prefixCls="san-dropdown" on-click="menuClick" slot="overlay">
+            <s-menu prefixCls="{{prefixCls}}" on-click="menuClick" slot="overlay">
                 <s-menu-item key="1">Clicking me will not close the menu.</s-menu-item>
                 <s-menu-item key="2">Clicking me will not close the menu also.</s-menu-item>
                 <s-menu-item key="3">Clicking me will close the menu.</s-menu-item>
