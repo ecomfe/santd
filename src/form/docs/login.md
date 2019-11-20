@@ -6,7 +6,7 @@
 ```html
 <template>
   <div style="width: 300px;">
-      <s-form on-submit="handleSubmit" className="login-form">
+      <s-form on-submit="handleSubmit" class="login-form">
         <s-formitem>
             <s-input placeholder="username" decorator="{{userNameDecorator}}">
                 <s-icon type="user" slot="prefix" style="color: rgba(0, 0, 0, .25);" />

@@ -6,7 +6,6 @@
 | allowHalf | 是否允许半选 | boolean | false |
 | autoFocus | 自动获取焦点 | boolean | false |
 | character | 自定义字符 | String or slot="character" | `<Icon type="star" />` |
-| className | 自定义样式名称 | string | - |
 | count | star 总数 | number | 5 |
 | defaultValue | 默认值 | number | 0 |
 | disabled | 只读，无法进行交互 | boolean | false |

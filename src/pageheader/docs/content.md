@@ -7,9 +7,9 @@
 <template>
     <div id="components-pageheader-demo-content">
         <s-pageheader title="Title" breadcrumb="{{breadcrumb}}">
-            <div className="wrap">
-            <div className="content">
-                <div className="content">
+            <div class="wrap">
+            <div class="content">
+                <div class="content">
                     <s-paragraph>
                         Ant Design interprets the color system into two levels: a system-level color system and a product-level color system.
                     </s-paragraph>
@@ -19,14 +19,14 @@
                         expectation of color when adjusting colors, as well as facilitate
                         communication in teams.
                     </s-paragraph>
-                    <p className="contentLink">
+                    <p class="contentLink">
                         <a><img src="https://gw.alipayobjects.com/zos/rmsportal/MjEImQtenlyueSmVEfUD.svg" alt="start" />Quick Start</a>
                         <a><img src="https://gw.alipayobjects.com/zos/rmsportal/NbuDUAuBlIApFuDvWiND.svg" alt="info" />Product Info</a>
                         <a><img src="https://gw.alipayobjects.com/zos/rmsportal/ohOEPSYdDTNnyMbGuyLb.svg" alt="doc" />Product Doc</a>
                     </p>
                 </div>
             </div>
-            <div className="extraContent"><img src="https://gw.alipayobjects.com/mdn/mpaas_user/afts/img/A*KsfVQbuLRlYAAAAAAAAAAABjAQAAAQ/original" alt="content" /></div>
+            <div class="extraContent"><img src="https://gw.alipayobjects.com/mdn/mpaas_user/afts/img/A*KsfVQbuLRlYAAAAAAAAAAABjAQAAAQ/original" alt="content" /></div>
         </div>
         </s-pageheader>
     </div>

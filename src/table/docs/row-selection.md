@@ -10,7 +10,6 @@
             rowSelection="{{rowSelection}}"
             columns="{{columns}}"
             data="{{data}}"
-            on-change="onChange"
         >
             <a slot="name" href="javascript:;">{{text}}</a>
         </s-table>

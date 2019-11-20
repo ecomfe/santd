@@ -72,7 +72,7 @@ const collectionCreateForm = Form.create({name: 'form_in_modal'})({
                     <s-formitem label="Description">
                         <s-textarea decorator="{{descriptionDecorator}}"></s-textarea>
                     </s-formitem>
-                    <s-formitem className="collection-create-form_last-form-item">
+                    <s-formitem class="collection-create-form_last-form-item">
                         <s-radiogroup decorator="{{modifierDecorator}}">
                             <s-radio value="public">Public</s-radio>
                             <s-radio value="private">Private</s-radio>

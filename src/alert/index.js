@@ -20,9 +20,13 @@ const iconMap = {
 
 export default san.defineComponent({
     template: `
-        <div class="{{className}}" on-animationend="animationEnd" style="{{elStyle}}">
+        <div class="{{classes}}" on-animationend="animationEnd" style="{{elStyle}}">
             <slot s-if="{{showIcon}}" name="icon">
-                <s-icon class="${prefixCls}-icon" type="{{iconType}}" theme="{{description ? 'outlined' : 'filled'}}" />
+                <s-icon
+                    class="${prefixCls}-icon"
+                    type="{{icon || iconMap[type] || 'smile'}}"
+                    theme="{{description ? 'outlined' : 'filled'}}"
+                />
             </slot>
             <span class="${prefixCls}-message">{{message}}</span>
             <span class="${prefixCls}-description">{{description}}</span>
@@ -49,7 +53,7 @@ export default san.defineComponent({
     },
 
     computed: {
-        className() {
+        classes() {
             const data = this.data;
             const type = data.get('type');
             const closing = data.get('closing');
@@ -58,24 +62,21 @@ export default san.defineComponent({
             const showIcon = data.get('showIcon');
             const banner = data.get('banner');
 
-            let klass = [prefixCls, `${prefixCls}-${type}`];
-            !closing && klass.push(`${prefixCls}-close`, `${prefixCls}-slide-up-leave`);
-            description && klass.push(`${prefixCls}-with-description`);
-            !showIcon && klass.push(`${prefixCls}-no-icon`);
-            banner && klass.push(`${prefixCls}-banner`);
-            closable && klass.push(`${prefixCls}-closable`);
+            let classArr = [prefixCls, `${prefixCls}-${type}`];
+            !closing && classArr.push(`${prefixCls}-close`, `${prefixCls}-slide-up-leave`);
+            description && classArr.push(`${prefixCls}-with-description`);
+            !showIcon && classArr.push(`${prefixCls}-no-icon`);
+            banner && classArr.push(`${prefixCls}-banner`);
+            closable && classArr.push(`${prefixCls}-closable`);
 
-            return klass;
-        },
-
-        iconType() {
-            return this.data.get('icon') || iconMap[this.data.get('type')] || 'smile';
+            return classArr;
         }
     },
 
     initData() {
         return {
-            closing: true
+            closing: true,
+            iconMap
         };
     },
 

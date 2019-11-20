@@ -49,7 +49,7 @@ export default san.defineComponent({
             visible="{{visible}}"
             popupVisible="{{popupVisible}}"
             on-visibleChange="handleVisibleChange"
-            class="{{className}}"
+            class="{{dropdownClassName}}"
             stretch="{{stretch}}"
             rootDomNode="{{rootDomNode}}"
             s-ref="trigger"

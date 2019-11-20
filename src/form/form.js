@@ -19,7 +19,6 @@ let form = san.defineComponent({
     dataTypes: {
         hideRequiredMark: DataTypes.bool,
         layout: DataTypes.oneOf(['inline', 'horizontal', 'vertical']),
-        className: DataTypes.string,
         wrapperCol: DataTypes.object,
         labelCol: DataTypes.object,
         labelAlign: DataTypes.string,

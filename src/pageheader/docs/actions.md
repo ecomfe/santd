@@ -21,42 +21,42 @@
                 <s-tabpane tab="Details" key="1"></s-tabpane>
                 <s-tabpane tab="Rule" key="2"></s-tabpane>
             </s-tabs>
-            <div className="wrap">
-                <div className="content padding">
+            <div class="wrap">
+                <div class="content padding">
                     <s-row>
                         <s-col span="{{12}}">
-                            <div className="description">
-                                <div className="term">Created：</div>
-                                <div className="detail">Lili Qu</div>
+                            <div class="description">
+                                <div class="term">Created：</div>
+                                <div class="detail">Lili Qu</div>
                             </div>
                         </s-col>
                         <s-col span="{{12}}">
-                            <div className="description">
-                                <div className="term">Association：</div>
-                                <div className="detail"><a>421421</a></div>
+                            <div class="description">
+                                <div class="term">Association：</div>
+                                <div class="detail"><a>421421</a></div>
                             </div>
                         </s-col>
                         <s-col span="{{12}}">
-                            <div className="description">
-                                <div className="term">Creation Time：</div>
-                                <div className="detail">2017-01-10</div>
+                            <div class="description">
+                                <div class="term">Creation Time：</div>
+                                <div class="detail">2017-01-10</div>
                             </div>
                         </s-col>
                         <s-col span="{{12}}">
-                            <div className="description">
-                                <div className="term">Effective：</div>
-                                <div className="detail">2017-10-10</div>
+                            <div class="description">
+                                <div class="term">Effective：</div>
+                                <div class="detail">2017-10-10</div>
                             </div>
                         </s-col>
                         <s-col span="{{24}}">
-                            <div className="description">
-                                <div className="term">Remarks：</div>
-                                <div className="detail">Gonghu Road, Xihu District, Hangzhou, Zhejiang, China</div>
+                            <div class="description">
+                                <div class="term">Remarks：</div>
+                                <div class="detail">Gonghu Road, Xihu District, Hangzhou, Zhejiang, China</div>
                             </div>
                         </s-col>
                     </s-row>
                 </div>
-                <div className="extraContent">
+                <div class="extraContent">
                     <s-row>
                         <s-col span="{{12}}">
                             <s-statistic title="Status" value="Pending" />

@@ -3,7 +3,6 @@
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | bodyStyle | 可用于设置 Drawer 的样式，调整浮层位置等 | string \| object | - |
-| className | 对话框外层容器的类名 | string | - |
 | closable | 是否显示右上角的关闭按钮 | boolean | true |
 | destroyOnClose | (todo) 关闭时销毁 Drawer 里的子元素 | boolean | false |
 | getContainer | (todo) 指定 Drawer 挂载的 HTML 节点 | HTMLElement \| `() => HTMLElement` \| selectors | 'body' |

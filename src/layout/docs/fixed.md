@@ -6,9 +6,9 @@
 ```html
 <template>
 <div>
-    <s-layout className="layout">
+    <s-layout class="layout">
         <s-header style="{{{position: 'fixed', 'z-index': 1, width: '100%'}}}">
-        <div className="logo" />
+        <div class="logo" />
         <s-menu
             theme="dark"
             mode="horizontal"

@@ -8,7 +8,7 @@
 <template>
     <div>
         <searchform></searchform>
-        <div className="search-result-list">Search Result List</div>
+        <div class="search-result-list">Search Result List</div>
   </div>
 </template>
 <script>

@@ -45,7 +45,7 @@ const ProgressInfo = san.defineComponent({
 const ProgressCirle = san.defineComponent({
     template: `
         <svg
-            class="${prefixCls}-circle {{className}}"
+            class="${prefixCls}-circle"
             viewBox="0 0 100 100"
             style="{{style}}"
         >
@@ -151,7 +151,7 @@ const ProgressCirle = san.defineComponent({
 
 export default san.defineComponent({
     template: `
-        <div class="{{className}}">
+        <div class="{{classes}}">
             <template s-if="type === 'line'">
                 <div class="${prefixCls}-outer">
                     <div class="${prefixCls}-inner">
@@ -213,7 +213,7 @@ export default san.defineComponent({
         's-circle': ProgressCirle
     },
     computed: {
-        className() {
+        classes() {
             const data = this.data;
             const size = data.get('size');
             const showInfo = data.get('showInfo');

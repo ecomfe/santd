@@ -26,7 +26,7 @@
 <s-icon type="star" theme="filled" />
 ```
 
-所有的图标都会以 `<svg>` 标签渲染，可以使用 `style` 和 `className` 设置图标的大小和单色图标的颜色。例如：
+所有的图标都会以 `<svg>` 标签渲染，可以使用 `style` 和 `class` 设置图标的大小和单色图标的颜色。例如：
 ```html
 <s-icon type="message" style="fontSize: 16px; color: #08c;"/>
 ```

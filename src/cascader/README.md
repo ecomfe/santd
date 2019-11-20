@@ -9,7 +9,6 @@
 | allowClear            | 是否支持清除                                                                           | boolean                                         | true                                                       |
 | autoFocus             | 自动获取焦点                                                                           | boolean                                         | false                                                      |
 | changeOnSelect        | 当此项为 true 时，点选每级菜单选项值都会发生变化，具体见上面的演示                     | boolean                                         | false                                                      |
-| className             | 自定义类名                                                                             | string                                          | -                                                          |
 | defaultValue          | 默认的选中项                                                                           | string[] \                                      | Array                                                      | - |
 | disabled              | 禁用                                                                                   | boolean                                         | false                                                      |
 | displayRender         | 选择后展示的渲染函数                                                                   | (label, selectedOptions) =>sanComponentInstance | `label => label.join(' / ')`                               |

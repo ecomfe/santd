@@ -317,7 +317,7 @@ export default san.defineComponent({
             stretch="minWidth"
             rootDomNode="{{getRootDomNode()}}"
             overlayStyle="{{dropdownStyle}}"
-            className="${prefixCls}-selection ${prefixCls}-selection--{{multiple || treeCheckable ? 'multiple' : 'single'}}"
+            dropdownClassName="${prefixCls}-selection ${prefixCls}-selection--{{multiple || treeCheckable ? 'multiple' : 'single'}}"
             visible="{{visible}}"
             popupVisible="{{popupVisible}}"
             stretch="{{dropdownMatchSelectWidth ? 'minWidth' : undefined}}"

@@ -21,7 +21,7 @@ export default san.defineComponent({
                 title="{{item.title}}"
                 on-mousedown="preventDefaultEvent"
             >
-                <div className="${prefixCls}-selection__choice__content">{{item.content}}</div>
+                <div class="${prefixCls}-selection__choice__content">{{item.content}}</div>
                 <span
                     s-if="!item.disabled"
                     class="${prefixCls}-selection__choice__remove"
@@ -32,7 +32,7 @@ export default san.defineComponent({
                     </slot>
                 </span>
             </li>
-            <li className="${prefixCls}-search ${prefixCls}-search--inline">
+            <li class="${prefixCls}-search ${prefixCls}-search--inline">
                 <slot name="input"/>
             </li>
         </ul>

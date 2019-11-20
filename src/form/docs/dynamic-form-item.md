@@ -16,7 +16,7 @@
             key="{{item}}"
         >
             <s-input decorator="{{decorators[index]}}" placeholder="passenger name" style="width: 60%; margin-right: 8px; display: inline-block;"></s-input>
-            <s-icon s-if="keys.length > 1" className="dynamic-delete-button" type="delete" on-click="handleRemove(item)"></s-icon>
+            <s-icon s-if="keys.length > 1" class="dynamic-delete-button" type="delete" on-click="handleRemove(item)"></s-icon>
         </s-formitem>
         <s-formitem wrapperCol="{{formItemLayoutWithOutLabel.wrapperCol}}">
             <s-button type="dashed" on-click="handleAdd" style="width: 60%;">

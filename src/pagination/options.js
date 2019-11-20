@@ -34,7 +34,7 @@ export default san.defineComponent({
             <s-select
                 s-if="{{showSizeChanger}}"
                 prefixCls="{{selectPrefixCls}}"
-                className="{{rootPrefixCls}}-options-size-changer"
+                class="{{rootPrefixCls}}-options-size-changer"
                 optionLabelProp="children"
                 defaultValue="{{pageSize || pageSizeOptions[0]}}"
                 size="{{size}}"

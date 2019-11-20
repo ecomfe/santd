@@ -201,7 +201,7 @@ export default san.defineComponent({
                 <s-select
                     size="{{fullscreen ? 'default' : 'small'}}"
                     dropdownMatchSelectWidth="{{false}}"
-                    className="{{prefixCls}}-year-select"
+                    class="{{prefixCls}}-year-select"
                     value="{{year}}"
                     style="display:inline-block; min-width: 80px;"
                     on-change="handleYearChange"
@@ -214,7 +214,7 @@ export default san.defineComponent({
                     s-if="mode !== 'year'"
                     size="{{fullscreen ? 'default' : 'small'}}"
                     dropdownMatchSelectWidth="{{false}}"
-                    className="{{prefixCls}}-month-select"
+                    class="{{prefixCls}}-month-select"
                     value="{{month}}"
                     style="display:inline-block; min-width: 80px;"
                     on-change="handleMonthChange"

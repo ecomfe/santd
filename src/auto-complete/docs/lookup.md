@@ -5,9 +5,9 @@
 
 ```html
 <template>
-  <div className="certain-category-search-wrapper">
-  	<s-auto-complete
-        className="certain-category-search"
+  <div class="certain-category-search-wrapper">
+    <s-auto-complete
+        class="certain-category-search"
         dropdownClassName="certain-category-search-dropdown"
         style="width: 300px;"
         placeholder="input here"

@@ -12,7 +12,6 @@ const prefixCls = classCreator('slider-handle')();
 
 export default san.defineComponent({
     dataTypes: {
-        className: DataTypes.string,
         vertical: DataTypes.bool,
         offset: DataTypes.number,
         disabled: DataTypes.bool,

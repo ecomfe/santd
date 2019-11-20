@@ -32,7 +32,6 @@ const PanelContent = san.defineComponent({
 let Panel = san.defineComponent({
     dataTypes: {
         prefixCls: DataTypes.string,
-        className: DataTypes.string,
         header: DataTypes.string,
         headerClass: DataTypes.string,
         showArrow: DataTypes.bool,

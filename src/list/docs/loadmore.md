@@ -7,7 +7,7 @@
 <template>
     <div>
         <s-list
-            className="demo-loadmore-list"
+            class="demo-loadmore-list"
             loading="{{initLoading}}"
             itemLayout="horizontal"
             dataSource="{{list}}"

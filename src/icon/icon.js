@@ -51,7 +51,6 @@ const icon = san.defineComponent({
     template: `
         <svg
             key="svg-{{target.name}}"
-            class="{{className}}"
             data-icon="{{target.name}}"
             width="1em"
             height="1em"
@@ -60,7 +59,7 @@ const icon = san.defineComponent({
             focusable="false"
             viewBox="{{target.icon.attrs.viewBox || '0 0 1024 1024'}}"
         >
-            <slot></slot>
+            <slot />
             <path
                 s-for="p, index in target.icon.children"
                 key="svg-{{target.name}}-path-{{index}}"

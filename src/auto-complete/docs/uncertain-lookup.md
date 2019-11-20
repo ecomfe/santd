@@ -5,9 +5,9 @@
 
 ```html
 <template>
-  <div className="global-search-wrapper">
-  	<s-auto-complete
-        className="global-search"
+  <div class="global-search-wrapper">
+    <s-auto-complete
+        class="global-search"
         dropdownClassName="certain-category-search-dropdown"
         style="width: 300px;"
         placeholder="input here"
@@ -15,13 +15,13 @@
         on-search="handleSearch"
     >
         <s-option s-for="item in dataSource" key="{{item.category}}" value="{{item.category}}">
-            <div className="global-search-item">
-                <span className="global-search-item-desc">
+            <div class="global-search-item">
+                <span class="global-search-item-desc">
                     {{item.query}} 在
                     <a href="https://baidu.github.io/san/" target="_blank">{{item.category}}</a>
                     区块中
                 </span>
-                <span className="global-search-item-count">约 {{item.count}} 个结果</span>
+                <span class="global-search-item-count">约 {{item.count}} 个结果</span>
             </div>
         </s-option>
     </s-auto-complete>

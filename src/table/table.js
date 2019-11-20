@@ -348,6 +348,7 @@ export default san.defineComponent({
         sorter && classArr.push(`${prefixCls}-column-has-sorters`);
         left && classArr.push(`${prefixCls}-left-sticky`);
         right && classArr.push(`${prefixCls}-right-sticky`);
+        column.className && classArr.push(column.className);
         return classArr;
     },
     getThStyle(column) {
