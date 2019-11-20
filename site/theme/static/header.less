@@ -23,7 +23,7 @@
         color: @site-text-color;
     }
 
-    .san-menu-item-active .header-link {
+    .santd-menu-item-active .header-link {
         color: @primary-color;
     }
 }
@@ -70,31 +70,29 @@
             color: #a3b1bf;
         }
     }
-    .san-select-selection {
+    .santd-select-selection {
         border: 0;
         padding: 0;
-        .san-input {
+        .santd-input {
             padding: 0;
         }
     }
-    .san-input:focus,
-    .san-input:hover,
-    .san-select-open .san-select-selection {
+    .santd-input:focus,
+    .santd-input:hover,
+    .santd-select-open .santd-select-selection {
         box-shadow: none;
     }
-    .san-icon {
+    .santd-icon {
         color: #ced4d9;
         position: relative;
         top: .5px;
     }
 }
 
-// .header-lang-button,
-// .version {
-//     float: right;
-//     margin-top: 20px;
-//     margin-left: 16px;
-// }
+.version {
+    float: right;
+    margin: 20px 40px 0 16px;
+}
 
 // .header-lang-button {
 //     color: @text-color;
@@ -107,11 +105,10 @@
     float: right;
     font-size: 14px;
     font-family: Lato, @font-family;
-    &.san-menu-horizontal {
+    &.santd-menu-horizontal {
         border-bottom: none;
-        margin-right: 220px;
-        & > .san-menu-item,
-        & > .san-menu-submenu {
+        & > .santd-menu-item,
+        & > .santd-menu-submenu {
             height: @header-height;
             line-height: @header-height - @menu-item-border - 2px;
             min-width: 72px;
@@ -124,7 +121,7 @@
             }
         }
 
-        & > .san-menu-item-selected {
+        & > .santd-menu-item-selected {
             border-top: @menu-item-border solid @primary-color;
             border-bottom: @menu-item-border solid transparent;
             a {
@@ -133,11 +130,11 @@
         }
     }
 
-    & > .san-menu-item {
+    & > .santd-menu-item {
         text-align: center;
     }
-    .san-menu-item,
-    .san-menu-submenu-title {
+    .santd-menu-item,
+    .santd-menu-submenu-title {
         transition: color .3s cubic-bezier(.645, .045, .355, 1),border-color .3s cubic-bezier(.645, .045, .355, 1),background .3s cubic-bezier(.645, .045, .355, 1),padding .15s cubic-bezier(.645, .045, .355, 1)
     }
     .trigger-popup {
@@ -146,19 +143,19 @@
 }
 
 .component-select {
-    &.san-select-dropdown {
+    &.santd-select-dropdown {
         border: 0;
         border-radius: 0;
         box-shadow: 0 0 8px rgba(0, 0, 0, .25);
         font-size: 14px;
     }
-    .san-select-dropdown-menu {
+    .santd-select-dropdown-menu {
         max-height: 200px;
     }
-    .san-select-dropdown-menu-item {
+    .santd-select-dropdown-menu-item {
         border-radius: 0 !important;
     }
-    .san-component-decs {
+    .santd-component-decs {
         font-size: 12px;
         position: absolute;
         color: #aaa;

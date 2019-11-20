@@ -3,16 +3,15 @@
  */
 
 export default [
+    /*{
+        name: 'Ant Design of San',
+        key: '/docs/introduce',
+        path: 'introduce'
+    },*/
     {
-        name: '开发指南',
-        key: 'docs',
-        leaf: [
-            {
-                name: '快速上手',
-                path: 'quickstart',
-                key: '/docs/quickstart'
-            }
-        ]
+        name: '快速上手',
+        path: 'quickstart',
+        key: '/docs/quickstart'
     },
     {
         name: '组件',

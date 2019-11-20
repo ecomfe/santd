@@ -3,7 +3,6 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 
-import './style/index.less';
 import {Component} from 'san';
 import {router} from 'san-router';
 
@@ -17,6 +16,7 @@ import Navigator from './containers/Navigator';
 import {Notification, Col, Row, Affix} from 'santd';
 
 import routes from './lib/routes';
+import './style/index.less';
 const defaultPath = '/docs/quickstart';
 
 class Index extends Component {
@@ -98,8 +98,8 @@ class Index extends Component {
         // 路由监听
         router.listen(e => {
             const query = e.query;
-            if (e.path === '/' || !that.checkRouter(query)) {
-                that.handleRedirect({key: defaultPath});
+            if (e.path === '/') {
+                // that.handleRedirect({key: defaultPath});
                 that.data.set('currentPath', defaultPath);
             }
             else {

@@ -14,12 +14,15 @@ export default class Navigator extends Component {
                 selectedKeys="{{selectedKeys}}"
                 on-click="handleClick"
             >
-                <s-sub-menu s-for="item in routes"
-                    key="{{item.key}}"
-                    title="{{item.name}}"
-                >
-                    <template s-if="item.list" s-for="listItem in item.list">
+                <template s-for="item in routes">
+                    <s-sub-menu
+                        s-if="item.list || item.leaf"
+                        key="{{item.key}}"
+                        title="{{item.name}}"
+                    >
                         <s-menu-item-group
+                            s-if="item.list"
+                            s-for="listItem in item.list"
                             key="{{listItem.groupKey}}"
                             title="{{listItem.groupName}}"
                         >
@@ -30,16 +33,18 @@ export default class Navigator extends Component {
                                 <span>{{leafItem.name}}</span>
                             </s-menu-item>
                         </s-menu-item-group>
-                    </template>
-                    <template s-if="item.leaf">
                         <s-menu-item
+                            s-if="item.leaf"
                             s-for="leafItem in item.leaf"
                             key="{{'/' + item.key + '/' + leafItem.path}}"
                         >
                             <span>{{leafItem.name}}</span>
                         </s-menu-item>
-                    </template>
-                </s-sub-menu>
+                    </s-sub-menu>
+                    <s-menu-item s-else key="{{item.key}}" title="{{item.name}}">
+                        <span>{{item.name}}</span>
+                    </s-menu-item>
+                </template>
             </s-menu>
         </template>
     `;
