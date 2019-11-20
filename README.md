@@ -84,6 +84,10 @@ npm run check button
 npm run docs
 ```
 
+### 贡献方式
+
+有任何问题或者建议，欢迎提 (issue)[https://github.com/ecomfe/santd/issues/new], 发 pr。
+
 ## License
 
 [MIT](./LICENSE)
