@@ -43,14 +43,14 @@ export default san.defineComponent({
             for (let i = 0; i < SUPPORT_SCREENS.length; i++) {
                 let size = SUPPORT_SCREENS[i];
                 let value = data.get(size);
-                if (!value) {
+                if (value === undefined) {
                     continue;
                 }
 
                 let sizeProps = typeof value === 'object'
                     ? (value || {})
                     : {span: +value};
-                sizeProps.span && arr.push(cc(`${size}-${sizeProps.span}`));
+                sizeProps.span !== undefined && arr.push(cc(`${size}-${sizeProps.span}`));
 
                 for (let j = 0; j < SUPPORT_PROPS.length; j++) {
                     let key = SUPPORT_PROPS[j];
