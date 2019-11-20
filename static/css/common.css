@@ -1,4 +1,4 @@
-.san-badge:not(.san-badge-not-a-wrapper) {
+.santd-badge:not(.santd-badge-not-a-wrapper) {
   margin-right: 20px;
 }
 .head-example {
@@ -8,3 +8,4 @@
     background: #eee;
     display: inline-block;
 }
+
