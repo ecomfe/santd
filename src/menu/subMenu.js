@@ -234,6 +234,7 @@ export default san.defineComponent({
                 popupStyle="{{overlayStyle}}"
                 action="hover"
                 visible="{{isOpen}}"
+                stretch="{{mode === 'horizontal' ? 'minWidth' : ''}}"
                 on-visibleChange="handleVisibleChange"
             >
                 <ul class="${prefixCls} {{rootPrefixCls}}-sub ${prefixCls}-{{mode}}" slot="popup"><slot /></ul>

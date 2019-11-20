@@ -29,6 +29,11 @@ export default san.defineComponent({
             }
             else {
                 this.data.set('destroy', true);
+                let rootNode = this.data.get('getRootDomNode');
+                if (rootNode && this.data.get('stretch')) {
+                    this.data.set('targetWidth', rootNode.offsetWidth);
+                    this.data.set('targetHeight', rootNode.offsetHeight);
+                }
             }
         });
     },
@@ -81,18 +86,6 @@ export default san.defineComponent({
             this.data.set('currentAlignClassName', currentAlignClassName);
         }
         this.fire('align', {source, result});
-    },
-    updated() {
-        const visible = this.data.get('visible');
-        const stretch = this.data.get('stretch');
-
-        if (visible && stretch) {
-            let rootNode = this.data.get('getRootDomNode');
-            if (rootNode) {
-                this.data.set('targetWidth', rootNode.offsetWidth);
-                this.data.set('targetHeight', rootNode.offsetHeight);
-            }
-        }
     },
     attached() {
         this.dispatch('santd_popup_save', this);
