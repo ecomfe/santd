@@ -99,7 +99,7 @@ class Index extends Component {
         router.listen(e => {
             const query = e.query;
             if (e.path === '/') {
-                // that.handleRedirect({key: defaultPath});
+                that.handleRedirect({key: defaultPath});
                 that.data.set('currentPath', defaultPath);
             }
             else {

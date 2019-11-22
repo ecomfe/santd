@@ -1,17 +1,6 @@
 {
-    "presets": [
-        [
-            "@babel/preset-env",
-            {
-                "targets": {"browsers": [">1%", "last 2 versions", "safari >= 7"]}
-            }
-        ]
-    ],
+    "presets": [["@babel/preset-env"]],
     "plugins": [
-        "@babel/plugin-syntax-dynamic-import",
-        "@babel/plugin-syntax-import-meta",
-        "@babel/plugin-proposal-class-properties",
-        "@babel/plugin-transform-new-target",
-        "@babel/plugin-transform-modules-commonjs"
+        "@babel/plugin-proposal-class-properties"
     ]
 }

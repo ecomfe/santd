@@ -3,7 +3,7 @@
  * @author
  */
 
-import './style/index.less';
+import './style/index';
 import Select from './Select';
 import Option from './Option';
 import OptGroup from './OptGroup';

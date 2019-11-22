@@ -3,11 +3,11 @@
  */
 
 export default [
-    /*{
+    {
         name: 'Ant Design of San',
         key: '/docs/introduce',
         path: 'introduce'
-    },*/
+    },
     {
         name: '快速上手',
         path: 'quickstart',
