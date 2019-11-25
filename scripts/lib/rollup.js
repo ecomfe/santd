@@ -20,7 +20,8 @@ module.exports = async (dest, src) => {
             peerDepsExternal(),
             postcss({
                 inject: false,
-                extract: true
+                extract: true,
+                use: [['less', {javascriptEnabled: true}]]
             }),
             resolve(),
             commonjs(),

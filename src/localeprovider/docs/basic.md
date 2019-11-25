@@ -7,14 +7,14 @@
 <template>
     <div>
         <s-localeprovider locale="{{locale}}">
-            <s-pagination defaultCurrent="{{1}}" total="{{50}}" showSizeChanger />
+            <s-pagination defaultCurrent="{{1}}" total="{{50}}" showSizeChanger="{{true}}" />
         </s-localeprovider>
     </div>
 </template>
 <script>
 import Pagination from 'santd/pagination';
 import LocaleProvider from 'santd/localeprovider';
-import zhCN from 'santd/localeprovider/zh_CN';
+import zhCN from 'santd/localeprovider/hu_HU';
 
 export default {
     initData() {

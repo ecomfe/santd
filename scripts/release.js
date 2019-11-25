@@ -132,7 +132,7 @@ async function genFiles(dest, src, version, pkg) {
         const file = files[i];
         const parsedFile = path.parse(file);
         const lessc = path.join(__dirname, '../node_modules/less/bin/lessc');
-        await execa(lessc, ['index.less', 'index.css'], {cwd: `${parsedFile.dir}`});
+        await execa(lessc, ['--js', 'index.less', 'index.css'], {cwd: `${parsedFile.dir}`});
         const es6Path = parsedFile.dir.replace('lib', 'es');
         await fsExtra.copy(`${parsedFile.dir}/index.css`, `${es6Path}/index.css`);
         // 删除不必要的文件
