@@ -14,6 +14,11 @@ export default [
         key: '/docs/quickstart'
     },
     {
+        name: '定制主题',
+        path: 'theme',
+        key: '/docs/theme'
+    },
+    {
         name: '组件',
         key: 'components',
         list: [

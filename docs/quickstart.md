@@ -4,58 +4,143 @@ Ant Design San 致力于提供给程序员愉悦的开发体验。
 
 > 在开始之前，推荐先学习 San 和 ES2015，并正确安装和配置了 Node.js v8 或以上。官方指南假设你已了解关于 HTML、CSS 和 JavaScript 的中级知识，并且已经完全掌握了 San 全家桶的正确开发方式。如果你刚开始学习前端或者 San，将 UI 框架作为你的第一步可能不是最好的主意。
 
-### 安装
+## 第一个例子
 
-指定内部源，使用 npm 安装
+这是一个最简单的 Santd 组件的在线演示。
 
-```bash
-$ npm install santd
-```
+### 1. 使用组件
 
-### 使用
+直接用下面的代码替换 index.js 的内容，用 san 的方式直接使用 santd 组件。
 
-```html
-<script>
-    import {Button} from 'santd';
-    export default {
-        components: {
-            's-button': Button
-        },
-        template: `
-        <div>
-            <s-button type="default">Default</s-button>
+```javascript
+import san from 'san';
+import {DatePicker, Message} from 'santd';
+import moment from 'moment';
+import 'moment/locale/zh-cn';
+import 'santd/dist/santd.css';
+import './index.css';
+
+moment.locale('zh-cn');
+
+const App = san.defineComponent({
+    initData() {
+        return {
+            date: null
+        }
+    },
+    components: {
+        's-datepicker': DatePicker
+    },
+    handleChange(date) {
+        Message.info(`您选择的日期是: ${date ? date.format('YYYY-MM-DD') : '未选择'}`);
+        this.data.set('date', date);
+    },
+    getDate(date) {
+        return date ? date.format('YYYY-MM-DD') : '未选择';
+    },
+    template: `<div style="width: 400px; margin: 100px auto;">
+        <s-datepicker on-change="handleChange" />
+        <div style="margin-top: 20px;">
+            当前日期：{{getDate(date)}}
         </div>
-    `
-    };
-</script>
+    </div>`
+});
+
+const app = new App();
+app.attach(document.body);
 ```
 
-### 按需加载
+### 2. 探索更多组件用法
 
-如果使用了 babel，可以使用[babel-plugin-import](https://github.com/ant-design/babel-plugin-import)来进行按需加载，使用这个插件后，可以写成
+你可以在左侧菜单查看组件列表，比如 [Alert](/#/components/alert) 组件，组件文档中提供了各类演示，最下方有组件 API 文档可以查阅。在代码演示部分找到第一个例子，点击右下角的图标展开代码。
+
+然后依照演示代码的写法，在之前的代码里修改 index.js，首先在 import 内引入 Alert 组件：
 
 ```javascript
-import {Button} from 'santd';
+import {DatePicker, Message, Alert} from 'santd';
 ```
 
-仅加载 Button 组件以及样式
-webpack loader 配置如下
+然后添加相应的代码：
 
 ```javascript
-{
-    loader: "babel-loader",
-    options: {
-        plugins: [['import', {
-            libraryName: '@baidu/santd',
-            style: 'css'
-        }]]
-    }
+const App = san.defineComponent({
+    initData() {
+        return {
+            date: null
+        }
+    },
+    components: {
+        's-datepicker': DatePicker,
+        's-alert': Alert
+    },
+    handleChange(date) {
+        Message.info(`您选择的日期是: ${date ? date.format('YYYY-MM-DD') : '未选择'}`);
+        this.data.set('date', date);
+    },
+    getDate(date) {
+        return date ? date.format('YYYY-MM-DD') : '未选择';
+    },
+    template: `<div style="width: 400px; margin: 100px auto;">
+        <s-datepicker on-change="handleChange" />
+        <div style="margin-top: 20px;">
+            <s-alert message="当前日期：{{getDate(date)}}" type="success" />
+        </div>
+    </div>`
+});
+```
+
+在右侧预览区就可以看到如图的效果。
+
+![avatar](https://gw.alipayobjects.com/zos/antfincdn/Up3%24VYhN0S/134614ee-7440-46f1-a797-fa6f6b3e300f.png)
+
+<style type="text/css">
+img[alt="avatar"] {width: 420px;}
+</style>
+
+好的，现在你已经会使用基本的 santd 组件了，你可以在这个例子中继续探索其他组件的用法。如果你遇到组件的 bug，也推荐建一个可重现的 codesandbox 来报告 bug。
+
+## 兼容性
+
+Ant Design San 支持所有的现代浏览器和 IE9+。
+
+| ![IE](https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png) <br/> IE \ Edge | ![Firefox](https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png) <br/> Firefox | ![Chrome](https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png) <br/> Chrome | ![Safari](https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png) <br/> Safari | ![Opera](https://raw.githubusercontent.com/alrra/browser-logos/master/src/opera/opera_48x48.png) <br/> Opera|
+| ---                                                                                                  | ---                                                                                                                  | ---                                                                                                              | ---                                                                                                              |---|
+|IE9, IE10, IE11, Edge|last 2 versions| last 2 versions| last 2 versions| last 2 versions|
+
+<style type="text/css">
+table {
+    width: 100%;
+    border: 1px solid #ebedf0;
+    margin: 8px 0 16px;
 }
-```
+table td, table th{
+    padding: 16px 24px;
+    border: 1px solid #ebedf0;
+}
+</style>
 
-未使用 babel，可以通过以下写法加载指定组件以及样式
+我们对 IE9/10 提供有限度的支持，部分样式和动画在 IE9/10 下的表现会比较裸。少数组件使用到了 Flex 布局，在 IE9/10 下也会有问题。
+
+对于 IE 系列浏览器，需要提供相应的 Polyfill 支持，建议使用 [babel-preset-env](https://babeljs.io/docs/en/babel-preset-env) 来解决浏览器兼容问题。
+
+
+## 自行构建
+
+如果想自己维护工作流，我们推荐使用 webpack 进行构建和调试。理论上你可以利用 San 生态圈中的 各种脚手架 进行开发。
+
+## 按需加载
+
+可以通过以下的写法来按需加载组件。
 
 ```javascript
-import Button from 'santd/lib/button';
-import 'santd/lib/button/style/css';
+import Button from 'santd/es/button';
+import 'santd/es/button/style'
 ```
+
+如果你使用了 babel，那么可以使用 [babel-plugin-import](https://github.com/ant-design/babel-plugin-import) 来进行按需加载，加入这个插件后。你可以仍然这么写：
+
+```javascript
+import { Button } from 'santd';
+```
+
+插件会帮你转换成 santd/es/xxx 的写法。另外此插件配合 style 属性可以做到模块样式的按需自动加载。
