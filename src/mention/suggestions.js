@@ -3,12 +3,11 @@
  * @author raowenjuan <raowenjuan@baidu.com>
  */
 
-import '../style/index.less';
+import './style/index.less';
 import san, {DataTypes} from 'san';
-import Icon from '../../icon';
+import Icon from '../icon';
 import Nav from './nav';
-import toStyle from 'to-style';
-import {classCreator} from '../../core/util';
+import {classCreator} from '../core/util';
 
 const prefixCls = classCreator('suggestions')();
 const prefixDropCls = classCreator('dropdown')();
@@ -33,8 +32,7 @@ export default san.defineComponent({
                 display: isShowSug ? 'block' : 'none',
                 left: `${position.left}px`,
                 top: isTop ? 'auto' : `${position.top + position.height}px`,
-                bottom: isTop ? `${position.top + position.height}px;` : 'auto',
-                ...toStyle.object(this.data.get('style'))
+                bottom: isTop ? `${position.top + position.height}px;` : 'auto'
             };
         }
     },

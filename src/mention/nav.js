@@ -3,8 +3,8 @@
  * @author zhangtingting12 <zhangtingting12@baidu.com>
  */
 import san from 'san';
-import {classCreator} from '../../core/util';
-import '../style/index.less';
+import {classCreator} from '../core/util';
+import './style/index.less';
 
 const prefixCls = classCreator('dropdown')();
 

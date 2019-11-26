@@ -3,12 +3,12 @@
  * @author zhangtingting12 <zhangtingting12@baidu.com>
  */
 
-import '../style/index.less';
+import './style/index.less';
 import san, {DataTypes} from 'san';
 import PlaceHolder from './placeHolder';
 import Suggestions from './suggestions';
-import {getRegExp, insertString, setCursorPosition, getSearchWordPos} from '../utils/index';
-import {classCreator} from '../../core/util';
+import {getRegExp, insertString, setCursorPosition, getSearchWordPos} from './utils/index';
+import {classCreator} from '../core/util';
 
 const prefixCls = classCreator('mention')();
 
