@@ -8,7 +8,6 @@ import {classCreator} from '../core/util';
 import Icon from '../icon';
 import Tree from '../tree';
 import Input from '../input';
-import Selector from '../select/selector';
 import SingleSelector from './single-selector';
 import MultipleSelector from './multiple-selector';
 import Dropdown from '../dropdown';
@@ -118,7 +117,6 @@ export default san.defineComponent({
         's-multiple-selector': MultipleSelector,
         's-dropdown': Dropdown,
         's-input-search': Input.Search,
-        's-selector': Selector
     },
     initData() {
         return {
