@@ -34,11 +34,11 @@ export default san.defineComponent({
         this.dispatch('select:updateOptions');
     },
 
-    detached() {
+    updated() {
         this.dispatch('select:updateOptions');
     },
 
-    updated() {
+    detached() {
         this.dispatch('select:updateOptions');
     }
 });

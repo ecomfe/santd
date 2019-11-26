@@ -382,10 +382,6 @@
         }
     }
 
-    &-allow-clear &-selection--single &-selection-selected-value {
-        padding-right: 16px;
-    }
-
     &-allow-clear &-selection--multiple &-selection__rendered,
     &-show-arrow &-selection--multiple &-selection__rendered {
         margin-right: 20px; // In case that clear button will overlap content
@@ -529,7 +525,7 @@
                 border-radius: 0 0 @border-radius-base @border-radius-base;
             }
 
-            &-selected {
+            &-selected:not(&-disabled) {
                 color: @text-color;
                 font-weight: @select-item-selected-font-weight;
                 background-color: @select-item-selected-bg;

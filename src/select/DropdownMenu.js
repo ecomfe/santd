@@ -15,12 +15,13 @@ import {
     preventDefaultEvent,
     toTitle
 } from './util';
+import KeyCode from '../core/util/keyCode';
 
 const formatOptionInfo = (option, optionsInfo) => {
     const value = option.data.get('value');
     const info = optionsInfo[getMapKey(value)];
     return {
-        content: option.el.innerHTML,
+        content: option.el.innerHTML.trim(),
         title: toTitle(info.title),
         value,
         disabled: info.disabled
@@ -60,10 +61,10 @@ export default san.defineComponent({
         <div id="{{context.ariaId}}"
             style="overflow: auto; transform: translateZ(0);"
             on-mousedown="preventDefaultEvent"
+            on-mouseleave="handleMouseLeave"
             on-scroll="capture:handlePopupScroll"
         >
             <s-menu
-                defaultActiveFirst="{{context.defaultActiveFirstOption}}"
                 multiple="{{multiple}}"
                 prefixCls="${dropdownPrefixCls}"
                 role="listbox"
@@ -81,7 +82,7 @@ export default san.defineComponent({
                 >
                     <s-menu-item
                         s-for="item in groupInfo.menuItems"
-                        class="${prefixCls}-unselectable"
+                        class="{{item | getItemClass(activeKey)}}"
                         disabled="{{item.disabled}}"
                         value="{{item.value}}"
                         key="{{item.value}}"
@@ -96,7 +97,7 @@ export default san.defineComponent({
                 <s-menu-item
                     s-else
                     s-for="item in menuItems"
-                    class="${prefixCls}-unselectable"
+                    class="{{item | getItemClass(activeKey)}}"
                     disabled="{{item.disabled}}"
                     value="{{item.value}}"
                     key="{{item.value}}"
@@ -148,7 +149,7 @@ export default san.defineComponent({
 
             if (modeConfig.tags) {
                 const childrenKeys = menuItems.map(item => item.value);
-                let inputValues = value.filter(val => childrenKeys.indexOf(val) < 0);
+                let inputValues = value.filter(val => childrenKeys.indexOf(val) < 0 && val.indexOf(inputValue) >= 0);
                 inputValues.sort((val1, val2) => val1.length - val2.length);
 
                 inputValues.forEach(val => {
@@ -212,11 +213,101 @@ export default san.defineComponent({
         }
     },
 
+    filters: {
+        getItemClass(item, activeKey) {
+            let klass = `${prefixCls}-unselectable`;
+
+            if (item.value === activeKey) {
+                klass += ` ${dropdownPrefixCls}-menu-item-active`;
+            }
+            return klass;
+        }
+    },
+
+    messages: {
+        'santd_menu_itemMouseEnter'({value}) {
+            this.data.set('activeKey', value.key);
+        }
+    },
+
     initData() {
         return {
+            activeKey: '',
             context: {},
             inputValue: ''
         };
+    },
+
+    inited() {
+        this.resetActiveKey();
+
+        this.owner.watch('realOpen', open => {
+            if (open) {
+                this.resetActiveKey();
+            }
+        });
+    },
+
+    getActiveItem() {
+        const activeKey = this.data.get('activeKey');
+        if (!activeKey) {
+            return null;
+        }
+
+        const menuItems = this.data.get('menuItems')
+            .filter(item => !item.disabled && item.value === activeKey);
+
+        return menuItems.length ? menuItems[0] : null;
+    },
+
+    resetActiveKey() {
+        let activeKey = '';
+        const {menuItems, selectedKeys} = this.data.get();
+
+        if (selectedKeys.length) {
+            activeKey = selectedKeys[0];
+        }
+        else if (this.owner.data.get('defaultActiveFirstOption')) {
+            const tmpArr = menuItems.filter(item => !item.disabled);
+
+            if (tmpArr.length) {
+                activeKey = tmpArr[0].value;
+            }
+        }
+
+        this.data.set('activeKey', activeKey);
+    },
+
+    // direction: -1 UP, 1 DOWN
+    updateActiveKey(activeItem = null, direction = 0) {
+        let activeKey = '';
+        const menuItems = this.data.get('menuItems')
+            .filter(item => !item.disabled);
+
+        if (menuItems.length) {
+            if (!activeItem) {
+                activeKey = menuItems[0].value;
+            }
+            else if (direction) {
+                let max = menuItems.length - 1;
+                let index = menuItems.findIndex(item => item.value === activeItem.value);
+
+                if (index >= 0) {
+                    index += direction;
+
+                    if (index < 0) {
+                        index = max;
+                    }
+                    else if (index > max) {
+                        index = 0;
+                    }
+
+                    activeKey = menuItems[index].value;
+                }
+            }
+
+            this.data.set('activeKey', activeKey);
+        }
     },
 
     handlePopupScroll(e) {
@@ -239,6 +330,10 @@ export default san.defineComponent({
         }
     },
 
+    handleMouseLeave() {
+        this.data.set('activeKey', '');
+    },
+
     handleMenuSelect({item}) {
         if (!item) {
             return;
@@ -252,7 +347,7 @@ export default san.defineComponent({
             modeConfig,
             value
         } = context;
-        const selectedValue = item.data.get('value') || item.data.get('key');
+        const selectedValue = item.value || item.data.get('value') || item.data.get('key');
         const lastValue = value[value.length - 1];
         const optionLabelProp = this.owner.getOptionLabelProp(context);
 
@@ -301,12 +396,46 @@ export default san.defineComponent({
     },
 
     handleMenuDeselect({item}) {
-        const value = item.data.get('value');
+        const value = item.value || item.data.get('value');
         this.owner.removeSelected(value);
 
         const autoClearSearchValue = this.data.get('context.autoClearSearchValue');
         if (autoClearSearchValue) {
             this.owner.setInputValue('');
+        }
+    },
+
+    handleKeyDown(e, callback) {
+        const keyCode = e.keyCode;
+        let activeItem = this.getActiveItem();
+
+        if (keyCode === KeyCode.ENTER) {
+            if (activeItem) {
+                const modeConfig = this.data.get('context.modeConfig');
+                if (modeConfig.single) {
+                    this.handleMenuSelect({item: activeItem});
+                }
+                else if (modeConfig.tags || modeConfig.multiple) {
+                    const selectedKeys = this.data.get('selectedKeys');
+
+                    if (selectedKeys.indexOf(activeItem.value) >= 0) {
+                        this.handleMenuDeselect({item: activeItem});
+                    }
+                    else {
+                        this.handleMenuSelect({item: activeItem});
+                    }
+                }
+            }
+            return;
+        }
+
+        if (keyCode === KeyCode.UP || keyCode === KeyCode.DOWN) {
+            this.updateActiveKey(activeItem, keyCode === KeyCode.UP ? -1 : 1);
+            e.preventDefault();
+
+            if (typeof callback === 'function') {
+                callback(activeItem);
+            }
         }
     },
 
