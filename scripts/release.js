@@ -22,18 +22,54 @@ const babel = require('./lib/babel');
 const copyFile = require('./lib/copy-file');
 const rollup = require('./lib/rollup');
 
+async function genLessFile() {
+    await new Promise((resolve) => {
+        const componentsPath = path.join(process.cwd(), 'src');
+        let componentsLessContent = '';
+
+        fs.readdir(componentsPath, (err, files) => {
+            files.forEach(file => {
+                if (fs.existsSync(path.join(componentsPath, file, 'style', 'index.less'))) {
+                    componentsLessContent += `@import "../${path.join(file, 'style', 'index.less')}";\n`;
+                }
+            });
+            fs.writeFileSync(
+                path.join(process.cwd(), 'dist', 'lib', 'core', 'styles', 'components.less'),
+                componentsLessContent,
+            );
+        });
+
+        if (fs.existsSync(path.join(process.cwd(), 'dist'))) {
+            fs.writeFileSync(
+                path.join(process.cwd(), 'dist', 'dist', 'santd.less'),
+                '@import "../lib/core/styles/index.less";\n@import "../lib/core/styles/components.less";',
+            );
+            console.log('Built a entry less file to dist/santd.less');
+        }
+        resolve();
+    });
+}
+
 async function main() {
     console.log('Release Santd...');
     const pkg = await getPackageJson();
-    const version = await getReleaseVersion(pkg.version);
+    // const version = await getReleaseVersion(pkg.version);
     const dest = await getDestDir();
     const src = path.resolve('src');
 
-    await genFiles(dest, src, version, pkg);
+    await genFiles(dest, src, pkg.version, pkg);
+    await genLessFile();
+
+    ['README.md', 'package.json'].forEach(f => {
+        fs.copyFileSync(path.join(__dirname, `../${f}`), path.join(dest, f));
+    });
+
+    // await execa('npm', ['version', version], {stdio: 'inherit', cwd: dest});
+    console.log('success build.');
 
     const workDir = process.cwd();
     console.log(`已经生成 Santd，在 ${path.relative(workDir, dest)} 文件夹`);
-    console.log('确定发包手动执行：npm publish --registry http://npmjs.com');
+    console.log('确定发包手动执行：npm publish --registry http://registry.npmjs.com');
 }
 
 async function getPackageJson() {
@@ -142,13 +178,6 @@ async function genFiles(dest, src, version, pkg) {
 
     console.log('starting package all in one file...');
     await rollup(path.join(dest, 'dist'), path.join(src, 'index.js'));
-
-    ['README.md', 'package.json'].forEach(f => {
-        fs.copyFileSync(path.join(__dirname, `../${f}`), path.join(dest, f));
-    });
-
-    await execa('npm', ['version', version], {stdio: 'inherit', cwd: dest});
-    console.log('success build.');
 }
 
 main();

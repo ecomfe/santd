@@ -35,24 +35,22 @@ module.exports = async (dest, src) => {
         ]
     };
 
-    const outputOptions = [
-        {
-            file: path.join(dest, 'santd.min.js'),
-            name: 'santd',
-            exports: 'named',
-            format: 'umd',
-            plugins: [terser()]
-        }, {
-            file: path.join(dest, 'santd.js'),
-            name: 'santd',
-            exports: 'named',
-            format: 'umd'
-        }
-    ];
+    const outputMin = {
+        file: path.join(dest, 'santd.min.js'),
+        name: 'santd',
+        exports: 'named',
+        format: 'umd',
+        plugins: [terser()]
+    };
+
+    const output = {
+        file: path.join(dest, 'santd.js'),
+        name: 'santd',
+        exports: 'named',
+        format: 'umd'
+    };
 
     const bundle = await rollup(inputOptions);
-
-    outputOptions.map(async options => {
-        await bundle.write(options);
-    });
+    await bundle.write(outputMin);
+    await bundle.write(output);
 };

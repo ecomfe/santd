@@ -122,7 +122,7 @@ module.exports = {
             filename: assetsPath('css/[name].css'),
             chunkFilename: assetsPath('css/common.css')
         }),
-        new HotModuleReplacementPlugin(),
+        // new HotModuleReplacementPlugin(),
         new NoEmitOnErrorsPlugin(),
         new HtmlWebpackPlugin({
             filename: 'index.html',
