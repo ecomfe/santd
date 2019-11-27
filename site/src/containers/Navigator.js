@@ -18,8 +18,8 @@ export default class Navigator extends Component {
                     <s-sub-menu
                         s-if="item.list || item.leaf"
                         key="{{item.key}}"
-                        title="{{item.name}}"
                     >
+                        <div slot="title">{{item.name}}<span class="chinese">{{count}}</span></div>
                         <s-menu-item-group
                             s-if="item.list"
                             s-for="listItem in item.list"
@@ -64,6 +64,17 @@ export default class Navigator extends Component {
         },
         selectedKeys() {
             return [this.data.get('currentPath')];
+        },
+        count() {
+            let routes = this.data.get('routes').filter(route => route.list);
+            let count = 0;
+            routes.forEach(route => {
+                route.list.forEach(r => {
+                    count += r.leaf.length;
+                });
+            });
+
+            return count;
         }
     };
 

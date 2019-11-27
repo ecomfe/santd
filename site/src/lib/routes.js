@@ -104,6 +104,12 @@ export default [
                         key: '/components/pagination'
                     },
                     {
+                        name: 'PageHeader',
+                        text: '页头',
+                        path: 'pageheader',
+                        key: '/components/pageheader'
+                    },
+                    {
                         name: 'Steps',
                         text: '步骤条',
                         path: 'steps',
