@@ -5,6 +5,7 @@
 
 import san, {DataTypes} from 'san';
 import {prefixCls} from './util';
+import KeyCode from '../core/util/keyCode';
 
 export default san.defineComponent({
     template: `
@@ -64,7 +65,14 @@ export default san.defineComponent({
         this.dispatch('select:inputChange', e);
     },
 
-    handleInputKeyDown() {
-        console.log('handleInputKeyDown');
+    handleInputKeyDown(e) {
+        const {modeConfig, realOpen} = this.data.get('context');
+
+        if (e.keyCode === KeyCode.ENTER) {
+            if (modeConfig.single && realOpen || !modeConfig.single && !realOpen) {
+                e.stopPropagation();
+            }
+        }
+        this.dispatch('select:inputKeyDown', e);
     }
 });

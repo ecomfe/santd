@@ -1,7 +1,6 @@
 /**
  * @file select/Select
  * @author
- * @todo combobox will be removed
  */
 
 import san, {DataTypes} from 'san';
@@ -77,10 +76,10 @@ export default san.defineComponent({
                 <div
                     s-ref="selection"
                     s-bind="selectionAttrs"
-                    class="{{selectionClass}}"
+                            class="{{selectionClass}}"
                     on-blur="capture:handleOuterBlur"
                     on-focus="capture:handleOuterFocus"
-                    on-keydown="capture:handleKeyDown"
+                    on-keydown="handleKeyDown"
                     on-mousedown="markMouseDown"
                     on-mouseup="markMouseLeave"
                     on-mouseout="markMouseLeave"
@@ -112,6 +111,7 @@ export default san.defineComponent({
                     </span>
                 </div>
                 <s-dropdown-render
+                    s-ref="dropdown"
                     slot="popup"
                     context="{{context}}"
                     inputValue="{{inputValue}}"
@@ -338,6 +338,10 @@ export default san.defineComponent({
 
         'select:inputChange'({value: event}) {
             this.handleInputChange(event);
+        },
+
+        'select:inputKeyDown'({value: event}) {
+            this.handleInputKeyDown(event);
         }
     },
 
@@ -347,14 +351,13 @@ export default san.defineComponent({
             allowClear: false,
             autoClearSearchValue: true,
             autoFocus: false,
+            backfill: false,
             defaultActiveFirstOption: true,
             disabled: false,
             dropdownMatchSelectWidth: true,
-            // filterOption: true,
             getPopupContainer: () => document.body,
             labelInValue: false,
             optionFilterProp: 'value',
-            // showArrow: true,
             showSearch: false,
             size: 'default',
             tokenSeparators: [],
@@ -379,19 +382,15 @@ export default san.defineComponent({
             value: this.getValueFromProps(true),
             open: !!props.defaultOpen,
             backfillValue: '',
-            // skipBuildOptionsInfo: true, // a flag for avoid redundant getOptionsInfoFromProps call
             ariaId: generateUUID()
         });
+
         this.setDropdownWidth();
     },
 
     attached() {
-        // this.updateOptions();
         this.setState({
             inputValue: '',
-            // inputValue: props.modeConfig.combobox
-            //     ? this.getInputValueForCombobox(props, optionsInfo, true)
-            //     : '',
             ready: true
         });
 
@@ -423,6 +422,14 @@ export default san.defineComponent({
         });
     },
 
+    findFirstMenuItem() {
+        const items = this.ref('dropdown').data.get('menuItems');
+        if (items.length) {
+            return items[0];
+        }
+        return null;
+    },
+
     getOptionsFromChildren(children = [], options = [], optionGroups = [], currGroup = [], hasGroup = false) {
         children.forEach(child => {
             if (child) {
@@ -432,7 +439,7 @@ export default san.defineComponent({
                 }
                 else if (child.isSelectOptionGroup) {
                     currGroup = [];
-                    this.getOptionsFromChildren(child.children, options, optionGroups, currGroup, true);
+                    this.getOptionsFromChildren(child.children || [], options, optionGroups, currGroup, true);
                     optionGroups.push({
                         group: child,
                         options: currGroup
@@ -508,24 +515,15 @@ export default san.defineComponent({
     },
 
     getValueByInput(str) {
-        const {modeConfig, tokenSeparators} = this.data.get();
+        const {tokenSeparators} = this.data.get();
         let nextValue = this.data.get('value');
         let hasNewValue = false;
         splitBySeparators(str, tokenSeparators).forEach(label => {
-            const selectedValue = [label];
-            // if (modeConfig.multiple || modeConfig.tags) {
-            //     const value = this.getValueByLabel(label);
-            //     if (value && findIndexInValueBySingleValue(nextValue, value) === -1) {
-            //         nextValue = (nextValue as string).concat(value);
-            //         hasNewValue = true;
-            //         this.fireSelect(value);
-            //     }
-            // }
-            // else if (findIndexInValueBySingleValue(nextValue, label) === -1) {
-            //     nextValue = (nextValue as string[]).concat(selectedValue);
-            //     hasNewValue = true;
-            //     this.fireSelect(label);
-            // }
+            if (nextValue.indexOf(label) === -1) {
+                nextValue = [...nextValue, label];
+                hasNewValue = true;
+                this.fireSelect(label);
+            }
         });
         return hasNewValue ? nextValue : undefined;
     },
@@ -540,10 +538,7 @@ export default san.defineComponent({
             value = toArray(props.value);
         }
         if (props.labelInValue) {
-            // mark
-            // value = (value as IILableValueType[]).map(v => {
-            //     return v.key as string;
-            // });
+            value = value.map(v => v.key);
         }
         return value;
     },
@@ -581,7 +576,6 @@ export default san.defineComponent({
         };
 
         // clear search input value when open is false in singleMode.
-        // https://github.com/ant-design/ant-design/issues/16572
         if (!open && props.modeConfig.single && props.showSearch && !isAutoComplete) {
             this.setInputValue('', fireSearch);
         }
@@ -642,7 +636,11 @@ export default san.defineComponent({
     },
 
     openIfHasChildren() {
-        console.log('openIfHasChildren');
+        const props = this.props;
+
+        if (props.options.length || props.modeConfig.single) {
+            this.setOpenState(true);
+        }
     },
 
     removeSelected(selectedKey, e) {
@@ -660,31 +658,24 @@ export default san.defineComponent({
         if (modeConfig.multiple || modeConfig.tags) {
             let event = selectedKey;
             if (labelInValue) {
-                // event = {
-                //     key: selectedKey,
-                //     label: this.getLabelBySingleValue(selectedKey)
-                // };
+                event = {
+                    key: selectedKey,
+                    label: selectedKey // this.getLabelBySingleValue(selectedKey)
+                };
             }
             this.fire('deselect', event);
-            // props.onDeselect(event, this.getOptionBySingleValue(selectedKey));
         }
         this.fireChange(value);
     },
 
     fireChange(value) {
-        // const props = this.data.get();
-        this.setState({value}); // mark: this.forcePopupAlign
+        this.setState({value});
         this.fire('change', value);
         this.dispatch('UI:form-item-interact', {fieldValue: value, type: 'change'});
-        // const vls = this.getVLForOnChange(value);
-        // const options = this.getOptionsBySingleValue(value);
-        // if (props.onChange) {
-        //     props.onChange(vls, isMultipleOrTags(this.props) ? options : options[0]);
-        // }
     },
 
     fireSelect(value) {
-        this.fire('select', value); // this.getOptionBySingleValue(value)
+        this.fire('select', value);
     },
 
     fireEvent(e, type) {
@@ -698,6 +689,24 @@ export default san.defineComponent({
         if (!disabled) {
             this.setOpenState(!open, {needFocus: !open});
         }
+    },
+
+    handleBackfill(item) {
+        const {modeConfig, backfill} = this.props;
+        if (!backfill || !(modeConfig.single || modeConfig.combobox)) {
+            return;
+        }
+
+        const key = item.value;
+
+        if (modeConfig.combobox) {
+            this.setInputValue(key, false);
+        }
+
+        this.setState({
+            value: [key],
+            backfillValue: key
+        });
     },
 
     handleClearSelection(e) {
@@ -721,7 +730,7 @@ export default san.defineComponent({
     },
 
     handleInputChange(e) {
-        const {modeConfig, tokenSeparators} = this.data.get();
+        const {modeConfig, tokenSeparators, inputElement: $input} = this.data.get();
         const val = e.target.value;
         if (
             (modeConfig.multiple || modeConfig.tags)
@@ -733,7 +742,11 @@ export default san.defineComponent({
                 this.fireChange(nextValue);
             }
             this.setOpenState(false, {needFocus: true});
-            this.setInputValue('', false);
+
+            $input.value = '';
+            this.nextTick(() => {
+                this.setState({inputValue: ''});
+            });
             return;
         }
         this.setInputValue(val);
@@ -776,8 +789,6 @@ export default san.defineComponent({
         }
         else if (keyCode === KeyCode.ENTER && open) {
             // Aviod trigger form submit when select item
-            // https://github.com/ant-design/ant-design/issues/10861
-            // https://github.com/ant-design/ant-design/issues/14544
             if (realOpen || !modeConfig.combobox) {
                 e.preventDefault();
             }
@@ -799,14 +810,12 @@ export default san.defineComponent({
             return;
         }
 
-        // mark
-        // if (realOpen && this.selectTriggerRef) {
-        //     const menu = this.selectTriggerRef.getInnerMenu();
-        //     if (menu && menu.onKeyDown(event, this.handleBackfill)) {
-        //         e.preventDefault();
-        //         e.stopPropagation();
-        //     }
-        // }
+        if (realOpen && this.ref('dropdown')) {
+            const $dropdown = this.ref('dropdown');
+            if ($dropdown && $dropdown.handleKeyDown) {
+                $dropdown.handleKeyDown(e, this.handleBackfill.bind(this));
+            }
+        }
     },
 
     handleKeyDown(e) {
@@ -840,24 +849,21 @@ export default san.defineComponent({
         }
         const blurTimer = window.setTimeout(() => {
             this.data.set('_focused', false);
+            const props = this.data.get();
             const {
-                value,
                 inputElement: $input,
                 inputValue,
                 modeConfig,
                 showSearch,
                 defaultActiveFirstOption,
-                options,
                 _mouseDown // eslint-disable-line
-            } = this.data.get();
+            } = props;
+            let value = props.value;
+
             if (modeConfig.single && showSearch && inputValue && defaultActiveFirstOption) {
-                if (options.length) {
-                    // mark
-                    // const firstOption = findFirstMenuItem(options);
-                    // if (firstOption) {
-                    //     value = [getValuePropValue(firstOption)];
-                    //     this.fireChange(value);
-                    // }
+                const firstOption = this.findFirstMenuItem();
+                if (firstOption) {
+                    this.fireChange(firstOption.value);
                 }
             }
             else if ((modeConfig.multiple || modeConfig.tags) && inputValue) {
@@ -866,16 +872,17 @@ export default san.defineComponent({
                     this.setInputValue('');
                 }
                 else {
-                    // this.setState({inputValue: ''});
+                    this.setState({inputValue: ''});
                     if ($input) {
                         $input.value = '';
                     }
                 }
-                // const tmpValue = this.getValueByInput(inputValue);
-                // if (tmpValue !== undefined) {
-                //     value = tmpValue;
-                //     this.fireChange(value);
-                // }
+                const tmpValue = this.getValueByInput(inputValue);
+
+                if (tmpValue !== undefined) {
+                    value = tmpValue;
+                    this.fireChange(value);
+                }
             }
 
             // if click the rest space of Select in multiple mode
@@ -885,7 +892,7 @@ export default san.defineComponent({
                 return;
             }
             this.setOpenState(false);
-            this.fire('blur', value); // mark: props.onBlur(this.getVLForOnChange(value as valueType));
+            this.fire('blur', value);
         }, 10);
         this.data.set('blurTimer', blurTimer);
     },
@@ -898,12 +905,6 @@ export default san.defineComponent({
         this.clearBlurTime();
         const {inputElement: $input, modeConfig, _focused, _mouseDown} = this.data.get(); // eslint-disable-line
 
-        // In IE11, onOuterFocus will be trigger twice when focus input
-        // First one: e.target is div
-        // Second one: e.target is input
-        // other browser only trigger second one
-        // https://github.com/ant-design/ant-design/issues/15942
-        // Here we ignore the first one when e.target is div
         if ($input && e.target === this.ref('selection')) {
             return;
         }
