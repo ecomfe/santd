@@ -14,7 +14,7 @@
 <script>
 import Pagination from 'santd/pagination';
 import LocaleProvider from 'santd/localeprovider';
-import zhCN from 'santd/localeprovider/hu_HU';
+import zhCN from 'santd/localeprovider/zh_CN';
 
 export default {
     initData() {

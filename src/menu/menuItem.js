@@ -47,9 +47,8 @@ export default san.defineComponent({
     inited() {
         this.dispatch('santd_menu_addItem', this);
     },
-    getItemStyle(mode) {
+    getItemStyle(mode, level) {
         const inlineIndent = this.data.get('inlineIndent');
-        const level = this.data.get('level');
 
         return mode === 'inline'
             ? `padding-left: ${inlineIndent * level}px;`
@@ -103,7 +102,7 @@ export default san.defineComponent({
     template: `
         <li
             class="{{classes}}"
-            style="{{getItemStyle(mode)}}"
+            style="{{getItemStyle(mode, level)}}"
             role="{{role || 'menuitem'}}"
             aria-disabled="{{disabled}}"
             aria-selected="{{isSelected}}"

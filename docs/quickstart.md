@@ -93,10 +93,6 @@ const App = san.defineComponent({
 
 ![avatar](https://gw.alipayobjects.com/zos/antfincdn/Up3%24VYhN0S/134614ee-7440-46f1-a797-fa6f6b3e300f.png)
 
-<style type="text/css">
-img[alt="avatar"] {width: 420px;}
-</style>
-
 好的，现在你已经会使用基本的 santd 组件了，你可以在这个例子中继续探索其他组件的用法。如果你遇到组件的 bug，也推荐建一个可重现的 codesandbox 来报告 bug。
 
 ## 兼容性
@@ -106,18 +102,6 @@ Ant Design San 支持所有的现代浏览器和 IE9+。
 | ![IE](https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png) <br/> IE \ Edge | ![Firefox](https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png) <br/> Firefox | ![Chrome](https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png) <br/> Chrome | ![Safari](https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png) <br/> Safari | ![Opera](https://raw.githubusercontent.com/alrra/browser-logos/master/src/opera/opera_48x48.png) <br/> Opera|
 | ---                                                                                                  | ---                                                                                                                  | ---                                                                                                              | ---                                                                                                              |---|
 |IE9, IE10, IE11, Edge|last 2 versions| last 2 versions| last 2 versions| last 2 versions|
-
-<style type="text/css">
-table {
-    width: 100%;
-    border: 1px solid #ebedf0;
-    margin: 8px 0 16px;
-}
-table td, table th{
-    padding: 16px 24px;
-    border: 1px solid #ebedf0;
-}
-</style>
 
 我们对 IE9/10 提供有限度的支持，部分样式和动画在 IE9/10 下的表现会比较裸。少数组件使用到了 Flex 布局，在 IE9/10 下也会有问题。
 

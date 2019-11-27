@@ -26,10 +26,10 @@ return san.defineComponent({
     </div>'
 })
 ```
-我们提供了英语，中文，俄语，法语，德语等多种语言支持，所有语言包可以在 这里 找到。
+我们提供了英语，中文，俄语，法语，德语等多种语言支持，所有语言包可以在 [这里](https://github.com/ecomfe/santd/tree/master/src/localeprovider) 找到。
 
 ## 增加语言包
-如果你找不到你需要的语言包，欢迎你在 英文语言包 的基础上创建一个新的语言包，并给我们 Pull Request。
+如果你找不到你需要的语言包，欢迎你在 [英文语言包](https://github.com/ecomfe/santd/blob/master/src/localeprovider/default.js) 的基础上创建一个新的语言包，并给我们 Pull Request。
 
 
 ## 代码演示

@@ -31,6 +31,7 @@ export default class Navigator extends Component {
                                 key="{{leafItem.key}}"
                             >
                                 <span>{{leafItem.name}}</span>
+                                <span class="chinese">{{leafItem.text}}</span>
                             </s-menu-item>
                         </s-menu-item-group>
                         <s-menu-item

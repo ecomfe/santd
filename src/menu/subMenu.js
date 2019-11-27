@@ -161,9 +161,8 @@ export default san.defineComponent({
         's-animate': Animate,
         's-trigger': Trigger
     },
-    getTitleStyle(mode) {
+    getTitleStyle(mode, level) {
         const inlineIndent = this.data.get('inlineIndent');
-        const level = this.data.get('level');
 
         return mode === 'inline'
             ? `padding-left: ${inlineIndent * level}px;`
@@ -207,7 +206,7 @@ export default san.defineComponent({
                     aria-expanded="{{isOpen}}"
                     aria-haspopup="true"
                     title="{{title}}"
-                    style="{{getTitleStyle(mode)}}"
+                    style="{{getTitleStyle(mode, level)}}"
                     on-click="handleTitleClick"
                 >
                     <slot name="title" s-if="!title" />
@@ -243,7 +242,7 @@ export default san.defineComponent({
                     aria-expanded="{{isOpen}}"
                     aria-haspopup="true"
                     title="{{title}}"
-                    style="{{getTitleStyle(mode)}}"
+                    style="{{getTitleStyle(mode, level)}}"
                     on-click="handleTitleClick"
                 >
                     <slot name="title" s-if="!title" />

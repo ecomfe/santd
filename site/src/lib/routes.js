@@ -19,6 +19,11 @@ export default [
         key: '/docs/theme'
     },
     {
+        name: '国际化',
+        path: 'i18n',
+        key: '/docs/i18n'
+    },
+    {
         name: '组件',
         key: 'components',
         list: [
@@ -27,27 +32,38 @@ export default [
                 groupKey: 'common',
                 leaf: [
                     {
-                        name: 'Button 按钮',
+                        name: 'Button',
+                        text: '按钮',
                         path: 'button',
                         key: '/components/button'
                     },
                     {
-                        name: 'Icon 图标',
+                        name: 'Icon',
+                        text: '图标',
                         path: 'icon',
                         key: '/components/icon'
                     },
                     {
-                        name: 'Typography 排版',
+                        name: 'Typography',
+                        text: '排版',
                         path: 'typography',
                         key: '/components/typography'
-                    },
+                    }
+                ]
+            },
+            {
+                groupName: '布局',
+                groupKey: 'layout',
+                leaf: [
                     {
-                        name: 'Grid 栅格',
+                        name: 'Grid',
+                        text: '栅格',
                         path: 'grid',
                         key: '/components/grid'
                     },
                     {
-                        name: 'Layout 布局',
+                        name: 'Layout',
+                        text: '布局',
                         path: 'layout',
                         key: '/components/layout'
                     }
@@ -58,32 +74,38 @@ export default [
                 groupKey: 'nav',
                 leaf: [
                     {
-                        name: 'Affix 图钉',
+                        name: 'Affix',
+                        text: '图钉',
                         path: 'affix',
                         key: '/components/affix'
                     },
                     {
-                        name: 'Breadcrumb 面包屑',
+                        name: 'Breadcrumb',
+                        text: '面包屑',
                         path: 'breadcrumb',
                         key: '/components/breadcrumb'
                     },
                     {
-                        name: 'dropdown 下拉菜单',
+                        name: 'dropdown',
+                        text: '下拉菜单',
                         path: 'dropdown',
                         key: '/components/dropdown'
                     },
                     {
-                        name: 'Menu 导航菜单',
+                        name: 'Menu',
+                        text: '导航菜单',
                         path: 'menu',
                         key: '/components/menu'
                     },
                     {
-                        name: 'Pagination 分页',
+                        name: 'Pagination',
+                        text: '分页',
                         path: 'pagination',
                         key: '/components/pagination'
                     },
                     {
-                        name: 'Steps 步骤条',
+                        name: 'Steps',
+                        text: '步骤条',
                         path: 'steps',
                         key: '/components/steps'
                     }
@@ -94,87 +116,104 @@ export default [
                 groupKey: 'datainput',
                 leaf: [
                     {
-                        name: 'AutoComplete 自动完成',
+                        name: 'AutoComplete',
+                        text: '自动完成',
                         path: 'auto-complete',
                         key: '/components/auto-complete'
                     },
                     {
-                        name: 'Checkbox 多选框',
+                        name: 'Checkbox',
+                        text: '多选框',
                         path: 'checkbox',
                         key: '/components/checkbox'
                     },
                     {
-                        name: 'Cascader 级联选择',
+                        name: 'Cascader',
+                        text: '级联选择',
                         path: 'cascader',
                         key: '/components/cascader'
                     },
                     {
-                        name: 'DatePicker 日期选择框',
+                        name: 'DatePicker',
+                        text: '日期选择框',
                         path: 'date-picker',
                         key: '/components/date-picker'
                     },
                     {
-                        name: 'Form 表单',
+                        name: 'Form',
+                        text: '表单',
                         path: 'form',
                         key: '/components/form'
                     },
                     {
-                        name: 'InputNumber 数字输入框',
+                        name: 'InputNumber',
+                        text: '数字输入框',
                         path: 'input-number',
                         key: '/components/input-number'
                     },
                     {
-                        name: 'Input 输入框',
+                        name: 'Input',
+                        text: '输入框',
                         path: 'input',
                         key: '/components/input'
                     },
                     {
-                        name: 'Mention 提及',
+                        name: 'Mention',
+                        text: '提及',
                         path: 'mention',
                         key: '/components/mention'
                     },
                     {
-                        name: 'Rate 评分',
+                        name: 'Rate',
+                        text: '评分',
                         path: 'rate',
                         key: '/components/rate'
                     },
                     {
-                        name: 'Radio 单选框',
+                        name: 'Radio',
+                        text: '单选框',
                         path: 'radio',
                         key: '/components/radio'
                     },
                     {
-                        name: 'Switch 开关',
+                        name: 'Switch',
+                        text: '开关',
                         path: 'switch',
                         key: '/components/switch'
                     },
                     {
-                        name: 'Slider 滑动输入条',
+                        name: 'Slider',
+                        text: '滑动输入条',
                         path: 'slider',
                         key: '/components/slider'
                     },
                     {
-                        name: 'Select 选择器',
+                        name: 'Select',
+                        text: '选择器',
                         path: 'select',
                         key: '/components/select'
                     },
                     {
-                        name: 'TreeSelect 树选择',
+                        name: 'TreeSelect',
+                        text: '树选择',
                         path: 'tree-select',
                         key: '/components/tree-select'
                     },
                     {
-                        name: 'Transfer 穿梭框',
+                        name: 'Transfer',
+                        text: '穿梭框',
                         path: 'transfer',
                         key: '/components/transfer'
                     },
                     {
-                        name: 'TimePicker 时间选择框',
+                        name: 'TimePicker',
+                        text: '时间选择框',
                         path: 'timepicker',
                         key: '/components/timepicker'
                     },
                     {
-                        name: 'Upload 上传',
+                        name: 'Upload',
+                        text: '上传',
                         path: 'upload',
                         key: '/components/upload'
                     }
@@ -185,87 +224,110 @@ export default [
                 groupKey: 'datadisplay',
                 leaf: [
                     {
-                        name: 'Avatar 头像',
+                        name: 'Avatar',
+                        text: '头像',
                         path: 'avatar',
                         key: '/components/avatar'
                     },
                     {
-                        name: 'Badge 徽标数',
+                        name: 'Badge',
+                        text: '徽标数',
                         path: 'badge',
                         key: '/components/badge'
                     },
                     {
-                        name: 'Comment 评论',
+                        name: 'Comment',
+                        text: '评论',
                         path: 'comment',
                         key: '/components/comment'
                     },
                     {
-                        name: 'Collapse 折叠面板',
+                        name: 'Collapse',
+                        text: '折叠面板',
                         path: 'collapse',
                         key: '/components/collapse'
                     },
                     {
-                        name: 'Carousel 走马灯',
+                        name: 'Carousel',
+                        text: '走马灯',
                         path: 'carousel',
                         key: '/components/carousel'
                     },
                     {
-                        name: 'Card 卡片',
+                        name: 'Card',
+                        text: '卡片',
                         path: 'card',
                         key: '/components/card'
                     },
                     {
-                        name: 'Calendar 日历',
+                        name: 'Calendar',
+                        text: '日历',
                         path: 'calendar',
                         key: '/components/calendar'
                     },
                     {
-                        name: 'Empty 空状态',
+                        name: 'Descriptions',
+                        text: '描述列表',
+                        path: 'descriptions',
+                        key: '/components/descriptions'
+                    },
+                    {
+                        name: 'Empty',
+                        text: '空状态',
                         path: 'empty',
                         key: '/components/empty'
                     },
                     {
-                        name: 'List 列表',
+                        name: 'List',
+                        text: '列表',
                         path: 'list',
                         key: '/components/list'
                     },
                     {
-                        name: 'Popover 气泡卡片',
+                        name: 'Popover',
+                        text: '气泡卡片',
                         path: 'popover',
                         key: '/components/popover'
                     },
                     {
-                        name: 'Statistic 统计数值',
+                        name: 'Statistic',
+                        text: '统计数值',
                         path: 'statistic',
                         key: '/components/statistic'
                     },
                     {
-                        name: 'Tree 树形控件',
+                        name: 'Tree',
+                        text: '树形控件',
                         path: 'tree',
                         key: '/components/tree'
                     },
                     {
-                        name: 'Tooltip 文字提示',
+                        name: 'Tooltip',
+                        text: '文字提示',
                         path: 'tooltip',
                         key: '/components/tooltip'
                     },
                     {
-                        name: 'Timeline 时间轴',
+                        name: 'Timeline',
+                        text: '时间轴',
                         path: 'timeline',
                         key: '/components/timeline'
                     },
                     {
-                        name: 'Tag 标签',
+                        name: 'Tag',
+                        text: '标签',
                         path: 'tag',
                         key: '/components/tag'
                     },
                     {
-                        name: 'Tabs 标签页',
+                        name: 'Tabs',
+                        text: '标签页',
                         path: 'tabs',
                         key: '/components/tabs'
                     },
                     {
-                        name: 'Table 表格',
+                        name: 'Table',
+                        text: '表格',
                         path: 'table',
                         key: '/components/table'
                     }
@@ -276,47 +338,62 @@ export default [
                 groupKey: 'feedback',
                 leaf: [
                     {
-                        name: 'Alert 警告提示',
+                        name: 'Alert',
+                        text: '警告提示',
                         path: 'alert',
                         key: '/components/alert'
                     },
                     {
-                        name: 'Drawer 抽屉',
+                        name: 'Drawer',
+                        text: '抽屉',
                         path: 'drawer',
                         key: '/components/drawer'
                     },
                     {
-                        name: 'Modal 对话框',
+                        name: 'Modal',
+                        text: '对话框',
                         path: 'modal',
                         key: '/components/modal'
                     },
                     {
-                        name: 'Message 全局提示',
+                        name: 'Message',
+                        text: '全局提示',
                         path: 'message',
                         key: '/components/message'
                     },
                     {
-                        name: 'Notification 通知提醒框',
+                        name: 'Notification',
+                        text: '通知提醒框',
                         path: 'notification',
                         key: '/components/notification'
                     },
                     {
-                        name: 'Progress 进度条',
+                        name: 'Progress',
+                        text: '进度条',
                         path: 'progress',
                         key: '/components/progress'
                     },
                     {
-                        name: 'Popconfirm 气泡确认框',
+                        name: 'Popconfirm',
+                        text: '气泡确认框',
                         path: 'popconfirm',
                         key: '/components/popconfirm'
                     },
                     {
-                        name: 'Spin 加载中',
+                        name: 'Result',
+                        text: '结果',
+                        path: 'result',
+                        key: '/components/result'
+                    },
+                    {
+                        name: 'Spin',
+                        text: '加载中',
                         path: 'spin',
                         key: '/components/spin'
                     },
                     {
-                        name: 'Skeleton 骨架屏',
+                        name: 'Skeleton',
+                        text: '骨架屏',
                         path: 'skeleton',
                         key: '/components/skeleton'
                     }
@@ -327,17 +404,26 @@ export default [
                 groupKey: 'other',
                 leaf: [
                     {
-                        name: 'Anchor 锚点',
+                        name: 'Anchor',
+                        text: '锚点',
                         path: 'anchor',
                         key: '/components/anchor'
                     },
                     {
-                        name: 'BackTop 回到顶部',
+                        name: 'BackTop',
+                        text: '回到顶部',
                         path: 'back-top',
                         key: '/components/back-top'
                     },
                     {
-                        name: 'Divider 分割线',
+                        name: 'LocaleProvider',
+                        text: '国际化',
+                        path: 'localeprovider',
+                        key: '/components/localeprovider'
+                    },
+                    {
+                        name: 'Divider',
+                        text: '分割线',
                         path: 'divider',
                         key: '/components/divider'
                     }

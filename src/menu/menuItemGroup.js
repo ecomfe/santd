@@ -20,30 +20,52 @@ export default san.defineComponent({
             return (rootPrefixCls ? rootPrefixCls : prefixCls) + '-item-group';
         }
     },
+
     initData() {
         return {
             inlineIndent: 24
         };
     },
 
+    inited() {
+        this.items = [];
+    },
+
     itemGroupClick(e) {
         e.stopPropagation();
     },
 
-    getTitleStyle(mode) {
+    getTitleStyle(mode, level) {
         const inlineIndent = this.data.get('inlineIndent');
-        const level = this.data.get('level');
 
         return mode === 'inline'
             ? `padding-left: ${inlineIndent * level}px;`
             : '';
     },
 
+    updated() {
+        const level = this.data.get('level');
+        this.items.forEach(item => {
+            item.data.set('level', level + 1);
+        });
+    },
+
+    messages: {
+        santd_menu_addItem(payload) {
+            this.items.push(payload.value);
+            this.dispatch('santd_menu_addItem', payload.value);
+        }
+    },
+
+    attached() {
+        this.dispatch('santd_menu_addItem', this);
+    },
+
     template: `
         <li class="{{groupPrefixCls}}" on-click="itemGroupClick($event)">
             <div
                 class="{{groupPrefixCls}}-title"
-                style="{{getTitleStyle(mode)}}"
+                style="{{getTitleStyle(mode, level)}}"
             >
                 <slot name="title" s-if="!title" />
                 <template s-else>{{title}}</template>

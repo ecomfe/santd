@@ -130,6 +130,11 @@ class Index extends Component {
                 }
                 that.hlCode();
             }
+            this.nextTick(() => {
+                if (window.document.documentElement.scrollTop > 110) {
+                    window.scroll(0, 110);
+                }
+            });
         });
 
         router.start();
