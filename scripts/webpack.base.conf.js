@@ -1,6 +1,6 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const HotModuleReplacementPlugin = require('webpack/lib/HotModuleReplacementPlugin');
+// const HotModuleReplacementPlugin = require('webpack/lib/HotModuleReplacementPlugin');
 const NoEmitOnErrorsPlugin = require('webpack/lib/NoEmitOnErrorsPlugin');
 const ProgressPlugin = require('webpack/lib/ProgressPlugin');
 
@@ -122,7 +122,6 @@ module.exports = {
             filename: assetsPath('css/[name].css'),
             chunkFilename: assetsPath('css/common.css')
         }),
-        // new HotModuleReplacementPlugin(),
         new NoEmitOnErrorsPlugin(),
         new HtmlWebpackPlugin({
             filename: 'index.html',
