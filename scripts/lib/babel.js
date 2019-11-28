@@ -19,24 +19,7 @@ module.exports = (from, to, options) => {
         babelTransform({
             presets: babelPresets,
             plugins: [
-                ...babelPlugins,
-                ({types: babelTypes}) => {
-                    return {
-                        name: 'nano-es5-import',
-                        visitor: {
-                            StringLiteral(path, state) {
-                                // StringLiteral
-                                if (
-                                    // eslint-disable-next-line
-                                    path.node.value.startsWith(pkgName) &&
-                                    path.node.value.indexOf(es5DirName) === -1
-                                ) {
-                                    path.node.value = path.node.value.replace(pkgName, `${pkgName}/${es5DirName}`);
-                                }
-                            }
-                        }
-                    };
-                }
+                ...babelPlugins
             ]
         }),
         exclude

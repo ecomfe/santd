@@ -7,7 +7,7 @@
 ```html
 <template>
     <div>
-        <s-radiogroup value="{{size}}" on-change="handleSizeChange">
+        <s-radiogroup value="{{size}}" on-change="handleSizeChange" name="size">
             <s-radiobutton value="large">Large</s-radiobutton>
             <s-radiobutton value="default">Default</s-radiobutton>
             <s-radiobutton value="small">Small</s-radiobutton>

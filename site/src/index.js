@@ -103,6 +103,10 @@ class Index extends Component {
                 that.data.set('currentPath', defaultPath);
             }
             else {
+                const currentPath = this.data.get('currentPath');
+                if (currentPath === e.path) {
+                    return;
+                }
                 that.data.set('currentPath', e.path);
                 document.getElementById('content').innerHTML = '';
                 that.data.set('content', '');
@@ -137,6 +141,7 @@ class Index extends Component {
             });
         });
 
+        router.setMode('html5');
         router.start();
     }
 
