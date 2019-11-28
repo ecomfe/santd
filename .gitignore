@@ -5,7 +5,7 @@ output/
 *.bak
 node_modules/
 **/node_modules/
-dist/
+dest/
 build/
 npm-debug.log
 package-lock.json

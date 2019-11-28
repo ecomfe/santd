@@ -8,7 +8,7 @@
 // 1. 获取当前版本
 // 2. 输入新的版本号
 // 3. 执行 npm version
-// 4. 开始下面的流程生成 dist 内容
+// 4. 开始下面的流程生成 dest 内容
 // 5. 手动发包？还是直接 exec？暂时手动吧，方便调试 release 脚本
 const fs = require('fs');
 const fsExtra = require('fs-extra');
@@ -34,14 +34,14 @@ async function genLessFile() {
                 }
             });
             fs.writeFileSync(
-                path.join(process.cwd(), 'dist', 'lib', 'core', 'styles', 'components.less'),
+                path.join(process.cwd(), 'dest', 'lib', 'core', 'styles', 'components.less'),
                 componentsLessContent,
             );
         });
 
-        if (fs.existsSync(path.join(process.cwd(), 'dist'))) {
+        if (fs.existsSync(path.join(process.cwd(), 'dest'))) {
             fs.writeFileSync(
-                path.join(process.cwd(), 'dist', 'dist', 'santd.less'),
+                path.join(process.cwd(), 'dest', 'dist', 'santd.less'),
                 '@import "../lib/core/styles/index.less";\n@import "../lib/core/styles/components.less";',
             );
             console.log('Built a entry less file to dist/santd.less');
@@ -132,7 +132,7 @@ async function getReleaseVersion(current = '0.1.0') {
 }
 
 async function getDestDir() {
-    const dest = path.resolve('dist');
+    const dest = path.resolve('dest');
     if (fsExtra.pathExistsSync(dest)) {
         fsExtra.removeSync(dest);
         fsExtra.mkdirSync(dest);
