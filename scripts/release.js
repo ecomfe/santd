@@ -158,7 +158,11 @@ async function genFiles(dest, src, version, pkg) {
         ]
     });
     console.log('starting package es6 version...');
-    await copyFile(src, path.join(dest, 'es'));
+    await copyFile(src, path.join(dest, 'es'), (content, file, cb) => {
+        content = content.split('\n').filter(c => c.indexOf('style/index') === -1);
+        file.contents = Buffer.from(content.join('\n'));
+        cb(null, file);
+    }, exclude);
 
     console.log('starting package less file...');
     let files = rd.readSync(es5Dest);
@@ -177,7 +181,7 @@ async function genFiles(dest, src, version, pkg) {
     }
 
     console.log('starting package all in one file...');
-    await rollup(path.join(dest, 'dist'), path.join(src, 'index.js'));
+    await rollup(path.join(dest, 'dist'), path.join(dest, 'es', 'index.js'));
 }
 
 main();

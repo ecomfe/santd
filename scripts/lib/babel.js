@@ -19,7 +19,20 @@ module.exports = (from, to, options) => {
         babelTransform({
             presets: babelPresets,
             plugins: [
-                ...babelPlugins
+                ...babelPlugins,
+                ({types: babelTypes}) => {
+                    return {
+                        name: 'remove-es5-import',
+                        visitor: {
+                            ImportDeclaration(path, source) {
+                                // StringLiteral
+                                if (path.node.source.value.indexOf('style/index') !== -1) {
+                                    path.remove();
+                                }
+                            }
+                        }
+                    };
+                }
             ]
         }),
         exclude

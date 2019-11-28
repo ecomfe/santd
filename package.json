@@ -1,6 +1,6 @@
 {
     "name": "santd",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "description": "san UI design",
     "scripts": {
         "start": "cross-env NODE_ENV=development node scripts/preview.js",
@@ -15,7 +15,8 @@
     "module": "es/index.js",
     "files": [
         "lib",
-        "es"
+        "es",
+        "dist"
     ],
     "dependencies": {
         "add-dom-event-listener": "^1.1.0",
@@ -25,11 +26,10 @@
         "dom-align": "^1.8.2",
         "dom-scroll-into-view": "^1.2.1",
         "enquire.js": "^2.1.6",
+        "lodash": "^4.17.15",
         "resize-observer-polyfill": "^1.5.1",
         "shallowequal": "^1.1.0",
-        "tinycolor2": "^1.4.1",
-        "to-style": "^1.3.3",
-        "lodash": "^4.17.15"
+        "tinycolor2": "^1.4.1"
     },
     "peerDependencies": {
         "san": "^3.7.9",
