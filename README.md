@@ -1,93 +1,99 @@
-# santd
+<h1 align="center">Ant Design for San</h1>
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+<div align="center">
+    San UI Toolkit for Ant Design
 
-_An enterprise-class UI components based on Ant Design and San._
+    [![](https://flat.badgen.net/npm/v/santd?icon=npm)](https://www.npmjs.com/package/santd) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+</div>
 
-## 使用指南
+[![](https://cdn-images-1.medium.com/max/2000/1*NIlj0-TdLMbo_hzSBP8tmg.png)](http://ecomfe.github.io/santd)
 
-1. 通过 npm 安装
+English | [简体中文](./README-zh_CN.md)
 
-    ```sh
-    $ npm i santd --save
-    ```
+## ✨ Features
 
-2. 在代码中引入
+- An enterprise-class UI design system for desktop applications.
+- A set of high-quality San components out of the box.
+- Shared [Ant Design of React](https://ant.design/docs/spec/introduce) design resources.
 
-    ```js
-    // 引入需要的组件
-    import {Button, Layout, Affix} from 'santd';
+## 🖥 Environment Support
 
-    // 引入单个需要的组件
-    import Button from 'santd/button';
-    import Layout from 'santd/layout';
-    import Affix from 'santd/affix';
-    ```
+- Modern browsers and Internet Explorer 9+ (with polyfills)
+- Server-side Rendering
 
-## 开发指南
+| [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="IE / Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>IE / Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Safari | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/opera/opera_48x48.png" alt="Opera" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Opera |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| IE9, IE10, IE11, Edge                                                                                                                                                                                           | last 2 versions                                                                                                                                                                                                   | last 2 versions                                                                                                                                                                                               | last 2 versions                                                                                                                                                                                               | last 2 versions                                                                                                                                                                                           |
 
-### 组件开发的一些约定
+## 📦 Install
 
-1. 代码规范遵循 [fecs](https://github.com/ecomfe/fecs) 规范
-2. 公共方法放到 `src/core/util` 下
-3. 公共组件放到`src/core` 下
-4. 引用其他组件已有样式，使用相对路径
-5. style 下由 index.js 统一导出样式
-6. 单个组件导出多个对象时，`{组件名}.{对象} = XXX; export default {组件名}`;
-
-### 版本依赖
-
-组件编译需要 node 9 以上版本，注意升级
-
-### 安装全局依赖
-
-> karma-cli ---测试执行过程管理工具,提供一个方便运行测试的环境, 可全局执行 karma 命令
+**We recommend using npm to install**，it not only makes development easier，but also allow you to take advantage of the rich ecosystem of Javascript packages and tooling.
 
 ```bash
-npm i -g karma-cli
+$ npm install santd --save
 ```
 
-### 安装依赖
+If you are in a bad network environment，you can try other registries and tools like [cnpm](https://github.com/cnpm/cnpm).
+
+## 🔨 Usage
+
+```jsx
+import san from 'san';
+import {DatePicker} from "santd";
+
+const App = san.defineComponent({
+    components: {
+        's-datepicker': DatePicker
+    },
+    template: `<div><s-datepicker /></div>`
+});
+
+const myApp = new App();
+myApp.attach(document.body);
+```
+
+And import style manually:
+
+```jsx
+import "santd/dist/santd.css"; // or 'santd/dist/santd.less'
+```
+
+Or [import components on demand](https://ecomfe.github.io/santd/#docs/quickstart).
+
+## 🌍 Internationalization
+
+See [i18n](http://ecomfe.github.io/santd/#docs/i18n).
+
+## 🔗 Links
+
+- [Home page](https://ecomfe.github.io/)
+- [Components](https://ecomfe.github.io/santd/#docs/introduce)
+- [San](https://baidu.github.io/san/)
+- [Customize Theme](http://ant.design/docs/react/customize-theme)
+
+## ⌨️ Development
+
+Use Gitpod, a free online dev environment for GitHub.
+
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/ecomfe/santd)
+
+Or clone locally:
 
 ```bash
-npm i
-# 本地运行
-npm start button
-# 如果想看button组件，那么后面加button，如果是看icon组件，那执行 npm start icon,以此类推
+$ git clone git@github.com:ecomfe/santd.git
+$ cd santd
+$ npm install
+$ npm start button
 ```
 
+Open your browser and visit http://127.0.0.1:8822
 
-### 测试
+## 🤝 Contributing [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/ecomfe/santd/pulls)
 
-```bash
-# 与本地开发同理
-npm run test button
-# 如果不传参数，那么默认的是all
-npm run test
-```
+We welcome all contributions. Please read our [CONTRIBUTING.md](https://github.com/ecomfe/santd/blob/master/CONTRIBUTING.md) first. You can submit any ideas as [pull requests](https://github.com/ecomfe/santd/pulls) or as [GitHub issues](https://github.com/ecomfe/santd/issues).
 
-### check 目录规范
+If you're new to posting issues, we ask that you read [*How To Ask Questions The Smart Way*](http://www.catb.org/~esr/faqs/smart-questions.html) (**This guide does not provide actual support services for this project!**), [How to Ask a Question in Open Source Community](https://github.com/seajs/seajs/issues/545) and [How to Report Bugs Effectively](http://www.chiark.greenend.org.uk/~sgtatham/bugs.html) prior to posting. Well written bug reports help us help you!
 
-如果组件不是通过 cli 生成的，那最好需要进行一次目录规范的 check，防止发生问题
+## ☀️ License
 
-```bash
-# 遍历所有组件进行规范检查
-npm run check
-
-# 或者指定检查哪个组件
-npm run check button
-```
-
-### 启动文档
-
-```bash
-npm run docs
-```
-
-### 贡献方式
-
-有任何问题或者建议，欢迎提 [issue](https://github.com/ecomfe/santd/issues/new), 发 pr。
-
-## License
-
-[MIT](./LICENSE)
+MIT
