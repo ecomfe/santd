@@ -1,9 +1,9 @@
 <h1 align="center">Ant Design for San</h1>
 
 <div align="center">
-    San UI Toolkit for Ant Design
+San UI Toolkit for Ant Design
 
-    [![](https://flat.badgen.net/npm/v/santd?icon=npm)](https://www.npmjs.com/package/santd) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![](https://flat.badgen.net/npm/v/santd?icon=npm)](https://www.npmjs.com/package/santd) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 </div>
 
 [![](https://cdn-images-1.medium.com/max/2000/1*NIlj0-TdLMbo_hzSBP8tmg.png)](http://ecomfe.github.io/santd)
