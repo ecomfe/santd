@@ -92,7 +92,7 @@ Open your browser and visit http://127.0.0.1:8822
 
 We welcome all contributions. You can submit any ideas as [pull requests](https://github.com/ecomfe/santd/pulls) or as [GitHub issues](https://github.com/ecomfe/santd/issues).
 
-If you're new to posting issues, we ask that you read [*How To Ask Questions The Smart Way*](http://www.catb.org/~esr/faqs/smart-questions.html) (**This guide does not provide actual support services for this project!**), [How to Ask a Question in Open Source Community](https://github.com/seajs/seajs/issues/545) and [How to Report Bugs Effectively](http://www.chiark.greenend.org.uk/~sgtatham/bugs.html) prior to posting. Well written bug reports help us help you!
+If you're new to posting issues, we ask that you read [How To Ask Questions The Smart Way](http://www.catb.org/~esr/faqs/smart-questions.html), [How to Ask a Question in Open Source Community](https://github.com/seajs/seajs/issues/545) and [How to Report Bugs Effectively](http://www.chiark.greenend.org.uk/~sgtatham/bugs.html) prior to posting. Well written bug reports help us help you!
 
 ## ☀️ License
 
