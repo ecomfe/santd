@@ -19,15 +19,4 @@ export default {
     }
 }
 </script>
-<style type="text/css">
-  ul {
-    list-style: none;
-}
-.markdown div ul li {
-  display: inline-block;
-  font-size:30px;
-  margin: 10px;
-  list-style-type: inherit;
-}
-</style>
 ```
