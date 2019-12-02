@@ -155,7 +155,7 @@ class Index extends Component {
             Array.prototype.forEach.call(code, function (item) {
                 Prism.highlightElement(item);
             });
-        }, 100);
+        }, 500);
     }
     handleError(err) {
         Notification.error({
