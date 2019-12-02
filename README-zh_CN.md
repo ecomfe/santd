@@ -1,3 +1,9 @@
+<p align="center">
+  <a href="https://ecomfe.github.com/santd">
+    <img width="200" src="https://b.bdstatic.com/searchbox/image/gcp/20191202/2915011424.png">
+  </a>
+</p>
+
 <h1 align="center">Ant Design for San</h1>
 
 <div align="center">
