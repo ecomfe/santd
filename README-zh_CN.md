@@ -7,7 +7,7 @@
 <h1 align="center">Ant Design for San</h1>
 
 <div align="center">
-一套基于Ant Design 和 San 的企业级 UI 组件库
+一套基于 [Ant Design](https://ant.design/) 和 [San](https://baidu.github.io/san/) 的企业级 UI 组件库
 
 [![](https://flat.badgen.net/npm/v/santd?icon=npm)](https://www.npmjs.com/package/santd) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 </div>
