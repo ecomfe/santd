@@ -7,7 +7,7 @@
 <h1 align="center">Ant Design for San</h1>
 
 <div align="center">
-[San](https://baidu.github.io/san/) UI Toolkit for [Ant Design](https://ant.design/)
+<a href="https://baidu.github.io/san/">San</a> UI Toolkit for <a href="https://ant.design/">Ant Design</a>
 
 [![](https://flat.badgen.net/npm/v/santd?icon=npm)](https://www.npmjs.com/package/santd) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 </div>
