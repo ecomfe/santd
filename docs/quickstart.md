@@ -6,11 +6,11 @@ Ant Design San 致力于提供给程序员愉悦的开发体验。
 
 ## 第一个例子
 
-这是一个最简单的 Santd 组件的在线演示。
+最简单的使用方式参照以下 CodeSandbox 演示。
+
+[![](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/adoring-sutherland-p4ol9)
 
 ### 1. 使用组件
-
-直接用下面的代码替换 index.js 的内容，用 san 的方式直接使用 santd 组件。
 
 ```javascript
 import san from 'san';
@@ -31,7 +31,7 @@ const App = san.defineComponent({
     components: {
         's-datepicker': DatePicker
     },
-    handleChange(date) {
+    handleChange({date}) {
         Message.info(`您选择的日期是: ${date ? date.format('YYYY-MM-DD') : '未选择'}`);
         this.data.set('date', date);
     },
@@ -73,7 +73,7 @@ const App = san.defineComponent({
         's-datepicker': DatePicker,
         's-alert': Alert
     },
-    handleChange(date) {
+    handleChange({date}) {
         Message.info(`您选择的日期是: ${date ? date.format('YYYY-MM-DD') : '未选择'}`);
         this.data.set('date', date);
     },
