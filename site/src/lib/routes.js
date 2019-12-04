@@ -19,6 +19,11 @@ export default [
         key: '/docs/theme'
     },
     {
+        name: '更新日志',
+        path: 'changelog',
+        key: '/docs/changelog'
+    },
+    {
         name: '国际化',
         path: 'i18n',
         key: '/docs/i18n'

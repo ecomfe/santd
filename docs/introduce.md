@@ -65,7 +65,7 @@ import 'santd/dist/santd.css';
         plugins: [['import', {
             libraryName: 'santd',
             libraryDirectory: 'es',
-            style: 'css'
+            style: true
         }]]
     }
 }
