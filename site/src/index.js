@@ -162,7 +162,7 @@ class Index extends Component {
         router.add({
             rule: '/:type/:id',
             handler(e) {
-                console.log(e); // eslint-disable-line
+                // console.log(e); // eslint-disable-line
             }
         });
 
