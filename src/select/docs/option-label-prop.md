@@ -50,7 +50,7 @@ export default {
 </script>
 
 <style>
-.code-box-demo .san-select span[role="img"] {
+.code-box-demo .santd-select span[role="img"] {
     margin-right: 6px;
 }
 </style>

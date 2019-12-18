@@ -28,6 +28,12 @@ async function deploy() {
             console.log(chalk.red('build site fail! please check command: npm run build:site'));
             process.exit(1);
         }
+        result = await execa('npm', ['run', 'build:issue']);
+        if (!(result.exitCode === 0 && fs.pathExistsSync(`${output}/issue`))) {
+            spinner.fail();
+            console.log(chalk.red('build issue fail! please check command: npm run build:issue'));
+            process.exit(1);
+        }
         spinner.succeed();
 
         console.log(chalk.gray('\n2. perpare for gh-pages\n'));
@@ -78,6 +84,7 @@ async function deploy() {
 
         // 5. 移动文档文件
         fs.copySync(`${output}/site/`, `${output}/santd/`);
+        fs.moveSync(`${output}/issue/`, `${output}/santd/issue`, {overwrite: true});
         // 6. git提交，提前输入提交commit信息，默认：update site + 日期
         let answer2 = await inquirer.prompt([
             {

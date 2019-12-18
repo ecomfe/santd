@@ -65,6 +65,7 @@ class Index extends Component {
                                             <h2>帮助</h2>
                                             <div><a href="https://github.com/ecomfe/santd" target="_blank">GitHub</a></div>
                                             <div><a href="#/docs/changelog">更新日志</a></div>
+                                            <div><a href="https://github.com/ecomfe/santd/issue">报告 Bug</a></div>
                                         </div>
                                     </s-col>
                                     <s-col xs="24" sm="24" md="6">

@@ -1,0 +1,174 @@
+.san-layout {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+      flex-direction: column;
+  -ms-flex: auto;
+      flex: auto;
+  background: #f0f2f5;
+}
+.san-layout,
+.san-layout * {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+.san-layout.san-layout-has-sider {
+  -ms-flex-direction: row;
+      flex-direction: row;
+}
+.san-layout.san-layout-has-sider > .san-layout,
+.san-layout.san-layout-has-sider > .san-layout-content {
+  overflow-x: hidden;
+}
+.san-layout-header,
+.san-layout-footer {
+  -ms-flex: 0 0 auto;
+      flex: 0 0 auto;
+}
+.san-layout-header {
+  background: #001529;
+  padding: 0 50px;
+  height: 64px;
+  line-height: 64px;
+}
+.san-layout-footer {
+  background: #f0f2f5;
+  padding: 24px 50px;
+  color: rgba(0, 0, 0, 0.65);
+  font-size: 14px;
+}
+.san-layout-content {
+  -ms-flex: auto;
+      flex: auto;
+}
+.san-layout-sider {
+  -webkit-transition: all .2s;
+  -o-transition: all .2s;
+  transition: all .2s;
+  position: relative;
+  background: #001529;
+  /* fix firefox can't set width smaller than content on flex item */
+  min-width: 0;
+}
+.san-layout-sider-children {
+  height: 100%;
+  padding-top: 0.1px;
+  margin-top: -0.1px;
+}
+.san-layout-sider-has-trigger {
+  padding-bottom: 48px;
+}
+.san-layout-sider-right {
+  -ms-flex-order: 1;
+      order: 1;
+}
+.san-layout-sider-trigger {
+  position: fixed;
+  text-align: center;
+  bottom: 0;
+  cursor: pointer;
+  height: 48px;
+  line-height: 48px;
+  color: #fff;
+  background: #002140;
+  z-index: 1;
+  -webkit-transition: all .2s;
+  -o-transition: all .2s;
+  transition: all .2s;
+}
+.san-layout-sider-zero-width > * {
+  overflow: hidden;
+}
+.san-layout-sider-zero-width-trigger {
+  position: absolute;
+  top: 64px;
+  right: -36px;
+  text-align: center;
+  width: 36px;
+  height: 42px;
+  line-height: 42px;
+  background: #001529;
+  color: #fff;
+  font-size: 18px;
+  border-radius: 0 4px 4px 0;
+  cursor: pointer;
+  -webkit-transition: background .3s ease;
+  -o-transition: background .3s ease;
+  transition: background .3s ease;
+}
+.san-layout-sider-zero-width-trigger:hover {
+  background: #192c3e;
+}
+
+.header {
+  transition: opacity .5s;
+  background: #fff;
+}
+
+.headerContainer {
+  width: 1024px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+}
+
+p {
+  margin: 0;
+}
+
+.logo {
+  height: 64px;
+  line-height: 64px;
+
+  h1 {
+    font-size: 18px;
+    font-weight: normal;
+    display: inline;
+    margin-left: 8px;
+  }
+
+  img {
+    float: left;
+    width: 40px;
+    height: 40px;
+    line-height: 64px;
+    margin-top: 12px;
+  }
+
+  span {
+    font-size: 16px;
+    height: 64px;
+    line-height: 64px;
+  }
+}
+
+.content {
+  width: 1024px;
+  margin: 20px auto;
+  padding: 24px;
+  border-radius: 4px;
+  background: #fff;
+}
+
+.paragraph {
+  h5 {
+    font-size: 16px;
+  }
+
+  p {
+    margin-bottom: 15px;
+  }
+
+  ul, ol {
+    padding: 0 15px 15px 15px;
+    margin-left: 15px;
+  }
+
+  ul {
+    list-style-type: disc;
+  }
+
+  ol {
+    list-style-type: decimal;
+  }
+}

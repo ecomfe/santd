@@ -9,7 +9,9 @@
         "check": "cross-env NODE_ENV=development node scripts/check.js",
         "build:site": "cross-env NODE_ENV=production webpack --config scripts/webpack.doc.conf.js",
         "deploy:site": "cross-env NODE_ENV=production node scripts/deploy.js",
-        "dev:site": "cross-env NODE_ENV=development node scripts/doc.js"
+        "dev:site": "cross-env NODE_ENV=development node scripts/doc.js",
+        "dev:issue": "cross-env NODE_ENV=development node scripts/issue.js",
+        "build:issue": "cross-env NODE_ENV=production webpack --config scripts/webpack.issue.conf.js"
     },
     "main": "lib/index.js",
     "module": "es/index.js",
@@ -22,6 +24,7 @@
         "add-dom-event-listener": "^1.1.0",
         "async-validator": "^1.11.2",
         "axios": "^0.18.0",
+        "compare-versions": "^3.5.1",
         "copy-to-clipboard": "^3.0.8",
         "dom-align": "^1.8.2",
         "dom-scroll-into-view": "^1.2.1",

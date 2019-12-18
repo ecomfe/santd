@@ -35,8 +35,8 @@ export default class Header extends Component {
                             </s-select-option>
                         </s-select>
                     </div>
-                    <s-select size="small" value="0.1.x" class="version">
-                        <s-select-option value="0.1.x">0.1.x</s-select-option>
+                    <s-select size="small" value="0.2.x" class="version">
+                        <s-select-option value="0.2.x">0.2.x</s-select-option>
                     </s-select>
                     <s-menu
                         class="doc-nav"

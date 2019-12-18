@@ -21,5 +21,12 @@ module.exports = {
         assetsSubDirectory: 'static',
         assetsPublicPath: './',
         devAssetsPublicPath: '/'
+    },
+    issue: {
+        port: 8888,
+        assetsRoot: path.resolve(__dirname, '../output/issue'),
+        assetsSubDirectory: 'static',
+        assetsPublicPath: './',
+        devAssetsPublicPath: '/'
     }
 };

@@ -39,7 +39,7 @@ export default {
 </script>
 
 <style>
-.code-box-demo .san-select {
+.code-box-demo .santd-select {
     margin: 0 8px 10px 0;
 }
 </style>
