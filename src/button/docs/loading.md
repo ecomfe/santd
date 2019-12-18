@@ -6,12 +6,12 @@
 ```html
 <template>
     <div>
-        <s-button type="primary" loading="{{true}}">
-          Loading
-        </s-button>
-        <s-button type="primary" size="small" loading="{{true}}">
-          Loading
-        </s-button>
+        <s-button type="primary" loading="{{true}}">Loading</s-button>
+        <s-button type="primary" size="small" loading="{{true}}">Loading</s-button>
+        <br />
+        <s-button type="primary" loading="{{true}}" />
+        <s-button type="primary" shape="circle" loading="{{true}}" />
+        <s-button type="danger" shape="round" loading="{{true}}" />
         <br />
         <s-button type="primary" loading="{{loading}}" on-click="enterLoading">
           Click me!
@@ -19,9 +19,6 @@
         <s-button type="primary" icon="poweroff" loading="{{iconLoading}}" on-click="enterIconLoading">
           Click me!
         </s-button>
-        <br />
-        <s-button shape="circle" loading="{{true}}" />
-        <s-button type="primary" shape="circle" loading="{{true}}" />
     </div>
 </template>
 <script>

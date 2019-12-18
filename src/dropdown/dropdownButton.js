@@ -30,6 +30,7 @@ export default san.defineComponent({
     handleVisibleChange(value) {
         this.fire('visibleChange', value);
     },
+
     template: `
         <span>
             <s-button-group class="${prefixCls}" size="{{size}}">
@@ -46,6 +47,7 @@ export default san.defineComponent({
                     placement="{{placement}}"
                     getPopupContainer="{{getPopupContainer}}"
                     on-visibleChange="handleVisibleChange"
+                    style="display:inline-block;"
                 >
                     <slot slot="overlay" var-prefixCls="{{prefixCls}}" name="overlay" />
                     <s-button disabled="{{disabled}}"><s-icon type="{{type || 'ellipsis'}}" /></s-button>

@@ -9,6 +9,7 @@
 <template>
   <div>
     <s-button type="primary" shape="circle" icon="search" />
+    <s-button type="primary" shape="circle">A</s-button>
     <s-button type="primary" icon="search">Search</s-button>
     <s-button shape="circle" icon="search" />
     <s-button icon="search">Search</s-button>

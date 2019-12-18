@@ -31,7 +31,19 @@ export default san.defineComponent({
         }
     },
 
-    template: `<span>
+    messages: {
+        santd_menu_itemClick(payload) {
+            if (!('visible' in this.data.get())) {
+                this.data.set('popupVisible', false, {force: true});
+            }
+        }
+    },
+
+    getRootDomNode(rootDomNode) {
+        return rootDomNode || this.el;
+    },
+
+    template: `<span class="${prefixCls}-trigger">
         <s-trigger
             prefixCls="{{prefixCls ? prefixCls : '${prefixCls}'}}"
             action="{{action}}"
@@ -51,7 +63,7 @@ export default san.defineComponent({
             on-visibleChange="handleVisibleChange"
             class="{{dropdownClassName}}"
             stretch="{{stretch}}"
-            rootDomNode="{{rootDomNode}}"
+            rootDomNode="{{getRootDomNode(rootDomNode)}}"
             s-ref="trigger"
         >
             <slot />

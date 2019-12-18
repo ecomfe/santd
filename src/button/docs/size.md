@@ -19,16 +19,18 @@
         <s-button type="danger" size="{{size}}">Danger</s-button>
         <s-button type="link" size="{{size}}">Link</s-button>
         <br />
+        <s-button type="primary" icon="download" size="{{size}}" />
         <s-button type="primary" shape="circle" icon="download" size="{{size}}" />
+        <s-button type="primary" shape="round" icon="download" size="{{size}}" />
         <s-button type="primary" shape="round" icon="download" size="{{size}}">Download</s-button>
         <s-button type="primary" icon="download" size="{{size}}">Download</s-button>
         <br />
         <s-buttongroup size="{{size}}">
           <s-button type="primary">
-            <s-icon type="left" />Backward
+            <s-icon type="left" /> Backward
           </s-button>
           <s-button type="primary">
-            Forward<s-icon type="right" />
+            Forward <s-icon type="right" />
           </s-button>
         </s-buttongroup>
     </div>

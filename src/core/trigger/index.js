@@ -141,7 +141,9 @@ export default san.defineComponent({
             if (!this._container) {
                 this.attachPopup();
             }
-            this._popup.data.set('visible', val);
+            this.nextTick(() => {
+                this._popup.data.set('visible', val);
+            });
         });
 
         this.watch('visible', val => {

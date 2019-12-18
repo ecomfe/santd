@@ -27,15 +27,19 @@
         <h4>With Icon</h4>
         <s-buttongroup>
             <s-button type="primary">
-                <s-icon type="left" />Go back
+                <s-icon type="left" /> Go back
             </s-button>
             <s-button type="primary">
-                Go forward<s-icon type="right" />
+                Go forward <s-icon type="right" />
             </s-button>
         </s-buttongroup>
         <s-buttongroup>
             <s-button type="primary" icon="cloud" />
             <s-button type="primary" icon="cloud-download" />
+        </s-buttongroup>
+        <s-buttongroup>
+            <s-button type="primary" icon="cloud" size="small" />
+            <s-button type="primary" icon="cloud-download" size="small" />
         </s-buttongroup>
     </div>
 </template>

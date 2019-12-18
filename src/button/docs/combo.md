@@ -8,7 +8,12 @@
   <div>
     <s-button type="primary">Primary</s-button>
     <s-button>secondary</s-button>
-    <s-dropdown trigger="hover" overlay="{{menu}}">
+    <s-dropdown trigger="hover">
+        <s-menu prefixCls="{{prefixCls}}" slot="overlay" selectable="{{false}}" on-click="handleMenuClick">
+            <s-menuitem key="1">1st item</s-menuitem>
+            <s-menuitem key="2">2nd item</s-menuitem>
+            <s-menuitem key="3">3rd item</s-menuitem>
+        </s-menu>
         <s-button>
             Actions <s-icon type="down" />
         </s-button>
@@ -27,9 +32,6 @@ const menu = san.defineComponent({
         's-menu': Menu,
         's-menuitem': Menu.Item
     },
-    handleMenuClick(e) {
-        console.log('click', e);
-    },
     template: `
         <div>
             <s-menu on-click="handleMenuClick" prefixCls="san-dropdown">
@@ -45,12 +47,12 @@ export default {
     components: {
         's-button': Button,
         's-dropdown': Dropdown,
-        's-icon': Icon
+        's-icon': Icon,
+        's-menu': Menu,
+        's-menuitem': Menu.Item
     },
-    initData() {
-        return {
-            menu: menu
-        };
+    handleMenuClick(e) {
+        console.log('click', e);
     }
 }
 </script>

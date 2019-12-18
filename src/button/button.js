@@ -128,7 +128,7 @@ export default san.defineComponent({
             <span>
                 <s-icon s-if="loading === true" type="loading" />
                 <s-icon s-elif="icon" type="{{icon}}" />
-                <slot s-if="!shape" />
+                <slot />
             </span>
             <s-wave s-if="!noWave && type !== 'link'" />
         </button>
