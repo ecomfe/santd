@@ -52,6 +52,7 @@
         "@babel/register": "^7.0.0",
         "@babel/traverse": "^7.4.4",
         "@babel/types": "^7.4.4",
+        "@octokit/rest": "^16.35.2",
         "autoprefixer": "^9.5.1",
         "babel-cli": "^6.26.0",
         "babel-loader": "^8.0.6",

@@ -17,13 +17,16 @@ const execa = require('execa');
 const semver = require('semver');
 const inquirer = require('inquirer');
 const rd = require('rd');
+const chalk = require('chalk');
 
 const babel = require('./lib/babel');
 const copyFile = require('./lib/copy-file');
 const rollup = require('./lib/rollup');
+const GitHub = require('@octokit/rest');
+const getChangeLog = require('./lib/getChangeLog');
 
 async function genLessFile() {
-    await new Promise((resolve) => {
+    await new Promise(resolve => {
         const componentsPath = path.join(process.cwd(), 'src');
         let componentsLessContent = '';
 
@@ -50,12 +53,103 @@ async function genLessFile() {
     });
 }
 
+async function tag(version) {
+    console.log('Tagging...');
+    const output = path.join(__dirname, '../output');
+    let name = await execa('git', ['config', 'user.name'], {cwd: `${output}/santd`});
+    let email = await execa('git', ['config', 'user.email'], {cwd: `${output}/santd`});
+
+    let answer1 = await inquirer.prompt([
+        {
+            type: 'confirm',
+            name: 'needtochange',
+            message: chalk.gray('confirm git config:')
+            + '\n\tuser.name: ' + chalk.green(name.stdout)
+            + '\n\tuser.email: ' + chalk.green(email.stdout)
+            + chalk.red('\nDo you need to make any changes?'),
+            default: false
+        },
+        {
+            type: 'input',
+            name: 'username',
+            message: 'input user.name: ',
+            when(answers) {
+                return answers.needtochange;
+            }
+        },
+        {
+            type: 'input',
+            name: 'useremail',
+            message: 'input user.email: ',
+            when(answers) {
+                return answers.needtochange;
+            }
+        }
+    ]);
+
+    if (answer1.needtochange) {
+        await execa('git', ['config', 'user.name', answer1.username], {cwd: `${output}/santd`});
+        await execa('git', ['config', 'user.email', answer1.useremail], {cwd: `${output}/santd`});
+        console.log(chalk.green('\ngit config success!\n'));
+    }
+
+    await execa('git', ['tag', version]);
+    await execa('git', ['push', `https://${process.env.GITHUB_TOKEN}@github.com/ecomfe/santd.git`, `${version}:${version}`]);
+    await execa('git', ['push', `https://${process.env.GITHUB_TOKEN}@github.com/ecomfe/santd.git`, 'master:master']);
+    console.log('Tagged.');
+}
+
+async function githubRelease(version) {
+    const changlogFiles = [
+        path.join(process.cwd(), 'CHANGELOG.en-US.md'),
+        path.join(process.cwd(), 'CHANGELOG.zh-CN.md')
+    ];
+    if (!changlogFiles.every(file => fs.existsSync(file))) {
+        console.log('no changelog found, skip');
+        return;
+    }
+    console.log('creating release on GitHub');
+
+    const github = new GitHub({
+        auth: process.env.GITHUB_TOKEN
+    });
+    const date = new Date();
+    const enChangeLog = getChangeLog(changlogFiles[0], version);
+    const cnChangeLog = getChangeLog(changlogFiles[1], version);
+    const changeLog = [
+        `\`${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}\``,
+        enChangeLog,
+        '\n',
+        '---',
+        '\n',
+        cnChangeLog
+    ].join('\n');
+
+    /* eslint-disable fecs-camelcase */
+    await github.repos.createRelease({
+        owner: 'ecomfe',
+        repo: 'santd',
+        tag_name: version,
+        name: version,
+        body: changeLog
+    });
+    console.log('github release done.');
+}
+
 async function main() {
     console.log('Release Santd...');
     const pkg = await getPackageJson();
-    // const version = await getReleaseVersion(pkg.version);
+    const version = await getReleaseVersion(pkg.version);
     const dest = await getDestDir();
     const src = path.resolve('src');
+
+    if (!process.env.GITHUB_TOKEN) {
+        console.log('no GitHub token found, skip github tag and release');
+    }
+    else {
+        await tag(version);
+        await githubRelease(version);
+    }
 
     await genFiles(dest, src, pkg.version, pkg);
     await genLessFile();
