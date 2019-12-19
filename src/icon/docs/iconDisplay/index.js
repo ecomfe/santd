@@ -2,7 +2,7 @@ import san from 'san';
 import Radio from '../../../radio';
 import Icon from '../../../icon';
 import Input from '../../../input';
-import manifest from '../../../core/svgIcons/lib/manifest';
+import manifest from '@ant-design/icons-svg/lib/manifest';
 import {FilledIcon, OutlinedIcon, TwoToneIcon} from './themeIcons';
 import {categories} from './fields';
 

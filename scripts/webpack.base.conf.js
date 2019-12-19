@@ -10,7 +10,7 @@ const {resolve, assetsPath} = require('./lib/utils');
 const isProduction = process.env.NODE_ENV === 'production';
 module.exports = {
     mode: isProduction ? 'production' : 'development',
-    devtool: isProduction ? '#cheap-module-eval-source-map' : false,
+    devtool: isProduction ? false: '#cheap-module-eval-source-map',
     entry: {
         app: './example/main.js'
     },

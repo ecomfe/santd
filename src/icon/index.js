@@ -4,7 +4,7 @@
 */
 import san, {DataTypes} from 'san';
 import './style/index.less';
-import * as allIcons from '../core/svgIcons/lib/dist';
+import * as allIcons from '@ant-design/icons-svg';
 import {classCreator} from '../core/util';
 import sanicon from './icon';
 import iconFont from './iconfont';

@@ -2,7 +2,7 @@
  * @file Santd icon display fileds file
  **/
 
-import manifest from '../../../core/svgIcons/lib/manifest';
+import manifest from '@ant-design/icons-svg/lib/manifest';
 
 let allIcons = [];
 Object.keys(manifest).forEach(theme => {

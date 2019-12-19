@@ -21,6 +21,7 @@
         "dist"
     ],
     "dependencies": {
+        "@ant-design/icons": "^4.0.0-alpha.11",
         "add-dom-event-listener": "^1.1.0",
         "async-validator": "^1.11.2",
         "axios": "^0.18.0",
