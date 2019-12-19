@@ -10,7 +10,7 @@
 
 ---
 
-## 0.2.0
+## 0.2.1
 
 `2019-12-20`
 
@@ -20,7 +20,7 @@
 - 🐞 fix `Dropdown` menu position is incorrect
 - 🐞 `icons` use `@ant-design/icons` to replace local
 
-## 0.1.0
+## 0.2.0
 
 `2019-12-10`
 
