@@ -68,9 +68,7 @@ export default function (options = {}, mixins = {}) {
                     'isFieldsTouched',
                     'isFieldTouched'
                 ].forEach(key => {
-                    this[key] = (...args) => {
-                        return this.fieldsStore[key](...args);
-                    };
+                    this[key] = (...args) => this.fieldsStore[key](...args);
                 });
 
                 // 这里把form的实例写入供外部调用
@@ -81,9 +79,9 @@ export default function (options = {}, mixins = {}) {
             },
 
             getRules(fieldMeta, action) {
-                const actionRules = fieldMeta.validate.filter(item => {
-                    return !action || item.trigger.indexOf(action) >= 0;
-                }).map(item => item.rules);
+                const actionRules = fieldMeta.validate.filter(
+                    item => !action || item.trigger.indexOf(action) >= 0
+                ).map(item => item.rules);
                 return flattenArray(actionRules);
             },
 

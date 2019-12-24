@@ -2,16 +2,15 @@
  * @file 原生js处理
  * @author fuqiangqiang@baidu.com
  */
- /* eslint-disable fecs-camelcase */
 
 import {CLASSNAME_PREFIX} from '../constants';
 import getRequestAnimationFrame, {cancelRequestAnimationFrame as caf} from './getRequestAnimationFrame';
 
 const raf = getRequestAnimationFrame();
 
-export const hasClass = (elements, cName) => {
-    return !!elements.className.match(new RegExp('(\\s|^)' + cName + '(\\s|$)'));
-};
+export const hasClass = (elements, cName) =>
+    !!elements.className.match(new RegExp('(\\s|^)' + cName + '(\\s|$)'));
+
 export const addClass = (ele, cls) => {
     if (!hasClass(ele, cls)) {
         ele.className += ' ' + cls;
@@ -43,11 +42,9 @@ export const guid = (prefix = CLASSNAME_PREFIX) => {
  * @param {string} prefix string
  * @return {Function} creator
  */
-export const classCreator = prefix => {
-    return part => {
-        return part ? `${CLASSNAME_PREFIX}-${prefix}-${part}` : `${CLASSNAME_PREFIX}-${prefix}`;
-    };
-};
+export const classCreator = prefix =>
+    part => part ? `${CLASSNAME_PREFIX}-${prefix}-${part}` : `${CLASSNAME_PREFIX}-${prefix}`;
+
 
 export const type = (o, s) => typeof o === s;
 
@@ -112,6 +109,8 @@ export const cancelAnimationTimeout = frame => caf(frame.id);
 
 export const requestAnimationTimeout = (callback, delay) => {
     const start = Date.now();
+    /* eslint-disable fecs-use-computed-property */
+    const frame = {};
     function timeout() {
         if (Date.now() - start >= delay) {
             callback.call();
@@ -121,9 +120,6 @@ export const requestAnimationTimeout = (callback, delay) => {
         }
     }
 
-    const frame = {
-        id: raf(timeout)
-    };
-
+    frame.id = raf(timeout);
     return frame;
 };

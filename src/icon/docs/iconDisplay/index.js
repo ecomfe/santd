@@ -45,9 +45,7 @@ export default san.defineComponent({
             return Object.keys(categories).map(category => {
                 return {
                     category,
-                    icons: (categories[category] || []).filter(name => {
-                        return manifest[themeTypeMapper[theme]].indexOf(name) !== -1;
-                    })
+                    icons: (categories[category] || []).filter(name => manifest[themeTypeMapper[theme]].indexOf(name) !== -1)
                 };
             }).filter(({icons}) => Boolean(icons.length));
         },
@@ -56,10 +54,10 @@ export default san.defineComponent({
             const searchKey = this.data.get('searchKey');
             const theme = this.data.get('theme');
 
-            const otherIcons = categories.all.filter(icon => {
-                return list.filter(({category}) => category !== 'all')
-                    .every(item => !item.icons.includes(icon));
-            });
+            const otherIcons = categories.all.filter(icon =>
+                list.filter(({category}) => category !== 'all')
+                    .every(item => !item.icons.includes(icon))
+            );
 
             return list.filter(({category}) => category !== 'all')
                 .concat({category: 'other', icons: otherIcons})

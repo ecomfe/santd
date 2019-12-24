@@ -86,7 +86,7 @@ export default san.defineComponent({
         santd_radio_add(payload) {
             // 当没有options数据的时候才去收集子checkbox
             if (!this.data.get('options').length) {
-                this.radios.push(payload.value)
+                this.radios.push(payload.value);
             }
         }
     },

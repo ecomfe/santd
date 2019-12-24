@@ -6,7 +6,7 @@ const availablePrefixs = ['webkit', 'moz', 'ms'];
 
 function requestAnimationFramePolyfill() {
     let lastTime = 0;
-    return function(callback) {
+    return function (callback) {
         const currTime = Date.now();
         const timeToCall = Math.max(0, 16 - (currTime - lastTime));
         const id = window.setTimeout(() => {

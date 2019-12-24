@@ -3,7 +3,7 @@
  * @author mayihui@baidu.com
  **/
 
-import san, {DataTypes} from 'san';
+import san from 'san';
 import Base from './base';
 import CalendarHeader from './calendar/calendarHeader';
 import CalendarFooter from './calendar/calendarFooter';

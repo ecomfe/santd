@@ -38,6 +38,7 @@ export default san.defineComponent({
     },
     computed: {
         dates() {
+            /* eslint-disable no-unused-vars */
             const prefixCls = this.data.get('prefixCls');
             const locale = this.data.get('locale');
             const value = this.data.get('value') || moment();
@@ -143,7 +144,7 @@ export default san.defineComponent({
                     dataTable[i].current[j].disabled = disabled;
                     passed++;
                 }
-            };
+            }
             return dataTable;
         },
         weeks() {
@@ -185,7 +186,7 @@ export default san.defineComponent({
     },
     getTrClassName(date) {
         const prefixCls = this.data.get('prefixCls');
-        let classArr =[];
+        let classArr = [];
         date.isCurrentWeek && classArr.push(`${prefixCls}-current-week`);
         date.isActiveWeek && classArr.push(`${prefixCls}-active-week`);
         return classArr;

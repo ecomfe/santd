@@ -95,7 +95,7 @@ const List = san.defineComponent({
             const paginationProps = this.data.get('paginationProps');
 
             if (dataSource.length > (paginationProps.current - 1) * paginationProps.pageSize) {
-                return [...dataSource].splice(
+                return Array.from(dataSource).splice(
                     (paginationProps.current - 1) * paginationProps.pageSize, paginationProps.pageSize
                 );
             }

@@ -43,14 +43,16 @@ export default san.defineComponent({
             startYear,
             endYear
         } = this.data.get();
-        const dStartDecade = decadeData.startDecade;
-        const dEndDecade = decadeData.endDecade;
+        const {
+            startDecade,
+            endDecade
+        } = decadeData;
         const currentYear = value.year();
 
         let classArr = [`${prefixCls}-cell`];
-        dStartDecade <= currentYear && currentYear <= dEndDecade && classArr.push(`${prefixCls}-selected-cell`);
-        dStartDecade < startYear && classArr.push(`${prefixCls}-last-century-cell`);
-        dEndDecade > endYear && classArr.push(`${prefixCls}-next-century-cell`);
+        startDecade <= currentYear && currentYear <= endDecade && classArr.push(`${prefixCls}-selected-cell`);
+        startDecade < startYear && classArr.push(`${prefixCls}-last-century-cell`);
+        endDecade > endYear && classArr.push(`${prefixCls}-next-century-cell`);
         return classArr;
     },
     handleChooseCentury(decadeData) {

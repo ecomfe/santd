@@ -3,7 +3,7 @@
  * @author baozhixin <baozhixin@baidu.com>
  */
 
-import san, {DataTypes} from 'san';
+import san from 'san';
 import {classCreator} from '../core/util';
 import icon from '../icon';
 import Dialog from './Dialog';

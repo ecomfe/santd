@@ -33,4 +33,4 @@ export default {
     inited() {
         this.dispatch('santd_add_locale_receiver', this);
     }
-}
+};

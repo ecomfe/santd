@@ -52,7 +52,7 @@ const icon = san.defineComponent({
             };
 
             if (!viewBox) {
-                delete innerSvgProps['viewBox'];
+                delete innerSvgProps.viewBox;
             }
             if (typeof type === 'string') {
                 let computedType = type;

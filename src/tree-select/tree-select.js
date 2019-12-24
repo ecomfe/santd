@@ -31,14 +31,12 @@ const getParentKey = (key, tree) => {
     return parentKey;
 };
 
-const getDefaultFilterOption = optionFilterProp => {
-    return (searchValue, dataNode) => {
-        const value = dataNode[optionFilterProp || 'value'];
+/*const getDefaultFilterOption = optionFilterProp => (searchValue, dataNode) => {
+    const value = dataNode[optionFilterProp || 'value'];
 
-        return String(value)
-            .toLowerCase()
-            .includes(String(searchValue).toLowerCase());
-    };
+    return String(value)
+        .toLowerCase()
+        .includes(String(searchValue).toLowerCase());
 };
 
 const filterData = (searchValue, treeData, {filterOption, optionFilterProp}) => {
@@ -73,7 +71,7 @@ const filterData = (searchValue, treeData, {filterOption, optionFilterProp}) => 
     }
 
     return loop(treeData.concat());
-};
+};*/
 
 const sizeMap = {
     small: 'sm',
@@ -116,7 +114,7 @@ export default san.defineComponent({
         's-single-selector': SingleSelector,
         's-multiple-selector': MultipleSelector,
         's-dropdown': Dropdown,
-        's-input-search': Input.Search,
+        's-input-search': Input.Search
     },
     initData() {
         return {
@@ -204,7 +202,7 @@ export default san.defineComponent({
             !multiple
                 ? this.ref('singleSelector')._repaintChildren()
                 : '';
-        this.ref('dropdown').refresh();
+            this.ref('dropdown').refresh();
         });
         !multiple
             ? this.handleVisibleChange(false)

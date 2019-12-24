@@ -115,8 +115,8 @@ export default san.defineComponent({
         });
 
         this.fire('init', {
-            slickDots: this.slickDots, 
-            slickTracks: this.slickTracks, 
+            slickDots: this.slickDots,
+            slickTracks: this.slickTracks,
             clientHeight
         });
     },

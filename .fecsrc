@@ -1,0 +1,29 @@
+{
+    "eslint": {
+        "env": {
+            "node": true,
+            "browser": true
+        },
+        "globals": {
+            Set: true
+        },
+        "rules": {
+            "fecs-valid-jsdoc": {
+                "requireAuthor": false
+            },
+            "fecs-camelcase": false,
+            "spaced-comment": false,
+            "max-len": false,
+            "fecs-eol-last": false,
+            "fecs-valid-map-set": false,
+            "no-confusing-arrow": false,
+            "fecs-no-require": false,
+            "fecs-properties-quote": false,
+            "no-console": false,
+            "fecs-use-for-of": false,
+            "max-nested-callbacks": 5,
+            "no-loop-func": false,
+            "fecs-max-statements": 100
+        }
+    }
+}

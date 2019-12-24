@@ -99,7 +99,8 @@ export default function calculateNodeHeight(
     // https://github.com/ant-design/ant-design/issues/6577
     if (uiTextNode.getAttribute('wrap')) {
         hiddenTextarea.setAttribute('wrap', uiTextNode.getAttribute('wrap'));
-    } else {
+    }
+    else {
         hiddenTextarea.removeAttribute('wrap');
     }
 
@@ -126,7 +127,8 @@ export default function calculateNodeHeight(
     if (boxSizing === 'border-box') {
         // border-box: add border, since height = content + padding + border
         height = height + borderSize;
-    } else if (boxSizing === 'content-box') {
+    }
+    else if (boxSizing === 'content-box') {
         // remove padding, since height = content
         height = height - paddingSize;
     }

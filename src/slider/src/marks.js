@@ -56,9 +56,9 @@ export default san.defineComponent({
     markStyle(point, vertical, max, min) {
         const offset = (point - min) / (max - min) * 100;
 
-        return vertical 
-            ? `margin-bottom:-50%;bottom:${offset}%;` 
-            : `left: ${offset}%;transform:translateX(-50%);-ms-transform:translateX(-50%)`;
+        return vertical
+        ? `margin-bottom:-50%;bottom:${offset}%;`
+        : `left: ${offset}%;transform:translateX(-50%);-ms-transform:translateX(-50%)`;
     },
 
     handleClickLabel(e, point) {

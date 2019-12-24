@@ -4,7 +4,6 @@
  * @borrows https://ant.design/components/spin-cn/
  */
 
-/* eslint-disable fecs-prefer-class */
 
 import './style/index.less';
 import san, {DataTypes} from 'san';

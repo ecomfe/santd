@@ -100,6 +100,6 @@ export default san.defineComponent({
     afterClose() {
         this.fire('afterClose');
     },
-    
+
     template: '<div />'
 });

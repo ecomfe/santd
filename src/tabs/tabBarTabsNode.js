@@ -14,7 +14,7 @@ const customTab = san.defineComponent({
     inited() {
         this.sourceSlots.named.tab = this.data.get('slot');
     },
-    template: `<span><slot name="tab" /></span>`
+    template: '<span><slot name="tab" /></span>'
 });
 
 export default san.defineComponent({

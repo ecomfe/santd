@@ -24,7 +24,7 @@ export default {
     },
     Popconfirm: {
         okText: 'OK',
-        cancelText: 'Отмена',
+        cancelText: 'Отмена'
     },
     Transfer: {
         searchPlaceholder: 'Поиск',

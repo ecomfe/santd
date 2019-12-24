@@ -130,17 +130,20 @@ export default san.defineComponent({
                     navOffset = {
                         value: `translate3d(0,${target}px,0)`
                     };
-                } else {
+                }
+                else {
                     navOffset = {
                         name: 'top',
                         value: `${target}px`
                     };
                 }
-            } else if (transformSupported) {
+            }
+            else if (transformSupported) {
                 navOffset = {
                     value: `translate3d(${target}px,0,0)`
                 };
-            } else {
+            }
+            else {
                 navOffset = {
                     name: 'left',
                     value: `${target}px`
@@ -148,7 +151,8 @@ export default san.defineComponent({
             }
             if (transformSupported) {
                 setTransform(navStyle, navOffset.value);
-            } else {
+            }
+            else {
                 navStyle[navOffset.name] = navOffset.value;
             }
             if (checkNextPrev) {
@@ -157,14 +161,15 @@ export default san.defineComponent({
         }
     },
     setNextPrev() {
-        const refs = this.data.get('refs');
-        const navNode = refs.nav;
-        const navTabsContainer = refs.navTabsContainer;
-        const navNodeWH = this.getScrollWH(navTabsContainer || navNode);
-        // Add 1px to fix `offsetWidth` with decimal in Chrome not correct handle
-        // https://github.com/ant-design/ant-design/issues/13423
-        const containerWH = this.getOffsetWH(refs.container) + 1;
-        const navWrapNodeWH = this.getOffsetWH(refs.navWrap);
+        const {
+            nav,
+            navTabsContainer,
+            container,
+            navWrap
+        } = this.data.get('refs');
+        const navNodeWH = this.getScrollWH(navTabsContainer || nav);
+        const containerWH = this.getOffsetWH(container) + 1;
+        const navWrapNodeWH = this.getOffsetWH(navWrap);
         let offset = this.data.get('offset');
         const minOffset = containerWH - navNodeWH;
         let {next, prev} = this.data.get();
@@ -172,13 +177,12 @@ export default san.defineComponent({
             next = false;
             this.setOffset(0, false);
             offset = 0;
-        } else if (minOffset < offset) {
+        }
+        else if (minOffset < offset) {
             next = true;
-        } else {
+        }
+        else {
             next = false;
-            // Fix https://github.com/ant-design/ant-design/issues/8861
-            // Test with container offset which is stable
-            // and set the offset of the nav wrap node
             const realOffset = navWrapNodeWH - navNodeWH;
             this.setOffset(realOffset, false);
             offset = realOffset;
@@ -186,7 +190,8 @@ export default san.defineComponent({
 
         if (offset < 0) {
             prev = true;
-        } else {
+        }
+        else {
             prev = false;
         }
 
@@ -206,9 +211,10 @@ export default san.defineComponent({
         next !== v && this.data.set('next', v);
     },
     scrollToActiveTab(e) {
-        const refs = this.data.get('refs');
-        const activeTab = refs.activeTab;
-        const navWrap = refs.navWrap;
+        const {
+            activeTab,
+            navWrap
+        } = this.data.get('refs');
         const isNextPrevShown = this.data.get('next') || this.data.get('prev');
         if (e && e.target !== e.currentTarget || !activeTab) {
             return;
@@ -229,7 +235,8 @@ export default san.defineComponent({
         if (wrapOffset > activeTabOffset) {
             offset += (wrapOffset - activeTabOffset);
             this.setOffset(offset);
-        } else if ((wrapOffset + navWrapNodeWH) < (activeTabOffset + activeTabWH)) {
+        }
+        else if ((wrapOffset + navWrapNodeWH) < (activeTabOffset + activeTabWH)) {
             offset -= (activeTabOffset + activeTabWH) - (wrapOffset + navWrapNodeWH);
             this.setOffset(offset);
         }

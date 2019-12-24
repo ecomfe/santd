@@ -118,9 +118,11 @@ export default san.defineComponent({
         const multiLines = this.data.get('multiLines');
         if (keyCode === 13 && multiLines) {
             this.multilDown = true;
-        } else if (keyCode === 13 && !multiLines) {
+        }
+        else if (keyCode === 13 && !multiLines) {
             e.preventDefault();
-        } else {
+        }
+        else {
             this.multilDown = false;
         }
     },

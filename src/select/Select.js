@@ -651,9 +651,7 @@ export default san.defineComponent({
 
         const {value: oldValue, modeConfig, labelInValue} = this.data.get();
 
-        const value = oldValue.filter(singleValue => {
-            return singleValue !== selectedKey;
-        });
+        const value = oldValue.filter(singleValue => singleValue !== selectedKey);
 
         if (modeConfig.multiple || modeConfig.tags) {
             let event = selectedKey;

@@ -2,7 +2,7 @@
  * @file 组件 calendar
  * @author chenkai13 <chenkai13@baidu.com>
  */
-import san, {DataTypes} from 'san';
+import san from 'san';
 import moment from 'moment';
 import {classCreator} from '../core/util';
 import Radio from '../radio';

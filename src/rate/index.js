@@ -144,15 +144,18 @@ export default san.defineComponent({
         if (event.keyCode === KeyCode.RIGHT && sValue < count) {
             if (allowHalf) {
                 sValue += 0.5;
-            } else {
+            }
+            else {
                 sValue += 1;
             }
             this.changeValue(sValue, event);
             event.preventDefault();
-        } else if (event.keyCode === KeyCode.LEFT && sValue > 0) {
+        }
+        else if (event.keyCode === KeyCode.LEFT && sValue > 0) {
             if (allowHalf) {
                 sValue -= 0.5;
-            } else {
+            }
+            else {
                 sValue -= 1;
             }
             this.changeValue(sValue, event);

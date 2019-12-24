@@ -10,7 +10,7 @@ const autoAdjustOverflow = {
 
 const targetOffset = [0, 0];
 
-const placements = {
+export default {
     bottomLeft: {
         points: ['tl', 'tl'],
         overflow: autoAdjustOverflow,
@@ -36,5 +36,3 @@ const placements = {
         targetOffset
     }
 };
-
-export default placements;

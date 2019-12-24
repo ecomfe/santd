@@ -51,12 +51,12 @@ export default san.defineComponent({
         node.setAttribute(attributeName, 'true');
         // Not white or transparnt or grey
         if (
-            waveColor &&
-            waveColor !== '#ffffff' &&
-            waveColor !== 'rgb(255, 255, 255)' &&
-            this.isNotGrey(waveColor) &&
-            !/rgba\(\d*, \d*, \d*, 0\)/.test(waveColor) && // any transparent rgba color
-            waveColor !== 'transparent'
+            waveColor
+            && waveColor !== '#ffffff'
+            && waveColor !== 'rgb(255, 255, 255)'
+            && this.isNotGrey(waveColor)
+            && !/rgba\(\d*, \d*, \d*, 0\)/.test(waveColor) // any transparent rgba color
+            && waveColor !== 'transparent'
         ) {
             extraNode.style.borderColor = waveColor;
             const styleForPesudo = (this.styleForPesudo = document.createElement('style'));
@@ -83,10 +83,9 @@ export default san.defineComponent({
             this.resetEffect(node);
             const nodeStyle = window.getComputedStyle(node);
             // Get wave color from target
-            const waveColor =
-                nodeStyle.getPropertyValue('border-top-color') || // Firefox Compatible
-                nodeStyle.getPropertyValue('border-color') ||
-                nodeStyle.getPropertyValue('background-color');
+            const waveColor = nodeStyle.getPropertyValue('border-top-color') // Firefox Compatible
+                || nodeStyle.getPropertyValue('border-color')
+                || nodeStyle.getPropertyValue('background-color');
             this.clickWaveTimeoutId = window.setTimeout(() => this.onClick(node, waveColor), 0);
         };
         node.addEventListener('click', onClick, true);

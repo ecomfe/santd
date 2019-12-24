@@ -37,6 +37,16 @@ const responsiveMap = {
 
 const responsiveArray = ['xxl', 'xl', 'lg', 'md', 'sm', 'xs'];
 
+function loopCMPT(list, gutter) {
+    list && list.length && list.forEach(item => {
+        if (item instanceof Col) {
+            item.data.set('colStyle', `padding-left:${gutter}px;padding-right:${gutter}px;`);
+        }
+        loopCMPT(item.children, gutter);
+    });
+}
+
+
 export default san.defineComponent({
     dataTypes: {
         type: DataTypes.oneOf(['normal', 'flex']),
@@ -100,17 +110,7 @@ export default san.defineComponent({
 
             if (slots && slots.length) {
                 gutter = gutter / 2;
-
-                function loopCMPT(list) {
-                    list && list.length && list.forEach(item => {
-                        if (item instanceof Col) {
-                            item.data.set('colStyle', `padding-left:${gutter}px;padding-right:${gutter}px;`);
-                        }
-                        loopCMPT(item.children);
-                    });
-                }
-
-                loopCMPT(slots);
+                loopCMPT(slots, gutter);
             }
         }
 
@@ -121,17 +121,13 @@ export default san.defineComponent({
                         let gutter = +this.data.get('gutter');
 
                         if (!isNaN(gutter)) {
-                            let obj = {};
-                            obj[screen] = true;
-                            this.data.merge('screens', obj);
+                            this.data.merge('screens', {[screen]: true});
                         }
                     },
                     unmatch: () => {
                         let gutter = +this.data.get('gutter');
                         if (!isNaN(+gutter)) {
-                            let obj = {};
-                            obj[screen] = false;
-                            this.data.merge('screens', obj);
+                            this.data.merge('screens', {[screen]: false});
                         }
                     },
                     // Keep a empty destory to avoid triggering unmatch when unregister

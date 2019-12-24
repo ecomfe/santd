@@ -3,7 +3,7 @@
  * @author mayihui@baidu.com
  **/
 
-import san, {DataTypes} from 'san';
+import san from 'san';
 import Base from './base';
 import DateTable from './date/dateTable';
 import MonthTable from './month/monthTable';

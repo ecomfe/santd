@@ -3,10 +3,6 @@
  * @author mayihui@baidu.com
  */
 
-function getDisplayName(WrappedComponent) {
-    return WrappedComponent.displayName || WrappedComponent.name || 'WrappedComponent';
-}
-
 export function identity(obj) {
     return obj;
 }
@@ -139,9 +135,7 @@ export function isEmptyObject(obj) {
 
 export function hasRules(validate) {
     if (validate) {
-        return validate.some(item => {
-            return item.rules && item.rules.length;
-        });
+        return validate.some(item => item.rules && item.rules.length);
     }
     return false;
 }

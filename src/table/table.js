@@ -409,7 +409,7 @@ export default san.defineComponent({
                     else {
                         let tmpFilteredData = [];
                         filterValue.forEach(value => {
-                            tmpFilteredData = tmpFilteredData.concat(filteredData.filter(item => column.onFilter(value, item)));
+                            tmpFilteredData = [...tmpFilteredData, ...filteredData.filter(item => column.onFilter(value, item))];
                         });
                         filteredData = tmpFilteredData;
                     }

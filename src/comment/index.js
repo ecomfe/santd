@@ -10,7 +10,7 @@ import {classCreator} from '../core/util';
 const prefixCls = classCreator('comment')();
 
 const Action = san.defineComponent({
-    template: `<li><slot /></li>`
+    template: '<li><slot /></li>'
 });
 
 const Comment = san.defineComponent({

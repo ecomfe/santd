@@ -49,7 +49,7 @@ export default san.defineComponent({
                     : index === this.items.length - 1
                         ? lastClasses : '',
                 this.getPositionCls(child, index)
-            ].join (' ');
+            ].join(' ');
             child.data.set('class', className);
         });
     },

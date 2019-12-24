@@ -97,7 +97,6 @@ export default san.defineComponent({
             this.cachedSelectedKeys = newSelectedKeys;
         }
         else if (multiple && shiftPick) {
-            console.log(eventKey, this.lastSelectedKey, expandedKeys)
             newSelectedKeys = Array.from(
                 new Set([
                     ...(this.cachedSelectedKeys || []),

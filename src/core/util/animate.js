@@ -7,9 +7,7 @@ import san from 'san';
 import cssAnimate, {isCssAnimationSupported} from './css-animation/index';
 
 function getChildrenFromComponent(children) {
-    return children.filter(child => {
-        return child.nodeType && child.nodeType === 5;
-    });
+    return children.filter(child => child.nodeType && child.nodeType === 5);
 }
 
 const transitionMap = {
@@ -32,7 +30,6 @@ export default san.defineComponent({
         const showProp = this.data.get('showProp') || 'visible';
         let children = slot && getChildrenFromComponent(slot.children) || [];
         this.childs = children.length ? children : [this];
-        return;
         if (showProp) {
             children = this.childs.filter(child => child.data.get(showProp));
         }

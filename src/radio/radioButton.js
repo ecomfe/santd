@@ -9,7 +9,7 @@ import {classCreator} from '../core/util';
 import Radio from './radio';
 const prefixCls = classCreator('radio-button')();
 
-const radioButton = san.defineComponent({
+export default san.defineComponent({
     initData() {
         return {
             ...Radio.prototype.initData(),
@@ -17,5 +17,3 @@ const radioButton = san.defineComponent({
         };
     }
 }, Radio);
-
-export default radioButton;

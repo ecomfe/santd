@@ -13,4 +13,4 @@ export default san.defineComponent({
 
         return data;
     }
-}, Upload)
+}, Upload);

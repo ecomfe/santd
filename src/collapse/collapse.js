@@ -9,7 +9,7 @@ import {classCreator} from '../core/util';
 const prefixCls = classCreator('collapse')();
 
 
-let Collapse = san.defineComponent({
+export default san.defineComponent({
     dataTypes: {
         activeKey: DataTypes.oneOfType([DataTypes.string, DataTypes.array]),
         defaultActiveKey: DataTypes.oneOfType([DataTypes.string, DataTypes.array]),
@@ -92,6 +92,3 @@ let Collapse = san.defineComponent({
         </div>
     `
 });
-
-
-export default Collapse;

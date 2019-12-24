@@ -62,9 +62,11 @@ function getPrecision(step) {
 
 function isEventFromHandle(eventTarget, handles) {
     for (let key in handles) {
-        let handle = handles[key];
-        if (handle && handle.el  === eventTarget) {
-            return true;
+        if (!handles.hasOwnProperty[key]) {
+            let handle = handles[key];
+            if (handle && handle.el  === eventTarget) {
+                return true;
+            }
         }
     }
 
@@ -86,7 +88,7 @@ export default san.defineComponent({
         on-focus="rootFocus"
     >
         <div class="${prefixCls}-rail" />
-        <div 
+        <div
             s-if="included"
             class="${prefixCls}-track{{track.index ? ' ${prefixCls}-track-' + track.index : ''}}"
             style="{{vertical ? 'bottom' : 'left'}}:{{track.offset}}%;{{vertical ? 'height' : 'width'}}:{{track.len}}%;"
@@ -170,9 +172,9 @@ export default san.defineComponent({
                         index: 1
                     }
                     : {
-                    offset: 0,
-                    len: (value - min) / (max - min) * 100
-                }
+                        offset: 0,
+                        len: (value - min) / (max - min) * 100
+                    };
             }
         },
 
@@ -207,7 +209,7 @@ export default san.defineComponent({
         let {
             min,
             value,
-            range,
+            range
         } = this.data.get();
 
 
@@ -224,14 +226,14 @@ export default san.defineComponent({
     },
 
     correctValue(value) {
-         let {
+        let {
             min,
             max,
             step,
             marks
         } = this.data.get();
 
-        return ensureValuePrecision(ensureValueInRange(value, min, max), step, marks, min, max)
+        return ensureValuePrecision(ensureValueInRange(value, min, max), step, marks, min, max);
     },
 
     rootBlur(e) {
@@ -404,9 +406,7 @@ export default san.defineComponent({
         let {
             vertical,
             min,
-            max,
-            step,
-            marks
+            max
         } = this.data.get();
 
         const ratio = Math.abs(Math.max(position - this.getSliderStart(), 0) / this.getSliderLength());

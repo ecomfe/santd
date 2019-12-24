@@ -11,7 +11,8 @@
         "deploy:site": "cross-env NODE_ENV=production node scripts/deploy.js",
         "dev:site": "cross-env NODE_ENV=development node scripts/doc.js",
         "dev:issue": "cross-env NODE_ENV=development node scripts/issue.js",
-        "build:issue": "cross-env NODE_ENV=production webpack --config scripts/webpack.issue.conf.js"
+        "build:issue": "cross-env NODE_ENV=production webpack --config scripts/webpack.issue.conf.js",
+        "lint": "fecs --type=js"
     },
     "main": "lib/index.js",
     "module": "es/index.js",
@@ -55,6 +56,7 @@
         "@octokit/rest": "^16.35.2",
         "autoprefixer": "^9.5.1",
         "babel-cli": "^6.26.0",
+        "babel-eslint": "^10.0.3",
         "babel-loader": "^8.0.6",
         "babel-plugin-import": "^1.11.0",
         "babel-plugin-module-resolver": "^3.1.1",
@@ -97,6 +99,7 @@
         "postcss-loader": "^3.0.0",
         "postcss-url": "^8.0.0",
         "posthtml": "^0.11.4",
+        "prettier": "^1.19.1",
         "prismjs": "^1.16.0",
         "querystring": "^0.2.0",
         "rd": "^2.0.1",

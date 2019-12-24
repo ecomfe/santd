@@ -4,7 +4,7 @@
  */
 
 import './style/index.less';
-import san, {DataTypes} from 'san';
+import san from 'san';
 import {classCreator} from '../core/util';
 import {Col, Row} from '../grid';
 

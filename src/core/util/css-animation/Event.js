@@ -55,7 +55,7 @@ function removeEventListener(node, eventName, eventListener) {
     node.removeEventListener(eventName, eventListener, false);
 }
 
-const TransitionEvents = {
+export default {
     addEndEventListener(node, eventListener) {
         if (endEvents.length === 0) {
             window.setTimeout(eventListener, 0);
@@ -80,4 +80,3 @@ const TransitionEvents = {
     }
 };
 
-export default TransitionEvents;

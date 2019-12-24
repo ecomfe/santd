@@ -3,7 +3,7 @@
  * @author mayihui@baidu.com
  **/
 
-import san, {DataTypes} from 'san';
+import san from 'san';
 import CalendarHeader from '../calendar/calendarHeader';
 import DateTable from '../date/dateTable';
 import DateInput from '../date/dateInput';

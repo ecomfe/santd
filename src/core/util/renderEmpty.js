@@ -4,7 +4,6 @@
 
 import san from 'san';
 import Empty from '../../empty';
-import {classCreator} from './index';
 
 
 export default function (componentName) {

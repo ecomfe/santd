@@ -228,7 +228,7 @@ export default san.defineComponent({
         });
     },
     handleChange(info) {
-        this.data.set('fileList', [...info.fileList]);
+        this.data.set('fileList', Array.from(info.fileList));
         this.fire('change', info);
         this.dispatch('UI:form-item-interact', {fieldValue: info, type: 'change', e: info.e});
     },

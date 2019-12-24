@@ -82,9 +82,11 @@ const create = function (tag) {
             },
 
             canUseCSSEllipsis() {
-                const clientRendered = this.data.get('clientRendered');
-                const copyable = this.data.get('copyable');
-                const getEllipsis = this.data.get('getEllipsis');
+                const {
+                    clientRendered,
+                    copyable,
+                    getEllipsis
+                } = this.data.get();
                 const rows = getEllipsis.rows;
                 const expandable = getEllipsis.expandable;
 

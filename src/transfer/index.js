@@ -3,7 +3,7 @@
  * @author chenkai13 <chenkai13@baidu.com>
  */
 import './style/index.less';
-import san, {DataTypes} from 'san';
+import san from 'san';
 import {classCreator} from '../core/util';
 import Empty from '../empty';
 import List from './list';

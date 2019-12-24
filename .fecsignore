@@ -1,0 +1,9 @@
+src/**/__tests__/*
+src/**/docs/**
+dest/
+scripts/
+output/
+docs/
+issue-helper/
+site/
+*.conf.js

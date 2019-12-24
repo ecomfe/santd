@@ -16,7 +16,7 @@ function loopFiles(item, callback) {
     function sequence() {
         dirReader.readEntries(entries => {
             const entryList = Array.prototype.slice.apply(entries);
-            fileList = fileList.concat(entryList);
+            fileList = [...fileList, ...entryList];
 
             // Check if all the file has been viewed
             const isFinished = !entryList.length;

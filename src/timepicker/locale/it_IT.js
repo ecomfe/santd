@@ -3,5 +3,5 @@
  **/
 
 export default {
-    placeholder: "Selezionare l'orario"
+    placeholder: 'Selezionare l\'orario'
 };

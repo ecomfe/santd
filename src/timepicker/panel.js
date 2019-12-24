@@ -3,7 +3,7 @@
  * @author mayihui@baidu.com
  **/
 
-import san, {DataTypes} from 'san';
+import san from 'san';
 import moment from 'moment';
 import Header from './header';
 import ComboBox from './combobox';

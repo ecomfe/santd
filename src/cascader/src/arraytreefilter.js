@@ -2,8 +2,7 @@
  * @file Santd cascader array tree filter file
  **/
 
-export default (data, filterFn, options) => {
-    options = options || {};
+export default (data, filterFn, options = {}) => {
     options.childrenKeyName = options.childrenKeyName || 'children';
     let children = data || [];
     let result = [];

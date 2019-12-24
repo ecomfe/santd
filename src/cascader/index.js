@@ -3,7 +3,7 @@
 * @author fuqiangqiang@baidu.com
 */
 
-import san, {DataTypes} from 'san';
+import san from 'san';
 import {classCreator} from '../core/util';
 import Cascader from './src/cascader';
 import Input from '../input';

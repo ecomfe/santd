@@ -9,7 +9,7 @@ function getViewRoot() {
     return isCompatMode ? document.body : document.documentElement;
 }
 
-export function hasClass(elements, cls)  {
+export function hasClass(elements, cls) {
     return elements.className
         && typeof elements.className === 'string'
         && elements.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'));
@@ -61,7 +61,7 @@ export function getOffset(element) {
         width: rect.right - rect.left,
         height: rect.bottom - rect.top
     };
-};
+}
 
 /**
  * 获取页面宽度
@@ -130,7 +130,7 @@ export function getViewWidth() {
  */
 export function getViewHeight() {
     let viewRoot = getViewRoot();
-    return viewRoot ? viewRoot.clientHeight : 0
+    return viewRoot ? viewRoot.clientHeight : 0;
 }
 
 /**
@@ -175,12 +175,12 @@ export function getClientLeft() {
  * @return {function}
  */
 export let on = document.addEventListener
-    ? function(element, event, handler) {
+    ? function (element, event, handler) {
         if (element && event && handler) {
             element.addEventListener(event, handler, false);
         }
     }
-    : function(element, event, handler) {
+    : function (element, event, handler) {
         if (element && event && handler) {
             element.attachEvent('on' + event, handler);
         }
@@ -193,12 +193,12 @@ export let on = document.addEventListener
  */
 
 export let off = document.removeEventListener
-    ? function(element, event, handler) {
+    ? function (element, event, handler) {
         if (element && event) {
             element.removeEventListener(event, handler, false);
         }
     }
-    : function(element, event, handler) {
+    : function (element, event, handler) {
         if (element && event) {
             element.detachEvent('on' + event, handler);
         }

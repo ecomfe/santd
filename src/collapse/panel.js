@@ -29,7 +29,7 @@ const PanelContent = san.defineComponent({
     `
 });
 
-let Panel = san.defineComponent({
+export default san.defineComponent({
     dataTypes: {
         prefixCls: DataTypes.string,
         header: DataTypes.string,
@@ -126,6 +126,3 @@ let Panel = san.defineComponent({
         </div>
     `
 });
-
-
-export default Panel;

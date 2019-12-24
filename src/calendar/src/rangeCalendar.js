@@ -3,11 +3,8 @@
  * @author mayihui@baidu.com
  **/
 
-import san, {DataTypes} from 'san';
+import san from 'san';
 import Base from './base';
-import DateTable from './date/dateTable';
-import MonthTable from './month/monthTable';
-import CalendarHeader from './fullCalendarHeader';
 import RangePanel from './range/rangePanel';
 import TodayButton from './calendar/todayButton';
 import OkButton from './calendar/okButton';
@@ -242,7 +239,6 @@ export default inherits(san.defineComponent({
     },
     handleRangeSelect(value) {
         const {
-            selectedValue,
             prevSelectedValue,
             firstSelectedValue
         } = this.data.get();
@@ -270,7 +266,6 @@ export default inherits(san.defineComponent({
         }
 
         const {
-            selectedValue,
             firstSelectedValue
         } = this.data.get();
 

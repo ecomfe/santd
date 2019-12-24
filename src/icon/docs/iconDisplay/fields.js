@@ -13,7 +13,7 @@ Object.keys(manifest).forEach(theme => {
 allIcons = allIcons.filter(name => !['interation', 'canlendar', 'colum-height'].includes(name));
 
 export const categories = {
-    all: [...new Set(allIcons)],
+    all: Array.from(allIcons),
     direction: [
         'step-backward',
         'step-forward',

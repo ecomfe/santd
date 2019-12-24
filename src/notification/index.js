@@ -173,9 +173,7 @@ const NotificationApi = {
     destroy() {
         Object.keys(notificationInstance).forEach(cacheKey => {
             notificationInstance[cacheKey].destroy();
-            /* eslint-disable fecs-valid-map-set */
             delete notificationInstance[cacheKey];
-            /* eslint-enable fecs-valid-map-set */
         });
     }
 };

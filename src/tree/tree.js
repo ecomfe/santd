@@ -180,9 +180,7 @@ export default san.defineComponent({
                 // 找到后不断遍历父节点，把需要改变状态的父节点的key都拿到
                 while (parent && parent !== this && !parent.data.get('disabled')) {
                     // 先过滤掉是disabled状态的节点
-                    let treeNodes = parent.treeNodes.filter(node => {
-                        return !this.data.get('disabled') && !node.data.get('disabled');
-                    });
+                    let treeNodes = parent.treeNodes.filter(node => !this.data.get('disabled') && !node.data.get('disabled'));
                     const parentKey = parent.data.get('key');
                     const allChecked = treeNodes.every(node => checkedKeys.includes(node.data.get('key')));
                     // 如果是子是全选状态，把父的key也放到selected中

@@ -56,9 +56,7 @@ export default san.defineComponent({
             if (checkedKeys.length === 0) {
                 return 'none';
             }
-            else if (filteredItems.every(item => {
-                return checkedKeys.indexOf(item.key) >= 0 || !!item.disabled;
-            })) {
+            else if (filteredItems.every(item => checkedKeys.indexOf(item.key) >= 0 || !!item.disabled)) {
                 return 'all';
             }
             return 'part';
