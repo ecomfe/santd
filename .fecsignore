@@ -5,5 +5,4 @@ scripts/
 output/
 docs/
 issue-helper/
-site/
 *.conf.js

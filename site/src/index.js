@@ -175,7 +175,6 @@ class Index extends Component {
                 that.data.set('currentPath', defaultPath);
             }
             else {
-                const currentPath = this.data.get('currentPath');
                 that.data.set('currentPath', e.path);
                 document.getElementById('content').innerHTML = '';
                 that.data.set('content', '');

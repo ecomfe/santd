@@ -86,9 +86,11 @@ merge(renderer, {
         let result;
         if (/^!&gt;/.test(text)) {
             result = helper('tip', text);
-        } else if (/^\?&gt;/.test(text)) {
+        }
+        else if (/^\?&gt;/.test(text)) {
             result = helper('warn', text);
-        } else {
+        }
+        else {
             result = `<p>${text}</p>`;
         }
         return result;
@@ -132,7 +134,8 @@ module.exports = (text, options = {}) => {
     let html;
     if (isPrimitive(text)) {
         html = marked(text);
-    } else {
+    }
+    else {
         html = marked.parser(text);
     }
 
