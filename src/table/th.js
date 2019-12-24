@@ -36,6 +36,7 @@ export default {
             visible="{{column.filterVisible}}"
             on-visibleChange="handleFilterVisibleChange($event, column, columnIndex, thIndex)"
             s-if="column.scopedSlots.filterIcon || column.filters"
+            useDomNodeForce="{{true}}"
         >
             <slot name="{{column.scopedSlots.filterIcon}}"/>
             <slot

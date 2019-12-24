@@ -19,7 +19,8 @@ export default san.defineComponent({
             placement: 'bottomLeft',
             mouseEnterDelay: 0.15,
             mouseLeaveDelay: 0.1,
-            transitionName: ''
+            transitionName: '',
+            useDomNodeForce: false
         };
     },
 
@@ -40,7 +41,8 @@ export default san.defineComponent({
     },
 
     getRootDomNode(rootDomNode) {
-        return rootDomNode || this.el;
+        const useDomNodeForce = this.data.get('useDomNodeForce');
+        return rootDomNode || (!useDomNodeForce && this.el);
     },
 
     template: `<span class="${prefixCls}-trigger">
