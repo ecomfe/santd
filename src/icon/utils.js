@@ -60,9 +60,9 @@ export function getSecondaryColor(primaryColor) {
 
 export function withSuffix(name, theme) {
     switch (theme) {
-        case 'fill':
+        case 'filled':
             return `${name}-fill`;
-        case 'outline':
+        case 'outlined':
             return `${name}-o`;
         case 'twotone':
             return `${name}-twotone`;

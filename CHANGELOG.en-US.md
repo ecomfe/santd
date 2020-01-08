@@ -10,6 +10,13 @@
 
 ---
 
+## 0.2.2
+
+`2020-01-08`
+
+- 🐞 fix `Table` dropdown position bug
+- 🐞 fix `Icon` not work with updated `@ant-design/icons`
+
 ## 0.2.1
 
 `2019-12-20`
