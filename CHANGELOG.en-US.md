@@ -10,6 +10,12 @@
 
 ---
 
+## 0.2.3
+
+`2020-01-09`
+
+- 🐞 fix `Collapse` on-change event not triggered
+
 ## 0.2.2
 
 `2020-01-08`
