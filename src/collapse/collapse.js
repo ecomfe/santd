@@ -8,7 +8,6 @@ import {classCreator} from '../core/util';
 
 const prefixCls = classCreator('collapse')();
 
-
 export default san.defineComponent({
     dataTypes: {
         activeKey: DataTypes.oneOfType([DataTypes.string, DataTypes.array]),
@@ -79,6 +78,7 @@ export default san.defineComponent({
                 }
             }
             this.data.set('activeKey', activeKey);
+            this.fire('change', activeKey);
         }
     },
 
