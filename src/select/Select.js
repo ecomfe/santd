@@ -375,6 +375,12 @@ export default san.defineComponent({
         };
     },
 
+    inited() {
+        this.watch('value', value => {
+            this.setState({value});
+        });
+    },
+
     created() {
         const props = this.props = this.data.get();
 
