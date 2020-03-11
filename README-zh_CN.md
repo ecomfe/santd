@@ -19,7 +19,7 @@
 ## ✨ 特性
 
 - 提炼自企业级中后台产品的交互语言和视觉风格。
-- 开箱即用的高质量 Vue 组件。
+- 开箱即用的高质量 San 组件。
 - 共享 [Ant Design of React](https://ant.design/docs/spec/introduce) 设计工具体系。
 
 ## 🖥 支持环境
