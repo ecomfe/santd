@@ -33,7 +33,7 @@ async function genLessFile() {
         fs.readdir(componentsPath, (err, files) => {
             files.forEach(file => {
                 if (fs.existsSync(path.join(componentsPath, file, 'style', 'index.less'))) {
-                    componentsLessContent += `@import "../${path.join(file, 'style', 'index.less')}";\n`;
+                    componentsLessContent += `@import "../../${path.join(file, 'style', 'index.less')}";\n`;
                 }
             });
             fs.writeFileSync(
