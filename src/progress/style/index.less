@@ -1,9 +1,9 @@
 @import "../../core/styles/themes/default";
 @import "../../core/styles/mixins/index";
 
-@prefix-cls: ~"@{ant-prefix}-progress";
+@progress-prefix-cls: ~"@{ant-prefix}-progress";
 
-.@{prefix-cls} {
+.@{progress-prefix-cls} {
   .reset-component;
   display: inline-block;
 
@@ -24,7 +24,7 @@
     width: 100%;
     margin-right: 0;
     padding-right: 0;
-    .@{prefix-cls}-show-info & {
+    .@{progress-prefix-cls}-show-info & {
       padding-right: ~"calc(2em + 8px)";
       margin-right: ~"calc(-2em - 8px)";
     }
@@ -80,7 +80,7 @@
   }
 
   &-status-active {
-    .@{prefix-cls}-bg:before {
+    .@{progress-prefix-cls}-bg:before {
       content: "";
       opacity: 0;
       position: absolute;
@@ -95,25 +95,25 @@
   }
 
   &-status-exception {
-    .@{prefix-cls}-bg {
+    .@{progress-prefix-cls}-bg {
       background-color: @error-color;
     }
-    .@{prefix-cls}-text {
+    .@{progress-prefix-cls}-text {
       color: @error-color;
     }
-    .@{prefix-cls}-circle-path {
+    .@{progress-prefix-cls}-circle-path {
       stroke: @error-color;
     }
   }
 
   &-status-success {
-    .@{prefix-cls}-bg {
+    .@{progress-prefix-cls}-bg {
       background-color: @success-color;
     }
-    .@{prefix-cls}-text {
+    .@{progress-prefix-cls}-text {
       color: @success-color;
     }
-    .@{prefix-cls}-circle-path {
+    .@{progress-prefix-cls}-circle-path {
       stroke: @success-color;
     }
   }
@@ -144,12 +144,12 @@
   }
 
   &-circle&-status-exception {
-    .@{prefix-cls}-text {
+    .@{progress-prefix-cls}-text {
       color: @error-color;
     }
   }
   &-circle&-status-success {
-    .@{prefix-cls}-text {
+    .@{progress-prefix-cls}-text {
       color: @success-color;
     }
   }
