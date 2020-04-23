@@ -1,9 +1,9 @@
 @import "../../core/styles/themes/default";
 @import "../../core/styles/mixins/index";
-@prefix-cls: ~"@{ant-prefix}-switch";
+@switch-prefix-cls: ~"@{ant-prefix}-switch";
 @switch-duration: .36s;
 
-.@{prefix-cls} {
+.@{switch-prefix-cls} {
     .reset-component;
     position: relative;
     display: inline-block;
@@ -27,7 +27,7 @@
         display: block;
     }
 
-    & .@{prefix-cls}-handler,
+    & .@{switch-prefix-cls}-handler,
     &:after {
         position: absolute;
         width: @switch-height - 4px;
@@ -45,12 +45,12 @@
         box-shadow: 0 2px 4px 0 rgba(0, 35, 11, .2);
     }
 
-    &:active .@{prefix-cls}-handler,
+    &:active .@{switch-prefix-cls}-handler,
     &:active:after {
         width: 24px;
     }
 
-    & .@{prefix-cls}-handler {
+    & .@{switch-prefix-cls}-handler {
         font-family: 'anticon';
         animation: loadingCircle 1s infinite linear;
         text-align: center;
@@ -60,12 +60,12 @@
         font-size: 12px;
     }
 
-    &-loading .@{prefix-cls}-handler {
+    &-loading .@{switch-prefix-cls}-handler {
         display: inline-block;
         color: @text-color;
     }
 
-    &-checked&-loading .@{prefix-cls}-handler {
+    &-checked&-loading .@{switch-prefix-cls}-handler {
         color: @switch-color;
     }
 
@@ -83,37 +83,37 @@
         min-width: 28px;
         line-height: @switch-sm-height - 2px;
 
-        .@{prefix-cls}-inner {
+        .@{switch-prefix-cls}-inner {
             margin-left: 18px;
             margin-right: 3px;
             font-size: @font-size-sm;
         }
 
-        & .@{prefix-cls}-handler,
+        & .@{switch-prefix-cls}-handler,
         &:after {
             width: @switch-sm-height - 4px;
             height: @switch-sm-height - 4px;
         }
 
-        &:active .@{prefix-cls}-handler,
+        &:active .@{switch-prefix-cls}-handler,
         &:active:after {
             width: 16px;
         }
     }
 
     &-small&-checked {
-        & .@{prefix-cls}-handler {
+        & .@{switch-prefix-cls}-handler {
             left: 100%;
             margin-left: @switch-sm-checked-margin-left;
         }
 
-        .@{prefix-cls}-inner {
+        .@{switch-prefix-cls}-inner {
             margin-left: 3px;
             margin-right: 18px;
         }
     }
 
-    &-small&-loading .@{prefix-cls}-handler {
+    &-small&-loading .@{switch-prefix-cls}-handler {
         animation: AntSwitchSmallLoadingCircle 1s infinite linear;
         font-weight: bold;
     }
@@ -121,12 +121,12 @@
     &-checked {
         background-color: @switch-color;
 
-        .@{prefix-cls}-inner {
+        .@{switch-prefix-cls}-inner {
             margin-left: 6px;
             margin-right: 24px;
         }
 
-        & .@{prefix-cls}-handler {
+        & .@{switch-prefix-cls}-handler {
             left: 100%;
             margin-left: -19px;
         }

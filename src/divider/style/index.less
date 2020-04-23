@@ -1,8 +1,8 @@
-@prefix-cls: ~"@{ant-prefix}-divider";
+@divider-prefix-cls: ~"@{ant-prefix}-divider";
 @import "../../core/styles/themes/default";
 @import "../../core/styles/mixins/index";
 
-.@{prefix-cls} {
+.@{divider-prefix-cls} {
   .reset-component;
   background: @border-color-split;
  
@@ -48,7 +48,7 @@
   }
   &-horizontal&-with-text-left,
   &-horizontal&-with-text-right {
-    .@{prefix-cls}-inner-text {
+    .@{divider-prefix-cls}-inner-text {
       display: inline-block;
       padding: 0 10px;
     }

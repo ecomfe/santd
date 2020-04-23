@@ -246,6 +246,10 @@ export default san.defineComponent({
                 this.resetActiveKey();
             }
         });
+
+        this.owner.watch('inputValue', value => {
+            this.data.set('activeKey', value);
+        });
     },
 
     getActiveItem() {
@@ -331,7 +335,7 @@ export default san.defineComponent({
     },
 
     handleMouseLeave() {
-        this.data.set('activeKey', '');
+        // this.data.set('activeKey', '');
     },
 
     handleMenuSelect({item}) {

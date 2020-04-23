@@ -1,12 +1,12 @@
 @import "../../core/styles/themes/default";
 @import "../../core/styles/mixins/index";
 
-@prefix-cls: ~"@{ant-prefix}-alert";
+@alert-prefix-cls: ~"@{ant-prefix}-alert";
 @alert-message-color: @heading-color;
 @alert-text-color: @text-color;
 @alert-close-color: @text-color-secondary;
 
-.@{prefix-cls} {
+.@{alert-prefix-cls} {
     .reset-component;
     position: relative;
     padding: 8px 15px 8px 37px;
@@ -35,7 +35,7 @@
     &-success {
         border: @border-width-base @border-style-base @alert-success-border-color;
         background-color: @alert-success-bg-color;
-        .@{prefix-cls}-icon {
+        .@{alert-prefix-cls}-icon {
             color: @alert-success-icon-color;
         }
     }
@@ -43,7 +43,7 @@
     &-info {
         border: @border-width-base @border-style-base @alert-info-border-color;
         background-color: @alert-info-bg-color;
-        .@{prefix-cls}-icon {
+        .@{alert-prefix-cls}-icon {
             color: @alert-info-icon-color;
         }
     }
@@ -51,7 +51,7 @@
     &-warning {
         border: @border-width-base @border-style-base @alert-warning-border-color;
         background-color: @alert-warning-bg-color;
-        .@{prefix-cls}-icon {
+        .@{alert-prefix-cls}-icon {
             color: @alert-warning-icon-color;
         }
     }
@@ -59,7 +59,7 @@
     &-error {
         border: @border-width-base @border-style-base @alert-error-border-color;
         background-color: @alert-error-bg-color;
-        .@{prefix-cls}-icon {
+        .@{alert-prefix-cls}-icon {
             color: @alert-error-icon-color;
         }
     }

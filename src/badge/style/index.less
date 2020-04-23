@@ -1,10 +1,10 @@
-@prefix-cls: ~"@{ant-prefix}-badge";
+@badge-prefix-cls: ~"@{ant-prefix}-badge";
 @number-prefix-cls: ~"@{ant-prefix}-scroll-number";
 @import "../../core/styles/themes/default";
 @import "../../core/styles/mixins/index";
 @import "../../core/styles/index";
 
-.@{prefix-cls} {
+.@{badge-prefix-cls} {
   .reset-component;
 
   position: relative;
@@ -126,7 +126,7 @@
   }
 
   &-not-a-wrapper {
-    &:not(.@{prefix-cls}-status) {
+    &:not(.@{badge-prefix-cls}-status) {
       vertical-align: middle;
     }
 
@@ -136,7 +136,7 @@
       display: block;
     }
 
-    .@{prefix-cls}-count {
+    .@{badge-prefix-cls}-count {
       transform: none;
     }
   }
@@ -190,7 +190,7 @@
   }
 }
 
-/*.@{prefix-cls} {
+/*.@{badge-prefix-cls} {
     .reset-component;
     position: relative;
     display: inline-block;
@@ -314,7 +314,7 @@
             position: relative;
         }
 
-        .@{prefix-cls}-count {
+        .@{badge-prefix-cls}-count {
             transform: none;
         }
     }

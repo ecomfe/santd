@@ -1,7 +1,7 @@
-@prefix-cls: ~"@{ant-prefix}-avatar";
+@avatar-prefix-cls: ~"@{ant-prefix}-avatar";
 @import "../../core/styles/themes/default";
 @import "../../core/styles/mixins/index";
-.@{prefix-cls} {
+.@{avatar-prefix-cls} {
     .reset-component;
     display: inline-block;
     text-align: center;
@@ -46,7 +46,7 @@
     & > * {
         line-height: @size;
     }
-    &.@{prefix-cls}-icon {
+    &.@{avatar-prefix-cls}-icon {
         font-size: @font-size;
     }
 }

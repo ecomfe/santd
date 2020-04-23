@@ -1,10 +1,10 @@
 @import "../../core/styles/themes/default";
 @import "../../core/styles/mixins/index";
 
-@prefix-cls: ~"@{ant-prefix}-spin";
+@spin-prefix-cls: ~"@{ant-prefix}-spin";
 @spin-dot-default: @text-color-secondary;
 
-.@{prefix-cls} {
+.@{spin-prefix-cls} {
   .reset-component;
   color: @primary-color;
   vertical-align: middle;
@@ -22,51 +22,51 @@
 
   &-nested-loading {
     position: relative;
-    > div > .@{prefix-cls} {
+    > div > .@{spin-prefix-cls} {
       display: block;
       position: absolute;
       height: 100%;
       max-height: 360px;
       width: 100%;
       z-index: 4;
-      .@{prefix-cls}-dot {
+      .@{spin-prefix-cls}-dot {
         position: absolute;
         top: 50%;
         left: 50%;
         margin: -@spin-dot-size / 2;
       }
-      .@{prefix-cls}-text {
+      .@{spin-prefix-cls}-text {
         position: absolute;
         top: 50%;
         width: 100%;
         padding-top: (@spin-dot-size - @font-size-base) / 2 + 2px;
         text-shadow: 0 1px 2px #fff;
       }
-      &.@{prefix-cls}-show-text .@{prefix-cls}-dot {
+      &.@{spin-prefix-cls}-show-text .@{spin-prefix-cls}-dot {
         margin-top: -@spin-dot-size / 2 - 10px;
       }
     }
 
-    > div > .@{prefix-cls}-sm {
-      .@{prefix-cls}-dot {
+    > div > .@{spin-prefix-cls}-sm {
+      .@{spin-prefix-cls}-dot {
         margin: -@spin-dot-size-sm / 2;
       }
-      .@{prefix-cls}-text {
+      .@{spin-prefix-cls}-text {
         padding-top: (@spin-dot-size-sm - @font-size-base) / 2 + 2px;
       }
-      &.@{prefix-cls}-show-text .@{prefix-cls}-dot {
+      &.@{spin-prefix-cls}-show-text .@{spin-prefix-cls}-dot {
         margin-top: -@spin-dot-size-sm / 2 - 10px;
       }
     }
 
-    > div > .@{prefix-cls}-lg {
-      .@{prefix-cls}-dot {
+    > div > .@{spin-prefix-cls}-lg {
+      .@{spin-prefix-cls}-dot {
         margin: -@spin-dot-size-lg / 2;
       }
-      .@{prefix-cls}-text {
+      .@{spin-prefix-cls}-text {
         padding-top: (@spin-dot-size-lg - @font-size-base) / 2 + 2px;
       }
-      &.@{prefix-cls}-show-text .@{prefix-cls}-dot {
+      &.@{spin-prefix-cls}-show-text .@{spin-prefix-cls}-dot {
         margin-top: -@spin-dot-size-lg / 2 - 10px;
       }
     }
@@ -189,7 +189,7 @@
 
 @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
   /* IE10+ */
-  .@{prefix-cls}-blur {
+  .@{spin-prefix-cls}-blur {
     background: @component-background;
     opacity: 0.5;
   }

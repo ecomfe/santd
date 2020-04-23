@@ -41,8 +41,11 @@ export default function (options = {}) {
             let useNode = this.el.querySelector('use');
             useNode.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '#' + type);
         },
+        handleClick(e) {
+            this.fire('click', e);
+        },
         template: `
-            <span>
+            <span on-click="handleClick">
                 <s-icon
                     theme="{{theme}}"
                     spin="{{spin}}"
