@@ -34,7 +34,11 @@ const contentTemplate = `
                 <slot name="renderItem" var-item="{{item}}" var-index="{{index}}" />
             </s-col>
         </s-row>
-        <slot s-for="item in splitDataSource" name="renderItem" var-item="{{item}}" s-else />
+        <slot
+            s-for="item, index in splitDataSource"
+            name="renderItem"
+            var-index="{{index}}"
+            var-item="{{item}}" s-else />
     </template>
 `;
 
