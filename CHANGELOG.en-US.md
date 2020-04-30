@@ -10,6 +10,13 @@
 
 ---
 
+## 0.2.4
+
+`2020-04-30`
+
+- 🐞 fix `Pagination` clicked style bug
+- 🐞 `List` renderItem slot expose index for use
+
 ## 0.2.3
 
 `2020-01-09`
