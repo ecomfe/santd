@@ -313,6 +313,7 @@ export default san.defineComponent({
             if (payload.value.event === 'check') {
                 this.fire('check', {checkedKeys: checkedKeys, info: payload.value});
             }
+            this.data.set('checkedKeys', checkedKeys);
         },
         // 展开节点的处理
         santd_tree_expandTreeNode(payload) {
