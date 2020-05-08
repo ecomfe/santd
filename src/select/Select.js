@@ -820,6 +820,8 @@ export default san.defineComponent({
                 $dropdown.handleKeyDown(e, this.handleBackfill.bind(this));
             }
         }
+
+        this.fire('input-keydown', e);
     },
 
     handleKeyDown(e) {
