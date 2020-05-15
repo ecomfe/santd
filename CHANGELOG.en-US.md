@@ -10,6 +10,12 @@
 
 ---
 
+## 0.2.6
+
+`2020-5-15`
+
+- 🐞 fix `Table` component `scopedSlots` not work when `render` is exist
+
 ## 0.2.5
 
 `2020-04-30`

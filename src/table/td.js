@@ -21,7 +21,7 @@ const contentTemplate = `
     </template>
     <!--配置scoped slot-->
     <slot
-        s-if="column.scopedSlots.render && !column.children"
+        s-if="column.scopedSlots.render"
         name="{{column.scopedSlots.render}}"
         var-text="{{column.scopedSlots.render === 'render' ? item[column.dataIndex] : item[column.scopedSlots.render]}}"
         var-record="{{item}}"
