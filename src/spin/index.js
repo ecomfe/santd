@@ -40,6 +40,12 @@ const SpinDot = san.defineComponent({
     `
 });
 
+const SpinTip = san.defineComponent({
+    template: `
+        <div class="${prefixCls}-text">{{tip}}</div>
+    `
+});
+
 const IndicatorLoader = san.createComponentLoader(() => {
     const promise = new Promise(resolve => {
         resolve(isValidComponent(defaultIndicator) ? defaultIndicator : SpinDot);
@@ -53,13 +59,13 @@ const Spin = san.defineComponent({
             <slot s-if="!hasContent" name="indicator">
                 <indicator />
             </slot>
-            <spin-tip s-if="!hasContent" tip="{{tip}}"/>
+            <spin-tip s-if="!hasContent" tip="{{tip}}" />
             <div s-if="hasContent && currentSpinning">
                 <div class="{{spinClasses}}">
                     <slot name="indicator">
                         <indicator />
                     </slot>
-                    <div class="${prefixCls}-text">{{tip}}</div>
+                    <spin-tip tip="{{tip}}" />
                 </div>
             </div>
             <div class="${prefixCls}-container {{currentSpinning ? '${prefixCls}-blur' : ''}}">
@@ -76,6 +82,7 @@ const Spin = san.defineComponent({
         wrapperClassName: DataTypes.string
     },
     components: {
+        'spin-tip': SpinTip,
         indicator: IndicatorLoader // san >= 3.7
     },
     computed: {
