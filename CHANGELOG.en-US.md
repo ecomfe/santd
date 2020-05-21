@@ -10,6 +10,12 @@
 
 ---
 
+## 0.2.7
+
+`2020-5-21`
+
+- 🐞 fix `Spin` spin-text component not work
+
 ## 0.2.6
 
 `2020-5-15`
