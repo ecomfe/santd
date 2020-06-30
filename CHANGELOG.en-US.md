@@ -10,6 +10,12 @@
 
 ---
 
+## 0.2.8
+
+`2020-6-30`
+
+- 🐞 fix `Tree-select` remove checked item not work when `treeCheckecable` is exist
+
 ## 0.2.7
 
 `2020-5-21`

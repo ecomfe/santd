@@ -241,7 +241,7 @@ export default san.defineComponent({
         let selectedValue = this.getRenderData(filteredData);
         this.data.set('selectedValue', selectedValue);
         this.data.set('selectedKeys', []);
-        this.data.set('checkedKeys', filteredData.map(item => item.key));
+        this.data.set('checkedKeys.checked', filteredData.map(item => item.key));
         !inited && this.repaint(true);
 
         if (info.checked) {
@@ -279,6 +279,7 @@ export default san.defineComponent({
         this.data.set('checkedKeys.checked', []);
         this.data.set('selectedKeys', []);
         this.handleVisibleChange(false);
+        this.fire('change', {info: {event: 'removeAll'}, value: []});
     },
     handleTreeDataLoad() {
         this.nextTick(() => {
@@ -291,6 +292,7 @@ export default san.defineComponent({
         const treeCheckable = this.data.get('treeCheckable');
         this.data.removeAt(treeCheckable ? 'checkedKeys.checked' : 'selectedKeys', index, {force: true});
         this.data.removeAt('selectedValue', index);
+        this.fire('change', {info: {event: 'remove'}, value: this.data.get(treeCheckable ? 'checkedKeys.checked' : 'selectedKeys')});
     },
     getIncludeData(data = []) {
         return this.dataList.filter(item => data.includes(item.key));
@@ -298,7 +300,7 @@ export default san.defineComponent({
     attached() {
         this.data.set('popupVisible', null);
         this.nextTick(() => {
-            this.data.set('checkedKeys', this.data.get('value'));
+            this.data.set('checkedKeys.checked', this.data.get('value'));
             let data = this.getData(this.ref('tree').treeNodes);
             this.dataList = data.dataList;
             this.treeData = data.treeData;
