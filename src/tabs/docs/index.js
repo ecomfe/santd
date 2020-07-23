@@ -16,6 +16,7 @@ import CardTop from './card-top.md';
 import CustomAdd from './custom-add.md';
 import CustomBar from './custom-bar.md';
 import Slide from './slide.md';
+import SlotTabpane from './slot-tabpane.md';
 
 export default san.defineComponent({
     components: {
@@ -32,7 +33,8 @@ export default san.defineComponent({
         editable: Editable,
         cardtop: CardTop,
         customadd: CustomAdd,
-        custombar: CustomBar
+        custombar: CustomBar,
+        'slot-tabpane': SlotTabpane,
     },
     template: `
         <div>
@@ -49,6 +51,7 @@ export default san.defineComponent({
             <cardtop/>
             <customadd/>
             <custombar/>
+            <slot-tabpane/>
             <readme/>
         </div>
     `

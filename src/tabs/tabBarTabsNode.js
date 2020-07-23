@@ -30,7 +30,6 @@ export default san.defineComponent({
                 let classArr = [`${prefixCls}-tab`];
                 tabBar.active && classArr.push(`${prefixCls}-tab-active`);
                 tabBar.disabled && classArr.push(`${prefixCls}-tab-disabled`);
-
                 return {
                     ...tabBar,
                     classes: classArr,
@@ -40,7 +39,7 @@ export default san.defineComponent({
         },
         slots() {
             const tabPanes = this.data.get('tabPanes') || [];
-            return tabPanes.map(pane => pane.sourceSlots.named.tab).filter(pane => pane);
+            return tabPanes.map(pane => pane.sourceSlots.named.tab || false);
         }
     },
     handleTabClick(e, key, disabled) {
@@ -77,7 +76,7 @@ export default san.defineComponent({
                 on-click="handleTabClick($event, tabBar.key, tabBar.disabled)"
             >
                 <div class="{{tabBar.closable ? '${prefixCls}-tab-uncloseable' : ''}}" s-if="type === 'editable-card'">
-                    <template s-if="slots && slots.length">
+                    <template s-if="slots[index]">
                         <s-customtab slot="{{slots[index]}}" />
                     </template>
                     <template s-else>
@@ -91,7 +90,7 @@ export default san.defineComponent({
                     />
                 </div>
                 <template s-else>
-                    <template s-if="slots && slots.length">
+                    <template s-if="slots[index]">
                         <s-customtab slot="{{slots[index]}}" />
                     </template>
                     <template s-else>
