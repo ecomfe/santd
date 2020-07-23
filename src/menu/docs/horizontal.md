@@ -41,7 +41,7 @@ export default {
         's-menu': Menu,
         's-sub-menu': Menu.Sub,
         's-menu-item': Menu.Item,
-        's-menu-item-group': Menu.ItemGroup,
+        's-menu-item-group': Menu.MenuItemGroup,
         's-icon': Icon
     },
     initData() {
