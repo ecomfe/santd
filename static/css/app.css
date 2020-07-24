@@ -33,6 +33,11 @@ code[class*="language-"]::-moz-selection, code[class*="language-"] ::-moz-select
 	background: #b3d4fc;
 }
 
+pre[class*="language-"]::-moz-selection, pre[class*="language-"] ::-moz-selection, code[class*="language-"]::-moz-selection, code[class*="language-"] ::-moz-selection {
+	text-shadow: none;
+	background: #b3d4fc;
+}
+
 pre[class*="language-"]::selection, pre[class*="language-"] ::selection,
 code[class*="language-"]::selection, code[class*="language-"] ::selection {
 	text-shadow: none;
@@ -78,7 +83,7 @@ pre[class*="language-"] {
 	color: #999;
 }
 
-.namespace {
+.token.namespace {
 	opacity: .7;
 }
 
