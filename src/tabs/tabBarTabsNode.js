@@ -23,24 +23,25 @@ export default san.defineComponent({
             let tabBarData = this.data.get('tabBarData') || [];
             const tabBarGutter = this.data.get('tabBarGutter');
             const tabBarPosition = this.data.get('tabBarPosition');
+            const tabPanes = this.data.get('tabPanes') || [];
 
             return tabBarData.map((tabBar, index) => {
                 const gutter = tabBarGutter && index === tabBarData.length - 1 ? 0 : tabBarGutter;
                 const style = gutter !== undefined && {[isVertical(tabBarPosition) ? 'margin-bottom' : 'margin-right']: gutter + 'px'};
                 let classArr = [`${prefixCls}-tab`];
+                // 获取parent节点
+                let slot = tabPanes[index] && tabPanes[index].sourceSlots.named.tab || null;
+
                 tabBar.active && classArr.push(`${prefixCls}-tab-active`);
                 tabBar.disabled && classArr.push(`${prefixCls}-tab-disabled`);
 
                 return {
                     ...tabBar,
+                    slot,
                     classes: classArr,
                     style: style
                 };
             });
-        },
-        slots() {
-            const tabPanes = this.data.get('tabPanes') || [];
-            return tabPanes.map(pane => pane.sourceSlots.named.tab).filter(pane => pane);
         }
     },
     handleTabClick(e, key, disabled) {
@@ -77,8 +78,8 @@ export default san.defineComponent({
                 on-click="handleTabClick($event, tabBar.key, tabBar.disabled)"
             >
                 <div class="{{tabBar.closable ? '${prefixCls}-tab-uncloseable' : ''}}" s-if="type === 'editable-card'">
-                    <template s-if="slots && slots.length">
-                        <s-customtab slot="{{slots[index]}}" />
+                    <template s-if="tabBar.slot">
+                        <s-customtab slot="{{tabBar.slot}}"/>
                     </template>
                     <template s-else>
                         {{tabBar.tab}}
@@ -91,8 +92,8 @@ export default san.defineComponent({
                     />
                 </div>
                 <template s-else>
-                    <template s-if="slots && slots.length">
-                        <s-customtab slot="{{slots[index]}}" />
+                    <template s-if="tabBar.slot">
+                        <s-customtab slot="{{tabBar.slot}}" />
                     </template>
                     <template s-else>
                         {{tabBar.tab}}
