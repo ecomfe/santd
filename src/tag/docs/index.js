@@ -10,6 +10,7 @@ import Checkable from './checkable.md';
 import HotTags from './hot-tags.md';
 import Color from './colorful.md';
 import Controlled from './controlled.md';
+import Icon from './icon.md';
 
 export default san.defineComponent({
     components: {
@@ -20,7 +21,8 @@ export default san.defineComponent({
         checkable: Checkable,
         hottags: HotTags,
         color: Color,
-        controlled: Controlled
+        controlled: Controlled,
+        icon: Icon
     },
     template: `
         <div>
@@ -31,6 +33,7 @@ export default san.defineComponent({
             <color/>
             <checkable/>
             <controlled/>
+            <icon/>
             <readme/>
         </div>
     `

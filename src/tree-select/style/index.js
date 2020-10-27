@@ -6,3 +6,4 @@ import './index.less';
 
 import '../../select/style';
 import '../../checkbox/style';
+import '../../tree/style';

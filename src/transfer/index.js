@@ -16,8 +16,10 @@ const emptyPrefixCls = classCreator('empty')();
 
 export default san.defineComponent({
     computed: {
-        ...localeReceiver.computed,
-
+        customLocale() {
+            let locale = this.data.get('locale') || {};
+            return {...localeReceiver.computed.locale.bind(this)(), ...locale};
+        },
         classes() {
             const disabled = this.data.get('disabled');
             const hasRenderList = this.data.get('hasLeftRenderList') || this.data.get('hsaRightRenderList');
@@ -188,7 +190,7 @@ export default san.defineComponent({
     },
 
     getTitles(titles, index) {
-        const locale = this.data.get('locale');
+        const locale = this.data.get('locale') || {};
         return (titles || (locale && locale.titles) || [])[index] || '';
     },
 
@@ -213,9 +215,9 @@ export default san.defineComponent({
             disabled="{{disabled}}"
             direction="left"
             showSelectAll="{{showSelectAll}}"
-            searchPlaceholder="{{locale.searchPlaceholder}}"
-            itemUnit="{{locale.itemUnit}}"
-            itemsUnit="{{locale.itemsUnit}}"
+            searchPlaceholder="{{customLocale.searchPlaceholder}}"
+            itemUnit="{{customLocale.itemUnit}}"
+            itemsUnit="{{customLocale.itemsUnit}}"
             on-itemSelect="handleLeftItemSelect"
             on-itemSelectAll="handleLeftItemSelectAll"
             on-scroll="handleScroll('left', $event)"
@@ -261,9 +263,9 @@ export default san.defineComponent({
             disabled="{{disabled}}"
             direction="right"
             showSelectAll="{{showSelectAll}}"
-            searchPlaceholder="{{locale.searchPlaceholder}}"
-            itemUnit="{{locale.itemUnit}}"
-            itemsUnit="{{locale.itemsUnit}}"
+            searchPlaceholder="{{customLocale.searchPlaceholder}}"
+            itemUnit="{{customLocale.itemUnit}}"
+            itemsUnit="{{customLocale.itemsUnit}}"
             on-itemSelect="handleRightItemSelect"
             on-itemSelectAll="handleRightItemSelectAll"
             on-scroll="handleScroll('right', $event)"

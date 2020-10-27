@@ -128,9 +128,11 @@ export default san.defineComponent({
                     <sentinel s-ref="sentinelStart" type="sentinelStart"/>
                     <div class="${prefixCls}-content">
                         <button s-if="{{closable}}" aria-label="Close" class="${prefixCls}-close" on-click="close">
-                            <span class="${prefixCls}-close-x">
-                                <s-icon class="${prefixCls}-close-icon" type="close"/>
-                            </span>
+                            <slot name="closeIcon">
+                                <span class="${prefixCls}-close-x">
+                                    <s-icon class="${prefixCls}-close-icon" type="close"/>
+                                </span>
+                            </slot>
                         </button>
                         <div s-if="{{title}}" s-ref="header" class="${prefixCls}-header">
                             <slot name="title">

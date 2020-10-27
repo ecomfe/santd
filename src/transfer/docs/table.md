@@ -22,6 +22,8 @@
                 filteredItems="{{filteredItems}}"
                 selectedKeys="{{selectedKeys}}"
                 disabled="{{disabled}}"
+                itemSelect="{{itemSelect}}"
+                itemSelectAll="{{itemSelectAll}}"
             >
             </s-transfertable>
             <s-transfertable
@@ -126,11 +128,14 @@ const transferTable = san.defineComponent({
         }
     },
     handleSelectAll(selectedRows, checked) {
+        let itemSelectAll = this.data.get('itemSelectAll');
+        itemSelectAll(selectedRows, checked);
         const treeSelectedKeys = selectedRows.map(({key}) => key);
-
         this.dispatch('santd_transfer_itemSelectAll', {selectedKeys: treeSelectedKeys, checkAll: checked});
     },
     handleSelectItem(record, checked) {
+        let itemSelect = this.data.get('itemSelect');
+        itemSelect(record.key, checked);
         this.dispatch('santd_transfer_itemSelect', {selectedKey: record.key, checked});
     },
     template: `<div>
@@ -157,7 +162,16 @@ export default {
             selectedKeys: [],
             filterOption(inputValue, item) {
                 return item.title.indexOf(inputValue) !== -1 || item.tag.indexOf(inputValue) !== -1
+            },
+            itemSelect: (key, ischecked) => {
+                console.log('itemSelect_key', key);
+                console.log('itemSelect_ischecked', ischecked);
+            },
+            itemSelectAll: (key, ischecked) => {
+                console.log('itemSelectAll_key', key);
+                console.log('itemSelectAll_ischecked', ischecked);
             }
+
         };
     },
     components: {

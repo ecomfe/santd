@@ -130,8 +130,12 @@ export default san.defineComponent({
                 item.data.set(param, data, {force: true});
             });
         });
+        let selectedKeys = this.data.get('selectedKeys') || [];
+        if (typeof selectedKeys === 'string') {
+            selectedKeys = [selectedKeys];
+        }
 
-        let ret = loopMenuItem(this.items, this.data.get('selectedKeys'), {});
+        let ret = loopMenuItem(this.items, selectedKeys, {});
         this.data.set('isChildrenSelected', !!ret.find);
         if (this.data.get('mode') === 'inline') {
             this.data.set('noSubClick', true);

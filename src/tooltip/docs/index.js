@@ -8,6 +8,8 @@ import Desc from './desc.md';
 import Basic from './basic.md';
 import Arrow from './arrow.md';
 import Position from './position.md';
+import Preset from './preset.md';
+
 
 export default san.defineComponent({
     components: {
@@ -15,7 +17,8 @@ export default san.defineComponent({
         readme: Readme,
         basic: Basic,
         arrow: Arrow,
-        position: Position
+        position: Position,
+        preset: Preset
     },
     template: `
         <div>
@@ -23,6 +26,7 @@ export default san.defineComponent({
             <basic/>
             <arrow/>
             <position/>
+            <preset/>
             <readme/>
         </div>
     `

@@ -91,10 +91,11 @@ export default san.defineComponent({
         <div
             s-if="included"
             class="${prefixCls}-track{{track.index ? ' ${prefixCls}-track-' + track.index : ''}}"
-            style="{{vertical ? 'bottom' : 'left'}}:{{track.offset}}%;{{vertical ? 'height' : 'width'}}:{{track.len}}%;"
+            style="{{direction}}:{{track.offset}}%;{{vertical ? 'height' : 'width'}}:{{track.len}}%;"
         ></div>
         <s-steps
             vertical="{{vertical}}"
+            reverse="{{reverse}}"
             marks="{{marks}}"
             dots="{{dots}}"
             step="{{step}}"
@@ -109,8 +110,11 @@ export default san.defineComponent({
             s-ref="handle-{{i}}"
             index="{{i + 1}}"
             vertical="{{vertical}}"
+            tooltipPlacement="{{tooltipPlacement}}"
             offset="{{(v - min) / (max - min) * 100}}"
             value="{{v}}"
+            direction="{{direction}}"
+            getTooltipPopupContainer="{{getTooltipPopupContainer}}"
             dragging="{{i === handleIndex}}"
             tabIndex="{{0}}"
             min="{{min}}"
@@ -123,6 +127,8 @@ export default san.defineComponent({
         />
         <s-marks
             vertical="{{vertical}}"
+            reverse="{{reverse}}"
+            direction="{{direction}}"
             marks="{{marks}}"
             included="{{included}}"
             max="{{max}}"
@@ -157,7 +163,13 @@ export default san.defineComponent({
             vertical && classArr.push(`${prefixCls}-vertical`);
             return classArr;
         },
-
+        direction() {
+            // 反向坐标轴
+            const reverse = this.data.get('reverse');
+            // 垂直方向
+            const vertical = this.data.get('vertical');
+            return vertical ? reverse ? 'top' : 'bottom' : reverse ? 'right' : 'left';
+        },
         track() {
             let range = this.data.get('range');
             let value = this.data.get('value');
@@ -330,7 +342,6 @@ export default san.defineComponent({
     handleMove(e, position) {
         e.stopPropagation();
         e.preventDefault();
-
         let value = this.calcValueByPos(position);
 
         if (this.data.get('range')) {
@@ -411,6 +422,9 @@ export default san.defineComponent({
 
         const ratio = Math.abs(Math.max(position - this.getSliderStart(), 0) / this.getSliderLength());
         let value = vertical ? (1 - ratio) * (max - min) + min : ratio * (max - min) + min;
+        if (this.data.get('reverse')) {
+            value = max - value;
+        }
         return this.correctValue(value);
     }
 });

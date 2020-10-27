@@ -20,11 +20,14 @@
 | disabledDate         | 不可选择的日期                                                             | (currentDate: moment) => boolean                        | -       |
 | dropdownClassName    | 额外的弹出日历 className                                                   | string                                                  | ''      |
 | getCalendarContainer | 定义浮层的容器，默认为 body 上新建 div                                     | function(trigger)                                       | -       |
+| locale | 国际化配置	                                     | [object](https://github.com/ecomfe/santd/tree/master/src/date-picker/example.json)                                       |    -    |
 | open                 | 控制弹层是否展开                                                           | boolean                                                 | -       |
 | placeholder          | 输入框提示文字                                                             | string\|RangePicker[]         | - |
 | popupStyle                 | 额外的弹出日历样式      | object                                                  | {} |
 | size               | 输入框大小，`large` 高度为 40px，`small` 为 24px，默认是 32px | string                                                  | -       |
 | suffixIcon               | 自定义的选择框后缀图标 | slot                                                  | -       |
+| inputReadOnly               | 设置输入框为只读（避免在移动设备上打开虚拟键盘） | boolean                                                  | -       |
+| align               | 该值将合并到 placement 的配置中，设置参考 dom-align | [object](https://github.com/yiminghe/dom-align)                                                  | -       |
 | on-openChange               | 弹出日历和关闭日历的回调 | function(status)                                                  | -       |
 | on-panelChange               | 日历面板切换的回调 | function({value, mode})                                                  | -       |
 
@@ -44,6 +47,7 @@
 | format               | 设置日期格式，为数组时支持多格式匹配，展示以第一个为准。配置参考 [moment.js](http://momentjs.com) | string\|string[]      | 'YYYY-MM-DD'     |
 | mode                 | 日期面板的状态                                                                                    | `time` `date` `month` `year` `decade` | 'date'        |
 | renderExtraFooter    | 在面板中添加额外的页脚                                                                            | slot                     | -             |
+| monthRender    | 自定义的月份内容渲染方法                                                                            | slot                     | -             |
 | showTime             | 增加时间选择功能                                                                                  | Object\|boolean               | - |
 | showTime.defaultValue    | 设置用户选择日期时默认的时分秒                                                                          | [moment](http://momentjs.com)                                | moment()            |
 | showToday |  是否展示“今天”按钮                                                           | boolean                     | true             |

@@ -105,7 +105,8 @@ export default san.defineComponent({
         treeDefaultExpandAll: DataTypes.bool,
         treeDefaultExpandedKeys: DataTypes.array,
         treeExpandedKeys: DataTypes.array,
-        value: DataTypes.oneOfType([DataTypes.string, DataTypes.array])
+        value: DataTypes.oneOfType([DataTypes.string, DataTypes.array]),
+        replaceFields: DataTypes.object
     },
     components: {
         's-icon': Icon,
@@ -132,7 +133,10 @@ export default san.defineComponent({
             expandedKeys: [],
             selectedValue: [],
             dropdownMatchSelectWidth: true,
-            showCheckedStrategy: 'SHOW_CHILD'
+            showCheckedStrategy: 'SHOW_CHILD',
+            treeCheckStrictly: false,
+            treeIcon: false,
+            replaceFields: {children: 'children', title: 'title', key: 'key', value: 'value', label: 'label'}
         };
     },
     inited() {
@@ -292,13 +296,34 @@ export default san.defineComponent({
         const treeCheckable = this.data.get('treeCheckable');
         this.data.removeAt(treeCheckable ? 'checkedKeys.checked' : 'selectedKeys', index, {force: true});
         this.data.removeAt('selectedValue', index);
+        this.handleTreeSelect({selectedKeys: this.data.get('selectedKeys'), info: {
+            node: this,
+            event: 'select'
+        }});
         this.fire('change', {info: {event: 'remove'}, value: this.data.get(treeCheckable ? 'checkedKeys.checked' : 'selectedKeys')});
     },
     getIncludeData(data = []) {
         return this.dataList.filter(item => data.includes(item.key));
     },
+    updateTreeData(treeData) {
+        const replaceFields = this.data.get('replaceFields');
+        treeData.map((item, i) => {
+            treeData[i].label = item[replaceFields.label];
+            treeData[i].title = item[replaceFields.title];
+            treeData[i].value = item[replaceFields.value];
+            treeData[i].key = item[replaceFields.key];
+            treeData[i].children = item[replaceFields.children];
+            if (treeData[i].children) {
+                this.updateTreeData(treeData[i].children);
+            }
+        });
+    },
     attached() {
         this.data.set('popupVisible', null);
+        let treeData = this.data.get('treeData');
+        if (treeData && treeData.length) {
+            this.updateTreeData(treeData);
+        }
         this.nextTick(() => {
             this.data.set('checkedKeys.checked', this.data.get('value'));
             let data = this.getData(this.ref('tree').treeNodes);
@@ -384,6 +409,7 @@ export default san.defineComponent({
                     expandedKeys="{{treeExpandedKeys}}"
                     disabled="{{disabled}}"
                     showSearch="{{showSearch}}"
+                    showIcon="{{treeIcon}}"
                     expandedKeys="{{expandedKeys}}"
                     selectedKeys="{{selectedKeys}}"
                     checkedKeys="{{checkedKeys}}"
@@ -392,6 +418,7 @@ export default san.defineComponent({
                     loadData="{{loadData}}"
                     multiple="{{multiple || treeCheckable}}"
                     checkable="{{treeCheckable}}"
+                    checkStrictly="{{treeCheckStrictly}}"
                     on-select="handleTreeSelect"
                     on-load="handleTreeDataLoad"
                     on-check="handleTreeCheck"

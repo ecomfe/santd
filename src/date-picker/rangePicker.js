@@ -73,14 +73,20 @@ export default san.defineComponent({
             hoverValue: [],
             disabledTime() {},
             trigger: 'click',
-            placements: Placements
+            placements: Placements,
+            popupPlacement: 'bottomLeft'
         };
     },
     inited() {
         const value = this.data.get('value');
         const defaultValue = this.data.get('defaultValue');
         const pickerValue = !value || isEmptyArray(value) ? this.data.get('defaultPickerValue') : value;
-
+        let align = this.data.get('align');
+        let placements = this.data.get('placements');
+        let popupPlacement = this.data.get('popupPlacement');
+        if (align && typeof align === 'object') {
+            placements[popupPlacement] = {...placements[popupPlacement], ...align};
+        }
         this.data.set('value', value || defaultValue || []);
         this.data.set('showDate', pickerValueAdapter(pickerValue || moment()));
         this.data.set('hasExtraFooter', !!this.sourceSlots.named.renderExtraFooter);
@@ -173,7 +179,7 @@ export default san.defineComponent({
                 visible="{{open}}"
                 action="{{disabled ? [] : trigger}}"
                 builtinPlacements="{{placements}}"
-                popupPlacement="bottomLeft"
+                popupPlacement="{{popupPlacement}}"
                 destroyPopupOnHide="{{true}}"
                 on-visibleChange="handleOpenChange"
             >
@@ -187,14 +193,15 @@ export default san.defineComponent({
                     showTime="{{showTime}}"
                     disabledDate="{{disabledDate}}"
                     disabledTime="{{disabledTime}}"
-                    dateInputPlaceholder="{{dateInputPlaceholder || locale.lang.rangePlaceholder}}"
+                    dateInputPlaceholder="{{dateInputPlaceholder || customLocale.lang.rangePlaceholder}}"
                     value="{{showDate}}"
+                    inputReadOnly="{{inputReadOnly}}"
                     selectedValue="{{value}}"
                     hoverValue="{{hoverValue}}"
                     showToday="{{showToday}}"
                     mode="{{mode}}"
-                    locale="{{locale.lang}}"
-                    localeCode="{{localeCode}}"
+                    locale="{{customLocale.lang}}"
+                    localeCode="{{customLocaleCode}}"
                     hasExtraFooter="{{hasExtraFooter}}"
                     hasDateRender="{{hasDateRender}}"
                     ranges="{{ranges}}"
@@ -210,7 +217,7 @@ export default san.defineComponent({
                         disabled="{{disabled}}"
                         readOnly
                         value="{{displayStartValue}}"
-                        placeholder="{{placeholder && placeholder[0] || locale.lang.rangePlaceholder[0]}}"
+                        placeholder="{{placeholder && placeholder[0] || customLocale.lang.rangePlaceholder[0]}}"
                         class="${prefixCls}-range-picker-input"
                         tabIndex="-1"
                         style="{{inputStyle}}"
@@ -220,7 +227,7 @@ export default san.defineComponent({
                         disabled="{{disabled}}"
                         readOnly
                         value="{{displayEndValue}}"
-                        placeholder="{{placeholder && placeholder[1] || locale.lang.rangePlaceholder[1]}}"
+                        placeholder="{{placeholder && placeholder[1] || customLocale.lang.rangePlaceholder[1]}}"
                         class="${prefixCls}-range-picker-input"
                         tabIndex="-1"
                         style="{{inputStyle}}"

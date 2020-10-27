@@ -10,6 +10,7 @@ import Alternate from './alternate.md';
 import Color from './color.md';
 import Dot from './dot.md';
 import Pending from './pending.md';
+import Label from './label.md';
 
 export default san.defineComponent({
     components: {
@@ -20,7 +21,8 @@ export default san.defineComponent({
         alternate: Alternate,
         color: Color,
         dot: Dot,
-        pending: Pending
+        pending: Pending,
+        label: Label
     },
     template: `
         <div>
@@ -31,6 +33,7 @@ export default san.defineComponent({
             <dot/>
             <alternate/>
             <mode/>
+            <label/>
             <readme/>
         </div>
     `

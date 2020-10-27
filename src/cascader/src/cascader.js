@@ -18,7 +18,6 @@ export default san.defineComponent({
         return {
             popupAlign: {},
             disabled: false,
-            placement: 'bottomLeft',
             builtinPlacements: placements,
             expandTrigger: 'click',
             trigger: 'click',
@@ -134,15 +133,15 @@ export default san.defineComponent({
         <s-trigger
             prefixCls="${prefixCls}-menus"
             builtinPlacements="{{builtinPlacements}}"
-            popupPlacement="{{placement}}"
+            popupPlacement="{{popupPlacement}}"
             popupAlign="{{popupAlign}}"
             popupTransitionName="{{transitionName}}"
             defaultPopupVisible="{{defaultVisible}}"
             getPopupContainer="{{getPopupContainer}}"
             mouseEnterDelay="{{mouseEnterDelay}}"
             mouseLeaveDelay="{{mouseLeaveDelay}}"
-            popupClassName="{{overlayClassName}}"
-            popupStyle="{{overlayStyle}}"
+            popupClassName="{{popupClassName}}"
+            popupStyle="{{popupStyle}}"
             action="{{disabled ? [] : trigger}}"
             visible="{{popupVisible}}"
             on-visibleChange="handleVisibleChange"

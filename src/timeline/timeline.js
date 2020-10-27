@@ -33,7 +33,8 @@ export default san.defineComponent({
     initData() {
         return {
             reverse: false,
-            mode: 'left'
+            mode: 'left',
+            labelClass: ''
         };
     },
     updated() {
@@ -42,6 +43,9 @@ export default san.defineComponent({
         const lastClasses = `${prefixCls}-item-last`;
 
         this.items.forEach((child, index) => {
+            if (child.data.get('label')) {
+                this.data.set('labelClass', `${prefixCls}-label`);
+            }
             const className = [
                 !reverse && !!hasPending
                     ? index === this.items.length - 2
@@ -89,7 +93,7 @@ export default san.defineComponent({
         's-icon': Icon
     },
     template: `
-        <ul class="{{classes}}">
+        <ul class="{{classes}} {{labelClass}}">
             <template s-if="!reverse">
                 <slot />
                 <s-item s-if="hasPending" pending="{{hasPending}}">

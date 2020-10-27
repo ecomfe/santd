@@ -14,7 +14,10 @@ const prefixCls = classCreator('anchor')();
 const sharpMatcherRegx = /#([^#]+)$/;
 
 const anchorContent = `
-    <div class="${prefixCls}-wrapper" style="max-height:{{offsetTop ? 'calc(100vh -' + offsetTop + 'px)' : '100vh'}};{{style}}">
+    <div
+        class="${prefixCls}-wrapper {{wrapperClass}}"
+        style="max-height:{{offsetTop ? 'calc(100vh - ' + offsetTop + 'px)' : '100vh'}};{{style}}{{wrapperStyle}}"
+    >
         <div class="${prefixCls}{{!affix && !showInkInFixed ? ' fixed' : ''}}">
             <div class="${prefixCls}-ink">
                 <span class="${prefixCls}-ink-ball{{activeLink ? ' visible' : ''}}" s-ref="inkNode" />
@@ -69,7 +72,7 @@ function scrollTo(href, offsetTop = 0, getContainer, callback) {
     const frameFunc = () => {
         const timestamp = Date.now();
         const time = timestamp - startTime;
-        const nextScrollTop = easeInOutCubic(time, scrollTop, targetScrollTop, 450);
+        const nextScrollTop = easeInOutCubic(time > 450 ? 450 : time, scrollTop, targetScrollTop, 450);
         if (container === window) {
             window.scrollTo(window.pageXOffset, nextScrollTop);
         }
@@ -97,7 +100,11 @@ export default san.defineComponent({
         offsetTop: DataTypes.number,
         bounds: DataTypes.number,
         affix: DataTypes.bool,
-        showInkInFixed: DataTypes.bool
+        showInkInFixed: DataTypes.bool,
+        wrapperClass: DataTypes.string,
+        wrapperStyle: DataTypes.oneOfType([DataTypes.string, DataTypes.object]),
+        getCurrentAnchor: DataTypes.func,
+        targetOffset: DataTypes.number
     },
 
     initData() {
@@ -125,9 +132,10 @@ export default san.defineComponent({
         if (this._handleScroll) {
             on(this.data.get('getContainer')(), 'scroll', this._handleScroll);
         }
-        // this.handleScroll();
+        this.nextTick(() => this._handleScroll());
 
         this.watch('activeLink', value => {
+            this.fire('change', value);
             this.linkChildren.forEach(child => {
                 child.data.set('activeLink', value);
             });
@@ -148,8 +156,8 @@ export default san.defineComponent({
             return;
         }
 
-        const {offsetTop, bounds} = this.data.get();
-        this.data.set('activeLink', this.getCurrentAnchor(offsetTop, bounds));
+        const {targetOffset, offsetTop, bounds} = this.data.get();
+        this.data.set('activeLink', this.getCurrentActiveLink(targetOffset || offsetTop, bounds));
     },
 
     updateInk() {
@@ -164,7 +172,12 @@ export default san.defineComponent({
         }
     },
 
-    getCurrentAnchor(offsetTop = 0, bounds = 5) {
+    getCurrentActiveLink(offsetTop = 0, bounds = 5) {
+        const getCurrentAnchor = this.data.get('getCurrentAnchor');
+        if (getCurrentAnchor) {
+            return getCurrentAnchor();
+        }
+
         let activeLink = '';
 
         if (document) {
@@ -213,11 +226,11 @@ export default san.defineComponent({
         },
 
         santd_link_scrollTo(payload) {
-            const {offsetTop, getContainer} = this.data.get();
+            const {targetOffset, offsetTop, getContainer} = this.data.get();
             this.data.set('animating', true);
             this.data.set('activeLink', payload.value);
 
-            scrollTo(payload.value, offsetTop, getContainer, () => {
+            scrollTo(payload.value, targetOffset || offsetTop, getContainer, () => {
                 this.data.set('animating', false);
             });
         }

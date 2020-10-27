@@ -18,14 +18,17 @@
 | multiple | 支持多选（当设置 treeCheckable 时自动变为true） | boolean | false |
 | placeholder | 选择框默认文字 | string | - |
 | searchPlaceholder | 搜索框默认文字 | string | - |
+| treeIcon | 是否展示 TreeNode title 前的图标，没有默认样式，如设置为 true，需要自行定义图标相关样式 | boolean | false |
 | showCheckedStrategy | 定义选中项回填的方式。`TreeSelect.SHOW_ALL`: 显示所有选中节点(包括父节点). `TreeSelect.SHOW_PARENT`: 只显示父节点(当父节点下所有子节点都选中时). 默认只显示子节点. | enum{TreeSelect.SHOW_ALL, TreeSelect.SHOW_PARENT, TreeSelect.SHOW_CHILD } | TreeSelect.SHOW_CHILD |
 | size | 选择框大小，可选 `large` `small` | string | 'default' |
 | suffixIcon | 自定义的选择框后缀图标 | slot | - |
 | treeCheckable | 显示 checkbox | boolean | false |
+| treeCheckStrictly | checkable 状态下节点选择完全受控（父子节点选中状态不再关联） | boolean | false |
 | treeData | treeNodes 数据，如果设置则不需要手动构造 TreeNode 节点（value 在整个树范围内唯一） | array&lt;{value, label, children, [disabled, disableCheckbox, selectable]}> | [] |
 | treeDefaultExpandAll | 默认展开所有树节点 | boolean | false |
 | treeDefaultExpandedKeys | 默认展开的树节点 | string[] | - |
 | treeExpandedKeys | 设置展开的树节点 | string[] | - |
+| treeNodeLabelProp | 作为显示的 prop 设置 | string | 'title' |
 | value | 指定当前选中的条目 | string/string[] | - |
 | on-change | 选中树节点时调用此函数 | function(value, node, info) | - |
 | on-search | 文本框值变化时回调 | function(value) | - |

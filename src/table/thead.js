@@ -15,6 +15,7 @@ export default {
                 <th s-if="rowSelection" class="${prefixCls}-selection-column {{rowSelection.selections ? '${prefixCls}-selection-column-custom': ''}}">
                     <div class="${prefixCls}-selection">
                         <s-checkbox
+                            s-if="rowSelection.type !== 'radio'"
                             checked="{{getAllChecked(renderData, selectedRowKeys)}}"
                             disabled="{{getAllDisabled(renderData, selectedRowKeys)}}"
                             indeterminate="{{getIndeterminate(selectedRowKeys, renderData)}}"

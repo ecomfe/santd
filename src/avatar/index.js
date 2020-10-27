@@ -13,7 +13,8 @@ const prefixCls = classCreator('avatar')();
 export default san.defineComponent({
     dataTypes: {
         shape: DataTypes.oneOf(['circle', 'square']),
-        size: DataTypes.oneOfType([DataTypes.string, DataTypes.number])
+        size: DataTypes.oneOfType([DataTypes.string, DataTypes.number]),
+        gap: DataTypes.number
     },
 
     components: {
@@ -26,7 +27,8 @@ export default san.defineComponent({
             shape: 'circle',
             size: 'default',
             isImgExist: true,
-            scaleId: guid(prefixCls)
+            scaleId: guid(prefixCls),
+            gap: 4
         };
     },
 
@@ -65,13 +67,15 @@ export default san.defineComponent({
     },
 
     updated() {
+        let gap = this.data.get('gap');
         const childrenNode = document.getElementById(this.data.get('scaleId'));
 
         // update scaleStyle
         if (childrenNode) {
             const childrenWidth = childrenNode.offsetWidth;
             const avatarWidth = this.el.getBoundingClientRect().width;
-            const scale = (avatarWidth - 8 < childrenWidth) ? (avatarWidth - 8) / childrenWidth : 1;
+            gap = gap * 2 < avatarWidth ? gap : 4;
+            const scale = (avatarWidth - gap * 2 < childrenWidth) ? (avatarWidth - gap * 2) / childrenWidth : 1;
 
             const transformString = `scale(${scale}) translateX(-50%)`;
             let scaleStyle = [

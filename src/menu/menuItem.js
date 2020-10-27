@@ -13,7 +13,7 @@ export default san.defineComponent({
         key: DataTypes.oneOfType([DataTypes.string, DataTypes.number]),
         title: DataTypes.string,
         multiple: DataTypes.bool,
-        selectedKeys: DataTypes.array
+        selectedKeys: DataTypes.oneOfType([DataTypes.string, DataTypes.array])
     },
     computed: {
         classes() {
@@ -33,7 +33,10 @@ export default san.defineComponent({
         },
         isSelected() {
             const key = this.data.get('key');
-            const selectedKeys = this.data.get('selectedKeys') || [];
+            let selectedKeys = this.data.get('selectedKeys') || [];
+            if (typeof selectedKeys === 'string') {
+                selectedKeys = [selectedKeys];
+            }
             return selectedKeys.includes(key);
         },
         active() {

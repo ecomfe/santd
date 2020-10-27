@@ -18,7 +18,7 @@ export default san.defineComponent({
         ['progressDot', 'status', 'hasChange'].forEach(key => {
             this.data.set(key === 'status' ? 'parentStatus' : key, parentData[key]);
         });
-
+        this.data.set('hasSubTitle', this.data.get('subTitle') || !!this.sourceSlots.named.subTitle);
         this.data.set('hasTitle', this.data.get('title') || !!this.sourceSlots.named.title);
         this.data.set('hasDescription', this.data.get('description') || !!this.sourceSlots.named.description);
         this.data.set('hasIcon', this.data.get('icon') || !!this.sourceSlots.named.icon);
@@ -35,8 +35,9 @@ export default san.defineComponent({
         's-icon': Icon
     },
     handleClick() {
+        const disabled = this.data.get('disabled');
         const stepIndex = this.data.get('stepIndex');
-        this.dispatch('santd_steps_clickStep', stepIndex);
+        this.dispatch('santd_steps_clickStep', {stepIndex, disabled});
     },
     template: `<div
         class="${prefixCls}-item ${prefixCls}-item-{{status}} {{hasIcon ? '${prefixCls}-item-custom': ''}}"
@@ -69,9 +70,17 @@ export default san.defineComponent({
             <span class="${prefixCls}-icon" s-else>{{stepNumber}}</span>
         </div>
         <div class="${prefixCls}-item-content">
-            <div class="${prefixCls}-item-title" s-if="hasTitle">
-                <template s-if="title">{{title}}</template>
-                <slot name="title" s-else />
+            <div class="${prefixCls}-item-title">
+                <template s-if="hasTitle">
+                    <template s-if="title">{{title}}</template>
+                    <slot name="title" s-else />
+                </template>
+                <template s-if="hasSubTitle">
+                    <span class="${prefixCls}-item-subTitle">
+                        <template s-if="subTitle">{{subTitle}}</template>
+                        <slot name="subTitle" s-else />
+                    </span>
+                </template>
             </div>
             <div class="${prefixCls}-item-description" s-if="hasDescription">
                 <template s-if="description">{{description}}</template>

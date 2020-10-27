@@ -70,6 +70,7 @@ export default san.defineComponent({
                         on-afterClose="afterClose"
                     >
                         <slot/>
+                        <slot name="closeIcon" slot="closeIcon"/>
                         <slot name="footer" slot="footer">
                             <s-button s-bind="{{cancelButtonProps}}"
                                 on-click="handleCancel"

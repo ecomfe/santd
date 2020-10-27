@@ -7,11 +7,14 @@
 ```html
 <template>
     <div>
-        <s-table data="{{data}}" columns="{{columns}}"></s-table>
+        checkStrictly: <s-switch on-change='onChange' defaultChecked="{{false}}"></s-switch >
+        <s-table rowSelection="{{rowSelection}}" data="{{data}}"
+        columns="{{columns}}" onExpandedRowsChange="{{onExpandedRowsChange}}"></s-table>
     </div>
 </template>
 <script>
 import Table from 'santd/table';
+import Switch from 'santd/switch';
 
 const columns = [
     {
@@ -59,6 +62,7 @@ const data = [
               address: 'New York No. 3 Lake Park'
             }
           ]
+
         },
         {
           key: 13,
@@ -100,13 +104,27 @@ const data = [
 
 export default {
     components: {
-        's-table': Table
+        's-table': Table,
+        's-switch': Switch
     },
     initData() {
         return {
             columns: columns,
-            data: data
+            data: data,
+            rowSelection: {
+                checkStrictly: false,
+                selectedRowKeys: []
+            },
+            onExpandedRowsChange: (item) => {
+              console.log('onExpandedRowsChange', item)
+            }
         }
+    },
+
+    onChange(checked) {
+      let rowSelection = this.data.get('rowSelection');
+      rowSelection.checkStrictly = checked;
+      this.data.set('rowSelection', rowSelection);
     }
 }
 </script>

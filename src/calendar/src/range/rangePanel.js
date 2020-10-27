@@ -80,6 +80,7 @@ export default san.defineComponent({
                     disabledDate="{{disabledDate}}"
                     placeholder="{{placeholder}}"
                     disabledTime="{{disabledTime}}"
+                    inputReadOnly="{{inputReadOnly}}"
                     value="{{value || defaultValue}}"
                     showClear="{{false}}"
                     selectedValue="{{dateInputValue(selectedValue)}}"

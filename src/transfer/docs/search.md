@@ -11,6 +11,7 @@
             targetKeys="{{targetKeys}}"
             filterOption="{{filterOption}}"
             showSearch="{{true}}"
+            locale="{{locale}}"
             on-change="handleChange"
             on-search="handleSearch"
         />
@@ -24,7 +25,8 @@ export default {
         return {
             mockData: [],
             targetKeys: [],
-            filterOption: (inputValue, option) => option.description.indexOf(inputValue) > -1
+            filterOption: (inputValue, option) => option.description.indexOf(inputValue) > -1,
+            locale: {itemUnit: '项', itemsUnit: '项', searchPlaceholder: '请输入搜索内容'}
         };
     },
     attached() {

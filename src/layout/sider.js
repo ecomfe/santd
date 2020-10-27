@@ -35,7 +35,8 @@ export default san.defineComponent({
         theme: DataTypes.oneOf(['light', 'dark']),
         width: DataTypes.oneOfType([DataTypes.string, DataTypes.number]),
         breakpoint: DataTypes.oneOf(['xs', 'sm', 'md', 'lg', 'xl', 'xxl']),
-        collapsed: DataTypes.bool
+        collapsed: DataTypes.bool,
+        zeroWidthTriggerStyle: DataTypes.oneOfType([DataTypes.string, DataTypes.object])
     },
 
     components: {
@@ -143,6 +144,7 @@ export default san.defineComponent({
             <span
                 s-if="collapsedWidth === 0 && trigger !== 'null' && mediaChange"
                 class="${prefixCls}-zero-width-trigger"
+                style="{{zeroWidthTriggerStyle}}"
                 on-click="toggle"
             >
                 <s-icon type="{{trigger || 'bars'}}" />

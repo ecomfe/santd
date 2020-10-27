@@ -1,14 +1,14 @@
 ## API
 
 ```html
-<s-layou>
+<s-layout>
     <s-header>header</s-header>
     <s-layout>
         <s-sider>left sidebar</s-sider>
         <s-content>main content</s-content>
         <s-sider>right sidebar</s-sider>
     </s-layout>
-    <Footer>footer</Footer>
+    <s-footer>footer</s-footer>
 </s-layout>
 ```
 
@@ -18,6 +18,7 @@
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
+| className | 容器 className | string | - |
 | hasSider | 表示子元素里有 Sider，一般不用指定。可用于服务端渲染时避免样式闪动 | boolean | - |
 | style | layout样式 | CSSProperties | - |
 
@@ -30,6 +31,7 @@
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | breakpoint | 触发响应式布局的断点 | `Enum { 'xs', 'sm', 'md', 'lg', 'xl', 'xxl' }` | - |
+| className | 容器 className | string | - |
 | collapsed | 当前收起状态 | boolean | - |
 | collapsedWidth | 收缩宽度，设置为 0 会出现特殊 trigger | number | 80 |
 | collapsible | 是否可收起 | boolean | false |
@@ -39,6 +41,7 @@
 | theme | 主题颜色 | string: `light` `dark` | `dark` |
 | trigger | 自定义 trigger，设置为 null 时隐藏 trigger | string,如 `search` `copy` 等合法icon的type | - |
 | width | 宽度 | number | 200 |
+| zeroWidthTriggerStyle | 指定当 `collapsedWidth` 为 0 时出现的特殊 trigger 的样式 | string \| object | - |
 
 #### breakpoint width
 
@@ -57,5 +60,5 @@
 ### 事件
 | 事件名称 | 说明 | 回调参数 |
 | --- | --- | --- |
-| on-collapse | 展开-收起时的回调函数，当点击时，可获得当前的状态 | - |
+| on-collapse | 展开-收起时的回调函数，当点击时，可获得当前的状态 | collapsed |
 | on-breakpoint | 触发响应式布局断点时的回调 | - |

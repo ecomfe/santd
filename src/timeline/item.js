@@ -17,7 +17,8 @@ export default san.defineComponent({
     initData() {
         return {
             color: 'blue',
-            pending: false
+            pending: false,
+            label: ''
         };
     },
     inited() {
@@ -40,6 +41,7 @@ export default san.defineComponent({
             >
                 <slot name="dot" />
             </div>
+            <div class="${prefixCls}-item-label">{{label}}</div>
             <div class="${prefixCls}-item-content"><slot /></div>
         </li>
     `

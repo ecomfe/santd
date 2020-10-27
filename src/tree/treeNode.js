@@ -48,7 +48,8 @@ export default san.defineComponent({
         isLeaf: DataTypes.bool,
         key: DataTypes.string,
         selectable: DataTypes.bool,
-        title: DataTypes.any
+        title: DataTypes.any,
+        treeNodeLabelProp: DataTypes.string
     },
 
     initData() {
@@ -56,7 +57,8 @@ export default san.defineComponent({
             selectable: true,
             disabled: false,
             loading: false,
-            hasTitle: true
+            hasTitle: true,
+            treeNodeLabelProp: 'title'
         };
     },
 
@@ -225,7 +227,7 @@ export default san.defineComponent({
     },
 
     template: `
-        <li class="{{classes}}">
+        <li class="{{classes}}" treeNodeLabelProp="{{treeNodeLabelProp}}">
             <span
                 class="${prefixCls}-switcher ${prefixCls}-switcher_{{showExpandIcon ? expanded ? 'open' : 'close' : 'noop'}}"
                 on-click="handleNodeExpand"
@@ -259,6 +261,7 @@ export default san.defineComponent({
                     s-if="treeData"
                     s-for="tree in treeData"
                     selectedKeys="{{selectedKeys}}"
+                    treeNodeLabelProp="{{treeNodeLabelProp}}"
                     allCheckedKeys="{{allCheckedKeys}}"
                     allHalfCheckedKeys="{{allHalfCheckedKeys}}"
                     defaultExpandAll="{{defaultExpandAll}}"

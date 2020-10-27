@@ -31,13 +31,14 @@ export default san.defineComponent({
                 let classArr = [`${prefixCls}-tab`];
                 // 获取parent节点
                 let slot = tabPanes[index] && tabPanes[index].sourceSlots.named.tab || null;
-
+                let closeIcon = tabPanes[index] && tabPanes[index].sourceSlots.named.closeIcon || null;
                 tabBar.active && classArr.push(`${prefixCls}-tab-active`);
                 tabBar.disabled && classArr.push(`${prefixCls}-tab-disabled`);
 
                 return {
                     ...tabBar,
                     slot,
+                    closeIcon,
                     classes: classArr,
                     style: style
                 };
@@ -49,7 +50,6 @@ export default san.defineComponent({
             return;
         }
         this.fire('tabClick', {key, e});
-        this.dispatch('santd_tabs_tabClick', {key, e});
     },
     handleRemoveTab(key, e) {
         e.stopPropagation();
@@ -84,12 +84,14 @@ export default san.defineComponent({
                     <template s-else>
                         {{tabBar.tab}}
                     </template>
-                    <s-icon
-                        type="close"
-                        class="${prefixCls}-close-x"
-                        s-if="tabBar.closable === undefined ? true : tabBar.closable"
-                        on-click="handleRemoveTab(tabBar.key, $event)"
-                    />
+                    <span on-click="handleRemoveTab(tabBar.key, $event)" s-if="tabBar.closable === undefined ? true : tabBar.closable">
+                        <s-customtab s-if="tabBar.closeIcon" slot="{{tabBar.closeIcon}}"/>
+                        <s-icon
+                            s-else
+                            type="close"
+                            class="${prefixCls}-close-x"
+                        />
+                    </span>
                 </div>
                 <template s-else>
                     <template s-if="tabBar.slot">

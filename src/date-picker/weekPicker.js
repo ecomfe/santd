@@ -25,10 +25,17 @@ export default san.defineComponent({
             allowClear: true,
             format: 'gggg-wo',
             placements: Placements,
-            trigger: 'click'
+            trigger: 'click',
+            popupPlacement: 'bottomLeft'
         };
     },
     inited() {
+        let align = this.data.get('align');
+        let placements = this.data.get('placements');
+        let popupPlacement = this.data.get('popupPlacement');
+        if (align && typeof align === 'object') {
+            placements[popupPlacement] = {...placements[popupPlacement], ...align};
+        }
         this.data.set('defaultValue', this.data.get('defaultPickerValue') || moment());
         this.data.set('hasExtraFooter', !!this.sourceSlots.named.renderExtraFooter);
         this.data.set('hasSuffixIcon', !!this.sourceSlots.named.suffixIcon);
@@ -78,20 +85,21 @@ export default san.defineComponent({
                 visible="{{open}}"
                 action="{{disabled ? [] : trigger}}"
                 builtinPlacements="{{placements}}"
-                popupPlacement="bottomLeft"
+                popupPlacement="{{popupPlacement}}"
                 on-visibleChange="handleOpenChange"
             >
                 <s-calendar
                     slot="popup"
                     style="{{popupStyle}}"
                     showWeekNumber="{{true}}"
+                    inputReadOnly="{{inputReadOnly}}"
                     format="{{format}}"
                     showDateInput="{{false}}"
                     showToday="{{false}}"
                     disabledDate="{{disabledDate}}"
                     value="{{value || defaultValue}}"
-                    locale="{{locale.lang}}"
-                    localeCode="{{localeCode}}"
+                    locale="{{customLocale.lang}}"
+                    localeCode="{{customLocaleCode}}"
                     hasExtraFooter="{{hasExtraFooter}}"
                     on-select="handleChange"
                     on-panelChange="handleCalendarChange"
@@ -103,7 +111,7 @@ export default san.defineComponent({
                     disabled="{{disabled}}"
                     readOnly
                     value="{{displayValue}}"
-                    placeholder="{{placeholder || locale.lang.placeholder}}"
+                    placeholder="{{placeholder || customLocale.lang.placeholder}}"
                     class="{{pickerInputClass}}"
                     tabIndex="{{tabIndex}}"
                     name="{{name}}"

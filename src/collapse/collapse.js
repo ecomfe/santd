@@ -13,15 +13,28 @@ export default san.defineComponent({
         activeKey: DataTypes.oneOfType([DataTypes.string, DataTypes.array]),
         defaultActiveKey: DataTypes.oneOfType([DataTypes.string, DataTypes.array]),
         acordion: DataTypes.bool,
-        destroyInactivePanel: DataTypes.bool
+        destroyInactivePanel: DataTypes.bool,
+        expandIconPosition: DataTypes.string
     },
 
     initData() {
         return {
             bordered: true,
             accordion: false,
-            destroyInactivePanel: false
+            destroyInactivePanel: false,
+            expandIconPosition: 'left'
         };
+    },
+
+    computed: {
+        classes() {
+            const expandIconPosition = this.data.get('expandIconPosition') || 'left';
+            const bordered = this.data.get('bordered');
+            let classArr = [prefixCls];
+            classArr.push(`${prefixCls}-icon-position-${expandIconPosition}`);
+            !bordered && classArr.push(`${prefixCls}-borderless`);
+            return classArr;
+        }
     },
 
     inited() {
@@ -87,7 +100,7 @@ export default san.defineComponent({
     },
 
     template: `
-        <div class="${prefixCls} {{bordered ? '' : '${prefixCls}-borderless'}}" role="{{accordion ? 'tablist' : ''}}">
+        <div class="{{classes}}" role="{{accordion ? 'tablist' : ''}}">
             <slot />
         </div>
     `

@@ -13,6 +13,8 @@ import Tip from './tip.md';
 import Vertical from './vertical.md';
 import Input from './input.md';
 import Tooltip from './tooltip.md';
+import Placement from './placement.md';
+import Reverse from './reverse.md';
 
 export default san.defineComponent({
     components: {
@@ -25,7 +27,9 @@ export default san.defineComponent({
         tip: Tip,
         vertical: Vertical,
         input: Input,
-        tooltip: Tooltip
+        tooltip: Tooltip,
+        placement: Placement,
+        reverse: Reverse
     },
     template: `
         <div>
@@ -38,6 +42,8 @@ export default san.defineComponent({
             <tip/>
             <mark/>
             <tooltip/>
+            <placement/>
+            <reverse/>
             <readme/>
         </div>
     `

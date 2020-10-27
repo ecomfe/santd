@@ -83,12 +83,17 @@ function getPlacementStyle(placement) {
     return style;
 }
 
-function getNotificationInstance(prefixCls, placement, callback) {
+function getNotificationInstance(prefixCls, closeIcon, placement, callback) {
     const cacheKey = `${prefixCls}-${placement}`;
+    let closeIconNode = `<s-icon slot="close-icon" class="${prefixCls}-close-icon" type="close"/>`;
 
     if (notificationInstance[cacheKey]) {
         callback(notificationInstance[cacheKey]);
         return;
+    }
+    // 自定义关闭按钮
+    if (closeIcon) {
+        closeIconNode = `<span slot="close-icon">${closeIcon}</span>`;
     }
 
     Notification.newInstance({
@@ -96,7 +101,7 @@ function getNotificationInstance(prefixCls, placement, callback) {
         className: `${prefixCls}-${placement}`,
         style: getPlacementStyle(placement),
         getContainer: defaultGetContainer,
-        closeIcon: `<s-icon slot="close-icon" class="${prefixCls}-close-icon" type="close"/>`
+        closeIcon: closeIconNode
     }, notification => {
         notificationInstance[cacheKey] = notification;
         callback(notification);
@@ -116,6 +121,7 @@ function notice(args) {
         type,
         onClose,
         onClick,
+        closeIcon,
         ...props
     } = args;
     const outerPrefixCls = args.prefixCls || 'santd-notification';
@@ -126,6 +132,7 @@ function notice(args) {
     if (icon) {
         iconNode = `<span class="${prefixCls}-icon">${icon}</span>`; // mark
     }
+
     else if (type) {
         const iconType = typeToIcon[type];
         iconNode = `<s-icon class="${prefixCls}-icon ${prefixCls}-icon-${type}" type="${iconType}"/>`; // mark
@@ -139,7 +146,7 @@ function notice(args) {
 
     const contentClass = iconNode ? `${prefixCls}-with-icon` : '';
 
-    getNotificationInstance(outerPrefixCls, placement, notification => {
+    getNotificationInstance(outerPrefixCls, closeIcon, placement, notification => {
         notification.notice({
             content: `
                 <div class="${contentClass}">

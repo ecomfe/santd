@@ -9,6 +9,7 @@
 | bordered  | 带边框风格的折叠面板 | boolean            | `true` |
 | accordion  | 手风琴模式 | boolean            | `false` |
 | on-change  | 切换面板的回调          | Function  | 无         |
+| expandIconPosition | 设置图标位置          |  left|right | `left` |
 | destroyInactivePanel | 销毁折叠隐藏的面板          | boolean    | `false` |
 
 ### Collapse.Panel

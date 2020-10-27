@@ -9,6 +9,8 @@
         <s-table
             columns="{{columns}}"
             data="{{data}}"
+            rowExpandable="{{rowExpandable}}"
+            onExpandedRowsChange="{{onExpandedRowsChange}}"
         >
             <a slot="action" href="javascript:;">Delete</a>
             <p slot="expandedRowRender" style="margin: 0">{{record.description}}</p>
@@ -57,7 +59,13 @@ export default {
     initData() {
         return {
             columns,
-            data
+            data,
+            rowExpandable: (res) => {
+                return res.name !== 'Joe Black';
+            },
+            onExpandedRowsChange: (item) => {
+              console.log('item', item)
+            }
         }
     }
 }

@@ -14,6 +14,8 @@ import Errors from './error.md';
 import Progress from './progressDot.md';
 import CustomDot from './customDot.md';
 import Click from './click.md';
+import Navigation from './navigation.md';
+import Initial from './initial.md';
 
 export default san.defineComponent({
     components: {
@@ -28,7 +30,9 @@ export default san.defineComponent({
         error: Errors,
         progess: Progress,
         customdot: CustomDot,
-        click: Click
+        click: Click,
+        navigation: Navigation,
+        initial: Initial
     },
     template: `
         <div>
@@ -43,6 +47,8 @@ export default san.defineComponent({
             <progess/>
             <customdot/>
             <click/>
+            <initial/>
+            <navigation/>
             <readme/>
         </div>
     `

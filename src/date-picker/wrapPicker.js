@@ -35,9 +35,14 @@ export default function (Picker, pickerType) {
         },
 
         computed: {
-            ...localeReceiver.computed,
             ...Picker.prototype.computed,
-
+            customLocale() {
+                let locale = this.data.get('locale') || {};
+                return {...localeReceiver.computed.locale.bind(this)(), ...locale};
+            },
+            customLocaleCode() {
+                return localeReceiver.computed.localeCode.bind(this)();
+            },
             format() {
                 const format = this.data.get('format');
                 const showTime = this.data.get('showTime');

@@ -53,12 +53,27 @@ export default san.defineComponent({
         return '';
     },
 
-    markStyle(point, vertical, max, min) {
+    /**
+     * 设置刻度标记值样式
+     *
+     * @param  {Number} point 刻度标记值
+     * @param  {Object} options 刻度标记参数,key包含vertical, reverse, direction, max, min
+     * @param  {Boolean} vertical 是否垂直
+     * @param  {Boolean} reverse 是否反向坐标轴
+     * @param  {String} direction 结合是否垂直&&是否反向坐标轴判断出的刻度位置（top、left、bottom、right）
+     * @param  {Number} max 最大值
+     * @param  {Number} min 最小值
+     * @return {String} 刻度标记值样式
+     */
+    markStyle(point, options = {}) {
+        let {vertical, reverse, direction, max, min} = options;
         const offset = (point - min) / (max - min) * 100;
-
-        return vertical
-        ? `margin-bottom:-50%;bottom:${offset}%;`
-        : `left: ${offset}%;transform:translateX(-50%);-ms-transform:translateX(-50%)`;
+        const distance = reverse ? '50%' : '-50%';
+        if (vertical) {
+            return `margin-${direction}:-50%;${direction}:${offset}%;`;
+        } else {
+            return `${direction}: ${offset}%;transform:translateX(${distance});-ms-transform:translateX(${distance})`;
+        }
     },
 
     handleClickLabel(e, point) {
@@ -69,7 +84,7 @@ export default san.defineComponent({
         <span
             s-for="mark in marksArr trackBy mark.point"
             class="${prefixCls}-text{{markClass(mark.point, included, max, min)}}"
-            style="{{mark.style}}{{markStyle(mark.point, vertical, max, min)}}"
+            style="{{mark.style}}{{markStyle(mark.point, {vertical, reverse, direction, max, min})}}"
             on-mousedown="handleClickLabel($event, point)"
             on-touchstart="handleClickLabel($event, point)"
         >{{mark.label}}</span>

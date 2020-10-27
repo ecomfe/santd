@@ -16,6 +16,7 @@
             <s-button on-click="clearAll">Clear filters and sorters</s-button>
         </div>
         <s-table
+            locale="{{locale}}"
             columns="{{columns}}"
             data="{{data}}"
             on-change="handleChange"
@@ -76,6 +77,11 @@ export default {
         return {
             filteredInfo: null,
             sortedInfo: null,
+            locale: {
+                emptyText: '暂无数据',
+                filterConfirm: '确定',
+                filterReset: '重置'
+            },
             columns: [{
                 title: 'Name',
                 dataIndex: 'name',

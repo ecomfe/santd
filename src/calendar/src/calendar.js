@@ -117,6 +117,7 @@ export default inherits(san.defineComponent({
                     placeholder="{{dateInputPlaceholder}}"
                     showClear
                     disabledTime="{{disabledTime}}"
+                    inputReadOnly="{{inputReadOnly}}"
                     disabledDate="{{disabledDate}}"
                     prefixCls="{{prefixCls}}"
                     selectedValue="{{selectedValue}}"

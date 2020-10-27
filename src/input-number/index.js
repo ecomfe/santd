@@ -108,6 +108,7 @@ export default san.defineComponent({
     */
     setStatus(val, max, min, fireEvent) {
         if (this.isNotCompleteNumber(val)) {
+            this.setNotNumberStatus(fireEvent);
             return false;
         }
         this.data.set('upDisabledConfirm', val >= max);
@@ -115,6 +116,13 @@ export default san.defineComponent({
         val <= max && val >= min && this.fire(fireEvent, val);
         val = val > max ? max : val < min ? min : val;
         this.data.set('inputDisplayValue', this.inputDisplayValueFormat(val), {force: true});
+    },
+
+    setNotNumberStatus(fireEvent) {
+        this.data.set('upDisabledConfirm', false);
+        this.data.set('downDisabledConfirm', false);
+        this.fire(fireEvent, null);
+        this.data.set('inputDisplayValue', null, {force: true});
     },
 
     getStep(val, rat, max, min, type) {
@@ -223,10 +231,6 @@ export default san.defineComponent({
         }
         let value = this.getCurrentValidValue(input, max, min);
         let newValue = this.isNotCompleteNumber(parseFloat(value, 10)) ? undefined : parseFloat(value, 10);
-        // hack 如果传入的值不合法，则默认为最小值
-        if (!newValue) {
-            newValue = min;
-        }
         this.setStatus(newValue, max, min, 'change');
         this.fire('blur', newValue);
     },
@@ -239,6 +243,9 @@ export default san.defineComponent({
         }
         else if (e.keyCode === 40) {
             this.stepFn(inputValue, step, 'down', 'keydown');
+        }
+        else if (e.keyCode === 13) {
+            this.fire('pressEnter', e);
         }
     },
 

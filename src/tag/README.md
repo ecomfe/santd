@@ -6,8 +6,10 @@
 | --- | --- | --- | --- |
 | closable | 标签是否可以关闭 | boolean | false |
 | color | 标签色 | string | - |
-| on-close | 关闭时回调 | function | -|
+| closeIcon| 自定义关闭按钮 | slot | - |
+| on-close | 关闭时回调, closable为true时有效 | function | -|
 | visible| 是否显示标签 | boolean | `true` |
+| icon| 设置图标 | string | - |
 
 ### Tag.CheckableTag
 | 参数 | 说明 | 类型 | 默认值 |

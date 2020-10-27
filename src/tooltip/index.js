@@ -6,7 +6,7 @@
 import './style/index.less';
 import san from 'san';
 import Trigger from '../core/trigger';
-import Placements from './placements';
+import Placements, {colorList} from './placements';
 import {classCreator} from '../core/util';
 import {getPlacements} from './util';
 
@@ -25,21 +25,39 @@ export default san.defineComponent({
             transitionName: 'zoom-big-fast',
             arrowPointAtCenter: false,
             autoAdjustOverflow: true,
-            useDomNodeForce: false
+            useDomNodeForce: false,
+            color: ''
         };
     },
 
     computed: {
         builtinPlacements() {
-            const builtinPlacements = this.data.get('placements');
             const arrowPointAtCenter = this.data.get('arrowPointAtCenter');
             const autoAdjustOverflow = this.data.get('autoAdjustOverflow');
-
-            return builtinPlacements || getPlacements({
+            return getPlacements({
                 arrowPointAtCenter,
                 verticalArrowShift: 8,
                 autoAdjustOverflow
             });
+        },
+        colorStyle() {
+            const color = this.data.get('color');
+            if (color) {
+                let bgColor = colorList[color] ? colorList[color] : color;
+                return {'background-color': bgColor};
+            }
+            return '';
+        },
+        arrowColorStyle() {
+            const color = this.data.get('color');
+            const placement = this.data.get('placement');
+            const direction = Placements[placement].direction;
+
+            if (color && placement) {
+                let bgColor = colorList[color] ? colorList[color] : color;
+                return {[`border-${direction}-color`]: bgColor};
+            }
+            return '';
         }
     },
 
@@ -78,8 +96,8 @@ export default san.defineComponent({
         >
             <slot />
             <template slot="popup">
-                <div class="${prefixCls}-arrow"></div>
-                <div class="${prefixCls}-inner" id="{{id}}" role="tooltip">
+                <div class="${prefixCls}-arrow" style="{{arrowColorStyle}}"></div>
+                <div class="${prefixCls}-inner" style="{{colorStyle}}" id="{{id}}" role="tooltip">
                     <slot name="title" s-if="!title" />
                     <template s-else>{{title}}</template>
                 </div>

@@ -10,6 +10,7 @@
 import './style/index.less';
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
+import KeyCode from '../core/util/keyCode';
 import isNumber from 'lodash/isNumber';
 import Icon from '../icon';
 import filters from '../modal/Dialog';
@@ -20,26 +21,35 @@ const styleType = DataTypes.oneOfType([DataTypes.string, DataTypes.object]);
 
 export default san.defineComponent({
     template: `
-        <div class="${prefixCls} ${prefixCls}-{{placement}} {{visible ? '${prefixCls}-open' : ''}}" style="z-index:{{zIndex}};">
+        <div
+            class="${prefixCls} ${prefixCls}-{{placement}} {{visible ? '${prefixCls}-open' : ''}} {{className}}"
+            style="z-index:{{zIndex}};"
+        >
             <div s-if="{{mask}}" class="${prefixCls}-mask" style="{{maskStyle}}" on-click="onMaskClick"></div>
-            <div class="${prefixCls}-content-wrapper" style="{{wrapStyle}}">
+            <div class="${prefixCls}-content-wrapper" style="{{wrapStyle}}" on-keydown="onKeyDown">
+                <div s-ref="sentinel" tabindex="0" style="width:0px;height:0px;overflow:hidden;"></div>
                 <div class="${prefixCls}-content">
-                    <div class="${prefixCls}-wrapper-body" style="{{containerStyle}}">
-                        <div s-if="{{title}}" class="${prefixCls}-header">
+                    <div class="${prefixCls}-wrapper-body" style="{{drawerStyle}}">
+                        <div s-if="{{title}}" class="${prefixCls}-header" style="{{headerStyle}}">
                             <div class="${prefixCls}-title">{{title}}</div>
                         </div>
-                        <button
-                            s-if="{{closable}}"
-                            on-click="close"
-                            aria-label="Close"
-                            class="${prefixCls}-close"
-                        >
-                            <span class="${prefixCls}-close-x">
-                                <s-icon type="close" />
-                            </span>
-                        </button>
+                        <div s-if="{{closable}}" class="${prefixCls}-close-wrapper" on-click="close">
+                            <slot name="closeIcon" />
+                            <button
+                                s-if="showCloseBtn"
+                                aria-label="Close"
+                                class="${prefixCls}-close"
+                            >
+                                <span class="${prefixCls}-close-x">
+                                    <s-icon type="close" />
+                                </span>
+                            </button>
+                        </div>
                         <div class="${prefixCls}-body" style="{{bodyStyle}}">
                             <slot />
+                        </div>
+                        <div class="${prefixCls}-footer" style="{{footerStyle}}">
+                            <slot name="footer" />
                         </div>
                     </div>
                 </div>
@@ -60,7 +70,15 @@ export default san.defineComponent({
         placement: placementType,
         title: DataTypes.string,
         visible: DataTypes.bool,
-        zIndex: DataTypes.number
+        zIndex: DataTypes.number,
+        keyboard: DataTypes.bool,
+        closeIcon: DataTypes.any,
+        footer: DataTypes.any,
+        footerStyle: styleType,
+        drawerStyle: styleType,
+        headerStyle: styleType,
+        afterVisibleChange: DataTypes.func,
+        className: DataTypes.string
     },
 
     components: {
@@ -99,8 +117,29 @@ export default san.defineComponent({
             maskStyle: {},
             width: 256,
             height: 256,
-            placement: 'right'
+            placement: 'right',
+            keyboard: true,
+            showCloseBtn: false
         };
+    },
+
+    inited() {
+        this.watch('visible', val => {
+            if (val) {
+                this.nextTick(() => {
+                    // wrapper内的元素聚焦之后，wrapper才能生效keydown事件监听
+                    const sentinel = this.ref('sentinel');
+                    !(this.slot('closeIcon')[0] && this.slot('closeIcon')[0].children.length)
+                        && this.data.set('showCloseBtn', true);
+                    sentinel && sentinel.focus();
+                });
+            }
+
+            // 切换抽屉时动画结束后的回调
+            setTimeout(() => {
+                this.fire('afterVisibleChange', val);
+            }, 300);
+        });
     },
 
     onMaskClick(e) {
@@ -115,5 +154,12 @@ export default san.defineComponent({
             this.fire('close', e);
         }
         this.data.set('visible', false);
+    },
+
+    onKeyDown(e) {
+        if (this.data.get('keyboard') && e.keyCode === KeyCode.ESC) {
+            e.stopPropagation();
+            this.close(e);
+        }
     }
 });

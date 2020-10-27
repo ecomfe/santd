@@ -28,13 +28,27 @@ const contentTemplate = `
         var-index="{{index}}"
         var-column="{{column}}"
     />
-    <template s-else>{{column.children || item[column.dataIndex] | raw}}</template>
+    <s-tooltip s-elif="column.ellipsis" placement="topLeft" title="{{column.children || item[column.dataIndex] | raw}}">
+        <div class="${prefixCls}-row-item">{{column.children || item[column.dataIndex] | raw}}</div>
+    </s-tooltip>
+    <template s-else>
+       <div class="${prefixCls}-row-item">{{column.children || item[column.dataIndex] | raw}}</div>
+    </template>
 `;
 
 export default {
     template: `
         <td s-if="rowSelection" class="${prefixCls}-selection-column">
+            <s-radio s-if="rowSelection.type === 'radio'"
+                autoFocus="{{getCheckboxProps(item, 'autoFocus')}}"
+                checked="{{getItemChecked(item, selectedRowKeys)}}"
+                defaultChecked="{{getCheckboxProps(item, 'defaultChecked')}}"
+                name="{{getCheckboxProps(item, 'name')}}"
+                disabled="{{getCheckboxProps(item, 'disabled')}}"
+                on-click="handleSelection($event, item, index)"
+            ></s-radio>
             <s-checkbox
+                s-else
                 autoFocus="{{getCheckboxProps(item, 'autoFocus')}}"
                 checked="{{getItemChecked(item, selectedRowKeys)}}"
                 defaultChecked="{{getCheckboxProps(item, 'defaultChecked')}}"
@@ -45,21 +59,23 @@ export default {
         </td>
         <template s-for="column, columnIndex in getColumns(tdColumns, item, index)">
             <td s-if="hasExpandedRowRender && columnIndex === 0" class="${prefixCls}-row-expand-icon-cell">
-                <span on-click="handleExpandRow(item)" s-if="hasExpandIcon">
-                    <slot name="expandIcon" var-record="{{item}}"/>
-                </span>
-                <span class="${prefixCls}-row-expand-icon ${prefixCls}-row-{{item.expanded ? 'expanded' : 'collapsed'}}" on-click="handleExpandRow(item)" s-else></span>
+                <template s-if="rowExpandable(item, columnIndex)">
+                    <span on-click="handleExpandRow(item)" s-if="hasExpandIcon">
+                        <slot name="expandIcon" var-record="{{item}}"/>
+                    </span>
+                    <span class="${prefixCls}-row-expand-icon ${prefixCls}-row-{{item.expanded ? 'expanded' : 'collapsed'}}" on-click="handleExpandRow(item)" s-else></span>
+                </template>
             </td>
-            <td s-if="column.attrs.colSpan" colspan="{{column.attrs.colSpan}}" class="{{getThClass(column)}}" style="{{getThStyle(column)}}">${contentTemplate}</td>
-            <td s-else-if="column.attrs.rowSpan" rowspan="{{column.attrs.rowSpan}}" class="{{getThClass(column)}}" style="{{getThStyle(column)}}">${contentTemplate}</td>
+            <td s-if="column.attrs.colSpan" colspan="{{column.attrs.colSpan}}" class="{{getThClass(column)}} {{column.ellipsis ? '${prefixCls}-cell-ellipsis' : ''}}" style="{{getThStyle(column)}}">${contentTemplate}</td>
+            <td s-else-if="column.attrs.rowSpan" rowspan="{{column.attrs.rowSpan}}" class="{{getThClass(column)}} {{column.ellipsis ? '${prefixCls}-cell-ellipsis' : ''}}" style="{{getThStyle(column)}}">${contentTemplate}</td>
             <td
                 s-else-if="column.attrs.colSpan && column.attrs.rowSpan"
                 colspan="{{column.attrs.colSpan}}"
                 rowspan="{{column.attrs.rowSpan}}"
-                class="{{getThClass(column)}}"
+                class="{{getThClass(column)}} {{column.ellipsis ? '${prefixCls}-cell-ellipsis' : ''}}"
                 style="{{getThStyle(column)}}"
             >${contentTemplate}</td>
-            <td s-else class="{{getThClass(column)}}" style="{{getThStyle(column)}}">${contentTemplate}</td>
+            <td s-else class="{{getThClass(column)}} {{column.ellipsis ? '${prefixCls}-cell-ellipsis' : ''}}" style="{{getThStyle(column)}}">${contentTemplate}</td>
         </template>
     `
 };

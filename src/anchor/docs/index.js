@@ -7,6 +7,9 @@ import Head from './head.md';
 import Basic from './basic.md';
 import Static from './static.md';
 import Click from './click.md';
+import Custom from './custom.md';
+import Change from './change.md';
+import TargetOffset from './targetOffset.md';
 
 export default san.defineComponent({
     components: {
@@ -14,7 +17,10 @@ export default san.defineComponent({
         head: Head,
         basic: Basic,
         static: Static,
-        click: Click
+        click: Click,
+        custom: Custom,
+        change: Change,
+        'target-offset': TargetOffset
     },
     template: `
         <div>
@@ -22,6 +28,9 @@ export default san.defineComponent({
             <basic/>
             <static/>
             <click/>
+            <custom/>
+            <change/>
+            <target-offset/>
             <readme/>
         </div>
     `

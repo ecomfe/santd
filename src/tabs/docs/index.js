@@ -16,6 +16,8 @@ import CardTop from './card-top.md';
 import CustomAdd from './custom-add.md';
 import CustomBar from './custom-bar.md';
 import Slide from './slide.md';
+import Center from './center.md';
+import Keyboard from './keyboard.md';
 
 export default san.defineComponent({
     components: {
@@ -32,13 +34,16 @@ export default san.defineComponent({
         editable: Editable,
         cardtop: CardTop,
         customadd: CustomAdd,
-        custombar: CustomBar
+        custombar: CustomBar,
+        center : Center,
+        keyboard: Keyboard
     },
     template: `
         <div>
             <desc/>
             <basic/>
             <disabled/>
+            <center/>
             <icon/>
             <slide/>
             <extra/>
@@ -49,6 +54,7 @@ export default san.defineComponent({
             <cardtop/>
             <customadd/>
             <custombar/>
+            <keyboard/>
             <readme/>
         </div>
     `

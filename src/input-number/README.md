@@ -15,6 +15,7 @@
 | step             | 每次改变步数，可以为小数                                   | number \| string          | 1 |
 | value            | 当前值                                                     | number                         | -               |
 | on-change        | 当input中的数值发生变化时触发                              | function(value: number \| string)         |   |
+| on-pressEnter    | 按下回车的回调                                           | function(e)         |   |
 
 ### 方法
 | 名称 | 描述 |

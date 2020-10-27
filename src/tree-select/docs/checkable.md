@@ -15,6 +15,7 @@
           showCheckedStrategy="{{SHOW_PARENT}}"
           placeholder="Please select"
           allowClear="{{true}}"
+          treeCheckStrictly="{{false}}"
           value="{{value}}"
           on-change="onChange"
       >

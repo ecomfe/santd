@@ -3,7 +3,12 @@
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | bodyStyle | 可用于设置 Drawer 的样式，调整浮层位置等 | string \| object | - |
+| drawerStyle | 用于设置 Drawer 弹出层的样式 | string \| object | - |
+| headerStyle | 用于设置 Drawer 头部的样式 | string \| object | - |
+| footer | 抽屉的页脚 | string \| object | - |
+| footerStyle | 抽屉页脚的样式 | string \| object | - |
 | closable | 是否显示右上角的关闭按钮 | boolean | true |
+| closeIcon | 自定义关闭图标 | slot | - |
 | destroyOnClose | (todo) 关闭时销毁 Drawer 里的子元素 | boolean | false |
 | getContainer | (todo) 指定 Drawer 挂载的 HTML 节点 | HTMLElement \| `() => HTMLElement` \| selectors | 'body' |
 | mask | 是否展示遮罩 | boolean | true |
@@ -15,6 +20,9 @@
 | title | 标题 | string | - |
 | visible | Drawer 是否可见 | boolean | - |
 | zIndex | 设置 Drawer 的 `z-index` | number | 1000 |
+| className | 对话框外层容器的类名 | string | - |
+| keyboard | 是否支持键盘esc关闭 | boolean | true |
+| afterVisibleChange | 切换抽屉时动画结束后的回调 | function(visible) | - |
 
 ## 回调 && 事件
 | 名称 | 说明 | 类型 | 默认值 |

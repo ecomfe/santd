@@ -34,7 +34,10 @@ export default san.defineComponent({
         readOnly: DataTypes.bool,
         suggestions: DataTypes.any,
         suggestionStyle: DataTypes.string,
-        value: DataTypes.string
+        value: DataTypes.string,
+        split: DataTypes.string,
+        validateSearch: DataTypes.func,
+        filterOption: DataTypes.oneOfType([DataTypes.bool, DataTypes.func])
     },
     initData() {
         return {
@@ -48,7 +51,8 @@ export default san.defineComponent({
             multiLines: false,
             placement: 'bottom',
             prefix: '@',
-            value: ''
+            value: '',
+            split: ' '
         };
     },
     computed: {
@@ -60,8 +64,8 @@ export default san.defineComponent({
     },
     messages: {
         santd_mention_itemSelect(e) {
-            const {value, start, end} = this.data.get();
-            let newInputValue = insertString(value, start, end, e.value);
+            const {value, start, end, split} = this.data.get();
+            let newInputValue = insertString(value, start, end, e.value, split);
             // 点击下拉选项后，设置输入框的值
             this.setInputValue(newInputValue);
             setCursorPosition(this.ref('mention-editor'), newInputValue.length);
@@ -139,15 +143,18 @@ export default san.defineComponent({
     // 匹配到的检索列表
     buildSugList() {
         // 获取检索词（光标左右非空白符的文字）
-        const {value, prefix} = this.data.get();
+        const {value, prefix, split, validateSearch} = this.data.get();
         // 需要先获取到上面行的字符数，而且，如果是同一行，不能加，只能在回车后的第一次才能加上
         const preLineOffset = this.ref('mention-editor').innerText.length;
         let anchorOffset = window.getSelection().anchorOffset; // 光标位置
         if (anchorOffset === 1) {
             anchorOffset += preLineOffset;
         }
-        const startPos = value.slice(0, anchorOffset).search(/\S+$/);
-        const endPos = value.slice(anchorOffset).search(/(\s|$)/);
+        // 对分隔符中的特殊字符进行转义
+        const splitRegExp = split.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+        const endRegExp = new RegExp(`${splitRegExp}|$`);
+        const startPos = value.slice(0, anchorOffset).lastIndexOf(split) + 1;
+        const endPos = value.slice(anchorOffset).search(endRegExp);
         this.data.set('start', startPos + 1);
         this.data.set('end', anchorOffset + endPos + 1);
         const word = value.slice(startPos, anchorOffset + endPos);
@@ -155,9 +162,13 @@ export default san.defineComponent({
         const rect = getSearchWordPos(this.ref('mention-editor'));
         this.data.set('position', rect);
         // suggestionsRegExp正则匹配出前缀符和检索文字
-        const suggestionsRegExp = getRegExp(prefix); // 生成前缀的正则
+        const suggestionsRegExp = getRegExp(prefix, split); // 生成前缀的正则
         const matchArr = suggestionsRegExp.exec(word);
-        if (!matchArr) {
+        // 未通过校验逻辑
+        if (
+            matchArr && matchArr.length > 3 && validateSearch && !validateSearch(matchArr[3])
+            || !matchArr
+        ) {
             return this.hideSug();
         }
         // 显示下拉框
@@ -166,10 +177,13 @@ export default san.defineComponent({
         this.onSearchChange(matchArr[3], matchArr[2]);
     },
     onSearchChange(value, trigger) {
+        const {defaultSuggestions, filterOption} = this.data.get();
         const searchValue = value.toLowerCase();
-        const filteredSuggestions = (this.data.get('defaultSuggestions') || []).filter(
+        const filteredSuggestions = (defaultSuggestions || []).filter(
             suggestion => (
-                suggestion.toLowerCase().indexOf(searchValue) !== -1
+                filterOption
+                ? filterOption(searchValue, suggestion)
+                : suggestion.toLowerCase().indexOf(searchValue) !== -1
             )
         );
         this.fire('searchChange', {

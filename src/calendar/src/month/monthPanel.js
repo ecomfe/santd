@@ -74,8 +74,11 @@ export default san.defineComponent({
                     cellRender="{{cellRender}}"
                     contentRender="{{contentRender}}"
                     prefixCls="{{prefixCls}}-month-panel"
+                    hasMonthRender="{{hasMonthRender}}"
                     on-select="setAndSelectValue"
-                />
+                >
+                <slot name="monthRender" slot="monthRender"/>
+                </s-monthtable>
             </div>
             <div class="{{prefixCls}}-month-panel-footer" s-if="hasExtraFooter">
                 <slot name="renderExtraFooter" />

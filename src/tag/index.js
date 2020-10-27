@@ -57,7 +57,8 @@ const Tag = san.defineComponent({
     initData() {
         return {
             closable: false,
-            visible: true
+            visible: true,
+            icon: ''
         };
     },
 
@@ -91,8 +92,13 @@ const Tag = san.defineComponent({
 
     template: `
         <div class="{{classes}}" style="{{color && !isPresetColor ? 'background-color:' + color : ''}}" on-click="handleClick">
+            <s-icon type="{{icon}}" s-if="icon"/>
             <slot />
-            <s-icon type="close" on-click="handleIconClick" s-if="closable" />
+            <span on-click="handleIconClick" s-if="closable">
+                <slot name="closeIcon">
+                    <s-icon type="close"/>
+                </slot>
+            </span>
             <s-wave s-if="isNeedWave" />
         </div>
     `

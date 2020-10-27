@@ -10,7 +10,11 @@ import './style/index';
 const generator = function ({suffixCls, tagName}) {
     const prefixCls = classCreator(suffixCls)();
     const template = `
-        <${tagName} class="${prefixCls} {{hasSider || siders.length > 0 ? '${prefixCls}-has-sider' : ''}}"><slot /></${tagName}>
+        <${tagName}
+            class="${prefixCls} {{hasSider || siders.length > 0 ? '${prefixCls}-has-sider' : ''}} {{className}}"
+        >
+            <slot />
+        </${tagName}>
     `;
     const baseComponent = san.defineComponent({
         messages: {

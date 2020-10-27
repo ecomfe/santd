@@ -17,6 +17,7 @@ const prefixCls = classCreator('rate')();
 export default san.defineComponent({
     dataTypes: {
         disabled: DataTypes.bool,
+        tooltips: DataTypes.arrayOf(DataTypes.string),
         value: DataTypes.number, // 传入组件的值，受控
         defaultValue: DataTypes.number, // 传入组件的默认值
         count: DataTypes.number, // 星星的个数

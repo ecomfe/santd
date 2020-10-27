@@ -24,7 +24,9 @@ const Tabs = san.defineComponent({
         tabPosition: DataTypes.oneOf(['top', 'right', 'bottom', 'left']),
         size: DataTypes.oneOf(['large', 'default', 'small']),
         animated: DataTypes.oneOfType([DataTypes.bool, DataTypes.object]),
-        tabBarGutter: DataTypes.number
+        tabBarGutter: DataTypes.number,
+        centered: DataTypes.bool,
+        keyboard: DataTypes.bool
     },
     initData() {
         return {
@@ -33,13 +35,16 @@ const Tabs = san.defineComponent({
             type: 'line',
             hideAdd: false,
             tabPosition: 'top',
-            children: []
+            children: [],
+            centered: false,
+            keyboard: true
         };
     },
     inited() {
         this.data.set('activeKey', this.data.get('activeKey') || this.data.get('defaultActiveKey'));
         this.data.set('hasRenderTabBar', !!this.sourceSlots.named.renderTabBar);
         this.data.set('hasExtraContent', !!this.sourceSlots.named.tabBarExtraContent);
+        this.data.set('hasAddIcon', !!this.sourceSlots.named.addIcon);
         this.tabPanes = [];
     },
     computed: {
@@ -47,11 +52,13 @@ const Tabs = san.defineComponent({
             const tabPosition = this.data.get('tabPosition');
             const size = this.data.get('size');
             const type = this.data.get('type');
+            const centered = this.data.get('centered');
             let classArr = [`${prefixCls}`, `${prefixCls}-${type}`, `${prefixCls}-${tabPosition}`];
 
             (tabPosition === 'left' || tabPosition === 'right') && classArr.push(`${prefixCls}-vertical`);
             !!size && classArr.push(`${prefixCls}-${size}`);
             type.indexOf('card') >= 0 && classArr.push(`${prefixCls}-card`);
+            centered && classArr.push(`${prefixCls}-center`);
 
             return classArr.join(' ');
         },
@@ -113,6 +120,9 @@ const Tabs = san.defineComponent({
         this.fire('tabClick', payload.key);
     },
     handleNavKeyDown(e) {
+        if (!this.data.get('keyboard')) {
+            return;
+        }
         const eventKeyCode = e.keyCode;
         if (eventKeyCode === KeyCode.ARROW_RIGHT || eventKeyCode === KeyCode.ARROW_DOWN) {
             e.preventDefault();
@@ -205,6 +215,7 @@ const Tabs = san.defineComponent({
                     tabBarStyle="{{tabBarStyle}}"
                     tabBarPosition="{{tabPosition}}"
                     hasExtraContent="{{hasExtraContent}}"
+                    hasAddIcon="{{hasAddIcon}}"
                     inkBarAnimated="{{hasAnimated.inkBar}}"
                     on-tabClick="handleTabClick"
                     on-keydown="native:handleNavKeyDown"
@@ -216,7 +227,8 @@ const Tabs = san.defineComponent({
                     size="{{size}}"
                     props="{{props}}"
                     s-else
-                ><slot name="tabBarExtraContent" slot="tabBarExtraContent" /></s-tabbar>
+                ><slot name="tabBarExtraContent" slot="tabBarExtraContent" />
+                <slot name="addIcon" slot="addIcon" /></s-tabbar>
             </template>
             <template s-else>
                 <slot name="renderTabBar" var-props="{{props}}" s-if="hasRenderTabBar" />
@@ -228,6 +240,7 @@ const Tabs = san.defineComponent({
                     tabBarStyle="{{tabBarStyle}}"
                     tabBarPosition="{{tabPosition}}"
                     hasExtraContent="{{hasExtraContent}}"
+                    hasAddIcon="{{hasAddIcon}}"
                     inkBarAnimated="{{hasAnimated.inkBar}}"
                     on-tabClick="handleTabClick"
                     on-keydown="native:handleNavKeyDown"
@@ -239,7 +252,8 @@ const Tabs = san.defineComponent({
                     size="{{size}}"
                     props="{{props}}"
                     s-else
-                ><slot name="tabBarExtraContent" slot="tabBarExtraContent" /></s-tabbar>
+                ><slot name="tabBarExtraContent" slot="tabBarExtraContent" />
+                <slot name="addIcon" slot="addIcon" /></s-tabbar>
                 <div class="{{contentClasses}}"><slot /></div>
             </template>
         </div>

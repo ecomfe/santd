@@ -13,6 +13,8 @@ const dataSource = ['12345', '23456', '34567'];
 | allowClear | 支持清除, 单选模式有效 | boolean | false |
 | autoFocus | 自动获取焦点 | boolean | false |
 | dataSource | 自动完成的数据源 | [] | |
+| dropdownMenuStyle | dropdown 菜单自定义样式 | string | |
+| defaultActiveFirstOption | 是否默认高亮第一个选项。 | boolean |true |
 | defaultValue | 指定默认选中的条目 | string \| string[] | |
 | disabled | 是否禁用 | boolean | false |
 | filterOption | 是否根据输入项进行筛选。当其为一个函数时，会接收 `inputValue` `option` 两个参数，当 `option` 符合筛选条件时，应返回 `true`，反之则返回 `false`。|boolean or function | true |
@@ -26,3 +28,10 @@ const dataSource = ['12345', '23456', '34567'];
 | defaultOpen | 是否默认展开下拉菜单 | boolean | - |
 | open | 是否展开下拉菜单 | boolean | - |
 | on-dropdownVisibleChange | 展开下拉菜单的回调 | function(open) | - |
+
+## auto-complete 方法
+
+| 名称 | 说明 |
+| --- | --- |
+| blur() | 取消焦点 |
+| focus() | 获取焦点 |

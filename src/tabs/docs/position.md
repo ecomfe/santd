@@ -45,7 +45,7 @@ export default {
         's-option': Select.Option
     },
     handleChange(value) {
-        this.data.set('tabPosition', value);
+        this.data.set('tabPosition', value[0]);
     }
 }
 </script>

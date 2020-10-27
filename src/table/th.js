@@ -63,8 +63,8 @@ export default {
                     </s-menu-item>
                 </s-menu>
                 <div class="${prefixCls}-filter-dropdown-btns" s-if="column.filters">
-                    <a class="${prefixCls}-filter-dropdown-link confirm" on-click="confirm">确定</a>
-                    <a class="${prefixCls}-filter-dropdown-link clear" on-click="clearFilter(column)">取消</a>
+                    <a class="${prefixCls}-filter-dropdown-link confirm" on-click="confirm">{{locale.filterConfirm}}</a>
+                    <a class="${prefixCls}-filter-dropdown-link clear" on-click="clearFilter(column)">{{locale.filterReset}}</a>
                 </div>
             </template>
         </s-dropdown>

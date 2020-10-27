@@ -1,11 +1,15 @@
 <text lang="cn">
 #### 可选择
-第一列是联动的选择框。
+第一列是联动的选择框。可以通过 rowSelection.type 属性指定选择类型，默认为 checkbox。
 </text>
 
 ```html
 <template>
     <div>
+         <s-group name="radiogroup" value="{{value}}" on-change="handleChange">
+            <s-radio value="checkbox" >checkbox</s-radio>
+            <s-radio value="radio" >radio</s-radio>
+        </s-group>
         <s-table
             rowSelection="{{rowSelection}}"
             columns="{{columns}}"
@@ -18,9 +22,12 @@
 <script>
 import san from 'san';
 import table from 'santd/table';
+import radio from 'santd/radio';
 export default {
     components: {
-        's-table': table
+        's-table': table,
+        's-radio': radio,
+        's-group': radio.Group,
     },
     initData() {
         return {
@@ -65,9 +72,15 @@ export default {
                         disabled: record.name === 'Joe Black',
                         name: record.name
                     };
-                }
-            }
+                },
+                type: 'checkbox'
+            },
+            value: 'checkbox'
         }
+    },
+    handleChange(e) {
+        this.data.set('value', e.target.value);
+        this.data.set('rowSelection.type', e.target.value);
     }
 }
 </script>

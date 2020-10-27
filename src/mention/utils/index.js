@@ -6,9 +6,12 @@
  * 获取匹配prefix的正则表达式
  *
  * @param  {Array} prefix 匹配符
+ * @param  {string} split 分隔符
  * @return {[RegExp]}  以匹配符开头的正则表达式
  */
-export const getRegExp = prefix => {
+export const getRegExp = (prefix, split) => {
+    // 对分隔符中的特殊字符进行转义
+    const splitRegExp = split.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
     const prefixArray = Array.isArray(prefix) ? prefix : [prefix];
     let prefixToken = prefixArray.join('').replace(/(\$|\^)/g, '\\$1');
 
@@ -16,7 +19,7 @@ export const getRegExp = prefix => {
         prefixToken = `[${prefixToken}]`;
     }
 
-    return new RegExp(`(\\s|^)(${prefixToken})([^\\s]*)$`, 'g');
+    return new RegExp(`(${splitRegExp}|^)(${prefixToken})([^${splitRegExp}]*)$`, 'g');
 };
 
 /**
@@ -27,10 +30,11 @@ export const getRegExp = prefix => {
  * @param  {number} start  要插入的起始位置
  * @param  {number} end    要插入的终点位置
  * @param  {string} newStr 要插入的字符
+ * @param  {string} split  分隔符
  * @return {[type]}        返回结果
  */
-export const insertString = (str, start, end, newStr) => (
-    str.slice(0, start) + newStr + ' ' + str.slice(end)
+export const insertString = (str, start, end, newStr, split) => (
+    str.slice(0, start) + newStr + split + str.slice(end)
 );
 
 /**

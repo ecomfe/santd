@@ -9,6 +9,7 @@
 | count | star 总数 | number | 5 |
 | defaultValue | 默认值 | number | 0 |
 | disabled | 只读，无法进行交互 | boolean | false |
+| tooltips | 自定义每项的提示信息 | string[] | - |
 | style | 自定义样式对象 | object | - |
 | value | 当前数，受控值 | number | - |
 | on-blur | 失去焦点时的回调 | Function() | - |

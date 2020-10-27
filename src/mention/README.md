@@ -21,6 +21,9 @@
 | defaultSuggestions | 默认建议内容 | Array&lt;string> | \[] | |
 | suggestions | 建议内容 | Array&lt;string> | \[] |
 | suggestionStyle | 弹出下拉框样式 | string | '' |
+| split | 设置选中项前后分隔符 | string | ' ' |
+| filterOption | 自定义过滤逻辑 | false \| (input, option): boolean | - |
+| validateSearch | 自定义触发验证逻辑	 | function(input): boolean | - |
 | on-blur | 失去焦点时回调 | function(e) | null |
 | on-focus | 获得焦点时回调 | function(e) | null |
 | on-change | 输入框内容变化时回调 | function(e) | null |

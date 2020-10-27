@@ -23,7 +23,9 @@ let AutoComplete = san.defineComponent({
         placeholder: DataTypes.string,
         value: DataTypes.oneOfType([DataTypes.string, DataTypes.object, DataTypes.array]),
         defaultOpen: DataTypes.bool,
-        open: DataTypes.bool
+        open: DataTypes.bool,
+        dropdownMenuStyle: DataTypes.string,
+        defaultActiveFirstOption: DataTypes.bool
     },
 
     onSearch(value) {
@@ -50,10 +52,16 @@ let AutoComplete = san.defineComponent({
     dropdownVisibleChange(val) {
         this.fire('dropdownVisibleChange', val);
     },
-
+    focus() {
+        this.ref('select').focus();
+    },
+    blur() {
+        this.ref('select').blur();
+    },
     template: `
         <div>
             <s-select
+                s-ref="select"
                 showSearch="{{true}}"
                 allowClear="{{allowClear}}"
                 autoFocus="{{autoFocus}}"
@@ -61,6 +69,8 @@ let AutoComplete = san.defineComponent({
                 style="width:100%"
                 showArrow="{{false}}"
                 placeholder="{{placeholder}}"
+                defaultActiveFirstOption="{{defaultActiveFirstOption}}"
+                dropdownMenuStyle="{{dropdownMenuStyle}}"
                 on-search="onSearch"
                 notFoundContent="{{null}}"
                 autoClearSearchValue="{{false}}"

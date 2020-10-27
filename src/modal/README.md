@@ -8,6 +8,7 @@
 | cancelText | 取消按钮文字 | string | 取消 |
 | centered | 垂直居中展示 modal | boolean | `false` |
 | closable | 是否显示右上角的关闭按钮 | boolean | true |
+| closeIcon | 自定义关闭图标 | slot | - |
 | confirmLoading | 确定按钮 loading | boolean | 无 |
 | getContainer | 指定 modal 挂载的 HTML 节点 | (instance): HTMLElement | () => document.body |
 | hasFooter | 是否显示底部内容 | boolean | true |

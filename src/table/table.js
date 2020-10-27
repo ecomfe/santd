@@ -17,6 +17,7 @@ import Checkbox from '../checkbox';
 import Button from '../button';
 import Tbody from './tbody';
 import Thead from './thead';
+import Tooltip from '../tooltip';
 import './style/index';
 
 const prefixCls = classCreator('table')();
@@ -33,14 +34,19 @@ function getLeafCount(column) {
 }
 
 // 深度遍历数据，并返回所有经过处理的数据
-function dfsData(data, callback, result = [], level = -1) {
+function dfsData(data, callback, result = [], level = -1, parentNode = []) {
     level++;
     data.forEach(item => {
         item = typeof callback === 'function'
-            ? callback({...item}, level)
+            ? callback({...item}, level, parentNode)
             : {...item};
         item && result.push(item);
-        dfsData(item && item.children || [], callback, result, level);
+        // 获取父节点，回传给callback
+        let parent = [...parentNode];
+        if (item.children && item.children.length) {
+            parent.unshift(item);
+        }
+        dfsData(item && item.children || [], callback, result, level, parent);
     });
     return result;
 }
@@ -98,7 +104,7 @@ const tableInnerTemplate = `
             ${Tbody.template}
         </table>
         <div class="${prefixCls}-placeholder" s-if="!renderData.length && !loading">
-            <s-empty />
+            <s-empty  description="{{locale.emptyText}}"/>
         </div>
     </div>
     <div class="${prefixCls}-footer" s-if="hasFooter">
@@ -114,7 +120,8 @@ export default san.defineComponent({
         size: DataTypes.string,
         title: DataTypes.string,
         data: DataTypes.array,
-        pagination: DataTypes.oneOfType([DataTypes.bool, DataTypes.object])
+        pagination: DataTypes.oneOfType([DataTypes.bool, DataTypes.object]),
+        locale: DataTypes.object
     },
     initData() {
         return {
@@ -124,7 +131,8 @@ export default san.defineComponent({
             data: [],
             pagination: {
                 current: 1,
-                pageSize: 10
+                pageSize: 10,
+                position: ['bottomRight']
             },
             selectedKeys: {},
             indentSize: 20,
@@ -134,7 +142,13 @@ export default san.defineComponent({
             scrollPosition: 'left',
             defaultExpandAllRows: false,
             defaultExpandedRowKeys: [],
-            expandRowByClick: false
+            expandRowByClick: false,
+            locale: {
+                emptyText: '暂无数据',
+                filterConfirm: '确定',
+                filterReset: '重置'
+            },
+            ellipsis: false
         };
     },
     computed: {
@@ -151,6 +165,26 @@ export default san.defineComponent({
             scrollPosition && classArr.push(`${prefixCls}-scroll-position-${scrollPosition}`);
 
             return classArr;
+        },
+        paginationTop() {
+            const pagination = this.data.get('pagination');
+            if (pagination.position !== null && Array.isArray(pagination.position)) {
+                let topPagination = pagination.position.find(p => p.indexOf('top') !== -1);
+                return topPagination && topPagination.toLowerCase().replace('top', '');
+            }
+            return '';
+        },
+        paginationBottom() {
+            const pagination = this.data.get('pagination');
+            if (pagination !== false) {
+                if (pagination.position !== null && Array.isArray(pagination.position)) {
+                    let bottomPagination = pagination.position.find(p => p.indexOf('bottom') !== -1);
+                    return bottomPagination && bottomPagination.toLowerCase().replace('bottom', '');
+                } else {
+                    return 'right';
+                }
+            }
+            return '';
         }
     },
     inited() {
@@ -175,7 +209,7 @@ export default san.defineComponent({
 
         this.watch('rowSelection', val => {
             let activeData = this.getActiveRows(this.data.get('renderData'));
-            let selectedRowKeys = val.selectedRowKeys;
+            let selectedRowKeys = val.selectedRowKeys || [];
             this.data.set('selectedRowKeys', selectedRowKeys);
             this.data.set('selectedRows', activeData.filter(item => selectedRowKeys.includes(item.key)));
             this.initRenderData();
@@ -200,6 +234,7 @@ export default san.defineComponent({
         's-button': Button,
         's-checkbox': Checkbox,
         's-pagination': Pagination,
+        's-tooltip': Tooltip,
         's-empty': renderEmpty('Table')
     },
     // 针对columns中的各种配置项做处理
@@ -229,6 +264,9 @@ export default san.defineComponent({
                     column.sortOrder = column.sortOrder || column.defaultSortOrder;
                     sortColumn = column;
                     sortColumnIndex = index;
+                }
+                if (column.ellipsis) {
+                    this.data.set('ellipsis', true);
                 }
                 // 处理有filteredValue的情况，如果有，扔到selectedKeys里面
                 if (column.filteredValue && Array.isArray(column.filteredValue)) {
@@ -280,6 +318,10 @@ export default san.defineComponent({
         }
 
         return data;
+    },
+    rowExpandable(item) {
+        let rowExpandable = this.data.get('rowExpandable');
+        return rowExpandable && rowExpandable(item) || false;
     },
     // 获取当前column的rolspan和rowspan
     getColumns(columns, item, dataIndex) {
@@ -425,6 +467,10 @@ export default san.defineComponent({
         this.handleChange();
     },
     handleRowClick(record) {
+        let onRowClick = this.data.get('onRowClick');
+        if (onRowClick && typeof onRowClick === 'function') {
+            onRowClick && onRowClick(record);
+        }
         if (!this.data.get('expandRowByClick')) {
             return;
         }
@@ -507,12 +553,15 @@ export default san.defineComponent({
         }
         const expandedRowKeys = this.data.get('expandedRowKeys');
         const defaultExpandAllRows = this.data.get('defaultExpandAllRows');
-        let result = dfsData(data, (item, level) => {
+        let result = dfsData(data, (item, level, parentNode) => {
             item.level = level;
             item.children && (item.collapsed = true);
             if (defaultExpandAllRows || expandedRowKeys.includes(item.key)) {
                 item.expanded = true;
                 item.children && (item.collapsed = false);
+            }
+            if (parentNode.length) {
+                item.parent = parentNode;
             }
             return item;
         });
@@ -523,6 +572,7 @@ export default san.defineComponent({
     handleTreeExpand(expandItem) {
         let data = this.data.get('renderData');
         let children = expandItem.children.map(item => item.key);
+        let onExpandedRowsChange = this.data.get('onExpandedRowsChange');
         data = data.map(item => {
             if (expandItem.key === item.key) {
                 item.collapsed = !item.collapsed;
@@ -535,10 +585,14 @@ export default san.defineComponent({
             };
         });
         this.data.set('renderData', data);
+        if (onExpandedRowsChange) {
+            onExpandedRowsChange(expandItem);
+        }
     },
     // 展开当前行
     handleExpandRow(expandItem) {
         let data = this.data.get('renderData');
+        let onExpandedRowsChange = this.data.get('onExpandedRowsChange');
         data = data.map(item => {
             if (expandItem.key === item.key) {
                 item.expanded = !item.expanded;
@@ -548,6 +602,9 @@ export default san.defineComponent({
             };
         });
         this.data.set('renderData', data);
+        if (onExpandedRowsChange) {
+            onExpandedRowsChange(expandItem);
+        }
     },
     hasSorterIcon(column, name) {
         const sortDirections = column.sortDirections || [];
@@ -667,24 +724,73 @@ export default san.defineComponent({
         }
         this.handleSelectionChange(selectedRowKeys, selectedRows);
     },
+    // 获取关联父/子节点
+    getCheckedList(checkedNode, type) {
+        let renderData = this.data.get('renderData');
+        let result = [];
+        for (let i = 0; i < renderData.length; i++) {
+            if (renderData[i].key === checkedNode.key && renderData[i][type]) {
+                let filterNode = type === 'parent'
+                    ? renderData[i].parent : dfsData(renderData[i].children);
+                filterNode.forEach(item => {
+                    result.push(item);
+                });
+            }
+        }
+        return result;
+    },
+
     // 复选框单选时候的操作
     handleSelection(e, item) {
+        const checked = e.target.checked;
         let selectedRows = this.data.get('selectedRows');
+        let type = this.data.get('rowSelection.type');
+        let checkStrictly = !this.data.get('rowSelection.checkStrictly');
         let selectedRowKeys = this.data.get('selectedRowKeys');
         let handleSelect = this.data.get('rowSelection.handleSelect');
-
-        const index = selectedRowKeys.indexOf(item.key);
-        const checked = e.target.checked;
-
-        if (checked && index === -1) {
-            selectedRowKeys.push(item.key);
-            selectedRows.push(item);
+        let getCheckedParentList = checkStrictly ? [] : this.getCheckedList(item, 'parent');
+        let getCheckedChildList = checkStrictly ? [] : this.getCheckedList(item, 'children');
+        if (e.target.checked) {
+            if (type === 'radio') {
+                selectedRowKeys = [item.key];
+                selectedRows = [item];
+            } else {
+                // 父节点&&当前节点&&子节点
+                [...getCheckedParentList, item, ...getCheckedChildList].forEach(checkedNode => {
+                    let index  = selectedRowKeys.indexOf(checkedNode.key);
+                    if (index === -1) {
+                        selectedRowKeys.push(checkedNode.key);
+                        selectedRows.push(checkedNode);
+                    }
+                });
+            }
+        } else {
+            // 子节点&&当前节点
+            [...getCheckedChildList, item].forEach(checkedNode => {
+                let index  = selectedRowKeys.indexOf(checkedNode.key);
+                if (index > -1) {
+                    selectedRowKeys.splice(index, 1);
+                    selectedRows.splice(index, 1);
+                }
+            });
+            // 父节点判断是否还有子节点
+            getCheckedParentList.forEach(checkedNode => {
+                let isDelete = true;
+                if (checkedNode.children) {
+                    for (let i = 0; i < checkedNode.children.length; i++) {
+                        if (selectedRowKeys.indexOf(checkedNode.children[i].key) > -1) {
+                            isDelete = false;
+                            break;
+                        }
+                    }
+                }
+                let index  = selectedRowKeys.indexOf(checkedNode.key);
+                if (index > -1 && isDelete) {
+                    selectedRowKeys.splice(index, 1);
+                    selectedRows.splice(index, 1);
+                }
+            });
         }
-        else if (!checked && index > -1) {
-            selectedRowKeys.splice(index, 1);
-            selectedRows.splice(index, 1);
-        }
-
         if (typeof handleSelect === 'function') {
             handleSelect(item, checked, selectedRows, e);
         }
@@ -700,15 +806,24 @@ export default san.defineComponent({
         this.initRenderData();
         this.handleChange();
     },
+
     template: `<div>
         <s-spin spinning="{{loading}}" delay="{{loadingDelay}}">
             <template slot="content">
+                <s-pagination
+                    s-if="{{paginationTop}}"
+                    class="${prefixCls}-pagination ${prefixCls}-{{paginationTop}}-pagination"
+                    current="{{pagination.current}}"
+                    pageSize="{{pagination.pageSize}}"
+                    total="{{pagination.total || filteredData.length}}"
+                    on-change="handlePaginationChange"
+                />
                 <div class="{{classes}}">
                 <div class="${prefixCls}-title" s-if="hasTitle">
                     <slot name="title" s-if="!title" />
                     <template s-else>{{title}}</template>
                 </div>
-                <div class="${prefixCls}-content">
+                <div class="${prefixCls}-content  {{ellipsis ? '${prefixCls}-layout-fixed' : ''}}">
                     <div class="${prefixCls}-scroll" s-if="scroll.x || scroll.y">
                         ${tableInnerTemplate}
                     </div>
@@ -716,8 +831,8 @@ export default san.defineComponent({
                 </div>
                 </div>
                 <s-pagination
-                    s-if="pagination !== false"
-                    class="${prefixCls}-pagination"
+                    s-if="{{paginationBottom}}"
+                    class="${prefixCls}-pagination ${prefixCls}-{{paginationBottom}}-pagination"
                     current="{{pagination.current}}"
                     pageSize="{{pagination.pageSize}}"
                     total="{{pagination.total || filteredData.length}}"

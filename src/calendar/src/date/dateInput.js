@@ -18,7 +18,8 @@ export default san.defineComponent({
         disabledDate: DataTypes.func,
         placeholder: DataTypes.string,
         selectedValue: DataTypes.object,
-        inputMode: DataTypes.string
+        inputMode: DataTypes.string,
+        inputReadOnly: DataTypes.bool
     },
 
     initData() {
@@ -115,6 +116,7 @@ export default san.defineComponent({
                     class="{{prefixCls}}-input {{invalid ? prefixCls + '-input-invalid' : ''}}"
                     value="{{showDate}}"
                     disabled="{{disabled}}"
+                    readOnly="{{inputReadOnly}}"
                     placeholder="{{placeholder}}"
                     on-change="handleChange"
                     on-input="handleChange"

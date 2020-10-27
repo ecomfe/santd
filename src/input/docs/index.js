@@ -15,6 +15,7 @@ import ToolTip from './tooltip.md';
 import Group from './group.md';
 import Allow from './allow-clear.md';
 import Password from './password.md';
+import Loading from './loading.md';
 
 export default san.defineComponent({
     components: {
@@ -30,7 +31,8 @@ export default san.defineComponent({
         autoarea: AutoTextarea,
         tooltip: ToolTip,
         allow: Allow,
-        password: Password
+        password: Password,
+        loading :Loading
     },
     template: `
         <div>
@@ -38,6 +40,7 @@ export default san.defineComponent({
             <basic/>
             <addon/>
             <search/>
+            <loading/>
             <autoarea/>
             <psfix/>
             <allow/>

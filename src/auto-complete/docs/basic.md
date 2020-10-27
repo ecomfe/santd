@@ -11,6 +11,7 @@
         on-select="handleSelect"
         dataSource="{{dataSource}}"
         style="width: 200px;"
+        dropdownMenuStyle="{{dropdownMenuStyle}}"
         placeholder="input some"
     >
     </s-auto-complete>
@@ -27,7 +28,8 @@ export default {
     },
     initData() {
         return {
-            dataSource: []
+            dataSource: [],
+            dropdownMenuStyle: 'width: 200px'
         };
     },
     handleSearch(value) {

@@ -34,13 +34,21 @@ export default function (calendar) {
                 allowClear: true,
                 showToday: true,
                 trigger: 'click',
-                placements: Placements
+                placements: Placements,
+                popupPlacement: 'bottomLeft'
             };
         },
         inited() {
+            let align = this.data.get('align');
+            let placements = this.data.get('placements');
+            let popupPlacement = this.data.get('popupPlacement');
+            if (align && typeof align === 'object') {
+                placements[popupPlacement] = {...placements[popupPlacement], ...align};
+            }
             this.data.set('value', this.data.get('value') || this.data.get('defaultValue'));
             this.data.set('hasExtraFooter', !!this.sourceSlots.named.renderExtraFooter);
             this.data.set('hasDateRender', !!this.sourceSlots.named.dateRender);
+            this.data.set('hasMonthRender', !!this.sourceSlots.named.monthRender);
             this.data.set('hasSuffixIcon', !!this.sourceSlots.named.suffixIcon);
         },
         handleChange(data) {
@@ -100,7 +108,7 @@ export default function (calendar) {
                 visible="{{open}}"
                 action="{{disabled ? [] : trigger}}"
                 builtinPlacements="{{placements}}"
-                popupPlacement="bottomLeft"
+                popupPlacement="{{popupPlacement}}"
                 destroyPopupOnHide="{{true}}"
                 on-visibleChange="handleOpenChange"
             >
@@ -113,22 +121,25 @@ export default function (calendar) {
                     value="{{value || defaultValue}}"
                     selectedValue="{{value}}"
                     timePicker="{{timePicker}}"
-                    dateInputPlaceholder="{{placeholder || locale.lang.placeholder}}"
+                    dateInputPlaceholder="{{placeholder || customLocale.lang.placeholder}}"
                     prefixCls="${prefixCls}"
                     customClassName="{{calendarClasses}}"
                     format="{{format}}"
+                    inputReadOnly="{{inputReadOnly}}"
                     showToday="{{showToday}}"
                     showTime="{{showTime}}"
-                    locale="{{locale.lang}}"
-                    localeCode="{{localeCode}}"
+                    locale="{{customLocale.lang}}"
+                    localeCode="{{customLocaleCode}}"
                     mode="{{mode}}"
                     hasExtraFooter="{{hasExtraFooter}}"
                     hasDateRender="{{hasDateRender}}"
+                    hasMonthRender="{{hasMonthRender}}"
                     on-select="handleChange"
                     on-clear="handleClearSelection"
                     on-ok="handleOk"
                 >
                     <slot name="renderExtraFooter" slot="renderExtraFooter" />
+                    <slot name="monthRender" slot="monthRender" />
                     <slot name="dateRender" slot="dateRender" var-current="{{current}}" />
                 </s-calendar>
                 <input
@@ -136,7 +147,7 @@ export default function (calendar) {
                     disabled="{{disabled}}"
                     readOnly
                     value="{{displayValue}}"
-                    placeholder="{{placeholder || locale.lang.placeholder}}"
+                    placeholder="{{placeholder || customLocale.lang.placeholder}}"
                     class="{{pickerInputClass}}"
                     tabIndex="{{tabIndex}}"
                     name="{{name}}"

@@ -108,6 +108,8 @@ export default san.defineComponent({
             <s-tooltip
                 rootDomNode="{{rootDomNode}}"
                 useDomNodeForce="{{true}}"
+                placement="{{tooltipPlacement}}"
+                getPopupContainer="{{getTooltipPopupContainer}}"
                 transitionName="zoom-down"
                 title="{{title}}"
                 s-ref="tooltip"
@@ -117,7 +119,7 @@ export default san.defineComponent({
                     s-ref="handle"
                     tabIndex="{{(disabled || tabIndex == null) ? '' : tabIndex}}"
                     class="${prefixCls}{{index ? ' ${prefixCls}-' + index : ''}}{{clickFocused ? ' ${prefixCls}-click-focused' : ''}}"
-                    style="{{vertical ? 'bottom' : 'left'}}:{{offset}}%;"
+                    style="{{direction}}:{{offset}}%;"
                     on-blur="handleBlur"
                     on-keydown="handleKeyDown"
                     on-mousedown="handleMouseDown"

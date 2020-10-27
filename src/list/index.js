@@ -17,7 +17,7 @@ const prefixCls = classCreator('list')();
 const contentTemplate = `
     <div s-if="!loading && !hasChildren()" class="${prefixCls}-empty-text">
         <slot name="renderEmpty" s-if="hasRenderEmpty" />
-        <span s-else>没有数据</span>
+        <span s-else>{{locale.emptyText}}</span>
     </div>
     <template s-else>
         <s-row gutter="{{grid.gutter}}" s-if="grid">
@@ -50,7 +50,8 @@ const List = san.defineComponent({
         loading: DataTypes.oneOfType([DataTypes.bool, DataTypes.object]),
         pagination: DataTypes.oneOfType([DataTypes.bool, DataTypes.object]),
         size: DataTypes.string,
-        split: DataTypes.bool
+        split: DataTypes.bool,
+        locale: DataTypes.object
     },
     initData() {
         return {
@@ -64,7 +65,10 @@ const List = san.defineComponent({
                 current: 1,
                 total: 0
             },
-            itemChildren: []
+            itemChildren: [],
+            locale: {
+                emptyText: '没有数据'
+            }
         };
     },
     computed: {
@@ -142,7 +146,6 @@ const List = san.defineComponent({
     },
     hasChildren() {
         const dataSource = this.data.get('dataSource');
-
         return this.data.get('hasHeader') || this.data.get('hasFooter') || dataSource.length !== 0;
     },
     somethingAfterLastItem() {

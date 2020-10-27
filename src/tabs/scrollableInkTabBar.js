@@ -124,7 +124,10 @@ export default san.defineComponent({
                     style="{{tabBarPosition === 'top' || tabBarPosition === 'bottom' ? 'float: right' : ''}}"
                 >
                     <template s-if="type === 'editable-card' && !hideAdd">
-                        <s-icon type="plus" class="${prefixCls}-new-tab" on-click="handleCreateNewTab" />
+                        <div on-click="handleCreateNewTab">
+                            <slot name="addIcon" s-if="hasAddIcon"/>
+                            <s-icon s-else type="plus" class="${prefixCls}-new-tab" />
+                        </div>
                         <slot name="tabBarExtraContent" />
                     </template>
                     <slot name="tabBarExtraContent" s-else />

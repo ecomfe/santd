@@ -59,6 +59,7 @@ export default san.defineComponent({
                 class="${prefixCls}-link-title {{activeLink === href ? '${prefixCls}-link-title-active' : ''}}"
                 href="{{href}}"
                 title="{{title}}"
+                target="{{target}}"
                 on-click="handleClick"
             >
                 {{title}}

@@ -12,14 +12,14 @@ export default san.defineComponent({
     dataTypes: {
         mode: DataTypes.oneOf(['vertical', 'horizontal', 'inline']),
         theme: DataTypes.oneOf(['light', 'dark']),
-        defaultSelectedKeys: DataTypes.array,
+        defaultSelectedKeys: DataTypes.oneOfType([DataTypes.string, DataTypes.array]),
         defaultOpenKeys: DataTypes.array,
         inlineCollapsed: DataTypes.bool,
         openKeys: DataTypes.array,
         inlineIndent: DataTypes.number,
         multiple: DataTypes.bool,
         selectable: DataTypes.bool,
-        selectedKeys: DataTypes.array,
+        selectedKeys: DataTypes.oneOfType([DataTypes.string, DataTypes.array]),
         subMenuCloseDelay: DataTypes.number,
         subMenuOpenDelay: DataTypes.number,
         forceSubMenuRender: DataTypes.bool
@@ -59,8 +59,7 @@ export default san.defineComponent({
     inited() {
         this.items = [];
         this.subMenus = [];
-
-        this.data.set('selectedKeys', this.data.get('selectedKeys') || this.data.get('defaultSelectedKeys') || []);
+        this.data.set('selectedKeys', this.getSelectedKeys(this.data.get('defaultSelectedKeys')));
         this.data.set('openKeys', this.data.get('openKeys') || this.data.get('defaultOpenKeys') || []);
     },
     attached() {
@@ -77,17 +76,23 @@ export default san.defineComponent({
             });
         });
     },
+    getSelectedKeys(defaultSelectedKeys) {
+        let selectedKeys =  this.data.get('selectedKeys') || defaultSelectedKeys || [];
+        if (typeof selectedKeys === 'string') {
+            selectedKeys = [selectedKeys];
+        }
+        return selectedKeys;
+    },
     handleSelect(selectInfo) {
         if (!this.data.get('selectable')) {
             return;
         }
 
-        let selectedKeys = this.data.get('selectedKeys');
+        let selectedKeys = this.getSelectedKeys();
         const selectedKey = selectInfo.key;
         const multiple = this.data.get('multiple');
 
         selectedKeys = multiple ? [...selectedKeys, selectedKey] : [selectedKey];
-
         this.data.set('selectedKeys', selectedKeys);
         this.updateItems();
         this.fire('select', {...selectInfo, selectedKeys});
@@ -97,7 +102,7 @@ export default san.defineComponent({
             return;
         }
 
-        const selectedKeys = this.data.get('selectedKeys');
+        const selectedKeys = this.getSelectedKeys();
         const selectedKey = selectInfo.key;
         const index = selectedKeys.indexOf(selectedKey);
         if (index !== -1) {

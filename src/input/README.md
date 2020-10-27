@@ -13,6 +13,7 @@
 | placeholder   | placeholder                                                                                                                                                                                 | string    | -       |
 | disabled      | 是否禁用状态，默认为 false                                                                                                                                                                  | boolean   | false   |
 | id            | 输入框的 id                                                                                                                                                                                 | string    | -       |
+| maxLength            | 最大长度                                                                                                                                                                                  | number    | -       |
 | prefix        | 带有前缀图标的 input                                                                                                                                                                        | string \| slot    | - |
 | size          | 控件大小。注：标准表单内的输入框大小限制为 large。可选`large` `small`                                                                                                                       | string  | default |
 | suffix        | 带有后缀图标的 input                                                                                                                                                                        | string \| slot         | - |
@@ -41,6 +42,7 @@
 | --- | --- | --- | --- |
 | enterButton | 是否有确认按钮，可设为按钮文字。该属性会与 addon 冲突。 | string| -|
 | on-search | 当点击搜索时执行 | function| -|
+| loading | 搜索 loading | boolean| false |
 
 ### Input.Group
 

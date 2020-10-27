@@ -14,11 +14,13 @@ table组件
 | defaultExpandedRowKeys | 默认展开的行 | string[] | - |
 | expandedRowKeys | 展开的行，控制属性 | string[] | - |
 | expandedRowRender | 额外的展开行 | slot | - |
+| rowExpandable | 设置是否允许行展开 | (record) => boolean | - |
 | expandIcon | 自定义展开图标 | slot | - |
 | expandRowByClick | 通过点击行来展开子行 | boolean | false |
 | footer | 表格尾部 | slot | - |
 | indentSize | 展示树形数据时，每层缩进的宽度，以 px 为单位 | number | 15 |
 | loading | 是否加载中 | boolean | false |
+| locale | 默认文案设置，目前包括排序、过滤、空数据文案 | object | filterConfirm: `确定`<br>filterReset: `重置`<br> emptyText: `暂无数据` |
 | pagination | 分页器，设置为false时不展示 | object | - |
 | rowClassName | 表格行的类名 | Function(record, index):string | - |
 | rowSelection | 表格行是否可选择 | object | null |
@@ -26,6 +28,7 @@ table组件
 | showHeader | 是否显示表头 | boolean | true |
 | size | 表格大小 | default \| middle \| small | default |
 | title | 表格标题 | slot | - |
+| onRowClick | 表格行点击触发 | Function(record) | - |
 | on-change | 分页、排序、筛选变化时触发 | Function(pagination, filters, sorter, extra: { currentDataSource: [] }) | - |
 
 ### Column
@@ -35,6 +38,7 @@ table组件
 | 属性 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | align | 设置列内容的对齐方式 | 'left', 'right', 'center'| 'left' |
+| ellipsis | 超过宽度将自动省略，表格布局变成tableLayout=fixed | boolean| false |
 | colSpan | 表头列合并,设置为 0 时，不渲染 | number | - |
 | dataIndex | 列数据在数据项中对应的 key。注意：比如key或者dataIndex='name', 那么tbody中的data数据中也必须有name字段与之对应 | string | - |
 | defaultSortOrder | 默认排序顺序 | 'ascend' \| 'descend' | - |
@@ -61,8 +65,10 @@ table组件
 ### pagination
 | 属性 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| pageSize | 分页大小 | number | |
+| pageSize | 每页条数 | number | |
 | current | 当前页数 | number | |
+| total | 数据总数 | number |0|
+| position | 指定分页显示的位置， 取值为topLeft | topCenter | topRight |bottomLeft | bottomCenter | bottomRight | Array |[bottomRight]|
 
 ### rowSelection
 
@@ -70,12 +76,14 @@ table组件
 
 | 属性 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
+| checkStrictly | checkable 状态下节点选择完全受控（父子数据选中状态不再关联） | boolean | true | |
 | columnWidth | 自定义列表选择框宽度 | string<number> \| number | |
 | columnTitle | 自定义列表选择框标题 | string |  - |
 | getCheckboxProps | 选择框的默认属性配置 | Function(record) |  - |
 | hideDefaultSelections | 去掉『全选』『反选』两个默认选项	 | Boolean | false |
 | selectedRowKeys | 指定选中项的 key 数组，需要和 on-change 进行配合 | string[] | [] |
 | selections | 自定义选择配置项, 设为 true 时使用默认选择项 | object[] |boolean | true |
+| type | 多选/单选，`checkbox` or `radio` | string |`checkbox` | true |
 | onChange | 选中项发生变化时的回调 | Function(selectedRowKeys, selectedRows) | - |
 | onSelect | 用户手动选择/取消选择某行的回调 | Function(record, selected, selectedRows, nativeEvent) | - |
 | onSelectAll | 用户手动选择/取消选择所有行的回调 | Function(selected, selectedRows, changeRows) | - |

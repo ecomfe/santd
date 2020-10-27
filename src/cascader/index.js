@@ -240,6 +240,7 @@ export default san.defineComponent({
         }
     },
     handleInputChange(value) {
+        this.fire('search', value);
         this.data.set('inputValue', value);
     },
     handleInputClick(e) {
@@ -265,6 +266,9 @@ export default san.defineComponent({
         <s-cascader
             rootPrefixCls="{{prefixCls}}"
             getPopupContainer="{{getPopupContainer}}"
+            popupStyle="{{popupStyle}}"
+            popupClassName="{{popupClassName}}"
+            popupPlacement="{{popupPlacement}}"
             options="{{inputValue ? filteredOptions : options}}"
             value="{{value}}"
             visible="{{popupVisible}}"

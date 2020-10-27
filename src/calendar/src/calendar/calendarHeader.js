@@ -164,11 +164,13 @@ export default san.defineComponent({
                 prefixCls="{{prefixCls}}"
                 disabledDate="{{disabledMonth}}"
                 hasExtraFooter="{{hasExtraFooter}}"
+                hasMonthRender="{{hasMonthRender}}"
                 on-select="handleMonthSelect"
                 on-yearPanelShow="showYearPanel('month')"
                 on-changeYear="goYear"
             >
                 <slot name="renderExtraFooter" slot="renderExtraFooter" />
+                <slot name="monthRender" slot="monthRender" />
             </s-monthpanel>
             <s-yearpanel
                 s-if="mode === 'year'"

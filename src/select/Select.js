@@ -153,7 +153,7 @@ export default san.defineComponent({
         dropdownMatchSelectWidth: DataTypes.bool,
         dropdownRender: DataTypes.func,
         dropdownStyle: DataTypes.object,
-        dropdownMenuStyle: DataTypes.object,
+        dropdownMenuStyle: DataTypes.string,
         filterOption: DataTypes.oneOfType([
             DataTypes.bool,
             DataTypes.func

@@ -115,20 +115,24 @@
 	}
 
 	&-close {
-		cursor: pointer;
+        cursor: pointer;
 		border: 0;
 		background: transparent;
-		position: absolute;
-		right: 0;
-		top: 0;
-		z-index: 10;
 		font-weight: 700;
 		line-height: 1;
 		text-decoration: none;
 		transition: color @animation-duration-slow;
 		color: @text-color-secondary;
 		outline: 0;
-		padding: 0;
+        padding: 0;
+        
+        &-wrapper {
+            position: absolute;
+            right: 0;
+            top: 0;
+            z-index: 10;
+            cursor: pointer;
+        }
 
 		&-x {
 			display: block;
@@ -178,7 +182,15 @@
 		&-content {
 			box-shadow: @shadow-2;
 		}
-	}
+    }
+    
+    &-footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        border-top: 1px solid #e8e8e8;
+        background-color: #fff;
+    }
 }
 
 @keyframes antdDrawerFadeIn {

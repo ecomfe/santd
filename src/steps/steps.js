@@ -16,7 +16,9 @@ export default san.defineComponent({
         current: DataTypes.number,
         progressDot: DataTypes.bool,
         size: DataTypes.string,
-        status: DataTypes.string
+        status: DataTypes.string,
+        type: DataTypes.string,
+        initial: DataTypes.number
     },
     initData() {
         return {
@@ -26,13 +28,16 @@ export default san.defineComponent({
             status: 'process',
             size: '',
             progressDot: false,
-            flexSupported: true
+            flexSupported: true,
+            type: '',
+            initial: 0
         };
     },
     computed: {
         classes() {
             const direction = this.data.get('direction');
             const size = this.data.get('size');
+            const type = this.data.get('type');
             const labelPlacement = this.data.get('labelPlacement');
             const hasDot = this.data.get('hasDot');
             const adjustedlabelPlacement = hasDot ? 'vertical' : labelPlacement;
@@ -40,6 +45,7 @@ export default san.defineComponent({
             let classArr = [prefixCls, `${prefixCls}-${direction}`];
 
             size && classArr.push(`${prefixCls}-${size}`);
+            type && classArr.push(`${prefixCls}-${type}`);
             direction === 'horizontal' && classArr.push(`${prefixCls}-label-${adjustedlabelPlacement}`);
             !!hasDot && classArr.push(`${prefixCls}-dot`);
             !flexSupported && classArr.push(`${prefixCls}-flex-not-supported`);
@@ -54,11 +60,12 @@ export default san.defineComponent({
     updated() {
         const status = this.data.get('status');
         const current = this.data.get('current');
+        const initial = Number(this.data.get('initial'));
 
         // 判断是否有change方法
         const hasChange = !!this.listeners.change;
         this.items.forEach((item, index) => {
-            item.data.set('stepNumber', index + 1);
+            item.data.set('stepNumber', index + initial + 1);
             item.data.set('stepIndex', index);
             status === 'error' && index === current - 1 && item.data.set('class', `${prefixCls}-next-error`);
 
@@ -79,9 +86,11 @@ export default san.defineComponent({
             this.items.push(payload.value);
         },
         santd_steps_clickStep(payload) {
+            let {stepIndex, disabled} = payload.value;
             const current = this.data.get('current');
-            if (current !== payload.value) {
-                this.fire('change', payload.value);
+            if (current !== stepIndex) {
+                !disabled && this.data.set('current', stepIndex);
+                this.fire('change', stepIndex);
             }
         }
     },

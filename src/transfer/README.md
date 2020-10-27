@@ -9,6 +9,7 @@
 | filterOption | 接收 `inputValue` `option` 两个参数，当 `option` 符合筛选条件时，应返回 `true`，反之则返回 `false`。 | (inputValue, option): boolean | - |
 | footer | 底部插槽 | slot | - |
 | listStyle | 两个穿梭框的自定义样式 | object | - |
+| locale | 各种语言| object | {itemUnit: '项', itemsUnit: '项' searchPlaceholder: '请输入搜索内容'} |
 | operations | 操作文案集合，顺序从上至下 | string\[] | `\['>', '<']` |
 | render | 每行数据渲染插槽| slot | - |
 | leftRenderList | 左边栏整体渲染插槽| slot | - |
@@ -33,3 +34,5 @@ Transfer支持leftRenderList和rightRenderList插槽来自定义渲染列表，�
 | disabled       | 是否禁用列表           | boolean |
 | filteredItems | 过滤后的数据           | TransferItem[]  |
 | selectedKeys    | 选中的条目       | string[] |
+| itemSelect    | 勾选条目       | (key: string, selected: boolean) |
+| itemSelectAll    | 勾选一组条目       | (keys: string[], selected: boolean) |

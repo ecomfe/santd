@@ -9,6 +9,22 @@
   border: @border-width-base @border-style-base @border-color-base;
   border-bottom: 0;
   border-radius: @border-radius-base;
+  &.@{collapse-prefix-cls}-icon-position-right {
+      & > .@{collapse-prefix-cls}-item  > .@{collapse-prefix-cls}-header {
+        padding: @collapse-header-padding-right;
+        .@{collapse-prefix-cls}-arrow {
+          right: @padding-md;
+        }
+      }
+  }
+  &.@{collapse-prefix-cls}-icon-position-left {
+      & > .@{collapse-prefix-cls}-item  > .@{collapse-prefix-cls}-header {
+        padding: @collapse-header-padding;
+        .@{collapse-prefix-cls}-arrow {
+          left: @padding-md;
+        }
+      }
+  }
 
   & > &-item {
     border-bottom: @border-width-base @border-style-base @border-color-base;
@@ -22,7 +38,6 @@
 
     > .@{collapse-prefix-cls}-header {
       position: relative;
-      padding: @collapse-header-padding;
       color: @heading-color;
       line-height: 22px;
       cursor: pointer;
@@ -32,7 +47,6 @@
         .iconfont-mixin();
         position: absolute;
         top: 50%;
-        left: @padding-md;
         display: inline-block;
         margin-top: 2px;
         font-size: @font-size-sm;

@@ -57,11 +57,13 @@ export default inherits(san.defineComponent({
                         locale="{{locale}}"
                         disabledMonth="{{disabledDate}}"
                         hasExtraFooter="{{hasExtraFooter}}"
+                        hasMonthRender="{{hasMonthRender}}"
                         on-valueChange="setValue"
                         on-panelChange="handlePanelChange"
                         on-monthSelect="handleMonthSelect"
                     >
                         <slot name="renderExtraFooter" slot="renderExtraFooter" />
+                        <slot name="monthRender" slot="monthRender" />
                     </s-calendarheader>
                 </div>
             </div>

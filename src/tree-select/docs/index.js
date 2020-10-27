@@ -10,6 +10,8 @@ import Multiple from './multiple.md';
 import Checkable from './checkable.md';
 import TreeData from './treeData.md';
 import LoadData from './loadData.md';
+import Showicon from './showicon.md';
+import ReplaceFields from './replaceFields.md';
 
 export default san.defineComponent({
     components: {
@@ -19,7 +21,10 @@ export default san.defineComponent({
         multiple: Multiple,
         checkable: Checkable,
         treedata: TreeData,
-        loaddata: LoadData
+        loaddata: LoadData,
+        showicon: Showicon,
+        replacefields: ReplaceFields
+
     },
     template: `
         <div>
@@ -29,6 +34,8 @@ export default san.defineComponent({
             <loaddata/>
             <multiple/>
             <checkable/>
+            <showicon/>
+            <replacefields/>
             <readme/>
         </div>
     `

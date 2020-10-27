@@ -14,7 +14,7 @@
   <div style="width:256px;">
     <s-menu
         style="width: 256px"
-        defaultSelectedKeys="{{['1']}}"
+        defaultSelectedKeys="{{'1'}}"
         openKeys="{{['sub1']}}"
         mode="{{mode}}"
         theme="{{theme}}"

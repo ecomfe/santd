@@ -25,6 +25,8 @@ import EditableRow from './editable-row.md';
 import ExpandedTable from './expanded-table.md';
 import Dynamic from './dynamic.md';
 import Children from './children.md';
+import Combination from './combination.md';
+import Ellipsis from './ellipsis.md';
 
 export default san.defineComponent({
     components: {
@@ -50,7 +52,9 @@ export default san.defineComponent({
         editablerow: EditableRow,
         expandedtable: ExpandedTable,
         dynamic: Dynamic,
-        children: Children
+        children: Children,
+        combination: Combination,
+        ellipsis: Ellipsis
     },
     template: `
         <div>
@@ -75,6 +79,8 @@ export default san.defineComponent({
             <rowselectioncustom/>
             <rowselection/>
             <size/>
+            <combination/>
+            <ellipsis/>
             <readme/>
         </div>
     `

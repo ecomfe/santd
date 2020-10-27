@@ -7,6 +7,7 @@ import Custom from './custom.md';
 import Noupcase from './no-upcase.md';
 import Lookup from './lookup.md';
 import Uncertainlookup from './uncertain-lookup.md';
+import Focus from './focus.md';
 
 export default san.defineComponent({
     components:{
@@ -17,7 +18,8 @@ export default san.defineComponent({
         custom: Custom,
         upcase: Noupcase,
         lookup: Lookup,
-        unlookup: Uncertainlookup
+        unlookup: Uncertainlookup,
+        focus: Focus
     },
     template: `
         <div>
@@ -28,6 +30,7 @@ export default san.defineComponent({
             <!--<custom/>-->
             <lookup/>
             <unlookup/>
+            <focus/>
             <readme/>
         </div>
     `

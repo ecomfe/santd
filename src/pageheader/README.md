@@ -4,7 +4,8 @@
 | --- | --- | --- | --- |
 | title | 自定义标题文字 | String | - |
 | subTitle | 自定义的二级标题文字 | String | - |
-| backIcon | 自定义 back icon ，如果为 false 不渲染 back icon | 同IconType | arrow-left |
+| avatar | 标题栏旁的头像，参考 `Avatar` 组件 | Object | - |
+| backIcon | 自定义 back icon ，如果为 false 不渲染 back icon | slot \| boolean | `<s-icon type="arrow-left" />` |
 | tags | title 旁的 tag 列表 | slot | - |
 | extra | 操作区，位于 title 行的行尾 | slot | - |
 | breadcrumb | 面包屑的配置 |  详见Breadcrumb  | - |

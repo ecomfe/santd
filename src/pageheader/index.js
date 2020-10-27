@@ -9,6 +9,7 @@ import {classCreator} from '../core/util';
 import icon from '../icon';
 import divider from '../divider';
 import breadcrumb from '../breadcrumb';
+import avatar from '../avatar';
 
 const prefixCls = classCreator('page-header')();
 
@@ -16,19 +17,26 @@ export default san.defineComponent({
     template: `
     	<div class="${prefixCls}">
             <s-breadcrumb separator="/" s-if="{{showBread(breadcrumb)}}" s-bind="{{breadcrumb}}" />
-            <div class="${prefixCls}-back-icon" on-click="handleBack" s-if="{{showBackIcon(breadcrumb, backIcon)}}">
-                <s-icon type="{{backIcon}}" />
-                <s-divider type="vertical" />
-            </div>
-            <div class="${prefixCls}-title-view">
-                <span class="${prefixCls}-title-view-title">{{title}}</span>
-                <span class="${prefixCls}-title-view-sub-title">{{subTitle}}</span>
-                <span class="${prefixCls}-title-view-tags">
-                    <slot name="tags" />
-                </span>
-                <span class="${prefixCls}-title-view-extra">
-                    <slot name="extraa "/>
-                </span>
+            <div class="${prefixCls}-header-view">
+                <div class="${prefixCls}-back-icon" on-click="handleBack" s-if="{{showBackIcon(breadcrumb, backIcon)}}">
+                    <slot name="backIcon">
+                        <s-icon type="arrow-left" />
+                    </slot>
+                    <s-divider type="vertical" />
+                </div>
+                <div s-if="avatar" class="${prefixCls}-avatar">
+                    <s-avatar size={{32}} s-bind={{avatar}} />
+                </div>
+                <div class="${prefixCls}-title-view">
+                    <span class="${prefixCls}-title-view-title">{{title}}</span>
+                    <span class="${prefixCls}-title-view-sub-title">{{subTitle}}</span>
+                    <span class="${prefixCls}-title-view-tags">
+                        <slot name="tags" />
+                    </span>
+                    <span class="${prefixCls}-title-view-extra">
+                        <slot name="extra"/>
+                    </span>
+                </div>
             </div>
             <div class="${prefixCls}-content-view" s-if="{{hasContent}}">
                 <slot />
@@ -38,13 +46,9 @@ export default san.defineComponent({
             </div>
         </div>
     `,
-    initData() {
-        return {
-            backIcon: 'arrow-left'
-        };
-    },
     components: {
         's-icon': icon,
+        's-avatar': avatar,
         's-divider': divider,
         's-breadcrumb': breadcrumb,
         's-brcrumbitem': breadcrumb.BrcrumbItem

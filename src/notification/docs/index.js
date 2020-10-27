@@ -13,6 +13,7 @@ import Button from './with-btn.md';
 import Placement from './placement.md';
 import Style from './custom-style.md';
 import Update from './update.md';
+import Close from './custom-close.md';
 import Readme from '../README.md';
 
 export default san.defineComponent({
@@ -27,6 +28,7 @@ export default san.defineComponent({
             <placement/>
             <style/>
             <update/>
+            <close/>
             <readme/>
         </div>
     `,
@@ -40,6 +42,7 @@ export default san.defineComponent({
         placement: Placement,
         style: Style,
         update: Update,
+        close: Close,
         readme: Readme
     }
 });
