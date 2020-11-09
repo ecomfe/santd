@@ -245,7 +245,7 @@ export default san.defineComponent({
         let selectedValue = this.getRenderData(filteredData);
         this.data.set('selectedValue', selectedValue);
         this.data.set('selectedKeys', []);
-        this.data.set('checkedKeys.checked', filteredData.map(item => item.key));
+        this.data.set('checkedKeys.checked', this.getIncludeData(checkedKeys).map(item => item.key));
         !inited && this.repaint(true);
 
         if (info.checked) {

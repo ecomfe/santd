@@ -154,7 +154,7 @@ export default san.defineComponent({
                 let keys = this.getChangedCheckedKeys(treeNodes, checkedKey, true, [], [], checkStrictly);
                 // 这里需要对数据进行去重
                 allKeys.checkedKeys = Array.from(new Set(allKeys.checkedKeys.concat(keys.checkedKeys)));
-                allKeys.halfCheckedKeys = keys.halfCheckedKeys;
+                allKeys.halfCheckedKeys = Array.from(new Set(allKeys.halfCheckedKeys.concat(keys.halfCheckedKeys)));
             }
         }
         return allKeys;
