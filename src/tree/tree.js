@@ -205,6 +205,8 @@ export default san.defineComponent({
                     }
                     return !disabled;
                 });
+
+                halfCheckedKeys = halfCheckedKeys.filter(key => !checkedKeys.includes(key));
             }
         });
         return {
