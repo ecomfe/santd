@@ -69,9 +69,10 @@ export default function upload(option) {
 
         option.onSuccess(getBody(xhr), xhr);
     };
+    let method = option.method || 'post';
 
 
-    xhr.open('post', option.action, true);
+    xhr.open(method, option.action, true);
 
     // Has to be after `.open()`. See https://github.com/enyo/dropzone/issues/179
     if (option.withCredentials && 'withCredentials' in xhr) {

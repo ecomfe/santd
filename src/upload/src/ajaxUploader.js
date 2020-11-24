@@ -28,7 +28,8 @@ export default san.defineComponent({
         beforeUpload: DataTypes.func,
         customRequest: DataTypes.func,
         withCredentials: DataTypes.bool,
-        openFileDialogOnClick: DataTypes.bool
+        openFileDialogOnClick: DataTypes.bool,
+        method: DataTypes.oneOf(['POST', 'PUT', 'post', 'put'])
     },
     initData() {
         return {
@@ -114,6 +115,7 @@ export default san.defineComponent({
                 filename: this.data.get('name'),
                 file,
                 data,
+                method: this.data.get('method'),
                 headers: this.data.get('headers'),
                 withCredentials: this.data.get('withCredentials'),
                 onProgress: e => {

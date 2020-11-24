@@ -33,6 +33,7 @@ const uploadButtonTemplate = `
         headers="{{headers}}"
         multiple="{{multiple}}"
         name="{{name}}"
+        method="{{method}}"
         openFileDialogOnClick="{{openFileDialogOnClick}}"
         beforeUpload="{{beforeUploadFunc(beforeUpload, fileList)}}"
         s-ref="button"
@@ -95,7 +96,8 @@ export default san.defineComponent({
             disabled: false,
             openFileDialogOnClick: true,
             dragState: 'drop',
-            showButton: true
+            showButton: true,
+            method: 'post'
         };
     },
 

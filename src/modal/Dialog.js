@@ -11,7 +11,6 @@ import KeyCode from '../core/util/keyCode';
 import {on, addClass, removeClass, getScrollBarSize} from '../core/util/dom';
 import TransitionEvents from '../core/util/css-animation/Event';
 import button from '../button';
-import icon from '../icon';
 
 export const filters = {
     css(style) {
@@ -128,11 +127,7 @@ export default san.defineComponent({
                     <sentinel s-ref="sentinelStart" type="sentinelStart"/>
                     <div class="${prefixCls}-content">
                         <button s-if="{{closable}}" aria-label="Close" class="${prefixCls}-close" on-click="close">
-                            <slot name="closeIcon">
-                                <span class="${prefixCls}-close-x">
-                                    <s-icon class="${prefixCls}-close-icon" type="close"/>
-                                </span>
-                            </slot>
+                            <slot name="closeIcon"/>
                         </button>
                         <div s-if="{{title}}" s-ref="header" class="${prefixCls}-header">
                             <slot name="title">
@@ -156,8 +151,7 @@ export default san.defineComponent({
     },
     components: {
         'sentinel': sentinel,
-        's-button': button,
-        's-icon': icon
+        's-button': button
     },
     filters: {
         ...filters

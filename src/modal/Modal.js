@@ -8,6 +8,7 @@ import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
 import Dialog from './Dialog';
 import button from '../button';
+import icon from '../icon';
 import localeReceiver from '../localeprovider/receiver';
 
 const prefixCls = classCreator('modal')();
@@ -26,7 +27,8 @@ export default san.defineComponent({
     },
 
     components: {
-        's-button': button
+        's-button': button,
+        's-icon': icon
     },
 
     computed: {
@@ -70,7 +72,11 @@ export default san.defineComponent({
                         on-afterClose="afterClose"
                     >
                         <slot/>
-                        <slot name="closeIcon" slot="closeIcon"/>
+                        <slot name="closeIcon" slot="closeIcon">
+                            <span class="${prefixCls}-close-x">
+                                <s-icon class="${prefixCls}-close-icon" type="close"/>
+                            </span>
+                        </slot>
                         <slot name="footer" slot="footer">
                             <s-button s-bind="{{cancelButtonProps}}"
                                 on-click="handleCancel"

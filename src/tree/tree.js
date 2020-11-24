@@ -123,8 +123,10 @@ export default san.defineComponent({
             // 如果有父子关联，拿到整个链上的数据
             if (!checkStrictly) {
                 let allKeys = this.getAllCheckedKeys(this.treeNodes, checkedKeys.concat());
-                this.data.set('allCheckedKeys', allKeys.checkedKeys);
-                this.data.set('allHalfCheckedKeys', allKeys.halfCheckedKeys);
+                checkedKeys = allKeys.checkedKeys;
+                halfCheckedKeys = allKeys.halfCheckedKeys.filter(key => !checkedKeys.includes(key));
+                this.data.set('allCheckedKeys', checkedKeys);
+                this.data.set('allHalfCheckedKeys', halfCheckedKeys);
             }
             // 没有关联的话直接返回当前数据
             else {
@@ -300,17 +302,11 @@ export default san.defineComponent({
             let halfCheckedKeys = checkStrictly ? [] : this.data.get('allHalfCheckedKeys');
             let allKeys = this.getChangedCheckedKeys(this.treeNodes, key, checked, checkedKeys, halfCheckedKeys, checkStrictly);
 
-            // 非受控状态下，所有数据都走内部的allCheckedKeys和allHalfCheckedKeys
-            if (!('checkedKeys' in this.data.get())) {
-                checkedKeys = allKeys.checkedKeys;
-                halfCheckedKeys = allKeys.halfCheckedKeys;
-                this.data.set('allCheckedKeys', checkedKeys);
-                this.data.set('allHalfCheckedKeys', halfCheckedKeys);
-            }
-            // 受控状态不保存数据，由外部传入的checkedKeys经过处理后拿到
-            else {
-                checkedKeys = allKeys.checkedKeys;
-            }
+            checkedKeys = allKeys.checkedKeys;
+            halfCheckedKeys = allKeys.halfCheckedKeys;
+            this.data.set('allCheckedKeys', checkedKeys);
+            this.data.set('allHalfCheckedKeys', halfCheckedKeys);
+
             this.updateTreeNodes();
             if (payload.value.event === 'check') {
                 this.fire('check', {checkedKeys: checkedKeys, info: payload.value});
