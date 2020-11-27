@@ -294,12 +294,9 @@ export default san.defineComponent({
     },
     handleRemoveValue(index) {
         const treeCheckable = this.data.get('treeCheckable');
-        this.data.removeAt(treeCheckable ? 'checkedKeys.checked' : 'selectedKeys', index, {force: true});
         this.data.removeAt('selectedValue', index);
-        this.handleTreeSelect({selectedKeys: this.data.get('selectedKeys'), info: {
-            node: this,
-            event: 'select'
-        }});
+        let selectedValue = this.data.get('selectedValue');
+        this.data.set(treeCheckable ? 'checkedKeys.checked' : 'selectedKeys', selectedValue.map(item => item.key));
         this.fire('change', {info: {event: 'remove'}, value: this.data.get(treeCheckable ? 'checkedKeys.checked' : 'selectedKeys')});
     },
     getIncludeData(data = []) {

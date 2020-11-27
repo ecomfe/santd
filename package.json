@@ -1,6 +1,6 @@
 {
     "name": "santd",
-    "version": "0.3.4",
+    "version": "0.3.5",
     "description": "san UI design",
     "scripts": {
         "start": "cross-env NODE_ENV=development node scripts/preview.js",
