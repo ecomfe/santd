@@ -42,6 +42,7 @@ export {default as Progress} from './progress';
 export {default as Radio} from './radio';
 export {default as Rate} from './rate';
 export {default as Row} from './row';
+export {default as Statistic} from './statistic';
 export {default as Select} from './select';
 export {default as Skeleton} from './skeleton';
 export {default as Slider} from './slider';
