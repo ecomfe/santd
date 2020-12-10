@@ -773,6 +773,7 @@ export default san.defineComponent({
             return;
         }
 
+        this.fire('input-keydown', e);
         // magic code
         const keyCode = e.keyCode;
         if ((modeConfig.multiple || modeConfig.tags) && !e.target.value && keyCode === KeyCode.BACKSPACE) {

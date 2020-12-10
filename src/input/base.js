@@ -38,6 +38,12 @@ export default san.defineComponent({
         this.fire('blur', inputValue);
         this.dispatch('UI:form-item-interact', {fieldValue: inputValue, type: 'blur', e});
     },
+    focus() {
+        this.ref('input').focus();
+    },
+    blur() {
+        this.ref('input').blur();
+    },
     template: `
         <input
             placeholder="{{placeholder}}"
