@@ -16,6 +16,11 @@ export default san.defineComponent({
     },
     attached() {
         this.resizeTextarea();
+        let value = this.data.get('value') || '';
+        if (!value) {
+            let defaultValue = this.data.get('defaultValue') || '';
+            this.data.set('value', defaultValue);
+        }
     },
     updated() {
         this.resizeTextarea();
@@ -44,7 +49,7 @@ export default san.defineComponent({
         this.nextTick(() => {
             this.resizeTextarea();
         });
-        this.fire('inputChange', e.target.value);
+        this.fire('change', e.target.value);
         this.dispatch('UI:form-item-interact', {fieldValue: e.target.value, type: 'change', e});
     },
     handleBlur(e) {
@@ -66,7 +71,7 @@ export default san.defineComponent({
             on-input="handleTextareaChange($event)"
             on-keydown="handleKeyDown($event)"
             on-blur="handleBlur($event)"
-            value="{{value || defaultValue}}"
+            value="{=value=}"
         ></textarea>
     `
 });

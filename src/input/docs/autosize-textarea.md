@@ -10,7 +10,7 @@
         <s-textarea placeholder="Autosize height based on content lines" autosize="{{true}}"></s-textarea>
     </div>
     <div style="margin-bottom: 10px;">
-        <s-textarea placeholder="Autosize height with minimum and maximum number of lines" autosize="{minRows: 2, maxRows: 6}"></s-textarea>
+        <s-textarea placeholder="Autosize height with minimum and maximum number of lines" autosize="{{{minRows: 2, maxRows: 6}}}"></s-textarea>
     </div>
 </div>
 </template>

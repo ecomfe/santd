@@ -161,7 +161,9 @@ export default san.defineComponent({
         }
     },
     handleChange(e) {
-        const files = e.target.files;
+        const files = Array.prototype.slice.call(e.target.files).filter(
+            file => attrAccept(file, this.data.get('accept'))
+        );
         this.uploadFiles(files, e);
         this.reset();
     },

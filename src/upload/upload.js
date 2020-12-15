@@ -21,6 +21,7 @@ const uploadButtonTemplate = `
     style="{{showButton ? '' : 'display:none;'}}"
 >
     <s-upload
+        accept="{{accept}}"
         showButton="{{showButton}}"
         prefixCls="${prefixCls}"
         listType="{{listType}}"
