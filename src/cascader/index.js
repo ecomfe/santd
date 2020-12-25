@@ -273,6 +273,7 @@ export default san.defineComponent({
             popupPlacement="{{popupPlacement}}"
             options="{{inputValue ? filteredOptions : options}}"
             value="{{value}}"
+            disabled="{{disabled}}"
             visible="{{popupVisible}}"
             on-visibleChange="handlePopupVisibleChange"
             on-change="handleChange"
