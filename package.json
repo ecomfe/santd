@@ -101,6 +101,7 @@
         "map-stream": "^0.0.7",
         "marked": "^0.7.0",
         "mini-css-extract-plugin": "^0.8.0",
+        "nprogress": "^0.2.0",
         "object-assign": "^4.1.1",
         "ora": "^3.4.0",
         "postcss": "^7.0.16",

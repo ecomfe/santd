@@ -8,6 +8,7 @@ import {router} from 'san-router';
 
 import Prism from 'prismjs';
 import 'prismjs/themes/prism.css';
+import NProgress from 'nprogress';
 
 import Content from './containers/Content';
 import Header from './containers/Header';
@@ -170,20 +171,27 @@ class Index extends Component {
         // 路由监听
         router.listen(e => {
             const query = e.query;
+
+            // 加载进度条
+            if (NProgress.isRendered) {
+                NProgress.remove();
+            }
+            NProgress.inc();
+
             if (e.path === '/') {
                 that.handleRedirect({key: defaultPath});
                 that.data.set('currentPath', defaultPath);
             }
             else {
                 that.data.set('currentPath', e.path);
-                document.getElementById('content').innerHTML = '';
-                that.data.set('content', '');
                 if (query.type === 'docs') {
                     import(
                         /* webpackChunkName: "docs" */
                         `@docs/${query.id}.md?exportType=html`
                     ).then(({default: html}) => {
-                        that.data.set('content', html);
+                        this.docChange(() => {
+                            that.data.set('content', html);
+                        });
                     }).catch(e => {
                         that.handleError(e);
                     });
@@ -193,20 +201,21 @@ class Index extends Component {
                         /* webpackChunkName: "comp-doc" */
                         `santd/${query.id}/docs/index.js`
                     ).then(({default: Doc}) => {
-                        // 得到的是san component 对象
-                        let doc = new Doc();
-                        doc.attach(document.getElementById('content'));
+                        this.docChange(() => {
+                            // 得到的是san component 对象
+                            const doc = new Doc();
+                            doc.attach(document.getElementById('content'));
+                        });
                     }).catch(e => {
                         that.handleError(e);
                     });
                 }
                 that.hlCode();
             }
-            this.nextTick(() => {
-                if (window.document.documentElement.scrollTop > 110) {
-                    window.scroll(0, 110);
-                }
-            });
+
+            // 完成加载进度条
+            // true 解决非首次加载过快导致进度条不显示问题
+            NProgress.done(true);
         });
 
         router.start();
@@ -220,6 +229,47 @@ class Index extends Component {
         const routerMap = this.data.get('routerMap');
         return routerMap[query.type] && routerMap[query.type][query.id];
     }
+
+    /**
+     * docChange 文档内容改变
+     *
+     * @param {Function} changeFun 自定义 doc change 事件
+     */
+    docChange(changeFun) {
+        // before
+        // 清除当前页面 doc内容
+        document.getElementById('content').innerHTML = '';
+        this.data.set('content', '');
+
+        // 执行自定义 change 执行事件
+        changeFun && changeFun();
+
+
+        // after
+        // 恢复滚动高度
+        if (window.document.documentElement.scrollTop > 110) {
+            window.scroll(0, 110);
+        }
+
+        // 更改页面标题
+        this.nextTick(() => {
+            const titleSuffix = 'San Toolkit for Ant Design';
+
+            const titleResult = document.querySelectorAll('h1 > span')[0].innerText.split(' ');
+            let title = '';
+
+            if (titleResult.length === 2) {
+                title = `${titleResult[1]} ${titleResult[0]}`;
+            }
+            else {
+                // 兼容Ant Design of San
+                title = titleResult.join(' ');
+            }
+
+            document.title = `${title} - ${titleSuffix}`;
+        });
+    }
+
     hlCode() {
         setTimeout(() => {
             let code = document.getElementsByTagName('code');
