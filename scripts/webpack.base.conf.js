@@ -42,7 +42,7 @@ module.exports = {
                         loader: 'babel-loader?cacheDirectory=true'
                     },
                     {
-                        loader: 'hulk-san-loader',
+                        loader: 'san-loader',
                         options: {
                             hotReload: !isProduction,
                             sourceMap: isProduction,
