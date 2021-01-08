@@ -19,7 +19,6 @@ import Tbody from './tbody';
 import Thead from './thead';
 import Tooltip from '../tooltip';
 import './style/index';
-import '../pagination/style/index';
 
 const prefixCls = classCreator('table')();
 
