@@ -13,7 +13,8 @@
         "dev:issue": "cross-env NODE_ENV=development node scripts/issue.js",
         "build:issue": "cross-env NODE_ENV=production webpack --config scripts/webpack.issue.conf.js",
         "lint:script": "fecs --type=js",
-        "lint:style": "stylelint \"{site, src}/**/*.less\" --syntax less"
+        "lint:style": "stylelint \"{site, src}/**/*.less\" --syntax less",
+        "commit": "git-cz"
     },
     "main": "lib/index.js",
     "module": "es/index.js",
@@ -37,9 +38,13 @@
         "shallowequal": "^1.1.0",
         "tinycolor2": "^1.4.1"
     },
+    "lint-staged": {
+        "!(example|dist|output|__mocks__)/**/*.js": "eslint"
+    },
     "husky": {
         "hooks": {
-            "pre-commit": "npm run lint:script && npm run lint:style"
+            "pre-commit": "lint-staged && npm run lint:script && npm run lint:style",
+            "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
         }
     },
     "peerDependencies": {
@@ -60,6 +65,9 @@
         "@babel/traverse": "^7.4.4",
         "@babel/types": "^7.4.4",
         "@octokit/rest": "^16.35.2",
+        "@commitlint/cli": "^8.3.4",
+        "@commitlint/core": "^8.3.4",
+        "@ksky521/cz-emoji": "^1.2.1",
         "autoprefixer": "^9.5.1",
         "babel-cli": "^6.26.0",
         "babel-eslint": "^10.0.3",
@@ -140,6 +148,137 @@
         "webpack-dev-middleware": "^3.7.0",
         "webpack-dev-server": "^3.3.1",
         "webpack-hot-middleware": "^2.25.0",
-        "webpack-merge": "^4.1.4"
+        "webpack-merge": "^4.1.4",
+        "lint-staged": "^9.2.5",
+        "eslint": "^6.8.0",
+        "commitizen": "^4.0.3",
+        "commitlint-config-gitmoji": "^1.0.1"
+    },
+    "commitlint": {
+        "extends": [
+            "gitmoji"
+        ],
+        "rules": {
+            "header-max-length": [
+                2,
+                "always",
+                120
+            ],
+            "subject-case": [
+                0,
+                "always",
+                "sentence-case"
+            ]
+        }
+    },
+    "config": {
+        "commitizen": {
+            "path": "./node_modules/@ksky521/cz-emoji"
+        },
+        "@ksky521/cz-emoji": {
+            "types": [
+                {
+                    "emoji": "🌟",
+                    "code": ":sparkles:",
+                    "description": "Introducing new features.",
+                    "name": "feat"
+                },
+                {
+                    "emoji": "🐛",
+                    "code": ":bug:",
+                    "description": "Fixing a bug.",
+                    "name": "fix"
+                },
+                {
+                    "emoji": "🚑",
+                    "code": ":ambulance:",
+                    "description": "Critical hotfix.",
+                    "name": "quickfix"
+                },
+                {
+                    "emoji": "✅",
+                    "code": ":white_check_mark:",
+                    "description": "Adding tests.",
+                    "name": "test"
+                },
+                {
+                    "emoji": "💬",
+                    "code": ":speech_balloon:",
+                    "description": "Updating text and literals.",
+                    "name": "chore"
+                },
+                {
+                    "emoji": "📦",
+                    "code": ":package:",
+                    "description": "Releasing / Version tags.",
+                    "name": "release"
+                },
+                {
+                    "emoji": "📝",
+                    "code": ":pencil:",
+                    "description": "Writing docs.",
+                    "name": "docs"
+                },
+                {
+                    "emoji": "🚨",
+                    "code": ":rotating_light:",
+                    "description": "Removing linter warnings.",
+                    "name": "lint"
+                },
+                {
+                    "emoji": "⏪",
+                    "code": ":rewind:",
+                    "description": "Reverting changes.",
+                    "name": "revert"
+                },
+                {
+                    "emoji": "🔀",
+                    "code": ":twisted_rightwards_arrows:",
+                    "description": "Merging branches.",
+                    "name": "merge"
+                },
+                {
+                    "emoji": "👌",
+                    "code": ":ok_hand:",
+                    "description": "Updating code due to code review changes.",
+                    "name": "review"
+                },
+                {
+                    "emoji": "🎨",
+                    "code": ":art:",
+                    "description": "Improving structure / format of the code.",
+                    "name": "style"
+                },
+                {
+                    "emoji": "💄",
+                    "code": ":lipstick:",
+                    "description": "Updating the UI and style files.",
+                    "name": "ui"
+                },
+                {
+                    "emoji": "👽",
+                    "code": ":alien:",
+                    "description": "Updating code due to external API changes.",
+                    "name": "compat"
+                },
+                {
+                    "emoji": "💥",
+                    "code": ":boom:",
+                    "description": " Refactoring code.",
+                    "name": "refactor"
+                },
+                {
+                    "emoji": "🎉",
+                    "code": ":tada:",
+                    "description": "Initial commit.",
+                    "name": "init"
+                }
+            ],
+            "skipQuestions": [
+                "scope",
+                "body",
+                "issues"
+            ]
+        }
     }
 }
