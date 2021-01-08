@@ -42,11 +42,10 @@ function flattenTree(options = [], props, ancestor = []) {
 const defaultLimit = 50;
 
 function highlightKeyword(str, keyword, prefixCls) {
-    return str.split(keyword).map((node, index) =>
-        index === 0
-        ? node
-        : `<span class="${prefixCls}-menu-item-keyword" key="seperator">${keyword}</span>${node}`
-    );
+    return str.split(keyword).map((node, index) => {
+        const html = `<span class="${prefixCls}-menu-item-keyword" key="seperator">${keyword}</span>${node}`;
+        return index === 0 ? node : html;
+    });
 }
 
 function defaultFilterOption(inputValue, path, names) {
@@ -193,8 +192,8 @@ export default san.defineComponent({
         const loadData = this.data.get('loadData');
         loadData && this.data.set('loadData', loadData.bind(this.parentComponent));
 
-        const showSearch = this.data.get('showSearch');
-        this.data.set('hasSlot', this.sourceSlots.noname && this.sourceSlots.noname.filter(item => !item.textExpr).length);
+        const hasSlot = this.sourceSlots.noname && this.sourceSlots.noname.filter(item => !item.textExpr).length;
+        this.data.set('hasSlot', hasSlot);
         this.data.set('hasDisplayRender', !!this.sourceSlots.named.displayRender);
 
         this.watch('inputValue', val => {

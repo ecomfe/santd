@@ -67,6 +67,7 @@
         "@octokit/rest": "^16.35.2",
         "@commitlint/cli": "^8.3.4",
         "@commitlint/core": "^8.3.4",
+        "@ecomfe/eslint-config": "^3.2.0",
         "@ksky521/cz-emoji": "^1.2.1",
         "autoprefixer": "^9.5.1",
         "babel-cli": "^6.26.0",
@@ -151,6 +152,8 @@
         "webpack-merge": "^4.1.4",
         "lint-staged": "^9.2.5",
         "eslint": "^6.8.0",
+        "eslint-plugin-babel": "^5.3.0",
+        "eslint-plugin-jest": "^23.8.2",
         "commitizen": "^4.0.3",
         "commitlint-config-gitmoji": "^1.0.1"
     },
