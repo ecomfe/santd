@@ -121,7 +121,8 @@ export default san.defineComponent({
         title: DataTypes.string,
         data: DataTypes.array,
         pagination: DataTypes.oneOfType([DataTypes.bool, DataTypes.object]),
-        locale: DataTypes.object
+        locale: DataTypes.object,
+        rowClassName: DataTypes.func
     },
     initData() {
         return {
@@ -805,6 +806,10 @@ export default san.defineComponent({
         this.data.set('pagination.current', payload.page);
         this.initRenderData();
         this.handleChange();
+    },
+    getRowClassName(record, index) {
+        const rowClassName = this.data.get('rowClassName');
+        return rowClassName && rowClassName(record, index) || '';
     },
 
     template: `<div>
