@@ -12,7 +12,7 @@ export default {
         <tbody class="${prefixCls}-tbody">
             <template s-for="item, index in renderData" s-if="renderData.length">
             <tr
-                class="${prefixCls}-row"
+                class="${prefixCls}-row {{getRowClassName(item, index)}}"
                 style="display: {{item.level === 0 || item.expanded ? '' : 'none;'}}"
                 on-click="handleRowClick(item)"
             >
@@ -20,7 +20,7 @@ export default {
             </tr>
             <tr
                 s-if="hasExpandedRowRender"
-                class="${prefixCls}-expanded-row"
+                class="${prefixCls}-expanded-row {{getRowClassName(item, index)}}"
                 style="display: {{item.expanded ? '' : 'none'}}"
             >
                 <td></td>
