@@ -17,13 +17,12 @@
 </template>
 
 <script>
-import alert from 'santd/alert';
-import spin from 'santd/spin';
+import {Spin, Alert} from 'santd';
 
 export default {
     components: {
-        's-alert': alert,
-        's-spin': spin
+        's-alert': Alert,
+        's-spin': Spin
     }
 }
 </script>

@@ -14,7 +14,8 @@
     </div>
 </template>
 <script>
-import Divider from 'santd/divider';
+import {Divider} from 'santd';
+
 export default {
     components: {
         's-divider': Divider

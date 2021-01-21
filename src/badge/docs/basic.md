@@ -15,8 +15,8 @@
     </div>
 </template>
 <script>
-import Badge from 'santd/badge';
-import Icon from 'santd/icon';
+import {Badge, Icon} from 'santd';
+
 export default {
     components: {
         's-badge': Badge,

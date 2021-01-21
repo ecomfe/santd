@@ -24,12 +24,12 @@ badge
     </div>
 </template>
 <script>
-import badge from 'santd/badge';
-import button from 'santd/button';
+import {Badge, Button} from 'santd';
+
 export default {
     components: {
-        's-badge': badge,
-        's-button': button
+        's-badge': Badge,
+        's-button': Button
     },
     initData() {
         return {

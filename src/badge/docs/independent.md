@@ -12,10 +12,11 @@
     </div>
 </template>
 <script>
-import badge from 'santd/badge';
+import {Badge} from 'santd';
+
 export default {
     components: {
-        's-badge': badge
+        's-badge': Badge
     }
 }
 </script>

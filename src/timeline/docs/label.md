@@ -23,9 +23,7 @@
 </template>
 <script>
 import san from 'san';
-import Timeline from 'santd/timeline';
-import Icon from 'santd/icon';
-import Radio from 'santd/radio';
+import {Timeline, Icon, Radio} from 'santd';
 
 export default {
     initData() {

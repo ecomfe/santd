@@ -17,7 +17,7 @@
 </template>
 <script>
 import san from 'san';
-import Mention from 'santd/mention';
+import {Mention} from 'santd';
 
 const webFrameworks = [
   { name: 'React', type: 'JavaScript' },

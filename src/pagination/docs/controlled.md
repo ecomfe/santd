@@ -10,7 +10,8 @@
     </div>
 </template>
 <script>
-import Pagination from 'santd/pagination';
+import {Pagination} from 'santd';
+
 export default {
     initData() {
         return {

@@ -17,7 +17,7 @@
     </div>
 </template>
 <script>
-import Anchor from 'santd/anchor';
+import {Anchor} from 'santd';
 
 export default {
     components: {

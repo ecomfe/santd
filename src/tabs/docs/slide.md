@@ -28,8 +28,7 @@
     </div>
 </template>
 <script>
-import Tabs from 'santd/tabs';
-import Radio from 'santd/radio';
+import {Tabs, Radio} from 'santd';
 
 export default {
     initData() {

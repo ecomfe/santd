@@ -36,15 +36,15 @@
 | title | 头部标题内容 |
 | footer | 底部内容，当不需要默认底部按钮时，可以设为 `hasFooter=false` |
 
-### modal.method()
+### Modal.method()
 
 包括：
 
-- `modal.info`
-- `modal.success`
-- `modal.error`
-- `modal.warning`
-- `modal.confirm`
+- `Modal.info`
+- `Modal.success`
+- `Modal.error`
+- `Modal.warning`
+- `Modal.confirm`
 
 以上均为一个函数，参数为 object，具体属性如下：
 
@@ -70,12 +70,12 @@
 以上函数调用后，会返回一个引用，可以通过该引用更新和关闭弹窗。
 
 ```js
-const modal = modal.info();
+const Modal = Modal.info();
 
-modal.update({
+Modal.update({
     title: '修改的标题',
     content: '修改的内容',
 });
 
-modal.destroy();
+Modal.destroy();
 ```

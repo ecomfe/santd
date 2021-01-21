@@ -12,8 +12,8 @@
   </div>
 </template>
 <script>
-import InputNumber from 'santd/input-number';
-import Icon from 'santd/icon';
+import {InputNumber, Icon} from 'santd';
+
 export default {
     components: {
         's-input-number': InputNumber,

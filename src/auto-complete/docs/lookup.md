@@ -26,8 +26,7 @@
 </template>
 <script>
 import san from 'san';
-import autoComplete from 'santd/auto-complete';
-import input from 'santd/input';
+import {AutoComplete} from 'santd';
 
 const componentTitle = function() {
     return san.defineComponent({
@@ -87,10 +86,9 @@ const dataSource = [
 
 export default {
     components: {
-        's-auto-complete': autoComplete,
-        's-input': input,
-        's-option-group': autoComplete.Group,
-        's-option': autoComplete.Option
+        's-auto-complete': AutoComplete,
+        's-option-group': AutoComplete.Group,
+        's-option': AutoComplete.Option
     },
     initData() {
         return {

@@ -13,7 +13,7 @@
 </template>
 <script>
 import san from 'san';
-import Tag from 'santd/tag';
+import {Tag} from 'santd';
 
 const myTag = san.defineComponent({
     components: {

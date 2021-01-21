@@ -21,12 +21,12 @@
   </div>
 </template>
 <script>
-import autoComplete from 'santd/auto-complete';
+import {AutoComplete} from 'santd';
 
 export default {
     components: {
-        's-auto-complete': autoComplete,
-        's-select-option': autoComplete.Option
+        's-auto-complete': AutoComplete,
+        's-select-option': AutoComplete.Option
     },
     initData() {
         return {

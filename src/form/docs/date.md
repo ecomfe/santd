@@ -32,10 +32,7 @@
   </div>
 </template>
 <script>
-import Form from 'santd/form';
-import Button from 'santd/button';
-import DatePicker from 'santd/date-picker';
-import TimePicker from 'santd/timepicker';
+import {Form, Button, DatePicker, TimePicker} from 'santd';
 
 export default Form.create({name: 'time_related_controls'})({
     components: {

@@ -11,11 +11,11 @@
 </template>
 
 <script>
-import spin from 'santd/spin';
+import {Spin} from 'santd';
 
 export default {
     components: {
-        's-spin': spin
+        's-spin': Spin
     }
 }
 </script>

@@ -19,7 +19,8 @@
 </template>
 <script>
 
-import transfer from 'santd/transfer';
+import {Transfer} from 'santd';
+
 export default {
     initData() {
         return {
@@ -51,7 +52,7 @@ export default {
         this.data.set('targetKeys', targetKeys);
     },
     components: {
-        's-transfer': transfer
+        's-transfer': Transfer
     },
     handleChange({targetKeys}) {
         this.data.set('targetKeys', targetKeys);

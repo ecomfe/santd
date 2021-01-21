@@ -14,11 +14,11 @@
   </div>
 </template>
 <script>
-import pageheader from 'santd/pageheader';
+import {PageHeader} from 'santd';
 
 export default {
     components: {
-        's-pageheader': pageheader
+        's-pageheader': PageHeader
     },
     initData() {
         return {

@@ -35,18 +35,15 @@
   </div>
 </template>
 <script>
-import statistic from 'santd/statistic';
-import icon from 'santd/icon';
-import col from 'santd/col';
-import row from 'santd/row';
-import card from 'santd/card';
+import {Statistic, Col, Row, Icon, Card} from 'santd';
+
 export default {
     components: {
-        's-statistic': statistic,
-        's-icon': icon,
-        's-col': col,
-        's-row': row,
-        's-card': card
+        's-statistic': Statistic,
+        's-icon': Icon,
+        's-col': Col,
+        's-row': Row,
+        's-card': Card
     },
     initData() {
         return {

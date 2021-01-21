@@ -42,10 +42,7 @@
 </template>
 <script>
 import moment from 'moment';
-import Calendar from 'santd/calendar';
-import Grid from 'santd/grid';
-import Radio from 'santd/radio';
-import Select from 'santd/select';
+import {Calendar, Grid, Radio, Select} from 'santd';
 
 export default {
     components: {

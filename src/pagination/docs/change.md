@@ -12,7 +12,8 @@
     </div>
 </template>
 <script>
-import Pagination from 'santd/pagination';
+import {Pagination} from 'santd';
+
 export default {
     components: {
         's-pagination': Pagination

@@ -19,8 +19,8 @@
 </template>
 <script>
 import san from 'san';
-import Empty from 'santd/empty';
-import Button from 'santd/button';
+import {Empty, Button} from 'santd';
+
 export default {
     components: {
         's-empty': Empty,

@@ -15,13 +15,12 @@ Radio不可用。
     </div>
 </template>
 <script>
-import radio from 'santd/radio';
-import button from 'santd/button';
+import {Radio, Button} from 'santd';
 
 export default {
     components: {
-        's-radio': radio,
-        's-button': button
+        's-radio': Radio,
+        's-button': Button
     },
     initData() {
         return {

@@ -22,7 +22,8 @@
     </div>
 </template>
 <script>
-import Button from 'santd/button';
+import {Button} from 'santd';
+
 export default {
     components: {
         's-button': Button

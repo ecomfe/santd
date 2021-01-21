@@ -19,8 +19,8 @@
 </template>
 
 <script>
-import DatePicker from 'santd/date-picker';
 import moment from 'moment';
+import {DatePicker} from 'santd';
 
 const dateFormat = 'YYYY/MM/DD';
 const monthFormat = 'YYYY/MM';

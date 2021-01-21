@@ -25,7 +25,7 @@
     </div>
 </template>
 <script>
-import Radio from 'santd/radio';
+import {Radio} from 'santd';
 
 export default {
     components: {

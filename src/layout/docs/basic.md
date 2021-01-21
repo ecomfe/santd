@@ -42,7 +42,8 @@
 </template>
 
 <script>
-import Layout from 'santd/layout';
+import {Layout} from 'santd';
+
 export default {
     components: {
         's-layout': Layout,

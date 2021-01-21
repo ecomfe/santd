@@ -48,8 +48,8 @@
   </div>
 </template>
 <script>
-import Menu from 'santd/menu';
-import Icon from 'santd/icon';
+import {Menu, Icon} from 'santd';
+
 export default {
     components: {
         's-menu': Menu,

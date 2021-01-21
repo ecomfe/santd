@@ -18,8 +18,8 @@
     </div>
 </template>
 <script>
-import Descriptions from 'santd/descriptions';
 import san from 'san';
+import {Descriptions} from 'santd';
 
 export default {
     components: {

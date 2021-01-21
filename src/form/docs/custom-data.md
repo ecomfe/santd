@@ -21,8 +21,7 @@
 </template>
 
 <script>
-import Form from 'santd/form';
-import InputNumber from 'santd/input-number';
+import {Form, InputNumber} from 'santd';
 
 function validatePrimeNumber(number) {
     if (number === 11) {

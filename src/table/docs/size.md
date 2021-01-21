@@ -21,10 +21,11 @@
     </div>
 </template>
 <script>
-import table from 'santd/table';
+import {Table} from 'santd';
+
 export default {
     components: {
-        's-table': table
+        's-table': Table
     },
     initData() {
         return {

@@ -24,8 +24,8 @@
     </div>
 </template>
 <script>
-import Carousel from 'santd/carousel';
-import Radio from 'santd/radio';
+import {Carousel, Radio} from 'santd';
+
 export default {
     components: {
         's-carousel': Carousel,

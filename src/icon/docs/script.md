@@ -13,7 +13,8 @@
 </div>
 </template>
 <script>
-import Icon from 'santd/icon';
+import {Icon} from 'santd';
+
 const IconFont = Icon.createFromIconfontCN({
     scriptUrl: '//at.alicdn.com/t/font_8d5l8fzk5b87iudi.js'
 });

@@ -33,9 +33,8 @@
   </div>
 </template>
 <script>
-import Menu from 'santd/menu';
-import Icon from 'santd/icon';
-import Button from 'santd/button';
+import {Menu, Icon, Button} from 'santd';
+
 export default {
     components: {
         's-menu': Menu,

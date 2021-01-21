@@ -23,7 +23,7 @@
     </div>
 </template>
 <script>
-import Table from 'santd/table';
+import {Table} from 'santd';
 
 const columns = [
 {title: 'Full Name', width: '100px', dataIndex: 'name', key: 'name', left: '0px'},

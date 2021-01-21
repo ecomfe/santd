@@ -18,8 +18,7 @@
 </template>
 <script>
 import san from 'san';
-import Steps from 'santd/steps';
-import Icon from 'santd/icon';
+import {Steps, Icon} from 'santd';
 
 export default {
     components: {

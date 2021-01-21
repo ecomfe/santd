@@ -27,7 +27,7 @@
     </div>
 </template>
 <script>
-import Typography from 'santd/typography';
+import {Typography} from 'santd';
 
 export default {
     components: {

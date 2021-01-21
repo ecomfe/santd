@@ -33,16 +33,14 @@
     </div>
 </template>
 <script>
-import Button from 'santd/button';
-import DropDown from 'santd/dropdown';
-import Menu from 'santd/menu';
-import Icon from 'santd/icon';
-import message from 'santd/message';
+import {Button, Icon, Dropdown, Menu} from 'santd';
+import message from 'santd/es/message';
+import 'santd/es/message/style';
 
 export default {
     components: {
-        's-dropdown': DropDown,
-        's-dropdownbutton': DropDown.Button,
+        's-dropdown': Dropdown,
+        's-dropdownbutton': Dropdown.Button,
         's-button': Button,
         's-icon': Icon,
         's-menu': Menu,

@@ -53,13 +53,14 @@
     </div>
 </template>
 <script>
-import popconfirm from 'santd/popconfirm';
-import message from 'santd/message';
-import button from 'santd/button';
+import {Popconfirm, Button} from 'santd';
+import message from 'santd/es/message';
+import 'santd/es/message/style';
+
 export default {
     components: {
-        's-popconfirm': popconfirm,
-        's-button': button
+        's-popconfirm': Popconfirm,
+        's-button': Button
     },
     initData() {
         return {

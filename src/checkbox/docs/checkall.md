@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import Checkbox from 'santd/checkbox';
+import {Checkbox} from 'santd';
 
 const plainOptions = ['Apple', 'Pear', 'Orange'];
 const defaultCheckedList = ['Apple', 'Orange'];

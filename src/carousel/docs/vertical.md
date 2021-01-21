@@ -16,10 +16,11 @@
     </div>
 </template>
 <script>
-import carousel from 'santd/carousel';
+import {Carousel} from 'santd';
+
 export default {
     components: {
-        's-carousel': carousel
+        's-carousel': Carousel
     },
     handleAfter(current) {
         console.log('afterChange', current);

@@ -44,8 +44,7 @@
     </div>
 </template>
 <script>
-import Button from 'santd/button';
-import Icon from 'santd/icon';
+import {Button, Icon} from 'santd';
 
 export default {
     components: {

@@ -10,12 +10,12 @@ value 和 on-change 需要配合使用。
     </div>
 </template>
 <script>
-import timepicker from 'santd/timepicker';
 import moment from 'moment';
+import {TimePicker} from 'santd';
 
 export default {
     components: {
-        's-timepicker': timepicker
+        's-timepicker': TimePicker
     },
     handleChange({time}) {
         console.log(time);

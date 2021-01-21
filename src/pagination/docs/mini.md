@@ -12,7 +12,7 @@
     </div>
 </template>
 <script>
-import Pagination from 'santd/pagination';
+import {Pagination} from 'santd';
 
 const showTotal = function (total) {
     return `Total ${total} items`;

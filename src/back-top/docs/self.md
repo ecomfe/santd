@@ -13,10 +13,11 @@
     </div>
 </template>
 <script>
-import backtop from 'santd/back-top';
+import {BackTop} from 'santd';
+
 export default {
     components: {
-        's-back-top': backtop
+        's-back-top': BackTop
     }
 }
 </script>

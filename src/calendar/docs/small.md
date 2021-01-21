@@ -10,11 +10,12 @@
     </div>
 </template>
 <script>
-import calendar from 'santd/calendar';
 import * as moment from 'moment';
+import {Calendar} from 'santd';
+
 export default {
     components: {
-        's-calendar': calendar
+        's-calendar': Calendar
     },
     initData() {
         return {

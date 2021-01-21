@@ -11,9 +11,8 @@
     </div>
 </template>
 <script>
-import Calendar from 'santd/calendar';
-import Alert from 'santd/alert';
 import moment from 'moment';
+import {Calendar, Alert} from 'santd';
 
 export default {
     components: {

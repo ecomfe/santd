@@ -63,13 +63,12 @@
     </div>
 </template>
 <script>
-import tooltip from 'santd/tooltip';
-import button from 'santd/button';
+import {Tooltip, Button} from 'santd';
 
 export default {
     components: {
-        's-tooltip': tooltip,
-        's-button': button
+        's-tooltip': Tooltip,
+        's-button': Button
     }
 }
 </script>

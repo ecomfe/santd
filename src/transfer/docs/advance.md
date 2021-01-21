@@ -23,9 +23,8 @@
     </div>
 </template>
 <script>
-import Transfer from 'santd/transfer';
-import Button from 'santd/button';
 import san from 'san';
+import {Transfer, Button} from 'santd';
 
 export default {
     initData() {

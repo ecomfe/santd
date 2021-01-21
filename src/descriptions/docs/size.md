@@ -37,9 +37,8 @@
     </div>
 </template>
 <script>
-import Descriptions from 'santd/descriptions';
-import Radio from 'santd/radio';
 import san from 'san';
+import {Descriptions, Radio} from 'santd';
 
 export default {
     initData() {

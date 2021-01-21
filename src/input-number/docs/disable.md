@@ -12,8 +12,7 @@
     </div>
 </template>
 <script>
-import InputNumber from 'santd/input-number';
-import Button from 'santd/button';
+import {InputNumber, Button} from 'santd';
 
 export default {
     components: {

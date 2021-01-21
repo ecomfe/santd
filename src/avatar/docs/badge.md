@@ -15,8 +15,7 @@
     </div>
 </template>
 <script>
-import Avatar from 'santd/avatar';
-import Badge from 'santd/badge';
+import {Avatar, Badge} from 'santd';
 
 export default {
     components: {

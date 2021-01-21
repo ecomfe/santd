@@ -12,13 +12,12 @@
     </div>
 </template>
 <script>
-import timepicker from 'santd/timepicker';
-import button from 'santd/button'
+import {TimePicker, Button} from 'santd';
 
 export default {
     components: {
-        's-timepicker': timepicker,
-        's-button': button
+        's-timepicker': TimePicker,
+        's-button': Button
     },
     initData() {
         return {

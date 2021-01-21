@@ -30,9 +30,7 @@
     </div>
 </template>
 <script>
-import Card from 'santd/card';
-import Avatar from 'santd/avatar';
-import Icon from 'santd/icon';
+import {Card, Avatar, Icon} from 'santd';
 
 export default {
     components: {

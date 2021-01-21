@@ -22,9 +22,8 @@
     </div>
 </template>
 <script>
-import Calendar from 'santd/calendar';
-import Badge from 'santd/badge';
 import moment from 'moment';
+import {Calendar, Badge} from 'santd';
 
 function getListData(value) {
     let listData;

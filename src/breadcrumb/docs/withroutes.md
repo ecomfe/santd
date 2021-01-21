@@ -14,7 +14,7 @@
   </div>
 </template>
 <script>
-import Breadcrumb from 'santd/breadcrumb';
+import {Breadcrumb} from 'santd';
 
 export default {
     initData() {

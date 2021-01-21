@@ -24,14 +24,13 @@
 </template>
 <script>
 import san from 'san';
-import tabs from 'santd/tabs';
-import icon from 'santd/icon';
+import {Tabs, Icon} from 'santd';
 
 export default {
     components: {
-        's-tabs': tabs,
-        's-tabpane': tabs.TabPane,
-        's-icon': icon
+        's-tabs': Tabs,
+        's-tabpane': Tabs.TabPane,
+        's-icon': Icon
     }
 }
 </script>

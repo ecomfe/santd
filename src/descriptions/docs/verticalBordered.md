@@ -35,9 +35,8 @@
     </div>
 </template>
 <script>
-import Descriptions from 'santd/descriptions';
-import Badge from 'santd/badge';
 import san from 'san';
+import {Descriptions, Badge} from 'santd';
 
 export default {
     components: {

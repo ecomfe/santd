@@ -12,8 +12,7 @@
     </div>
 </template>
 <script>
-import Slider from 'santd/slider';
-import Switch from 'santd/switch';
+import {Slider, Switch} from 'santd';
 export default {
     components: {
         's-slider': Slider,

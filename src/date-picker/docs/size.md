@@ -26,8 +26,7 @@
 
 
 <script>
-import DatePicker from 'santd/date-picker';
-import Radio from 'santd/radio';
+import {DatePicker, Radio} from 'santd';
 
 export default {
     components: {

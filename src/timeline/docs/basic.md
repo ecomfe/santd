@@ -15,7 +15,8 @@
     </div>
 </template>
 <script>
-import Timeline from 'santd/timeline';
+import {Timeline} from 'santd';
+
 export default {
     components: {
         's-timeline': Timeline,

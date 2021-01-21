@@ -29,8 +29,7 @@
   </div>
 </template>
 <script>
-import Tree from 'santd/tree';
-import Icon from 'santd/icon';
+import {Tree, Icon} from 'santd';
 
 export default {
     components: {

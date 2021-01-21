@@ -34,9 +34,7 @@
 </template>
 
 <script>
-import Layout from 'santd/layout';
-import Menu from 'santd/menu';
-import Breadcrumb from 'santd/breadcrumb';
+import {Layout, Menu, Breadcrumb} from 'santd';
 
 export default {
     components: {

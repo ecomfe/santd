@@ -35,10 +35,7 @@
 </template>
 <script>
 import san from 'san';
-import Table from 'santd/table';
-import Badge from 'santd/badge';
-import Dropdown from 'santd/dropdown';
-import Menu from 'santd/menu';
+import {Table, Badge, Dropdown, Menu} from 'santd';
 
 const columns = [
     {title: 'Name', dataIndex: 'name', key: 'name'},

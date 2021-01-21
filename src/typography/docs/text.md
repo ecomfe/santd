@@ -28,10 +28,11 @@
   </div>
 </template>
 <script>
-import typography from 'santd/typography';
+import {Typography} from 'santd';
+
 export default {
     components: {
-        's-text': typography.Text
+        's-text': Typography.Text
     }
 }
 </script>

@@ -23,8 +23,7 @@
     </div>
 </template>
 <script>
-import Tree from 'santd/tree';
-import TreeSelect from 'santd/tree-select';
+import {TreeSelect} from 'santd';
 
 const treeData = [{
   title: 'Node1',

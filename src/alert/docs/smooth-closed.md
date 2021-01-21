@@ -17,11 +17,11 @@
 </template>
 
 <script>
-import alert from 'santd/alert';
+import {Alert} from 'santd';
 
 export default {
     components: {
-        's-alert': alert
+        's-alert': Alert
     },
     initData() {
         return {

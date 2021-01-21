@@ -83,19 +83,21 @@
   </div>
 </template>
 <script>
-import Form from 'santd/form';
-import Select from 'santd/select';
-import InputNumber from 'santd/input-number';
-import Switch from 'santd/switch';
-import Radio from 'santd/radio';
-import Slider from 'santd/slider';
-import Button from 'santd/button';
-import Icon from 'santd/icon';
-import Rate from 'santd/rate';
-import Checkbox from 'santd/checkbox';
-import Upload from 'santd/upload';
-import Row from 'santd/row';
-import Col from 'santd/col';
+import {
+    Row,
+    Col,
+    Form,
+    InputNumber,
+    Icon,
+    Checkbox,
+    Upload,
+    Button,
+    Select,
+    Switch,
+    Radio,
+    Slider,
+    Rate
+} from 'santd';
 
 export default Form.create({name: 'validate_other'})({
     components: {

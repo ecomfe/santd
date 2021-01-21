@@ -19,8 +19,7 @@
     </div>
 </template>
 <script>
-import Result from 'santd/result';
-import Button from 'santd/button';
+import {Result, Button} from 'santd';
 
 export default {
     components: {

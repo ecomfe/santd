@@ -11,8 +11,7 @@
 </template>
 
 <script>
-import button from 'santd/button';
-import notification from 'santd/notification';
+import {Notification, Button} from 'santd';
 
 const close = () => {
     console.log('Notification was closed. Either the close button was clicked or duration time elapsed.');
@@ -20,7 +19,7 @@ const close = () => {
 
 export default {
     components: {
-        's-button': button
+        's-button': Button
     },
     clickHandler() {
         const key = 'open' + Date.now();
@@ -28,12 +27,12 @@ export default {
             Confirm
         </s-button>`;
 
-        notification.open({
+        Notification.open({
             message: 'Notification Title',
             description: 'A function will be called after the notification is closed (automatically after the "duration" time of manually).',
             btn,
             btnClick: () => {
-                notification.close(key);
+                Notification.close(key);
             },
             key,
             onClose: close

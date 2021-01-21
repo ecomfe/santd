@@ -21,8 +21,8 @@
 </div>
 </template>
 <script>
-import Input from 'santd/input';
-import Tooltip from 'santd/tooltip';
+import {Input, Tooltip} from 'santd';
+
 export default {
     components: {
         's-input': Input,

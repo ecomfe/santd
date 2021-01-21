@@ -15,12 +15,13 @@
   </div>
 </template>
 <script>
-import mention from 'santd/mention';
+import {Mention} from 'santd';
+
 const users = ['liudehua', 'zhoujielun', 'zhouxingchi', 'zhaowei', 'linxinru', 'fanbingbing', 'liuxiang'];
 const tags = ['1.0', '2.0', '3.0'];
 export default {
     components: {
-        's-mention': mention
+        's-mention': Mention
     },
     onSearchChange(e) {
         let value = e.value;

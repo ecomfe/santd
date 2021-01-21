@@ -32,10 +32,7 @@
     </div>
 </template>
 <script>
-import Result from 'santd/result';
-import Button from 'santd/button';
-import Icon from 'santd/icon';
-import Typography from 'santd/typography';
+import {Result, Button, Icon, Typography} from 'santd';
 
 export default {
     components: {

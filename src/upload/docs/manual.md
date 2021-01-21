@@ -27,11 +27,10 @@
     </div>
 </template>
 <script>
-import Upload from 'santd/upload';
-import Button from 'santd/button';
-import Icon from 'santd/icon';
-import Message from 'santd/message';
 import axios from 'axios';
+import {Upload, Button, Icon} from 'santd';
+import message from 'santd/es/message';
+import 'santd/es/message/style';
 
 export default {
     components: {
@@ -74,9 +73,9 @@ export default {
             data: formData
         }).then(response => {
             this.data.set('uploading', false);
-            Message.success('upload successfully.');
+            message.success('upload successfully.');
         }).catch(error => {
-            Message.error('upload failed.');
+            message.error('upload failed.');
         });
     }
 }

@@ -13,7 +13,8 @@ checkbox不可用。
 </template>
 
 <script>
-import Checkbox from 'santd/checkbox';
+import {Checkbox} from 'santd';
+
 export default {
     components:{
        's-checkbox': Checkbox

@@ -11,12 +11,13 @@
 </template>
 
 <script>
-import button from 'santd/button';
-import message from 'santd/message';
+import {Button} from 'santd';
+import message from 'santd/es/message';
+import 'santd/es/message/style';
 
 export default {
     components: {
-        's-button': button
+        's-button': Button
     },
     clickHandler() {
         message.success('This is a prompt message for success, and it will disappear in 10 seconds', 10);
