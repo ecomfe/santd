@@ -21,7 +21,8 @@
     </div>
 </template>
 <script>
-import Avatar from 'santd/avatar';
+import {Avatar} from 'santd';
+
 export default {
     components: {
         's-avatar': Avatar

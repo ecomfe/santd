@@ -23,10 +23,7 @@
   </div>
 </template>
 <script>
-import Form from 'santd/form';
-import Input from 'santd/input';
-import Button from 'santd/button';
-import Checkbox from 'santd/checkbox';
+import {Form, Input, Checkbox, Button} from 'santd';
 
 export default Form.create({name: 'dynamic_rule'})({
     components: {

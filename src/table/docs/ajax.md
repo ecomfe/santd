@@ -24,11 +24,12 @@
 </template>
 <script>
 import san from 'san';
-import table from 'santd/table';
 import axios from 'axios';
+import {Table} from 'santd';
+
 export default {
     components: {
-        's-table': table
+        's-table': Table
     },
     attached() {
         this.fetch();

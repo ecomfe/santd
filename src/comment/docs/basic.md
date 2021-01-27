@@ -34,11 +34,8 @@
     </div>
 </template>
 <script>
-import Comment from 'santd/comment';
-import Icon from 'santd/icon';
-import Avatar from 'santd/avatar';
-import Tooltip from 'santd/tooltip';
 import moment from 'moment';
+import {Comment, Icon, Avatar, Tooltip} from 'santd';
 
 export default {
     components: {

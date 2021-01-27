@@ -19,8 +19,7 @@
 </template>
 <script>
 import san from 'san';
-import Steps from 'santd/steps';
-import Popover from 'santd/popover';
+import {Steps, Popover} from 'santd';
 
 export default {
     components: {

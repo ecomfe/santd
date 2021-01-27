@@ -17,7 +17,7 @@
 </template>
 <script>
 import san from 'san';
-import Pagination from 'santd/pagination';
+import {Pagination} from 'santd';
 
 export default {
     components: {

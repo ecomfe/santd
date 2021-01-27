@@ -22,10 +22,8 @@
     </div>
 </template>
 <script>
-import Comment from 'santd/comment';
-import Avatar from 'santd/avatar';
-import List from 'santd/list';
 import moment from 'moment';
+import {Comment, Avatar, List} from 'santd';
 
 const data = [{
     author: 'Han Solo',

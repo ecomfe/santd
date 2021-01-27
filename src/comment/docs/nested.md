@@ -16,10 +16,8 @@
 </template>
 <script>
 import san from 'san';
-import Comment from 'santd/comment';
-import Icon from 'santd/icon';
-import Avatar from 'santd/avatar';
 import moment from 'moment';
+import {Comment, Icon, Avatar} from 'santd';
 
 const pComment = san.defineComponent({
     template: `

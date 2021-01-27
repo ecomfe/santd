@@ -15,8 +15,8 @@
 </template>
 
 <script>
-import DatePicker from 'santd/date-picker';
 import moment from 'moment';
+import {DatePicker} from 'santd';
 
 export default {
     components: {

@@ -19,7 +19,7 @@
 </template>
 <script>
 import san from 'san';
-import Tabs from 'santd/tabs';
+import {Tabs} from 'santd';
 
 export default {
     components: {

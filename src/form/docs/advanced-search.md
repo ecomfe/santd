@@ -12,12 +12,7 @@
   </div>
 </template>
 <script>
-import Form from 'santd/form';
-import Input from 'santd/input';
-import Button from 'santd/button';
-import Row from 'santd/row';
-import Col from 'santd/col';
-import Icon from 'santd/icon';
+import {Form, Input, Button, Row, Col, Icon} from 'santd';
 
 const decorator = [];
 for (let i = 0; i < 10; i++) {

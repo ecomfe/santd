@@ -24,7 +24,7 @@
     </div>
 </template>
 <script>
-import InputNumber from 'santd/input-number';
+import {InputNumber} from 'santd';
 
 export default {
     components: {

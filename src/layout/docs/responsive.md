@@ -43,9 +43,7 @@ Layout.Sider 支持响应式布局。
 </template>
 
 <script>
-import Layout from 'santd/layout';
-import Menu from 'santd/menu';
-import Icon from 'santd/icon';
+import {Layout, Menu, Icon} from 'santd';
 
 export default {
     components: {

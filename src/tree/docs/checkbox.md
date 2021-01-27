@@ -20,7 +20,8 @@ tree受控操作示例
   </div>
 </template>
 <script>
-import Tree from 'santd/tree';
+import {Tree} from 'santd';
+
 export default {
     components: {
         's-tree': Tree,

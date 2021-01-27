@@ -12,8 +12,8 @@
     </div>
 </template>
 <script>
-import Tag from 'santd/tag';
-import Button from 'santd/button';
+import {Tag, Button} from 'santd';
+
 export default {
     components: {
         's-tag': Tag,

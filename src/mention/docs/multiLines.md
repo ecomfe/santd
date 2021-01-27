@@ -15,10 +15,11 @@
   </div>
 </template>
 <script>
-import mention from 'santd/mention';
+import {Mention} from 'santd';
+
 export default {
     components: {
-        's-mention': mention
+        's-mention': Mention
     },
     initData() {
         return {

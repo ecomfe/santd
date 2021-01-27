@@ -62,10 +62,8 @@
 </div>
 </template>
 <script>
-import Menu from 'santd/menu';
-import Icon from 'santd/icon';
-import Button from 'santd/button';
-import Switch from 'santd/switch';
+import {Menu, Icon, Button, Switch} from 'santd';
+
 export default {
     components: {
         's-menu': Menu,

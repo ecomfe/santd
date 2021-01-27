@@ -33,9 +33,7 @@
     </div>
 </template>
 <script>
-import List from 'santd/list';
-import Icon from 'santd/icon';
-import Avatar from 'santd/avatar';
+import {List, Icon, Avatar} from 'santd';
 
 const listData = [];
 for (let i = 0; i < 23; i++) {

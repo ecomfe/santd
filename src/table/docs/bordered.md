@@ -24,7 +24,8 @@
     </div>
 </template>
 <script>
-import Table from 'santd/table';
+import {Table} from 'santd';
+
 export default {
     components: {
         's-table': Table,

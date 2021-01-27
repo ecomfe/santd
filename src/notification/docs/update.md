@@ -10,14 +10,13 @@
     </div>
 </template>
 <script>
-import button from 'santd/button';
-import notification from 'santd/notification';
+import {Notification, Button} from 'santd';
 
 const key = 'updatable';
 
 export default {
     components: {
-        's-button': button
+        's-button': Button
     },
     clickHandler() {
         const options = {
@@ -25,7 +24,7 @@ export default {
             message: 'Notification Title',
             description: 'description.'
         };
-        notification.open(options);
+        Notification.open(options);
 
         // 更新内容
         const newOptions = Object.assign({}, options, {
@@ -33,7 +32,7 @@ export default {
             description: 'New description.'
         });
         setTimeout(() => {
-            notification.open(newOptions);
+            Notification.open(newOptions);
         }, 1000);
     }
 }

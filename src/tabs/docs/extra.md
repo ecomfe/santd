@@ -16,8 +16,7 @@
 </template>
 <script>
 import san from 'san';
-import Tabs from 'santd/tabs';
-import Button from 'santd/button';
+import {Tabs, Button} from 'santd';
 
 export default {
     components: {

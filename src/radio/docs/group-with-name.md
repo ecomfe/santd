@@ -15,12 +15,12 @@
     </div>
 </template>
 <script>
-import radio from 'santd/radio';
+import {Radio} from 'santd';
 
 export default {
     components: {
-        's-radio': radio,
-        's-group': radio.Group
+        's-radio': Radio,
+        's-group': Radio.Group
     }
 }
 </script>

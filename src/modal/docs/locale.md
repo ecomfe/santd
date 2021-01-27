@@ -25,13 +25,12 @@
 </template>
 
 <script>
-import button from 'santd/button';
-import modal from 'santd/modal';
+import {Modal, Button} from 'santd';
 
 export default {
     components: {
-        's-button': button,
-        's-modal': modal
+        's-button': Button,
+        's-modal': Modal
     },
     clickHandler() {
         this.data.set('visible', true);
@@ -50,7 +49,7 @@ export default {
         this.data.set('visible', false);
     },
     confirm() {
-        modal.confirm({
+        Modal.confirm({
             title: 'Confirm',
             content: 'Bla bla ...',
             okText: '确认',

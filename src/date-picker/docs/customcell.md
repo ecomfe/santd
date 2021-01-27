@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import DatePicker from 'santd/date-picker';
+import {DatePicker} from 'santd';
 
 export default {
     components: {

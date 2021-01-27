@@ -13,13 +13,12 @@
 </template>
 
 <script>
-import icon from 'santd/icon';
-import spin from 'santd/spin';
+import {Spin, Icon} from 'santd';
 
 export default {
     components: {
-        's-icon': icon,
-        's-spin': spin
+        's-icon': Icon,
+        's-spin': Spin
     }
 }
 </script>

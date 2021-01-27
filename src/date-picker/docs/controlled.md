@@ -14,7 +14,7 @@
 
 <script>
 import san from 'san';
-import DatePicker from 'santd/date-picker';
+import {DatePicker} from 'santd';
 
 const ControlledDatePicker = san.defineComponent({
     components: {

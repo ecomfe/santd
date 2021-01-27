@@ -106,14 +106,8 @@
 </template>
 
 <script>
-import avatar from 'santd/avatar';
-import button from 'santd/button';
-import drawer from 'santd/drawer';
-import divider from 'santd/divider';
-import col from 'santd/col';
-import row from 'santd/row';
-import list from 'santd/list';
 import san from 'san';
+import {Avatar, Button, Drawer, Divider, Col, Row, List} from 'santd';
 
 const uiItem = san.defineComponent({
     template: `
@@ -126,19 +120,19 @@ const uiItem = san.defineComponent({
 
 export default {
     components: {
-        's-avatar': avatar,
-        's-button': button,
-        's-drawer': drawer,
-        's-divider': divider,
-        's-col': col,
-        's-row': row,
+        's-avatar': Avatar,
+        's-button': Button,
+        's-drawer': Drawer,
+        's-divider': Divider,
+        's-col': Col,
+        's-row': Row,
         's-item': uiItem,
-        's-list': list,
-        's-list-item': list.Item,
-        's-list-item-meta': list.Item.Meta
+        's-list': List,
+        's-list-item': List.Item,
+        's-list-item-meta': List.Item.Meta
     },
     filters:  {
-        css: drawer.prototype.filters.css
+        css: Drawer.prototype.filters.css
     },
     initData() {
         return {

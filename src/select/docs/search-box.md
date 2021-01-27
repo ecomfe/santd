@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import Select from 'santd/select';
+import {Select} from 'santd';
 import jsonp from 'fetch-jsonp';
 import querystring from 'querystring';
 

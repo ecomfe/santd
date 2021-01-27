@@ -11,11 +11,11 @@
 </template>
 <script>
 
-import rate from 'santd/rate';
+import {Rate} from 'santd';
 
 export default {
     components: {
-        's-rate': rate
+        's-rate': Rate
     }
 }
 </script>

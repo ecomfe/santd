@@ -12,11 +12,11 @@
     </div>
 </template>
 <script>
-import tooltip from 'santd/tooltip';
+import {Tooltip} from 'santd';
 
 export default {
     components: {
-        's-tooltip': tooltip
+        's-tooltip': Tooltip
     }
 }
 </script>

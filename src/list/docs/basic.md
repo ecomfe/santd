@@ -19,8 +19,7 @@
     </div>
 </template>
 <script>
-import List from 'santd/list';
-import Avatar from 'santd/avatar';
+import {List, Avatar} from 'santd';
 
 export default {
     components: {

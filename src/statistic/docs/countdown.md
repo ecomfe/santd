@@ -23,15 +23,14 @@
   </div>
 </template>
 <script>
-import statistic from 'santd/statistic';
-import col from 'santd/col';
-import row from 'santd/row';
+import {Statistic, Col, Row} from 'santd';
+
 export default {
     components: {
-        's-statistic': statistic,
-        's-countdown': statistic.Countdown,
-        's-col': col,
-        's-row': row
+        's-statistic': Statistic,
+        's-countdown': Statistic.Countdown,
+        's-col': Col,
+        's-row': Row
     },
     initData() {
         return {

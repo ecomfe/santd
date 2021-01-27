@@ -27,8 +27,7 @@
 
 <script>
 import san from 'san';
-import Select from 'santd/select';
-import Spin from 'santd/spin';
+import {Select, Spin} from 'santd';
 import debounce from 'lodash/debounce';
 import jsonp from 'fetch-jsonp';
 

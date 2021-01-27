@@ -14,14 +14,13 @@
     </div>
 </template>
 <script>
-import button from 'santd/button';
-import progress from 'santd/progress';
+import {Progress, Button} from 'santd';
 
 export default {
     components: {
-        's-button': button,
-        's-button-group': button.Group,
-        's-progress': progress
+        's-button': Button,
+        's-button-group': Button.Group,
+        's-progress': Progress
     },
     initData() {
         return {

@@ -12,8 +12,8 @@
     </div>
 </template>
 <script>
-import Slider from 'santd/slider';
-import Icon from 'santd/icon';
+import {Slider, Icon} from 'santd';
+
 export default {
     components: {
         's-slider': Slider,

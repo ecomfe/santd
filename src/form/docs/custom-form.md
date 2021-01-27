@@ -22,10 +22,7 @@
 
 <script>
 import san from 'san';
-import Form from 'santd/form';
-import Input from 'santd/input';
-import Button from 'santd/button';
-import Select from 'santd/select';
+import {Form, Input, Button, Select} from 'santd';
 
 const PriceInput = san.defineComponent({
     components: {

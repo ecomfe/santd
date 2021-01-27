@@ -29,8 +29,7 @@
 </template>
 <script>
 import san from 'san';
-import autoComplete from 'santd/auto-complete';
-import input from 'santd/input';
+import {AutoComplete} from 'santd';
 
 const getRandomInt = function (max, min = 0) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -49,10 +48,8 @@ const searchResult = function(query) {
 
 export default {
     components: {
-        's-auto-complete': autoComplete,
-        's-input': input,
-        's-option-group': autoComplete.Group,
-        's-option': autoComplete.Option
+        's-auto-complete': AutoComplete,
+        's-option': AutoComplete.Option
     },
     initData() {
         return {

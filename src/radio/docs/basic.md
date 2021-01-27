@@ -10,11 +10,11 @@
     </div>
 </template>
 <script>
-import radio from 'santd/radio';
+import {Radio} from 'santd';
 
 export default {
     components: {
-        's-radio': radio
+        's-radio': Radio
     }
 }
 </script>

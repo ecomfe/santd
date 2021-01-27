@@ -12,12 +12,12 @@
     </div>
 </template>
 <script>
-import timepicker from 'santd/timepicker';
 import moment from 'moment';
+import {TimePicker} from 'santd';
 
 export default {
     components: {
-        's-timepicker': timepicker
+        's-timepicker': TimePicker
     },
     handleChange(param) {
         console.log(param);

@@ -12,8 +12,7 @@
     </div>
 </template>
 <script>
-import Pagination from 'santd/pagination';
-import LocaleProvider from 'santd/localeprovider';
+import {Pagination, LocaleProvider} from 'santd';
 import zhCN from 'santd/localeprovider/zh_CN';
 
 export default {

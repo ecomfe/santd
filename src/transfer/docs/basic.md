@@ -43,8 +43,8 @@ const oriTargetKeys = mockData
     .filter(item => +item.key % 3 > 1)
     .map(item => item.key);
 
-import transfer from 'santd/transfer';
-import Switch from 'santd/switch';
+import {Transfer, Switch} from 'santd';
+
 export default {
     initData() {
         return {
@@ -55,7 +55,7 @@ export default {
         };
     },
     components: {
-        's-transfer': transfer,
+        's-transfer': Transfer,
         's-switch': Switch
     },
     handleChange({targetKeys, direction, moveKeys}) {

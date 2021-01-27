@@ -45,9 +45,8 @@
   </div>
 </template>
 <script>
-import Collapse from 'santd/collapse';
-import Icon from 'santd/icon';
-import Cascader from 'santd/Cascader';
+import {Collapse, Icon, Cascader} from 'santd';
+
 export default {
     components: {
         's-collapse': Collapse,

@@ -11,11 +11,11 @@
 </template>
 
 <script>
-import skeleton from 'santd/skeleton';
+import {Skeleton} from 'santd';
 
 export default {
     components: {
-        's-skeleton': skeleton
+        's-skeleton': Skeleton
     },
     initData() {
         return {

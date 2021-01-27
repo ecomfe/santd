@@ -16,7 +16,8 @@
     </div>
 </template>
 <script>
-import table from 'santd/table';
+import {Table} from 'santd';
+
 const renderContent = (value, row, index) => {
     const obj = {
         children: value,
@@ -117,7 +118,7 @@ const columns = [
 ]
 export default {
     components: {
-        's-table': table,
+        's-table': Table,
     },
     initData() {
         return {

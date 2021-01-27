@@ -17,14 +17,13 @@
     </div>
 </template>
 <script>
-import Icon from 'santd/icon';
-import DropDown from 'santd/dropdown';
-import Menu from 'santd/menu';
-import message from 'santd/message'
+import {Icon, Dropdown, Menu} from 'santd';
+import message from 'santd/es/message';
+import 'santd/es/message/style';
 
 export default {
     components: {
-        's-dropdown': DropDown,
+        's-dropdown': Dropdown,
         's-icon': Icon,
         's-menu': Menu,
         's-menu-item': Menu.Item

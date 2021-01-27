@@ -25,13 +25,13 @@
   </div>
 </template>
 <script>
-import autoComplete from 'santd/auto-complete';
+import {AutoComplete} from 'santd';
 
 export default {
     components: {
-        's-auto-complete': autoComplete,
-        's-select-option': autoComplete.Option,
-        's-select-opt-group': autoComplete.Group
+        's-auto-complete': AutoComplete,
+        's-select-option': AutoComplete.Option,
+        's-select-opt-group': AutoComplete.Group
     },
     initData() {
         return {

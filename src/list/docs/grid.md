@@ -17,8 +17,7 @@
     </div>
 </template>
 <script>
-import List from 'santd/list';
-import Card from 'santd/card';
+import {List, Card} from 'santd';
 
 export default {
     components: {

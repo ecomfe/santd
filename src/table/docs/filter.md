@@ -54,10 +54,7 @@
 </template>
 <script>
 import san from 'san';
-import Table from 'santd/table';
-import Icon from 'santd/icon';
-import Input from 'santd/input';
-import Button from 'santd/button';
+import {Table, Icon, Input, Button} from 'santd';
 
 export default {
     components: {

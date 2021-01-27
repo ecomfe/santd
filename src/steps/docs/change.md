@@ -25,9 +25,8 @@
     </div>
 </template>
 <script>
-import Steps from 'santd/steps';
-import Icon from 'santd/icon';
-import Button from 'santd/button';
+import {Steps, Icon, Button} from 'santd';
+
 export default {
     components: {
         's-steps': Steps,

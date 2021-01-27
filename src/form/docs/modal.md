@@ -11,11 +11,7 @@
   </div>
 </template>
 <script>
-import Form from 'santd/form';
-import Input from 'santd/input';
-import Radio from 'santd/radio';
-import Button from 'santd/button';
-import Modal from 'santd/modal';
+import {Form, Input, Radio, Modal, Button} from 'santd';
 
 const collectionCreateForm = Form.create({name: 'form_in_modal'})({
     components: {

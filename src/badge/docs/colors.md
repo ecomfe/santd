@@ -25,7 +25,7 @@
     </div>
 </template>
 <script>
-import Badge from 'santd/badge';
+import {Badge} from 'santd';
 
 const colors = ['pink', 'red', 'yellow', 'orange', 'cyan', 'green', 'blue', 'purple', 'geekblue', 'magenta', 'volcano', 'gold', 'lime'];
 export default {

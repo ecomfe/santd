@@ -15,8 +15,8 @@
 </div>
 </template>
 <script>
-import Input from 'santd/input';
-import Icon from 'santd/icon';
+import {Input, Icon} from 'santd';
+
 export default {
     components: {
         's-input': Input,

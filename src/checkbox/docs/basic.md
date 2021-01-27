@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import Checkbox from 'santd/checkbox';
+import {Checkbox} from 'santd';
 
 export default {
     components:{

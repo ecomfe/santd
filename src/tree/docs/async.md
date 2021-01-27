@@ -13,7 +13,7 @@
   </div>
 </template>
 <script>
-import Tree from 'santd/tree';
+import {Tree} from 'santd';
 
 export default {
     components: {

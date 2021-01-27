@@ -61,17 +61,19 @@
   </div>
 </template>
 <script>
-import form from 'santd/form';
-import Input from 'santd/input';
-import Icon from 'santd/icon';
-import Button from 'santd/button';
-import Checkbox from 'santd/checkbox';
-import Cascader from 'santd/cascader';
-import Select from 'santd/select';
-import Row from 'santd/row';
-import Col from 'santd/col';
-import Tooltip from 'santd/tooltip';
-import AutoComplete from 'santd/auto-complete';
+import {
+    Row,
+    Col,
+    Form,
+    Input,
+    Icon,
+    Checkbox,
+    Cascader,
+    Button,
+    Select,
+    Tooltip,
+    AutoComplete
+} from 'santd';
 
 const residences = [{
     value: 'zhejiang',
@@ -97,10 +99,10 @@ const residences = [{
     }]
 }];
 
-export default form.create({name: 'register'})({
+export default Form.create({name: 'register'})({
     components: {
-        's-form': form,
-        's-formitem': form.FormItem,
+        's-form': Form,
+        's-formitem': Form.FormItem,
         's-input': Input,
         's-input-password': Input.Password,
         's-icon': Icon,

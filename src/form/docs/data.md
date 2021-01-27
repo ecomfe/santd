@@ -16,8 +16,7 @@
 </template>
 <script>
 import san from 'san';
-import Form from 'santd/form';
-import Input from 'santd/input';
+import {Form, Input} from 'santd';
 
 const CustomizedForm = Form.create({
     name: 'global_state',

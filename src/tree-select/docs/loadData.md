@@ -19,7 +19,7 @@
   </div>
 </template>
 <script>
-import TreeSelect from 'santd/tree-select';
+import {TreeSelect} from 'santd';
 
 const treeData = [
     {value: '1', title: 'Expand to load', key: '0'},

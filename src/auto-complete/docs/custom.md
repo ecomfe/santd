@@ -24,13 +24,12 @@
   </div>
 </template>
 <script>
-import autoComplete from 'santd/auto-complete';
-import input from 'santd/input';
+import {AutoComplete, Input} from 'santd';
 
 export default {
     components: {
-        's-auto-complete': autoComplete,
-        's-textarea': input.TextArea
+        's-auto-complete': AutoComplete,
+        's-textarea': Input.TextArea
     },
     initData() {
         return {

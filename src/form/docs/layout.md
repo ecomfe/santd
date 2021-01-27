@@ -27,10 +27,7 @@
   </div>
 </template>
 <script>
-import Form from 'santd/form';
-import Input from 'santd/input';
-import Button from 'santd/button';
-import Radio from 'santd/radio';
+import {Form, Input, Radio, Button} from 'santd';
 
 export default {
     components: {

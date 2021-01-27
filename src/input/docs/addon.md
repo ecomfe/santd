@@ -31,9 +31,7 @@
     </div>
 </template>
 <script>
-import Input from 'santd/input';
-import Icon from 'santd/icon';
-import Select from 'santd/select';
+import {Input, Icon, Select} from 'santd';
 
 export default {
     components: {

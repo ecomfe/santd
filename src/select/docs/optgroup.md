@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import Select from 'santd/select';
+import {Select} from 'santd';
 
 export default {
     components: {

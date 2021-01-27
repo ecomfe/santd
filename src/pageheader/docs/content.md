@@ -32,12 +32,11 @@
     </div>
 </template>
 <script>
-import pageheader from 'santd/pageheader';
-import Typography from 'santd/typography';
+import {PageHeader, Typography} from 'santd';
 
 export default {
     components: {
-        's-pageheader': pageheader,
+        's-pageheader': PageHeader,
         's-paragraph': Typography.Paragraph
     },
     initData() {

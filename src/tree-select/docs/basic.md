@@ -31,8 +31,7 @@
 <script>
 
 import san from 'san'
-import TreeSelect from 'santd/tree-select';
-import Icon from 'santd/icon';
+import {TreeSelect} from 'santd';
 
 export default {
     components: {

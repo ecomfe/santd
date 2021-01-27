@@ -23,10 +23,7 @@
   </div>
 </template>
 <script>
-import Form from 'santd/form';
-import Input from 'santd/input';
-import Button from 'santd/button';
-import Select from 'santd/select';
+import {Form, Input, Button, Select} from 'santd';
 
 export default Form.create({name: 'coordinated'})({
     components: {

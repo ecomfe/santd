@@ -76,29 +76,22 @@
 </template>
 
 <script>
-import button from 'santd/button';
-import drawer from 'santd/drawer';
-import icon from 'santd/icon';
-import form from 'santd/form';
-import grid from 'santd/grid';
-import input from 'santd/input';
-import select from 'santd/select';
-import datepicker from 'santd/date-picker';
+import {Button, Drawer, Icon, Form, Grid, Input, Select, DatePicker} from 'santd';
 
-export default form.create({})({
+export default Form.create({})({
     components: {
-        's-button': button,
-        's-drawer': drawer,
-        's-icon': icon,
-        's-row': grid.Row,
-        's-col': grid.Col,
-        's-form': form,
-        's-item': form.FormItem,
-        's-input': input,
-        's-select': select,
-        's-option': select.Option,
-        's-textarea': input.TextArea,
-        's-rangepicker': datepicker.RangePicker
+        's-button': Button,
+        's-drawer': Drawer,
+        's-icon': Icon,
+        's-row': Grid.Row,
+        's-col': Grid.Col,
+        's-form': Form,
+        's-item': Form.FormItem,
+        's-input': Input,
+        's-select': Select,
+        's-option': Select.Option,
+        's-textarea': Input.TextArea,
+        's-rangepicker': DatePicker.RangePicker
     },
     initData() {
         return {

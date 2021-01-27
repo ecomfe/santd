@@ -24,10 +24,7 @@
   </div>
 </template>
 <script>
-import Form from 'santd/form';
-import Input from 'santd/input';
-import Icon from 'santd/icon';
-import Button from 'santd/button';
+import {Form, Input, Button, Icon} from 'santd';
 
 function hasErrors(fieldsError) {
     return Object.keys(fieldsError).some(field => fieldsError[field]);

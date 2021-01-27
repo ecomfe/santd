@@ -19,12 +19,11 @@
     </div>
 </template>
 <script>
-import badge from 'santd/badge';
-import icon from 'santd/icon';
+import {Badge} from 'santd';
+
 export default {
     components: {
-        's-badge': badge,
-        's-icon': icon
+        's-badge': Badge
     },
     initData() {
         return {

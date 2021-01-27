@@ -17,8 +17,8 @@
     </div>
 </template>
 <script>
-import Switch from 'santd/switch';
-import Icon from 'santd/icon';
+import {Switch, Icon} from 'santd';
+
 export default {
     components: {
         's-switch': Switch,

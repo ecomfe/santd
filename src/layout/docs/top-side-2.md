@@ -57,10 +57,7 @@
 </div>
 </template>
 <script>
-import Layout from 'santd/layout';
-import Menu from 'santd/menu';
-import Icon from 'santd/icon';
-import Breadcrumb from 'santd/breadcrumb';
+import {Layout, Menu, Icon, Breadcrumb} from 'santd';
 
 export default {
     components: {

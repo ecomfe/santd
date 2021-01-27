@@ -14,13 +14,12 @@
     </div>
 </template>
 <script>
-import pageheader from 'santd/pageheader';
-import tag from 'santd/tag';
-import button from 'santd/button'
+import {PageHeader} from 'santd';
+
 
 export default {
     components: {
-        's-pageheader': pageheader
+        's-pageheader': PageHeader
     },
     initData() {
         return {

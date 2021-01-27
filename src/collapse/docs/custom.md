@@ -39,8 +39,7 @@
 </template>
 <script>
 import san from 'san';
-import Icon from 'santd/icon';
-import Collapse from 'santd/collapse';
+import {Collapse, Icon} from 'santd';
 
 const customPanelStyle = {
     'background': '#f7f7f7',

@@ -21,14 +21,11 @@ focus获取焦点、blur移除焦点
   </div>
 </template>
 <script>
-import autoComplete from 'santd/auto-complete';
-import input from 'santd/input';
-import Button from 'santd/button';
+import {AutoComplete, Button} from 'santd';
 
 export default {
     components: {
-        's-auto-complete': autoComplete,
-        's-input': input,
+        's-auto-complete': AutoComplete,
         's-button': Button
     },
     initData() {

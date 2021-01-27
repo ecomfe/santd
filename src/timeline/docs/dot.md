@@ -18,9 +18,8 @@
     </div>
 </template>
 <script>
-import Timeline from 'santd/timeline';
-import Icon from 'santd/icon';
 import san from 'san';
+import {Timeline, Icon} from 'santd';
 
 export default {
     components: {

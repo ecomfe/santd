@@ -16,8 +16,8 @@
     </div>
 </template>
 <script>
-import Popover from 'santd/popover';
-import Button from 'santd/button';
+import {Popover, Button} from 'santd';
+
 export default {
     components: {
         's-popover': Popover,

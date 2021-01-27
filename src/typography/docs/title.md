@@ -13,10 +13,11 @@
   </div>
 </template>
 <script>
-import typography from 'santd/typography';
+import {Typography} from 'santd';
+
 export default {
     components: {
-        's-title': typography.Title,
+        's-title': Typography.Title,
     }
 }
 </script>

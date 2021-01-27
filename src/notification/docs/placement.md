@@ -14,26 +14,25 @@
 </template>
 
 <script>
-import button from 'santd/button';
-import select from 'santd/select';
-import notification from 'santd/notification';
+import {Notification, Button, Select} from 'santd';
+
 
 const options = ['topLeft', 'topRight', 'bottomLeft', 'bottomRight'];
 
 export default {
     components: {
-        's-button': button,
-        's-select': select,
-        's-option': select.Option
+        's-button': Button,
+        's-select': Select,
+        's-option': Select.Option
     },
     clickHandler() {
-        notification.open({
+        Notification.open({
             message: 'Notification Title',
             description: 'This is the content of the notification. This is the content of the notification. This is the content of the notification.'
         });
     },
     changeHandler(placement) {
-        notification.config({placement});
+        Notification.config({placement});
     },
     initData() {
         return {

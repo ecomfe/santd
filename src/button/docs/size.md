@@ -36,9 +36,8 @@
     </div>
 </template>
 <script>
-import Button from 'santd/button';
-import Radio from 'santd/radio';
-import Icon from 'santd/icon';
+import {Button, Radio, Icon} from 'santd';
+
 export default {
     components: {
         's-button': Button,

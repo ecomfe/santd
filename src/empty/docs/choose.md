@@ -10,7 +10,8 @@
     </div>
 </template>
 <script>
-import Empty from 'santd/empty';
+import {Empty} from 'santd';
+
 export default {
     initData() {
         return {

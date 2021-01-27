@@ -25,9 +25,7 @@
     </div>
 </template>
 <script>
-import Card from 'santd/card';
-import Avatar from 'santd/avatar';
-import Switch from 'santd/switch';
+import {Card, Avatar, Switch} from 'santd';
 
 export default {
     components: {

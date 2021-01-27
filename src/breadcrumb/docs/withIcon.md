@@ -19,8 +19,7 @@
   </div>
 </template>
 <script>
-import Icon from 'santd/icon';
-import Breadcrumb from 'santd/breadcrumb';
+import {Breadcrumb, Icon} from 'santd';
 
 export default {
     components: {

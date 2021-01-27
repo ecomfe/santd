@@ -29,10 +29,7 @@
 </template>
 <script>
 import san from 'san';
-import Table from 'santd/table';
-import tag from 'santd/tag';
-import divider from 'santd/divider';
-import Icon from 'santd/icon';
+import {Table, Tag, Divider, Icon} from 'santd';
 
 export default {
     components: {
@@ -42,8 +39,8 @@ export default {
         's-th': Table.Th,
         's-tr': Table.Tr,
         's-td': Table.Td,
-        's-divider': divider,
-        's-tag': tag,
+        's-divider': Divider,
+        's-tag': Tag,
         's-icon': Icon
     },
     initData() {

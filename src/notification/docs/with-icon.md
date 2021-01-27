@@ -14,15 +14,14 @@
 </template>
 
 <script>
-import button from 'santd/button';
-import notification from 'santd/notification';
+import {Notification, Button} from 'santd';
 
 export default {
     components: {
-        's-button': button
+        's-button': Button
     },
     openNotificationWithIcon(type) {
-        notification[type]({
+        Notification[type]({
             message: 'Notification Title',
             description: 'This is the content of the notification. This is the content of the notification. This is the content of the notification.'
         });

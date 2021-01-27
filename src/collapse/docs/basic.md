@@ -32,7 +32,7 @@
   </div>
 </template>
 <script>
-import Collapse from 'santd/collapse';
+import {Collapse} from 'santd';
 
 export default {
     components: {

@@ -23,7 +23,7 @@
 </template>
 <script>
 import san from 'san';
-import table from 'santd/table';
+import {Table} from 'santd';
 
 const columns = [
 {title: 'Name', width: '150px', dataIndex: 'name', key: 'name', left: '0px'},
@@ -56,7 +56,7 @@ for (let i = 0; i < 50; i++) {
 
 export default {
     components: {
-        's-table': table
+        's-table': Table
     },
     initData() {
         return {

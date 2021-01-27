@@ -16,8 +16,7 @@
     </div>
 </template>
 <script>
-import Affix from 'santd/affix';
-import Button from 'santd/button';
+import {Affix, Button} from 'santd';
 
 export default {
     components: {

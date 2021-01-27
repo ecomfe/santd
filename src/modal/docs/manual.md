@@ -11,16 +11,15 @@
 </template>
 
 <script>
-import button from 'santd/button';
-import modal from 'santd/modal';
+import {Modal, Button} from 'santd';
 
 export default {
     components: {
-        's-button': button
+        's-button': Button
     },
     countDown() {
         let secondsToGo = 5;
-        const instance = modal.success({
+        const instance = Modal.success({
             title: 'This is a notification message',
             content: `This modal will be destroyed after ${secondsToGo} second.`
         });

@@ -46,8 +46,7 @@ function flatten(list = []) {
 flatten(treeData);
 
 import san from 'san';
-import transfer from 'santd/transfer';
-import Tree from 'santd/tree';
+import {Transfer, Tree} from 'santd';
 
 const isChecked = (selectedKeys, eventKey) => {
     return selectedKeys.indexOf(eventKey) !== -1;
@@ -107,7 +106,7 @@ export default {
         };
     },
     components: {
-        's-transfer': transfer,
+        's-transfer': Transfer,
         's-transfertree': transferTree
     },
     handleChange({targetKeys}) {

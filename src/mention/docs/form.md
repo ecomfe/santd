@@ -22,10 +22,8 @@
   </div>
 </template>
 <script>
-import Mention from 'santd/mention';
-import Form from 'santd/form';
-import Button from 'santd/button';
-import Input from 'santd/input';
+import {Mention, Form, Button, Input} from 'santd';
+
 export default Form.create({name: 'dynamic_rule'})({
     components: {
         's-mention': Mention,

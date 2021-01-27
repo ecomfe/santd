@@ -28,17 +28,14 @@
 </template>
 
 <script>
-import button from 'santd/button';
-import drawer from 'santd/drawer';
-import radio from 'santd/radio';
-const group = radio.Group;
+import {Button, Drawer, Radio} from 'santd';
 
 export default {
     components: {
-        's-button': button,
-        's-drawer': drawer,
-        's-radio': radio,
-        's-radio-group': group
+        's-button': Button,
+        's-drawer': Drawer,
+        's-radio': Radio,
+        's-radio-group': Radio.Group
     },
     initData() {
         return {

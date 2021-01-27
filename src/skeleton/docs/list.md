@@ -27,12 +27,8 @@
 </template>
 
 <script>
-import avatar from 'santd/avatar';
-import icon from 'santd/icon';
-import list from 'santd/list';
-import skeleton from 'santd/skeleton';
-import switcher from 'santd/switch';
 import san from 'san';
+import {Skeleton, Avatar, Icon, List, Switch} from 'santd';
 
 const listData = [];
 for (let i = 0; i < 3; i++) {
@@ -47,13 +43,13 @@ for (let i = 0; i < 3; i++) {
 
 export default {
     components: {
-        's-icon': icon,
-        's-avatar': avatar,
-        's-list': list,
-        's-list-item': list.Item,
-        's-list-item-meta': list.Item.Meta,
-        's-skeleton': skeleton,
-        's-switcher': switcher
+        's-icon': Icon,
+        's-avatar': Avatar,
+        's-list': List,
+        's-list-item': List.Item,
+        's-list-item-meta': List.Item.Meta,
+        's-skeleton': Skeleton,
+        's-switcher': Switch
     },
     initData() {
         return {

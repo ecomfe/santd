@@ -30,11 +30,11 @@ src/form/README.md <text lang="cn">
     </div>
 </template>
 <script>
-import table from 'santd/table';
-import Radio from 'santd/radio';
+import {Table, Radio} from 'santd';
+
 export default {
     components: {
-        's-table': table,
+        's-table': Table,
         's-radio': Radio,
         's-group': Radio.Group,
         's-button': Radio.Button

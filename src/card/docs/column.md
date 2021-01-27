@@ -20,8 +20,7 @@
     </div>
 </template>
 <script>
-import Card from 'santd/card';
-import Grid from 'santd/grid';
+import {Card, Grid} from 'santd';
 
 export default {
     components: {

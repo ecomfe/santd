@@ -14,7 +14,7 @@ Ant Design San 致力于提供给程序员愉悦的开发体验。
 
 ```javascript
 import san from 'san';
-import {DatePicker, Message} from 'santd';
+import {DatePicker, message} from 'santd';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 import 'santd/dist/santd.css';
@@ -32,7 +32,7 @@ const App = san.defineComponent({
         's-datepicker': DatePicker
     },
     handleChange({date}) {
-        Message.info(`您选择的日期是: ${date ? date.format('YYYY-MM-DD') : '未选择'}`);
+        message.info(`您选择的日期是: ${date ? date.format('YYYY-MM-DD') : '未选择'}`);
         this.data.set('date', date);
     },
     getDate(date) {
@@ -57,7 +57,7 @@ app.attach(document.body);
 然后依照演示代码的写法，在之前的代码里修改 index.js，首先在 import 内引入 Alert 组件：
 
 ```javascript
-import {DatePicker, Message, Alert} from 'santd';
+import {DatePicker, message, Alert} from 'santd';
 ```
 
 然后添加相应的代码：
@@ -74,7 +74,7 @@ const App = san.defineComponent({
         's-alert': Alert
     },
     handleChange({date}) {
-        Message.info(`您选择的日期是: ${date ? date.format('YYYY-MM-DD') : '未选择'}`);
+        message.info(`您选择的日期是: ${date ? date.format('YYYY-MM-DD') : '未选择'}`);
         this.data.set('date', date);
     },
     getDate(date) {

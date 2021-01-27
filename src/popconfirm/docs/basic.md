@@ -18,11 +18,13 @@
     </div>
 </template>
 <script>
-import popconfirm from 'santd/popconfirm';
-import message from 'santd/message';
+import {Popconfirm} from 'santd';
+import message from 'santd/es/message';
+import 'santd/es/message/style';
+
 export default {
     components: {
-        's-popconfirm': popconfirm
+        's-popconfirm': Popconfirm
     },
     handleConfirm(e) {
         console.log(e);

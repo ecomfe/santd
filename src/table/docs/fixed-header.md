@@ -15,7 +15,8 @@
     </div>
 </template>
 <script>
-import table from 'santd/table';
+import {Table} from 'santd';
+
 const data = [];
 for (let i = 1; i < 101; i++) {
   data.push({
@@ -28,7 +29,7 @@ for (let i = 1; i < 101; i++) {
 
 export default {
     components: {
-        's-table': table
+        's-table': Table
     },
     initData() {
         return {
