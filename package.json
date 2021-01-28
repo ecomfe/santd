@@ -124,6 +124,7 @@
         "rollup-plugin-terser": "^5.1.2",
         "rucksack-css": "^1.0.2",
         "san": "^3.7.9",
+        "moment": "^2.22.2",
         "san-hot-reload-api": "^1.0.1",
         "san-loader": "^0.2.0",
         "san-router": "^1.2.0",
