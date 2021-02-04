@@ -7,7 +7,7 @@
 
 ```html
 <template>
-  <div>
+  <div id="components-grid-demo-responesive-more">
       <s-row>
         <s-col xs="{{ { span: 5, offset: 1 } }}" lg="{{ { span: 6, offset: 2 } }}">Col</s-col>
         <s-col xs="{{ { span: 11, offset: 1 } }}" lg="{{ { span: 6, offset: 2 } }}">Col</s-col>

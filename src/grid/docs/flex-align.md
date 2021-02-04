@@ -6,7 +6,7 @@ Flex 子元素垂直对齐。
 
 ```html
 <template>
-  <div>
+  <div id="components-grid-demo-flex-align">
     <p>Align Top</p>
     <s-row type="flex" justify="center" align="top">
       <s-col span="4"><p class="height-100">col-4</p></s-col>

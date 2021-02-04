@@ -91,7 +91,7 @@ export default [
                         key: '/components/breadcrumb'
                     },
                     {
-                        name: 'dropdown',
+                        name: 'Dropdown',
                         text: '下拉菜单',
                         path: 'dropdown',
                         key: '/components/dropdown'
