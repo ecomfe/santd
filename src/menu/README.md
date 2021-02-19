@@ -27,7 +27,8 @@
 | --- | --- | --- |
 | on-click | 点击 MenuItem 调用此函数 | function({key, item, keyPath}) |
 | on-deselect | 取消选中时调用，仅在 multiple 生效 | function({key, item, keyPath}) |
-| on-openChange | SubMenu 展开/关闭的回调 | function(openKeys)
+| on-openChange | SubMenu 展开/关闭的回调 | function(openKeys) |
+| on-select | 被选中时调用 | function({key, item, keyPath, selectedKeys}) |
 
 
 ### Menu.Item

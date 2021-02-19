@@ -7,7 +7,7 @@
 
 ```html
 <template>
-  <div>
+  <div id="components-grid-demo-offset">
     <s-row>
       <s-col span="8">col-8</s-col>
       <s-col span="8" offset="8">col-8</s-col>

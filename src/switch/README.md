@@ -11,6 +11,7 @@
 | size | 开关大小，可选值：`default` `small` | string | default |
 | unCheckedChildren | 非选中时的内容 | string\|slot |  |
 | on-change | 变化时回调函数 | Function(checked:Boolean) |  |
+| on-click | 点击时回调函数 | Function(checked:Boolean) |  |
 
 ## 方法
 

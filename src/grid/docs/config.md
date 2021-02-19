@@ -6,7 +6,7 @@
 
 ```html
 <template>
-    <div>
+    <div id="components-grid-demo-config">
         <div style="margin-bottom: 16px;">
             <span style="margin-right: 6px;">Gutter（px）:</span>
             <div style="width: 50%">
