@@ -703,7 +703,7 @@ export default san.defineComponent({
 
         const key = item.value;
 
-        if (modeConfig.combobox) {
+        if (modeConfig.combobox || modeConfig.single) {
             this.setInputValue(key, false);
         }
 
