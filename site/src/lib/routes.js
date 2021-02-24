@@ -71,6 +71,12 @@ export default [
                         text: '布局',
                         path: 'layout',
                         key: '/components/layout'
+                    },
+                    {
+                        name: 'Space',
+                        text: '间距',
+                        path: 'space',
+                        key: '/components/space'
                     }
                 ]
             },
