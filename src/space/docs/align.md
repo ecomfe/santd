@@ -52,7 +52,6 @@ export default {
 .space-align-container {
   display: flex;
   flex-wrap: wrap;
-  align-item: flex-start;
 }
 .space-align-block {
   flex: none;
