@@ -47,6 +47,7 @@ export {default as Statistic} from './statistic';
 export {default as Select} from './select';
 export {default as Skeleton} from './skeleton';
 export {default as Slider} from './slider';
+export {default as Space} from './space';
 export {default as Spin} from './spin';
 export {default as Steps} from './steps';
 export {default as Switch} from './switch';
