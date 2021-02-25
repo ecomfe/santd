@@ -105,7 +105,7 @@ function setNumberSize(htmlNodes, direction, numberSize) {
 }
 
 function isNum(value) {
-    return /^[0-9]+.?[0-9]*/.test(value);
+    return /^[0-9]+\.?[0-9]*$/.test(value);
 }
 
 function computeContainerMargin(direction, size) {
