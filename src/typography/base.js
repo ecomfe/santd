@@ -85,8 +85,7 @@ const create = function (tag) {
                 const clientRendered = this.data.get('clientRendered');
                 const copyable = this.data.get('copyable');
                 const getEllipsis = this.data.get('getEllipsis');
-                const rows = getEllipsis.rows;
-                const expandable = getEllipsis.expandable;
+                const {rows, expandable} = getEllipsis;
 
                 if (copyable || expandable || !clientRendered) {
                     return false;

@@ -8,7 +8,6 @@
   <fragment>
     <s-silder value="{{size}}" on-change="handleChange"></s-silder>
     <br>
-    <br>
     <s-space size="{{size}}">
       <s-button type="primary">Primary</s-button>
       <s-button>Default</s-button>

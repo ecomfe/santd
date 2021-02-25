@@ -42,7 +42,7 @@ function dfsData(data, callback, result = [], level = -1, parentNode = []) {
             : {...item};
         item && result.push(item);
         // 获取父节点，回传给callback
-        let parent = [...parentNode];
+        let parent = Array.from(parentNode);
         if (item.children && item.children.length) {
             parent.unshift(item);
         }
@@ -181,9 +181,8 @@ export default san.defineComponent({
                 if (pagination.position !== null && Array.isArray(pagination.position)) {
                     let bottomPagination = pagination.position.find(p => p.indexOf('bottom') !== -1);
                     return bottomPagination && bottomPagination.toLowerCase().replace('bottom', '');
-                } else {
-                    return 'right';
                 }
+                return 'right';
             }
             return '';
         }
