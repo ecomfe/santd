@@ -71,9 +71,8 @@ export default san.defineComponent({
         const distance = reverse ? '50%' : '-50%';
         if (vertical) {
             return `margin-${direction}:-50%;${direction}:${offset}%;`;
-        } else {
-            return `${direction}: ${offset}%;transform:translateX(${distance});-ms-transform:translateX(${distance})`;
         }
+        return `${direction}: ${offset}%;transform:translateX(${distance});-ms-transform:translateX(${distance})`;
     },
 
     handleClickLabel(e, point) {

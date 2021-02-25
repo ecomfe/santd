@@ -193,7 +193,6 @@ export default san.defineComponent({
         const loadData = this.data.get('loadData');
         loadData && this.data.set('loadData', loadData.bind(this.parentComponent));
 
-        const showSearch = this.data.get('showSearch');
         this.data.set('hasSlot', this.sourceSlots.noname && this.sourceSlots.noname.filter(item => !item.textExpr).length);
         this.data.set('hasDisplayRender', !!this.sourceSlots.named.displayRender);
 
