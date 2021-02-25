@@ -1,6 +1,6 @@
 /**
 * @file 文档加载入口
-* @author liuhuyue@baidu.com
+* @author Lohoyo
 */
 
 import san from 'san';

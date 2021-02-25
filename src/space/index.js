@@ -1,6 +1,6 @@
 /**
  * @file Space 组件
- * @author liuhuyue<liuhuyue@baidu.com>
+ * @author Lohoyo
 */
 
 import './style/index.less';
