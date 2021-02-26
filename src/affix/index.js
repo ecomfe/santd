@@ -14,7 +14,8 @@ const innerCls = classCreator('affix')();
 export default san.defineComponent({
     dataTypes: {
         offsetTop: DataTypes.oneOfType([DataTypes.string, DataTypes.number]),
-        offsetBottom: DataTypes.oneOfType([DataTypes.string, DataTypes.number])
+        offsetBottom: DataTypes.oneOfType([DataTypes.string, DataTypes.number]),
+        target: DataTypes.func
     },
 
     initData() {
@@ -29,20 +30,26 @@ export default san.defineComponent({
         if (!this._scroller) {
             this._scroller = this.handleScroll.bind(this);
 
-            on(window, 'scroll', this._scroller);
-            on(window, 'resize', this._scroller);
+            const target = this.data.get('target');
+            const element = target ? target() : window;
+            on(element, 'scroll', this._scroller);
+            on(element, 'resize', this._scroller);
         }
     },
 
     disposed() {
         if (this._scroller) {
-            off(window, 'scroll', this._scroller);
-            off(window, 'resize', this._scroller);
+            const target = this.data.get('target');
+            const element = target ? target() : window;
+            off(element, 'scroll', this._scroller);
+            off(element, 'resize', this._scroller);
             this._scroller = null;
         }
     },
 
     handleScroll() {
+        const target = this.data.get('target');
+        const targetOffset = target && getOffset(target());
         const elOffset = getOffset(this.el);
         const scrollTop = getScrollTop();
         const innerEl = this.ref('inner');
@@ -51,35 +58,35 @@ export default san.defineComponent({
         let offsetBottom = +this.data.get('offsetBottom');
         let isAffixBottom = offsetBottom >= 0;
 
-        let affix = this.data.get('affix');
         let affixTo = null;
         let styles = {};
         let outerStyles = {};
 
         if (isAffixBottom) {
-            let winBottomPos = window.innerHeight + scrollTop;
-            let elBottomAffixPos = elOffset.top + offsetBottom + innerEl.offsetHeight;
-            if (elBottomAffixPos > winBottomPos && !affix) {
+            const winBottomPos = window.innerHeight + scrollTop;
+            const targetBottomPos = target && (target().offsetHeight + targetOffset.top);
+            const elBottomAffixPos = elOffset.top + offsetBottom + innerEl.offsetHeight;
+            if (elBottomAffixPos >= (target ? targetBottomPos : winBottomPos)) {
                 affixTo = true;
                 styles = {
                     position: 'fixed',
-                    bottom: `${offsetBottom}px`
+                    bottom: target ? `${winBottomPos - targetOffset.bottom + offsetBottom}px` : `${offsetBottom}px`
                 };
             }
-            else if (elBottomAffixPos < winBottomPos && affix) {
+            else {
                 affixTo = false;
             }
         }
         else {
-            let elTopAffixPos = elOffset.top - offsetTop;
-            if (elTopAffixPos <= scrollTop && !affix) {
+            const elTopAffixPos = elOffset.top - offsetTop;
+            if (elTopAffixPos <= (target ? targetOffset.top : scrollTop)) {
                 affixTo = true;
                 styles = {
                     position: 'fixed',
-                    top: `${offsetTop}px`
+                    top: target ? `${targetOffset.top - scrollTop + offsetTop}px` : `${offsetTop}px`
                 };
             }
-            else if (elTopAffixPos > scrollTop && affix) {
+            else {
                 affixTo = false;
             }
         }

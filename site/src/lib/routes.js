@@ -86,7 +86,7 @@ export default [
                 leaf: [
                     {
                         name: 'Affix',
-                        text: '图钉',
+                        text: '固钉',
                         path: 'affix',
                         key: '/components/affix'
                     },
