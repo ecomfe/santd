@@ -217,7 +217,11 @@ export default san.defineComponent({
                     <template s-else>{{title}}</template>
                     <i class="{{menuPrefixCls}}-arrow" />
                 </div>
-                <s-animate hiddenClassName="${prefixCls}-hidden" showProp="visible" visible="{{isOpen}}" animation="{{openAnimation}}">
+                <s-animate
+                    hiddenClassName="${prefixCls}-hidden"
+                    showProp="visible"
+                    visible="{{isOpen}}"
+                    animation="{{openAnimation}}">
                     <ul class="${prefixCls} {{rootPrefixCls}}-sub ${prefixCls}-{{mode}}"><slot /></ul>
                 </s-animate>
             </template>
@@ -240,7 +244,7 @@ export default san.defineComponent({
                 stretch="{{mode === 'horizontal' ? 'minWidth' : ''}}"
                 on-visibleChange="handleVisibleChange"
             >
-                <ul class="${prefixCls} {{rootPrefixCls}}-sub ${prefixCls}-{{mode}}" slot="popup"><slot /></ul>
+                <ul class="${prefixCls} {{rootPrefixCls}}-sub ${prefixCls}-vertical" slot="popup"><slot /></ul>
                 <div
                     class="{{menuPrefixCls}}-title"
                     aria-expanded="{{isOpen}}"
