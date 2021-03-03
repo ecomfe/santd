@@ -72,7 +72,6 @@ export default san.defineComponent({
             openKeys: [],
             activeKey: [],
             openAnimation,
-            isSubMenu: true,
             inlineIndent: 16,
             builtinPlacements,
             trigger: 'hover',
@@ -157,12 +156,6 @@ export default san.defineComponent({
         santd_menu_addItem(payload) {
             this.items.push(payload.value);
         },
-        santd_menu_addSubMenu(payload) {
-            this.subMenus.push(payload.value);
-        },
-        santd_menu_isSelected(payload) {
-            this.data.set('isChildrenSelected', true);
-        },
         santd_menu_itemClick(payload) {
             if (this.data.get('mode') !== 'inline') {
                 this.data.set('noSubClick', false);
@@ -241,14 +234,7 @@ export default san.defineComponent({
                 style="display: block;"
                 popupPlacement="{{inFoldedItem ? 'leftTop' : (mode === 'horizontal' ? 'bottomCenter' : 'rightTop')}}"
                 builtinPlacements="{{builtinPlacements}}"
-                popupAlign="{{popupAlign}}"
-                popupTransitionName="{{transitionName}}"
-                defaultPopupVisible="{{defaultVisible}}"
                 getPopupContainer="{{getPopupContainer()}}"
-                mouseEnterDelay="{{mouseEnterDelay}}"
-                mouseLeaveDelay="{{mouseLeaveDelay}}"
-                popupClassName="{{overlayClassName}}"
-                popupStyle="{{overlayStyle}}"
                 action="hover"
                 visible="{{isOpen}}"
                 stretch="{{mode === 'horizontal' ? 'minWidth' : ''}}"

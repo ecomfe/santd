@@ -195,7 +195,6 @@ export default san.defineComponent({
         },
         santd_menu_itemClick(payload) {
             this.fire('click', payload.value);
-            this.dispatch('santd_menu_itemClick', payload.value);
         },
         santd_menu_openChange(payload) {
             this.handleOpenChange(payload.value);
