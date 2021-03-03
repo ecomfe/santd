@@ -8,11 +8,14 @@ import {classCreator} from '../core/util';
 import Trigger from '../core/trigger';
 import Animate from '../core/util/animate';
 import openAnimation from '../core/util/openAnimation';
+import {MENU_FOLDED_ITEM_ID} from '../core/constants';
+import {getParentNode} from '../core/util/dom';
+
 const prefixCls = classCreator('menu')();
 
 function loopMenuItem(children = [], keys, ret = {}) {
     children.forEach(child => {
-        if (keys.includes(child.data.get('key'))) {
+        if (keys.includes(child.data.get('key')) && !child.data.get('isFolded')) {
             ret.find = true;
         }
         else {
@@ -86,7 +89,7 @@ export default san.defineComponent({
         },
         classes() {
             const menuPrefixCls = this.data.get('menuPrefixCls');
-            const mode = this.data.get('mode');
+            const mode = this.data.get('inFoldedItem') ? 'vertical' : this.data.get('mode');
             const isOpen = this.data.get('isOpen');
             const isInlineMode = this.data.get('mode') === 'inline';
             const active = this.data.get('active');
@@ -119,9 +122,12 @@ export default san.defineComponent({
         this.subMenus = [];
         this.dispatch('santd_menu_addItem', this);
     },
+    attached() {
+        this.data.set('inFoldedItem', getParentNode(this.el, 6).id === MENU_FOLDED_ITEM_ID);
+    },
     updated() {
         let paramsArr = ['mode', 'level', 'selectedKeys', 'openKeys', 'inlineIndent', 'rootPrefixCls'];
-        this.items.forEach(item => {
+        this.items.forEach((item, index) => {
             paramsArr.forEach(param => {
                 let data = this.data.get(param);
                 if (param === 'level') {
@@ -129,6 +135,9 @@ export default san.defineComponent({
                 }
                 item.data.set(param, data, {force: true});
             });
+            if (this.data.get('itemFoldedFlags')) {
+                item.data.set('isFolded', !this.data.get('itemFoldedFlags')[index]);
+            }
         });
         let selectedKeys = this.data.get('selectedKeys') || [];
         if (typeof selectedKeys === 'string') {
@@ -203,6 +212,7 @@ export default san.defineComponent({
     template: `
         <li class="{{classes}}"
             role="menuitem"
+            s-if="!isFolded"
         >
             <template s-if="mode === 'inline'">
                 <div
@@ -229,7 +239,7 @@ export default san.defineComponent({
                 s-else
                 prefixCls="${prefixCls}"
                 style="display: block;"
-                popupPlacement="{{mode === 'horizontal' ? 'bottomCenter' : 'rightTop'}}"
+                popupPlacement="{{inFoldedItem ? 'leftTop' : (mode === 'horizontal' ? 'bottomCenter' : 'rightTop')}}"
                 builtinPlacements="{{builtinPlacements}}"
                 popupAlign="{{popupAlign}}"
                 popupTransitionName="{{transitionName}}"

@@ -6,7 +6,13 @@
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
 import './style/index.less';
+import {getOffset} from '../core/util/dom';
+import SubMenu from './subMenu';
+import Icon from '../icon';
+import {MENU_FOLDED_ITEM_ID} from '../core/constants';
+
 const prefixCls = classCreator('menu')();
+const FOLDED_ITEM_WIDTH = 54;
 
 export default san.defineComponent({
     dataTypes: {
@@ -24,6 +30,10 @@ export default san.defineComponent({
         subMenuOpenDelay: DataTypes.number,
         forceSubMenuRender: DataTypes.bool
     },
+    components: {
+        's-sub-menu': SubMenu,
+        's-icon': Icon
+    },
     initData() {
         return {
             mode: 'vertical',
@@ -34,7 +44,9 @@ export default san.defineComponent({
             subMenuCloseDelay: 0.1,
             subMenuOpenDelay: 0,
             defaultOpenKeys: [],
-            level: 1
+            level: 1,
+            hasFoldedItem: false,
+            itemFoldedFlags: []
         };
     },
     computed: {
@@ -64,6 +76,13 @@ export default san.defineComponent({
     },
     attached() {
         this.updateItems();
+
+        if (this.data.get('mode') !== 'horizontal') {
+            return;
+        }
+        this.getItemWidths();
+        this.actualUpdateFoldedItems();
+        window.onresize = this.updateFoldedItems.bind(this);
     },
     updated() {
         this.updateItems();
@@ -75,6 +94,33 @@ export default san.defineComponent({
                 item.data.set(param, this.data.get(param), {force: true});
             });
         });
+    },
+    getItemWidths() {
+        this.itemWidths = [];
+        this.items.forEach(item => this.itemWidths.push(getOffset(item.el).width));
+    },
+    updateFoldedItems() {
+        if (!this.resizeTimeout) {
+            this.resizeTimeout = setTimeout(() => {
+                this.resizeTimeout = null;
+                this.actualUpdateFoldedItems();
+            // actualUpdateFoldedItems函数的执行频率是15fps
+            }, 66);
+        }
+    },
+    actualUpdateFoldedItems() {
+        let availableMenuWidth = getOffset(this.el).width - FOLDED_ITEM_WIDTH;
+        this.items.forEach((item, index, items) => {
+            // 折叠项（最后一项）不参与菜单项是否需要被折叠的计算
+            if (index === items.length - 1) {
+                return;
+            }
+
+            availableMenuWidth -= this.itemWidths[index];
+            item.data.set('isFolded', availableMenuWidth < 0);
+            this.data.set(`itemFoldedFlags[${index}]`, availableMenuWidth < 0);
+        });
+        this.data.set('hasFoldedItem', availableMenuWidth < 0);
     },
     getSelectedKeys(defaultSelectedKeys) {
         let selectedKeys =  this.data.get('selectedKeys') || defaultSelectedKeys || [];
@@ -156,6 +202,16 @@ export default san.defineComponent({
         }
     },
     template: `
-        <ul class="{{classes}}" role="{{role || 'menu'}}"><slot/></ul>
+        <ul class="{{classes}}" role="{{role || 'menu'}}">
+            <slot/>
+            <s-sub-menu
+                s-show="hasFoldedItem"
+                id="${MENU_FOLDED_ITEM_ID}"
+                key="${MENU_FOLDED_ITEM_ID}"
+                itemFoldedFlags="{{itemFoldedFlags}}">
+                <s-icon slot="title" type="ellipsis" class="${prefixCls}-fold-icon"></s-icon>
+                <slot/>
+            </s-sub-menu>
+        </ul>
     `
 });

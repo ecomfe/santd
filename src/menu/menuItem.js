@@ -112,6 +112,7 @@ export default san.defineComponent({
             on-click="handleClick($event)"
             on-mouseleave="handleMouseLeave($event)"
             on-mouseenter="handleMouseEnter($event)"
+            s-if="!isFolded"
         >
             <slot />
         </li>
