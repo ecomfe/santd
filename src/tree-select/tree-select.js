@@ -248,7 +248,7 @@ export default san.defineComponent({
 
         if (value) {
             hiddenKeys = this.dataList.map(item => {
-                if (item.key.indexOf(value) === -1) {
+                if (item.value.indexOf(value) === -1) {
                     return item.key;
                 }
                 return null;
@@ -256,7 +256,8 @@ export default san.defineComponent({
 
             for (const item of this.dataList) {
                 const key = item.key;
-                if (key.indexOf(value) > -1) {
+                const itemValue = item.value;
+                if (itemValue.indexOf(value) > -1) {
                     filteredKeys.push(key);
                     const parentKey = getParentKey(key, this.treeData);
                     parentKey && expandedKeys.push(parentKey);
