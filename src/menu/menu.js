@@ -6,10 +6,11 @@
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
 import './style/index.less';
-import {getOffset} from '../core/util/dom';
+import {getOffset, on, off} from '../core/util/dom';
 import SubMenu from './subMenu';
 import Icon from '../icon';
 import {MENU_FOLDED_ITEM_ID} from '../core/constants';
+import throttle from 'lodash/throttle';
 
 const prefixCls = classCreator('menu')();
 const FOLDED_ITEM_WIDTH = 54;
@@ -81,11 +82,16 @@ export default san.defineComponent({
             return;
         }
         this.getItemWidths();
-        this.actualUpdateFoldedItems();
-        window.onresize = this.updateFoldedItems.bind(this);
+        this.updateFoldedItems();
+        // resize事件的触发频率较高，因此延迟66ms（意味着updateFoldedItems函数的执行频率变为15fps）
+        this.updateFoldedItemsBind = throttle(this.updateFoldedItems, 66).bind(this);
+        on(window, 'resize', this.updateFoldedItemsBind);
     },
     updated() {
         this.updateItems();
+    },
+    detached() {
+        this.updateFoldedItemsBind && off(window, 'resize', this.updateFoldedItemsBind);
     },
     updateItems() {
         let paramsArr = ['mode', 'level', 'selectedKeys', 'openKeys', 'rootPrefixCls', 'multiple'];
@@ -100,15 +106,6 @@ export default san.defineComponent({
         this.items.forEach(item => this.itemWidths.push(getOffset(item.el).width));
     },
     updateFoldedItems() {
-        if (!this.resizeTimeout) {
-            this.resizeTimeout = setTimeout(() => {
-                this.resizeTimeout = null;
-                this.actualUpdateFoldedItems();
-            // actualUpdateFoldedItems函数的执行频率是15fps
-            }, 66);
-        }
-    },
-    actualUpdateFoldedItems() {
         let availableMenuWidth = getOffset(this.el).width - FOLDED_ITEM_WIDTH;
         this.items.forEach((item, index, items) => {
             // 折叠项（最后一项）不参与菜单项是否需要被折叠的计算
@@ -117,8 +114,9 @@ export default san.defineComponent({
             }
 
             availableMenuWidth -= this.itemWidths[index];
-            item.data.set('isFolded', availableMenuWidth < 0);
-            this.data.set(`itemFoldedFlags[${index}]`, availableMenuWidth < 0);
+            const isFolded = availableMenuWidth < 0;
+            item.data.set('isFolded', isFolded);
+            this.data.set(`itemFoldedFlags[${index}]`, isFolded);
         });
         this.data.set('hasFoldedItem', availableMenuWidth < 0);
     },
