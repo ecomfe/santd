@@ -137,6 +137,7 @@ export default san.defineComponent({
                     tabBarPosition="{{tabBarPosition}}"
                 >
                     <s-tabbartabsnode
+                        s-bind="{{ownerData}}"
                         tabPanes="{{tabPanes}}"
                         tabBarData="{{tabBarData}}"
                         type="{{type}}"
