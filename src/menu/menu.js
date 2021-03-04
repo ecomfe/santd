@@ -13,7 +13,8 @@ import {MENU_FOLDED_ITEM_ID} from '../core/constants';
 import throttle from 'lodash/throttle';
 
 const prefixCls = classCreator('menu')();
-const FOLDED_ITEM_WIDTH = 54;
+const DEFAULT_FOLDED_ITEM_WIDTH = 14;
+const FOLDED_ITEM_PADDING = 40;
 
 export default san.defineComponent({
     dataTypes: {
@@ -86,6 +87,14 @@ export default san.defineComponent({
         // resize事件的触发频率较高，因此延迟66ms（意味着updateFoldedItems函数的执行频率变为15fps）
         this.updateFoldedItemsBind = throttle(this.updateFoldedItems, 66).bind(this);
         on(window, 'resize', this.updateFoldedItemsBind);
+        this.nextTick(() => {
+            const foldedItemWidth = getOffset(this.ref(`${prefixCls}-fold-item`)).width;
+            // 用户是否传入了和默认折叠图标的宽度不一样的折叠图标
+            if (foldedItemWidth !== DEFAULT_FOLDED_ITEM_WIDTH) {
+                this.foldedItemWidth = foldedItemWidth;
+                this.updateFoldedItems();
+            }
+        });
     },
     updated() {
         this.updateItems();
@@ -104,9 +113,10 @@ export default san.defineComponent({
     getItemWidths() {
         this.itemWidths = [];
         this.items.forEach(item => this.itemWidths.push(getOffset(item.el).width));
+        this.foldedItemWidth = DEFAULT_FOLDED_ITEM_WIDTH;
     },
     updateFoldedItems() {
-        let availableMenuWidth = getOffset(this.el).width - FOLDED_ITEM_WIDTH;
+        let availableMenuWidth = getOffset(this.el).width - (this.foldedItemWidth + FOLDED_ITEM_PADDING);
         this.items.forEach((item, index, items) => {
             // 折叠项（最后一项）不参与菜单项是否需要被折叠的计算
             if (index === items.length - 1) {
@@ -200,14 +210,18 @@ export default san.defineComponent({
     },
     template: `
         <ul class="{{classes}}" role="{{role || 'menu'}}">
-            <slot/>
+            <slot></slot>
             <s-sub-menu
                 s-show="hasFoldedItem"
                 id="${MENU_FOLDED_ITEM_ID}"
                 key="${MENU_FOLDED_ITEM_ID}"
                 itemFoldedFlags="{{itemFoldedFlags}}">
-                <s-icon slot="title" type="ellipsis" class="${prefixCls}-fold-icon"></s-icon>
-                <slot/>
+                <div slot="title" s-ref="${prefixCls}-fold-item" class="${prefixCls}-fold-item">
+                    <slot name="overflowedIndicator">
+                        <s-icon type="ellipsis"></s-icon>
+                    </slot>
+                </div>
+                <slot></slot>
             </s-sub-menu>
         </ul>
     `

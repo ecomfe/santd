@@ -1,6 +1,6 @@
 <text lang="cn">
-#### 顶部导航
-水平的顶部导航菜单。
+#### 折叠图标
+自定义 Menu 折叠时的图标。
 </text>
 
 ```html
@@ -32,6 +32,7 @@
         <s-menu-item key="link2">
             <a href="https://github.com/ecomfe/santd" target="_blank" rel="noopener noreferrer">Navigation Five - Link</a>
         </s-menu-item>
+        <s-icon slot="overflowedIndicator" type="more"></s-icon>
     </s-menu>
   </div>
 </template>
