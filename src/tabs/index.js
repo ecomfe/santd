@@ -46,6 +46,7 @@ const Tabs = san.defineComponent({
         this.data.set('hasExtraContent', !!this.sourceSlots.named.tabBarExtraContent);
         this.data.set('hasAddIcon', !!this.sourceSlots.named.addIcon);
         this.tabPanes = [];
+        this.data.set('ownerData', this.owner.data.get());
     },
     computed: {
         classes() {
@@ -226,6 +227,7 @@ const Tabs = san.defineComponent({
                     hideAdd="{{hideAdd}}"
                     size="{{size}}"
                     props="{{props}}"
+                    ownerData="{{ownerData}}"
                     s-else
                 ><slot name="tabBarExtraContent" slot="tabBarExtraContent" />
                 <slot name="addIcon" slot="addIcon" /></s-tabbar>
@@ -251,6 +253,7 @@ const Tabs = san.defineComponent({
                     hideAdd="{{hideAdd}}"
                     size="{{size}}"
                     props="{{props}}"
+                    ownerData="{{ownerData}}"
                     s-else
                 ><slot name="tabBarExtraContent" slot="tabBarExtraContent" />
                 <slot name="addIcon" slot="addIcon" /></s-tabbar>
