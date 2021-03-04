@@ -44,7 +44,7 @@
     },
     "peerDependencies": {
         "moment": "^2.22.2",
-        "san": "^3.10.1"
+        "san": "^3.9.3"
     },
     "devDependencies": {
         "@babel/core": "^7.4.4",
