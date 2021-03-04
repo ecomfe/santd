@@ -13,6 +13,7 @@
 | mode | 菜单类型，现在支持垂直、水平、和内嵌模式三种 | string `vertical` `horizontal` `inline` | `vertical` |
 | multiple | 是否允许多选 | boolean | false |
 | openKeys | 当前展开的 SubMenu 菜单项 key 数组 | [] \| string[] | - |
+| overflowedIndicator | 自定义 Menu 折叠时的图标 | slot | - |
 | selectable | 是否允许选中 | boolean | true |
 | selectedKeys | 当前选中的菜单项 key | string(单选) \| []（多选） | - |
 | style | 根节点样式 | string | - |

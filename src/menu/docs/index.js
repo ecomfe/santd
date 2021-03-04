@@ -11,6 +11,7 @@ import Horizontal from './horizontal.md';
 import Inline from './inline.md';
 import Current from './current.md';
 import Switch from './switch.md';
+import OverflowedIndicator from './overflowedIndicator.md';
 
 
 export default san.defineComponent({
@@ -23,7 +24,9 @@ export default san.defineComponent({
         inline: Inline,
         head: Head,
         current: Current,
-        switch: Switch
+        switch: Switch,
+        'overflowed-indicator': OverflowedIndicator
+
     },
     template: `
         <div>
@@ -34,6 +37,7 @@ export default san.defineComponent({
             <vertical/>
             <theme/>
             <switch/>
+            <overflowed-indicator/>
             <readme/>
         </div>
     `
