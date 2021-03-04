@@ -8,11 +8,14 @@ import {classCreator} from '../core/util';
 import Trigger from '../core/trigger';
 import Animate from '../core/util/animate';
 import openAnimation from '../core/util/openAnimation';
+import {MENU_FOLDED_ITEM_ID} from '../core/constants';
+import {getParentNode} from '../core/util/dom';
+
 const prefixCls = classCreator('menu')();
 
 function loopMenuItem(children = [], keys, ret = {}) {
     children.forEach(child => {
-        if (keys.includes(child.data.get('key'))) {
+        if (keys.includes(child.data.get('key')) && !child.data.get('isFolded')) {
             ret.find = true;
         }
         else {
@@ -69,7 +72,6 @@ export default san.defineComponent({
             openKeys: [],
             activeKey: [],
             openAnimation,
-            isSubMenu: true,
             inlineIndent: 16,
             builtinPlacements,
             trigger: 'hover',
@@ -86,7 +88,7 @@ export default san.defineComponent({
         },
         classes() {
             const menuPrefixCls = this.data.get('menuPrefixCls');
-            const mode = this.data.get('mode');
+            const mode = this.data.get('inFoldedItem') ? 'vertical' : this.data.get('mode');
             const isOpen = this.data.get('isOpen');
             const isInlineMode = this.data.get('mode') === 'inline';
             const active = this.data.get('active');
@@ -119,9 +121,12 @@ export default san.defineComponent({
         this.subMenus = [];
         this.dispatch('santd_menu_addItem', this);
     },
+    attached() {
+        this.data.set('inFoldedItem', getParentNode(this.el, 6).id === MENU_FOLDED_ITEM_ID);
+    },
     updated() {
         let paramsArr = ['mode', 'level', 'selectedKeys', 'openKeys', 'inlineIndent', 'rootPrefixCls'];
-        this.items.forEach(item => {
+        this.items.forEach((item, index) => {
             paramsArr.forEach(param => {
                 let data = this.data.get(param);
                 if (param === 'level') {
@@ -129,6 +134,9 @@ export default san.defineComponent({
                 }
                 item.data.set(param, data, {force: true});
             });
+            if (this.data.get('itemFoldedFlags')) {
+                item.data.set('isFolded', !this.data.get('itemFoldedFlags')[index]);
+            }
         });
         let selectedKeys = this.data.get('selectedKeys') || [];
         if (typeof selectedKeys === 'string') {
@@ -147,12 +155,6 @@ export default san.defineComponent({
     messages: {
         santd_menu_addItem(payload) {
             this.items.push(payload.value);
-        },
-        santd_menu_addSubMenu(payload) {
-            this.subMenus.push(payload.value);
-        },
-        santd_menu_isSelected(payload) {
-            this.data.set('isChildrenSelected', true);
         },
         santd_menu_itemClick(payload) {
             if (this.data.get('mode') !== 'inline') {
@@ -203,6 +205,7 @@ export default san.defineComponent({
     template: `
         <li class="{{classes}}"
             role="menuitem"
+            s-if="!isFolded"
         >
             <template s-if="mode === 'inline'">
                 <div
@@ -217,7 +220,11 @@ export default san.defineComponent({
                     <template s-else>{{title}}</template>
                     <i class="{{menuPrefixCls}}-arrow" />
                 </div>
-                <s-animate hiddenClassName="${prefixCls}-hidden" showProp="visible" visible="{{isOpen}}" animation="{{openAnimation}}">
+                <s-animate
+                    hiddenClassName="${prefixCls}-hidden"
+                    showProp="visible"
+                    visible="{{isOpen}}"
+                    animation="{{openAnimation}}">
                     <ul class="${prefixCls} {{rootPrefixCls}}-sub ${prefixCls}-{{mode}}"><slot /></ul>
                 </s-animate>
             </template>
@@ -225,22 +232,15 @@ export default san.defineComponent({
                 s-else
                 prefixCls="${prefixCls}"
                 style="display: block;"
-                popupPlacement="{{mode === 'horizontal' ? 'bottomCenter' : 'rightTop'}}"
+                popupPlacement="{{inFoldedItem ? 'leftTop' : (mode === 'horizontal' ? 'bottomCenter' : 'rightTop')}}"
                 builtinPlacements="{{builtinPlacements}}"
-                popupAlign="{{popupAlign}}"
-                popupTransitionName="{{transitionName}}"
-                defaultPopupVisible="{{defaultVisible}}"
                 getPopupContainer="{{getPopupContainer()}}"
-                mouseEnterDelay="{{mouseEnterDelay}}"
-                mouseLeaveDelay="{{mouseLeaveDelay}}"
-                popupClassName="{{overlayClassName}}"
-                popupStyle="{{overlayStyle}}"
                 action="hover"
                 visible="{{isOpen}}"
                 stretch="{{mode === 'horizontal' ? 'minWidth' : ''}}"
                 on-visibleChange="handleVisibleChange"
             >
-                <ul class="${prefixCls} {{rootPrefixCls}}-sub ${prefixCls}-{{mode}}" slot="popup"><slot /></ul>
+                <ul class="${prefixCls} {{rootPrefixCls}}-sub ${prefixCls}-vertical" slot="popup"><slot /></ul>
                 <div
                     class="{{menuPrefixCls}}-title"
                     aria-expanded="{{isOpen}}"

@@ -90,17 +90,7 @@ export default san.defineComponent({
         }
 
         const key = this.data.get('key');
-        this.dispatch('santd_menu_itemHover', {key, hover: true});
         this.dispatch('santd_menu_itemMouseEnter', {key, e});
-    },
-    handleMouseLeave(e) {
-        if (this.data.get('disabled')) {
-            return;
-        }
-
-        const key = this.data.get('key');
-        this.dispatch('santd_menu_itemHover', {key, hover: false});
-        this.dispatch('santd_menu_itemMouseLeave', {key, e});
     },
     template: `
         <li
@@ -110,8 +100,8 @@ export default san.defineComponent({
             aria-disabled="{{disabled}}"
             aria-selected="{{isSelected}}"
             on-click="handleClick($event)"
-            on-mouseleave="handleMouseLeave($event)"
             on-mouseenter="handleMouseEnter($event)"
+            s-if="!isFolded"
         >
             <slot />
         </li>

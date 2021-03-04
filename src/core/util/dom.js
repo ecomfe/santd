@@ -261,3 +261,16 @@ export function getScrollBarSize(fresh) {
     }
     return cached;
 }
+
+/**
+ * 获取指定层级的父节点
+ * @param {Object} node HTML节点
+ * @param {number=} num 父节点层级（可选）
+ * @return {Object} HTML节点
+ */
+export function getParentNode(node, num) {
+    if (!node) {
+        return;
+    }
+    return num ? getParentNode(node.parentNode, num - 1) : node;
+}

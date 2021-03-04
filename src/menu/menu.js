@@ -6,7 +6,14 @@
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
 import './style/index.less';
+import {getOffset, on, off} from '../core/util/dom';
+import SubMenu from './subMenu';
+import Icon from '../icon';
+import {MENU_FOLDED_ITEM_ID} from '../core/constants';
+import throttle from 'lodash/throttle';
+
 const prefixCls = classCreator('menu')();
+const FOLDED_ITEM_WIDTH = 54;
 
 export default san.defineComponent({
     dataTypes: {
@@ -24,6 +31,10 @@ export default san.defineComponent({
         subMenuOpenDelay: DataTypes.number,
         forceSubMenuRender: DataTypes.bool
     },
+    components: {
+        's-sub-menu': SubMenu,
+        's-icon': Icon
+    },
     initData() {
         return {
             mode: 'vertical',
@@ -34,7 +45,9 @@ export default san.defineComponent({
             subMenuCloseDelay: 0.1,
             subMenuOpenDelay: 0,
             defaultOpenKeys: [],
-            level: 1
+            level: 1,
+            hasFoldedItem: false,
+            itemFoldedFlags: []
         };
     },
     computed: {
@@ -64,9 +77,21 @@ export default san.defineComponent({
     },
     attached() {
         this.updateItems();
+
+        if (this.data.get('mode') !== 'horizontal') {
+            return;
+        }
+        this.getItemWidths();
+        this.updateFoldedItems();
+        // resize事件的触发频率较高，因此延迟66ms（意味着updateFoldedItems函数的执行频率变为15fps）
+        this.updateFoldedItemsBind = throttle(this.updateFoldedItems, 66).bind(this);
+        on(window, 'resize', this.updateFoldedItemsBind);
     },
     updated() {
         this.updateItems();
+    },
+    detached() {
+        this.updateFoldedItemsBind && off(window, 'resize', this.updateFoldedItemsBind);
     },
     updateItems() {
         let paramsArr = ['mode', 'level', 'selectedKeys', 'openKeys', 'rootPrefixCls', 'multiple'];
@@ -75,6 +100,25 @@ export default san.defineComponent({
                 item.data.set(param, this.data.get(param), {force: true});
             });
         });
+    },
+    getItemWidths() {
+        this.itemWidths = [];
+        this.items.forEach(item => this.itemWidths.push(getOffset(item.el).width));
+    },
+    updateFoldedItems() {
+        let availableMenuWidth = getOffset(this.el).width - FOLDED_ITEM_WIDTH;
+        this.items.forEach((item, index, items) => {
+            // 折叠项（最后一项）不参与菜单项是否需要被折叠的计算
+            if (index === items.length - 1) {
+                return;
+            }
+
+            availableMenuWidth -= this.itemWidths[index];
+            const isFolded = availableMenuWidth < 0;
+            item.data.set('isFolded', isFolded);
+            this.data.set(`itemFoldedFlags[${index}]`, isFolded);
+        });
+        this.data.set('hasFoldedItem', availableMenuWidth < 0);
     },
     getSelectedKeys(defaultSelectedKeys) {
         let selectedKeys =  this.data.get('selectedKeys') || defaultSelectedKeys || [];
@@ -149,13 +193,22 @@ export default san.defineComponent({
         },
         santd_menu_itemClick(payload) {
             this.fire('click', payload.value);
-            this.dispatch('santd_menu_itemClick', payload.value);
         },
         santd_menu_openChange(payload) {
             this.handleOpenChange(payload.value);
         }
     },
     template: `
-        <ul class="{{classes}}" role="{{role || 'menu'}}"><slot/></ul>
+        <ul class="{{classes}}" role="{{role || 'menu'}}">
+            <slot/>
+            <s-sub-menu
+                s-show="hasFoldedItem"
+                id="${MENU_FOLDED_ITEM_ID}"
+                key="${MENU_FOLDED_ITEM_ID}"
+                itemFoldedFlags="{{itemFoldedFlags}}">
+                <s-icon slot="title" type="ellipsis" class="${prefixCls}-fold-icon"></s-icon>
+                <slot/>
+            </s-sub-menu>
+        </ul>
     `
 });

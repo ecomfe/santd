@@ -169,6 +169,9 @@
         transition: opacity 0.3s @ease-in-out, width 0.3s @ease-in-out;
       }
     }
+    .@{menu-prefix-cls}-fold-icon {
+      margin-right: 0;
+    }
   }
 
   & > &-item-divider {
@@ -357,7 +360,7 @@
       height: @menu-item-height;
       margin-top: @menu-item-vertical-margin;
       margin-bottom: @menu-item-vertical-margin;
-      padding: 0 16px;
+      padding: 0 34px 0 16px;
       overflow: hidden;
       font-size: @menu-item-font-size;
       line-height: @menu-item-height;
@@ -394,10 +397,6 @@
     .@{menu-prefix-cls}-item,
     .@{menu-prefix-cls}-submenu-title {
       width: ~'calc(100% + 1px)';
-    }
-
-    .@{menu-prefix-cls}-submenu-title {
-      padding-right: 34px;
     }
   }
 
