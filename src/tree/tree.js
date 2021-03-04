@@ -83,7 +83,6 @@ export default san.defineComponent({
     },
     inited() {
         this.treeNodes = [];
-        this.treeNodesArr = [];
         this.multipleItem = [];
         this.selectedNodes = [];
 
@@ -108,12 +107,15 @@ export default san.defineComponent({
             // 当外部传入expandedKeys时，自动展开父节点
             if (this.data.get('autoExpandParent')) {
                 this.autoExpand();
+                this.updateTreeNodes();
             }
         });
 
         this.watch('selectedKeys', val => {
             this.updateTreeNodes();
         });
+
+        this.watch('activeKey', () => this.updateTreeNodes());
 
         // 受控状态下监听checkedKeys，如果变化fire到上一层处理
         this.watch('checkedKeys', val => {
@@ -247,6 +249,9 @@ export default san.defineComponent({
             }
         }
         this.data.set('expandedKeys', expandedKeys.concat(), {silent: true});
+
+        const hiddenKeys = this.data.get('hiddenKeys') || [];
+        this.data.set('hiddenKeys', hiddenKeys.filter(key => !expandedKeys.includes(key)));
     },
 
     // 把父的所有数据更新给子节点
@@ -272,6 +277,19 @@ export default san.defineComponent({
         return expandComponents;
     },
 
+    handleSelect(key, info) {
+        const {multiple, selectedKeys} = this.data.get();
+        const index = selectedKeys.indexOf(key);
+
+        multiple && index > -1 && this.data.removeAt('selectedKeys', index);
+        multiple && index === -1 && this.data.push('selectedKeys', key);
+
+        !multiple && this.data.set('selectedKeys', [key]);
+        this.updateTreeNodes();
+
+        this.fire('select', {selectedKeys: this.data.get('selectedKeys'), info});
+    },
+
     messages: {
         // 拿到子节点，便于后面传递数据
         santd_tree_addTreeNode(payload) {
@@ -279,17 +297,7 @@ export default san.defineComponent({
         },
         // 点击节点的处理
         santd_tree_clickTreeNode(payload) {
-            const multiple = this.data.get('multiple');
-            const key = payload.value.key;
-            const selectedKeys = this.data.get('selectedKeys');
-            const index = selectedKeys.indexOf(key);
-
-            multiple && index > -1 && this.data.removeAt('selectedKeys', index);
-            multiple && index === -1 && this.data.push('selectedKeys', key);
-
-            !multiple && this.data.set('selectedKeys', [key]);
-            this.updateTreeNodes();
-            this.fire('select', {selectedKeys: this.data.get('selectedKeys'), info: payload.value});
+            this.handleSelect(payload.value.key, payload.value);
         },
         // check节点的处理
         santd_tree_checkTreeNode(payload) {
@@ -337,11 +345,22 @@ export default san.defineComponent({
         }
     },
 
+    handleMouseOver(e) {
+        this.fire('mouseOver', e);
+    },
+
     template: `
-        <ul class="{{classes}}" unselectable="on" role="tree">
+        <ul
+            class="{{classes}}"
+            unselectable="on"
+            role="tree"
+            on-mouseover="handleMouseOver"
+        >
             <s-tree-node
                 s-if="treeData"
                 s-for="tree in treeData"
+                filteredKeys="{{filteredKeys}}"
+                hiddenKeys="{{hiddenKeys}}"
                 selectedKeys="{{selectedKeys}}"
                 expandedKeys="{{expandedKeys}}"
                 allCheckedKeys="{{allCheckedKeys}}"
@@ -351,6 +370,7 @@ export default san.defineComponent({
                 showLine="{{showLine}}"
                 title="{{tree.title}}"
                 key="{{tree.key}}"
+                activeKey="{{activeKey}}"
                 value="{{tree.value}}"
                 isLeaf="{{tree.isLeaf}}"
                 checkable="{{tree.checkable || rootCheckable}}"
