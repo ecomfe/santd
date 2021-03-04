@@ -26,8 +26,11 @@
                 <s-menu-item key="setting4">Option 4</s-menu-item>
             </s-menu-item-group>
         </s-sub-menu>
-        <s-menu-item key="alipay">
+        <s-menu-item key="link1">
             <a href="http://www.baidu.com" target="_blank" rel="noopener noreferrer">Navigation Four - Link</a>
+        </s-menu-item>
+        <s-menu-item key="link2">
+            <a href="https://github.com/ecomfe/santd" target="_blank" rel="noopener noreferrer">Navigation Five - Link</a>
         </s-menu-item>
     </s-menu>
   </div>
