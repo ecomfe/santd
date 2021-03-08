@@ -19,19 +19,19 @@ const customTab = san.defineComponent({
 
 export default san.defineComponent({
     computed: {
-        tabBars() {
-            let tabBarData = this.data.get('tabBarData') || [];
-            const tabBarGutter = this.data.get('tabBarGutter');
-            const tabBarPosition = this.data.get('tabBarPosition');
-            const tabPanes = this.data.get('tabPanes') || [];
+        __tabBars__() {
+            const tabBarData = this.data.get('__tabBarData__') || [];
+            const tabBarGutter = this.data.get('__tabBarGutter__');
+            const tabPosition = this.data.get('__tabPosition__');
+            const tabPanes = this.data.get('__tabPanes__') || [];
 
             return tabBarData.map((tabBar, index) => {
                 const gutter = tabBarGutter && index === tabBarData.length - 1 ? 0 : tabBarGutter;
-                const style = gutter !== undefined && {[isVertical(tabBarPosition) ? 'margin-bottom' : 'margin-right']: gutter + 'px'};
-                let classArr = [`${prefixCls}-tab`];
+                const style = gutter !== undefined && {[isVertical(tabPosition) ? 'margin-bottom' : 'margin-right']: gutter + 'px'};
+                const classArr = [`${prefixCls}-tab`];
                 // 获取parent节点
-                let slot = tabPanes[index] && tabPanes[index].sourceSlots.named.tab || null;
-                let closeIcon = tabPanes[index] && tabPanes[index].sourceSlots.named.closeIcon || null;
+                const slot = tabPanes[index] && tabPanes[index].sourceSlots.named.tab || null;
+                const closeIcon = tabPanes[index] && tabPanes[index].sourceSlots.named.closeIcon || null;
                 tabBar.active && classArr.push(`${prefixCls}-tab-active`);
                 tabBar.disabled && classArr.push(`${prefixCls}-tab-disabled`);
 
@@ -40,7 +40,7 @@ export default san.defineComponent({
                     slot,
                     closeIcon,
                     classes: classArr,
-                    style: style
+                    style
                 };
             });
         }
@@ -68,7 +68,7 @@ export default san.defineComponent({
     template: `
         <div>
             <div
-                s-for="tabBar, index in tabBars trackBy index"
+                s-for="tabBar, index in __tabBars__ trackBy index"
                 role="tab"
                 aria-disabled="{{tabBar.disabled ? true : false}}"
                 aria-selected="{{tabBar.active ? true : false}}"
@@ -77,7 +77,7 @@ export default san.defineComponent({
                 style="{{tabBar.style}}"
                 on-click="handleTabClick($event, tabBar.key, tabBar.disabled)"
             >
-                <div class="{{tabBar.closable ? '${prefixCls}-tab-uncloseable' : ''}}" s-if="type === 'editable-card'">
+                <div class="{{tabBar.closable ? '${prefixCls}-tab-uncloseable' : ''}}" s-if="__type__ === 'editable-card'">
                     <template s-if="tabBar.slot">
                         <s-customtab slot="{{tabBar.slot}}"/>
                     </template>

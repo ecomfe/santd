@@ -15,7 +15,6 @@ const prefixCls = classCreator('tabs')();
 
 const Tabs = san.defineComponent({
     dataTypes: {
-        destroyInactiveTabPane: DataTypes.bool,
         activeKey: DataTypes.string,
         defaultActiveKey: DataTypes.string,
         hideAdd: DataTypes.bool,
@@ -30,8 +29,6 @@ const Tabs = san.defineComponent({
     },
     initData() {
         return {
-            destroyInactiveTabPane: false,
-            tabBarPosition: 'top',
             type: 'line',
             hideAdd: false,
             tabPosition: 'top',
@@ -41,10 +38,11 @@ const Tabs = san.defineComponent({
         };
     },
     inited() {
-        this.data.set('activeKey', this.data.get('activeKey') || this.data.get('defaultActiveKey'));
+        this.data.set('__activeKey__', this.data.get('activeKey') || this.data.get('defaultActiveKey'));
         this.data.set('hasRenderTabBar', !!this.sourceSlots.named.renderTabBar);
         this.data.set('hasExtraContent', !!this.sourceSlots.named.tabBarExtraContent);
         this.data.set('hasAddIcon', !!this.sourceSlots.named.addIcon);
+        this.data.set('ownerData', this.owner.data.get());
         this.tabPanes = [];
         this.data.set('ownerData', this.owner.data.get());
     },
@@ -81,16 +79,16 @@ const Tabs = san.defineComponent({
             return typeof animated === 'object' ? animated : {tabPane: animated, inkBar: animated};
         },
         props() {
-            const activeKey = this.data.get('activeKey');
+            const activeKey = this.data.get('__activeKey__');
             const tabBarGutter = this.data.get('tabBarGutter');
-            const tabBarPosition = this.data.get('tabBarPosition');
+            const tabPosition = this.data.get('tabPosition');
             const type = this.data.get('type');
             const size = this.data.get('size');
             const tabBarData = this.data.get('tabBarData');
             return {
                 activeKey,
                 tabBarGutter,
-                tabBarPosition,
+                tabPosition,
                 type,
                 size,
                 tabBarData
@@ -98,27 +96,28 @@ const Tabs = san.defineComponent({
         }
     },
     getNextActiveKey(next) {
-        const activeKey = this.data.get('activeKey');
-        const tabPanesLength = this.tabPanes.length;
-        let ret = tabPanesLength && this.tabPanes[0].data.get('key');
-        this.tabPanes.forEach((tabPane, index) => {
-            if (tabPane.data.get('key') === activeKey) {
-                let currentIndex = next ? ++index : --index;
-                if (currentIndex < 0) {
-                    currentIndex = 0;
-                }
-                if (currentIndex > tabPanesLength - 1) {
-                    currentIndex = tabPanesLength - 1;
-                }
-                ret = this.tabPanes[currentIndex].data.get('key');
+        const {__activeKey__, tabBarData} = this.data.get();
+        const arr = tabBarData.filter(item => !item.disabled);
+        const len = arr.length;
+        let ret = __activeKey__;
+        let currentIndex = arr.findIndex(item => item.key === __activeKey__);
+
+        if (currentIndex > -1) {
+            next ? ++currentIndex : --currentIndex;
+            if (currentIndex < 0) {
+                currentIndex = len - 1;
             }
-        });
+            if (currentIndex > len - 1) {
+                currentIndex = 0;
+            }
+
+            ret = arr[currentIndex].key;
+        }
         return ret;
     },
     handleTabClick(payload) {
-        this.setActiveKey(payload.key);
-        this.updateTab();
         this.fire('tabClick', payload.key);
+        this.setActiveKey(payload.key);
     },
     handleNavKeyDown(e) {
         if (!this.data.get('keyboard')) {
@@ -128,12 +127,12 @@ const Tabs = san.defineComponent({
         if (eventKeyCode === KeyCode.ARROW_RIGHT || eventKeyCode === KeyCode.ARROW_DOWN) {
             e.preventDefault();
             const nextKey = this.getNextActiveKey(true);
-            this.handleTabClick({key: nextKey});
+            this.setActiveKey(nextKey);
         }
         else if (eventKeyCode === KeyCode.ARROW_LEFT || eventKeyCode === KeyCode.ARROW_UP) {
             e.preventDefault();
             const previousKey = this.getNextActiveKey(false);
-            this.handleTabClick({key: previousKey});
+            this.setActiveKey(previousKey);
         }
     },
     handleCreateNewTab() {
@@ -153,17 +152,20 @@ const Tabs = san.defineComponent({
         });
     },
     setActiveKey(key) {
-        if (this.data.get('activeKey') !== key) {
-            this.data.set('activeKey', key);
+        const {activeKey, __activeKey__} = this.data.get();
+        const latestKey = activeKey || key;
+        if (__activeKey__ !== latestKey) {
+            this.data.set('__activeKey__', latestKey);
+            this.updateTab();
+            this.fire('change', latestKey);
         }
-        this.fire('change', key);
     },
     updateTab() {
-        const activeKey = this.data.get('activeKey');
+        const __activeKey__ = this.data.get('__activeKey__');
         let tabBarData = [];
         this.tabPanes.forEach(tabPane => {
             const key = tabPane.data.get('key');
-            tabPane.data.set('active', activeKey === key);
+            tabPane.data.set('active', __activeKey__ === key);
             tabBarData.push(tabPane.data.get());
         });
         this.data.set('tabBarData', tabBarData);
@@ -176,11 +178,9 @@ const Tabs = san.defineComponent({
                 this.updateTab();
             });
         });
+        this.watch('activeKey', val => this.setActiveKey(val));
     },
     messages: {
-        santd_tabs_tabClick(payload) {
-            this.handleTabClick(payload.value);
-        },
         santd_tabs_addTabPane(payload) {
             this.tabPanes.push(payload.value);
             this.updateTab();
@@ -211,10 +211,10 @@ const Tabs = san.defineComponent({
                 <s-tabbar
                     tabPanes="{{tabPanes}}"
                     tabBarData="{{tabBarData}}"
-                    activeKey="{{activeKey}}"
+                    activeKey="{{__activeKey__}}"
                     tabBarGutter="{{tabBarGutter}}"
                     tabBarStyle="{{tabBarStyle}}"
-                    tabBarPosition="{{tabPosition}}"
+                    tabPosition="{{tabPosition}}"
                     hasExtraContent="{{hasExtraContent}}"
                     hasAddIcon="{{hasAddIcon}}"
                     inkBarAnimated="{{hasAnimated.inkBar}}"
@@ -223,7 +223,6 @@ const Tabs = san.defineComponent({
                     on-createNewTab="handleCreateNewTab"
                     on-removeTab="handleRemoveTab"
                     type="{{type}}"
-                    closable="{{closable}}"
                     hideAdd="{{hideAdd}}"
                     size="{{size}}"
                     props="{{props}}"
@@ -237,10 +236,10 @@ const Tabs = san.defineComponent({
                 <s-tabbar
                     tabPanes="{{tabPanes}}"
                     tabBarData="{{tabBarData}}"
-                    activeKey="{{activeKey}}"
+                    activeKey="{{__activeKey__}}"
                     tabBarGutter="{{tabBarGutter}}"
                     tabBarStyle="{{tabBarStyle}}"
-                    tabBarPosition="{{tabPosition}}"
+                    tabPosition="{{tabPosition}}"
                     hasExtraContent="{{hasExtraContent}}"
                     hasAddIcon="{{hasAddIcon}}"
                     inkBarAnimated="{{hasAnimated.inkBar}}"
@@ -249,7 +248,6 @@ const Tabs = san.defineComponent({
                     on-createNewTab="handleCreateNewTab"
                     on-removeTab="handleRemoveTab"
                     type="{{type}}"
-                    closable="{{closable}}"
                     hideAdd="{{hideAdd}}"
                     size="{{size}}"
                     props="{{props}}"
