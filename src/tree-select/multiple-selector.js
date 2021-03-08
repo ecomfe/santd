@@ -12,7 +12,8 @@ export default san.defineComponent({
     dataTypes: {
         disabled: DataTypes.bool,
         maxTagCount: DataTypes.number,
-        maxTagPlaceholder: DataTypes.any
+        maxTagPlaceholder: DataTypes.any,
+        treeNodeLabelProp: DataTypes.string
     },
     components: {
         's-icon': Icon
@@ -29,10 +30,17 @@ export default san.defineComponent({
             let result;
             const maxTagCount = this.data.get('maxTagCount') || Number.MAX_VALUE;
             const maxTagPlaceholder = this.data.get('maxTagPlaceholder');
+            const treeNodeLabelProp = this.data.get('treeNodeLabelProp');
+            const diff = value.length - maxTagCount;
 
             result = value.filter((item, index) => index < maxTagCount);
 
-            value.length > maxTagCount && result.push({title: `+ ${value.length} ${maxTagPlaceholder || '...'}`});
+            if (diff > 0) {
+                const obj = {};
+                obj[treeNodeLabelProp] = `+ ${diff} ${maxTagPlaceholder || '...'}`;
+                result.push(obj);
+            }
+
             return result;
         }
     },
@@ -50,7 +58,7 @@ export default san.defineComponent({
         const list = this.data.get('multipleValue');
         if (list && list.length) {
             for (const item of list) {
-                if (!item.title && item.node.sourceSlots.named.title) {
+                if (!item.title && item.node && item.node.sourceSlots.named.title) {
                     this.sourceSlots.named[`title_${item.key}`] = item.node.sourceSlots.named.title;
                 }
             }
@@ -64,8 +72,8 @@ export default san.defineComponent({
                     style="user-select: none;"
                 >
                     <div class="{{mulClasses}}">
-                        <template s-if="value.title">
-                            {{value.title}}
+                        <template s-if="value[treeNodeLabelProp]">
+                            {{value[treeNodeLabelProp]}}
                         </template>
                         <slot s-else name="title_{{value.key}}" />
                     </div>

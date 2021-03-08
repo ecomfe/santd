@@ -123,7 +123,8 @@ export default san.defineComponent({
         treeDefaultExpandedKeys: DataTypes.array,
         treeExpandedKeys: DataTypes.array,
         value: DataTypes.oneOfType([DataTypes.string, DataTypes.array]),
-        replaceFields: DataTypes.object
+        replaceFields: DataTypes.object,
+        treeNodeLabelProp: DataTypes.string
     },
     components: {
         's-icon': Icon,
@@ -154,6 +155,7 @@ export default san.defineComponent({
             showValue: '',
             searchValue: '',
             activeKey: '',
+            treeNodeLabelProp: 'title',
             replaceFields: {children: 'children', title: 'title', key: 'key', value: 'value', label: 'label'}
         };
     },
@@ -248,15 +250,18 @@ export default san.defineComponent({
 
         if (value) {
             hiddenKeys = this.dataList.map(item => {
-                if (item.key.indexOf(value) === -1) {
+                const title = (item.title || '').toLowerCase();
+                if (title.indexOf(value.toLowerCase()) === -1) {
                     return item.key;
                 }
                 return null;
             }).filter(key => key);
 
+            // todo：兼容 treeNode.title 为 slot
             for (const item of this.dataList) {
                 const key = item.key;
-                if (key.indexOf(value) > -1) {
+                const title = (item.title || '').toLowerCase();
+                if (title.indexOf(value.toLowerCase()) > -1) {
                     filteredKeys.push(key);
                     const parentKey = getParentKey(key, this.treeData);
                     parentKey && expandedKeys.push(parentKey);
@@ -625,6 +630,7 @@ export default san.defineComponent({
                 multiple="{{multiple}}"
                 treeCheckable="{{treeCheckable}}"
                 popupVisible="{{visible}}"
+                treeNodeLabelProp="{{treeNodeLabelProp}}"
                 maxTagCount="{{maxTagCount}}"
                 maxTagPlaceholder="{{maxTagPlaceholder}}"
                 on-inputFocus="handleInputFocus"

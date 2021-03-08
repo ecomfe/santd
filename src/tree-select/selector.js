@@ -21,7 +21,8 @@ export default class Selector extends Component {
         treeCheckable: DataTypes.bool,
         popupVisible: DataTypes.bool,
         maxTagCount: DataTypes.number,
-        maxTagPlaceholder: DataTypes.any
+        maxTagPlaceholder: DataTypes.any,
+        treeNodeLabelProp: DataTypes.string
     };
 
     // eslint-disable-next-line
@@ -38,6 +39,7 @@ export default class Selector extends Component {
                 s-if="multiple || treeCheckable"
                 s-ref="multipleSelector"
                 value="{{selectedValue}}"
+                treeNodeLabelProp="{{treeNodeLabelProp}}"
                 maxTagCount="{{maxTagCount}}"
                 maxTagPlaceholder="{{maxTagPlaceholder}}"
                 on-removeValue="handleRemoveValue"
@@ -47,6 +49,7 @@ export default class Selector extends Component {
                 s-ref="singleSelector"
                 s-if="selectedValue.length"
                 value="{{selectedValue}}"
+                treeNodeLabelProp="{{treeNodeLabelProp}}"
                 inputValue="{{handledInputValue}}"
                 showSearch="{{showSearch}}"
                 popupVisible="{{popupVisible}}"

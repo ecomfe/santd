@@ -54,5 +54,5 @@
 | disabled        | 是否禁用                                           | boolean | false  |
 | isLeaf          | 设置为叶子节点                                     | boolean | false  |
 | key             | 此项必须设置（其值在整个树范围内唯一）             | string  | -      |
-| title           | 树节点显示的内容                                   | string\|slot        | - |
-| value           | 默认根据此属性值进行筛选（其值在整个树范围内唯一） | string  | -      |
+| title           | 树节点显示的内容，默认根据此属性值进行筛选          | string\|slot        | - |
+| value           | 其值在整个树范围内唯一 | string  | -      |

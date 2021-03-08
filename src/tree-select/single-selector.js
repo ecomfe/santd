@@ -12,7 +12,8 @@ export default san.defineComponent({
         value: DataTypes.array,
         inputValue: DataTypes.string,
         showSearch: DataTypes.bool,
-        popupVisible: DataTypes.bool
+        popupVisible: DataTypes.bool,
+        treeNodeLabelProp: DataTypes.string
     },
     template: `
         <div
@@ -20,8 +21,8 @@ export default san.defineComponent({
             style="opacity: {{popupVisible && showSearch ? '0.4' : '1'}}"
         >
             <template s-if="!inputValue">
-                <template s-if="value.length && value[0].title">
-                    {{value[0].title}}
+                <template s-if="value.length && value[0][treeNodeLabelProp]">
+                    {{value[0][treeNodeLabelProp]}}
                 </template>
                 <slot s-else />
             </template>
