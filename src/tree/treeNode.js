@@ -10,7 +10,7 @@ import Checkbox from '../checkbox';
 import {LINE_UNIT_OFFEST_V} from './commonConst';
 
 const prefixCls = classCreator('tree')();
-const prefixCls_v = prefixCls + '-virtual-list';
+const prefixClsV = prefixCls + '-virtual-list';
 const getComputedKeys = (targetKeys = [], key) => {
     let keysFlag = false;
     targetKeys.forEach(defKey => {
@@ -132,7 +132,7 @@ export default san.defineComponent({
         this.data.set('hasTitle', !!this.sourceSlots.named.title && this.data.get('hasTitle'));
         this.data.set('hasIcon', !!this.sourceSlots.named.icon);
         const treeData = this.data.get('treeData') || [];
-        this.data.set('hasChild', !!treeData.length || !!this.data.get('treeNodeData_v.children.length'));
+        this.data.set('hasChild', !!treeData.length || !!this.data.get('treeNodeDataV.children.length'));
 
         paramArr.forEach(param => this.data.set(param, this.parentComponent.data.get(param)));
 
@@ -153,13 +153,13 @@ export default san.defineComponent({
 
     updated() {
         // 更新 hasChild
-        this.data.get('treeNodeData_v')
-            && this.data.set('hasChild', !!this.data.get('treeNodeData_v.children.length'));
+        this.data.get('treeNodeDataV')
+            && this.data.set('hasChild', !!this.data.get('treeNodeDataV.children.length'));
         // 更新 expanded
         this.data.set(
             'expanded',
             this.data.get('isVirtual')
-                ? this.data.get('treeNodeData_v').expanded
+                ? this.data.get('treeNodeDataV').expanded
                 : getComputedKeys(this.data.get('expandedKeys'), this.data.get('key'))
         );
         // 每次父组件有数据更新就扔给子节点一份去更新
@@ -205,7 +205,7 @@ export default san.defineComponent({
             checked: e.target.checked,
             nativeEvent: e,
             node: this,
-            treeNodeData_v: this.data.get('treeNodeData_v')
+            treeNodeDataV: this.data.get('treeNodeDataV')
         });
     },
 
@@ -230,7 +230,7 @@ export default san.defineComponent({
             node: this,
             nativeEvent: e,
             expandedKeys,
-            treeIndex_v: this.data.get('treeIndex_v')
+            treeIndexV: this.data.get('treeIndexV')
         });
     },
 
@@ -244,11 +244,11 @@ export default san.defineComponent({
         <li
             class="{{classes}}"
             treeNodeLabelProp="{{treeNodeLabelProp}}"
-            style="{{'margin-left: ' + (treeNodeData_v.isEnd.length - 1) * LINE_UNIT_OFFEST_V + 'px'}}">
+            style="{{'margin-left: ' + (treeNodeDataV.isEnd.length - 1) * LINE_UNIT_OFFEST_V + 'px'}}">
             <div
                 s-if="showLine && isVirtual"
-                class="${prefixCls_v}-line
-                ${prefixCls_v}-{{treeNodeData_v.isEnd[treeNodeData_v.isEnd.length - 1] ? 'end' : ''}}-line"
+                class="${prefixClsV}-line
+                ${prefixClsV}-{{treeNodeDataV.isEnd[treeNodeDataV.isEnd.length - 1] ? 'end' : ''}}-line"
                 style="{{'height: ' + height + 'px'}}">
             </div>
             <span

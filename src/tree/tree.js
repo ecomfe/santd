@@ -12,7 +12,7 @@ import treeNode from './treeNode';
 import {LINE_UNIT_OFFEST_V} from './commonConst';
 
 const prefixCls = classCreator('tree')();
-const prefixCls_v = prefixCls + '-virtual-list';
+const prefixClsV = prefixCls + '-virtual-list';
 const NODE_HEIGHT_V = 32;
 const SCROLL_STATUS_DELAY_V = 500;
 const LINE_BASIC_OFFEST_V = 12;
@@ -29,12 +29,12 @@ export function traverseNodesKey(root = [], callback) {
     root.forEach(processNode);
 }
 
-function traverseNodesKey_v(root = [], callback) {
+function traverseNodesKeyV(root = [], callback) {
     function processNode(node) {
         const key = node.key;
 
         if (callback(key, node) !== false) {
-            traverseNodesKey_v(node.children, callback);
+            traverseNodesKeyV(node.children, callback);
         }
     }
 
@@ -51,7 +51,7 @@ function toggleArrayData(check, data = [], key) {
     return data;
 }
 
-function checkNodeExpanded_v(node) {
+function checkNodeExpandedV(node) {
     // 如果一个节点的父节点是收起的，那这个节点也是收起的
     let isExpanded = true;
     let parent = node.parent;
@@ -109,34 +109,34 @@ export default san.defineComponent({
             return this.data.get('height') && this.data.get('virtual');
         },
         // 虚拟滚动中，展开的节点的列表
-        expandedNodes_v() {
+        expandedNodesV() {
             const flatNodes = this.data.get('flatNodes');
-            return flatNodes && flatNodes.filter(node => checkNodeExpanded_v(node));
+            return flatNodes && flatNodes.filter(node => checkNodeExpandedV(node));
         },
         // 虚拟滚动中，渲染的节点的数量
-        visibleCount_v() {
+        visibleCountV() {
             return Math.ceil(this.data.get('height') / NODE_HEIGHT_V);
         },
         // 虚拟滚动中，渲染的节点的信息
-        visibleNode_v() {
-            const expandedNodes_v = this.data.get('expandedNodes_v');
-            return expandedNodes_v && expandedNodes_v.slice(
-                this.data.get('start_v'),
-                Math.min(this.data.get('end_v'), expandedNodes_v.length)
+        visibleNodeV() {
+            const expandedNodesV = this.data.get('expandedNodesV');
+            return expandedNodesV && expandedNodesV.slice(
+                this.data.get('startV'),
+                Math.min(this.data.get('endV'), expandedNodesV.length)
             );
         },
         // 虚拟滚动中，列表的总高度
-        listHeight_v() {
-            const expandedNodes_v = this.data.get('expandedNodes_v');
-            return expandedNodes_v && (expandedNodes_v.length * NODE_HEIGHT_V);
+        listHeightV() {
+            const expandedNodesV = this.data.get('expandedNodesV');
+            return expandedNodesV && (expandedNodesV.length * NODE_HEIGHT_V);
         },
         // 虚拟滚动中，渲染的节点的偏移量
-        translate_v() {
-            return `transform: translate3d(0, ${this.data.get('startOffset_v')}px, 0)`;
+        translateV() {
+            return `transform: translate3d(0, ${this.data.get('startOffsetV')}px, 0)`;
         },
         // 虚拟滚动中，渲染的最后一个节点的索引
-        end_v() {
-            return this.data.get('start_v') + this.data.get('visibleCount_v');
+        endV() {
+            return this.data.get('startV') + this.data.get('visibleCountV');
         }
     },
     initData() {
@@ -150,9 +150,9 @@ export default san.defineComponent({
             allHalfCheckedKeys: [],
             checkStrictly: false,
             // 虚拟滚动中，渲染的第一个节点的索引
-            start_v: 0,
+            startV: 0,
             // 虚拟滚动中，渲染的节点的偏移量
-            startOffset_v: 0,
+            startOffsetV: 0,
             // 虚拟滚动中，连接线的数量（数组的长度即数量，用数组表示是为了方便在模板中遍历）
             virtual: true,
             LINE_BASIC_OFFEST_V,
@@ -241,10 +241,10 @@ export default san.defineComponent({
             checkedKey = checkedKeys.shift();
 
             if (!allKeys.checkedKeys.includes(checkedKey)) {
-                const treeNodeData_v = this.data.get('isVirtual')
+                const treeNodeDataV = this.data.get('isVirtual')
                     && this.data.get('flatNodes').find(node => node.key === checkedKey);
                 let keys = this.getChangedCheckedKeys(
-                    treeNodes, checkedKey, true, [], [], checkStrictly, treeNodeData_v
+                    treeNodes, checkedKey, true, [], [], checkStrictly, treeNodeDataV
                 );
                 // 这里需要对数据进行去重
                 allKeys.checkedKeys = Array.from(new Set(allKeys.checkedKeys.concat(keys.checkedKeys)));
@@ -266,7 +266,7 @@ export default san.defineComponent({
     },
 
     getChangedCheckedKeys(
-        treeNodes, key, isCheck, checkedKeys = [], halfCheckedKeys = [], checkStrictly, treeNodeData_v
+        treeNodes, key, isCheck, checkedKeys = [], halfCheckedKeys = [], checkStrictly, treeNodeDataV
     ) {
         let checkedNodes = this.getCheckedNodes(this.treeNodes, [key]);
         checkedNodes.forEach(node => {
@@ -303,7 +303,7 @@ export default san.defineComponent({
                         return !disabled;
                     });
                 } else {
-                    let parent = treeNodeData_v.parent;
+                    let parent = treeNodeDataV.parent;
                     while (parent && !parent.disabled) {
                         let treeNodes = parent.children.filter(node => !this.data.get('disabled') && !node.disabled);
                         const parentKey = parent.key;
@@ -319,9 +319,9 @@ export default san.defineComponent({
                         halfCheckedKeys = toggleArrayData(halfChecked, halfCheckedKeys, parentKey);
                         parent = parent.parent;
                     }
-                    if (treeNodeData_v.children && treeNodeData_v.children.length) {
+                    if (treeNodeDataV.children && treeNodeDataV.children.length) {
                         const disabled = this.data.get('disabled') || node.disabled;
-                        !disabled && traverseNodesKey_v(treeNodeData_v.children, (key, node) => {
+                        !disabled && traverseNodesKeyV(treeNodeDataV.children, (key, node) => {
                             const disabled = node.disabled;
                             if (!disabled) {
                                 checkedKeys = toggleArrayData(isCheck, checkedKeys, key);
@@ -394,22 +394,22 @@ export default san.defineComponent({
         return expandComponents;
     },
 
-    scrollEvent_v() {
-        this.data.set('isScrolling_v', true);
+    scrollEventV() {
+        this.data.set('isScrollingV', true);
 
         // 虚拟滚动中，当前的滚动位置
-        const scrollTop = this.ref(`${prefixCls_v}-container`).scrollTop;
+        const scrollTop = this.ref(`${prefixClsV}-container`).scrollTop;
 
-        this.data.set('start_v', Math.floor(scrollTop / NODE_HEIGHT_V));
+        this.data.set('startV', Math.floor(scrollTop / NODE_HEIGHT_V));
 
         // 虚拟滚动中，渲染的节点的偏移量
-        this.data.set('startOffset_v', scrollTop - (scrollTop % NODE_HEIGHT_V));
+        this.data.set('startOffsetV', scrollTop - (scrollTop % NODE_HEIGHT_V));
 
-        if (this.scrollTimeoutID_v) {
-            clearTimeout(this.scrollTimeoutID_v);
+        if (this.scrollTimeoutIDV) {
+            clearTimeout(this.scrollTimeoutIDV);
         }
-        this.scrollTimeoutID_v = setTimeout(() => {
-            this.data.set('isScrolling_v', false);
+        this.scrollTimeoutIDV = setTimeout(() => {
+            this.data.set('isScrollingV', false);
         }, SCROLL_STATUS_DELAY_V);
     },
 
@@ -462,7 +462,7 @@ export default san.defineComponent({
 
         dig(treeData);
 
-        this.data.set('lineCount_v', new Array(treeDepth - 1));
+        this.data.set('lineCountV', new Array(treeDepth - 1));
 
         return flatNodes;
     },
@@ -496,7 +496,7 @@ export default san.defineComponent({
             let checkedKeys = this.data.get('allCheckedKeys');
             let halfCheckedKeys = checkStrictly ? [] : this.data.get('allHalfCheckedKeys');
             let allKeys = this.getChangedCheckedKeys(
-                this.treeNodes, key, checked, checkedKeys, halfCheckedKeys, checkStrictly, info.treeNodeData_v
+                this.treeNodes, key, checked, checkedKeys, halfCheckedKeys, checkStrictly, info.treeNodeDataV
             );
 
             checkedKeys = allKeys.checkedKeys;
@@ -513,7 +513,7 @@ export default san.defineComponent({
         santd_tree_expandTreeNode(payload) {
             if (this.data.get('isVirtual')) {
                 const flatNodesCopy = Array.from(this.data.get('flatNodes'));
-                flatNodesCopy[payload.value.treeIndex_v].expanded = !payload.value.expanded;
+                flatNodesCopy[payload.value.treeIndexV].expanded = !payload.value.expanded;
                 this.data.set('flatNodes', flatNodesCopy);
             }
             let expandedKeys = payload.value.expandedKeys;
@@ -567,26 +567,26 @@ export default san.defineComponent({
             <slot s-else />
         </ul>
         <div s-else
-            class="${prefixCls_v}-container"
+            class="${prefixClsV}-container"
             style="height: {{height}}px;"
-            on-scroll="scrollEvent_v"
-            s-ref="${prefixCls_v}-container">
-            <div class="${prefixCls_v}-phantom" style="height: {{listHeight_v}}px;"></div>
-            <fragment s-if="showLine" s-for="item, index in lineCount_v">
-                <div class="${prefixCls_v}-extra-line"
+            on-scroll="scrollEventV"
+            s-ref="${prefixClsV}-container">
+            <div class="${prefixClsV}-phantom" style="height: {{listHeightV}}px;"></div>
+            <fragment s-if="showLine" s-for="item, index in lineCountV">
+                <div class="${prefixClsV}-extra-line"
                     style="
-                        {{'height: ' + listHeight_v + 'px;'}}
+                        {{'height: ' + listHeightV + 'px;'}}
                         {{'left: ' + (index * LINE_UNIT_OFFEST_V + LINE_BASIC_OFFEST_V) + 'px;'}}
                     "
-                    s-if="!visibleNode_v[0].isEnd[index]"></div>
+                    s-if="!visibleNodeV[0].isEnd[index]"></div>
             </fragment>
             <ul
-                class="{{classes}} ${prefixCls_v} ${prefixCls_v}-{{isScrolling_v ? 'scrolling' : ''}}"
+                class="{{classes}} ${prefixClsV} ${prefixClsV}-{{isScrollingV ? 'scrolling' : ''}}"
                 unselectable="on"
                 role="tree"
-                style="{{translate_v}}">
+                style="{{translateV}}">
                 <s-tree-node
-                    s-for="tree, index in visibleNode_v"
+                    s-for="tree, index in visibleNodeV"
                     selectedKeys="{{selectedKeys}}"
                     expandedKeys="{{expandedKeys}}"
                     allCheckedKeys="{{allCheckedKeys}}"
@@ -603,10 +603,10 @@ export default san.defineComponent({
                     selectable="{{rootSelectable && tree.selectable === undefined || tree.selectable)}}"
                     loadData="{{loadData}}"
                     hasTitle="{{hasTitle}}"
-                    treeIndex_v="{{tree.index}}"
+                    treeIndexV="{{tree.index}}"
                     height="{{height}}"
                     isVirtual="{{isVirtual}}"
-                    treeNodeData_v="{{tree}}"
+                    treeNodeDataV="{{tree}}"
                 >
                 </s-tree-node>
             </ul>
