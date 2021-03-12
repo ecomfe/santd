@@ -7,8 +7,10 @@ import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
 import Icon from '../icon';
 import Checkbox from '../checkbox';
-const prefixCls = classCreator('tree')();
+import {LINE_UNIT_OFFEST_V} from './commonConst';
 
+const prefixCls = classCreator('tree')();
+const prefixCls_v = prefixCls + '-virtual-list';
 const getComputedKeys = (targetKeys = [], key) => {
     let keysFlag = false;
     targetKeys.forEach(defKey => {
@@ -58,17 +60,14 @@ export default san.defineComponent({
             disabled: false,
             loading: false,
             hasTitle: true,
-            treeNodeLabelProp: 'title'
+            treeNodeLabelProp: 'title',
+            LINE_UNIT_OFFEST_V
         };
     },
 
     computed: {
         selected() {
             return getComputedKeys(this.data.get('selectedKeys'), this.data.get('key'));
-        },
-
-        expanded() {
-            return getComputedKeys(this.data.get('expandedKeys'), this.data.get('key')) || this.data.get('showExpand');
         },
 
         checked() {
@@ -84,11 +83,14 @@ export default san.defineComponent({
             const disabled = this.data.get('rootDisabled') || this.data.get('disabled');
             const checked = this.data.get('checked');
             const selected = this.data.get('selected');
+            const isVirtual = this.data.get('isVirtual');
 
             let classArr = [`${prefixCls}-treenode-switcher-${expanded ? 'open' : 'close'}`];
             disabled && classArr.push(`${prefixCls}-treenode-disabled`);
             checked && classArr.push(`${prefixCls}-treenode-checkbox-checked`);
             selected && !disabled && classArr.push(`${prefixCls}-treenode-selected`);
+            !isVirtual && classArr.push(`${prefixCls}-not-virtual`);
+
             return classArr;
         },
 
@@ -130,7 +132,7 @@ export default san.defineComponent({
         this.data.set('hasTitle', !!this.sourceSlots.named.title && this.data.get('hasTitle'));
         this.data.set('hasIcon', !!this.sourceSlots.named.icon);
         const treeData = this.data.get('treeData') || [];
-        this.data.set('hasChild', !!treeData.length);
+        this.data.set('hasChild', !!treeData.length || !!this.data.get('treeNodeData_v.children.length'));
 
         paramArr.forEach(param => this.data.set(param, this.parentComponent.data.get(param)));
 
@@ -150,6 +152,16 @@ export default san.defineComponent({
     },
 
     updated() {
+        // 更新 hasChild
+        this.data.get('treeNodeData_v')
+            && this.data.set('hasChild', !!this.data.get('treeNodeData_v.children.length'));
+        // 更新 expanded
+        this.data.set(
+            'expanded',
+            this.data.get('isVirtual')
+                ? this.data.get('treeNodeData_v').expanded
+                : getComputedKeys(this.data.get('expandedKeys'), this.data.get('key'))
+        );
         // 每次父组件有数据更新就扔给子节点一份去更新
         this.treeNodes.forEach(node => {
             paramArr.forEach(param => {
@@ -192,7 +204,8 @@ export default san.defineComponent({
             event: 'check',
             checked: e.target.checked,
             nativeEvent: e,
-            node: this
+            node: this,
+            treeNodeData_v: this.data.get('treeNodeData_v')
         });
     },
 
@@ -205,7 +218,7 @@ export default san.defineComponent({
             this.data.set('loading', true);
             loadData(this);
         }
-        let expandedKeys = this.data.get('expandedKeys').concat();
+        let expandedKeys = Array.from(new Set(this.data.get('expandedKeys')));
         const index = expandedKeys.indexOf(key);
 
         index > -1 && expandedKeys.splice(index, 1);
@@ -216,7 +229,8 @@ export default san.defineComponent({
             expanded: this.data.get('expanded'),
             node: this,
             nativeEvent: e,
-            expandedKeys
+            expandedKeys,
+            treeIndex_v: this.data.get('treeIndex_v')
         });
     },
 
@@ -227,9 +241,21 @@ export default san.defineComponent({
     },
 
     template: `
-        <li class="{{classes}}" treeNodeLabelProp="{{treeNodeLabelProp}}">
+        <li
+            class="{{classes}}"
+            treeNodeLabelProp="{{treeNodeLabelProp}}"
+            style="{{'margin-left: ' + (treeNodeData_v.isEnd.length - 1) * LINE_UNIT_OFFEST_V + 'px'}}">
+            <div
+                s-if="showLine && isVirtual"
+                class="${prefixCls_v}-line
+                ${prefixCls_v}-{{treeNodeData_v.isEnd[treeNodeData_v.isEnd.length - 1] ? 'end' : ''}}-line"
+                style="{{'height: ' + height + 'px'}}">
+            </div>
             <span
-                class="${prefixCls}-switcher ${prefixCls}-switcher_{{showExpandIcon ? expanded ? 'open' : 'close' : 'noop'}}"
+                class="
+                    ${prefixCls}-switcher
+                    ${prefixCls}-switcher_{{showExpandIcon ? (expanded ? 'open' : 'close') : 'noop'}}
+                "
                 on-click="handleNodeExpand"
             >
                 <span class="${prefixCls}-switcher-{{showLine ? 'line-icon' : 'icon'}}" s-if="hasSwitcherIcon && showExpandIcon">

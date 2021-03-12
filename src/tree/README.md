@@ -15,6 +15,7 @@
 | defaultSelectedKeys | 默认选中的树节点                                                                                                                | string[]                                                                                         | []     |
 | disabled            | 将树禁用                                                                                                                        | boolean                                                                                          | false  |
 | expandedKeys        | （受控）展开指定的树节点                                                                                                        | string[]                                                                                         | []     |
+| height        | 设置虚拟滚动容器高度                                                                                                        | number                                                                                         | -     |
 | loadData            | 异步加载数据                                                                                                                    | function(node)                                                                                   | -      |
 | multiple            | 支持点选多个节点（节点本身）                                                                                                    | boolean                                                                                          | false  |
 | selectable          | 是否可选中                                                                                                                      | boolean                                                                                          | true   |
@@ -22,11 +23,12 @@
 | showIcon            | 是否展示 TreeNode title 前的图标，没有默认样式，如设置为 true，需要自行定义图标相关样式                                         | boolean                                                                                          | false  |
 | switcherIcon        | 自定义树节点的展开/折叠图标                                                                                                     | slot                                                                                             | -      |
 | showLine            | 是否展示连接线                                                                                                                  | boolean                                                                                          | false  |
+| treeData            | 节点的配置描述, 如果设置则不需要手动构造 TreeNode 节点（key 在整个树范围内唯一），具体项与 TreeNode props 一致，可见下表                                                                            | array<{key, title, children, [disabled, selectable]}>                                                                                            | -     |
+| virtual            | 设置 false 时关闭虚拟滚动                                                                            | boolean                                                                                            | true     |
 | on-load             | 节点加载完毕时触发                                                                                                              | function({loadedKeys, info: {event, node}})                                                      | -      |
 | on-check            | 点击复选框触发                                                                                                                  | function({checkedKeys, info: {checked, checkedKeys, node, event, nativeEvent, halfCheckedKeys}}) | -      |
 | on-expand           | 展开/收起节点时触发                                                                                                             | function({expandedKeys, info: {expanded, node}})                                                 | -      |
 | on-select           | 点击树节点触发                                                                                                                  | function({selectedKeys, info: {selected, selectedKeys, node, event}})                            | -      |
-| treeData            | 节点的配置描述, 具体项与TreeNode props一致，可见下表                                                                            | array                                                                                            | --     |
 
 ### TreeNode props
 
