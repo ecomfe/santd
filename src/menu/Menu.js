@@ -7,7 +7,7 @@ import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
 import './style/index.less';
 import {getOffset, on, off} from '../core/util/dom';
-import SubMenu from './subMenu';
+import SubMenu from './SubMenu';
 import Icon from '../icon';
 import {MENU_FOLDED_ITEM_ID} from '../core/constants';
 import throttle from 'lodash/throttle';

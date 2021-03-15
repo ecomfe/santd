@@ -5,7 +5,7 @@
 
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
-import Checkbox from './checkbox';
+import Checkbox from './Checkbox';
 
 const prefixCls = classCreator('checkbox')();
 

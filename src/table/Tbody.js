@@ -4,7 +4,7 @@
  **/
 
 import {classCreator} from '../core/util';
-import Td from './td';
+import Td from './Td';
 const prefixCls = classCreator('table')();
 
 export default {

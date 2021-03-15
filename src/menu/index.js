@@ -2,11 +2,11 @@
 * @file menu入口文件
 * @author fuqiangqiang@baidu.com
 */
-import Menu from './menu';
-import MenuSub from './subMenu';
-import MenuItem from './menuItem';
-import MenuItemGroup from './menuItemGroup';
-import MenuDivider from './divider';
+import Menu from './Menu';
+import MenuSub from './SubMenu';
+import MenuItem from './MenuItem';
+import MenuItemGroup from './MenuItemGroup';
+import MenuDivider from './Divider';
 
 Menu.Sub = MenuSub;
 Menu.Item = MenuItem;

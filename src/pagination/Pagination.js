@@ -5,8 +5,8 @@
 import san, {DataTypes} from 'san';
 import Input from '../input';
 import KEYCODE from '../core/util/keyCode';
-import Pager from './pager';
-import Options from './options';
+import Pager from './Pager';
+import Options from './Options';
 
 const prevTemplate = `
     <li

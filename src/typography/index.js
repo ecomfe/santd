@@ -4,8 +4,8 @@
  */
 
 import san from 'san';
-import Base from './base';
-import Title from './title';
+import Base from './Base';
+import Title from './Title';
 import {classCreator} from '../core/util';
 
 const prefixCls = classCreator('typography')();

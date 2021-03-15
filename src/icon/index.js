@@ -6,8 +6,8 @@ import san, {DataTypes} from 'san';
 import './style/index.less';
 import * as allIcons from '@ant-design/icons-svg';
 import {classCreator} from '../core/util';
-import sanicon from './icon';
-import iconFont from './iconfont';
+import sanicon from './Icon';
+import iconFont from './Iconfont';
 import {svgBaseProps, withThemeSuffix, removeTypeTheme, alias} from './utils';
 import {getTwoToneColor, setTwoToneColor} from './twoTonePrimaryColor';
 

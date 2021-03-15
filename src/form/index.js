@@ -3,8 +3,8 @@
  * @author fuqiangqiang <fuqiangqiang@baidu.com>
  */
 
-import Form from './form';
-import FormItem from './formItem';
+import Form from './Form';
+import FormItem from './FormItem';
 
 Form.FormItem = FormItem;
 

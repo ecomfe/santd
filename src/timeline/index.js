@@ -3,8 +3,8 @@
  * @author chenkai13 <chenkai13@baidu.com>
  */
 
-import Timeline from './timeline';
-import Item from './item';
+import Timeline from './Timeline';
+import Item from './Item';
 
 Timeline.Item = Item;
 

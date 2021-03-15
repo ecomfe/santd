@@ -4,7 +4,7 @@
  **/
 
 import san, {DataTypes} from 'san';
-import Select from './select';
+import Select from './Select';
 
 const formatOption = (option, disabledOptions) => {
     let value = `${option}`;

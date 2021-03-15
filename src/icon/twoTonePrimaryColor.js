@@ -3,7 +3,7 @@
  * @author mayihui@baidu.com
  **/
 
-import icon from './icon';
+import icon from './Icon';
 
 export function setTwoToneColor(primaryColor) {
     return icon.setTwoToneColors({

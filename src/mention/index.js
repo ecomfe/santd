@@ -1,8 +1,8 @@
 /**
  * @file Santd metion component file
  **/
-import Mention from './mention';
-import Nav from './nav';
+import Mention from './Mention';
+import Nav from './Nav';
 
 Mention.Nav = Nav;
 export default Mention;

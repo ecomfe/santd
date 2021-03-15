@@ -3,9 +3,9 @@
  * @author chenkai13 <chenkai13@baidu.com>
  */
 
-import Card from './card';
-import Meta from './meta';
-import Grid from './grid';
+import Card from './Card';
+import Meta from './Meta';
+import Grid from './Grid';
 
 Card.Meta = Meta;
 Card.Grid = Grid;

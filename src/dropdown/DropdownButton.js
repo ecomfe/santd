@@ -3,7 +3,7 @@
 * @author fuqiangqiang@baidu.com
 */
 import san, {DataTypes} from 'san';
-import Dropdown from './dropdown';
+import Dropdown from './Dropdown';
 import {classCreator} from '../core/util';
 import Icon from '../icon';
 import Button from '../button';

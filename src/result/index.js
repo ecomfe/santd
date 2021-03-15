@@ -7,9 +7,9 @@ import './style/index.less';
 import san, {DataTypes} from 'san';
 import Icon from '../icon';
 import {classCreator} from '../core/util';
-import noFound from './noFound';
-import serverError from './serverError';
-import unauthorized from './unauthorized';
+import noFound from './NoFound';
+import serverError from './ServerError';
+import unauthorized from './Unauthorized';
 const prefixCls = classCreator('result')();
 
 export const IconMap = {

@@ -6,7 +6,7 @@
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
 import './style/index.less';
-import BaseInput from './base';
+import BaseInput from './Base';
 import Icon from '../icon';
 const prefixCls = classCreator('input')();
 

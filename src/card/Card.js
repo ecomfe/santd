@@ -6,7 +6,7 @@
 import './style/index.less';
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
-import LoadingBlock from './loadingBlock';
+import LoadingBlock from './LoadingBlock';
 import Tabs from '../tabs';
 
 const prefix = classCreator('card')();

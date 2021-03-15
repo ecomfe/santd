@@ -8,7 +8,7 @@ import without from 'lodash/without';
 import isPlainObject from 'lodash/isPlainObject';
 import {classCreator} from '../core/util';
 import './style/index';
-import treeNode from './treeNode';
+import treeNode from './TreeNode';
 import {LINE_UNIT_OFFEST_V} from './commonConst';
 
 const prefixCls = classCreator('tree')();

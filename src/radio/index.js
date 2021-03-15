@@ -3,9 +3,9 @@
  * @author chenkai13 <chenkai13@baidu.com>
  */
 
-import Radio from './radio';
-import Group from './group';
-import Button from './radioButton';
+import Radio from './Radio';
+import Group from './Group';
+import Button from './RadioButton';
 
 Radio.Group = Group;
 Radio.Button = Button;
