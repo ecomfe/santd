@@ -9,7 +9,7 @@ import {classCreator} from '../core/util';
 import Trigger from '../core/trigger';
 import Placement from './placements';
 import moment from 'moment';
-import Panel from './panel';
+import Panel from './Panel';
 import Icon from '../icon';
 import localeReceiver from '../localeprovider/receiver';
 

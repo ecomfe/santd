@@ -5,9 +5,9 @@
 
 import {Component, DataTypes} from 'san';
 import {classCreator} from '../core/util';
-import Input from './input';
-import SingleSelector from './single-selector';
-import MultipleSelector from './multiple-selector';
+import Input from './Input';
+import SingleSelector from './SingleSelector';
+import MultipleSelector from './MultipleSelector';
 const prefixCls = classCreator('select')();
 
 export default class Selector extends Component {

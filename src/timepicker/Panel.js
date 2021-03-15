@@ -5,8 +5,8 @@
 
 import san from 'san';
 import moment from 'moment';
-import Header from './header';
-import ComboBox from './combobox';
+import Header from './Header';
+import ComboBox from './Combobox';
 
 function generateOptions(length, disabledOptions, hideDisabledOptions, step = 1) {
     const arr = [];

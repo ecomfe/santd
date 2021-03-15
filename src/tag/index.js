@@ -4,7 +4,7 @@
  */
 
 import san, {DataTypes} from 'san';
-import CheckableTag from './checkableTag';
+import CheckableTag from './CheckableTag';
 import {classCreator} from '../core/util';
 import Wave from '../core/util/wave';
 import Icon from '../icon';

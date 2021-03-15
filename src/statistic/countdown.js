@@ -5,7 +5,7 @@
 
 import './style/index.less';
 import san from 'san';
-import Statistic from './statistic';
+import Statistic from './Statistic';
 import moment from 'moment';
 
 const timeUnits = [

@@ -6,7 +6,7 @@
 import './style/index.less';
 import san from 'san';
 import {classCreator} from '../core/util';
-import base from './base';
+import base from './Base';
 
 const prefixCls = classCreator('typography')();
 

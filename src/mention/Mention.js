@@ -5,8 +5,8 @@
 
 import './style/index.less';
 import san, {DataTypes} from 'san';
-import PlaceHolder from './placeHolder';
-import Suggestions from './suggestions';
+import PlaceHolder from './PlaceHolder';
+import Suggestions from './Suggestions';
 import {getRegExp, insertString, setCursorPosition, getSearchWordPos} from './utils/index';
 import {classCreator} from '../core/util';
 

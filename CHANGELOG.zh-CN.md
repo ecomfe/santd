@@ -22,7 +22,7 @@
     - 💄 子菜单统一为垂直菜单。[#29](https://github.com/ecomfe/santd/pull/29)
     - 🐞 修复展开收起箭头某些情况下会遮盖文字的问题。[#29](https://github.com/ecomfe/santd/pull/29)
 - Select
-    - 🛠 默认根据 value 筛选改为默认同时根据 value 和内嵌内容筛选。[34](https://github.com/ecomfe/santd/pull/34)
+    - 🌟 默认根据 value 筛选改为默认同时根据 value 和内嵌内容筛选。[34](https://github.com/ecomfe/santd/pull/34)
 - Space
     - 🆕 新增 Space 组件：设置组件之间的间距。[#25](https://github.com/ecomfe/santd/pull/25)
 - Tabs
@@ -34,6 +34,9 @@
 - TreeSelect
     - 🆕 新增 showSearch 属性：支持搜索框。[#33](https://github.com/ecomfe/santd/pull/33)
     - 🆕 新增 searchValue 属性：手动控制搜索框的值。[#33](https://github.com/ecomfe/santd/pull/33)
+- 其它
+    - 🌟 使用内部实现用到 s-show 的组件要求 San 版本至少 3.9.3。[#29](https://github.com/ecomfe/santd/pull/29)
+    - 🛠 组件文件的命名统一为帕斯卡命名法。[#37](https://github.com/ecomfe/santd/pull/37)
 
 ## 0.2.9
 `2020-10-10`

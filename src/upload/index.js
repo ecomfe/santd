@@ -4,8 +4,8 @@
  */
 
 
-import Upload from './upload';
-import Dragger from './dragger';
+import Upload from './Upload';
+import Dragger from './Dragger';
 import './style/index';
 
 Upload.Dragger = Dragger;

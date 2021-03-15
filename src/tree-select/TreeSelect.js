@@ -7,7 +7,7 @@ import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
 import Icon from '../icon';
 import Tree from '../tree';
-import Selector from './selector';
+import Selector from './Selector';
 import Dropdown from '../dropdown';
 import Empty from '../empty';
 import './style/index';

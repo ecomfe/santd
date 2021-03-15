@@ -3,8 +3,8 @@
  * @author mayihui@baidu.com
  **/
 
-import Anchor from './anchor';
-import Link from './link';
+import Anchor from './Anchor';
+import Link from './Link';
 
 Anchor.Link = Link;
 

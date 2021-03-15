@@ -6,7 +6,7 @@
 import './style/index.less';
 import san, {DataTypes} from 'san';
 import Icon from '../icon';
-import Nav from './nav';
+import Nav from './Nav';
 import {classCreator} from '../core/util';
 
 const prefixCls = classCreator('suggestions')();

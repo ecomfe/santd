@@ -5,8 +5,8 @@
 
 import san from 'san';
 import Icon from '../icon';
-import ScrollableTabBarNode from './scrollableTabBarNode';
-import TabBarTabsNode from './tabBarTabsNode';
+import ScrollableTabBarNode from './ScrollableTabBarNode';
+import TabBarTabsNode from './TabBarTabsNode';
 import {
     isTransform3dSupported,
     getLeft,

@@ -4,12 +4,12 @@
  */
 
 import './style/index';
-import Calendar from '../calendar/src/calendar';
-import MonthCalendar from '../calendar/src/monthCalendar';
-import RangePicker from './rangePicker';
-import createPicker from './createPicker';
+import Calendar from '../calendar/src/Calendar';
+import MonthCalendar from '../calendar/src/MonthCalendar';
+import RangePicker from './RangePicker';
+import createPicker from './CreatePicker';
 import wrapPicker from './wrapPicker';
-import WeekPicker from './weekPicker';
+import WeekPicker from './WeekPicker';
 
 const DatePicker = wrapPicker(createPicker(Calendar), 'date');
 

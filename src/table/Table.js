@@ -15,8 +15,8 @@ import Menu from '../menu';
 import Radio from '../radio';
 import Checkbox from '../checkbox';
 import Button from '../button';
-import Tbody from './tbody';
-import Thead from './thead';
+import Tbody from './Tbody';
+import Thead from './Thead';
 import Tooltip from '../tooltip';
 import './style/index';
 

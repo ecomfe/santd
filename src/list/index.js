@@ -8,7 +8,7 @@ import {classCreator} from '../core/util';
 import Spin from '../spin';
 import Pagination from '../pagination';
 import Grid from '../grid';
-import Item from './item';
+import Item from './Item';
 
 import './style/index';
 

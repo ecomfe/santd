@@ -4,10 +4,10 @@
  **/
 
 import san, {DataTypes} from 'san';
-import TabPane from './tabPane';
+import TabPane from './TabPane';
 import KeyCode from '../core/util/keyCode';
 import {classCreator} from '../core/util';
-import ScrollableInkTabBar from './scrollableInkTabBar';
+import ScrollableInkTabBar from './ScrollableInkTabBar';
 
 import './style/index';
 

@@ -6,7 +6,7 @@
 import './style/index.less';
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
-import Item from './item';
+import Item from './Item';
 import Icon from '../icon';
 
 const prefixCls = classCreator('timeline')();

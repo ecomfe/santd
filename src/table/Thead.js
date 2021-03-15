@@ -4,7 +4,7 @@
  **/
 
 import {classCreator} from '../core/util';
-import Th from './th';
+import Th from './Th';
 const prefixCls = classCreator('table')();
 const dropdownPrefixCls = classCreator('dropdown')();
 

@@ -5,7 +5,7 @@
 
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
-import BreadcrumbItem from './item';
+import BreadcrumbItem from './Item';
 import './style/index';
 const prefixCls = classCreator('breadcrumb')();
 

@@ -2,11 +2,11 @@
 * @file input 入口文件
 */
 
-import Input from './input';
-import Search from './input-search';
-import TextArea from './textarea';
-import Group from './group';
-import Password from './input-password';
+import Input from './Input';
+import Search from './InputSearch';
+import TextArea from './Textarea';
+import Group from './Group';
+import Password from './InputPassword';
 
 Input.Search = Search;
 Input.TextArea = TextArea;
