@@ -23,14 +23,14 @@ export default san.defineComponent({
     },
     initData() {
         return {
-            tabBarPosition: 'top',
+            tabPosition: 'top',
             inkBarAnimated: true,
             refs: {}
         };
     },
     computed: {
         classes() {
-            const tabPosition = this.data.get('tabBarPosition');
+            const tabPosition = this.data.get('tabPosition');
             const size = this.data.get('size');
             const type = this.data.get('type');
 
@@ -65,7 +65,7 @@ export default san.defineComponent({
         const inkBarNode = this.ref('inkBar');
         const inkBarNodeStyle = inkBarNode && inkBarNode.style;
         const tabsNode = this.ref('tabsNode');
-        const tabBarPosition = this.data.get('tabBarPosition');
+        const tabPosition = this.data.get('tabPosition');
         let tabBarData = this.data.get('tabBarData') || [];
         let activeTab;
         tabBarData.forEach((tabBar, index) => {
@@ -80,7 +80,7 @@ export default san.defineComponent({
         this.data.set('refs.activeTab', activeTab);
         const transformSupported = isTransform3dSupported(inkBarNodeStyle);
         let inkBarStyles = '';
-        if (tabBarPosition === 'top' || tabBarPosition === 'bottom') {
+        if (tabPosition === 'top' || tabPosition === 'bottom') {
             let left = getLeft(activeTab, wrapNode);
             let width = activeTab.offsetWidth;
 
@@ -110,7 +110,7 @@ export default san.defineComponent({
         });
     },
     template: `
-        <div style="{{tabBarPosition === 'left' || tabBarPosition === 'right' ? 'height:100%;float:' + tabBarPosition : ''}}">
+        <div style="{{tabPosition === 'left' || tabPosition === 'right' ? 'height:100%;float:' + tabPosition : ''}}">
         <slot name="tab" />
             <div
                 role="tablist"
@@ -121,7 +121,7 @@ export default san.defineComponent({
             >
                 <div
                     class="${prefixCls}-extra-content"
-                    style="{{tabBarPosition === 'top' || tabBarPosition === 'bottom' ? 'float: right' : ''}}"
+                    style="{{tabPosition === 'top' || tabPosition === 'bottom' ? 'float: right' : ''}}"
                 >
                     <template s-if="type === 'editable-card' && !hideAdd">
                         <div on-click="handleCreateNewTab">
@@ -134,16 +134,15 @@ export default san.defineComponent({
                 </div>
                 <s-scrollabletabbarnode
                     refs="{{refs}}"
-                    tabBarPosition="{{tabBarPosition}}"
+                    tabBarPosition="{{tabPosition}}"
                 >
                     <s-tabbartabsnode
-                        tabPanes="{{tabPanes}}"
-                        tabBarData="{{tabBarData}}"
-                        type="{{type}}"
-                        closable="{{closable}}"
-                        activeKey="{{activeKey}}"
-                        tabBarGutter="{{tabBarGutter}}"
-                        tabBarPosition="{{tabBarPosition}}"
+                        s-bind="{{ownerData}}"
+                        __tabPanes__="{{tabPanes}}"
+                        __tabBarData__="{{tabBarData}}"
+                        __type__="{{type}}"
+                        __tabBarGutter__="{{tabBarGutter}}"
+                        __tabPosition__="{{tabPosition}}"
                         on-tabClick="handleTabClick"
                         on-removeTab="handleRemoveTab"
                         s-ref="tabsNode"

@@ -17,9 +17,10 @@
 | maxTagPlaceholder | 隐藏 tag 时显示的内容 | string |
 | multiple | 支持多选（当设置 treeCheckable 时自动变为true） | boolean | false |
 | placeholder | 选择框默认文字 | string | - |
-| searchPlaceholder | 搜索框默认文字 | string | - |
+| searchValue | 搜索框的值，可以通过 `onSearch` 获取用户输入 | string | - | 
 | treeIcon | 是否展示 TreeNode title 前的图标，没有默认样式，如设置为 true，需要自行定义图标相关样式 | boolean | false |
 | showCheckedStrategy | 定义选中项回填的方式。`TreeSelect.SHOW_ALL`: 显示所有选中节点(包括父节点). `TreeSelect.SHOW_PARENT`: 只显示父节点(当父节点下所有子节点都选中时). 默认只显示子节点. | enum{TreeSelect.SHOW_ALL, TreeSelect.SHOW_PARENT, TreeSelect.SHOW_CHILD } | TreeSelect.SHOW_CHILD |
+| showSearch | 是否支持搜索框 | boolean | 单选：false \| 多选：true |
 | size | 选择框大小，可选 `large` `small` | string | 'default' |
 | suffixIcon | 自定义的选择框后缀图标 | slot | - |
 | treeCheckable | 显示 checkbox | boolean | false |
@@ -53,5 +54,5 @@
 | disabled        | 是否禁用                                           | boolean | false  |
 | isLeaf          | 设置为叶子节点                                     | boolean | false  |
 | key             | 此项必须设置（其值在整个树范围内唯一）             | string  | -      |
-| title           | 树节点显示的内容                                   | string\|slot        | - |
-| value           | 默认根据此属性值进行筛选（其值在整个树范围内唯一） | string  | -      |
+| title           | 树节点显示的内容，默认根据此属性值进行筛选          | string\|slot        | - |
+| value           | 其值在整个树范围内唯一 | string  | -      |

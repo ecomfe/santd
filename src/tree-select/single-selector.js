@@ -9,14 +9,23 @@ const prefixCls = classCreator('select')();
 
 export default san.defineComponent({
     dataTypes: {
-        title: DataTypes.any
+        value: DataTypes.array,
+        inputValue: DataTypes.string,
+        showSearch: DataTypes.bool,
+        popupVisible: DataTypes.bool,
+        treeNodeLabelProp: DataTypes.string
     },
     template: `
-        <div class="${prefixCls}-selection-selected-value">
-            <template s-if="value.length && value[0].title">
-                {{value[0].title}}
+        <div
+            class="${prefixCls}-selection-selected-value"
+            style="opacity: {{popupVisible && showSearch ? '0.4' : '1'}}"
+        >
+            <template s-if="!inputValue">
+                <template s-if="value.length && value[0][treeNodeLabelProp]">
+                    {{value[0][treeNodeLabelProp]}}
+                </template>
+                <slot s-else />
             </template>
-            <slot s-else />
         </div>
     `
 });

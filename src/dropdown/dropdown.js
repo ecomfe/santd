@@ -48,7 +48,6 @@ export default san.defineComponent({
     template: `<span class="${prefixCls}-trigger">
         <s-trigger
             prefixCls="{{prefixCls ? prefixCls : '${prefixCls}'}}"
-            action="{{action}}"
             builtinPlacements="{{builtinPlacements}}"
             popupPlacement="{{placement}}"
             popupAlign="{{popupAlign}}"
@@ -60,6 +59,9 @@ export default san.defineComponent({
             popupClassName="{{overlayClassName}}"
             popupStyle="{{overlayStyle}}"
             action="{{disabled ? [] : trigger}}"
+            action="{{action}}"
+            showAction="{{showAction}}"
+            hideAction="{{hideAction}}"
             visible="{{visible}}"
             popupVisible="{{popupVisible}}"
             on-visibleChange="handleVisibleChange"

@@ -22,6 +22,9 @@ const getComputedKeys = (targetKeys = [], key) => {
 };
 
 let paramArr = [
+    'filteredKeys',
+    'hiddenKeys',
+    'activeKey',
     'selectedKeys',
     'expandedKeys',
     'allCheckedKeys',
@@ -50,8 +53,7 @@ export default san.defineComponent({
         isLeaf: DataTypes.bool,
         key: DataTypes.string,
         selectable: DataTypes.bool,
-        title: DataTypes.any,
-        treeNodeLabelProp: DataTypes.string
+        title: DataTypes.any
     },
 
     initData() {
@@ -60,7 +62,6 @@ export default san.defineComponent({
             disabled: false,
             loading: false,
             hasTitle: true,
-            treeNodeLabelProp: 'title',
             LINE_UNIT_OFFEST_V
         };
     },
@@ -74,6 +75,18 @@ export default san.defineComponent({
             return getComputedKeys(this.data.get('allCheckedKeys'), this.data.get('key'));
         },
 
+        filtered() {
+            return getComputedKeys(this.data.get('filteredKeys'), this.data.get('key'));
+        },
+
+        hidden() {
+            return getComputedKeys(this.data.get('hiddenKeys'), this.data.get('key'));
+        },
+
+        actived() {
+            return this.data.get('activeKey') === this.data.get('key');
+        },
+
         indeterminate() {
             return getComputedKeys(this.data.get('allHalfCheckedKeys'), this.data.get('key'));
         },
@@ -83,9 +96,13 @@ export default san.defineComponent({
             const disabled = this.data.get('rootDisabled') || this.data.get('disabled');
             const checked = this.data.get('checked');
             const selected = this.data.get('selected');
+            const hidden = this.data.get('hidden');
             const isVirtual = this.data.get('isVirtual');
 
-            let classArr = [`${prefixCls}-treenode-switcher-${expanded ? 'open' : 'close'}`];
+            let classArr = [
+                `${prefixCls}-treenode-switcher-${expanded ? 'open' : 'close'}`,
+                hidden ? `${prefixCls}-treenode-hidden` : ''
+            ];
             disabled && classArr.push(`${prefixCls}-treenode-disabled`);
             checked && classArr.push(`${prefixCls}-treenode-checkbox-checked`);
             selected && !disabled && classArr.push(`${prefixCls}-treenode-selected`);
@@ -109,10 +126,14 @@ export default san.defineComponent({
             const hasChild = this.data.get('hasChild');
             const selected = this.data.get('selected');
             const expanded = this.data.get('expanded');
+            const filtered = this.data.get('filtered');
+            const actived = this.data.get('actived');
 
             let classArr = [
                 `${prefixCls}-node-content-wrapper`,
-                `${prefixCls}-node-content-wrapper-${hasChild ? expanded ? 'open' : 'close' : 'normal'}`
+                `${prefixCls}-node-content-wrapper-${hasChild ? expanded ? 'open' : 'close' : 'normal'}`,
+                filtered ? 'filter-node' : '',
+                actived ? `${prefixCls}-node-content-wrapper-active` : ''
             ];
             selected && !disabled && classArr.push(`${prefixCls}-node-selected`);
             return classArr;
@@ -243,7 +264,6 @@ export default san.defineComponent({
     template: `
         <li
             class="{{classes}}"
-            treeNodeLabelProp="{{treeNodeLabelProp}}"
             style="{{'margin-left: ' + (treeNodeDataV.isEnd.length - 1) * LINE_UNIT_OFFEST_V + 'px'}}">
             <div
                 s-if="showLine && isVirtual"
@@ -286,8 +306,9 @@ export default san.defineComponent({
                 <s-tree-node
                     s-if="treeData"
                     s-for="tree in treeData"
+                    filteredKeys="{{filteredKeys}}"
+                    hiddenKeys="{{hiddenKeys}}"
                     selectedKeys="{{selectedKeys}}"
-                    treeNodeLabelProp="{{treeNodeLabelProp}}"
                     allCheckedKeys="{{allCheckedKeys}}"
                     allHalfCheckedKeys="{{allHalfCheckedKeys}}"
                     defaultExpandAll="{{defaultExpandAll}}"
@@ -295,6 +316,7 @@ export default san.defineComponent({
                     showLine="{{showLine}}"
                     title="{{tree.title}}"
                     key="{{tree.key}}"
+                    activeKey="{{activeKey}}"
                     value="{{tree.value}}"
                     isLeaf="{{tree.isLeaf}}"
                     checkable="{{rootCheckable ? tree.checkable !== undefined ? tree.checkable : true : false}}"

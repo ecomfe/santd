@@ -24,7 +24,7 @@
 | maxTagPlaceholder | 隐藏 tag 时显示的内容 | function(omittedValues) | - |
 | mode | 设置 Select 的模式为多选或标签 | 'multiple' \| 'tags' | - |
 | notFoundContent | 当下拉列表为空时显示的内容，默认是 empty 空态 | string | - |
-| optionFilterProp | 搜索时过滤对应的 option 属性，如设置为 children 表示对内嵌内容进行搜索 | string | value |
+| optionFilterProp | 搜索时过滤对应的 option 属性，如设置为 children 表示对内嵌内容进行搜索 | string | `children` |
 | optionLabelProp | 回填到选择框的 Option 的属性值，默认是 Option 的子元素。比如在子元素需要高亮效果时，此值可以设为 `value`。 | string | `children` （combobox 模式下为 `value`） |
 | placeholder | 选择框默认文字 | string | - |
 | showArrow | 是否显示下拉小箭头 | boolean | true |
@@ -76,7 +76,7 @@
 | --- | --- | --- | --- |
 | disabled | 是否禁用 | boolean | false |
 | title | 选中该 Option 后，Select 的 title | string | - |
-| value | 默认根据此属性值进行筛选 | string\|number | - |
+| value | 可根据此属性值进行筛选 | string\|number | - |
 
 ## OptGroup 属性
 

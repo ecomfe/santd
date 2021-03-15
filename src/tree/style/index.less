@@ -57,12 +57,6 @@
         border-bottom-color: @primary-color;
       }
     }
-    &.filter-node {
-      > span {
-        color: @highlight-color !important;
-        font-weight: 500 !important;
-      }
-    }
 
     // When node is loading
     &.@{tree-prefix-cls}-treenode-loading {
@@ -97,6 +91,10 @@
       }
     }
 
+    &.@{tree-prefix-cls}-treenode-hidden {
+        display: none !important;
+    }
+
     ul {
       margin: 0;
       padding: 0 0 0 @tree-child-padding;
@@ -114,10 +112,19 @@
       cursor: pointer;
       transition: all 0.3s;
       &:hover {
-        background-color: @item-hover-bg;
+        background-color: #f5f5f5;
+      }
+      &-active {
+        background-color: #f5f5f5;
       }
       &.@{tree-prefix-cls}-node-selected {
         background-color: @primary-2;
+      }
+      &.filter-node {
+        >.@{tree-prefix-cls}-title {
+          color: inherit;
+          font-weight: 500;
+        }
       }
     }
     span {
