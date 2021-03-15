@@ -13,6 +13,7 @@ import Async from './async.md';
 import Control from './control.md';
 import Search from './search.md';
 import Directory from './directory.md';
+import VirtualScroll from './virtual-scroll.md';
 
 export default san.defineComponent({
     components: {
@@ -26,7 +27,8 @@ export default san.defineComponent({
         async: Async,
         control: Control,
         search: Search,
-        directory: Directory
+        directory: Directory,
+        'virtual-scroll': VirtualScroll
     },
     template: `
         <div>
@@ -39,6 +41,7 @@ export default san.defineComponent({
             <line/>
             <switcher/>
             <directory/>
+            <virtual-scroll/>
             <readme/>
         </div>
     `

@@ -9,7 +9,13 @@ import isPlainObject from 'lodash/isPlainObject';
 import {classCreator} from '../core/util';
 import './style/index';
 import treeNode from './treeNode';
+import {LINE_UNIT_OFFEST_V} from './commonConst';
+
 const prefixCls = classCreator('tree')();
+const prefixClsV = prefixCls + '-virtual-list';
+const NODE_HEIGHT_V = 32;
+const SCROLL_STATUS_DELAY_V = 500;
+const LINE_BASIC_OFFEST_V = 12;
 
 export function traverseNodesKey(root = [], callback) {
     function processNode(node) {
@@ -17,6 +23,18 @@ export function traverseNodesKey(root = [], callback) {
 
         if (callback(key, node) !== false) {
             traverseNodesKey(node.treeNodes, callback);
+        }
+    }
+
+    root.forEach(processNode);
+}
+
+function traverseNodesKeyV(root = [], callback) {
+    function processNode(node) {
+        const key = node.key;
+
+        if (callback(key, node) !== false) {
+            traverseNodesKeyV(node.children, callback);
         }
     }
 
@@ -31,6 +49,21 @@ function toggleArrayData(check, data = [], key) {
     !check && index !== -1 && data.splice(index, 1);
 
     return data;
+}
+
+function checkNodeExpandedV(node) {
+    // 如果一个节点的父节点是收起的，那这个节点也是收起的
+    let isExpanded = true;
+    let parent = node.parent;
+    while (parent) {
+        if (!parent.expanded) {
+            isExpanded = false;
+            break;
+        } else {
+            parent = parent.parent;
+        }
+    }
+    return isExpanded;
 }
 
 export default san.defineComponent({
@@ -50,12 +83,15 @@ export default san.defineComponent({
         disabled: DataTypes.bool,
         draggable: DataTypes.bool,
         expandedKeys: DataTypes.array,
+        height: DataTypes.oneOfType([DataTypes.number, DataTypes.string]),
         loadData: DataTypes.func,
         loadedKeys: DataTypes.array,
         multiple: DataTypes.bool,
         selectedKeys: DataTypes.array,
         showIcon: DataTypes.bool,
-        showLine: DataTypes.bool
+        showLine: DataTypes.bool,
+        treeData: DataTypes.array,
+        virtual: DataTypes.bool
     },
     computed: {
         classes() {
@@ -67,6 +103,40 @@ export default san.defineComponent({
             blockNode && classArr.push(`${prefixCls}-block-node`);
             directory && classArr.push(`${prefixCls}-directory`);
             return classArr;
+        },
+        // 是否启用了虚拟滚动
+        isVirtual() {
+            return this.data.get('height') && this.data.get('virtual');
+        },
+        // 虚拟滚动中，展开的节点的列表
+        expandedNodesV() {
+            const flatNodes = this.data.get('flatNodes');
+            return flatNodes && flatNodes.filter(node => checkNodeExpandedV(node));
+        },
+        // 虚拟滚动中，渲染的节点的数量
+        visibleCountV() {
+            return Math.ceil(this.data.get('height') / NODE_HEIGHT_V);
+        },
+        // 虚拟滚动中，渲染的节点的信息
+        visibleNodeV() {
+            const expandedNodesV = this.data.get('expandedNodesV');
+            return expandedNodesV && expandedNodesV.slice(
+                this.data.get('startV'),
+                Math.min(this.data.get('endV'), expandedNodesV.length)
+            );
+        },
+        // 虚拟滚动中，列表的总高度
+        listHeightV() {
+            const expandedNodesV = this.data.get('expandedNodesV');
+            return expandedNodesV && (expandedNodesV.length * NODE_HEIGHT_V);
+        },
+        // 虚拟滚动中，渲染的节点的偏移量
+        translateV() {
+            return `transform: translate3d(0, ${this.data.get('startOffsetV')}px, 0)`;
+        },
+        // 虚拟滚动中，渲染的最后一个节点的索引
+        endV() {
+            return this.data.get('startV') + this.data.get('visibleCountV');
         }
     },
     initData() {
@@ -75,10 +145,17 @@ export default san.defineComponent({
             checkable: false,
             selecteable: true,
             autoExpandParent: true,
-            halfCheckedKeys: [],
             allCheckedKeys: [],
             allHalfCheckedKeys: [],
-            checkStrictly: false
+            checkStrictly: false,
+            // 虚拟滚动中，渲染的第一个节点的索引
+            startV: 0,
+            // 虚拟滚动中，渲染的节点的偏移量
+            startOffsetV: 0,
+            // 虚拟滚动中，连接线的数量（数组的长度即数量，用数组表示是为了方便在模板中遍历）
+            virtual: true,
+            LINE_BASIC_OFFEST_V,
+            LINE_UNIT_OFFEST_V
         };
     },
     inited() {
@@ -87,6 +164,16 @@ export default san.defineComponent({
         this.selectedNodes = [];
 
         this.data.set('expandedKeys', this.data.get('expandedKeys') || this.data.get('defaultExpandedKeys') || []);
+
+        if (this.data.get('isVirtual')) {
+            const treeData = this.data.get('treeData');
+            if (treeData) {
+                this.data.set('flatNodes', this.flattenTreeData(treeData));
+            } else {
+                console.error('`treeData` not found.');
+            }
+        }
+
         // 如果是checkable的时候不设置默认的selectedKeys
         let selectedKeys = this.data.get('selectedKeys') || this.data.get('defaultSelectedKeys') || [];
         this.data.set('selectedKeys', this.data.get('checkable') ? [] : selectedKeys);
@@ -155,7 +242,9 @@ export default san.defineComponent({
             checkedKey = checkedKeys.shift();
 
             if (!allKeys.checkedKeys.includes(checkedKey)) {
-                let keys = this.getChangedCheckedKeys(treeNodes, checkedKey, true, [], [], checkStrictly);
+                const treeNodeDataV = this.data.get('isVirtual')
+                    && this.data.get('flatNodes').find(node => node.key === checkedKey);
+                let keys = this.getChangedCheckedKeys(checkedKey, true, [], [], checkStrictly, treeNodeDataV);
                 // 这里需要对数据进行去重
                 allKeys.checkedKeys = Array.from(new Set(allKeys.checkedKeys.concat(keys.checkedKeys)));
                 allKeys.halfCheckedKeys = Array.from(new Set(allKeys.halfCheckedKeys.concat(keys.halfCheckedKeys)));
@@ -175,41 +264,69 @@ export default san.defineComponent({
         return nodes;
     },
 
-    getChangedCheckedKeys(treeNodes, key, isCheck, checkedKeys = [], halfCheckedKeys = [], checkStrictly) {
+    getChangedCheckedKeys(key, isCheck, checkedKeys = [], halfCheckedKeys = [], checkStrictly, treeNodeDataV) {
         let checkedNodes = this.getCheckedNodes(this.treeNodes, [key]);
         checkedNodes.forEach(node => {
             checkedKeys = toggleArrayData(isCheck, checkedKeys, node.data.get('key'));
             if (!checkStrictly) {
-                let parent = node.parentComponent;
-                // 找到后不断遍历父节点，把需要改变状态的父节点的key都拿到
-                while (parent && parent !== this && !parent.data.get('disabled')) {
-                    // 先过滤掉是disabled状态的节点
-                    let treeNodes = parent.treeNodes.filter(node => !this.data.get('disabled') && !node.data.get('disabled'));
-                    const parentKey = parent.data.get('key');
-                    const allChecked = treeNodes.every(node => checkedKeys.includes(node.data.get('key')));
-                    // 如果是子是全选状态，把父的key也放到selected中
-                    checkedKeys = toggleArrayData(allChecked && isCheck, checkedKeys, parentKey);
+                if (!this.data.get('isVirtual')) {
+                    let parent = node.parentComponent;
+                    // 找到后不断遍历父节点，把需要改变状态的父节点的key都拿到
+                    while (parent && parent !== this && !parent.data.get('disabled')) {
+                        // 先过滤掉是disabled状态的节点
+                        let treeNodes = parent.treeNodes.filter(node => !this.data.get('disabled') && !node.data.get('disabled'));
+                        const parentKey = parent.data.get('key');
+                        const allChecked = treeNodes.every(node => checkedKeys.includes(node.data.get('key')));
+                        // 如果是子是全选状态，把父的key也放到selected中
+                        checkedKeys = toggleArrayData(allChecked && isCheck, checkedKeys, parentKey);
 
-                    const halfChecked = !treeNodes.every(node => checkedKeys.includes(node.data.get('key')))
-                        && treeNodes.some(node => {
-                            const key = node.data.get('key');
-                            return checkedKeys.includes(key) || halfCheckedKeys.includes(key);
-                        }
-                        );
-                    // 如果子不是全选是半选，把父放到halfSelectedKeys里面
-                    halfCheckedKeys = toggleArrayData(halfChecked, halfCheckedKeys, parentKey);
-                    parent = parent.parentComponent;
-                }
-                // 处理完父节点，处理子节点，找到所有的子节点，添加或者删除在checkedKeys里面
-                const disabled = this.data.get('disabled') || node.data.get('disabled');
-                !disabled && traverseNodesKey(node.treeNodes, (key, node) => {
-                    const disabled = this.data.get('disabled') || node.data.get('disabled');
-                    if (!disabled) {
-                        checkedKeys = toggleArrayData(isCheck, checkedKeys, key);
+                        const halfChecked = !treeNodes.every(node => checkedKeys.includes(node.data.get('key')))
+                            && treeNodes.some(node => {
+                                const key = node.data.get('key');
+                                return checkedKeys.includes(key) || halfCheckedKeys.includes(key);
+                            }
+                            );
+                        // 如果子不是全选是半选，把父放到halfSelectedKeys里面
+                        halfCheckedKeys = toggleArrayData(halfChecked, halfCheckedKeys, parentKey);
+                        parent = parent.parentComponent;
                     }
-                    return !disabled;
-                });
+                    // 处理完父节点，处理子节点，找到所有的子节点，添加或者删除在checkedKeys里面
+                    const disabled = this.data.get('disabled') || node.data.get('disabled');
+                    !disabled && traverseNodesKey(node.treeNodes, (key, node) => {
+                        const disabled = this.data.get('disabled') || node.data.get('disabled');
+                        if (!disabled) {
+                            checkedKeys = toggleArrayData(isCheck, checkedKeys, key);
+                        }
+                        return !disabled;
+                    });
+                } else {
+                    let parent = treeNodeDataV.parent;
+                    while (parent && !parent.disabled) {
+                        let treeNodes = parent.children.filter(node => !this.data.get('disabled') && !node.disabled);
+                        const parentKey = parent.key;
+                        const allChecked = treeNodes.every(node => checkedKeys.includes(node.key));
+                        checkedKeys = toggleArrayData(allChecked && isCheck, checkedKeys, parentKey);
 
+                        const halfChecked = !treeNodes.every(node => checkedKeys.includes(node.key))
+                            && treeNodes.some(node => {
+                                const key = node.key;
+                                return checkedKeys.includes(key) || halfCheckedKeys.includes(key);
+                            }
+                            );
+                        halfCheckedKeys = toggleArrayData(halfChecked, halfCheckedKeys, parentKey);
+                        parent = parent.parent;
+                    }
+                    if (treeNodeDataV.children && treeNodeDataV.children.length) {
+                        const disabled = this.data.get('disabled') || node.disabled;
+                        !disabled && traverseNodesKeyV(treeNodeDataV.children, (key, node) => {
+                            const disabled = node.disabled;
+                            if (!disabled) {
+                                checkedKeys = toggleArrayData(isCheck, checkedKeys, key);
+                            }
+                            return !disabled;
+                        });
+                    }
+                }
                 halfCheckedKeys = halfCheckedKeys.filter(key => !checkedKeys.includes(key));
             }
         });
@@ -277,6 +394,79 @@ export default san.defineComponent({
         return expandComponents;
     },
 
+    scrollEventV() {
+        this.data.set('isScrollingV', true);
+
+        // 虚拟滚动中，当前的滚动位置
+        const scrollTop = this.ref(`${prefixClsV}-container`).scrollTop;
+
+        this.data.set('startV', Math.floor(scrollTop / NODE_HEIGHT_V));
+
+        // 虚拟滚动中，渲染的节点的偏移量
+        this.data.set('startOffsetV', scrollTop - (scrollTop % NODE_HEIGHT_V));
+
+        if (this.scrollTimeoutIDV) {
+            clearTimeout(this.scrollTimeoutIDV);
+        }
+        this.scrollTimeoutIDV = setTimeout(() => {
+            this.data.set('isScrollingV', false);
+        }, SCROLL_STATUS_DELAY_V);
+    },
+
+    flattenTreeData(treeData) {
+        const flatNodes = [];
+        let treeDepth = 0;
+        let currentDepth = 0;
+        let nodeCount = 0;
+        const expandedKeys = this.data.get('expandedKeys');
+
+        const dig = (treeData, parent) =>
+            treeData.map((treeNode, index) => {
+                currentDepth++;
+                if (!treeNode.children || !treeNode.children.length) {
+                    treeDepth = Math.max(treeDepth, currentDepth);
+                    currentDepth = 0;
+                }
+
+                const flatNode = Object.assign({}, treeNode, {
+                    parent,
+                    children: null,
+                    index: nodeCount++,
+                    isEnd: [...(parent ? parent.isEnd : []), index === treeData.length - 1]
+                });
+
+                if (this.data.get('defaultExpandAll') && treeNode.children) {
+                    flatNode.expanded = true;
+                } else if (expandedKeys.length && this.data.get('autoExpandParent')) {
+                    const expanded = expandedKeys.includes(treeNode.key);
+                    flatNode.expanded = expanded;
+                    if (expanded) {
+                        let loopedParent = parent;
+                        while (loopedParent) {
+                            loopedParent.expanded = true;
+                            const loopedParentKey = loopedParent.key;
+                            if (!expandedKeys.includes(loopedParentKey)) {
+                                this.data.push('expandedKeys', loopedParentKey);
+                            }
+                            loopedParent = loopedParent.parent;
+                        }
+                    }
+                }
+
+                flatNodes.push(flatNode);
+
+                flatNode.children = dig(treeNode.children || [], flatNode);
+
+                return flatNode;
+            });
+
+        dig(treeData);
+
+        this.data.set('lineCountV', new Array(treeDepth - 1));
+
+        return flatNodes;
+    },
+
     handleSelect(key, info) {
         const {multiple, selectedKeys} = this.data.get();
         const index = selectedKeys.indexOf(key);
@@ -308,7 +498,9 @@ export default san.defineComponent({
 
             let checkedKeys = this.data.get('allCheckedKeys');
             let halfCheckedKeys = checkStrictly ? [] : this.data.get('allHalfCheckedKeys');
-            let allKeys = this.getChangedCheckedKeys(this.treeNodes, key, checked, checkedKeys, halfCheckedKeys, checkStrictly);
+            let allKeys = this.getChangedCheckedKeys(
+                key, checked, checkedKeys, halfCheckedKeys, checkStrictly, info.treeNodeDataV
+            );
 
             checkedKeys = allKeys.checkedKeys;
             halfCheckedKeys = allKeys.halfCheckedKeys;
@@ -322,6 +514,11 @@ export default san.defineComponent({
         },
         // 展开节点的处理
         santd_tree_expandTreeNode(payload) {
+            if (this.data.get('isVirtual')) {
+                const flatNodesCopy = Array.from(this.data.get('flatNodes'));
+                flatNodesCopy[payload.value.treeIndexV].expanded = !payload.value.expanded;
+                this.data.set('flatNodes', flatNodesCopy);
+            }
             let expandedKeys = payload.value.expandedKeys;
             this.data.set('expandedKeys', expandedKeys, {silent: true});
             this.updateTreeNodes();
@@ -355,6 +552,7 @@ export default san.defineComponent({
             unselectable="on"
             role="tree"
             on-mouseover="handleMouseOver"
+            s-if="!isVirtual"
         >
             <s-tree-node
                 s-if="treeData"
@@ -373,9 +571,9 @@ export default san.defineComponent({
                 activeKey="{{activeKey}}"
                 value="{{tree.value}}"
                 isLeaf="{{tree.isLeaf}}"
-                checkable="{{tree.checkable || rootCheckable}}"
+                checkable="{{rootCheckable && tree.checkable === undefined || tree.checkable)}}"
                 disabled="{{tree.disabled || rootDisabled}}"
-                selectable="{{tree.selectable || rootSelectable}}"
+                selectable="{{rootSelectable && tree.selectable === undefined || tree.selectable)}}"
                 loadData="{{loadData}}"
                 treeData="{{tree.children}}"
                 hasTitle="{{hasTitle}}"
@@ -384,5 +582,54 @@ export default san.defineComponent({
             </s-tree-node>
             <slot s-else />
         </ul>
+        <div s-else
+            class="${prefixClsV}-container"
+            on-mouseover="handleMouseOver"
+            style="height: {{height}}px;"
+            on-scroll="scrollEventV"
+            s-ref="${prefixClsV}-container">
+            <div class="${prefixClsV}-phantom" style="height: {{listHeightV}}px;"></div>
+            <fragment s-if="showLine" s-for="item, index in lineCountV">
+                <div class="${prefixClsV}-extra-line"
+                    style="
+                        {{'height: ' + listHeightV + 'px;'}}
+                        {{'left: ' + (index * LINE_UNIT_OFFEST_V + LINE_BASIC_OFFEST_V) + 'px;'}}
+                    "
+                    s-if="!visibleNodeV[0].isEnd[index]"></div>
+            </fragment>
+            <ul
+                class="{{classes}} ${prefixClsV} ${prefixClsV}-{{isScrollingV ? 'scrolling' : ''}}"
+                unselectable="on"
+                role="tree"
+                style="{{translateV}}">
+                <s-tree-node
+                    s-for="tree, index in visibleNodeV"
+                    filteredKeys="{{filteredKeys}}"
+                    hiddenKeys="{{hiddenKeys}}"
+                    selectedKeys="{{selectedKeys}}"
+                    expandedKeys="{{expandedKeys}}"
+                    allCheckedKeys="{{allCheckedKeys}}"
+                    allHalfCheckedKeys="{{allHalfCheckedKeys}}"
+                    defaultExpandAll="{{defaultExpandAll}}"
+                    autoExpandParent="{{autoExpandParent}}"
+                    showLine="{{showLine}}"
+                    title="{{tree.title}}"
+                    key="{{tree.key}}"
+                    activeKey="{{activeKey}}"
+                    value="{{tree.value}}"
+                    isLeaf="{{tree.isLeaf}}"
+                    checkable="{{rootCheckable && tree.checkable === undefined || tree.checkable)}}"
+                    disabled="{{tree.disabled || rootDisabled}}"
+                    selectable="{{rootSelectable && tree.selectable === undefined || tree.selectable)}}"
+                    loadData="{{loadData}}"
+                    hasTitle="{{hasTitle}}"
+                    treeIndexV="{{tree.index}}"
+                    height="{{height}}"
+                    isVirtual="{{isVirtual}}"
+                    treeNodeDataV="{{tree}}"
+                >
+                </s-tree-node>
+            </ul>
+        </div>
     `
 });

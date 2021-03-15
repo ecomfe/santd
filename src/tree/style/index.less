@@ -8,6 +8,7 @@
 @san-prefix-cls: ~'@{ant-prefix}';
 @tree-showline-icon-color: @text-color-secondary;
 @tree-node-padding: 4px;
+@tree-prefix-cls-v: ~'@{tree-prefix-cls}-virtual-list';
 
 .antCheckboxFn(@checkbox-prefix-cls: ~'@{ant-prefix}-tree-checkbox');
 
@@ -239,7 +240,8 @@
         }
       }
     }
-    li:not(:last-child)::before {
+    // 非虚拟列表的连接线
+    .@{tree-prefix-cls}-not-virtual:not(:last-child)::before {
       position: absolute;
       left: 12px;
       width: 1px;
@@ -247,6 +249,16 @@
       margin: 22px 0;
       border-left: 1px solid @border-color-base;
       content: ' ';
+    }
+    // 虚拟列表的连接线
+    .@{tree-prefix-cls-v}-line {
+      position: absolute;
+      width: 1px;
+      background-color: @border-color-base;
+      left: 12px;
+    }
+    .@{tree-prefix-cls-v}-end-line {
+      background-color: @component-background;
     }
   }
 
@@ -268,6 +280,29 @@
             width: ~'calc(100% - 46px)';
           }
         }
+    }
+  }
+}
+
+.@{tree-prefix-cls-v}-container {
+  overflow: scroll;
+  position: relative;
+  .@{tree-prefix-cls-v}-extra-line {
+    position: absolute;
+    width: 1px;
+    background-color: @border-color-base;
+    top: 0
+  }
+  .@{tree-prefix-cls-v} {
+    position: absolute;
+    top: 0;
+    li {
+      background-color: @component-background;
+    }
+    &-scrolling {
+      svg {
+        transition: none !important;
+      }
     }
   }
 }
