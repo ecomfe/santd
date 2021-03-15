@@ -145,7 +145,6 @@ export default san.defineComponent({
             checkable: false,
             selecteable: true,
             autoExpandParent: true,
-            halfCheckedKeys: [],
             allCheckedKeys: [],
             allHalfCheckedKeys: [],
             checkStrictly: false,
@@ -245,9 +244,7 @@ export default san.defineComponent({
             if (!allKeys.checkedKeys.includes(checkedKey)) {
                 const treeNodeDataV = this.data.get('isVirtual')
                     && this.data.get('flatNodes').find(node => node.key === checkedKey);
-                let keys = this.getChangedCheckedKeys(
-                    treeNodes, checkedKey, true, [], [], checkStrictly, treeNodeDataV
-                );
+                let keys = this.getChangedCheckedKeys(checkedKey, true, [], [], checkStrictly, treeNodeDataV);
                 // 这里需要对数据进行去重
                 allKeys.checkedKeys = Array.from(new Set(allKeys.checkedKeys.concat(keys.checkedKeys)));
                 allKeys.halfCheckedKeys = Array.from(new Set(allKeys.halfCheckedKeys.concat(keys.halfCheckedKeys)));
@@ -267,9 +264,7 @@ export default san.defineComponent({
         return nodes;
     },
 
-    getChangedCheckedKeys(
-        treeNodes, key, isCheck, checkedKeys = [], halfCheckedKeys = [], checkStrictly, treeNodeDataV
-    ) {
+    getChangedCheckedKeys(key, isCheck, checkedKeys = [], halfCheckedKeys = [], checkStrictly, treeNodeDataV) {
         let checkedNodes = this.getCheckedNodes(this.treeNodes, [key]);
         checkedNodes.forEach(node => {
             checkedKeys = toggleArrayData(isCheck, checkedKeys, node.data.get('key'));
@@ -471,7 +466,7 @@ export default san.defineComponent({
 
         return flatNodes;
     },
-  
+
     handleSelect(key, info) {
         const {multiple, selectedKeys} = this.data.get();
         const index = selectedKeys.indexOf(key);
@@ -504,7 +499,7 @@ export default san.defineComponent({
             let checkedKeys = this.data.get('allCheckedKeys');
             let halfCheckedKeys = checkStrictly ? [] : this.data.get('allHalfCheckedKeys');
             let allKeys = this.getChangedCheckedKeys(
-                this.treeNodes, key, checked, checkedKeys, halfCheckedKeys, checkStrictly, info.treeNodeDataV
+                key, checked, checkedKeys, halfCheckedKeys, checkStrictly, info.treeNodeDataV
             );
 
             checkedKeys = allKeys.checkedKeys;

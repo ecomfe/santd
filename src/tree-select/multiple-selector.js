@@ -36,8 +36,9 @@ export default san.defineComponent({
             result = value.filter((item, index) => index < maxTagCount);
 
             if (diff > 0) {
-                const obj = {};
-                obj[treeNodeLabelProp] = `+ ${diff} ${maxTagPlaceholder || '...'}`;
+                const obj = {
+                    [treeNodeLabelProp]: `+ ${diff} ${maxTagPlaceholder || '...'}`
+                };
                 result.push(obj);
             }
 
