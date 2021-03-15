@@ -9,6 +9,32 @@
 - 主版本号：含有破坏性更新和新特性，不在发布周期内。
 
 ---
+
+## 0.3.10
+`2020-3-15`
+- Affix
+    - 🆕 新增 target 属性：设置 Affix 需要监听其滚动事件的元素。[#27](https://github.com/ecomfe/santd/pull/27)
+- AutoComplete
+    - 🆕 新增 backfill 属性：使用键盘选择选项的时候把选中项回填到输入框中。[#24](https://github.com/ecomfe/santd/pull/24)
+- Menu
+    - 🆕 新增 overflowedIndicator 属性：自定义 Menu 折叠时的图标。[#30](https://github.com/ecomfe/santd/pull/30)
+    - 🆕 新增菜单项过多而溢出时会自动折叠的功能。[#29](https://github.com/ecomfe/santd/pull/29)
+    - 💄 子菜单统一为垂直菜单。[#29](https://github.com/ecomfe/santd/pull/29)
+    - 🐞 修复展开收起箭头某些情况下会遮盖文字的问题。[#29](https://github.com/ecomfe/santd/pull/29)
+- Select
+    - 🛠 默认根据 value 筛选改为默认同时根据 value 和内嵌内容筛选。[34](https://github.com/ecomfe/santd/pull/34)
+- Space
+    - 🆕 新增 Space 组件：设置组件之间的间距。[#25](https://github.com/ecomfe/santd/pull/25)
+- Tabs
+    - 🆕 新增 forceRender 属性：被隐藏时是否渲染 DOM 结构。[#28](https://github.com/ecomfe/santd/pull/28)
+    - 🆕 Tabpane 的内容支持 slot。[#32](https://github.com/ecomfe/santd/pull/32)
+- Tree
+    - 🆕 新增 height 和 virtual 属性：支持虚拟滚动。[#35](https://github.com/ecomfe/santd/pull/35)
+    - 🐞 修复子节点是否可选的判断逻辑。[#35](https://github.com/ecomfe/santd/pull/35)
+- TreeSelect
+    - 🆕 新增 showSearch 属性：支持搜索框。[#33](https://github.com/ecomfe/santd/pull/33)
+    - 🆕 新增 searchValue 属性：手动控制搜索框的值。[#33](https://github.com/ecomfe/santd/pull/33)
+
 ## 0.2.9
 `2020-10-10`
 - 🐞 新增 Avatar支持gap设置字符距离左右两侧边界单位像素。
