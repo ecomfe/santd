@@ -11,7 +11,7 @@ import OkButton from './calendar/okButton';
 import TimePickerButton from './calendar/timepickerButton';
 import Tag from '../../tag';
 import inherits from '../../core/util/inherits';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import {syncTime, getTodayTime, isAllowedDate, getTimeConfig} from './util';
 
 function isEmptyArray(arr) {
@@ -36,7 +36,7 @@ function normalizeAnchor(data, init) {
     const normalizedValue = value
         ? getValueFromSelectedValue(value)
         : getValueFromSelectedValue(selectedValue);
-    return !isEmptyArray(normalizedValue) ? normalizedValue : init && [moment(), moment().add(1, 'months')];
+    return !isEmptyArray(normalizedValue) ? normalizedValue : init && [dayjs(), dayjs().add(1, 'months')];
 }
 
 export default inherits(san.defineComponent({
@@ -188,7 +188,7 @@ export default inherits(san.defineComponent({
         this.data.set('prevSelectedValue', selectedValue);
         this.data.set('firstSelectedValue', null);
 
-        localeCode && moment.locale(localeCode);
+        localeCode && dayjs.locale(localeCode);
         localeCode && value[0].locale(localeCode);
         localeCode && value[1].locale(localeCode);
         this.data.set('value', value);

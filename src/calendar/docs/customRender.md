@@ -22,7 +22,7 @@
     </div>
 </template>
 <script>
-import moment from 'moment';
+import dayjs from 'dayjs';
 import {Calendar, Badge} from 'santd';
 
 function getListData(value) {

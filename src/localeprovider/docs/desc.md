@@ -7,10 +7,10 @@ LocaleProvider只需在应用外围包裹一次即可全局生效。
 ```js
 import {LocaleProvider} from 'santd';
 import zh_CN from 'santd/localeprovider/zh_CN';
-import moment from 'moment';
-import 'moment/locale/zh-cn';
+import dayjs from 'dayjs';
+import 'dayjs/locale/zh-cn';
 
-moment.locale('zh-cn');
+dayjs.locale('zh-cn');
 
 return san.defineComponent({
     initData() {

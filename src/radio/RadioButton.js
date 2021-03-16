@@ -6,7 +6,7 @@
 import './style/index.less';
 import san from 'san';
 import {classCreator} from '../core/util';
-import Radio from './radio';
+import Radio from './Radio';
 const prefixCls = classCreator('radio-button')();
 
 export default san.defineComponent({

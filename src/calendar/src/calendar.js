@@ -10,7 +10,7 @@ import CalendarFooter from './calendar/calendarFooter';
 import DateTable from './date/dateTable';
 import DateInput from './date/dateInput';
 import inherits from '../../core/util/inherits';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import {getTimeConfig, getTodayTime, syncTime} from './util';
 
 export default inherits(san.defineComponent({
@@ -31,12 +31,12 @@ export default inherits(san.defineComponent({
     },
     inited() {
         const mode = this.data.get('mode');
-        let value = this.data.get('value') || this.data.get('defaultValue') || moment();
+        let value = this.data.get('value') || this.data.get('defaultValue') || dayjs();
         let selectedValue = this.data.get('selectedValue') || this.data.get('defaultSelectedValue');
         const localeCode = this.data.get('localeCode');
 
-        // 如果有国际化编码，对moment进行国际化处理
-        localeCode && moment.locale(localeCode);
+        // 如果有国际化编码，对dayjs进行国际化处理
+        localeCode && dayjs.locale(localeCode);
         localeCode && value && value.locale(localeCode);
 
         this.data.set('mode', mode || 'date');
@@ -49,7 +49,7 @@ export default inherits(san.defineComponent({
         const selectedValue = this.data.get('selectedValue');
         const showTime = this.data.get('showTime');
         if (!selectedValue && showTime) {
-            const timePickerDefaultValue = showTime.defaultValue || moment();
+            const timePickerDefaultValue = showTime.defaultValue || dayjs();
             if (timePickerDefaultValue) {
                 syncTime(timePickerDefaultValue, value);
             }

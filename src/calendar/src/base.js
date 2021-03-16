@@ -6,7 +6,7 @@
 import san, {DataTypes} from 'san';
 import locale from './locale/en_US';
 import {isAllowedDate} from './util/index';
-import TimePickerPanel from '../../timepicker/panel';
+import TimePickerPanel from '../../timepicker/Panel';
 
 export default san.defineComponent({
     dataTypes: {

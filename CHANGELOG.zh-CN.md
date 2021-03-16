@@ -35,8 +35,9 @@
     - 🆕 新增 showSearch 属性：支持搜索框。[#33](https://github.com/ecomfe/santd/pull/33)
     - 🆕 新增 searchValue 属性：手动控制搜索框的值。[#33](https://github.com/ecomfe/santd/pull/33)
 - 其它
-    - 🌟 使用内部实现用到 s-show 的组件要求 San 版本至少 3.9.3。[#29](https://github.com/ecomfe/santd/pull/29)
+    - 🛠 把 Moment.js 换成 Day.js。[#38](https://github.com/ecomfe/santd/pull/38)
     - 🛠 组件文件的命名统一为帕斯卡命名法。[#37](https://github.com/ecomfe/santd/pull/37)
+    - 🌟 使用内部实现用到 s-show 的组件要求 San 版本至少 3.9.3。[#29](https://github.com/ecomfe/santd/pull/29)
 
 ## 0.2.9
 `2020-10-10`

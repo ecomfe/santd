@@ -4,8 +4,8 @@
  */
 
 import './style/index';
-import Calendar from '../calendar/src/Calendar';
-import MonthCalendar from '../calendar/src/MonthCalendar';
+import Calendar from '../calendar/src/calendar';
+import MonthCalendar from '../calendar/src/monthCalendar';
 import RangePicker from './RangePicker';
 import createPicker from './CreatePicker';
 import wrapPicker from './wrapPicker';

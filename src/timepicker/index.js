@@ -8,7 +8,7 @@ import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
 import Trigger from '../core/trigger';
 import Placement from './placements';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import Panel from './Panel';
 import Icon from '../icon';
 import localeReceiver from '../localeprovider/receiver';
@@ -61,7 +61,7 @@ export default san.defineComponent({
             popupStyle: {},
             id: '',
             align: {},
-            defaultOpenValue: moment(),
+            defaultOpenValue: dayjs(),
             allowClear: true,
             showHour: true,
             showMinute: true,

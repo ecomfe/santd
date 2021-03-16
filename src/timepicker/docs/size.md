@@ -12,7 +12,7 @@
     </div>
 </template>
 <script>
-import moment from 'moment';
+import dayjs from 'dayjs';
 import {TimePicker} from 'santd';
 
 export default {
@@ -21,7 +21,7 @@ export default {
     },
     initData() {
         return {
-            defaultValue: moment('2:08:23', 'HH:mm:ss')
+            defaultValue: dayjs('2:08:23', 'HH:mm:ss')
         };
     }
 }

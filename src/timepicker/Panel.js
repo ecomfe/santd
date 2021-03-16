@@ -4,7 +4,7 @@
  **/
 
 import san from 'san';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import Header from './Header';
 import ComboBox from './Combobox';
 
@@ -28,7 +28,7 @@ function toNearestValidTime(time, hourOptions, minuteOptions, secondOptions) {
     const second = secondOptions
         .slice()
         .sort((a, b) => Math.abs(time.second() - a) - Math.abs(time.second() - b))[0];
-    return moment(`${hour}:${minute}:${second}`, 'HH:mm:ss');
+    return dayjs(`${hour}:${minute}:${second}`, 'HH:mm:ss');
 }
 
 export default san.defineComponent({

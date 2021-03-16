@@ -11,7 +11,7 @@
     </div>
 </template>
 <script>
-import moment from 'moment';
+import dayjs from 'dayjs';
 import {Calendar, Alert} from 'santd';
 
 export default {
@@ -27,8 +27,8 @@ export default {
     },
     initData() {
         return {
-            value: moment('2017-01-25'),
-            selectedValue: moment('2017-01-25')
+            value: dayjs('2017-01-25'),
+            selectedValue: dayjs('2017-01-25')
         }
     },
     handleSelect(value) {

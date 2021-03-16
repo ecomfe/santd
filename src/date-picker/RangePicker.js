@@ -4,7 +4,7 @@
  **/
 import san from 'san';
 import RangeCalendar from '../calendar/src/rangeCalendar';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import {classCreator} from '../core/util';
 import Trigger from '../core/trigger';
 import Placements from '../calendar/src/placements';
@@ -88,7 +88,7 @@ export default san.defineComponent({
             placements[popupPlacement] = {...placements[popupPlacement], ...align};
         }
         this.data.set('value', value || defaultValue || []);
-        this.data.set('showDate', pickerValueAdapter(pickerValue || moment()));
+        this.data.set('showDate', pickerValueAdapter(pickerValue || dayjs()));
         this.data.set('hasExtraFooter', !!this.sourceSlots.named.renderExtraFooter);
         this.data.set('hasDateRender', !!this.sourceSlots.named.dateRender);
         this.data.set('hasSuffixIcon', !!this.sourceSlots.named.suffixIcon);

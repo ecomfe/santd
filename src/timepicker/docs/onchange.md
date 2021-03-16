@@ -10,7 +10,7 @@ value 和 on-change 需要配合使用。
     </div>
 </template>
 <script>
-import moment from 'moment';
+import dayjs from 'dayjs';
 import {TimePicker} from 'santd';
 
 export default {

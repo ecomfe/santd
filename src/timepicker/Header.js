@@ -4,7 +4,7 @@
  **/
 
 import san, {DataTypes} from 'san';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 export default san.defineComponent({
     dataTypes: {
@@ -64,7 +64,7 @@ export default san.defineComponent({
         if (inputValue) {
             const originalValue = this.data.get('value');
             const value = this.data.get('value') || this.data.get('defaultOpenValue');
-            const parsed = moment(inputValue, format, true);
+            const parsed = dayjs(inputValue, format, true);
             if (!parsed.isValid()) {
                 this.data.set('invalid', true);
                 return;

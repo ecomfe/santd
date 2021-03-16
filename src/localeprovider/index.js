@@ -5,7 +5,7 @@
 
 import san from 'san';
 import defaultLocale from './zh_CN';
-import * as moment from 'moment';
+import * as dayjs from 'dayjs';
 
 
 export default san.defineComponent({
@@ -21,10 +21,10 @@ export default san.defineComponent({
 
         const locale = this.data.get('locale');
         if (locale && locale.locale) {
-            moment.locale(locale.locale);
+            dayjs.locale(locale.locale);
         }
         else {
-            moment.locale('en');
+            dayjs.locale('en');
         }
     },
 
