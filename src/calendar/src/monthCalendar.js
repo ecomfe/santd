@@ -7,7 +7,7 @@ import san from 'san';
 import Base from './base';
 import CalendarHeader from './calendar/calendarHeader';
 import inherits from '../../core/util/inherits';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 export default inherits(san.defineComponent({
     initData() {
@@ -16,7 +16,7 @@ export default inherits(san.defineComponent({
         };
     },
     inited() {
-        let value = this.data.get('value') || this.data.get('defaultValue') || moment();
+        let value = this.data.get('value') || this.data.get('defaultValue') || dayjs();
         let selectedValue = this.data.get('selectedValue') || this.data.get('defaultSelectedValue');
         const localeCode = this.data.get('localeCode');
 

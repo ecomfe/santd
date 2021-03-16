@@ -4,7 +4,7 @@
  **/
 
 import san, {DataTypes} from 'san';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import {formatDate} from '../util/index';
 import KeyCode from '../../../core/util/keyCode';
 
@@ -68,7 +68,7 @@ export default san.defineComponent({
         }
 
         // 不合法直接退出
-        const parsed = moment(showDate, format, true);
+        const parsed = dayjs(showDate, format, true);
         if (!parsed.isValid()) {
             this.data.set('invalid', true);
             this.data.set('showDate', showDate);

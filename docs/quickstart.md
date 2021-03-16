@@ -15,12 +15,12 @@ Ant Design San 致力于提供给程序员愉悦的开发体验。
 ```javascript
 import san from 'san';
 import {DatePicker, message} from 'santd';
-import moment from 'moment';
-import 'moment/locale/zh-cn';
+import dayjs from 'dayjs';
+import 'dayjs/locale/zh-cn';
 import 'santd/dist/santd.css';
 import './index.css';
 
-moment.locale('zh-cn');
+dayjs.locale('zh-cn');
 
 const App = san.defineComponent({
     initData() {

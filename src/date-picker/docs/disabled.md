@@ -16,7 +16,7 @@
 
 
 <script>
-import moment from 'moment';
+import dayjs from 'dayjs';
 import {DatePicker} from 'santd';
 
 const dateFormat = 'YYYY-MM-DD';
@@ -29,9 +29,9 @@ export default {
     },
     initData() {
         return {
-            dateDefaultValue: moment('2019-06-06', 'YYYY-MM-DD'),
-            monthDefaultValue: moment('2019-06', 'YYYY-MM'),
-            rangeDefaultValue: [moment('2019-06-06', 'YYYY-MM-DD'), moment('2019-06-06', 'YYYY-MM-DD')]
+            dateDefaultValue: dayjs('2019-06-06', 'YYYY-MM-DD'),
+            monthDefaultValue: dayjs('2019-06', 'YYYY-MM'),
+            rangeDefaultValue: [dayjs('2019-06-06', 'YYYY-MM-DD'), dayjs('2019-06-06', 'YYYY-MM-DD')]
         };
     }
 }

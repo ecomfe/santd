@@ -10,7 +10,7 @@
     </div>
 </template>
 <script>
-import * as moment from 'moment';
+import * as dayjs from 'dayjs';
 import {Calendar} from 'santd';
 
 export default {
@@ -19,7 +19,7 @@ export default {
     },
     initData() {
         return {
-            validRange: [moment.default(), moment.default().add(10, 'd')]
+            validRange: [dayjs.default(), dayjs.default().add(10, 'd')]
         }
     },
     getValue(value) {

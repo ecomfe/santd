@@ -16,9 +16,10 @@
 </template>
 <script>
 import san from 'san';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import {Comment, Icon, Avatar} from 'santd';
 
+dayjs.extend(require('dayjs/plugin/relativeTime'));
 const pComment = san.defineComponent({
     template: `
         <template>
@@ -42,7 +43,7 @@ const pComment = san.defineComponent({
     },
     initData() {
         return {
-            datetime: moment().fromNow()
+            datetime: dayjs().fromNow()
         };
     }
 });

@@ -8,7 +8,7 @@ import Base from './base';
 import DateTable from './date/dateTable';
 import MonthTable from './month/monthTable';
 import inherits from '../../core/util/inherits';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 export default inherits(san.defineComponent({
     components: {
@@ -32,7 +32,7 @@ export default inherits(san.defineComponent({
         const defaultSelectedValue = this.data.get('defaultSelectedValue');
 
         this.data.set('type', type || defaultType);
-        this.data.set('value', value || defaultValue || moment());
+        this.data.set('value', value || defaultValue || dayjs());
         this.data.set('selectedValue', selectedValue || defaultSelectedValue);
         this.data.set('hasMonthCellRender', !!this.sourceSlots.named.customMonthCellRender);
         this.data.set('hasDateCellRender', !!this.sourceSlots.named.customDateCellRender);

@@ -32,7 +32,7 @@ $ npm install santd --save
 
 > 强烈不推荐使用已构建文件，这样无法按需加载，而且难以获得底层依赖模块的 bug 快速修复支持。
 
-> 注意：引入 santd.js 前你需要自行引入 san 和 moment。
+> 注意：引入 santd.js 前你需要自行引入 san 和 dayjs。
 
 ## 示例
 

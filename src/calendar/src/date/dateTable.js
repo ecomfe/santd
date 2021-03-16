@@ -4,7 +4,7 @@
  **/
 
 import san, {DataTypes} from 'san';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import {getTitleString, getTodayTime} from '../util/index';
 
 const ROW = 6;
@@ -41,7 +41,7 @@ export default san.defineComponent({
             /* eslint-disable no-unused-vars */
             const prefixCls = this.data.get('prefixCls');
             const locale = this.data.get('locale');
-            const value = this.data.get('value') || moment();
+            const value = this.data.get('value') || dayjs();
             const today = getTodayTime(value);
             const selectedValue = this.data.get('selectedValue');
             const hoverValue = this.data.get('hoverValue');
@@ -149,12 +149,12 @@ export default san.defineComponent({
         },
         weeks() {
             const locale = this.data.get('locale');
-            const value = this.data.get('value') || moment();
+            const value = this.data.get('value') || dayjs();
             const localeData = value.localeData();
             const firstDayOfWeek = localeData.firstDayOfWeek();
             const weekDays = [];
             const veryShortWeekdays = [];
-            const now = moment();
+            const now = dayjs();
 
             for (let dateColIndex = 0; dateColIndex < COL; dateColIndex++) {
                 const index = (firstDayOfWeek + dateColIndex) % COL;

@@ -4,7 +4,7 @@
  **/
 import san from 'san';
 import Calendar from '../calendar/src/calendar';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import {classCreator} from '../core/util';
 import Icon from '../icon';
 import Trigger from '../core/trigger';
@@ -36,7 +36,7 @@ export default san.defineComponent({
         if (align && typeof align === 'object') {
             placements[popupPlacement] = {...placements[popupPlacement], ...align};
         }
-        this.data.set('defaultValue', this.data.get('defaultPickerValue') || moment());
+        this.data.set('defaultValue', this.data.get('defaultPickerValue') || dayjs());
         this.data.set('hasExtraFooter', !!this.sourceSlots.named.renderExtraFooter);
         this.data.set('hasSuffixIcon', !!this.sourceSlots.named.suffixIcon);
     },

@@ -8,7 +8,7 @@ import CalendarHeader from '../calendar/calendarHeader';
 import DateTable from '../date/dateTable';
 import DateInput from '../date/dateInput';
 import {getTimeConfig} from '../util/index';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 export default san.defineComponent({
     components: {
@@ -33,7 +33,7 @@ export default san.defineComponent({
         const defaultSelectedValue = this.data.get('defaultSelectedValue');
 
         this.data.set('mode', mode || 'date');
-        this.data.set('value', value || defaultValue || moment());
+        this.data.set('value', value || defaultValue || dayjs());
         this.data.set('selectedValue', selectedValue || defaultSelectedValue);
     },
     handleDateTableSelect(value) {

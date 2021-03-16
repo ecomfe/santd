@@ -6,7 +6,7 @@
 import './style/index.less';
 import san from 'san';
 import Statistic from './Statistic';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 const timeUnits = [
     [/Y+/g, 1000 * 60 * 60 * 24 * 365], // years
@@ -66,15 +66,15 @@ export default san.defineComponent({
     },
 
     getFormatValue() {
-        const target = moment(this.data.get('deadline')).valueOf();
-        const current = moment().valueOf();
+        const target = dayjs(this.data.get('deadline')).valueOf();
+        const current = dayjs().valueOf();
         const diff = Math.max(target - current, 0);
         return formatTimeStr(diff, this.data.get('format'));
     },
 
     syncTimer() {
         const value = this.data.get('deadline');
-        const timestamp = moment(value).valueOf();
+        const timestamp = dayjs(value).valueOf();
         if (timestamp >= Date.now()) {
             this.startTimer();
         }

@@ -3,7 +3,7 @@
  * @author chenkai13 <chenkai13@baidu.com>
  */
 import san from 'san';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import {classCreator} from '../core/util';
 import Radio from '../radio';
 import Select from '../select';
@@ -11,6 +11,8 @@ import Calendar from './src/fullCalendar';
 import './style/index.less';
 import localeReceiver from '../localeprovider/receiver';
 
+dayjs.extend(require('dayjs/plugin/weekOfYear'));
+dayjs.extend(require('dayjs/plugin/localeData'));
 const prefixCls = classCreator('fullcalendar')();
 
 function getMonthsLocale(value) {
@@ -135,18 +137,18 @@ export default san.defineComponent({
         localeReceiver.inited.call(this);
 
         const defaultValue = this.data.get('defaultValue');
-        const value = this.data.get('value') || defaultValue || moment();
+        const value = this.data.get('value') || defaultValue || dayjs();
         const localeCode = this.data.get('localeCode');
 
         if (localeCode) {
-            moment.locale(localeCode);
+            dayjs.locale(localeCode);
             value.locale(localeCode);
         }
         this.data.set('value', value);
         this.data.set('hasHeaderRender', !!this.sourceSlots.named.headerRender);
 
         this.watch('localeCode', val => {
-            moment.locale(val);
+            dayjs.locale(val);
             value.locale(val);
             this.data.set('value', value, {force: true});
         });

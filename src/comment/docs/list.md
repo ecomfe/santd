@@ -22,19 +22,20 @@
     </div>
 </template>
 <script>
-import moment from 'moment';
+import dayjs from 'dayjs';
 import {Comment, Avatar, List} from 'santd';
 
+dayjs.extend(require('dayjs/plugin/relativeTime'));
 const data = [{
     author: 'Han Solo',
     avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
     content: `We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.`,
-    datetime: moment().subtract(1, 'days').fromNow()
+    datetime: dayjs().subtract(1, 'days').fromNow()
 }, {
     author: 'Han Solo',
     avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
     content: `We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.`,
-    datetime: moment().subtract(2, 'days').fromNow()
+    datetime: dayjs().subtract(2, 'days').fromNow()
 }];
 
 export default {

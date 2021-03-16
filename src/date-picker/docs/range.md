@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import moment from 'moment';
+import dayjs from 'dayjs';
 import {DatePicker} from 'santd';
 
 export default {
@@ -25,8 +25,8 @@ export default {
     initData() {
         return {
             ranges: {
-                Today: [moment(), moment()],
-                'This Month': [moment().startOf('month'), moment().endOf('month')]
+                Today: [dayjs(), dayjs()],
+                'This Month': [dayjs().startOf('month'), dayjs().endOf('month')]
             }
         }
     },
