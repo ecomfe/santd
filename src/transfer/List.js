@@ -6,7 +6,7 @@ import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
 import Checkbox from '../checkbox';
 import defaultRenderList from './RenderListBody';
-import Search from './search';
+import Search from './Search';
 
 const prefixCls = classCreator('transfer')('list');
 

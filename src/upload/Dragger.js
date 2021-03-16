@@ -4,7 +4,7 @@
  */
 
 import san from 'san';
-import Upload from './upload';
+import Upload from './Upload';
 
 export default san.defineComponent({
     initData() {

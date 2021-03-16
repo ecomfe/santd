@@ -5,7 +5,7 @@
 
 import san from 'san';
 import Upload from './src/ajaxUploader';
-import UploadList from './uploadlist';
+import UploadList from './UploadList';
 import uniqBy from 'lodash/uniqBy';
 import findIndex from 'lodash/findIndex';
 import {classCreator} from '../core/util';
