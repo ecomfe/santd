@@ -298,6 +298,11 @@
     top: 0;
     li {
       background-color: @component-background;
+      .@{tree-prefix-cls}-switcher-unactive {
+        svg {
+          transition: none !important;
+        }
+      }
     }
     &-scrolling {
       svg {

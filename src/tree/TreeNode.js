@@ -20,6 +20,7 @@ const getComputedKeys = (targetKeys = [], key) => {
     });
     return keysFlag;
 };
+const SWITCH_STATUS_DELAY_V = 100;
 
 let paramArr = [
     'filteredKeys',
@@ -62,7 +63,9 @@ export default san.defineComponent({
             disabled: false,
             loading: false,
             hasTitle: true,
-            LINE_UNIT_OFFEST_V
+            LINE_UNIT_OFFEST_V,
+            // 展开收起按钮是否被用户点击了
+            isSwitcherActive: false
         };
     },
 
@@ -253,6 +256,11 @@ export default san.defineComponent({
             expandedKeys,
             treeIndexV: this.data.get('treeIndexV')
         });
+
+        this.data.set('isSwitcherActive', true);
+        setTimeout(() => {
+            this.data.set('isSwitcherActive', false);
+        }, SWITCH_STATUS_DELAY_V);
     },
 
     attached() {
@@ -275,10 +283,13 @@ export default san.defineComponent({
                 class="
                     ${prefixCls}-switcher
                     ${prefixCls}-switcher_{{showExpandIcon ? (expanded ? 'open' : 'close') : 'noop'}}
+                    {{!(isVirtual && isSwitcherActive) ? '${prefixCls}-switcher-unactive' : ''}}
                 "
                 on-click="handleNodeExpand"
             >
-                <span class="${prefixCls}-switcher-{{showLine ? 'line-icon' : 'icon'}}" s-if="hasSwitcherIcon && showExpandIcon">
+                <span
+                    class="${prefixCls}-switcher-{{showLine ? 'line-icon' : 'icon'}}"
+                    s-if="hasSwitcherIcon && showExpandIcon">
                     <slot name="switcherIcon" var-expanded="{{expanded}}"/>
                 </span>
                 <s-icon type="caret-down" theme="filled" class="${prefixCls}-switcher-icon" s-else-if="showExpandIcon" />
