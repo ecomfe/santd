@@ -154,7 +154,7 @@ export default san.defineComponent({
         this.treeNodes = [];
 
         this.data.set('hasTitle', !!this.sourceSlots.named.title && this.data.get('hasTitle'));
-        this.data.set('hasIcon', !!this.sourceSlots.named.icon);
+        this.data.set('hasIcon', !!this.sourceSlots.named.icon || this.data.get('icon'));
         const treeData = this.data.get('treeData') || [];
         this.data.set('hasChild', !!treeData.length || !!this.data.get('treeNodeDataV.children.length'));
 
@@ -306,7 +306,14 @@ export default san.defineComponent({
             />
             <span class="{{titleClass}}" on-click="handleNodeClick($event)">
                 <span class="${prefixCls}-iconEle ${prefixCls}-tree-icon__customize" s-if="hasIcon && showIcon">
-                    <slot name="icon" var-selected="{{selected}}" var-expanded="{{expanded}}" var-isLeaf="{{!hasChild}} "/>
+                    <s-icon s-if="icon" type="{{icon}}"/>
+                    <slot
+                        s-else
+                        name="icon"
+                        var-selected="{{selected}}"
+                        var-expanded="{{expanded}}"
+                        var-isLeaf="{{!hasChild}}">
+                    </slot>
                 </span>
                 <span class="${prefixCls}-title">
                     <slot name="title" var-title="{{title}}" s-if="hasTitle" />
@@ -331,6 +338,7 @@ export default san.defineComponent({
                     value="{{tree.value}}"
                     isLeaf="{{tree.isLeaf}}"
                     disableCheckbox="{{tree.disableCheckbox}}"
+                    icon="{{tree.icon}}"
                     checkable="{{rootCheckable ? tree.checkable !== undefined ? tree.checkable : true : false}}"
                     disabled="{{rootDisabled || tree.disabled}}"
                     selectable="{{rootSelectable || tree.selectable}}"
