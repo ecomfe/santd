@@ -330,6 +330,7 @@ export default san.defineComponent({
                     activeKey="{{activeKey}}"
                     value="{{tree.value}}"
                     isLeaf="{{tree.isLeaf}}"
+                    disableCheckbox="{{tree.disableCheckbox}}"
                     checkable="{{rootCheckable ? tree.checkable !== undefined ? tree.checkable : true : false}}"
                     disabled="{{rootDisabled || tree.disabled}}"
                     selectable="{{rootSelectable || tree.selectable}}"
