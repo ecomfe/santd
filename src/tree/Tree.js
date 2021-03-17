@@ -14,7 +14,7 @@ import {LINE_UNIT_OFFEST_V} from './commonConst';
 const prefixCls = classCreator('tree')();
 const prefixClsV = prefixCls + '-virtual-list';
 const NODE_HEIGHT_V = 32;
-const SCROLL_STATUS_DELAY_V = 500;
+const SCROLL_STATUS_DELAY_V = 300;
 const LINE_BASIC_OFFEST_V = 12;
 
 export function traverseNodesKey(root = [], callback) {
