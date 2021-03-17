@@ -20,6 +20,7 @@ const getComputedKeys = (targetKeys = [], key) => {
     });
     return keysFlag;
 };
+const SWITCH_STATUS_DELAY_V = 100;
 
 let paramArr = [
     'filteredKeys',
@@ -62,7 +63,9 @@ export default san.defineComponent({
             disabled: false,
             loading: false,
             hasTitle: true,
-            LINE_UNIT_OFFEST_V
+            LINE_UNIT_OFFEST_V,
+            // 展开收起按钮是否被用户点击了
+            isSwitcherActive: false
         };
     },
 
@@ -151,7 +154,7 @@ export default san.defineComponent({
         this.treeNodes = [];
 
         this.data.set('hasTitle', !!this.sourceSlots.named.title && this.data.get('hasTitle'));
-        this.data.set('hasIcon', !!this.sourceSlots.named.icon);
+        this.data.set('hasIcon', !!this.sourceSlots.named.icon || this.data.get('icon'));
         const treeData = this.data.get('treeData') || [];
         this.data.set('hasChild', !!treeData.length || !!this.data.get('treeNodeDataV.children.length'));
 
@@ -253,6 +256,11 @@ export default san.defineComponent({
             expandedKeys,
             treeIndexV: this.data.get('treeIndexV')
         });
+
+        this.data.set('isSwitcherActive', true);
+        setTimeout(() => {
+            this.data.set('isSwitcherActive', false);
+        }, SWITCH_STATUS_DELAY_V);
     },
 
     attached() {
@@ -275,10 +283,13 @@ export default san.defineComponent({
                 class="
                     ${prefixCls}-switcher
                     ${prefixCls}-switcher_{{showExpandIcon ? (expanded ? 'open' : 'close') : 'noop'}}
+                    {{!(isVirtual && isSwitcherActive) ? '${prefixCls}-switcher-unactive' : ''}}
                 "
                 on-click="handleNodeExpand"
             >
-                <span class="${prefixCls}-switcher-{{showLine ? 'line-icon' : 'icon'}}" s-if="hasSwitcherIcon && showExpandIcon">
+                <span
+                    class="${prefixCls}-switcher-{{showLine ? 'line-icon' : 'icon'}}"
+                    s-if="hasSwitcherIcon && showExpandIcon">
                     <slot name="switcherIcon" var-expanded="{{expanded}}"/>
                 </span>
                 <s-icon type="caret-down" theme="filled" class="${prefixCls}-switcher-icon" s-else-if="showExpandIcon" />
@@ -295,11 +306,18 @@ export default san.defineComponent({
             />
             <span class="{{titleClass}}" on-click="handleNodeClick($event)">
                 <span class="${prefixCls}-iconEle ${prefixCls}-tree-icon__customize" s-if="hasIcon && showIcon">
-                    <slot name="icon" var-selected="{{selected}}" var-expanded="{{expanded}}" var-isLeaf="{{!hasChild}} "/>
+                    <s-icon s-if="icon" type="{{icon}}"/>
+                    <slot
+                        s-else
+                        name="icon"
+                        var-selected="{{selected}}"
+                        var-expanded="{{expanded}}"
+                        var-isLeaf="{{!hasChild}}">
+                    </slot>
                 </span>
                 <span class="${prefixCls}-title">
                     <slot name="title" var-title="{{title}}" s-if="hasTitle" />
-                    <template s-else>{{title}}</template>
+                    <fragment s-else>{{title}}</fragment>
                 </span>
             </span>
             <ul class="${prefixCls}-child-tree ${prefixCls}-child-tree-{{expanded ? 'open' : 'close'}}">
@@ -319,6 +337,8 @@ export default san.defineComponent({
                     activeKey="{{activeKey}}"
                     value="{{tree.value}}"
                     isLeaf="{{tree.isLeaf}}"
+                    disableCheckbox="{{tree.disableCheckbox}}"
+                    icon="{{tree.icon}}"
                     checkable="{{rootCheckable ? tree.checkable !== undefined ? tree.checkable : true : false}}"
                     disabled="{{rootDisabled || tree.disabled}}"
                     selectable="{{rootSelectable || tree.selectable}}"

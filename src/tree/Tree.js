@@ -14,7 +14,7 @@ import {LINE_UNIT_OFFEST_V} from './commonConst';
 const prefixCls = classCreator('tree')();
 const prefixClsV = prefixCls + '-virtual-list';
 const NODE_HEIGHT_V = 32;
-const SCROLL_STATUS_DELAY_V = 500;
+const SCROLL_STATUS_DELAY_V = 300;
 const LINE_BASIC_OFFEST_V = 12;
 
 export function traverseNodesKey(root = [], callback) {
@@ -169,6 +169,9 @@ export default san.defineComponent({
             const treeData = this.data.get('treeData');
             if (treeData) {
                 this.data.set('flatNodes', this.flattenTreeData(treeData));
+                this.watch('treeData', val => {
+                    this.data.set('flatNodes', this.flattenTreeData(val));
+                });
             } else {
                 console.error('`treeData` not found.');
             }
@@ -571,6 +574,8 @@ export default san.defineComponent({
                 activeKey="{{activeKey}}"
                 value="{{tree.value}}"
                 isLeaf="{{tree.isLeaf}}"
+                disableCheckbox="{{tree.disableCheckbox}}"
+                icon="{{tree.icon}}"
                 checkable="{{rootCheckable && tree.checkable === undefined || tree.checkable)}}"
                 disabled="{{tree.disabled || rootDisabled}}"
                 selectable="{{rootSelectable && tree.selectable === undefined || tree.selectable)}}"
@@ -618,6 +623,8 @@ export default san.defineComponent({
                     activeKey="{{activeKey}}"
                     value="{{tree.value}}"
                     isLeaf="{{tree.isLeaf}}"
+                    disableCheckbox="{{tree.disableCheckbox}}"
+                    icon="{{tree.icon}}"
                     checkable="{{rootCheckable && tree.checkable === undefined || tree.checkable)}}"
                     disabled="{{tree.disabled || rootDisabled}}"
                     selectable="{{rootSelectable && tree.selectable === undefined || tree.selectable)}}"
