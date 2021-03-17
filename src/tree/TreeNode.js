@@ -299,7 +299,7 @@ export default san.defineComponent({
                 </span>
                 <span class="${prefixCls}-title">
                     <slot name="title" var-title="{{title}}" s-if="hasTitle" />
-                    <template s-else>{{title}}</template>
+                    <fragment s-else>{{title}}</fragment>
                 </span>
             </span>
             <ul class="${prefixCls}-child-tree ${prefixCls}-child-tree-{{expanded ? 'open' : 'close'}}">

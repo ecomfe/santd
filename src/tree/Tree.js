@@ -169,6 +169,9 @@ export default san.defineComponent({
             const treeData = this.data.get('treeData');
             if (treeData) {
                 this.data.set('flatNodes', this.flattenTreeData(treeData));
+                this.watch('treeData', val => {
+                    this.data.set('flatNodes', this.flattenTreeData(val));
+                });
             } else {
                 console.error('`treeData` not found.');
             }
