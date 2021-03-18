@@ -24,6 +24,7 @@
             <s-tree-node title="leaf" key="0-0-2-0" />
             <s-tree-node title="leaf" key="0-0-2-1" />
           </s-tree-node>
+        </s-tree-node>
     </s-tree>
   </div>
 </template>

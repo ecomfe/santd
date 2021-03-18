@@ -54,7 +54,6 @@
                     <s-col span="{{8}}"><s-checkbox value="C">C</s-checkbox></s-col>
                     <s-col span="{{8}}"><s-checkbox value="D">D</s-checkbox></s-col>
                     <s-col span="{{8}}"><s-checkbox value="E">E</s-checkbox></s-col>
-                    </s-col>
                 </s-row>
             </s-checkboxgroup>
         </s-formitem>

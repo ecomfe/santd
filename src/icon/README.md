@@ -64,9 +64,5 @@ const CustomIcon = san.defineComponent({
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| scriptUrl | [iconfont.cn](http://www.iconfont.cn) 项目在线生成的 `js` 地址 | string | - |
-| extraCommonProps | 给所有的 `svg` 图标 `<s-icon />` 组件设置额外的属性 | {[key: string]: any} | {} |
-
-在 `scriptUrl` 都设置有效的情况下，组件在渲染前会自动引入 [iconfont.cn](http://www.iconfont.cn) 项目中的图标符号集，无需手动引入。
-
-见 [iconfont.cn 使用帮助](http://iconfont.cn/help/detail?spm=a313x.7781069.1998910419.15&helptype=code) 查看如何生成 js 地址。
+| scriptUrl | [iconfont.cn](http://www.iconfont.cn) 项目在线生成的 `js` 地址 | `string` | - |
+| extraCommonProps | 给所有的 `svg` 图标 `<s-icon />` 组件设置额外的属性 | `{[key: string]: any}` | `{}` |

@@ -10,11 +10,11 @@
                 type="info"
                 message="Alert message title"
                 description="Further details about the context of this alert."
-            >
+            />
         </s-spin>
         <div style="margin-top: 16px;">
             Loading state： <s-switch checked="{=loading=}" on-change="toggle"/>
-        <div>
+        </div>
     </div>
 </template>
 

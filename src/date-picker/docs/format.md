@@ -12,7 +12,7 @@
             <br /><br />
             <s-monthpicker defaultValue="{{value3}}" format="{{monthFormat}}" />
             <br /><br />
-            <s-rangepicker defaultValue="{{value4}}" format="{{dateFormat}}">
+            <s-rangepicker defaultValue="{{value4}}" format="{{dateFormat}}" />
         </div>
     </div>
 </template>

@@ -10,7 +10,7 @@
                 type="info"
                 message="Alert message title"
                 description="Further details about the context of this alert."
-            >
+            />
         </s-spin>
     </div>
 </template>

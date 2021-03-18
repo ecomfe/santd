@@ -21,7 +21,7 @@
         </s-header>
         <s-content style="padding: 0 50px; margin-top: 64px;">
             <s-breadcrumb separator="/" style="margin: 16px 0">
-                <s-brcrumbitem href="www.baidu.com">Home</s-brcrumbitem>
+                <s-brcrumbitem href="#">Home</s-brcrumbitem>
                 <s-brcrumbitem href="#">List</s-brcrumbitem>
                 <s-brcrumbitem>App</s-brcrumbitem>
             </s-breadcrumb>

@@ -34,9 +34,9 @@
         </s-paragraph>
         <s-paragraph>
             <ul>
-                <li><a href="#">Model</a>： 域模型，用于持久化</li>
-                <li><a href="#">View</a>： 作为视图模板存在</li>
-                <li><a href="#">ViewModel</a>： 作为视图的模型，为视图服务</li>
+                <li>Model： 域模型，用于持久化</li>
+                <li>View： 作为视图模板存在</li>
+                <li>ViewModel： 作为视图的模型，为视图服务</li>
             </ul> 
         </s-paragraph>
     </s-typography>

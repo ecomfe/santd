@@ -41,5 +41,24 @@ export default {
     }
 }
 </script>
+
+<style>
+.height-100 {
+    height: 100px;
+    line-height: 100px
+}
+.height-50 {
+    height: 50px;
+    line-height: 50px
+}
+.height-120 {
+    height: 120px;
+    line-height: 120px
+}
+.height-80 {
+    height: 80px;
+    line-height: 80px
+}
+</style>
 ```
 </codebox>

@@ -29,7 +29,7 @@ CustomizedForm = Form.create({})({
 | --- | --- | --- |
 | mapPropsToFields | 把父组件的属性映射到表单项上（如：把 san-store 中的值读出），需要对返回值中的表单域数据用 Form.createFormField 标记，注意表单项将变成受控组件, error 等也需要一并手动传入 | (form) => ({ [fieldName]: FormField { value } }) |
 | name |  设置表单域内字段 id 的前缀 | - |
-| validateMessages | 默认校验信息，可用于把默认错误信息改为中文等，格式与 newMessages 返回值一致 | Object { [nested.path]: String } |
+| validateMessages | 默认校验信息，可用于把默认错误信息改为中文等，格式与 newMessages 返回值一致 | `Object { [nested.path]: String }` |
 | onFieldsChange | 当 Form.Item 子节点的值（包括 error）发生改变时触发，可以把对应的值转存到 san-store| Function(form, changedFields, allFields) |
 | onValuesChange | 任一表单域的值发生改变时的回调 | Function(form, changedValues, allValues) => void |
 

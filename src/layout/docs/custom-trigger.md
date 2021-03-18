@@ -35,7 +35,7 @@
         </s-sider>
         <s-layout>
             <s-header style="background: #fff; padding: 0">
-                <s-icon class="trigger" type="{{collapsed ? 'menu-unfold' : 'menu-fold'}}" on-click="toggleCollapsed"/></span>
+                <s-icon class="trigger" type="{{collapsed ? 'menu-unfold' : 'menu-fold'}}" on-click="toggleCollapsed"/>
             </s-header>
             <s-content style="{{{margin: '24px 16px', padding: '24px', background: '#fff', 'min-height': '280px'}}}">Content</s-content>
         </s-layout>

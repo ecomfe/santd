@@ -17,7 +17,7 @@
                     </template>
                 </s-comment>
             </li>
-        </s-lst>
+        </s-list>
     </div>
 </template>
 <script>

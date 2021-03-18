@@ -47,7 +47,7 @@
             </s-sider>
             <s-layout style="{{{padding: '0 24px 24px'}}}">
                 <s-breadcrumb style="{{{margin: '16px 0'}}}">
-                    <s-brcrumbitem href="www.baidu.com">Home</s-brcrumbitem>
+                    <s-brcrumbitem href="#">Home</s-brcrumbitem>
                     <s-brcrumbitem href="#">List</s-brcrumbitem>
                     <s-brcrumbitem>App</s-brcrumbitem></s-breadcrumb>
                 <s-content style="{{{padding: '24px', background: '#fff', minHeight: '280px'}}}">Content</s-content></s-layout>

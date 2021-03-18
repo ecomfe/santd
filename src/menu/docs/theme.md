@@ -32,7 +32,7 @@
             <s-menu-item-group key="g2" title="Item 2">
                 <s-menu-item key="3">Option 3</s-menu-item>
                 <s-menu-item key="4">Option 4</s-menu-item>
-            </s-menu-item>
+            </s-menu-item-group>
         </s-sub-menu>
         <s-sub-menu key="sub2">
             <span slot="title">

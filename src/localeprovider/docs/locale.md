@@ -6,11 +6,11 @@
 <template>
     <div>
         <div class="change-locale">
-        <span style="margin-right: 16px">Change locale of components: </span>
-        <s-radiogroup defaultValue="zhCN" on-change="handleChangeLocale" name="language">
-            <s-radiobutton key="en" value="enUS">English</s-radiobutton>
-            <s-radiobutton key="cn" value="zhCN">中文</s-radiobutton>
-        </s-radiogroup>
+            <span style="margin-right: 16px">Change locale of components: </span>
+            <s-radiogroup defaultValue="zhCN" on-change="handleChangeLocale" name="language">
+                <s-radiobutton key="en" value="enUS">English</s-radiobutton>
+                <s-radiobutton key="cn" value="zhCN">中文</s-radiobutton>
+            </s-radiogroup>
         </div>
         <s-localeprovider locale="{{locale}}">
             <div class="locale-components">
@@ -30,7 +30,7 @@
                 </div>
                 <div class="example">
                     <s-transfer dataSource="{{[]}}" showSearch="{{true}}" targetKeys="{{[]}}" render="{{render}}"/>
-                <div>
+                </div>
                 <div class="example" style="width: 319px; border: 1px solid #d9d9d9; border-radius: 4px">
                     <s-calendar fullscreen="{{false}}"  />
                 </div>

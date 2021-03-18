@@ -84,7 +84,7 @@
 | defaultValue          | 默认日期                                                                                          | [dayjs](https://day.js.org)[]                    | -        |
 | disabledTime          | 不可选择的时间                                                                                    | function(date: [dayjs, dayjs], partial: `'start'\|'end'`)       | -            |
 | format                | 展示的日期格式 | string | 'YYYY-MM-DD HH:mm:ss' |
-| ranges                  | 预设时间范围快捷选择                                                                                    |  { [range: string]: dayjs[] } \| { [range: string]: () => dayjs[] }             | -   |
+| ranges                  | 预设时间范围快捷选择 | `{ [range: string]: dayjs[] } \| { [range: string]: () => dayjs[] }` | -   |
 | renderExtraFooter     | 在面板中添加额外的页脚                                                                            | slot                               | -        |
 | separator     | 设置分隔符                                                                            | string                                  | '~'        |
 | showTime              | 增加时间选择功能                                                                                  | Object\|boolean  | -            |

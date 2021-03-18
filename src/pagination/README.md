@@ -7,7 +7,7 @@
 | defaultPageSize | 默认的每页条数 | number | 10 |
 | disabled | 禁用分页 | boolean | - |
 | hideOnSinglePage | 只有一页时是否隐藏分页器 | boolean | false |
-| itemRender | 用于自定义页码的结构，可用于优化 SEO | slot {type: 'page' \| 'prev' \| 'next', page: number} | - |
+| itemRender | 用于自定义页码的结构，可用于优化 SEO | `slot {type: 'page' \| 'prev' \| 'next', page: number}` | - |
 | pageSize | 每页条数 | number | - |
 | pageSizeOptions | 指定每页可以显示多少条 | string[] | [10, 20, 30, 40] |
 | showLessItems | 展示较少的分页数 | boolean | false |

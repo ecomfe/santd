@@ -24,7 +24,7 @@ table组件
 | pagination | 分页器，设置为false时不展示 | object | - |
 | rowClassName | 表格行的类名 | Function(record, index):string | - |
 | rowSelection | 表格行是否可选择 | object | null |
-| scroll | 设置横向或纵向滚动，也可用于指定滚动区域的宽和高，建议为 `x` 设置一个数字，如果要设置为 `true`，需要配合样式 `.san-table td { white-space: nowrap; }` | { x: number \| true, y: number } | - |
+| scroll | 设置横向或纵向滚动，也可用于指定滚动区域的宽和高，建议为 `x` 设置一个数字，如果要设置为 `true`，需要配合样式 `.san-table td { white-space: nowrap; }` | `{ x: number | true, y: number }` | - |
 | showHeader | 是否显示表头 | boolean | true |
 | size | 表格大小 | default \| middle \| small | default |
 | title | 表格标题 | slot | - |
@@ -68,35 +68,3 @@ table组件
 | pageSize | 每页条数 | number | |
 | current | 当前页数 | number | |
 | total | 数据总数 | number |0|
-| position | 指定分页显示的位置， 取值为topLeft | topCenter | topRight |bottomLeft | bottomCenter | bottomRight | Array |[bottomRight]|
-
-### rowSelection
-
-选择功能的配置。
-
-| 属性 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| checkStrictly | checkable 状态下节点选择完全受控（父子数据选中状态不再关联） | boolean | true | |
-| columnWidth | 自定义列表选择框宽度 | string<number> \| number | |
-| columnTitle | 自定义列表选择框标题 | string |  - |
-| getCheckboxProps | 选择框的默认属性配置 | Function(record) |  - |
-| hideDefaultSelections | 去掉『全选』『反选』两个默认选项	 | Boolean | false |
-| selectedRowKeys | 指定选中项的 key 数组，需要和 on-change 进行配合 | string[] | [] |
-| selections | 自定义选择配置项, 设为 true 时使用默认选择项 | object[] |boolean | true |
-| type | 多选/单选，`checkbox` or `radio` | string |`checkbox` | true |
-| onChange | 选中项发生变化时的回调 | Function(selectedRowKeys, selectedRows) | - |
-| onSelect | 用户手动选择/取消选择某行的回调 | Function(record, selected, selectedRows, nativeEvent) | - |
-| onSelectAll | 用户手动选择/取消选择所有行的回调 | Function(selected, selectedRows, changeRows) | - |
-| onSelectInvert | 用户手动选择反选的回调 | Function(selectedRows) | - |
-
-### selection
-
-| 属性 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| key | San 需要的 key，建议设置 | string | - |
-| text | 选择项显示的文字| string | - |
-| onSelect | 选择项点击回调 | Function(changeableRowKeys) | - |
-
-## 注意
-
-在 Table 中，data 和 columns 里的数据值都需要指定 key 值。对于 data 默认将每列数据的 key 属性作为唯一的标识。

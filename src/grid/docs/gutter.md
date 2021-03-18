@@ -32,5 +32,21 @@ export default {
     }
 }
 </script>
+
+<style>
+.gutter-row {
+    padding: 5px 0;
+    text-align: center;
+    border-radius: 0;
+    min-height: 30px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    color: #fff;
+}
+.gutter-box {
+    background: #00a0e9;
+    padding: 5px 0;
+}
+</style>
 ```
 </codebox>

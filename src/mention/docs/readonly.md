@@ -21,7 +21,6 @@
             suggestions="{{ ['liyanhong666', 'mayun', 'mahuateng', 'zhouhongyi', 'leijun666', 'ww233'] }}"
           />
     </div>
-  </div>
 </template>
 <script>
 import {Mention} from 'santd';

@@ -14,12 +14,12 @@
 | notFoundContent | 未找到时的内容 | string | '无匹配结果，轻敲空格完成输入' |
 | placeholder | 输入框默认文字 | string | null |
 | placement | 建议框位置，可选 `top` `bottom` | string | 'bottom' |
-| prefix | 触发弹出下拉框的字符 | string or Array<string> | '@' |
+| prefix | 触发弹出下拉框的字符 | string or string[] | '@' |
 | readOnly | 是否只读. | boolean | false |
 | defaultValue | 默认值 | string | '' | |
 | value | 值 | string | '' |
-| defaultSuggestions | 默认建议内容 | Array&lt;string> | \[] | |
-| suggestions | 建议内容 | Array&lt;string> | \[] |
+| defaultSuggestions | 默认建议内容 | string[] | \[] | |
+| suggestions | 建议内容 | string[] | \[] |
 | suggestionStyle | 弹出下拉框样式 | string | '' |
 | split | 设置选中项前后分隔符 | string | ' ' |
 | filterOption | 自定义过滤逻辑 | false \| (input, option): boolean | - |
