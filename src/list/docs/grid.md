@@ -58,7 +58,6 @@ export default {
 }
 .content {
     width: 100%;
-    height: 70px;
     color: #333;
 }
 </style>
