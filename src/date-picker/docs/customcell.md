@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 定制日期单元格
 使用 `dateRender` 可以自定义日期单元格的内容和样式。
-</text>
 
 ```html
 <template>
@@ -41,3 +40,4 @@ export default {
 </script>
 
 ```
+</codebox>

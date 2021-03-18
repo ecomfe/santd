@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 条件触发
 可以判断是否需要弹出。
-</text>
 
 ```html
 <template>
@@ -65,3 +64,4 @@ export default {
 }
 </script>
 ```
+</codebox>

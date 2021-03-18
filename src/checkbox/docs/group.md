@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### Checkbox组
 方便的从数组生成Checkbox组。
-</text>
 
 ```html
 <template>
@@ -53,3 +52,4 @@ export default {
 }
 </script>
 ```
+</codebox>

@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 自定义选项
 也可以直接传 `AutoComplete.Option` 作为 `AutoComplete` 的 `children`，而非使用 `dataSource`。
-</text>
 
 ```html
 <template>
@@ -48,3 +47,4 @@ export default {
 }
 </script>
 ```
+</codebox>

@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 抽屉表单
 在抽屉中使用表单。
-</text>
 
 ```html
 <template>
@@ -150,3 +149,4 @@ export default Form.create({})({
 }
 </style>
 ```
+</codebox>

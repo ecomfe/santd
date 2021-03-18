@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 栅格卡片
 在系统概览页面常常和栅格进行配合。
-</text>
 
 ```html
 <template>
@@ -31,3 +30,4 @@ export default {
 }
 </script>
 ```
+</codebox>

@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 自定义触发器
 要使用自定义触发器，可以设置 `trigger = null` 来隐藏默认设定。
-</text>
 
 ```html
 <template>
@@ -89,3 +88,4 @@ export default {
 }
 </style>
 ```
+</codebox>

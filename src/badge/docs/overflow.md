@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 封顶数字
 超过 `overflowCount` 的会显示为 `\${overflowCount}+`，默认的 `overflowCount` 为 `99`。
-</text>
 
 ```html
 <template>
@@ -30,3 +29,4 @@ export default {
 }
 </script>
 ```
+</codebox>

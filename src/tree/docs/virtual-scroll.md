@@ -1,10 +1,9 @@
-<text lang="cn">
+<codebox>
 #### 虚拟滚动
 
 使用 `height` 属性则切换为虚拟滚动。
 
 只支持传入 treeData，不支持手动构造 TreeNode 节点。
-</text>
 
 ```html
 <template>
@@ -45,3 +44,4 @@ export default {
 }
 </script>
 ```
+</codebox>

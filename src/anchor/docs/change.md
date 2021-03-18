@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 监听锚点链接改变
 监听锚点链接改变。
-</text>
 
 ```html
 <template>
@@ -30,3 +29,4 @@ export default {
 }
 </script>
 ```
+</codebox>

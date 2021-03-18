@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 可以自定义显示
 切换按钮和结果分开。
-</text>
 
 ```html
 <template>
@@ -50,3 +49,4 @@ export default {
 }
 </script>
 ```
+</codebox>

@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 水平分割线
 默认为水平分割线，可在中间加入文字。
-</text>
 
 ```html
 <template>
@@ -23,3 +22,4 @@ export default {
 }
 </script>
 ```
+</codebox>

@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 自定义已选项
 例如给最后一项加上邮编链接。
-</text>
 
 ```html
 <template>
@@ -65,3 +64,4 @@ export default {
 }
 </script>
 ```
+</codebox>

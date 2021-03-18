@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 自动关闭的延时
 自定义通知框自动关闭的延时，默认`4.5s`，取消自动关闭只要将该值设为 `0` 即可。`注：鼠标经过时会重新计时`
-</text>
 
 ```html
 <template>
@@ -27,3 +26,4 @@ export default {
 }
 </script>
 ```
+</codebox>

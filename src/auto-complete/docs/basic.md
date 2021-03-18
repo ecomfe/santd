@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 基本使用
 基本使用。通过 dataSource 设置自动完成的数据源
-</text>
 
 ```html
 <template>
@@ -47,3 +46,4 @@ export default {
 }
 </script>
 ```
+</codebox>

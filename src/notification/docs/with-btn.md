@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 自定义按钮
 自定义关闭按钮（模板标签需使用`s-button`）的样式和文字。
-</text>
 
 ```html
 <template>
@@ -41,3 +40,4 @@ export default {
 }
 </script>
 ```
+</codebox>

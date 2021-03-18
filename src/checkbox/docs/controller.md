@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 受控的Checkbox
 联动Checkbox。
-</text>
 
 ```html
 <template>
@@ -51,3 +50,4 @@ export default {
 }
 </script>
 ```
+</codebox>

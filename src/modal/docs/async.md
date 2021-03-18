@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 异步关闭
 点击确定后异步关闭对话框，例如提交表单。
-</text>
 
 ```html
 <template>
@@ -50,8 +49,5 @@ export default {
     }
 }
 </script>
-
-<style>
-.demo-async {}
-</style>
 ```
+</codebox>

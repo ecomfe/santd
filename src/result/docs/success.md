@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### Success
 成功的结果。
-</text>
 
 ```html
 <template>
@@ -29,3 +28,4 @@ export default {
 }
 </script>
 ```
+</codebox>

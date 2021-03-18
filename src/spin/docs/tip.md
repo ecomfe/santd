@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 自定义描述文案
 自定义描述文案。
-</text>
 
 ```html
 <template>
@@ -27,3 +26,4 @@ export default {
 }
 </script>
 ```
+</codebox>

@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 垂直分割线
 使用 `type="vertical"` 设置为行内的垂直分割线。
-</text>
 
 ```html
 <template>
@@ -23,3 +22,4 @@ export default {
 }
 </script>
 ```
+</codebox>

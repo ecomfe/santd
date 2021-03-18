@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 标签
 使用 label 标签单独展示时间
-</text>
 
 ```html
 <template>
@@ -47,3 +46,4 @@ export default {
 }
 </script>
 ```
+</codebox>

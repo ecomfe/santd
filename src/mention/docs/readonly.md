@@ -1,8 +1,7 @@
-<text lang="cn">
+<codebox>
 #### 无效或只读
 通过 disabled 属性设置是否生效。通过 readOnly 属性设置是否只读。
 
-</text>
 
 ```html
 <template>
@@ -34,3 +33,4 @@ export default {
 }
 </script>
 ```
+</codebox>

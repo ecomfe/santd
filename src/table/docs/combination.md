@@ -1,7 +1,6 @@
-src/form/README.md <text lang="cn">
+src/form/README.md <codebox>
 #### 分页器
 选择不同配置组合查看效果
-</text>
 
 ```html
 <template>
@@ -94,3 +93,4 @@ export default {
 }
 </script>
 ```
+</codebox>

@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 气泡框位置
 tooltip气泡框位置
-</text>
 
 ```html
 <template>
@@ -25,3 +24,4 @@ export default {
 }
 </script>
 ```
+</codebox>

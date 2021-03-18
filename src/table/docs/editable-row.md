@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 可编辑行
 带行编辑功能的表格。
-</text>
 
 ```html
 <template>
@@ -134,3 +133,4 @@ export default {
 }
 </script>
 ```
+</codebox>

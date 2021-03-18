@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 搜索框
 搜索和远程数据结合。
-</text>
 
 ```html
 <template>
@@ -90,3 +89,4 @@ export default {
 }
 </script>
 ```
+</codebox>

@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 单位
 通过前缀和后缀添加单位。
-</text>
 
 ```html
 <template>
@@ -37,3 +36,4 @@ export default {
 }
 </script>
 ```
+</codebox>

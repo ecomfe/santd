@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 状态点
 用于表示状态的小圆点。
-</text>
 
 ```html
 <template>
@@ -33,3 +32,4 @@ export default {
 }
 </script>
 ```
+</codebox>

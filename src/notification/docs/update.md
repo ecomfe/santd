@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 更新消息内容
 可以通过唯一的 key 来更新内容。
-</text>
 
 ```html
 <template>
@@ -38,3 +37,4 @@ export default {
 }
 </script>
 ```
+</codebox>

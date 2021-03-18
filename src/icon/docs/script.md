@@ -1,8 +1,7 @@
-<text lang="cn">
+<codebox>
 #### 使用iconfont.cn
 
 对于使用 [iconfont.cn](http://www.iconfont.cn) 的用户，通过设置 `createFromIconfontCN` 方法参数对象中的 `scriptUrl` 字段， 即可轻松地使用已有项目中的图标。
-</text>
 
 ```html
 <template>
@@ -25,3 +24,4 @@ export default {
 }
 </script>
 ```
+</codebox>

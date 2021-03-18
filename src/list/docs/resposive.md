@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 响应式的栅格列表
 响应式的栅格列表。尺寸与 Layout Grid 保持一致。
-</text>
 
 ```html
 <template>
@@ -60,3 +59,4 @@ export default {
 }
 </script>
 ```
+</codebox>

@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 单选组合
 一组互斥的 Radio 配合使用。
-</text>
 
 ```html
 <template>
@@ -34,3 +33,4 @@ export default {
 }
 </script>
 ```
+</codebox>

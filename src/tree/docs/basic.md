@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 基本
 最简单的用法，展示可勾选，可选中，禁用，默认展开等功能。
-</text>
 
 ```html
 <template>
@@ -45,3 +44,4 @@ export default {
 }
 </script>
 ```
+</codebox>

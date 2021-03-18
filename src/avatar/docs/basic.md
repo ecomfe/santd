@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 基本
 头像有三种尺寸，两种形状可选。
-</text>
 
 ```html
 <template>
@@ -30,3 +29,4 @@ export default {
 }
 </script>
 ```
+</codebox>

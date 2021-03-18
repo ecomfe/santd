@@ -1,9 +1,8 @@
-<text lang="cn">
+<codebox>
 #### 缩起内嵌菜单
 内嵌菜单可以被缩起/展开。
 
 你可以在 Layout 里查看侧边布局结合的完整示例。
-</text>
 
 
 ```html
@@ -116,3 +115,4 @@ export default {
 }
 </style>
 ```
+</codebox>

@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 圆圈颜色
 圆圈颜色，绿色用于已完成、成功状态，红色表示告警或错误状态，蓝色可表示正在进行或其他默认状态。
-</text>
 
 ```html
 <template>
@@ -38,3 +37,4 @@ export default {
 }
 </script>
 ```
+</codebox>

@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 自行定义图标相关样式
 展示 TreeNode title 前的图标
-</text>
 
 ```html
 <template>
@@ -47,3 +46,4 @@ export default {
 }
 </script>
 ```
+</codebox>

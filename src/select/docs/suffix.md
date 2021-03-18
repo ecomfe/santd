@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 后缀图标
 使用`Icon`组件定义的`suffixIcon`插槽, 添加`class`名`san-select-arrow-icon`时，将实现与箭头图标相同的旋转动画。
-</text>
 
 ```html
 <template>
@@ -35,3 +34,4 @@ export default {
 }
 </script>
 ```
+</codebox>

@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 垂直
 垂直的列表。
-</text>
 
 ```html
 <template>
@@ -29,3 +28,4 @@ export default {
 }
 </script>
 ```
+</codebox>

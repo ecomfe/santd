@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 前缀和后缀
 在输入框上添加前缀或后缀图标。
-</text>
 
 ```html
 <template>
@@ -31,3 +30,4 @@ export default {
 }
 </script>
 ```
+</codebox>

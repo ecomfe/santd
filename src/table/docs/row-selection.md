@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 可选择
 第一列是联动的选择框。可以通过 rowSelection.type 属性指定选择类型，默认为 checkbox。
-</text>
 
 ```html
 <template>
@@ -85,3 +84,4 @@ export default {
 }
 </script>
 ```
+</codebox>

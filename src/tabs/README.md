@@ -31,4 +31,4 @@
 | closeIcon | 自定义关闭图标，在 type="editable-card"时有效 | slot | 无 |
 | forceRender | 被隐藏时是否渲染 DOM 结构 | boolean | false |
 | key | 对应 activeKey | string | 无 |
-| tab | 选项卡头显示文字 | string | 无 |
+| tab | 选项卡头显示文字 | string \| slot | 无 |

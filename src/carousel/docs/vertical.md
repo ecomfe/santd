@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 垂直
 垂直显示。
-</text>
 
 ```html
 <template>
@@ -44,3 +43,4 @@ export default {
 }
 </style>
 ```
+</codebox>

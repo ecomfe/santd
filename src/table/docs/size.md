@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 紧凑型
 两种紧凑型的列表，小型列表只用于对话框内。
-</text>
 
 ```html
 <template>
@@ -68,3 +67,4 @@ export default {
 }
 </script>
 ```
+</codebox>

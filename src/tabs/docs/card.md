@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 卡片式页签
 另一种样式的页签，不提供对应的垂直样式。
-</text>
 
 ```html
 <template>
@@ -30,3 +29,4 @@ export default {
 }
 </script>
 ```
+</codebox>

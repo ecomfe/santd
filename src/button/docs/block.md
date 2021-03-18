@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### block 按钮
 block属性将使按钮适合其父宽度。
-</text>
 
 ```html
 <template>
@@ -25,3 +24,4 @@ export default {
 <style>
 </style>
 ```
+</codebox>

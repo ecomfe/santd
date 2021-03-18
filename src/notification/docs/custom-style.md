@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 自定义样式
 使用 style 和 className 来定义样式。
-</text>
 
 ```html
 <template>
@@ -30,3 +29,4 @@ export default {
 }
 </script>
 ```
+</codebox>

@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 单元格自动省略
 设置column.ellipsis可以让单元格内容根据宽度自动省略。
-</text>
 
 ```html
 <template>
@@ -99,3 +98,4 @@ export default {
 }
 </script>
 ```
+</codebox>

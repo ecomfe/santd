@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 多行
 多行模式，多行模式必须指定高度。
-</text>
 
 ```html
 <template>
@@ -29,3 +28,4 @@ export default {
 }
 </script>
 ```
+</codebox>

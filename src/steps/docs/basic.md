@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 基本用法
 简单的步骤条。
-</text>
 
 ```html
 <template>
@@ -24,3 +23,4 @@ export default {
 }
 </script>
 ```
+</codebox>

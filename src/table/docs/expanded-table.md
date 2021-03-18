@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 嵌套子表格
 展示每行数据更详细的信息。
-</text>
 
 ```html
 <template>
@@ -103,3 +102,4 @@ export default {
 }
 </script>
 ```
+</codebox>

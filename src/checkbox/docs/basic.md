@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 基本用法
 简单的checkbox
-</text>
 
 ```html
 <template>
@@ -23,3 +22,4 @@ export default {
 }
 </script>
 ```
+</codebox>

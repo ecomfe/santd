@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 自定义标题
 设置鼠标放在状态点上时显示的文字
-</text>
 
 ```html
 <style>
@@ -35,3 +34,4 @@ export default {
 }
 </script>
 ```
+</codebox>

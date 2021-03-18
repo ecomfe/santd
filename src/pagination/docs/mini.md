@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 迷你
 迷你版本。
-</text>
 
 ```html
 <template>
@@ -29,3 +28,4 @@ export default {
 }
 </script>
 ```
+</codebox>

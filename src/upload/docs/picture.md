@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 图片列表样式
 上传文件为图片，可展示本地缩略图。IE8/9 不支持浏览器本地缩略图展示（[Ref](https://developer.mozilla.org/en-US/docs/Web/API/FileReader/readAsDataURL)），可以写 `thumbUrl` 属性来代替。
-</text>
 
 ```html
 <template>
@@ -70,3 +69,4 @@ export default {
 }
 </style>
 ```
+</codebox>

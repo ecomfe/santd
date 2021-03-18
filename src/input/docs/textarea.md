@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 文本域
 用于多行输入。
-</text>
 
 ```html
 <template>
@@ -42,3 +41,4 @@ export default {
 </script>
 
 ```
+</codebox>

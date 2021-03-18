@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 主题
 内建了两套主题 `light|dark`，默认 `light`
-</text>
 
 ```html
 <template>
@@ -87,3 +86,4 @@ export default {
 }
 </script>
 ```
+</codebox>

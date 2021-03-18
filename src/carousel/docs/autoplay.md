@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 自动切换
 定时切换下一张。
-</text>
 
 ```html
 <template>
@@ -44,3 +43,4 @@ export default {
 }
 </style>
 ```
+</codebox>

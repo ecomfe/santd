@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 大小
 不同大小的级联选择器。
-</text>
 
 ```html
 <template>
@@ -56,3 +55,4 @@ export default {
 }
 </script>
 ```
+</codebox>

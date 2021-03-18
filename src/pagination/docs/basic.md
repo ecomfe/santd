@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 基本
 基础分页
-</text>
 
 ```html
 <template>
@@ -19,3 +18,4 @@ export default {
 }
 </script>
 ```
+</codebox>

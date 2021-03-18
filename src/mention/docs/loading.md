@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### loading态
 匹配内容列表为异步返回时。
-</text>
 
 ```html
 <template>
@@ -43,3 +42,4 @@ export default {
 }
 </script>
 ```
+</codebox>

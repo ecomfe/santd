@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 基本
 最简单的下拉菜单。
-</text>
 
 ```html
 <template>
@@ -34,3 +33,4 @@ export default {
 }
 </script>
 ```
+</codebox>

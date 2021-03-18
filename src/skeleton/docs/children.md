@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 包含子组件
 加载占位图包含子组件。
-</text>
 
 ```html
 <template>
@@ -51,3 +50,4 @@ export default {
 }
 </style>
 ```
+</codebox>

@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 固定头部
 一般用于固定顶部导航，方便页面切换。
-</text>
 
 ```html
 <template>
@@ -59,3 +58,4 @@ export default {
 }
 </style>
 ```
+</codebox>

@@ -1,8 +1,7 @@
-<text lang="cn">
+<codebox>
 #### 多级菜单
 传入的菜单里有多个层级。
 
-</text>
 
 ```html
 <template>
@@ -37,3 +36,4 @@ export default {
 }
 </script>
 ```
+</codebox>

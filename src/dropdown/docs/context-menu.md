@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 右键菜单
 默认是移入触发菜单，可以点击鼠标右键触发。
-</text>
 
 ```html
 <template>
@@ -34,3 +33,4 @@ export default {
 }
 </script>
 ```
+</codebox>

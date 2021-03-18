@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 基本用法
 一个简单的 loading 状态
-</text>
 
 ```html
 <template>
@@ -20,3 +19,4 @@ export default {
 }
 </script>
 ```
+</codebox>

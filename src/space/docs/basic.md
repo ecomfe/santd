@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 基本用法
 相邻组件水平间距。
-</text>
 
 ```html
 <template>
@@ -33,3 +32,4 @@ export default {
 }
 </script>
 ```
+</codebox>

@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 垂直菜单
 子菜单是弹出的形式.
-</text>
 
 ```html
 <template>
@@ -63,3 +62,4 @@ export default {
 }
 </script>
 ```
+</codebox>

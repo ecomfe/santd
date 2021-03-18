@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 受控
 受控制的页码。
-</text>
 
 ```html
 <template>
@@ -28,3 +27,4 @@ export default {
 }
 </script>
 ```
+</codebox>

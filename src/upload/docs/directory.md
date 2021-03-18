@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 文件夹上传
 支持上传一个文件夹里的所有文件。
-</text>
 
 ```html
 <template>
@@ -28,3 +27,4 @@ export default {
 }
 </script>
 ```
+</codebox>

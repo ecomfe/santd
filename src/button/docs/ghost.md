@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 幽灵按钮
 幽灵按钮将按钮的内容反色，背景变为透明，常用在有色背景上。
-</text>
 
 ```html
 <template>
@@ -23,3 +22,4 @@ export default {
 }
 </script>
 ```
+</codebox>

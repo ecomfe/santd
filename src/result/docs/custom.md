@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### Error
 复杂的错误反馈。
-</text>
 
 ```html
 <template>
@@ -45,3 +44,4 @@ export default {
 }
 </script>
 ```
+</codebox>

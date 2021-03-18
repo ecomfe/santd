@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 获取/移除焦点
 focus获取焦点、blur移除焦点
-</text>
 
 ```html
 <template>
@@ -57,3 +56,4 @@ export default {
 }
 </script>
 ```
+</codebox>

@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 信息提示
 各种类型的信息提示，只提供一个按钮用于关闭。
-</text>
 
 ```html
 <template>
@@ -57,8 +56,5 @@ export default {
     }
 }
 </script>
-
-<style>
-.demo-info {}
-</style>
 ```
+</codebox>

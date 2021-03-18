@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 查询模式 - 不确定类目
 查询模式 - 不确定类目
-</text>
 
 ```html
 <template>
@@ -106,3 +105,4 @@ export default {
 
 </style>
 ```
+</codebox>

@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 图标
 有图标的标签。
-</text>
 
 ```html
 <template>
@@ -35,3 +34,4 @@ export default {
 }
 </script>
 ```
+</codebox>

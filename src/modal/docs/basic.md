@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 基本
 第一个对话框。
-</text>
 
 ```html
 <template>
@@ -58,9 +57,9 @@ export default {
 </script>
 
 <style>
-.demo-basic {}
 .san-modal p {
     margin: 0;
 }
 </style>
 ```
+</codebox>

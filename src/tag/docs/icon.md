@@ -1,8 +1,7 @@
-<text lang="cn">
+<codebox>
 #### 图标按钮
 当需要在 Tag 内嵌入 Icon 时，可以设置 icon 属性,具体取值地址查看：https://ecomfe.github.io/santd/#/components/icon。
 
-</text>
 
 ```html
 <template>
@@ -32,3 +31,4 @@ export default {
 }
 </script>
 ```
+</codebox>

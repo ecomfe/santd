@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 多选
 多选的树选择。
-</text>
 
 ```html
 <template>
@@ -48,3 +47,4 @@ export default {
 }
 </script>
 ```
+</codebox>

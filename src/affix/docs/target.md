@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 滚动容器
 用 `target` 设置 `Affix` 需要监听其滚动事件的元素，默认为 `window`。
-</text>
 
 ```html
 <template>
@@ -44,3 +43,4 @@ export default {
 }
 </style>
 ```
+</codebox>

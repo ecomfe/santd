@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 反向
 设置 reverse 可以将滑动条置反。
-</text>
 
 ```html
 <template>
@@ -39,3 +38,4 @@ export default {
 }
 </script>
 ```
+</codebox>

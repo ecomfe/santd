@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 动态校验规则
 根据不同情况执行不同的校验规则。
-</text>
 
 ```html
 <template>
@@ -84,3 +83,4 @@ export default Form.create({name: 'dynamic_rule'})({
 }
 </style>
 ```
+</codebox>

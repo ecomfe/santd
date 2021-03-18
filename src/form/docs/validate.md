@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 校验其他组件
 以上演示没有出现的表单控件对应的校验演示。
-</text>
 
 ```html
 <template>
@@ -195,3 +194,4 @@ export default Form.create({name: 'validate_other'})({
 })
 </script>
 ```
+</codebox>

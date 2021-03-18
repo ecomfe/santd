@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 基本用法
 最基本的用法，展示了 `dataSource`、`targetKeys`、每行的渲染函数 `render` 以及回调函数 `on-change` `on-selectChange` `on-scroll`的用法
-</text>
 
 ```html
 <template>
@@ -84,3 +83,4 @@ export default {
 }
 </script>
 ```
+</codebox>

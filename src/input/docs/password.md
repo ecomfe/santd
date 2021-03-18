@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 密码框
 密码框
-</text>
 
 ```html
 <template>
@@ -22,3 +21,4 @@ export default {
 }
 </script>
 ```
+</codebox>

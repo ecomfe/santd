@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 表格穿梭框
 使用 Table 组件作为自定义渲染列表。
-</text>
 
 ```html
 <template>
@@ -189,3 +188,4 @@ export default {
 }
 </script>
 ```
+</codebox>

@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 自定义指示符
 使用自定义指示符。
-</text>
 
 ```html
 <template>
@@ -23,3 +22,4 @@ export default {
 }
 </script>
 ```
+</codebox>

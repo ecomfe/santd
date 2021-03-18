@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 嵌套评论
 评论可以嵌套。
-</text>
 
 ```html
 <template>
@@ -54,3 +53,4 @@ export default {
 }
 </script>
 ```
+</codebox>

@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 弹出层中的新建表单
 当用户访问一个展示了某个列表的页面，想新建一项但又不想跳转页面时，可以用 Modal 弹出一个表单，用户填写必要信息后创建新的项。
-</text>
 
 ```html
 <template>
@@ -104,3 +103,4 @@ export default {
 }
 </style>
 ```
+</codebox>

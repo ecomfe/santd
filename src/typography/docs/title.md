@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 标题组件
 展示不同级别的标题。
-</text>
 
 ```html
 <template>
@@ -22,3 +21,4 @@ export default {
 }
 </script>
 ```
+</codebox>

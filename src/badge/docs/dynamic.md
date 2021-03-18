@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### badge
 badge
-</text>
 
 ```html
 <style>
@@ -47,3 +46,4 @@ export default {
 }
 </script>
 ```
+</codebox>

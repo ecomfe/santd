@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 垂直带边框的
 垂直带边框和背景颜色列表。
-</text>
 
 ```html
 <template>
@@ -47,3 +46,4 @@ export default {
 }
 </script>
 ```
+</codebox>

@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 基本用法
 基本的时间轴。
-</text>
 
 ```html
 <template>
@@ -25,3 +24,4 @@ export default {
 }
 </script>
 ```
+</codebox>

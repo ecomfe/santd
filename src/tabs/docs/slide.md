@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 滑动
 可以左右、上下滑动，容纳更多标签。
-</text>
 
 ```html
 <template>
@@ -48,3 +47,4 @@ export default {
 }
 </script>
 ```
+</codebox>

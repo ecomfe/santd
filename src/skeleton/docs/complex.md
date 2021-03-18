@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 复杂的组合
 更复杂的组合。
-</text>
 
 ```html
 <template>
@@ -27,3 +26,4 @@ export default {
 }
 </script>
 ```
+</codebox>

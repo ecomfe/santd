@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 ####  卡片模式
 用于嵌套在空间有限的容器中。
-</text>
 
 ```html
 <template>
@@ -37,3 +36,4 @@ export default {
 }
 </script>
 ```
+</codebox>

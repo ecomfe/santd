@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 进度圈
 圈形的进度。
-</text>
 
 ```html
 <template>
@@ -30,3 +29,4 @@ export default {
 }
 </style>
 ```
+</codebox>

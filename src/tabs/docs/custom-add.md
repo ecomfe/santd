@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 自定义新增页签触发器
 隐藏默认的页签增加图标，给自定义触发器绑定事件。
-</text>
 
 ```html
 <template>
@@ -93,3 +92,4 @@ export default {
 }
 </script>
 ```
+</codebox>

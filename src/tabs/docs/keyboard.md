@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 基本用法
 开启键盘切换。
-</text>
 
 ```html
 <template>
@@ -32,3 +31,4 @@ export default {
 }
 </script>
 ```
+</codebox>

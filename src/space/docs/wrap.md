@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 自动换行
 自动换行。
-</text>
 
 ```html
 <template>
@@ -26,3 +25,4 @@ export default {
 }
 </script>
 ```
+</codebox>

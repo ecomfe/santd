@@ -1,4 +1,4 @@
-<text lang="cn">
+<codebox>
 #### 固定列
 对于列数很多的数据，可以使用 `columns` 中的 `left` 和 `right` 固定前后的列，横向滚动查看其它数据，需要和 `scroll.x` 配合使用。
 
@@ -8,7 +8,6 @@
 
 > 建议指定 scroll.x 为大于表格宽度的固定值或百分比。注意，且非固定列宽度之和不要超过 scroll.x。
 
-</text>
 
 ```html
 <template>
@@ -69,3 +68,4 @@ export default {
 }
 </script>
 ```
+</codebox>

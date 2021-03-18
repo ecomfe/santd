@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 可点击
 用 a 标签进行包裹即可。
-</text>
 
 ```html
 <template>
@@ -23,3 +22,4 @@ export default {
 }
 </script>
 ```
+</codebox>

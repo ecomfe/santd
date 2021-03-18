@@ -1,9 +1,8 @@
-<text lang="cn">
+<codebox>
 #### 小数
 
 和原生的数字输入框一样，value 的精度由 step 的小数位数决定。
 
-</text>
 
 ```html
 <template>
@@ -24,3 +23,4 @@ export default {
 }
 </script>
 ```
+</codebox>

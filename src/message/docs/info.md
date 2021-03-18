@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 普通提示
 信息提醒反馈。
-</text>
 
 ```html
 <template>
@@ -25,3 +24,4 @@ export default {
 }
 </script>
 ```
+</codebox>

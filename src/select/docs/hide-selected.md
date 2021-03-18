@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 隐藏已选择选项
 隐藏下拉列表中已选择的选项。
-</text>
 
 ```html
 <template>
@@ -49,3 +48,4 @@ export default {
 }
 </script>
 ```
+</codebox>

@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 带有图标的通知提醒框
 通知提醒框左侧有图标。
-</text>
 
 ```html
 <template>
@@ -35,3 +34,4 @@ export default {
 }
 </style>
 ```
+</codebox>

@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 自定义关闭图标
 关闭图标可以被自定义。
-</text>
 
 ```html
 <template>
@@ -28,3 +27,4 @@ export default {
 }
 </script>
 ```
+</codebox>

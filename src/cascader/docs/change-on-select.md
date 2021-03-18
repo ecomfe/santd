@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 选择即改变
 这种交互允许只选中父级选项。
-</text>
 
 ```html
 <template>
@@ -52,3 +51,4 @@ export default {
 }
 </script>
 ```
+</codebox>

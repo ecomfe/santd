@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 自定义文字格式
 `format` 属性指定格式。
-</text>
 
 ```html
 <template>
@@ -36,3 +35,4 @@ export default {
 }
 </style>
 ```
+</codebox>

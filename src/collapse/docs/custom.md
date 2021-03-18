@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 自定义面板
 自定义各个面板的样式。
-</text>
 
 ```html
 <template>
@@ -63,3 +62,4 @@ export default {
 }
 </script>
 ```
+</codebox>

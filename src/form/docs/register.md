@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 注册新用户
 用户填写必须的信息以注册新用户。
-</text>
 
 ```html
 <template>
@@ -230,3 +229,4 @@ export default Form.create({name: 'register'})({
 }
 </style>
 ```
+</codebox>

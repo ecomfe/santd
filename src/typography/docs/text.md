@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 文本组件
 内置不同样式的文本。
-</text>
 
 ```html
 <template>
@@ -37,3 +36,4 @@ export default {
 }
 </script>
 ```
+</codebox>

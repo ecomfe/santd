@@ -1,7 +1,7 @@
-<text lang="cn">
+<codebox>
 #### 基本
 最简单的用法
-</text>
+
 ```html
 <template>
     <div>
@@ -26,3 +26,4 @@ export default {
 }
 </script>
 ```
+</codebox>

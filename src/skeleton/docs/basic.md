@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 基本
 最简单的占位效果。
-</text>
 
 ```html
 <template>
@@ -20,3 +19,4 @@ export default {
 }
 </script>
 ```
+</codebox>

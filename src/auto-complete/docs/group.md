@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 分组选项
 分组显示选项
-</text>
 
 ```html
 <template>
@@ -80,3 +79,4 @@ export default {
 }
 </script>
 ```
+</codebox>

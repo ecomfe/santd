@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 可勾选
 使用勾选框实现多选功能。
-</text>
 
 ```html
 <template>
@@ -70,3 +69,4 @@ export default {
 }
 </script>
 ```
+</codebox>

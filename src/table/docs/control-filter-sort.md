@@ -1,11 +1,10 @@
-<text lang="cn">
+<codebox>
 #### 可控的筛选和排序
 使用受控属性对筛选和排序状态进行控制。
 
 > 1. columns 中赋值了 filteredValue 和 sortOrder 属性即视为受控模式。
 > 2. 只支持同时对一列进行排序，请保证只有一列的 sortOrder 属性是生效的。
 > 3. 务必指定 column.key。
-</text>
 
 ```html
 <template>
@@ -159,3 +158,4 @@ export default {
 }
 </style>
 ```
+</codebox>

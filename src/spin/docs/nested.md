@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 卡片加载中
 可以直接把`slot=content`的内容内嵌到 `Spin` 中，将现有容器变为加载状态。
-</text>
 
 ```html
 <template>
@@ -40,3 +39,4 @@ export default {
 }
 </script>
 ```
+</codebox>

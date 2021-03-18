@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 步骤切换
 通常配合内容及按钮使用，表示一个流程的处理进度。
-</text>
 
 ```html
 <template>
@@ -75,3 +74,4 @@ export default {
   }
 </style>
 ```
+</codebox>

@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 水平登录栏
 水平登录栏，常用在顶部导航栏中。
-</text>
 
 ```html
 <template>
@@ -78,3 +77,4 @@ export default Form.create({})({
 });
 </script>
 ```
+</codebox>

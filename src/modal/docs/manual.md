@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 手动更新和移除
 手动更新和关闭 `Modal.method` 方式创建的对话框。
-</text>
 
 ```html
 <template>
@@ -33,8 +32,5 @@ export default {
     }
 }
 </script>
-
-<style>
-.demo-manual {}
-</style>
 ```
+</codebox>

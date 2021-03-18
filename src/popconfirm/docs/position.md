@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 位置
 位置有十二个方向。如需箭头指向目标元素中心，可以设置 `arrowPointAtCenter`。
-</text>
 
 ```html
 <template>
@@ -84,3 +83,4 @@ export default {
     }
 </style>
 ```
+</codebox>

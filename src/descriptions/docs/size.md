@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 自定义尺寸
 自定义尺寸，适应在各种容器中展示。
-</text>
 
 ```html
 <template>
@@ -58,3 +57,4 @@ export default {
 }
 </script>
 ```
+</codebox>

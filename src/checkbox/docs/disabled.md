@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 不可用
 checkbox不可用。
-</text>
 
 ```html
 <template>
@@ -23,3 +22,4 @@ export default {
 }
 </script>
 ```
+</codebox>

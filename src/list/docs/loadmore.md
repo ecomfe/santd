@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 加载更多
 可通过 loadMore 属性实现加载更多功能。
-</text>
 
 ```html
 <template>
@@ -109,3 +108,4 @@ export default {
 }
 </script>
 ```
+</codebox>

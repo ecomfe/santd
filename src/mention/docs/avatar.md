@@ -1,8 +1,7 @@
-<text lang="cn">
+<codebox>
 #### 头像
 自定义建议（含头像） <br>
 注意，自定义建议时，onSearchChange 必须不能为空。
-</text>
 
 ```html
 <template>
@@ -90,3 +89,4 @@ export default {
 }
 </script>
 ```
+</codebox>

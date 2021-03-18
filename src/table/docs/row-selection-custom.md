@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 自定义选择项
 通过 `rowSelection.selections` 自定义选择项，默认不显示下拉项，设为 `true` 时显示默认选择项。
-</text>
 
 ```html
 <template>
@@ -87,3 +86,4 @@ export default {
 }
 </script>
 ```
+</codebox>

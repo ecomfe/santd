@@ -1,7 +1,7 @@
-<text lang="cn">
+<codebox>
 #### 不可用
 Switch 失效状态
-</text>
+
 ```html
 <template>
     <div>
@@ -29,3 +29,4 @@ export default {
 }
 </script>
 ```
+</codebox>

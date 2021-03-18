@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 无描述
 无描述展示。
-</text>
 
 ```html
 <template>
@@ -19,3 +18,4 @@ export default {
 }
 </script>
 ```
+</codebox>

@@ -1,8 +1,7 @@
 
-<text lang="cn">
+<codebox>
 #### 文案展现
 给评分组件加上文案展示。
-</text>
 
 ```html
 <template>
@@ -32,3 +31,4 @@ export default {
 }
 </script>
 ```
+</codebox>

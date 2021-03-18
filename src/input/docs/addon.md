@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 前置/后置标签
 用于配置一些固定组合。
-</text>
 
 ```html
 <template>
@@ -43,3 +42,4 @@ export default {
 }
 </script>
 ```
+</codebox>

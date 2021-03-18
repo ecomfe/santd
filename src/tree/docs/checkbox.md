@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 受控操作示例
 tree受控操作示例
-</text>
 
 ```html
 <template>
@@ -97,3 +96,4 @@ export default {
 }
 </script>
 ```
+</codebox>

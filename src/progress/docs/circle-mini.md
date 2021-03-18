@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 小型进度圈
 小一号的圈形进度。
-</text>
 
 ```html
 <template>
@@ -22,3 +21,4 @@ export default {
 }
 </script>
 ```
+</codebox>

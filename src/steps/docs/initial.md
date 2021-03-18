@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 起始序号
 设置步骤条起始序号。
-</text>
 
 ```html
 <template>
@@ -24,3 +23,4 @@ export default {
 }
 </script>
 ```
+</codebox>

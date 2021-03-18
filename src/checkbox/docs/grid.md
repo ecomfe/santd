@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 布局
 Checkbox.Group 内嵌 Checkbox 并与 Grid 组件一起使用，可以实现灵活的布局。
-</text>
 
 ```html
 <template>
@@ -34,3 +33,4 @@ export default {
 }
 </script>
 ```
+</codebox>

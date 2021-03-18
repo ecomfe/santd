@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 自定义提示
 使用 `tipFormatter` 可以格式化 `Tooltip` 的内容，设置 `tipFormatter` 为 `null`，则隐藏 Tooltip。
-</text>
 
 ```html
 <template>
@@ -28,3 +27,4 @@ export default {
 }
 </script>
 ```
+</codebox>

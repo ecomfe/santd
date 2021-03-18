@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 基本用法
 基本使用
-</text>
 
 ```html
 <template>
@@ -44,3 +43,4 @@ export default {
 }
 </style>
 ```
+</codebox>

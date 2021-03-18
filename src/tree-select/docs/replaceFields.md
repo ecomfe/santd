@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 替换字段
 替换 treeNode 中 title、value、key、children、label 字段为 treeData 中对应的字段。
-</text>
 
 ```html
 <template>
@@ -76,3 +75,4 @@ export default {
 }
 </script>
 ```
+</codebox>

@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 登录框
 普通的登录框，可以容纳更多的元素。
-</text>
 
 ```html
 <template>
@@ -77,3 +76,4 @@ export default Form.create({name: 'normal_login'})({
 }
 </style>
 ```
+</codebox>

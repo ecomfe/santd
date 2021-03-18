@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 动态增减表单项
 动态增加、减少表单项。
-</text>
 
 ```html
 <template>
@@ -136,3 +135,4 @@ export default Form.create({name: 'dynamic_form_item'})({
 }
 </style>
 ```
+</codebox>

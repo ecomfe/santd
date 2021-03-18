@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 基本
 展示文档样例。
-</text>
 
 ```html
 <template>
@@ -57,3 +56,4 @@ export default {
 }
 </script>
 ```
+</codebox>

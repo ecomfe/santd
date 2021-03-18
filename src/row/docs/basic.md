@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### row
 row
-</text>
 
 ```html
 <template>
@@ -17,3 +16,4 @@ export default {
 }
 </script>
 ```
+</codebox>

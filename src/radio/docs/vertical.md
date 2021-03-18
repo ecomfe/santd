@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### RadioGroup 垂直
 垂直的 RadioGroup，配合更多输入框选项。
-</text>
 
 ```html
 <template>
@@ -43,3 +42,4 @@ export default {
 }
 </script>
 ```
+</codebox>

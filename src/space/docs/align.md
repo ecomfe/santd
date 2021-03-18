@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 对齐
 设置对齐模式。
-</text>
 
 ```html
 <template>
@@ -66,3 +65,4 @@ export default {
 }
 </style>  
 ```
+</codebox>

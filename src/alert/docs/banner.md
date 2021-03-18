@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 顶部公告
 页面顶部通告形式，默认有图标且`type` 为 'warning'。
-</text>
 
 ```html
 <template>
@@ -23,3 +22,4 @@ export default {
 }
 </script>
 ```
+</codebox>

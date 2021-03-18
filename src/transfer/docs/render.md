@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 自定义渲染行数据
 自定义渲染每一个 Transfer Item，可用于渲染复杂数据。
-</text>
 
 ```html
 <template>
@@ -58,3 +57,4 @@ export default {
 }
 </script>
 ```
+</codebox>

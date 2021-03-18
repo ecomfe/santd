@@ -1,10 +1,9 @@
-<text lang="cn">
+<codebox>
 #### 完全控制的上传列表
 使用 `fileList` 对列表进行完全控制，可以实现各种自定义功能，以下演示三种情况：
 
 1. 上传列表数量的限制。
 2. 读取远程路径并显示链接。
-</text>
 
 ```html
 <template>
@@ -61,3 +60,4 @@ export default {
 }
 </script>
 ```
+</codebox>

@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 可展开
 当表格内容较多不能一次性完全展示时。
-</text>
 
 ```html
 <template>
@@ -71,3 +70,4 @@ export default {
 }
 </script>
 ```
+</codebox>

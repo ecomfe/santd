@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 可关闭的警告提示
 显示关闭按钮，点击可关闭警告提示。
-</text>
 
 ```html
 <template>
@@ -35,3 +34,4 @@ export default {
 }
 </script>
 ```
+</codebox>

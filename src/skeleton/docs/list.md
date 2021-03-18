@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 列表
 在列表组件中使用加载占位符。
-</text>
 
 ```html
 <template>
@@ -63,3 +62,4 @@ export default {
 }
 </script>
 ```
+</codebox>

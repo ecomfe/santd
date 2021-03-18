@@ -1,9 +1,8 @@
-<text lang="cn">
+<codebox>
 #### autoFocus
 
 自动获得焦点
 
-</text>
 
 ```html
 <template>
@@ -25,3 +24,4 @@ export default {
 }
 </script>
 ```
+</codebox>

@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 支持更多内容配置
 一种支持封面、头像、标题和描述信息的卡片。
-</text>
 
 ```html
 <template>
@@ -42,3 +41,4 @@ export default {
 }
 </script>
 ```
+</codebox>

@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 热门标签
 选择你感兴趣的话题。
-</text>
 
 ```html
 <template>
@@ -39,3 +38,4 @@ export default {
 }
 </script>
 ```
+</codebox>

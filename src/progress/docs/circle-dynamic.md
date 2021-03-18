@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 进度圈动态展示
 会动的进度条才是好进度条。
-</text>
 
 ```html
 <template>
@@ -51,3 +50,4 @@ export default {
 }
 </style>
 ```
+</codebox>

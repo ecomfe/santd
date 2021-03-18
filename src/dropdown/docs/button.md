@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 带下拉框的按钮
 左边是按钮，右边是额外的相关功能菜单。
-</text>
 
 ```html
 <template>
@@ -56,3 +55,4 @@ export default {
 }
 </script>
 ```
+</codebox>

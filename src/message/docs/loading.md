@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 加载中
 进行全局 loading，异步自行移除。
-</text>
 
 ```html
 <template>
@@ -27,3 +26,4 @@ export default {
 }
 </script>
 ```
+</codebox>

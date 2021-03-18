@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 已上传的文件列表
 使用 `defaultFileList` 设置已上传的内容。
-</text>
 
 ```html
 <template>
@@ -57,3 +56,4 @@ export default {
 }
 </script>
 ```
+</codebox>

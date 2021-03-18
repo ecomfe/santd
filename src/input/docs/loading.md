@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 搜索框loading
 用于 onSearch 的时候展示 loading。
-</text>
 
 ```html
 <template>
@@ -34,3 +33,4 @@ export default {
 }
 </script>
 ```
+</codebox>

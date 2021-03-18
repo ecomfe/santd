@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 步骤运行错误
 使用 steps 的 `status` 属性来指定当前步骤的状态。
-</text>
 
 ```html
 <template>
@@ -24,3 +23,4 @@ export default {
 }
 </script>
 ```
+</codebox>

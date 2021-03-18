@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 链接线
 带连接线的树。
-</text>
 
 ```html
 <template>
@@ -43,3 +42,4 @@ export default {
 }
 </script>
 ```
+</codebox>

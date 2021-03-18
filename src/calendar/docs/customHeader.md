@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 ####  自定义头部
 自定义日历头部内容。
-</text>
 
 ```html
 <template>
@@ -106,3 +105,4 @@ export default {
 }
 </script>
 ```
+</codebox>

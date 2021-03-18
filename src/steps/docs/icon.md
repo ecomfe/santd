@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 带图标的步骤条
 通过设置 Steps.Step 的 icon slot，可以启用自定义图标。
-</text>
 
 ```html
 <template>
@@ -29,3 +28,4 @@ export default {
 }
 </script>
 ```
+</codebox>

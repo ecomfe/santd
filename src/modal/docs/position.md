@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 自定义位置
 使用 `centered` 或 `modalStyle` 添加top样式来设置对话框位置。
-</text>
 
 ```html
 <template>
@@ -54,8 +53,5 @@ export default {
     }
 }
 </script>
-
-<style>
-.demo-position {}
-</style>
 ```
+</codebox>

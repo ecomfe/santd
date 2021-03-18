@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 顶部导航
 水平的顶部导航菜单。
-</text>
 
 ```html
 <template>
@@ -69,3 +68,4 @@ ul {
 }
 </style>
 ```
+</codebox>

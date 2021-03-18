@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 容器
 放入一个容器中。
-</text>
 
 ```html
 <template>
@@ -31,3 +30,4 @@ export default {
 }
 </style>
 ```
+</codebox>

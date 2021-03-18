@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 手动上传
 `beforeUpload` 返回 `false` 后，手动上传文件。
-</text>
 
 ```html
 <template>
@@ -81,3 +80,4 @@ export default {
 }
 </script>
 ```
+</codebox>

@@ -1,8 +1,7 @@
-<text lang="cn">
+<codebox>
 #### 自定义建议
 自定义建议 <br>
 注意，自定义建议时，onSearchChange 必须不能为空。
-</text>
 
 ```html
 <template>
@@ -69,3 +68,4 @@ export default {
 }
 </script>
 ```
+</codebox>

@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 分隔符
 使用 `separator=">"` 可以自定义分隔符
-</text>
 
 ```html
 <template>
@@ -25,3 +24,4 @@ export default {
 }
 </script>
 ```
+</codebox>

@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 禁用选项
 通过指定 options 里的 `disabled` 字段。
-</text>
 
 ```html
 <template>
@@ -53,3 +52,4 @@ export default {
 }
 </script>
 ```
+</codebox>

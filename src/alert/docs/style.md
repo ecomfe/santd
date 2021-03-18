@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 四种样式
 共有四种样式 `success`、`info`、`warning`、`error`。
-</text>
 
 ```html
 <template>
@@ -23,3 +22,4 @@ export default {
 }
 </script>
 ```
+</codebox>

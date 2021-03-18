@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 导航步骤
 导航类型的步骤条。
-</text>
 
 ```html
 <template>
@@ -24,3 +23,4 @@ export default {
 }
 </script>
 ```
+</codebox>

@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 网格型内嵌卡片
 一种常见的卡片内容区隔模式。
-</text>
 
 ```html
 <template>
@@ -27,3 +26,4 @@ export default {
 }
 </script>
 ```
+</codebox>

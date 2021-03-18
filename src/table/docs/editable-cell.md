@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 可编辑单元格
 带单元格编辑功能的表格。
-</text>
 
 ```html
 <template>
@@ -174,3 +173,4 @@ export default {
   }
 </style>
 ```
+</codebox>

@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 卡片式页签容器
 用于容器顶部，需要一点额外的样式覆盖。
-</text>
 
 ```html
 <template>
@@ -67,3 +66,4 @@ export default {
 }
 </style>
 ```
+</codebox>

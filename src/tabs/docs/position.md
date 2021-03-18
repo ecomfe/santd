@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 位置
 有四个位置，`tabPosition="left|right|top|bottom"`。
-</text>
 
 ```html
 <template>
@@ -49,3 +48,4 @@ export default {
 }
 </script>
 ```
+</codebox>

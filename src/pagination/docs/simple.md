@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 简洁
 简单的翻页。
-</text>
 
 ```html
 <template>
@@ -19,3 +18,4 @@ export default {
 }
 </script>
 ```
+</codebox>

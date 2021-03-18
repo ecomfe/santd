@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 自定义 Icon 图标
 使用 `icon` 自定义提示 `icon`。
-</text>
 
 ```html
 <template>
@@ -28,3 +27,4 @@ export default {
 }
 </script>
 ```
+</codebox>

@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 清除
 支持允许或者禁用清除。
-</text>
 
 ```html
 <template>
@@ -21,3 +20,4 @@ export default {
 }
 </script>
 ```
+</codebox>

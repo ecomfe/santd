@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 禁用
 禁用某一项。
-</text>
 
 ```html
 <template>
@@ -24,3 +23,4 @@ export default {
 }
 </script>
 ```
+</codebox>

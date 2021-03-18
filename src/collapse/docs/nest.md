@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 面板嵌套
 嵌套折叠面板。
-</text>
 
 ```html
 <template>
@@ -49,3 +48,4 @@ export default {
 }
 </script>
 ```
+</codebox>

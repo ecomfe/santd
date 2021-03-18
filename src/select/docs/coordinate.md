@@ -1,8 +1,7 @@
-<text lang="cn">
+<codebox>
 #### 联动
 省市联动是典型的例子。
 推荐使用 `Cascader` 组件。
-</text>
 
 ```html
 <template>
@@ -60,3 +59,4 @@ export default {
 }
 </script>
 ```
+</codebox>

@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 触发方式
 默认是移入触发菜单，可以点击触发。
-</text>
 
 ```html
 <template>
@@ -34,3 +33,4 @@ export default {
 }
 </script>
 ```
+</codebox>

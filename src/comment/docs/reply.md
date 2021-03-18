@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 回复框
 评论编辑器组件提供了相同样式的封装以支持自定义评论编辑器。
-</text>
 
 ```html
 <template>
@@ -76,3 +75,4 @@ export default {
 }
 </script>
 ```
+</codebox>

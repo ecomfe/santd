@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 自定义锚点高亮
 自定义锚点高亮。
-</text>
 
 ```html
 <template>
@@ -32,3 +31,4 @@ export default {
 }
 </script>
 ```
+</codebox>

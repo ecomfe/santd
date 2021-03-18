@@ -1,8 +1,7 @@
-<text lang="cn">
+<codebox>
 #### 目录树
 内置的目录树，`multiple` 模式支持 `ctrl(Windows)` / `command(Mac)` 复选。
 
-</text>
 
 ```html
 <template>
@@ -52,3 +51,4 @@ export default {
 }
 </script>
 ```
+</codebox>

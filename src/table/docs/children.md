@@ -1,8 +1,7 @@
-<text lang="cn">
+<codebox>
 #### 树形数据展示
 表格支持树形数据的展示，当数据中有 `children` 字段时会自动展示为树形表格。
 可以通过设置 `indentSize` 以控制每一层的缩进宽度。
-</text>
 
 ```html
 <template>
@@ -128,3 +127,4 @@ export default {
 }
 </script>
 ```
+</codebox>

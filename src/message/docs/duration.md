@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 修改延时
 自定义时长 `10s`，默认时长为 `3s`。`注：鼠标经过时会重新计时`
-</text>
 
 ```html
 <template>
@@ -25,3 +24,4 @@ export default {
 }
 </script>
 ```
+</codebox>

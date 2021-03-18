@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 可点击
 设置 on-change 后，Steps 变为可点击状态。
-</text>
 
 ```html
 <template>
@@ -40,3 +39,4 @@ export default {
 }
 </script>
 ```
+</codebox>

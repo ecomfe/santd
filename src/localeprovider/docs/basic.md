@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 国际化
 用 `LocaleProvider` 包裹你的应用，并引用对应的语言包。
-</text>
 
 ```html
 <template>
@@ -28,3 +27,4 @@ export default {
 }
 </script>
 ```
+</codebox>

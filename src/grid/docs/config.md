@@ -1,8 +1,7 @@
-<text lang="cn">
+<codebox>
 #### 栅格配置器
 
 可以简单配置几种等分栅格和间距。
-</text>
 
 ```html
 <template>
@@ -82,3 +81,4 @@ export default {
 }
 </script>
 ```
+</codebox>

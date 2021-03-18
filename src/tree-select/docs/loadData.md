@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 异步加载
 异步加载树节点。
-</text>
 
 ```html
 <template>
@@ -69,3 +68,4 @@ export default {
 }
 </script>
 ```
+</codebox>

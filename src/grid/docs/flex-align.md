@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### Flex 对齐
 Flex 子元素垂直对齐。
-</text>
 
 
 ```html
@@ -43,5 +42,4 @@ export default {
 }
 </script>
 ```
-
-
+</codebox>

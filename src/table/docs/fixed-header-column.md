@@ -1,4 +1,4 @@
-<text lang="cn">
+<codebox>
 #### 固定头和列
 适合同时展示有大量数据和数据列。
 
@@ -7,7 +7,6 @@
 > 若列头与内容不对齐或出现列重复，请指定每一列的 th 的宽度 width。
 
 > 建议指定 scroll.x 为大于表格宽度的固定值或百分比。注意，且非固定列宽度之和不要超过 scroll.x。
-</text>
 
 ```html
 <template>
@@ -67,3 +66,4 @@ export default {
 }
 </script>
 ```
+</codebox>

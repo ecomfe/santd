@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 典型卡片
 包含标题、内容、操作区域。
-</text>
 
 ```html
 <template>
@@ -37,3 +36,4 @@ export default {
 }
 </script>
 ```
+</codebox>

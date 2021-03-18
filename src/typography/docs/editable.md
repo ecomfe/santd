@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 可交互
 提供额外的交互能力。
-</text>
 
 ```html
 <template>
@@ -32,3 +31,4 @@ export default {
 }
 </script>
 ```
+</codebox>

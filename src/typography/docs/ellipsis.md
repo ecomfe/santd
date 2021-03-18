@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 省略号
 多行文本省略。
-</text>
 
 ```html
 <template>
@@ -36,3 +35,4 @@ export default {
 }
 </script>
 ```
+</codebox>

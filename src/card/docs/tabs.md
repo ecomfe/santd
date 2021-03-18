@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 带页签的卡片
 可承载更多内容。
-</text>
 
 ```html
 <template>
@@ -41,3 +40,4 @@ export default {
 }
 </script>
 ```
+</codebox>

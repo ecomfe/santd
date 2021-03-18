@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 三种触发方式
 鼠标移入、聚集、点击。
-</text>
 
 ```html
 <template>
@@ -40,3 +39,4 @@ export default {
 }
 </script>
 ```
+</codebox>

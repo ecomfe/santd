@@ -1,8 +1,7 @@
 
-<text lang="cn">
+<codebox>
 #### 半星
 支持选中半星。
-</text>
 
 ```html
 <template>
@@ -20,3 +19,4 @@ export default {
 }
 </script>
 ```
+</codebox>

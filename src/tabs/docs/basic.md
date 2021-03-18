@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 基本用法
 默认选中第一项。
-</text>
 
 ```html
 <template>
@@ -36,3 +35,4 @@ export default {
 }
 </script>
 ```
+</codebox>

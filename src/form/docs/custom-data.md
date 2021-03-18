@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 自行处理表单数据
 使用 `Form.create` 处理后的表单具有自动收集数据并校验的功能，但如果您不需要这个功能，或者默认的行为无法满足业务需求，可以选择不使用 `Form.create` 并自行处理数据。
-</text>
 
 ```html
 <template>
@@ -68,3 +67,4 @@ export default {
 };
 </script>
 ```
+</codebox>

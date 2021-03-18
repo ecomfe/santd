@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 控制关闭状态
 通过 `visible` 属性控制关闭状态。
-</text>
 
 ```html
 <template>
@@ -33,3 +32,4 @@ export default {
 }
 </script>
 ```
+</codebox>

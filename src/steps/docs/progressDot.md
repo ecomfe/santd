@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 点状步骤条 
 包含步骤点的进度条。
-</text>
 
 ```html
 <template>
@@ -24,3 +23,4 @@ export default {
 }
 </script>
 ```
+</codebox>

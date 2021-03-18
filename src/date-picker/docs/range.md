@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 预设范围
 可以预设常用的日期范围以提高用户体验。
-</text>
 
 ```html
 <template>
@@ -37,3 +36,4 @@ export default {
 </script>
 
 ```
+</codebox>

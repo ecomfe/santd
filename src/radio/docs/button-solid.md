@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 填底的按钮样式
 实色填底的单选按钮样式。
-</text>
 
 ```html
 <template>
@@ -36,3 +35,4 @@ export default {
 }
 </script>
 ```
+</codebox>

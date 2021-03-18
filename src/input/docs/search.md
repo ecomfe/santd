@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 搜索框
 带有搜索按钮的输入框。
-</text>
 
 ```html
 <template>
@@ -36,3 +35,4 @@ export default {
 }
 </script>
 ```
+</codebox>

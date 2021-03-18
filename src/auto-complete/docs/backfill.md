@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 使用键盘选择时自动回填
 使用键盘选择选项的时候把选中项回填到输入框中。
-</text>
 
 ```html
 <template>
@@ -48,3 +47,4 @@ export default {
 }
 </script>
 ```
+</codebox>

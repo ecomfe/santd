@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 自定义on-Click事件
 点击锚点不记录历史。
-</text>
 
 ```html
 <template>
@@ -31,3 +30,4 @@ export default {
 }
 </script>
 ```
+</codebox>

@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 大小
 大号页签用在页头区域，小号用在弹出框等较狭窄的容器内。(其实随意怎么用)
-</text>
 
 ```html
 <template>
@@ -45,3 +44,4 @@ export default {
 }
 </script>
 ```
+</codebox>

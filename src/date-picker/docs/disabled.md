@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 禁用状态
 增加disabled属性，可以对日历组件进行禁用
-</text>
 
 ```html
 <template>
@@ -38,3 +37,4 @@ export default {
 </script>
 
 ```
+</codebox>

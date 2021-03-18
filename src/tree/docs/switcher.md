@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 自定义展开/折叠图标
 自定义展开/折叠图标
-</text>
 
 ```html
 <template>
@@ -46,3 +45,4 @@ export default {
 }
 </script>
 ```
+</codebox>

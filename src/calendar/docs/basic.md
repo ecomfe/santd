@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 基本
 一个通用的日历面板，支持年/月切换。
-</text>
 
 ```html
 <template>
@@ -22,3 +21,4 @@ export default {
 }
 </script>
 ```
+</codebox>

@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 自定义页签头
 给页签头增加额外的内容。
-</text>
 
 ```html
 <template>
@@ -30,3 +29,4 @@ export default {
 }
 </script>
 ```
+</codebox>

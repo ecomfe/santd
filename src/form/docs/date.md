@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 时间类控件
 时间类组件的 `value` 类型为 `dayjs` 对象，所以在提交服务器前需要预处理。
-</text>
 
 ```html
 <template>
@@ -107,3 +106,4 @@ export default Form.create({name: 'time_related_controls'})({
 });
 </script>
 ```
+</codebox>

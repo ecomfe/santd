@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 顶部-侧边布局-通栏
 同样拥有顶部导航及侧边栏，区别是两边未留边距，多用于应用型的网站。
-</text>
 
 ```html
 <template>
@@ -92,3 +91,4 @@ export default {
 }
 </style>
 ```
+</codebox>

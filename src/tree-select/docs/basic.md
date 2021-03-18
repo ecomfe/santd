@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### tree-select基本
 树选择组件,最简单的用法
-</text>
 
 ```html
 <template>
@@ -44,3 +43,4 @@ export default {
 }
 </script>
 ```
+</codebox>

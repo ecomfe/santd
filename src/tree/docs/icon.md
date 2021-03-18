@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 自定义图标
 可以针对不同的节点定制图标。
-</text>
 
 ```html
 <template>
@@ -36,3 +35,4 @@ export default {
 }
 </script>
 ```
+</codebox>

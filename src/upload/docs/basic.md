@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 点击上传
 经典款式，用户点击按钮弹出文件选择框。
-</text>
 
 ```html
 <template>
@@ -43,3 +42,4 @@ export default {
 }
 </script>
 ```
+</codebox>

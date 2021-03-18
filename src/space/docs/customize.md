@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 自定义间距大小
 自定义间距大小。
-</text>
 
 ```html
 <template>
@@ -38,3 +37,4 @@ export default {
 }
 </script>
 ```
+</codebox>

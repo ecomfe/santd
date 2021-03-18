@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 位置
 位置有12个方向。
-</text>
 
 ```html
 <template>
@@ -72,3 +71,4 @@ export default {
     }
 </style>
 ```
+</codebox>

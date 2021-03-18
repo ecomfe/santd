@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 倒计时
 倒计时组件。
-</text>
 
 ```html
 <template>
@@ -43,3 +42,4 @@ export default {
 }
 </script>
 ```
+</codebox>

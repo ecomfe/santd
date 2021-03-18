@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 居中
 标签居中展示。
-</text>
 
 ```html
 <template>
@@ -32,3 +31,4 @@ export default {
 }
 </script>
 ```
+</codebox>

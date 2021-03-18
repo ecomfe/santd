@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 多选
 多选，从已有条目中选择。
-</text>
 
 ```html
 <template>
@@ -45,3 +44,4 @@ export default {
 }
 </script>
 ```
+</codebox>

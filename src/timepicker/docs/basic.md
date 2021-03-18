@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 基本
 点击 TimePicker，然后可以在浮层中选择或者输入某一时间
-</text>
 
 ```html
 <template>
@@ -28,3 +27,4 @@ export default {
 }
 </script>
 ```
+</codebox>

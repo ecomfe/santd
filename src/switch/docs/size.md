@@ -1,7 +1,7 @@
-<text lang="cn">
+<codebox>
 #### 两种大小
 `size="small"` 表示小号开关。
-</text>
+
 ```html
 <template>
     <div>
@@ -20,3 +20,4 @@ export default {
 }
 </script>
 ```
+</codebox>

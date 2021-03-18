@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 12 小时制
 12 小时制的时间选择器，默认的 format 为 `h:mm:ss a`。
-</text>
 
 ```html
 <template>
@@ -25,3 +24,4 @@ export default {
 }
 </script>
 ```
+</codebox>

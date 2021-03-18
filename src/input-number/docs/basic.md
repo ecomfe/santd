@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 基本
 数字输入框。
-</text>
 
 ```html
 <template>
@@ -22,3 +21,4 @@ export default {
 }
 </script>
 ```
+</codebox>

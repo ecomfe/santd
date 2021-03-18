@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 不区分大小写
 不区分大小写的 AutoComplete
-</text>
 
 ```html
 <template>
@@ -37,3 +36,4 @@ export default {
 }
 </script>
 ```
+</codebox>

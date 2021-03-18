@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 扩展菜单
 使用 `dropdownRender` 对下拉菜单进行自由扩展。自定义内容点击时会关闭浮层，如果不喜欢关闭，可以添加 `on-mousedown={e => e.preventDefault()}` 进行阻止。
-</text>
 
 ```html
 <template>
@@ -56,3 +55,4 @@ export default {
 }
 </script>
 ```
+</codebox>

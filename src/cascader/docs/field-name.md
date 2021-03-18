@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 自定义字段名
 自定义字段名
-</text>
 
 ```html
 <template>
@@ -62,3 +61,4 @@ export default {
 }
 </script>
 ```
+</codebox>

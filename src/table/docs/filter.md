@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 自定义筛选菜单
 通过 `filterDropdown` 定义自定义的列筛选功能，并实现一个搜索列的示例
-</text>
 
 ```html
 <template>
@@ -140,3 +139,4 @@ export default {
 }
 </script>
 ```
+</codebox>

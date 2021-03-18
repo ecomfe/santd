@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 其他字符
 可以将星星替换为其他字符，比如字母，数字，字体图标甚至中文。
-</text>
 
 ```html
 <template>
@@ -27,3 +26,4 @@ export default {
 }
 </script>
 ```
+</codebox>

@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 分组
 用 `OptGroup` 进行选项分组。
-</text>
 
 ```html
 <template>
@@ -33,3 +32,4 @@ export default {
 }
 </script>
 ```
+</codebox>

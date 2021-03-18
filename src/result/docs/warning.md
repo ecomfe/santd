@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### Warning
 警告类型的结果。
-</text>
 
 ```html
 <template>
@@ -25,3 +24,4 @@ export default {
 }
 </script>
 ```
+</codebox>

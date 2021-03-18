@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 简洁卡片
 只包含内容区域。
-</text>
 
 ```html
 <template>
@@ -23,3 +22,4 @@ export default {
 }
 </script>
 ```
+</codebox>

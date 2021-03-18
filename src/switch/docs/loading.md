@@ -1,7 +1,7 @@
-<text lang="cn">
+<codebox>
 #### 加载中
 标识开关操作仍在执行中。
-</text>
+
 ```html
 <template>
     <div>
@@ -19,3 +19,4 @@ export default {
 }
 </script>
 ```
+</codebox>

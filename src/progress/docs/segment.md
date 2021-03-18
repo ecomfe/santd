@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 分段进度条
 标准的进度条。
-</text>
 
 ```html
 <template>
@@ -19,3 +18,4 @@ export default {
 }
 </script>
 ```
+</codebox>

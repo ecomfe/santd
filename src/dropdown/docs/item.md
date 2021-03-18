@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 其它元素
 分割线和不可用菜单项。
-</text>
 
 ```html
 <template>
@@ -37,3 +36,4 @@ export default {
 }
 </script>
 ```
+</codebox>

@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 带输入框的滑块
 和数字输入框组件保持同步。
-</text>
 
 ```html
 <template>
@@ -61,3 +60,4 @@ export default {
 }
 </script>
 ```
+</codebox>

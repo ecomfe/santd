@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 自定义输入组件
 自定义输入组件
-</text>
 
 ```html
 <template>
@@ -57,3 +56,4 @@ export default {
 }
 </script>
 ```
+</codebox>

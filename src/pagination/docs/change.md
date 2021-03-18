@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 改变
 改变每页显示条目数
-</text>
 
 ```html
 <template>
@@ -24,3 +23,4 @@ export default {
 }
 </script>
 ```
+</codebox>

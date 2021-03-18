@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 附加内容
 可以在页签右边添加附加操作。
-</text>
 
 ```html
 <template>
@@ -27,3 +26,4 @@ export default {
 }
 </script>
 ```
+</codebox>

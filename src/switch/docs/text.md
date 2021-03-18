@@ -1,7 +1,7 @@
-<text lang="cn">
+<codebox>
 #### 文字和图标
 带有文字和图标。
-</text>
+
 ```html
 <template>
     <div>
@@ -35,3 +35,4 @@ export default {
 }
 </script>
 ```
+</codebox>

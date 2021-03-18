@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 带搜索框
 展开后可对选项进行搜索。
-</text>
 
 ```html
 <template>
@@ -55,3 +54,4 @@ export default {
 }
 </script>
 ```
+</codebox>

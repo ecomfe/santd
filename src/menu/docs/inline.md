@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 内嵌菜单
 垂直菜单，子菜单内嵌在菜单区域。
-</text>
 
 ```html
 <template>
@@ -70,3 +69,4 @@ export default {
 }
 </script>
 ```
+</codebox>

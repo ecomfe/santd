@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 按钮样式
 按钮样式的单选组合。
-</text>
 
 ```html
 <template>
@@ -47,3 +46,4 @@ export default {
 }
 </script>
 ```
+</codebox>

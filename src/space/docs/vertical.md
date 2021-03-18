@@ -1,10 +1,9 @@
-<text lang="cn">
+<codebox>
 #### 垂直间距
 
 相邻组件垂直间距。
 
 可以设置 `width: 100%` 占满一行。
-</text>
 
 ```html
 <template>
@@ -31,3 +30,4 @@ export default {
 }
 </script>
 ```
+</codebox>

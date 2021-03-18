@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 配合form使用
 配合 Form 使用
-</text>
 
 ```html
 <template>
@@ -65,3 +64,4 @@ export default Form.create({name: 'dynamic_rule'})({
 })
 </script>
 ```
+</codebox>

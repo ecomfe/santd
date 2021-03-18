@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 基本
 最简单的用法，浮层的大小由内容区域决定。
-</text>
 
 ```html
 <template>
@@ -26,3 +25,4 @@ export default {
 }
 </script>
 ```
+</codebox>

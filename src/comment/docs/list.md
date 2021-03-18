@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 配合 List 组件
 配合 List 组件展现评论列表。
-</text>
 
 ```html
 <template>
@@ -53,3 +52,4 @@ export default {
 }
 </script>
 ```
+</codebox>

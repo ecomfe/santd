@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 垂直
 垂直方向的 Slider。
-</text>
 
 ```html
 <template>
@@ -40,3 +39,4 @@ export default {
 }
 </script>
 ```
+</codebox>

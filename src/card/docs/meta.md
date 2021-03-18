@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 更灵活的内容展示
 可以利用 `Card.Meta` 支持更灵活的内容。
-</text>
 
 ```html
 <template>
@@ -25,3 +24,4 @@ export default {
 }
 </script>
 ```
+</codebox>

@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 隐藏箭头
 你可以通过 `showArrow` 值为 `false` , 隐藏 CollapsePanel 组件的箭头图标。
-</text>
 
 ```html
 <template>
@@ -38,3 +37,4 @@ export default {
 }
 </script>
 ```
+</codebox>

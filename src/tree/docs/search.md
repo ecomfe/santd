@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 可搜索
 可搜索的树。
-</text>
 
 ```html
 <template>
@@ -124,3 +123,4 @@ export default {
 }
 </script>
 ```
+</codebox>

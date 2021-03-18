@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 弹出位置
 支持 6 个弹出位置。
-</text>
 
 ```html
 <template>
@@ -40,3 +39,4 @@ export default {
 }
 </script>
 ```
+</codebox>

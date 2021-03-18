@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### RadioGroup 组合 - 配置方式
 通过配置 `options` 参数来渲染单选框。
-</text>
 
 ```html
 <template>
@@ -49,3 +48,4 @@ export default {
 }
 </script>
 ```
+</codebox>

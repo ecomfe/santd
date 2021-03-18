@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 查询模式 - 确定类目
 查询模式 - 确定类目
-</text>
 
 ```html
 <template>
@@ -146,3 +145,4 @@ export default {
 
 </style>
 ```
+</codebox>

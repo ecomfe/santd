@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 禁用
 禁用时间选择。
-</text>
 
 ```html
 <template>
@@ -25,3 +24,4 @@ export default {
 }
 </script>
 ```
+</codebox>

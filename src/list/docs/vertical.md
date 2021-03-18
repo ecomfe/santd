@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 竖排列表样式
 通过设置 `itemLayout` 属性为 `vertical` 可实现竖排列表样式。
-</text>
 
 ```html
 <template>
@@ -68,3 +67,4 @@ export default {
 }
 </script>
 ```
+</codebox>

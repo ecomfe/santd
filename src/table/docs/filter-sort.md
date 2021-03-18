@@ -1,4 +1,4 @@
-<text lang="cn">
+<codebox>
 #### 筛选和排序
 对某一列数据进行筛选，使用列的 `filters` 属性来指定需要筛选菜单的列，`onFilter` 用于筛选当前数据，`filterMultiple` 用于指定多选和单选。
 
@@ -7,7 +7,6 @@
 `sortDirections: ['ascend' | 'descend']` 改变每列可用的排序方式，切换排序时按数组内容依次切换，设置在table props上时对所有列生效。
 
 使用 `defaultSortOrder` 属性，设置列的默认排序顺序。
-</text>
 
 ```html
 <template>
@@ -101,3 +100,4 @@ export default {
 }
 </script>
 ```
+</codebox>

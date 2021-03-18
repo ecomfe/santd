@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 静态位置
 不浮动，状态不随页面滚动变化
-</text>
 
 ```html
 <template>
@@ -27,3 +26,4 @@ export default {
 }
 </script>
 ```
+</codebox>

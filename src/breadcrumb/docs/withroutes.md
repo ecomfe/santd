@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### with routes
 设置routes，并定义item
-</text>
 
 ```html
 <template>
@@ -44,3 +43,4 @@ export default {
 
 </script>
 ```
+</codebox>

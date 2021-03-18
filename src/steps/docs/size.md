@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### mini版
 迷你版的步骤条，通过设置 `<s-steps size="small">` 启用
-</text>
 
 ```html
 <template>
@@ -24,3 +23,4 @@ export default {
 }
 </script>
 ```
+</codebox>

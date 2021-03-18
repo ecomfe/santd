@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 上一步和下一步
 修改上一步和下一步为文字链接。
-</text>
 
 ```html
 <template>
@@ -26,3 +25,4 @@ export default {
 }
 </script>
 ```
+</codebox>

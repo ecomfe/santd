@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 基础列表
 基础列表
-</text>
 
 ```html
 <template>
@@ -57,3 +56,4 @@ export default {
 }
 </script>
 ```
+</codebox>

@@ -1,8 +1,7 @@
-<text lang="cn">
+<codebox>
 #### 按钮尺寸
 按钮有大、中、小三种尺寸。
 通过设置 `size` 为 `large` `small` 分别把按钮设为大、小尺寸。若不设置 `size`，则尺寸为中。
-</text>
 
 ```html
 <template>
@@ -12,7 +11,7 @@
             <s-radiobutton value="default">Default</s-radiobutton>
             <s-radiobutton value="small">Small</s-radiobutton>
         </s-radiogroup>
-        <br /><br/ >
+        <br /><br />
         <s-button type="primary" size="{{size}}">Primary</s-button>
         <s-button size="{{size}}">Normal</s-button>
         <s-button type="dashed" size="{{size}}">Dashed</s-button>
@@ -57,3 +56,4 @@ export default {
 }
 </script>
 ```
+</codebox>

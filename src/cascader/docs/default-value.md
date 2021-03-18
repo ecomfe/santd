@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 默认值
 默认值通过数组的方式指定。
-</text>
 
 ```html
 <template>
@@ -57,3 +56,4 @@ export default {
 }
 </script>
 ```
+</codebox>

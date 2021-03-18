@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 设置只读
 设置输入框为只读。
-</text>
 
 ```html
 <template>
@@ -81,3 +80,4 @@ export default {
 </script>
 
 ```
+</codebox>

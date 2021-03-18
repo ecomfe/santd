@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 自定义预览
 自定义本地预览，用于处理非图片格式文件（例如视频文件）。
-</text>
 
 ```html
 <template>
@@ -46,3 +45,4 @@ export default {
 }
 </script>
 ```
+</codebox>

@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 表头分组
 `columns[n]` 可以内嵌 `children`，以渲染分组表头。
-</text>
 
 ```html
 <template>
@@ -104,3 +103,4 @@ export default {
 }
 </script>
 ```
+</codebox>

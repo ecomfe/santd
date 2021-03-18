@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 仪表盘
 通过设置 `type=dashboard`，可以很方便地实现仪表盘样式的进度条。
-</text>
 
 ```html
 <template>
@@ -19,3 +18,4 @@ export default {
 }
 </script>
 ```
+</codebox>

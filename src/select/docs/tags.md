@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 标签
 tags select，随意输入的内容（scroll the menu）
-</text>
 
 ```html
 <template>
@@ -44,3 +43,4 @@ export default {
 }
 </script>
 ```
+</codebox>

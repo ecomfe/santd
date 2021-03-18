@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 设置锚点滚动偏移量
 锚点目标滚动到屏幕正中间。
-</text>
 
 ```html
 <template>
@@ -35,3 +34,4 @@ export default {
 }
 </script>
 ```
+</codebox>

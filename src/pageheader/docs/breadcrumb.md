@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 带面包屑页头
 带面包屑页头，适合层级比较深的页面，让用户可以快速导航。
-</text>
 
 ```html
 <template>
@@ -46,3 +45,4 @@ export default {
 }
 </script>
 ```
+</codebox>

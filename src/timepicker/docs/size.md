@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 三种大小
 三种大小的输入框，大的用在表单中，中的为默认。
-</text>
 
 ```html
 <template>
@@ -27,3 +26,4 @@ export default {
 }
 </script>
 ```
+</codebox>

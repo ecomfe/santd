@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 折叠图标
 自定义 Menu 折叠时的图标。
-</text>
 
 ```html
 <template>
@@ -70,3 +69,4 @@ ul {
 }
 </style>
 ```
+</codebox>

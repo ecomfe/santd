@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 全选
 在实现全选效果时，你可能会用到 indeterminate 属性。
-</text>
 
 ```html
 <template>
@@ -54,3 +53,4 @@ export default {
 }
 </script>
 ```
+</codebox>

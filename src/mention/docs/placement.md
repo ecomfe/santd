@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 向上展开
 向上展开建议
-</text>
 
 ```html
 <template>
@@ -45,3 +44,4 @@ export default {
 }
 </script>
 ```
+</codebox>

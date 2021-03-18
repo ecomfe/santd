@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 自定义图标
 可口的图标让信息类型更加醒目。
-</text>
 
 ```html
 <template>
@@ -88,3 +87,4 @@ export default {
 }
 </script>
 ```
+</codebox>

@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 带徽标的头像
 通常用于消息提示。
-</text>
 
 ```html
 <template>
@@ -25,3 +24,4 @@ export default {
 }
 </script>
 ```
+</codebox>

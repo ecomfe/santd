@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 简洁风格
 一套没有边框的简洁样式。
-</text>
 
 ```html
 <template>
@@ -42,3 +41,4 @@ export default {
 }
 </script>
 ```
+</codebox>

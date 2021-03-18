@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 通知事项日历
 一个复杂的应用示例，用插槽 `dateCellRender` 和 `monthCellRender` 来自定义需要追加的渲染的数据。
-</text>
 
 ```html
 <template>
@@ -98,3 +97,4 @@ export default {
 }
 </style>
 ```
+</codebox>

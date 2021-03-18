@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 附加内容
 在 TimePicker 选择框底部显示自定义的内容。
-</text>
 
 ```html
 <template>
@@ -33,3 +32,4 @@ export default {
 }
 </script>
 ```
+</codebox>

@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 基本结构
 典型的页面布局。
-</text>
 
 ```html
 <template>
@@ -55,3 +54,4 @@ export default {
 }
 </script>
 ```
+</codebox>

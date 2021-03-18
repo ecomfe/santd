@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 动画效果
 显示动画效果。
-</text>
 
 ```html
 <template>
@@ -20,3 +19,4 @@ export default {
 }
 </script>
 ```
+</codebox>

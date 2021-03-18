@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 基本形式
 省市区级联。
-</text>
 
 ```html
 <template>
@@ -52,3 +51,4 @@ export default {
 }
 </script>
 ```
+</codebox>

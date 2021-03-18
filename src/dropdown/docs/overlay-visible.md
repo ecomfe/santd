@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 菜单隐藏方式
 默认是点击关闭菜单，可以关闭此功能。
-</text>
 
 ```html
 <template>
@@ -43,3 +42,4 @@ export default {
 }
 </script>
 ```
+</codebox>

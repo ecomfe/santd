@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 带文字的分割线
 分割线中带有文字，可以用 `orientation` 指定文字位置。
-</text>
 
 ```html
 <template>
@@ -25,3 +24,4 @@ export default {
 }
 </script>
 ```
+</codebox>

@@ -1,7 +1,6 @@
-<text lang="cn">
+<codebox>
 #### 表单联动
 使用 `setFieldsValue` 来动态设置其他控件的值。
-</text>
 
 ```html
 <template>
@@ -63,3 +62,4 @@ export default Form.create({name: 'coordinated'})({
 })
 </script>
 ```
+</codebox>

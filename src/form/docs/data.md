@@ -1,9 +1,8 @@
-<text lang="cn">
+<codebox>
 #### 表单数据存储于上层组件
 
 通过使用 onFieldsChange 与 mapPropsToFields，可以把表单的数据存储到上层组件或者 san-store 中
 注意：mapPropsToFields 里面返回的表单域数据必须使用 Form.createFormField 包装。
-</text>
 
 ```html
 <template>
@@ -85,3 +84,4 @@ export default {
 };
 </script>
 ```
+</codebox>
