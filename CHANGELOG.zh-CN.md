@@ -30,7 +30,9 @@
     - 🆕 Tabpane 的内容支持 slot。[#32](https://github.com/ecomfe/santd/pull/32)
 - Tree
     - 🆕 新增 height 和 virtual 属性：支持虚拟滚动。[#35](https://github.com/ecomfe/santd/pull/35)
+    - 🆕 支持通过 treeData 属性自定义图标。[#40](https://github.com/ecomfe/santd/pull/40)
     - 🐞 修复子节点是否可选的判断逻辑。[#35](https://github.com/ecomfe/santd/pull/35)
+    - 🐞 修复 disableCheckbox 属性没有生效的问题。[#40](https://github.com/ecomfe/santd/pull/40)
 - TreeSelect
     - 🆕 新增 showSearch 属性：支持搜索框。[#33](https://github.com/ecomfe/santd/pull/33)
     - 🆕 新增 searchValue 属性：手动控制搜索框的值。[#33](https://github.com/ecomfe/santd/pull/33)
