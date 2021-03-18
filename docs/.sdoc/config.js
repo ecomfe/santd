@@ -9,7 +9,7 @@ const resolve = dir => path.join(__dirname, '../../src', dir);
 
 module.exports = {
     base: '/santd/',
-    title: 'Santd - San Toolkit for Ant Design',
+    title: 'Santd',
     head: [
         ['link', {rel: 'icon', href: '/santd/logo.svg'}]
     ],
@@ -17,9 +17,7 @@ module.exports = {
 
     themeConfig: {
         nav: [
-            {text: 'San', link: 'https://baidu.github.io/san/'},
-            {text: 'San CLI', link: 'https://ecomfe.github.io/san-cli/'},
-            {text: 'Github', link: 'https://github.com/ecomfe/santd'}
+            {img: '/santd/github.svg', link: 'https://github.com/ecomfe/santd'}
         ],
         sidebar: {
             '/': [{

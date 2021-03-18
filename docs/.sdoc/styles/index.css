@@ -1,4 +1,22 @@
 .markdown img {
     display: block;
-    /* margin: 34px auto !important; */
+}
+
+.navbar span {
+    color: #000;
+}
+
+#header ul {
+    margin-top: 1em;
+}
+
+#content .fixed {
+    position: relative;
+}
+
+#header,
+#sidebar {
+    font-size: 16px;
+    font-family: Trebuchet MS, -apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Helvetica Neue, Helvetica,
+    Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
 }

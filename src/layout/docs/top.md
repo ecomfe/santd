@@ -6,7 +6,7 @@
 ```html
 <template>
 <div>
-    <s-layout class="layout">
+    <s-layout class="demo-layout">
         <s-header>
         <div class="logo" />
         <s-menu
@@ -50,7 +50,7 @@ export default {
 }
 </script>
 <style>
-.logo {
+.demo-layout .logo {
     width: 120px;
     height: 31px;
     background: rgba(255,255,255,.2);
