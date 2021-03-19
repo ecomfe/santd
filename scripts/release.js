@@ -22,7 +22,7 @@ const chalk = require('chalk');
 const babel = require('./lib/babel');
 const copyFile = require('./lib/copy-file');
 const rollup = require('./lib/rollup');
-const GitHub = require('@octokit/rest');
+const {Octokit} = require('@octokit/rest');
 const getChangeLog = require('./lib/getChangeLog');
 
 async function genLessFile() {
@@ -56,8 +56,8 @@ async function genLessFile() {
 async function tag(version) {
     console.log('Tagging...');
     const output = path.join(__dirname, '../output');
-    let name = await execa('git', ['config', 'user.name'], {cwd: `${output}/santd`});
-    let email = await execa('git', ['config', 'user.email'], {cwd: `${output}/santd`});
+    let name = await execa('git', ['config', 'user.name']);
+    let email = await execa('git', ['config', 'user.email']);
 
     let answer1 = await inquirer.prompt([
         {
@@ -88,8 +88,8 @@ async function tag(version) {
     ]);
 
     if (answer1.needtochange) {
-        await execa('git', ['config', 'user.name', answer1.username], {cwd: `${output}/santd`});
-        await execa('git', ['config', 'user.email', answer1.useremail], {cwd: `${output}/santd`});
+        await execa('git', ['config', 'user.name', answer1.username]);
+        await execa('git', ['config', 'user.email', answer1.useremail]);
         console.log(chalk.green('\ngit config success!\n'));
     }
 
@@ -110,7 +110,7 @@ async function githubRelease(version) {
     }
     console.log('creating release on GitHub');
 
-    const github = new GitHub({
+    const octokit = new Octokit({
         auth: process.env.GITHUB_TOKEN
     });
     const date = new Date();
@@ -126,8 +126,8 @@ async function githubRelease(version) {
     ].join('\n');
 
     /* eslint-disable fecs-camelcase */
-    await github.repos.createRelease({
-        owner: 'ecomfe',
+    await octokit.repos.createRelease({
+        owner: 'Lohoyo',
         repo: 'santd',
         tag_name: version,
         name: version,
