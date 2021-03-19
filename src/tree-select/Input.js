@@ -3,20 +3,19 @@
  * @author
  */
 
-import {Component, DataTypes} from 'san';
+import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
 const prefixCls = classCreator('select')();
 
-export default class Input extends Component {
-    static dataTypes = {
+export default san.defineComponent({
+    dataTypes: {
         inputValue: DataTypes.string,
         searchValue: DataTypes.string,
         multiple: DataTypes.bool,
         popupVisible: DataTypes.bool
-    };
+    },
 
-    // eslint-disable-next-line
-    static template = /*html*/ `
+    template: `
         <div class="${prefixCls}-search__field__wrap">
             <input
                 s-ref="input"
@@ -32,7 +31,7 @@ export default class Input extends Component {
                 class="${prefixCls}-search__field__mirror"
             >{{value}}{{'&nbsp;'|raw}}</span>
         </div>
-    `;
+    `,
 
     initData() {
         return {
@@ -41,13 +40,13 @@ export default class Input extends Component {
             multiple: false,
             popupVisible: false
         };
-    }
+    },
 
-    static computed = {
+    computed: {
         value() {
             return this.data.get('searchValue') || this.data.get('inputValue');
         }
-    };
+    },
 
     attached() {
         const {multiple, searchValue} = this.data.get();
@@ -62,7 +61,7 @@ export default class Input extends Component {
         }
 
         this.dispatch('santd_treeselect_setInputElement', $input);
-    }
+    },
 
     setInputWidth() {
         const $input = this.ref('input');
@@ -73,7 +72,7 @@ export default class Input extends Component {
         else if ($input) {
             $input.style.width = '';
         }
-    }
+    },
 
     handleInputChange(e) {
         const searchValue = this.data.get('searchValue');
@@ -86,13 +85,13 @@ export default class Input extends Component {
             return;
         }
         this.dispatch('santd_treeselect_inputChange', value);
-    }
+    },
 
     handleInputKeyDown(e) {
         this.dispatch('santd_treeselect_inputKeyDown', e);
-    }
+    },
 
     handleInpurBlur(e) {
         this.dispatch('santd_treeselect_inputBlur', e);
     }
-}
+});

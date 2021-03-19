@@ -3,15 +3,15 @@
  * @author
  */
 
-import {Component, DataTypes} from 'san';
+import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
 import Input from './Input';
 import SingleSelector from './SingleSelector';
 import MultipleSelector from './MultipleSelector';
 const prefixCls = classCreator('select')();
 
-export default class Selector extends Component {
-    static dataTypes = {
+export default san.defineComponent({
+    dataTypes: {
         placeholder: DataTypes.string,
         inputValue: DataTypes.string,
         searchValue: DataTypes.string,
@@ -23,10 +23,9 @@ export default class Selector extends Component {
         maxTagCount: DataTypes.number,
         maxTagPlaceholder: DataTypes.any,
         treeNodeLabelProp: DataTypes.string
-    };
+    },
 
-    // eslint-disable-next-line
-    static template = /*html*/ `
+    template: `
         <div class="${prefixCls}-selection__rendered">
             <div
                 class="${prefixCls}-selection__placeholder ${prefixCls}-unselectable"
@@ -68,13 +67,13 @@ export default class Selector extends Component {
                 />
             </div>
         </div>
-    `;
+    `,
 
-    static components = {
+    components: {
         's-input': Input,
         's-single-selector': SingleSelector,
         's-multiple-selector': MultipleSelector
-    };
+    },
 
     initData() {
         return {
@@ -86,9 +85,9 @@ export default class Selector extends Component {
             treeCheckable: false,
             popupVisible: false
         };
-    }
+    },
 
-    static computed = {
+    computed: {
         handledInputValue() {
             return this.data.get('searchValue') || this.data.get('inputValue');
         },
@@ -101,7 +100,7 @@ export default class Selector extends Component {
             }
             return '';
         }
-    };
+    },
 
     updated() {
         const {selectedValue, multiple} = this.data.get();
@@ -115,13 +114,13 @@ export default class Selector extends Component {
                 this.ref('singleSelector') && this.ref('singleSelector')._repaintChildren();
             }
         }
-    }
+    },
 
     handleRemoveValue(index) {
         this.fire('removeValue', index);
-    }
+    },
 
     handleClick() {
         this.fire('inputFocus');
     }
-}
+});
