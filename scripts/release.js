@@ -56,8 +56,16 @@ async function genLessFile() {
 async function tag(version) {
     console.log('Tagging...');
     const output = path.join(__dirname, '../output');
-    let name = await execa('git', ['config', 'user.name']);
-    let email = await execa('git', ['config', 'user.email']);
+
+    try {
+        fs.accessSync(`${output}/santd`);
+    } catch (e) {
+        console.log('发布官网（执行 npm run deploy:site）后再尝试。')
+        throw e;
+    }
+    
+    let name = await execa('git', ['config', 'user.name'], {cwd: `${output}/santd`});
+    let email = await execa('git', ['config', 'user.email'], {cwd: `${output}/santd`});
 
     let answer1 = await inquirer.prompt([
         {
@@ -88,8 +96,8 @@ async function tag(version) {
     ]);
 
     if (answer1.needtochange) {
-        await execa('git', ['config', 'user.name', answer1.username]);
-        await execa('git', ['config', 'user.email', answer1.useremail]);
+        await execa('git', ['config', 'user.name', answer1.username], {cwd: `${output}/santd`});
+        await execa('git', ['config', 'user.email', answer1.useremail], {cwd: `${output}/santd`});
         console.log(chalk.green('\ngit config success!\n'));
     }
 
@@ -126,8 +134,8 @@ async function githubRelease(version) {
     ].join('\n');
 
     /* eslint-disable fecs-camelcase */
-    await octokit.repos.createRelease({
-        owner: 'Lohoyo',
+    await github.repos.createRelease({
+        owner: 'ecomfe',
         repo: 'santd',
         tag_name: version,
         name: version,
