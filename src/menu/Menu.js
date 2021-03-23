@@ -87,14 +87,6 @@ export default san.defineComponent({
         // resize事件的触发频率较高，因此延迟66ms（意味着updateFoldedItems函数的执行频率变为15fps）
         this.updateFoldedItemsBind = throttle(this.updateFoldedItems, 66).bind(this);
         on(window, 'resize', this.updateFoldedItemsBind);
-        this.nextTick(() => {
-            const foldedItemWidth = getOffset(this.ref(`${prefixCls}-fold-item`)).width;
-            // 用户是否传入了和默认折叠图标的宽度不一样的折叠图标
-            if (foldedItemWidth !== DEFAULT_FOLDED_ITEM_WIDTH) {
-                this.foldedItemWidth = foldedItemWidth;
-                this.updateFoldedItems();
-            }
-        });
     },
     updated() {
         this.updateItems();
@@ -137,7 +129,20 @@ export default san.defineComponent({
             item.data.set('isFolded', isFolded);
             this.data.set(`itemFoldedFlags[${index}]`, isFolded);
         });
-        this.data.set('hasFoldedItem', availableMenuWidth < 0);
+        const hasFoldedItem = availableMenuWidth < 0;
+        this.data.set('hasFoldedItem', hasFoldedItem);
+        // 用户是否自定义了折叠图标
+        if (this.sourceSlots.named.overflowedIndicator
+                && this.foldedItemWidth === DEFAULT_FOLDED_ITEM_WIDTH
+                && hasFoldedItem) {
+            this.nextTick(() => {
+                const foldedItemWidth = getOffset(this.ref(`${prefixCls}-fold-item`)).width;
+                if (foldedItemWidth !== DEFAULT_FOLDED_ITEM_WIDTH) {
+                    this.foldedItemWidth = foldedItemWidth;
+                    this.updateFoldedItems();
+                }
+            });
+        }
     },
     getSelectedKeys(defaultSelectedKeys) {
         let selectedKeys =  this.data.get('selectedKeys') || defaultSelectedKeys || [];
