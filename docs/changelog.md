@@ -12,6 +12,11 @@
 
 ## 1.0.1
 `2020-3-23`
+- Menu
+    - 🐞 修复 MenuItem 溢出折叠时的可用空间的计算逻辑 [#47](https://github.com/ecomfe/santd/pull/47)
+    - 🐞 修复 MenuItem 的 padding 没有正常生效的问题 [#47](https://github.com/ecomfe/santd/pull/47)
+    - 🐞 修复 MenuItem 之间有间隙导致溢出折叠的计算不精确的问题 [#47](https://github.com/ecomfe/santd/pull/47)
+    - 🐞 修复折叠图标的空间的计算逻辑 [#47](https://github.com/ecomfe/santd/pull/47)
 - Table
     - 🐞 修复当存在子表格时展开子表格的按钮默认隐藏的问题，改为了默认显示 [#45](https://github.com/ecomfe/santd/pull/45)
 - 其它
