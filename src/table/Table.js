@@ -320,8 +320,12 @@ export default san.defineComponent({
         return data;
     },
     rowExpandable(item) {
-        let rowExpandable = this.data.get('rowExpandable');
-        return rowExpandable ? rowExpandable(item) : true;
+        const rowExpandable = this.data.get('rowExpandable');
+        if (rowExpandable) {
+            return rowExpandable(item);
+        }
+        // 用户没有传入 rowExpandable 函数的情况下，默认显示展开子表格的按钮
+        return true;
     },
     // 获取当前column的rolspan和rowspan
     getColumns(columns, item, dataIndex) {
