@@ -321,7 +321,7 @@ export default san.defineComponent({
     },
     rowExpandable(item) {
         let rowExpandable = this.data.get('rowExpandable');
-        return rowExpandable && rowExpandable(item) || false;
+        return rowExpandable ? rowExpandable(item) : true;
     },
     // 获取当前column的rolspan和rowspan
     getColumns(columns, item, dataIndex) {
