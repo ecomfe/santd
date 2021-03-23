@@ -122,7 +122,8 @@ export default san.defineComponent({
         data: DataTypes.array,
         pagination: DataTypes.oneOfType([DataTypes.bool, DataTypes.object]),
         locale: DataTypes.object,
-        rowClassName: DataTypes.func
+        rowClassName: DataTypes.func,
+        rowExpandable: DataTypes.func
     },
     initData() {
         return {
