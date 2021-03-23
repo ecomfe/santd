@@ -134,7 +134,7 @@ async function githubRelease(version) {
     ].join('\n');
 
     /* eslint-disable fecs-camelcase */
-    await github.repos.createRelease({
+    await octokit.repos.createRelease({
         owner: 'ecomfe',
         repo: 'santd',
         tag_name: version,
