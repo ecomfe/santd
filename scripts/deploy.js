@@ -47,7 +47,7 @@ async function deploy() {
 
         // 这里重新clone一次太慢了，影响发布速度，复用本地现成的.git
         const {stdout} = await execa('git', ['remote', '-v'], {cwd: `${output}`});
-        const [remote] = stdout.match(/https:\/\/github.com\/\w+\/\w+\.git/);
+        const [remote] = stdout.match(/https:\/\/github.com\/\w+\/\w+\.git|git@github\.com:\w+\/\w+\.git/);
         console.log(chalk.gray('\nRemote Repository:') + chalk.green(remote));
         await execa('mkdir', ['santd'], {cwd: `${output}`});
         await execa('cp', ['-r', '../.git', 'santd'], {cwd: `${output}`});
