@@ -10,6 +10,13 @@
 
 ---
 
+## 1.0.1
+`2020-3-23`
+- Table
+    - 🐞 修复当存在子表格时展开子表格的按钮默认隐藏的问题，改为了默认显示。[#45](https://github.com/ecomfe/santd/pull/45)
+- 其它
+    - 🐞 修复发布 NPM 包的脚本因外部依赖 @octokit/rest 的 API 更改导致脚本运行失败的问题。[#44](https://github.com/ecomfe/santd/pull/44)
+
 ## 1.0.0
 `2020-3-15`
 - Affix
