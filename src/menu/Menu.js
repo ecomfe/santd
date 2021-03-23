@@ -116,7 +116,16 @@ export default san.defineComponent({
         this.foldedItemWidth = DEFAULT_FOLDED_ITEM_WIDTH;
     },
     updateFoldedItems() {
-        let availableMenuWidth = getOffset(this.el).width - (this.foldedItemWidth + FOLDED_ITEM_PADDING);
+        let availableMenuWidth = getOffset(this.el).width;
+        const itemFoldedFlags = this.data.get('itemFoldedFlags');
+        // 是否是可用空间正在变大且目前只有一项折叠项
+        const isSpecialCase = this.lastAvailableMenuWidth
+            && (availableMenuWidth - this.lastAvailableMenuWidth) > 0
+            && itemFoldedFlags[itemFoldedFlags.length - 1] && !itemFoldedFlags[itemFoldedFlags.length - 2];
+        if (this.data.get('hasFoldedItem') && !isSpecialCase) {
+            availableMenuWidth -= this.foldedItemWidth + FOLDED_ITEM_PADDING;
+        }
+        this.lastAvailableMenuWidth = availableMenuWidth;
         this.items.forEach((item, index, items) => {
             // 折叠项（最后一项）不参与菜单项是否需要被折叠的计算
             if (index === items.length - 1) {
