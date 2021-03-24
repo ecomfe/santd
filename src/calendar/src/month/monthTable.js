@@ -25,8 +25,7 @@ export default san.defineComponent({
             for (let rowIndex = 0; rowIndex < ROW; rowIndex++) {
                 months[rowIndex] = [];
                 for (let colIndex = 0; colIndex < COL; colIndex++) {
-                    const current = value.clone();
-                    current.month(index);
+                    const current = value.month(index);
                     const content = getMonthName(current);
                     months[rowIndex][colIndex] = {
                         value: index,
@@ -49,8 +48,7 @@ export default san.defineComponent({
 
         let disabled = false;
         if (disabledDate) {
-            const testValue = value.clone();
-            testValue.month(monthData.value);
+            const testValue = value.month(monthData.value);
             disabled = disabledDate(testValue);
         }
 
@@ -66,14 +64,12 @@ export default san.defineComponent({
         const disabledDate = this.data.get('disabledDate');
         let disabled = false;
         if (disabledDate) {
-            const testValue = value.clone();
-            testValue.month(monthData.value);
+            const testValue = value.month(monthData.value);
             disabled = disabledDate(testValue);
         }
 
         if (!disabled) {
-            const next = value.clone();
-            next.month(monthData.value);
+            const next = value.month(monthData.value);
             this.fire('select', next);
         }
     },

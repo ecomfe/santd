@@ -48,23 +48,19 @@ export default san.defineComponent({
         }
     },
     handlePreviousYear() {
-        const previous = this.data.get('value').clone();
-        previous.add(-1, 'years');
+        const previous = this.data.get('value').add(-1, 'years');
         this.fire('valueChange', previous);
     },
     handleNextYear() {
-        const next = this.data.get('value').clone();
-        next.add(1, 'years');
+        const next = this.data.get('value').add(1, 'years');
         this.fire('valueChange', next);
     },
     handlePreviousMonth() {
-        const previous = this.data.get('value').clone();
-        previous.add(-1, 'month');
+        const previous = this.data.get('value').add(-1, 'month');
         this.fire('valueChange', previous);
     },
     handleNextMonth() {
-        const next = this.data.get('value').clone();
-        next.add(1, 'month');
+        const next = this.data.get('value').add(1, 'month');
         this.fire('valueChange', next);
     },
     handleDecadeSelect(value) {
@@ -87,8 +83,7 @@ export default san.defineComponent({
         this.fire('valueChange', value);
     },
     goYear(direction) {
-        const next = this.data.get('value').clone();
-        next.add(direction, 'years');
+        const next = this.data.get('value').add(direction, 'years');
         this.fire('valueChange', next);
     },
     handleYearSelect(value) {

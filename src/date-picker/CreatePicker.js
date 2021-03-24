@@ -55,7 +55,7 @@ export default function (calendar) {
             const format = this.data.get('format');
             const value = data.value;
             const cause = data.cause || {};
-            this.data.set('value', value.clone(), {force: true});
+            this.data.set('value', value, {force: true});
             this.fire('change', {date: value, dateString: value && value.format(format)});
             this.dispatch('UI:form-item-interact', {fieldValue: value, type: 'change'});
 

@@ -64,14 +64,11 @@ export default san.defineComponent({
         }
     },
     goYear(year) {
-        const value = this.data.get('value').clone();
-        value.add(year, 'year');
+        const value = this.data.get('value').add(year, 'year');
         this.data.set('value', value);
     },
     chooseYear(year) {
-        const value = this.data.get('value').clone();
-        value.year(year);
-        value.month(this.data.get('value').month());
+        const value = this.data.get('value').year(year).month(this.data.get('value').month());
         this.fire('select', value);
         this.nextTick(() => {
             this.data.set('refresh', Math.random(), {force: true});

@@ -10,6 +10,10 @@
 
 ---
 
+## 1.0.2
+`2020-3-24`
+- 🐞 修复 1.0.0 版本把 Moment.js 换成 Day.js 后引起的和时间日期相关的组件的一系列 bug，涉及的组件包括 Calendar、DatePicker、LocaleProvider、TimePicker [#48](https://github.com/ecomfe/santd/pull/48)
+
 ## 1.0.1
 `2020-3-23`
 - Menu

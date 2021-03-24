@@ -16,12 +16,10 @@ dayjs.extend(require('dayjs/plugin/localeData'));
 const prefixCls = classCreator('fullcalendar')();
 
 function getMonthsLocale(value) {
-    const current = value.clone();
     const localeData = value.localeData();
     const months = [];
     for (let i = 0; i < 12; i++) {
-        current.month(i);
-        months.push(localeData.monthsShort(current));
+        months.push(localeData.monthsShort(value.month(i)));
     }
     return months;
 }
@@ -103,7 +101,7 @@ export default san.defineComponent({
         }
     },
     setValue(value, way) {
-        const prevValue = this.data.get('value').clone();
+        const prevValue = this.data.get('value');
         const mode = this.data.get('mode');
 
         this.data.set('value', value);
@@ -118,14 +116,10 @@ export default san.defineComponent({
         }
     },
     handleMonthChange(month) {
-        const value = this.data.get('value').clone();
-        value.month(month);
-        this.setValue(value, 'changePanel');
+        this.setValue(this.data.get('value').month(month), 'changePanel');
     },
     handleYearChange(year) {
-        const value = this.data.get('value').clone();
-        value.year(year);
-        this.setValue(value, 'changePanel');
+        this.setValue(this.data.get('value').year(year), 'changePanel');
     },
     handlePanelChange(value, mode) {
         this.fire('panelChange', {value, mode});
@@ -137,19 +131,21 @@ export default san.defineComponent({
         localeReceiver.inited.call(this);
 
         const defaultValue = this.data.get('defaultValue');
-        const value = this.data.get('value') || defaultValue || dayjs();
+        let value = this.data.get('value') || defaultValue || dayjs();
         const localeCode = this.data.get('localeCode');
 
         if (localeCode) {
+            require(`dayjs/locale/${localeCode}.js`);
             dayjs.locale(localeCode);
-            value.locale(localeCode);
+            value = value.locale(localeCode);
         }
         this.data.set('value', value);
         this.data.set('hasHeaderRender', !!this.sourceSlots.named.headerRender);
 
         this.watch('localeCode', val => {
+            require(`dayjs/locale/${val}.js`);
             dayjs.locale(val);
-            value.locale(val);
+            value = value.locale(val);
             this.data.set('value', value, {force: true});
         });
     },

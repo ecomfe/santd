@@ -21,11 +21,11 @@ function isEmptyArray(arr) {
 function getValueFromSelectedValue(selectedValue) {
     let [start, end] = selectedValue;
     if (end && (start === undefined || start === null)) {
-        start = end.clone().subtract(1, 'month');
+        start = end.subtract(1, 'month');
     }
 
     if (start && (end === undefined || end === null)) {
-        end = start.clone().add(1, 'month');
+        end = start.add(1, 'month');
     }
     return [start, end];
 }
@@ -81,7 +81,7 @@ export default inherits(san.defineComponent({
         isClosestMonths() {
             const startValue = this.data.get('getStartValue');
             const endValue = this.data.get('getEndValue');
-            const nextMonthOfStart = startValue.clone().add(1, 'months');
+            const nextMonthOfStart = startValue.add(1, 'months');
 
             return nextMonthOfStart.year() === endValue.year() && nextMonthOfStart.month() === endValue.month();
         },
@@ -118,11 +118,10 @@ export default inherits(san.defineComponent({
             if (!value) {
                 return;
             }
-            let startValue = value[0].clone();
+            let startValue = value[0];
             // keep selectedTime when select date
             if (selectedValue[0] && this.data.get('showTime')) {
-                startValue = startValue.clone();
-                syncTime(selectedValue[0], startValue);
+                startValue = syncTime(selectedValue[0], startValue);
             }
             if (showTimePicker && selectedValue[0]) {
                 startValue = selectedValue[0];
@@ -131,7 +130,7 @@ export default inherits(san.defineComponent({
             // Adjust month if date not align
             if (panelTriggerSource === 'end' && mode[0] === 'date' && mode[1] === 'date'
                 && startValue.isSame(value[1], 'month')) {
-                startValue = startValue.clone().subtract(1, 'month');
+                startValue = startValue.subtract(1, 'month');
             }
 
             return startValue;
@@ -145,19 +144,19 @@ export default inherits(san.defineComponent({
             if (!value) {
                 return;
             }
-            let endValue = value[1] ? value[1].clone() : value[0].clone().add(1, 'month');
+            let endValue = value[1] || value[0].add(1, 'month');
             // keep selectedTime when select date
             if (selectedValue[1] && this.data.get('showTime')) {
-                syncTime(selectedValue[1], endValue);
+                endValue = syncTime(selectedValue[1], endValue);
             }
             if (showTimePicker) {
-                endValue = selectedValue[1] ? selectedValue[1] : this.data.get('getStartValue');
+                endValue = selectedValue[1] || this.data.get('getStartValue');
             }
 
             // Adjust month if date not align
             if (!showTimePicker && panelTriggerSource !== 'end' && mode[0] === 'date' && mode[1] === 'date'
                 && endValue.isSame(value[0], 'month')) {
-                endValue = endValue.clone().add(1, 'month');
+                endValue = endValue.add(1, 'month');
             }
 
             return endValue;
@@ -188,9 +187,13 @@ export default inherits(san.defineComponent({
         this.data.set('prevSelectedValue', selectedValue);
         this.data.set('firstSelectedValue', null);
 
-        localeCode && dayjs.locale(localeCode);
-        localeCode && value[0].locale(localeCode);
-        localeCode && value[1].locale(localeCode);
+        if (localeCode) {
+            require(`dayjs/locale/${localeCode}.js`);
+            dayjs.locale(localeCode);
+            value[0] = value[0].locale(localeCode);
+            value[1] = value[1].locale(localeCode);
+        }
+
         this.data.set('value', value);
     },
     fireSelectValueChange(selectedValue, direct, cause) {
@@ -202,10 +205,10 @@ export default inherits(san.defineComponent({
         if (showTime && showTime.defaultValue) {
             const timePickerDefaultValue = showTime.defaultValue;
             if (!prevSelectedValue[0] && selectedValue[0]) {
-                syncTime(timePickerDefaultValue[0], selectedValue[0]);
+                selectedValue[0] = syncTime(timePickerDefaultValue[0], selectedValue[0]);
             }
             if (!prevSelectedValue[1] && selectedValue[1]) {
-                syncTime(timePickerDefaultValue[1], selectedValue[1]);
+                selectedValue[1] = syncTime(timePickerDefaultValue[1], selectedValue[1]);
             }
         }
 
@@ -238,23 +241,23 @@ export default inherits(san.defineComponent({
         this.fire('clear');
     },
     handleRangeSelect(value) {
-        const {
+        let {
             prevSelectedValue,
             firstSelectedValue
         } = this.data.get();
 
         let nextSelectedValue;
         if (!firstSelectedValue) {
-            syncTime(prevSelectedValue[0], value);
+            value = syncTime(prevSelectedValue[0], value);
             nextSelectedValue = [value];
         }
         else if (this.compare(firstSelectedValue, value) < 0) {
-            syncTime(prevSelectedValue[1], value);
+            value = syncTime(prevSelectedValue[1], value);
             nextSelectedValue = [firstSelectedValue, value];
         }
         else {
-            syncTime(prevSelectedValue[0], value);
-            syncTime(prevSelectedValue[1], firstSelectedValue);
+            value = syncTime(prevSelectedValue[0], value);
+            firstSelectedValue = syncTime(prevSelectedValue[1], firstSelectedValue);
             nextSelectedValue = [value, firstSelectedValue];
         }
 
@@ -284,7 +287,7 @@ export default inherits(san.defineComponent({
     },
     handleToday() {
         const startValue = getTodayTime(this.data.get('value')[0]);
-        const endValue = startValue.clone().add(1, 'months');
+        const endValue = startValue.add(1, 'months');
         this.data.set('value', [startValue, endValue]);
     },
     handleTimePicker(visible) {

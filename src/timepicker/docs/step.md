@@ -10,7 +10,6 @@
     </div>
 </template>
 <script>
-import dayjs from 'dayjs';
 import {TimePicker} from 'santd';
 
 export default {

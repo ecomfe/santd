@@ -21,7 +21,7 @@ function getShowDateFromValue(value, mode) {
     if (mode && mode[0] === 'month') {
         return [start, end];
     }
-    const newEnd = end && end.isSame(start, 'month') ? end.clone().add(1, 'month') : end;
+    const newEnd = end && end.isSame(start, 'month') ? end.add(1, 'month') : end;
     return [start, newEnd];
 }
 
@@ -39,7 +39,7 @@ function pickerValueAdapter(value) {
     if (Array.isArray(value)) {
         return value;
     }
-    return [value, value.clone().add(1, 'month')];
+    return [value, value.add(1, 'month')];
 }
 
 export default san.defineComponent({

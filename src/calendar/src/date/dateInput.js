@@ -68,6 +68,7 @@ export default san.defineComponent({
         }
 
         // 不合法直接退出
+        dayjs.extend(require('dayjs/plugin/customParseFormat'));
         const parsed = dayjs(showDate, format, true);
         if (!parsed.isValid()) {
             this.data.set('invalid', true);
@@ -75,8 +76,7 @@ export default san.defineComponent({
             return;
         }
 
-        const value = this.data.get('value').clone();
-        value.year(parsed.year())
+        const value = this.data.get('value').year(parsed.year())
             .month(parsed.month())
             .date(parsed.date())
             .hour(parsed.hour())
@@ -104,7 +104,7 @@ export default san.defineComponent({
         if (e.keyCode === KeyCode.ENTER) {
             const validateDate = !disabledDate || !disabledDate(value);
             if (validateDate) {
-                this.fire('select', value.clone());
+                this.fire('select', value);
             }
         }
     },

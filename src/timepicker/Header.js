@@ -63,13 +63,14 @@ export default san.defineComponent({
 
         if (inputValue) {
             const originalValue = this.data.get('value');
-            const value = this.data.get('value') || this.data.get('defaultOpenValue');
+            let value = this.data.get('value') || this.data.get('defaultOpenValue');
+            dayjs.extend(require('dayjs/plugin/customParseFormat'));
             const parsed = dayjs(inputValue, format, true);
             if (!parsed.isValid()) {
                 this.data.set('invalid', true);
                 return;
             }
-            value
+            value = value
                 .hour(parsed.hour())
                 .minute(parsed.minute())
                 .second(parsed.second());
@@ -103,10 +104,10 @@ export default san.defineComponent({
                     || originalValue.minute() !== value.minute()
                     || originalValue.second() !== value.second()
                 ) {
-                    const changedValue = originalValue.clone();
-                    changedValue.hour(value.hour());
-                    changedValue.minute(value.minute());
-                    changedValue.second(value.second());
+                    const changedValue = originalValue
+                        .hour(value.hour())
+                        .minute(value.minute())
+                        .second(value.second());
                     this.fire('change', changedValue);
                 }
             }

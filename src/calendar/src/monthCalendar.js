@@ -20,14 +20,19 @@ export default inherits(san.defineComponent({
         let selectedValue = this.data.get('selectedValue') || this.data.get('defaultSelectedValue');
         const localeCode = this.data.get('localeCode');
 
-        localeCode && value.locale(localeCode);
+        if (localeCode) {
+            require(`dayjs/locale/${localeCode}.js`);
+            value = value.locale(localeCode);
+        }
 
         this.data.set('value', value);
         this.data.set('selectedValue', selectedValue);
         this.data.set('mode', 'month');
 
         this.watch('selectedValue', val => {
-            localeCode && val.locale(localeCode);
+            if (localeCode) {
+                val = val.locale(localeCode);
+            }
             this.data.set('value', val);
         });
     },

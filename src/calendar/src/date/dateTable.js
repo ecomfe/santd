@@ -46,12 +46,10 @@ export default san.defineComponent({
             const selectedValue = this.data.get('selectedValue');
             const hoverValue = this.data.get('hoverValue');
             const disabledDate = this.data.get('disabledDate');
-            const month = value.clone();
-            month.date(1);
+            const month = value.date(1);
             const day = month.day();
             const lastMonthDiffDay = (day + 7 - value.localeData().firstDayOfWeek()) % 7;
-            const lastMonth = month.clone();
-            lastMonth.add(0 - lastMonthDiffDay, 'days');
+            const lastMonth = month.add(0 - lastMonthDiffDay, 'days');
             const dataTable = [];
             let passed = 0;
             let current;
@@ -65,8 +63,7 @@ export default san.defineComponent({
                 for (let j = 0; j < COL; j++) {
                     current = lastMonth;
                     if (passed) {
-                        current = current.clone();
-                        current.add(passed, 'days');
+                        current = current.add(passed, 'days');
                     }
                     dataTable[i].current.push({data: current});
                     dataTable[i].week = current.week();
@@ -75,10 +72,10 @@ export default san.defineComponent({
                     let next = null;
                     let last = null;
                     if (j < COL - 1) {
-                        next = current.clone().add(passed + 1, 'days');
+                        next = current.add(passed + 1, 'days');
                     }
                     if (j > 0) {
-                        last = current.clone().add(passed - 1, 'days');
+                        last = current.add(passed - 1, 'days');
                     }
                     let className = [`${prefixCls}-cell`];
                     let disabled = false;
@@ -126,7 +123,7 @@ export default san.defineComponent({
                     isSameDay(current, selectedValue) && className.push(`${prefixCls}-selected-date`);
                     isBeforeCurrentMonthYear && className.push(`${prefixCls}-last-month-cell`);
                     isAfterCurrentMonthYear && className.push(`${prefixCls}-next-month-btn-day`);
-                    (current.clone().endOf('month').date() === current.date()) && className.push(` ${prefixCls}-last-day-of-month`);
+                    (current.endOf('month').date() === current.date()) && className.push(` ${prefixCls}-last-day-of-month`);
 
                     if (disabledDate) {
                         if (disabledDate(current, value)) {
@@ -154,11 +151,11 @@ export default san.defineComponent({
             const firstDayOfWeek = localeData.firstDayOfWeek();
             const weekDays = [];
             const veryShortWeekdays = [];
-            const now = dayjs();
+            let now = dayjs();
 
             for (let dateColIndex = 0; dateColIndex < COL; dateColIndex++) {
                 const index = (firstDayOfWeek + dateColIndex) % COL;
-                now.day(index);
+                now = now.day(index);
                 veryShortWeekdays[dateColIndex] = localeData.weekdaysMin(now);
                 weekDays[dateColIndex] = localeData.weekdaysShort(now);
             }
