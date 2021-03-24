@@ -28,6 +28,7 @@ function toNearestValidTime(time, hourOptions, minuteOptions, secondOptions) {
     const second = secondOptions
         .slice()
         .sort((a, b) => Math.abs(time.second() - a) - Math.abs(time.second() - b))[0];
+    dayjs.extend(require('dayjs/plugin/customParseFormat'));
     return dayjs(`${hour}:${minute}:${second}`, 'HH:mm:ss');
 }
 

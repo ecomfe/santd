@@ -13,6 +13,8 @@
 import dayjs from 'dayjs';
 import {TimePicker} from 'santd';
 
+dayjs.extend(require('dayjs/plugin/customParseFormat'));
+
 export default {
     components: {
         's-timepicker': TimePicker

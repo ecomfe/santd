@@ -19,6 +19,8 @@
 import dayjs from 'dayjs';
 import {DatePicker} from 'santd';
 
+dayjs.extend(require('dayjs/plugin/customParseFormat'));
+
 const dateFormat = 'YYYY-MM-DD';
 
 export default {
