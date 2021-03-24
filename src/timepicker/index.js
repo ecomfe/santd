@@ -191,7 +191,7 @@ export default san.defineComponent({
         this.dispatch('UI:form-item-interact', {fieldValue: '', type: 'change', e});
     },
     handleChange(value) {
-        this.data.set('value', value.clone());
+        this.data.set('value', value);
         const format = this.data.get('format') || 'HH:mm:ss';
 
         this.fire('change', {time: value, timeString: value && value.format(format) || ''});

@@ -60,7 +60,7 @@ export default san.defineComponent({
     dateInputValue(selectedValue = []) {
         const direction = this.data.get('direction');
         const value = selectedValue[direction === 'left' ? 0 : 1];
-        return value && value.clone();
+        return value;
     },
     getTimeConfig(selectedValue, disabledTime, mode) {
         const showTimePicker = this.data.get('showTimePicker');

@@ -92,7 +92,7 @@ export default san.defineComponent({
         's-combobox': ComboBox
     },
     handleChange(value) {
-        this.data.set('value', value.clone());
+        this.data.set('value', value);
         this.fire('change', value);
     },
     handleAmpmChange(ampm) {

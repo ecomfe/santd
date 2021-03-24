@@ -75,8 +75,7 @@ export default san.defineComponent({
             return;
         }
 
-        const value = this.data.get('value').clone();
-        value.year(parsed.year())
+        const value = this.data.get('value').year(parsed.year())
             .month(parsed.month())
             .date(parsed.date())
             .hour(parsed.hour())
@@ -104,7 +103,7 @@ export default san.defineComponent({
         if (e.keyCode === KeyCode.ENTER) {
             const validateDate = !disabledDate || !disabledDate(value);
             if (validateDate) {
-                this.fire('select', value.clone());
+                this.fire('select', value);
             }
         }
     },

@@ -17,9 +17,10 @@ const defaultDisabledTime = {
 };
 
 export function getTodayTime(value) {
-    const today = dayjs();
-    today.locale(value.locale()).utcOffset(value.utcOffset());
-    return today;
+    const locale = value.locale();
+    require(`dayjs/locale/${locale}.js`);
+    dayjs.extend(require('dayjs/plugin/utc'));
+    return dayjs().locale(locale).utcOffset(value.utcOffset());
 }
 
 export function getTitleString(value) {
@@ -41,10 +42,11 @@ export function syncTime(from, to) {
     if (!dayjs.isDayjs(from) || !dayjs.isDayjs(to)) {
         return;
     }
-    to.hour(from.hour());
-    to.minute(from.minute());
-    to.second(from.second());
-    to.millisecond(from.millisecond());
+    return to
+        .hour(from.hour())
+        .minute(from.minute())
+        .second(from.second())
+        .millisecond(from.millisecond());
 }
 
 export function getTimeConfig(value, disabledTime) {

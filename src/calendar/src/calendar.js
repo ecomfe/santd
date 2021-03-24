@@ -36,8 +36,13 @@ export default inherits(san.defineComponent({
         const localeCode = this.data.get('localeCode');
 
         // 如果有国际化编码，对dayjs进行国际化处理
-        localeCode && dayjs.locale(localeCode);
-        localeCode && value && value.locale(localeCode);
+        if (localeCode) {
+            require(`dayjs/locale/${localeCode}.js`);
+            dayjs.locale(localeCode);
+            if (value) {
+                value = value.locale(localeCode);
+            }
+        }
 
         this.data.set('mode', mode || 'date');
         this.data.set('value', value);
@@ -51,7 +56,7 @@ export default inherits(san.defineComponent({
         if (!selectedValue && showTime) {
             const timePickerDefaultValue = showTime.defaultValue || dayjs();
             if (timePickerDefaultValue) {
-                syncTime(timePickerDefaultValue, value);
+                value = syncTime(timePickerDefaultValue, value);
             }
         }
         this.fire('select', {value});

@@ -21,6 +21,7 @@ export default san.defineComponent({
 
         const locale = this.data.get('locale');
         if (locale && locale.locale) {
+            require(`dayjs/locale/${locale.locale}.js`);
             dayjs.locale(locale.locale);
         }
         else {

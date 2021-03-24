@@ -78,12 +78,10 @@ export default {
     },
     getMonths(value) {
         const options = [];
-        const current = value.clone();
         const localeData = value.localeData();
 
         for (let i = 0; i < 12; i++) {
-            current.month(i);
-            options.push({label: localeData.monthsShort(current), value: String(i)});
+            options.push({label: localeData.monthsShort(value.month(i)), value: String(i)});
         }
         return options;
     },

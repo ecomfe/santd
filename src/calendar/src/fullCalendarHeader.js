@@ -33,12 +33,10 @@ export default san.defineComponent({
             return String(this.data.get('value').year());
         },
         months() {
-            const value = this.data.get('value').clone();
             const result = [];
 
             for (let i = 0; i < 12; i++) {
-                value.month(i);
-                result.push({label: getMonthName(value), value: String(i)});
+                result.push({label: getMonthName(this.data.get('value').month(i)), value: String(i)});
             }
             return result;
         },
@@ -67,14 +65,10 @@ export default san.defineComponent({
         this.fire('typeChange', 'month');
     },
     handleChangeMonth(month) {
-        const value = this.data.get('value').clone();
-        value.month(parseInt(month, 10));
-        this.fire('valueChange', value);
+        this.fire('valueChange', this.data.get('value').month(parseInt(month, 10)));
     },
     handleChangeYear(year) {
-        const value = this.data.get('value').clone();
-        value.year(parseInt(year, 10));
-        this.fire('valueChange', value);
+        this.fire('valueChange', this.data.get('value').year(parseInt(year, 10)));
     },
     template: `
         <div class="{{prefixCls}}-header">

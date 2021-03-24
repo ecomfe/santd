@@ -40,8 +40,7 @@ export default san.defineComponent({
         this.fire('select', value);
     },
     goYear(year) {
-        const value = this.data.get('value').clone();
-        value.add(year, 'year');
+        const value = this.data.get('value').add(year, 'year');
         this.data.set('value', value);
     },
     components: {
