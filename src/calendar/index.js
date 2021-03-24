@@ -10,9 +10,12 @@ import Select from '../select';
 import Calendar from './src/fullCalendar';
 import './style/index.less';
 import localeReceiver from '../localeprovider/receiver';
+import weekOfYear from 'dayjs/plugin/weekOfYear';
+import localeData from 'dayjs/plugin/localeData';
 
-dayjs.extend(require('dayjs/plugin/weekOfYear'));
-dayjs.extend(require('dayjs/plugin/localeData'));
+dayjs.extend(weekOfYear);
+dayjs.extend(localeData);
+
 const prefixCls = classCreator('fullcalendar')();
 
 function getMonthsLocale(value) {

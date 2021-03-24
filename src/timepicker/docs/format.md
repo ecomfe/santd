@@ -12,8 +12,9 @@ TimePicker 浮层中的列会随着 `format` 变化，当略去 `format` 中的�
 <script>
 import dayjs from 'dayjs';
 import {TimePicker} from 'santd';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
 
-dayjs.extend(require('dayjs/plugin/customParseFormat'));
+dayjs.extend(customParseFormat);
 
 export default {
     components: {
