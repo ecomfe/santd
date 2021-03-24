@@ -36,8 +36,9 @@
 <script>
 import dayjs from 'dayjs';
 import {Comment, Icon, Avatar, Tooltip} from 'santd';
+import relativeTime from 'dayjs/plugin/relativeTime';
 
-dayjs.extend(require('dayjs/plugin/relativeTime'));
+dayjs.extend(relativeTime);
 
 export default {
     components: {

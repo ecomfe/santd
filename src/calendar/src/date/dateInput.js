@@ -7,6 +7,9 @@ import san, {DataTypes} from 'san';
 import dayjs from 'dayjs';
 import {formatDate} from '../util/index';
 import KeyCode from '../../../core/util/keyCode';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+
+dayjs.extend(customParseFormat);
 
 export default san.defineComponent({
     dataTypes: {
@@ -68,7 +71,6 @@ export default san.defineComponent({
         }
 
         // 不合法直接退出
-        dayjs.extend(require('dayjs/plugin/customParseFormat'));
         const parsed = dayjs(showDate, format, true);
         if (!parsed.isValid()) {
             this.data.set('invalid', true);

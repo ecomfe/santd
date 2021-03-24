@@ -11,9 +11,11 @@ import createPicker from './CreatePicker';
 import wrapPicker from './wrapPicker';
 import WeekPicker from './WeekPicker';
 import dayjs from 'dayjs';
+import weekYear from 'dayjs/plugin/weekYear';
+import advancedFormat from 'dayjs/plugin/advancedFormat';
 
-dayjs.extend(require('dayjs/plugin/weekYear'));
-dayjs.extend(require('dayjs/plugin/advancedFormat'));
+dayjs.extend(weekYear);
+dayjs.extend(advancedFormat);
 
 const DatePicker = wrapPicker(createPicker(Calendar), 'date');
 

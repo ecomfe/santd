@@ -43,8 +43,9 @@
 <script>
 import dayjs from 'dayjs';
 import {Calendar, Grid, Radio, Select} from 'santd';
+import localeData from 'dayjs/plugin/localeData';
 
-dayjs.extend(require('dayjs/plugin/localeData'));
+dayjs.extend(localeData);
 
 export default {
     components: {

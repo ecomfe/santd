@@ -18,8 +18,10 @@
 import san from 'san';
 import dayjs from 'dayjs';
 import {Comment, Icon, Avatar} from 'santd';
+import relativeTime from 'dayjs/plugin/relativeTime';
 
-dayjs.extend(require('dayjs/plugin/relativeTime'));
+dayjs.extend(relativeTime);
+
 const pComment = san.defineComponent({
     template: `
         <template>

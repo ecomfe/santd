@@ -3,6 +3,9 @@
  * @author mayihui@baidu.com
  **/
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+
+dayjs.extend(utc);
 
 const defaultDisabledTime = {
     disabledHours() {
@@ -19,7 +22,6 @@ const defaultDisabledTime = {
 export function getTodayTime(value) {
     const locale = value.locale();
     require(`dayjs/locale/${locale}.js`);
-    dayjs.extend(require('dayjs/plugin/utc'));
     return dayjs().locale(locale).utcOffset(value.utcOffset());
 }
 

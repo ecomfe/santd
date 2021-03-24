@@ -29,6 +29,8 @@
 import dayjs from 'dayjs';
 import {DatePicker} from 'santd';
 
+dayjs.extend(require('dayjs/plugin/customParseFormat'));
+
 function range(start, end) {
     const result = [];
     for (let i = start; i < end; i++) {

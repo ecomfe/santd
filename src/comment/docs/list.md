@@ -24,8 +24,10 @@
 <script>
 import dayjs from 'dayjs';
 import {Comment, Avatar, List} from 'santd';
+import relativeTime from 'dayjs/plugin/relativeTime';
 
-dayjs.extend(require('dayjs/plugin/relativeTime'));
+dayjs.extend(relativeTime);
+
 const data = [{
     author: 'Han Solo',
     avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
