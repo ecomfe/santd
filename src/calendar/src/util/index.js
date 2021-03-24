@@ -40,7 +40,7 @@ export function getMonthName(month) {
 
 export function syncTime(from, to) {
     if (!dayjs.isDayjs(from) || !dayjs.isDayjs(to)) {
-        return;
+        return to;
     }
     return to
         .hour(from.hour())

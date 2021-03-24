@@ -10,6 +10,10 @@ import RangePicker from './RangePicker';
 import createPicker from './CreatePicker';
 import wrapPicker from './wrapPicker';
 import WeekPicker from './WeekPicker';
+import dayjs from 'dayjs';
+
+dayjs.extend(require('dayjs/plugin/weekYear'));
+dayjs.extend(require('dayjs/plugin/advancedFormat'));
 
 const DatePicker = wrapPicker(createPicker(Calendar), 'date');
 

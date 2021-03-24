@@ -68,6 +68,7 @@ export default san.defineComponent({
         }
 
         // 不合法直接退出
+        dayjs.extend(require('dayjs/plugin/customParseFormat'));
         const parsed = dayjs(showDate, format, true);
         if (!parsed.isValid()) {
             this.data.set('invalid', true);

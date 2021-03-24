@@ -64,6 +64,7 @@ export default san.defineComponent({
         if (inputValue) {
             const originalValue = this.data.get('value');
             let value = this.data.get('value') || this.data.get('defaultOpenValue');
+            dayjs.extend(require('dayjs/plugin/customParseFormat'));
             const parsed = dayjs(inputValue, format, true);
             if (!parsed.isValid()) {
                 this.data.set('invalid', true);
