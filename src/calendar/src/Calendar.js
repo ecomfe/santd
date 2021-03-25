@@ -4,11 +4,11 @@
  **/
 
 import san from 'san';
-import Base from './base';
-import CalendarHeader from './calendar/calendarHeader';
-import CalendarFooter from './calendar/calendarFooter';
-import DateTable from './date/dateTable';
-import DateInput from './date/dateInput';
+import Base from './Base';
+import CalendarHeader from './calendar/CalendarHeader';
+import CalendarFooter from './calendar/CalendarFooter';
+import DateTable from './date/DateTable';
+import DateInput from './date/DateInput';
 import inherits from '../../core/util/inherits';
 import dayjs from 'dayjs';
 import {getTimeConfig, getTodayTime, syncTime} from './util';

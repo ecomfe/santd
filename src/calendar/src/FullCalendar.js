@@ -4,9 +4,9 @@
  **/
 
 import san from 'san';
-import Base from './base';
-import DateTable from './date/dateTable';
-import MonthTable from './month/monthTable';
+import Base from './Base';
+import DateTable from './date/DateTable';
+import MonthTable from './month/MonthTable';
 import inherits from '../../core/util/inherits';
 import dayjs from 'dayjs';
 

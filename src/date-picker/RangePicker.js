@@ -3,7 +3,7 @@
  * @author mayihui@baidu.com
  **/
 import san from 'san';
-import RangeCalendar from '../calendar/src/rangeCalendar';
+import RangeCalendar from '../calendar/src/RangeCalendar';
 import dayjs from 'dayjs';
 import {classCreator} from '../core/util';
 import Trigger from '../core/trigger';

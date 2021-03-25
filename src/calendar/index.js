@@ -7,7 +7,7 @@ import dayjs from 'dayjs';
 import {classCreator} from '../core/util';
 import Radio from '../radio';
 import Select from '../select';
-import Calendar from './src/fullCalendar';
+import Calendar from './src/FullCalendar';
 import './style/index.less';
 import localeReceiver from '../localeprovider/receiver';
 import weekOfYear from 'dayjs/plugin/weekOfYear';

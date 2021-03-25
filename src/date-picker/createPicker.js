@@ -3,7 +3,7 @@
  * @author mayihui@baidu.com
  **/
 import san from 'san';
-import MonthCalendar from '../calendar/src/monthCalendar';
+import MonthCalendar from '../calendar/src/MonthCalendar';
 import {classCreator} from '../core/util';
 import Trigger from '../core/trigger';
 import Icon from '../icon';

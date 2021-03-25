@@ -4,7 +4,7 @@
  */
 
 import san from 'san';
-import Upload from './src/ajaxUploader';
+import Upload from './src/AjaxUploader';
 import UploadList from './UploadList';
 import uniqBy from 'lodash/uniqBy';
 import findIndex from 'lodash/findIndex';

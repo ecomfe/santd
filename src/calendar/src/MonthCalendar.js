@@ -4,8 +4,8 @@
  **/
 
 import san from 'san';
-import Base from './base';
-import CalendarHeader from './calendar/calendarHeader';
+import Base from './Base';
+import CalendarHeader from './calendar/CalendarHeader';
 import inherits from '../../core/util/inherits';
 import dayjs from 'dayjs';
 

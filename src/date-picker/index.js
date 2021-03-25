@@ -4,10 +4,10 @@
  */
 
 import './style/index';
-import Calendar from '../calendar/src/calendar';
-import MonthCalendar from '../calendar/src/monthCalendar';
+import Calendar from '../calendar/src/Calendar';
+import MonthCalendar from '../calendar/src/MonthCalendar';
 import RangePicker from './RangePicker';
-import createPicker from './CreatePicker';
+import createPicker from './createPicker';
 import wrapPicker from './wrapPicker';
 import WeekPicker from './WeekPicker';
 import dayjs from 'dayjs';
