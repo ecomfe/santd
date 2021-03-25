@@ -4,9 +4,9 @@
  **/
 
 import san from 'san';
-import CalendarHeader from '../calendar/calendarHeader';
-import DateTable from '../date/dateTable';
-import DateInput from '../date/dateInput';
+import CalendarHeader from '../calendar/CalendarHeader';
+import DateTable from '../date/DateTable';
+import DateInput from '../date/DateInput';
 import {getTimeConfig} from '../util/index';
 import dayjs from 'dayjs';
 

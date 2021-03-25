@@ -5,7 +5,7 @@
 
 import san from 'san';
 import {classCreator} from '../core/util';
-import Cascader from './src/cascader';
+import Cascader from './src/Cascader';
 import Input from '../input';
 import Icon from '../icon';
 import arrayTreeFilter from './src/arraytreefilter';

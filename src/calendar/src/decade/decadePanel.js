@@ -4,7 +4,7 @@
  **/
 
 import san, {DataTypes} from 'san';
-import DecadeTable from './decadeTable';
+import DecadeTable from './DecadeTable';
 
 export default san.defineComponent({
     dataTypes: {

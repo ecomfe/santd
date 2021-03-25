@@ -7,7 +7,7 @@
 import san from 'san';
 import Trigger from '../../core/trigger/index';
 import placements from './placements';
-import Menus from './menus';
+import Menus from './Menus';
 import {classCreator} from '../../core/util';
 import arrayTreeFilter from './arraytreefilter';
 

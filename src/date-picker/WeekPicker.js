@@ -3,7 +3,7 @@
  * @author mayihui@baidu.com
  **/
 import san from 'san';
-import Calendar from '../calendar/src/calendar';
+import Calendar from '../calendar/src/Calendar';
 import dayjs from 'dayjs';
 import {classCreator} from '../core/util';
 import Icon from '../icon';

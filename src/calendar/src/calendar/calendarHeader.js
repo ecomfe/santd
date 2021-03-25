@@ -4,9 +4,9 @@
  **/
 
 import san, {DataTypes} from 'san';
-import MonthPanel from '../month/monthPanel';
-import YearPanel from '../year/yearPanel';
-import DecadePanel from '../decade/decadePanel';
+import MonthPanel from '../month/MonthPanel';
+import YearPanel from '../year/YearPanel';
+import DecadePanel from '../decade/DecadePanel';
 
 export default san.defineComponent({
     dataTypes: {

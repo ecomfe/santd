@@ -5,9 +5,9 @@
 
 import './style/index.less';
 import san from 'san';
-import Handle from './src/handle';
-import Steps from './src/steps';
-import Marks from './src/marks';
+import Handle from './src/Handle';
+import Steps from './src/Steps';
+import Marks from './src/Marks';
 import {classCreator} from '../core/util';
 
 const prefixCls = classCreator('slider')();

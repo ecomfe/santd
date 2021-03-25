@@ -4,7 +4,7 @@
  **/
 
 import san, {DataTypes} from 'san';
-import YearTable from './yearTable';
+import YearTable from './YearTable';
 
 export default san.defineComponent({
     dataTypes: {

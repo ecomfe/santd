@@ -4,7 +4,7 @@
  **/
 
 import san, {DataTypes} from 'san';
-import MonthTable from './monthTable';
+import MonthTable from './MonthTable';
 
 export default san.defineComponent({
     dataTypes: {
