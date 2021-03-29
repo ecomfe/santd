@@ -1,5 +1,5 @@
 import CalendarLocale from '../../calendar/src/locale/he_IL';
-import TimePickerLocale from '../../timepicker/locale/he_IL';
+import TimePickerLocale from '../../time-picker/locale/he_IL';
 
 // Merge into a locale object
 export default {

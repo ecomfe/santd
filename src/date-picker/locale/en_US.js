@@ -3,7 +3,7 @@
  **/
 
 import CalendarLocale from '../../calendar/src/locale/en_US';
-import TimePickerLocale from '../../timepicker/locale/en_US';
+import TimePickerLocale from '../../time-picker/locale/en_US';
 
 // Merge into a locale object
 export default {
