@@ -225,8 +225,8 @@ export default [
                     {
                         name: 'TimePicker',
                         text: '时间选择框',
-                        path: 'timepicker',
-                        key: '/components/timepicker'
+                        path: 'time-picker',
+                        key: '/components/time-picker'
                     },
                     {
                         name: 'Upload',

@@ -1,5 +1,5 @@
 import CalendarLocale from '../../calendar/src/locale/zh_CN';
-import TimePickerLocale from '../../timepicker/locale/zh_CN';
+import TimePickerLocale from '../../time-picker/locale/zh_CN';
 
 const locale = {
     lang: {

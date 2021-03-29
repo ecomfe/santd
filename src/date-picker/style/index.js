@@ -4,5 +4,5 @@
 import './index.less';
 
 import '../../input/style';
-import '../../timepicker/style';
+import '../../time-picker/style';
 import '../../tag/style';

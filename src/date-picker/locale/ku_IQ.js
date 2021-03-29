@@ -1,5 +1,5 @@
 import CalendarLocale from '../../calendar/src/locale/ku_IQ';
-import TimePickerLocale from '../../timepicker/locale/ku_IQ';
+import TimePickerLocale from '../../time-picker/locale/ku_IQ';
 
 // Merge into a locale object
 export default {

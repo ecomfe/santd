@@ -1,6 +1,6 @@
 import Pagination from '../pagination/locale/fa_IR';
 import DatePicker from '../date-picker/locale/fa_IR';
-import TimePicker from '../timepicker/locale/fa_IR';
+import TimePicker from '../time-picker/locale/fa_IR';
 import Calendar from '../calendar/locale/fa_IR';
 
 export default {

@@ -1,5 +1,5 @@
 import CalendarLocale from '../../calendar/src/locale/vi_VN';
-import TimePickerLocale from '../../timepicker/locale/vi_VN';
+import TimePickerLocale from '../../time-picker/locale/vi_VN';
 
 // Merge into a locale object
 export default {

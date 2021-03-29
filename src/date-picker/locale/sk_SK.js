@@ -1,5 +1,5 @@
 import CalendarLocale from '../../calendar/src/locale/sk_SK';
-import TimePickerLocale from '../../timepicker/locale/sk_SK';
+import TimePickerLocale from '../../time-picker/locale/sk_SK';
 
 // 统一合并为完整的 Locale
 export default {
