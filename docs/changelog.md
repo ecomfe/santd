@@ -10,6 +10,16 @@
 
 ---
 
+## 1.0.4
+`2020-3-30`
+- Table
+    - 🐞 修复某些情况下该组件的分页功能没有样式的问题 [#52](https://github.com/ecomfe/santd/pull/52)
+
+## 1.0.3
+`2020-3-29`
+- TimePicker
+    - 🐞 修复无法用首字母大写的形式引入该组件的问题 [#51](https://github.com/ecomfe/santd/pull/51)
+
 ## 1.0.2
 `2020-3-24`
 - 🐞 修复 1.0.0 版本把 Moment.js 换成 Day.js 后引起的和时间日期相关的组件的一系列 bug，涉及的组件包括 Calendar、DatePicker、LocaleProvider、TimePicker [#48](https://github.com/ecomfe/santd/pull/48)
