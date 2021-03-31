@@ -72,7 +72,7 @@
 | 参数                 | 说明                                                                                              | 类型                                  | 默认值        |
 | ---                  | ---                                                                                               | ---                                   | ---           |
 | defaultValue         | 默认日期                | [dayjs](https://day.js.org)         | -             |
-| format               | 设置日期格式，配置参考 [dayjs.js](https://day.js.org) | string      | 'YYYY-wo'     |
+| format               | 设置日期格式，配置参考 [dayjs.js](https://day.js.org) | string      | 'gggg-wo'     |
 | renderExtraFooter    | 在面板中添加额外的页脚                                                                            | slot                     | -             |
 | value    | 日期                                                                          | [dayjs](https://day.js.org)                                | -            |
 | on-change          | 时间发生变化的回调                                                                                    | function({date: dayjs, dateString: string}) | -     |
