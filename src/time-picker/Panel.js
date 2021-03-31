@@ -7,6 +7,9 @@ import san from 'san';
 import dayjs from 'dayjs';
 import Header from './Header';
 import ComboBox from './Combobox';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+
+dayjs.extend(customParseFormat);
 
 function generateOptions(length, disabledOptions, hideDisabledOptions, step = 1) {
     const arr = [];
@@ -28,7 +31,6 @@ function toNearestValidTime(time, hourOptions, minuteOptions, secondOptions) {
     const second = secondOptions
         .slice()
         .sort((a, b) => Math.abs(time.second() - a) - Math.abs(time.second() - b))[0];
-    dayjs.extend(require('dayjs/plugin/customParseFormat'));
     return dayjs(`${hour}:${minute}:${second}`, 'HH:mm:ss');
 }
 
