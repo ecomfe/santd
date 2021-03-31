@@ -10,10 +10,8 @@ import Select from '../select';
 import Calendar from './src/FullCalendar';
 import './style/index.less';
 import localeReceiver from '../localeprovider/receiver';
-import weekOfYear from 'dayjs/plugin/weekOfYear';
 import localeData from 'dayjs/plugin/localeData';
 
-dayjs.extend(weekOfYear);
 dayjs.extend(localeData);
 
 const prefixCls = classCreator('fullcalendar')();
