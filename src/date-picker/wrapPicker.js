@@ -6,6 +6,12 @@
 import san from 'san';
 import {classCreator} from '../core/util/index';
 import localeReceiver from '../localeprovider/receiver';
+import dayjs from 'dayjs';
+import weekYear from 'dayjs/plugin/weekYear';
+import advancedFormat from 'dayjs/plugin/advancedFormat';
+
+dayjs.extend(weekYear);
+dayjs.extend(advancedFormat);
 
 const prefixCls = classCreator('calendar')();
 const inputPrefixCls = classCreator('input')();
