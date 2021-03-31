@@ -7,6 +7,10 @@ import san, {DataTypes} from 'san';
 import MonthPanel from '../month/MonthPanel';
 import YearPanel from '../year/YearPanel';
 import DecadePanel from '../decade/DecadePanel';
+import dayjs from 'dayjs';
+import localeData from 'dayjs/plugin/localeData';
+
+dayjs.extend(localeData);
 
 export default san.defineComponent({
     dataTypes: {

@@ -7,8 +7,10 @@ import san, {DataTypes} from 'san';
 import dayjs from 'dayjs';
 import {getTitleString, getTodayTime} from '../util/index';
 import weekOfYear from 'dayjs/plugin/weekOfYear';
+import localeData from 'dayjs/plugin/localeData';
 
 dayjs.extend(weekOfYear);
+dayjs.extend(localeData);
 
 const ROW = 6;
 const COL = 7;

@@ -4,8 +4,10 @@
  **/
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
+import localeData from 'dayjs/plugin/localeData';
 
 dayjs.extend(utc);
+dayjs.extend(localeData);
 
 const defaultDisabledTime = {
     disabledHours() {
