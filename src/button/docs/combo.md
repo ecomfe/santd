@@ -22,10 +22,7 @@
 </template>
 <script>
 import san from 'san';
-import Button from 'santd/button';
-import Menu from 'santd/menu';
-import Dropdown from 'santd/dropdown';
-import Icon from 'santd/icon';
+import {Button, Menu, Dropdown, Icon} from 'santd';
 
 const menu = san.defineComponent({
     components: {

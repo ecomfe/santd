@@ -25,9 +25,7 @@
     </div>
 </template>
 <script>
-import Slider from 'santd/slider';
-import InputNumber from 'santd/input-number';
-import Grid from 'santd/grid';
+import {Slider, InputNumber, Grid} from 'santd';
 
 export default {
     components: {

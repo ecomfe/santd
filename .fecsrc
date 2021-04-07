@@ -23,7 +23,8 @@
             "fecs-use-for-of": false,
             "max-nested-callbacks": 5,
             "no-loop-func": false,
-            "fecs-max-statements": 100
+            "fecs-max-statements": 100,
+            "brace-style": false
         }
     }
 }

@@ -17,8 +17,8 @@
     </div>
 </template>
 <script>
-import Transfer from 'santd/transfer';
 import san from 'san';
+import {Transfer} from 'santd';
 
 export default {
     initData() {

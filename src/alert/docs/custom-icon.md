@@ -78,13 +78,12 @@
 </template>
 
 <script>
-import alert from 'santd/alert';
-import icon from 'santd/icon';
+import {Alert, Icon} from 'santd';
 
 export default {
     components: {
-        's-alert': alert,
-        's-icon': icon
+        's-alert': Alert,
+        's-icon': Icon
     }
 }
 </script>

@@ -44,8 +44,7 @@
   </div>
 </template>
 <script>
-import Typography from 'santd/typography';
-import Divider from 'santd/divider';
+import {Typography, Divider} from 'santd';
 
 export default {
     components: {

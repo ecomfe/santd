@@ -11,15 +11,14 @@
 </template>
 
 <script>
-import button from 'santd/button';
-import notification from 'santd/notification';
+import {Notification, Button} from 'santd';
 
 export default {
     components: {
-        's-button': button
+        's-button': Button
     },
     clickHandler() {
-        notification.open({
+        Notification.open({
             message: 'Notification Title',
             description: 'I will never close automatically. I will be close manually. I will never close automatically.',
             duration: 0

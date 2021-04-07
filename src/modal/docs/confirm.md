@@ -13,14 +13,13 @@
 </template>
 
 <script>
-import button from 'santd/button';
-import modal from 'santd/modal';
+import {Modal, Button} from 'santd';
 
-const confirm = modal.confirm;
+const confirm = Modal.confirm;
 
 export default {
     components: {
-        's-button': button
+        's-button': Button
     },
     showConfirm() {
         confirm({

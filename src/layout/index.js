@@ -2,8 +2,8 @@
 * @file Layout 入口文件
 */
 
-import Layout from './layout';
-import Sider from './sider';
+import Layout from './Layout';
+import Sider from './Sider';
 
 Layout.Sider = Sider;
 

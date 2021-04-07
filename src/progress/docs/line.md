@@ -15,11 +15,11 @@
 </template>
 
 <script>
-import progress from 'santd/progress';
+import {Progress} from 'santd';
 
 export default {
     components: {
-        's-progress': progress
+        's-progress': Progress
     }
 }
 </script>

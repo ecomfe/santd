@@ -16,7 +16,8 @@
   </div>
 </template>
 <script>
-import Mention from 'santd/mention';
+import {Mention} from 'santd';
+
 export default {
     components: {
         's-mention': Mention

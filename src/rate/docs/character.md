@@ -17,13 +17,12 @@
 </template>
 <script>
 
-import rate from 'santd/rate';
-import icon from 'santd/icon';
+import {Rate, Icon} from 'santd';
 
 export default {
     components: {
-        's-rate': rate,
-        's-icon': icon
+        's-rate': Rate,
+        's-icon': Icon
     }
 }
 </script>

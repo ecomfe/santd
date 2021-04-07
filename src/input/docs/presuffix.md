@@ -20,9 +20,7 @@
 </div>
 </template>
 <script>
-import Input from 'santd/input';
-import Icon from 'santd/icon';
-import Tooltip from 'santd/tooltip';
+import {Input, Icon, Tooltip} from 'santd';
 
 export default {
     components: {

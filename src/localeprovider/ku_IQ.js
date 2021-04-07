@@ -1,6 +1,6 @@
 import Pagination from '../pagination/locale/ku_IQ';
 import DatePicker from '../date-picker/locale/ku_IQ';
-import TimePicker from '../timepicker/locale/ku_IQ';
+import TimePicker from '../time-picker/locale/ku_IQ';
 import Calendar from '../calendar/locale/ku_IQ';
 
 export default {

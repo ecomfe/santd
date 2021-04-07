@@ -7,7 +7,7 @@
 <template>
     <div>
         <s-upload
-            action="https://jsonplaceholder.typicode.com/posts/",
+            action="https://jsonplaceholder.typicode.com/posts/"
             name="file"
             listType="picture"
             previewFile="{{previewFile}}"
@@ -19,11 +19,8 @@
     </div>
 </template>
 <script>
-import Upload from 'santd/upload';
-import Button from 'santd/button';
-import Icon from 'santd/icon';
-import Message from 'santd/message';
 import axios from 'axios';
+import {Upload, Button, Icon} from 'santd';
 
 export default {
     components: {

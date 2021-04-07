@@ -3,8 +3,8 @@
  * @author jinzhan <jinzhan@baidu.com>
  */
 
-import Checkbox from './checkbox';
-import Group from './group';
+import Checkbox from './Checkbox';
+import Group from './Group';
 
 Checkbox.Group = Group;
 

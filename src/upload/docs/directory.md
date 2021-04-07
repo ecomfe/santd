@@ -17,10 +17,7 @@
     </div>
 </template>
 <script>
-import Upload from 'santd/upload';
-import Button from 'santd/button';
-import Icon from 'santd/icon';
-import Message from 'santd/message';
+import {Upload, Button, Icon} from 'santd';
 
 export default {
     components: {

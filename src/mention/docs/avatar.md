@@ -17,8 +17,7 @@
 </template>
 <script>
 import san from 'san';
-import Mention from 'santd/mention';
-import Avatar from 'santd/avatar';
+import {Mention, Avatar} from 'santd';
 
 const webFrameworks = [
     {

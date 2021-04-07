@@ -10,7 +10,7 @@
     </div>
 </template>
 <script>
-import Calendar from 'santd/calendar';
+import {Calendar} from 'santd';
 
 export default {
     components: {

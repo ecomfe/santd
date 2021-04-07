@@ -26,16 +26,18 @@
                 <s-menu-item key="setting4">Option 4</s-menu-item>
             </s-menu-item-group>
         </s-sub-menu>
-        <s-menu-item key="alipay">
+        <s-menu-item key="link1">
             <a href="http://www.baidu.com" target="_blank" rel="noopener noreferrer">Navigation Four - Link</a>
+        </s-menu-item>
+        <s-menu-item key="link2">
+            <a href="https://github.com/ecomfe/santd" target="_blank" rel="noopener noreferrer">Navigation Five - Link</a>
         </s-menu-item>
     </s-menu>
   </div>
 </template>
 <script>
-import Menu from 'santd/menu';
-import Icon from 'santd/icon';
-import Button from 'santd/button';
+import {Menu, Icon, Button} from 'santd';
+
 export default {
     components: {
         's-menu': Menu,
@@ -57,7 +59,7 @@ export default {
 }
 </script>
 <style type="text/css">
-  ul {
+ul {
     list-style: none;
 }
 .markdown ul li {

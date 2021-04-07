@@ -39,11 +39,7 @@
 </template>
 <script>
 import san from 'san';
-import santable from 'santd/table';
-import form from 'santd/form';
-import sanSwitch from 'santd/switch';
-import radio from 'santd/radio';
-import button from 'santd/button';
+import {Table, Radio, Button, Switch} from 'santd';
 
 const data = [];
 for (let i = 1; i <= 10; i++) {
@@ -58,11 +54,11 @@ for (let i = 1; i <= 10; i++) {
 
 export default {
     components: {
-        's-table': santable,
-        's-switch': sanSwitch,
-        's-radio': radio,
-        's-group': radio.Group,
-        's-button': button
+        's-table': Table,
+        's-switch': Switch,
+        's-radio': Radio,
+        's-group': Radio.Group,
+        's-button': Button
     },
      handleBordered() {
         const bordered = this.data.get('bordered');

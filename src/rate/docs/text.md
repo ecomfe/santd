@@ -12,13 +12,13 @@
     </div>
 </template>
 <script>
-import rate from 'santd/rate';
+import {Rate} from 'santd';
 
 const desc = ['terrible', 'bad', 'normal', 'good', 'wonderful'];
 
 export default {
     components: {
-        's-rate': rate
+        's-rate': Rate
     },
     initData() {
         return {

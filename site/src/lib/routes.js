@@ -71,6 +71,12 @@ export default [
                         text: '布局',
                         path: 'layout',
                         key: '/components/layout'
+                    },
+                    {
+                        name: 'Space',
+                        text: '间距',
+                        path: 'space',
+                        key: '/components/space'
                     }
                 ]
             },
@@ -80,7 +86,7 @@ export default [
                 leaf: [
                     {
                         name: 'Affix',
-                        text: '图钉',
+                        text: '固钉',
                         path: 'affix',
                         key: '/components/affix'
                     },
@@ -91,7 +97,7 @@ export default [
                         key: '/components/breadcrumb'
                     },
                     {
-                        name: 'dropdown',
+                        name: 'Dropdown',
                         text: '下拉菜单',
                         path: 'dropdown',
                         key: '/components/dropdown'
@@ -219,8 +225,8 @@ export default [
                     {
                         name: 'TimePicker',
                         text: '时间选择框',
-                        path: 'timepicker',
-                        key: '/components/timepicker'
+                        path: 'time-picker',
+                        key: '/components/time-picker'
                     },
                     {
                         name: 'Upload',

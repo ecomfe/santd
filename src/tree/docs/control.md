@@ -42,8 +42,7 @@
 </template>
 <script>
 import san from 'san';
-import Tree from 'santd/tree';
-
+import {Tree} from 'santd';
 
 export default {
     initData() {

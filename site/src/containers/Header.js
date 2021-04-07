@@ -14,7 +14,7 @@ export default class Header extends Component {
                 <s-col xs="24" sm="24" md="5" lg="5" xl="5" xxl="4">
                     <a class="doc-logo" href="/santd">
                         <span class="logo"></span>
-                        <span class="text">santd</span>
+                        <span class="text">Santd</span>
                     </a>
                 </s-col>
                 <s-col xs="0" sm="0" md="19" lg="19" xl="19" xxl="20">
@@ -35,9 +35,7 @@ export default class Header extends Component {
                             </s-select-option>
                         </s-select>
                     </div>
-                    <s-select size="small" value="0.2.x" class="version">
-                        <s-select-option value="0.2.x">0.2.x</s-select-option>
-                    </s-select>
+
                     <s-menu
                         class="doc-nav"
                         mode="horizontal"

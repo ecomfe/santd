@@ -22,11 +22,9 @@
     </div>
 </template>
 <script>
-import popconfirm from 'santd/popconfirm';
-import button from 'santd/button';
-import icon from 'santd/icon';
-import message from 'santd/message';
-import sanSwitch from 'santd/switch';
+import {Popconfirm, Button, Icon, Switch} from 'santd';
+import message from 'santd/es/message';
+import 'santd/es/message/style';
 
 export default {
     initData() {
@@ -36,10 +34,10 @@ export default {
         };
     },
     components: {
-        's-popconfirm': popconfirm,
-        's-button': button,
-        's-icon': icon,
-        's-switch': sanSwitch
+        's-popconfirm': Popconfirm,
+        's-button': Button,
+        's-icon': Icon,
+        's-switch': Switch
     },
     handleConfirm(e) {
         this.data.set('visible', false);

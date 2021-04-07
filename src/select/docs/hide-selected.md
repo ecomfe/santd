@@ -23,7 +23,7 @@
 
 <script>
 
-import Select from 'santd/select';
+import {Select} from 'santd';
 
 const OPTIONS = ['Apples', 'Nails', 'Bananas', 'Helicopters'];
 

@@ -21,13 +21,13 @@
 </template>
 <script>
 import san from 'san';
-import table from 'santd/table';
-import radio from 'santd/radio';
+import {Table, Radio} from 'santd';
+
 export default {
     components: {
-        's-table': table,
-        's-radio': radio,
-        's-group': radio.Group,
+        's-table': Table,
+        's-radio': Radio,
+        's-group': Radio.Group,
     },
     initData() {
         return {

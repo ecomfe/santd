@@ -8,6 +8,7 @@ import {router} from 'san-router';
 
 import Prism from 'prismjs';
 import 'prismjs/themes/prism.css';
+import NProgress from 'nprogress';
 
 import Content from './containers/Content';
 import Header from './containers/Header';
@@ -70,12 +71,10 @@ class Index extends Component {
                                     </s-col>
                                     <s-col xs="24" sm="24" md="6">
                                         <div class="footer-center">
-                                            <h2><img alt="" class="title-icon" src="https://gw.alipayobjects.com/zos/rmsportal/nBVXkrFdWHxbZlmMbsaH.svg"><span>更多产品</span></h2>
-                                            <div><a href="https://yuque.com/" target="_blank "><i nz-icon="" nztheme="fill" nztype="yuque" style="margin-right: 4px; color: rgb(37, 184, 100);" class="anticon anticon-yuque"><svg viewBox="64 64 896 896" fill="currentColor" width="1em" height="1em" data-icon="yuque" aria-hidden="true"><path d="M854.6 370.6c-9.9-39.4 9.9-102.2 73.4-124.4l-67.9-3.6s-25.7-90-143.6-98c-117.9-8.1-195-3-195-3s87.4 55.6 52.4 154.7c-25.6 52.5-65.8 95.6-108.8 144.7-1.3 1.3-2.5 2.6-3.5 3.7C319.4 605 96 860 96 860c245.9 64.4 410.7-6.3 508.2-91.1 20.5-.2 35.9-.3 46.3-.3 135.8 0 250.6-117.6 245.9-248.4-3.2-89.9-31.9-110.2-41.8-149.6z"></path></svg></i> 语雀</a><span> - </span><span>知识创作与分享工具</span></div>
-                                            <div><a href="https://yunfengdie.com/" target="_blank "><span>云凤蝶</span></a><span> - </span><span>移动建站平台</span></div>
-                                            <div><a href="https://antv.alipay.com/" rel="noopener noreferrer" target="_blank">AntV</a><span> - </span><span>数据可视化</span></div>
-                                            <div><a href="https://eggjs.org/" rel="noopener noreferrer" target="_blank">Egg</a><span> - </span><span>企业级 Node 开发框架</span></div>
-                                            <div><a href="http://xtech.antfin.com/" target="_blank "><span>蚂蚁体验科技</span></a></div>
+                                            <h2>更多</h2>
+                                            <div><a href="https://github.com/baidu/san" rel="noopener noreferrer" target="_blank">San</a><span> - </span><span>一个快速、轻量、灵活的JavaScript组件框架</span></div>
+                                            <div><a href="https://github.com/ecomfe/san-cli" target="_blank "><span>san-cli</span></a><span> - </span><span>可定制化的前端开发工具集</span></div>
+                                            <div><a href="https://github.com/baidu/san-devtools" rel="noopener noreferrer" target="_blank">san-devtools</a><span> - </span><span>用于调试San.js应用程序的开发工具</span></div>
                                         </div>
                                     </s-col>
                                 </s-row>
@@ -170,20 +169,27 @@ class Index extends Component {
         // 路由监听
         router.listen(e => {
             const query = e.query;
+
+            // 加载进度条
+            if (NProgress.isRendered) {
+                NProgress.remove();
+            }
+            NProgress.inc();
+
             if (e.path === '/') {
                 that.handleRedirect({key: defaultPath});
                 that.data.set('currentPath', defaultPath);
             }
             else {
                 that.data.set('currentPath', e.path);
-                document.getElementById('content').innerHTML = '';
-                that.data.set('content', '');
                 if (query.type === 'docs') {
                     import(
                         /* webpackChunkName: "docs" */
                         `@docs/${query.id}.md?exportType=html`
                     ).then(({default: html}) => {
-                        that.data.set('content', html);
+                        this.docChange(() => {
+                            that.data.set('content', html);
+                        });
                     }).catch(e => {
                         that.handleError(e);
                     });
@@ -193,20 +199,21 @@ class Index extends Component {
                         /* webpackChunkName: "comp-doc" */
                         `santd/${query.id}/docs/index.js`
                     ).then(({default: Doc}) => {
-                        // 得到的是san component 对象
-                        let doc = new Doc();
-                        doc.attach(document.getElementById('content'));
+                        this.docChange(() => {
+                            // 得到的是san component 对象
+                            const doc = new Doc();
+                            doc.attach(document.getElementById('content'));
+                        });
                     }).catch(e => {
                         that.handleError(e);
                     });
                 }
                 that.hlCode();
             }
-            this.nextTick(() => {
-                if (window.document.documentElement.scrollTop > 110) {
-                    window.scroll(0, 110);
-                }
-            });
+
+            // 完成加载进度条
+            // true 解决非首次加载过快导致进度条不显示问题
+            NProgress.done(true);
         });
 
         router.start();
@@ -220,6 +227,47 @@ class Index extends Component {
         const routerMap = this.data.get('routerMap');
         return routerMap[query.type] && routerMap[query.type][query.id];
     }
+
+    /**
+     * docChange 文档内容改变
+     *
+     * @param {Function} changeFun 自定义 doc change 事件
+     */
+    docChange(changeFun) {
+        // before
+        // 清除当前页面 doc内容
+        document.getElementById('content').innerHTML = '';
+        this.data.set('content', '');
+
+        // 执行自定义 change 执行事件
+        changeFun && changeFun();
+
+
+        // after
+        // 恢复滚动高度
+        if (window.document.documentElement.scrollTop > 110) {
+            window.scroll(0, 110);
+        }
+
+        // 更改页面标题
+        this.nextTick(() => {
+            const titleSuffix = 'San Toolkit for Ant Design';
+
+            const titleResult = document.querySelectorAll('h1 > span')[0].innerText.split(' ');
+            let title = '';
+
+            if (titleResult.length === 2) {
+                title = `${titleResult[1]} ${titleResult[0]}`;
+            }
+            else {
+                // 兼容Ant Design of San
+                title = titleResult.join(' ');
+            }
+
+            document.title = `${title} - ${titleSuffix}`;
+        });
+    }
+
     hlCode() {
         setTimeout(() => {
             let code = document.getElementsByTagName('code');

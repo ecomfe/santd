@@ -27,7 +27,8 @@
     </div>
 </template>
 <script>
-import Tag from 'santd/tag';
+import {Tag} from 'santd';
+
 export default {
     components: {
         's-tag': Tag

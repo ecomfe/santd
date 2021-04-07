@@ -58,18 +58,14 @@
   </div>
 </template>
 <script>
-import Input from 'santd/input';
-import Icon from 'santd/icon';
-import {Row, Col} from 'santd/grid';
-import Select from 'santd/select';
-import InputNumber from 'santd/input-number';
-import DatePicker from 'santd/date-picker';
+import {Input, Icon, Grid, Select, InputNumber, DatePicker} from 'santd';
+
 export default {
     components: {
         's-input': Input,
         's-input-group': Input.Group,
-        's-row': Row,
-        's-col': Col,
+        's-row': Grid.Row,
+        's-col': Grid.Col,
         's-select': Select,
         's-select-option': Select.Option,
         's-inputnumber': InputNumber,

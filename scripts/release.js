@@ -22,7 +22,7 @@ const chalk = require('chalk');
 const babel = require('./lib/babel');
 const copyFile = require('./lib/copy-file');
 const rollup = require('./lib/rollup');
-const GitHub = require('@octokit/rest');
+const {Octokit} = require('@octokit/rest');
 const getChangeLog = require('./lib/getChangeLog');
 
 async function genLessFile() {
@@ -56,6 +56,14 @@ async function genLessFile() {
 async function tag(version) {
     console.log('Tagging...');
     const output = path.join(__dirname, '../output');
+
+    try {
+        fs.accessSync(`${output}/santd`);
+    } catch (e) {
+        console.log('发布官网（执行 npm run deploy:site）后再尝试。')
+        throw e;
+    }
+    
     let name = await execa('git', ['config', 'user.name'], {cwd: `${output}/santd`});
     let email = await execa('git', ['config', 'user.email'], {cwd: `${output}/santd`});
 
@@ -110,7 +118,7 @@ async function githubRelease(version) {
     }
     console.log('creating release on GitHub');
 
-    const github = new GitHub({
+    const octokit = new Octokit({
         auth: process.env.GITHUB_TOKEN
     });
     const date = new Date();
@@ -126,7 +134,7 @@ async function githubRelease(version) {
     ].join('\n');
 
     /* eslint-disable fecs-camelcase */
-    await github.repos.createRelease({
+    await octokit.repos.createRelease({
         owner: 'ecomfe',
         repo: 'santd',
         tag_name: version,

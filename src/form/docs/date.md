@@ -1,6 +1,6 @@
 <text lang="cn">
 #### 时间类控件
-时间类组件的 `value` 类型为 `moment` 对象，所以在提交服务器前需要预处理。
+时间类组件的 `value` 类型为 `dayjs` 对象，所以在提交服务器前需要预处理。
 </text>
 
 ```html
@@ -32,10 +32,7 @@
   </div>
 </template>
 <script>
-import Form from 'santd/form';
-import Button from 'santd/button';
-import DatePicker from 'santd/date-picker';
-import TimePicker from 'santd/timepicker';
+import {Form, Button, DatePicker, TimePicker} from 'santd';
 
 export default Form.create({name: 'time_related_controls'})({
     components: {

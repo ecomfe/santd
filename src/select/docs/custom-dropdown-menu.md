@@ -29,9 +29,7 @@
 </template>
 
 <script>
-import Select from 'santd/select';
-import Icon from 'santd/icon';
-import Divider from 'santd/divider';
+import {Select, Icon, Divider} from 'santd';
 
 let index = 0;
 

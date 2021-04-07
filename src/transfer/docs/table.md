@@ -84,10 +84,7 @@ const rightTableColumns = [{
 
 import san from 'san';
 import difference from 'lodash/difference';
-import transfer from 'santd/transfer';
-import Switch from 'santd/switch';
-import Table from 'santd/table';
-import Tag from 'santd/tag';
+import {Transfer, Switch, Table, Tag} from 'santd';
 
 const transferTable = san.defineComponent({
     components: {
@@ -175,7 +172,7 @@ export default {
         };
     },
     components: {
-        's-transfer': transfer,
+        's-transfer': Transfer,
         's-switch': Switch,
         's-transfertable': transferTable
     },

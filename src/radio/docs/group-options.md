@@ -12,13 +12,12 @@
     </div>
 </template>
 <script>
-import radio from 'santd/radio';
+import {Radio} from 'santd';
 
-const group = radio.Group;
 export default {
     components: {
-        's-radio': radio,
-        's-group': group
+        's-radio': Radio,
+        's-group': Radio.Group
     },
     initData() {
         return {

@@ -154,7 +154,7 @@
     position: relative;
     display: block;
     margin: 0;
-    padding: 0 20px;
+    padding: 0 20px !important;
     white-space: nowrap;
     cursor: pointer;
     transition: color 0.3s @ease-in-out, border-color 0.3s @ease-in-out,
@@ -168,6 +168,11 @@
         opacity: 1;
         transition: opacity 0.3s @ease-in-out, width 0.3s @ease-in-out;
       }
+    }
+  }
+  &-fold-item {
+    .@{iconfont-css-prefix} {
+      margin-right: 0;
     }
   }
 
@@ -286,6 +291,7 @@
   }
 
   &-horizontal {
+    display: flex;
     line-height: 46px;
     white-space: nowrap;
     border: 0;
@@ -357,7 +363,7 @@
       height: @menu-item-height;
       margin-top: @menu-item-vertical-margin;
       margin-bottom: @menu-item-vertical-margin;
-      padding: 0 16px;
+      padding: 0 34px 0 16px;
       overflow: hidden;
       font-size: @menu-item-font-size;
       line-height: @menu-item-height;
@@ -394,10 +400,6 @@
     .@{menu-prefix-cls}-item,
     .@{menu-prefix-cls}-submenu-title {
       width: ~'calc(100% + 1px)';
-    }
-
-    .@{menu-prefix-cls}-submenu-title {
-      padding-right: 34px;
     }
   }
 

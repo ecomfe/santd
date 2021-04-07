@@ -6,7 +6,7 @@
 import './style/index.less';
 import san from 'san';
 import {classCreator} from '../core/util';
-import Track from './track';
+import Track from './Track';
 
 const prefixCls = classCreator('carousel')();
 

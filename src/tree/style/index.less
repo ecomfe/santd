@@ -8,6 +8,7 @@
 @san-prefix-cls: ~'@{ant-prefix}';
 @tree-showline-icon-color: @text-color-secondary;
 @tree-node-padding: 4px;
+@tree-prefix-cls-v: ~'@{tree-prefix-cls}-virtual-list';
 
 .antCheckboxFn(@checkbox-prefix-cls: ~'@{ant-prefix}-tree-checkbox');
 
@@ -56,12 +57,6 @@
         border-bottom-color: @primary-color;
       }
     }
-    &.filter-node {
-      > span {
-        color: @highlight-color !important;
-        font-weight: 500 !important;
-      }
-    }
 
     // When node is loading
     &.@{tree-prefix-cls}-treenode-loading {
@@ -96,6 +91,10 @@
       }
     }
 
+    &.@{tree-prefix-cls}-treenode-hidden {
+        display: none !important;
+    }
+
     ul {
       margin: 0;
       padding: 0 0 0 @tree-child-padding;
@@ -113,10 +112,19 @@
       cursor: pointer;
       transition: all 0.3s;
       &:hover {
-        background-color: @item-hover-bg;
+        background-color: #f5f5f5;
+      }
+      &-active {
+        background-color: #f5f5f5;
       }
       &.@{tree-prefix-cls}-node-selected {
         background-color: @primary-2;
+      }
+      &.filter-node {
+        >.@{tree-prefix-cls}-title {
+          color: inherit;
+          font-weight: 500;
+        }
       }
     }
     span {
@@ -232,7 +240,8 @@
         }
       }
     }
-    li:not(:last-child)::before {
+    // 非虚拟列表的连接线
+    .@{tree-prefix-cls}-not-virtual:not(:last-child)::before {
       position: absolute;
       left: 12px;
       width: 1px;
@@ -240,6 +249,16 @@
       margin: 22px 0;
       border-left: 1px solid @border-color-base;
       content: ' ';
+    }
+    // 虚拟列表的连接线
+    .@{tree-prefix-cls-v}-line {
+      position: absolute;
+      width: 1px;
+      background-color: @border-color-base;
+      left: 12px;
+    }
+    .@{tree-prefix-cls-v}-end-line {
+      background-color: @component-background;
     }
   }
 
@@ -261,6 +280,34 @@
             width: ~'calc(100% - 46px)';
           }
         }
+    }
+  }
+}
+
+.@{tree-prefix-cls-v}-container {
+  overflow: scroll;
+  position: relative;
+  .@{tree-prefix-cls-v}-extra-line {
+    position: absolute;
+    width: 1px;
+    background-color: @border-color-base;
+    top: 0
+  }
+  .@{tree-prefix-cls-v} {
+    position: absolute;
+    top: 0;
+    li {
+      background-color: @component-background;
+      .@{tree-prefix-cls}-switcher-unactive {
+        svg {
+          transition: none !important;
+        }
+      }
+    }
+    &-scrolling {
+      *, ::after {
+        transition: none !important;
+      }
     }
   }
 }

@@ -37,9 +37,7 @@
     </div>
 </template>
 <script>
-import Table from 'santd/table';
-import Input from 'santd/input';
-import Popconfirm from 'santd/popconfirm';
+import {Table, Input, Popconfirm} from 'santd';
 
 export default {
     components: {

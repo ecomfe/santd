@@ -7,7 +7,7 @@
 
 ```html
 <template>
-  <div>
+  <div id="components-grid-demo-sort">
     <s-row>
       <s-col span="18" push="6">col-18 col-push-6</s-col>
       <s-col span="6" pull="18">col-6 col-pull-18</s-col>
@@ -15,11 +15,12 @@
   </div>
 </template>
 <script>
-import {Col, Row} from 'santd/grid';
+import {Grid} from 'santd';
+
 export default {
     components: {
-        's-col': Col,
-        's-row': Row
+        's-col': Grid.Col,
+        's-row': Grid.Row
     }
 }
 </script>

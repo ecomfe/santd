@@ -11,8 +11,7 @@ Switch 失效状态
     </div>
 </template>
 <script>
-import Switch from 'santd/switch';
-import Button from 'santd/button';
+import {Switch, Button} from 'santd';
 
 export default {
     components: {

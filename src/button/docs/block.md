@@ -14,7 +14,8 @@ block属性将使按钮适合其父宽度。
     </div>
 </template>
 <script>
-import Button from 'santd/button';
+import {Button} from 'santd';
+
 export default {
     components: {
         's-button': Button

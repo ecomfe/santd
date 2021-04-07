@@ -12,7 +12,7 @@
                     <s-radiobutton value="horizontal">Horizontal</s-radiobutton>
                     <s-radiobutton value="vertical">Vertical</s-radiobutton>
                     <s-radiobutton value="inline">Inline</s-radiobutton>
-                <s-radiogroup>
+                </s-radiogroup>
             </s-formitem>
             <s-formitem label="Field A" labelCol="{{formItemLayout.labelCol}}" wrapperCol="{{formItemLayout.wrapperCol}}">
                 <s-input placeholder="input placeholder"></s-input>
@@ -27,10 +27,7 @@
   </div>
 </template>
 <script>
-import Form from 'santd/form';
-import Input from 'santd/input';
-import Button from 'santd/button';
-import Radio from 'santd/radio';
+import {Form, Input, Radio, Button} from 'santd';
 
 export default {
     components: {

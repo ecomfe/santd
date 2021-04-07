@@ -24,7 +24,7 @@
     </div>
 </template>
 <script>
-import Card from 'santd/card';
+import {Card} from 'santd';
 
 export default {
     components: {

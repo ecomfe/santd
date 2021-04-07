@@ -10,7 +10,8 @@
     </div>
 </template>
 <script>
-import Switch from 'santd/switch';
+import {Switch} from 'santd';
+
 export default {
     components: {
         's-switch': Switch

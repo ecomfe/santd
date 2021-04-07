@@ -25,7 +25,7 @@
             <s-menu-item-group key="g2" title="Item 2">
                 <s-menu-item key="3">Option 3</s-menu-item>
                 <s-menu-item key="4">Option 4</s-menu-item>
-            </s-menu-item>
+            </s-menu-item-group>
         </s-sub-menu>
         <s-sub-menu key="sub2">
             <span slot="title">
@@ -53,9 +53,8 @@
   </div>
 </template>
 <script>
-import Menu from 'santd/menu';
-import Icon from 'santd/icon';
-import Button from 'santd/button';
+import {Menu, Icon, Button} from 'santd';
+
 export default {
     components: {
         's-menu': Menu,

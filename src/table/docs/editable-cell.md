@@ -28,11 +28,7 @@
 </template>
 <script>
 import san from 'san';
-import Table from 'santd/table';
-import Button from 'santd/button';
-import Input from 'santd/input';
-import Popconfirm from 'santd/popconfirm';
-import Icon from 'santd/icon';
+import {Table, Button, Input, Popconfirm, Icon} from 'santd';
 
 const EditableCell = san.defineComponent({
     components: {

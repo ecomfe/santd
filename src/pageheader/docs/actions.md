@@ -71,12 +71,7 @@
     </div>
 </template>
 <script>
-import pageheader from 'santd/pageheader';
-import tag from 'santd/tag';
-import tabs from 'santd/tabs';
-import button from 'santd/button'
-import statistic from 'santd/statistic';
-import grid from 'santd/grid';
+import {PageHeader, Tag, Tabs, Button, Statistic, Grid} from 'santd';
 
 const description = function () {
     return `<div>a</div>`;
@@ -84,14 +79,14 @@ const description = function () {
 
 export default {
     components: {
-        's-pageheader': pageheader,
-        's-tag': tag,
-        's-tabs': tabs,
-        's-tabpane': tabs.TabPane,
-        's-statistic': statistic,
-        's-button': button,
-        's-row': grid.Row,
-        's-col': grid.Col
+        's-pageheader': PageHeader,
+        's-tag': Tag,
+        's-tabs': Tabs,
+        's-tabpane': Tabs.TabPane,
+        's-statistic': Statistic,
+        's-button': Button,
+        's-row': Grid.Row,
+        's-col': Grid.Col
     },
     initData() {
         return {

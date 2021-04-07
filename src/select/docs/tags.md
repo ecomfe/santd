@@ -21,7 +21,7 @@ tags select，随意输入的内容（scroll the menu）
 </template>
 
 <script>
-import Select from 'santd/select';
+import {Select} from 'santd';
 
 const children = [];
 for (let i = 10; i < 36; i++) {

@@ -17,8 +17,7 @@
   </div>
 </template>
 <script>
-import autoComplete from 'santd/auto-complete';
-import input from 'santd/input';
+import {AutoComplete} from 'santd';
 
 const dataSource = ['Burns Bay Road', 'Downing Street', 'Wall Street'];
 const filterOption = function (inputValue, option) {
@@ -27,8 +26,7 @@ const filterOption = function (inputValue, option) {
 
 export default {
     components: {
-        's-auto-complete': autoComplete,
-        's-input': input
+        's-auto-complete': AutoComplete
     },
     initData() {
         return {

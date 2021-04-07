@@ -20,8 +20,7 @@
     </div>
 </template>
 <script>
-import Steps from 'santd/steps';
-import Divider from 'santd/divider';
+import {Steps, Divider} from 'santd';
 
 export default {
     initData() {

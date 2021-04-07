@@ -1,7 +1,7 @@
 <text lang="cn">
 #### 表单数据存储于上层组件
 
-通过使用 onFieldsChange 与 mapPropsToFields，可以把表单的数据存储到上层组件或者 Redux、san-store 中
+通过使用 onFieldsChange 与 mapPropsToFields，可以把表单的数据存储到上层组件或者 san-store 中
 注意：mapPropsToFields 里面返回的表单域数据必须使用 Form.createFormField 包装。
 </text>
 
@@ -16,8 +16,7 @@
 </template>
 <script>
 import san from 'san';
-import Form from 'santd/form';
-import Input from 'santd/input';
+import {Form, Input} from 'santd';
 
 const CustomizedForm = Form.create({
     name: 'global_state',

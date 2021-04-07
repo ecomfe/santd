@@ -13,10 +13,8 @@
     </div>
 </template>
 <script>
-import Result from 'santd/result';
-import Button from 'santd/button';
-import Icon from 'santd/icon';
 import san from 'san';
+import {Result, Button, Icon} from 'santd';
 
 export default {
     components: {

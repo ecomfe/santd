@@ -23,9 +23,7 @@
     </div>
 </template>
 <script>
-import Upload from 'santd/upload';
-import Icon from 'santd/icon';
-import Modal from 'santd/modal';
+import {Upload, Icon, Modal} from 'santd';
 
 function getBase64(file) {
     return new Promise((resolve, reject) => {

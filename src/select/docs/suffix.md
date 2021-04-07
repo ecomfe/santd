@@ -21,8 +21,7 @@
 </template>
 
 <script>
-import Icon from 'santd/icon';
-import Select from 'santd/select';
+import {Select, Icon} from 'santd';
 
 export default {
     components: {

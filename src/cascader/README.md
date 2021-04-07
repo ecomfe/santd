@@ -23,7 +23,7 @@
 | popupStyle | 自定义浮层样式 | object | {} |
 | popupPlacement | 浮层预设位置：`bottomLeft` `bottomRight` `topLeft` `topRight` | string | bottomLeft |
 | popupVisible | 控制浮层显隐 | boolean | - |
-| showSearch | 在选择框中显示搜索框 | boolean | false |
+| showSearch | 在选择框中显示搜索框 | boolean \| object(详解如下) | false|
 | size | 输入框大小，可选 `large`<br> `default`<br> `small` | string | default |
 | style | 自定义样式  | cssProperty | - |
 | suffixIcon | 自定义的选择框后缀图标type | string | - |

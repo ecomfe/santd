@@ -40,9 +40,20 @@ async function deploy() {
 
         spinner = ora('git clone santd');
         spinner.start();
-        await execa('cp', ['../site/theme/static/img/logo.png', './site/favicon.png'], {cwd: `${output}`});
+        await execa('cp', ['../site/theme/static/img/logo.svg', './site/favicon.png'], {cwd: `${output}`});
+
         // 3. 拷贝分支gh-pages代码到本地
-        await execa('git', ['clone', '-b', 'gh-pages', 'git@github.com:ecomfe/santd.git'], {cwd: `${output}`});
+        // await execa('git', ['clone', '-b', 'gh-pages', 'git@github.com:ecomfe/santd.git'], {cwd: `${output}`});
+
+        // 这里重新clone一次太慢了，影响发布速度，复用本地现成的.git
+        const {stdout} = await execa('git', ['remote', '-v'], {cwd: `${output}`});
+        const [remote] = stdout.match(/https:\/\/github.com\/\w+\/\w+\.git|git@github\.com:\w+\/\w+\.git/);
+        console.log(chalk.gray('\nRemote Repository:') + chalk.green(remote));
+        await execa('mkdir', ['santd'], {cwd: `${output}`});
+        await execa('cp', ['-r', '../.git', 'santd'], {cwd: `${output}`});
+        await execa('git', ['stash'], {cwd: `${output}/santd`});
+        await execa('git', ['checkout', 'gh-pages'], {cwd: `${output}/santd`});
+        await execa('git', ['pull'], {cwd: `${output}/santd`});
         spinner.succeed();
 
         // 4. 确认名称和邮箱：git config user.name git config user.email

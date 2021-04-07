@@ -1,6 +1,6 @@
 import Pagination from '../pagination/locale/ko_KR';
 import DatePicker from '../date-picker/locale/ko_KR';
-import TimePicker from '../timepicker/locale/ko_KR';
+import TimePicker from '../time-picker/locale/ko_KR';
 import Calendar from '../calendar/locale/ko_KR';
 
 export default {

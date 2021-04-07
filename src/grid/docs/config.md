@@ -6,7 +6,7 @@
 
 ```html
 <template>
-    <div>
+    <div id="components-grid-demo-config">
         <div style="margin-bottom: 16px;">
             <span style="margin-right: 6px;">Gutter（px）:</span>
             <div style="width: 50%">
@@ -38,13 +38,12 @@
     </div>
 </template>
 <script>
-import {Col, Row} from 'santd/grid';
-import Slider from 'santd/slider';
+import {Grid, Slider} from 'santd';
 
 export default {
     components: {
-        's-col': Col,
-        's-row': Row,
+        's-col': Grid.Col,
+        's-row': Grid.Row,
         's-slider': Slider
     },
     computed: {

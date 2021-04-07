@@ -23,6 +23,7 @@ module.exports = {
         extensions: ['.js', '.san', '.less'],
         alias: {
             san: isProduction ? 'san/dist/san.spa.min.js' : 'san/dist/san.spa.dev.js',
+            'santd/es': resolve('./src'),
             santd: resolve('./src')
         }
     },
@@ -42,7 +43,7 @@ module.exports = {
                         loader: 'babel-loader?cacheDirectory=true'
                     },
                     {
-                        loader: 'hulk-san-loader',
+                        loader: 'san-loader',
                         options: {
                             hotReload: !isProduction,
                             sourceMap: isProduction,

@@ -6,8 +6,8 @@ import './style/index.less';
 import san from 'san';
 import {classCreator} from '../core/util';
 import Empty from '../empty';
-import List from './list';
-import Operation from './operation';
+import List from './List';
+import Operation from './Operation';
 import localeReceiver from '../localeprovider/receiver';
 
 const prefixCls = classCreator('transfer')();

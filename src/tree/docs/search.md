@@ -30,8 +30,7 @@
 </template>
 <script>
 import san from 'san';
-import Tree from 'santd/tree';
-import Input from 'santd/input';
+import {Tree, Input} from 'santd';
 
 const x = 3;
 const y = 2;

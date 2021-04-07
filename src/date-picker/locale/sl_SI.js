@@ -1,4 +1,4 @@
-import TimePickerLocale from '../../timepicker/locale/sl_SI';
+import TimePickerLocale from '../../time-picker/locale/sl_SI';
 
 // Merge into a locale object
 export default {

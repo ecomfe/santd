@@ -8,7 +8,8 @@ col
 
 </template>
 <script>
-import col from 'santd/col';
+import {Col} from 'santd';
+
 export default {
     components: {
         's-col': col

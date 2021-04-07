@@ -14,7 +14,7 @@
     </div>
 </template>
 <script>
-import Tabs from 'santd/tabs';
+import {Tabs} from 'santd';
 
 export default {
     components: {

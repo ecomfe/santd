@@ -6,7 +6,7 @@ import './style/index';
 import san from 'san';
 import Icon from '../icon';
 import {classCreator} from '../core/util';
-import pagination from './pagination';
+import pagination from './Pagination';
 import localeReceiver from '../localeprovider/receiver';
 
 const prefixCls = classCreator('pagination')();

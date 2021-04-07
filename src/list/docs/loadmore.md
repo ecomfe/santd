@@ -30,10 +30,7 @@
     </div>
 </template>
 <script>
-import List from 'santd/list';
-import Avatar from 'santd/avatar';
-import Button from 'santd/button';
-import Skeleton from 'santd/skeleton';
+import {List, Avatar, Button, Skeleton} from 'santd';
 
 export default {
     components: {

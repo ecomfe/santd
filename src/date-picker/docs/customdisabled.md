@@ -26,8 +26,10 @@
 
 
 <script>
-import DatePicker from 'santd/date-picker';
-import moment from 'moment';
+import dayjs from 'dayjs';
+import {DatePicker} from 'santd';
+
+dayjs.extend(require('dayjs/plugin/customParseFormat'));
 
 function range(start, end) {
     const result = [];
@@ -48,10 +50,10 @@ export default {
     initData() {
         return {
             showTime: { 
-                defaultValue: moment('00:00:00', 'HH:mm:ss'),
+                defaultValue: dayjs('00:00:00', 'HH:mm:ss'),
             },
             disabledDate(current) {
-                return current && current < moment().endOf('day');
+                return current && current < dayjs().endOf('day');
             },
             disabledDateTime() {
                 return {
@@ -76,7 +78,7 @@ export default {
             },
             rangeShowTime: {
                 hideDisabledOptions: true,
-                defaultValue: [moment('00:00:00', 'HH:mm:ss'), moment('11:59:59', 'HH:mm:ss')]
+                defaultValue: [dayjs('00:00:00', 'HH:mm:ss'), dayjs('11:59:59', 'HH:mm:ss')]
             }
         };
     }

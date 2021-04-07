@@ -31,10 +31,7 @@
   </div>
 </template>
 <script>
-import Form from 'santd/form';
-import Input from 'santd/input';
-import Icon from 'santd/icon';
-import Button from 'santd/button';
+import {Form, Input, Icon, Button} from 'santd';
 
 let id = 0;
 

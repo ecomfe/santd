@@ -5,7 +5,7 @@
 
 import san from 'san';
 import {classCreator} from '../core/util';
-import Cascader from './src/cascader';
+import Cascader from './src/Cascader';
 import Input from '../input';
 import Icon from '../icon';
 import arrayTreeFilter from './src/arraytreefilter';
@@ -121,7 +121,11 @@ export default san.defineComponent({
                 sort = defaultSortFilteredOption,
                 limit = defaultLimit
             } = showSearch;
-            const flattenOptions = this.data.get('flattenOptions') || [];
+            const options = this.data.get('options');
+            const changeOnSelect = this.data.get('changeOnSelect') || false;
+            const fieldNames = this.data.get('fieldNames') || {};
+
+            const flattenOptions = showSearch && flattenTree(options, {changeOnSelect, fieldNames}) || [];
             const inputValue = this.data.get('inputValue');
 
             // Limit the filter if needed
@@ -189,9 +193,6 @@ export default san.defineComponent({
         const loadData = this.data.get('loadData');
         loadData && this.data.set('loadData', loadData.bind(this.parentComponent));
 
-        const showSearch = this.data.get('showSearch');
-        const options = this.data.get('options');
-        showSearch && this.data.set('flattenOptions', flattenTree(options, this.data.get()));
         this.data.set('hasSlot', this.sourceSlots.noname && this.sourceSlots.noname.filter(item => !item.textExpr).length);
         this.data.set('hasDisplayRender', !!this.sourceSlots.named.displayRender);
 
@@ -271,6 +272,7 @@ export default san.defineComponent({
             popupPlacement="{{popupPlacement}}"
             options="{{inputValue ? filteredOptions : options}}"
             value="{{value}}"
+            disabled="{{disabled}}"
             visible="{{popupVisible}}"
             on-visibleChange="handlePopupVisibleChange"
             on-change="handleChange"

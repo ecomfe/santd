@@ -1,3 +1,8 @@
+import dayjs from 'dayjs';
+import advancedFormat from 'dayjs/plugin/advancedFormat';
+
+dayjs.extend(advancedFormat);
+
 export default {
     today: '오늘',
     now: '현재 시각',

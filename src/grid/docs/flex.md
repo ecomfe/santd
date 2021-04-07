@@ -7,7 +7,7 @@ Flex 布局基础。
 
 ```html
 <template>
-  <div>
+  <div id="components-grid-demo-flex">
     <p>sub-element align left</p>
     <s-row type="flex" justify="start">
       <s-col span="4">col-4</s-col>
@@ -50,11 +50,12 @@ Flex 布局基础。
   </div>
 </template>
 <script>
-import {Col, Row} from 'santd/grid';
+import {Grid} from 'santd';
+
 export default {
     components: {
-        's-col': Col,
-        's-row': Row
+        's-col': Grid.Col,
+        's-row': Grid.Row
     }
 }
 </script>

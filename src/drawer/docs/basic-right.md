@@ -22,13 +22,12 @@
 </template>
 
 <script>
-import button from 'santd/button';
-import drawer from 'santd/drawer';
+import {Button, Drawer} from 'santd';
 
 export default {
     components: {
-        's-button': button,
-        's-drawer': drawer
+        's-button': Button,
+        's-drawer': Drawer
     },
     initData() {
         return {

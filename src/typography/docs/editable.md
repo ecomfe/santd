@@ -13,10 +13,11 @@
   </div>
 </template>
 <script>
-import typography from 'santd/typography';
+import {Typography} from 'santd';
+
 export default {
     components: {
-        's-paragraph': typography.Paragraph,
+        's-paragraph': Typography.Paragraph,
     },
     initData() {
         return {

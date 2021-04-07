@@ -14,7 +14,8 @@
     </div>
 </template>
 <script>
-import Steps from 'santd/steps';
+import {Steps} from 'santd';
+
 export default {
     components: {
         's-steps': Steps,

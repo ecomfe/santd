@@ -1,6 +1,6 @@
 # 快速上手
 
-Ant Design San 致力于提供给程序员愉悦的开发体验。
+Santd致力于提供给程序员愉悦的开发体验。
 
 > 在开始之前，推荐先学习 San 和 ES2015，并正确安装和配置了 Node.js v8 或以上。官方指南假设你已了解关于 HTML、CSS 和 JavaScript 的中级知识，并且已经完全掌握了 San 全家桶的正确开发方式。如果你刚开始学习前端或者 San，将 UI 框架作为你的第一步可能不是最好的主意。
 
@@ -14,13 +14,13 @@ Ant Design San 致力于提供给程序员愉悦的开发体验。
 
 ```javascript
 import san from 'san';
-import {DatePicker, Message} from 'santd';
-import moment from 'moment';
-import 'moment/locale/zh-cn';
+import {DatePicker, message} from 'santd';
+import dayjs from 'dayjs';
+import 'dayjs/locale/zh-cn';
 import 'santd/dist/santd.css';
 import './index.css';
 
-moment.locale('zh-cn');
+dayjs.locale('zh-cn');
 
 const App = san.defineComponent({
     initData() {
@@ -32,7 +32,7 @@ const App = san.defineComponent({
         's-datepicker': DatePicker
     },
     handleChange({date}) {
-        Message.info(`您选择的日期是: ${date ? date.format('YYYY-MM-DD') : '未选择'}`);
+        message.info(`您选择的日期是: ${date ? date.format('YYYY-MM-DD') : '未选择'}`);
         this.data.set('date', date);
     },
     getDate(date) {
@@ -57,7 +57,7 @@ app.attach(document.body);
 然后依照演示代码的写法，在之前的代码里修改 index.js，首先在 import 内引入 Alert 组件：
 
 ```javascript
-import {DatePicker, Message, Alert} from 'santd';
+import {DatePicker, message, Alert} from 'santd';
 ```
 
 然后添加相应的代码：
@@ -74,7 +74,7 @@ const App = san.defineComponent({
         's-alert': Alert
     },
     handleChange({date}) {
-        Message.info(`您选择的日期是: ${date ? date.format('YYYY-MM-DD') : '未选择'}`);
+        message.info(`您选择的日期是: ${date ? date.format('YYYY-MM-DD') : '未选择'}`);
         this.data.set('date', date);
     },
     getDate(date) {

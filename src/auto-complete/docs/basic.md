@@ -18,13 +18,11 @@
   </div>
 </template>
 <script>
-import autoComplete from 'santd/auto-complete';
-import input from 'santd/input';
+import {AutoComplete} from 'santd';
 
 export default {
     components: {
-        's-auto-complete': autoComplete,
-        's-input': input
+        's-auto-complete': AutoComplete
     },
     initData() {
         return {

@@ -7,7 +7,7 @@
 
 ```html
 <template>
-  <div>
+  <div id="components-grid-demo-offset">
     <s-row>
       <s-col span="8">col-8</s-col>
       <s-col span="8" offset="8">col-8</s-col>
@@ -22,11 +22,12 @@
   </div>
 </template>
 <script>
-import {Col, Row} from 'santd/grid';
+import {Grid} from 'santd';
+
 export default {
     components: {
-        's-col': Col,
-        's-row': Row
+        's-col': Grid.Col,
+        's-row': Grid.Row
     }
 }
 </script>

@@ -21,15 +21,13 @@
 </template>
 
 <script>
-import alert from 'santd/alert';
-import spin from 'santd/spin';
-import switcher from 'santd/switch';
+import {Spin, Alert, Switch} from 'santd';
 
 export default {
     components: {
-        's-alert': alert,
-        's-spin': spin,
-        's-switch': switcher
+        's-alert': Alert,
+        's-spin': Spin,
+        's-switch': Switch
     },
     initData() {
         return {

@@ -8,10 +8,11 @@ row
 
 </template>
 <script>
-import row from 'santd/row';
+import {Row} from 'santd';
+
 export default {
     components: {
-        's-row': row
+        's-row': Row
     }
 }
 </script>

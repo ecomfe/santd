@@ -17,8 +17,7 @@
 </template>
 
 <script>
-import Checkbox from 'santd/checkbox';
-import Button from 'santd/button';
+import {Checkbox, Button} from 'santd';
 
 export default {
     components:{

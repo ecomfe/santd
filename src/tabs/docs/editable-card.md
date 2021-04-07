@@ -24,7 +24,8 @@
     </div>
 </template>
 <script>
-import tabs from 'santd/tabs';
+import {Tabs} from 'santd';
+
 export default {
     initData() {
         return {
@@ -49,8 +50,8 @@ export default {
         };
     },
     components: {
-        's-tabs': tabs,
-        's-tabpane': tabs.TabPane
+        's-tabs': Tabs,
+        's-tabpane': Tabs.TabPane
     },
     handleEdit({key, action}) {
         this[action](key);

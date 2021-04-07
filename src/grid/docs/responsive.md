@@ -7,7 +7,7 @@
 
 ```html
 <template>
-  <div>
+  <div id="components-grid-demo-responsive">
       <s-row>
         <s-col xs="2" sm="4" md="6" lg="8" xl="10">Col</s-col>
         <s-col xs="20" sm="16" md="12" lg="8" xl="4">Col</s-col>
@@ -16,11 +16,12 @@
   </div>
 </template>
 <script>
-import {Col, Row} from 'santd/grid';
+import {Grid} from 'santd';
+
 export default {
     components: {
-        's-col': Col,
-        's-row': Row
+        's-col': Grid.Col,
+        's-row': Grid.Row
     }
 }
 </script>

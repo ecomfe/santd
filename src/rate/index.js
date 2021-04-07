@@ -10,7 +10,7 @@ import {classCreator} from '../core/util';
 import {getOffset} from '../core/util/dom';
 import icon from '../icon';
 import tooltip from '../tooltip';
-import star from './star';
+import star from './Star';
 
 const prefixCls = classCreator('rate')();
 

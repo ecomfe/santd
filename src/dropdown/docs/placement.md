@@ -23,14 +23,11 @@
     </div>
 </template>
 <script>
-import Menu from 'santd/menu';
-import Icon from 'santd/icon';
-import Button from 'santd/button';
-import DropDown from 'santd/dropdown';
+import {Button, Icon, Dropdown, Menu} from 'santd';
 
 export default {
     components: {
-        's-dropdown': DropDown,
+        's-dropdown': Dropdown,
         's-button': Button,
         's-menu': Menu,
         's-menu-item': Menu.Item

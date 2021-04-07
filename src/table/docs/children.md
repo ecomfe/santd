@@ -13,8 +13,7 @@
     </div>
 </template>
 <script>
-import Table from 'santd/table';
-import Switch from 'santd/switch';
+import {Table, Switch} from 'santd';
 
 const columns = [
     {

@@ -19,8 +19,10 @@
 </template>
 
 <script>
-import DatePicker from 'santd/date-picker';
-import moment from 'moment';
+import dayjs from 'dayjs';
+import {DatePicker} from 'santd';
+
+dayjs.extend(require('dayjs/plugin/customParseFormat'));
 
 const dateFormat = 'YYYY/MM/DD';
 const monthFormat = 'YYYY/MM';
@@ -37,10 +39,10 @@ export default {
             dateFormat,
             monthFormat,
             dateFormatList,
-            value1: moment('2019/01/01', dateFormat),
-            value2: moment('01/01/2019', dateFormatList[0]),
-            value3: moment('2019/01/01', monthFormat),
-            value4: [moment('2019/10/01', dateFormat), moment('2019/10/20', dateFormat)]
+            value1: dayjs('2019/01/01', dateFormat),
+            value2: dayjs('01/01/2019', dateFormatList[0]),
+            value3: dayjs('2019/01/01', monthFormat),
+            value4: [dayjs('2019/10/01', dateFormat), dayjs('2019/10/20', dateFormat)]
         };
     }
 }

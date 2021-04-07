@@ -21,13 +21,12 @@
 </template>
 
 <script>
-import button from 'santd/button';
-import skeleton from 'santd/skeleton';
+import {Skeleton, Button} from 'santd';
 
 export default {
     components: {
-        's-button': button,
-        's-skeleton': skeleton
+        's-button': Button,
+        's-skeleton': Skeleton
     },
     initData() {
         return {

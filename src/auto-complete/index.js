@@ -65,6 +65,7 @@ let AutoComplete = san.defineComponent({
                 showSearch="{{true}}"
                 allowClear="{{allowClear}}"
                 autoFocus="{{autoFocus}}"
+                backfill="{{backfill}}"
                 class="auto-complete"
                 style="width:100%"
                 showArrow="{{false}}"

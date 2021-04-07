@@ -1,6 +1,6 @@
 import Pagination from '../pagination/locale/en_GB';
 import DatePicker from '../date-picker/locale/en_GB';
-import TimePicker from '../timepicker/locale/en_GB';
+import TimePicker from '../time-picker/locale/en_GB';
 import Calendar from '../calendar/locale/en_GB';
 
 export default {

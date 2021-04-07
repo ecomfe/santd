@@ -25,16 +25,14 @@
   </div>
 </template>
 <script>
-import statistic from 'santd/statistic';
-import icon from 'santd/icon';
-import col from 'santd/col';
-import row from 'santd/row';
+import {Statistic, Col, Row, Icon} from 'santd';
+
 export default {
     components: {
-        's-statistic': statistic,
-        's-icon': icon,
-        's-col': col,
-        's-row': row
+        's-statistic': Statistic,
+        's-icon': Icon,
+        's-col': Col,
+        's-row': Row
     }
 }
 </script>

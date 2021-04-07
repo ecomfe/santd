@@ -3,3 +3,4 @@
 */
 import '../../core/styles/index.less';
 import './index.less';
+import '../../pagination/style';

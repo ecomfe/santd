@@ -3,7 +3,7 @@
  * @author mayihui@baidu.com
  **/
 import san from 'san';
-import MonthCalendar from '../calendar/src/monthCalendar';
+import MonthCalendar from '../calendar/src/MonthCalendar';
 import {classCreator} from '../core/util';
 import Trigger from '../core/trigger';
 import Icon from '../icon';
@@ -55,7 +55,7 @@ export default function (calendar) {
             const format = this.data.get('format');
             const value = data.value;
             const cause = data.cause || {};
-            this.data.set('value', value.clone(), {force: true});
+            this.data.set('value', value, {force: true});
             this.fire('change', {date: value, dateString: value && value.format(format)});
             this.dispatch('UI:form-item-interact', {fieldValue: value, type: 'change'});
 

@@ -29,8 +29,7 @@
     </div>
 </template>
 <script>
-import Select from 'santd/select';
-import Tabs from 'santd/tabs';
+import {Tabs, Select} from 'santd';
 
 export default {
     initData() {

@@ -5,7 +5,7 @@
 
 import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
-import inputHandle from './inputHandler';
+import inputHandle from './InputHandler';
 import './style/index.less';
 const prefixCls = classCreator('input-number')();
 

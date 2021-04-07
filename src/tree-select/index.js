@@ -4,8 +4,8 @@
  */
 
 import {SHOW_ALL, SHOW_PARENT, SHOW_CHILD} from './treeStrategies';
-import TreeSelect from './tree-select';
-import TreeNode from '../tree/treeNode';
+import TreeSelect from './TreeSelect';
+import TreeNode from '../tree/TreeNode';
 
 TreeSelect.TreeNode = TreeNode;
 TreeSelect.SHOW_ALL = SHOW_ALL;

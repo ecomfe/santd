@@ -10,15 +10,16 @@
     </div>
 </template>
 <script>
-import calendar from 'santd/calendar';
-import * as moment from 'moment';
+import * as dayjs from 'dayjs';
+import {Calendar} from 'santd';
+
 export default {
     components: {
-        's-calendar': calendar
+        's-calendar': Calendar
     },
     initData() {
         return {
-            validRange: [moment.default(), moment.default().add(10, 'd')]
+            validRange: [dayjs.default(), dayjs.default().add(10, 'd')]
         }
     },
     getValue(value) {

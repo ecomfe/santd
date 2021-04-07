@@ -7,7 +7,7 @@
 
 ```html
 <template>
-  <div>
+  <div id="components-grid-demo-flex-order">
     <s-row type="flex">
       <s-col span="6" order="4">1 col-order-4</s-col>
       <s-col span="6" order="3">2 col-order-3</s-col>
@@ -17,11 +17,12 @@
   </div>
 </template>
 <script>
-import {Col, Row} from 'santd/grid';
+import {Grid} from 'santd';
+
 export default {
     components: {
-        's-col': Col,
-        's-row': Row
+        's-col': Grid.Col,
+        's-row': Grid.Row
     }
 }
 </script>

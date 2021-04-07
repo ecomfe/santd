@@ -23,8 +23,7 @@
 </template>
 <script>
 import san from 'san';
-import Timeline from 'santd/timeline';
-import Icon from 'santd/icon';
+import {Timeline, Icon} from 'santd';
 
 export default {
     components: {

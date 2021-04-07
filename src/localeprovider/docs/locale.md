@@ -46,20 +46,22 @@
     </div>
 </template>
 <script>
-import Pagination from 'santd/pagination';
-import LocaleProvider from 'santd/localeprovider';
+import {
+    Pagination,
+    LocaleProvider,
+    Radio,
+    Select,
+    DatePicker,
+    TimePicker,
+    Button,
+    Modal,
+    Popconfirm,
+    Transfer,
+    Calendar,
+    Table
+} from 'santd';
 import zhCN from 'santd/localeprovider/zh_CN';
 import enUS from 'santd/localeprovider/en_US';
-import Radio from 'santd/radio';
-import Select from 'santd/select';
-import DatePicker from 'santd/date-picker';
-import TimePicker from 'santd/timepicker';
-import Button from 'santd/button';
-import Modal from 'santd/modal';
-import Popconfirm from 'santd/popconfirm';
-import Transfer from 'santd/transfer';
-import Calendar from 'santd/calendar';
-import Table from 'santd/table';
 
 export default {
     initData() {

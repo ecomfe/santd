@@ -15,8 +15,7 @@
 
 <script>
 import san from 'san';
-import button from 'santd/button';
-import modal from 'santd/modal';
+import {Modal, Button} from 'santd';
 
 const content = san.defineComponent({
     template: `
@@ -29,29 +28,29 @@ const content = san.defineComponent({
 
 export default {
     components: {
-        's-button': button
+        's-button': Button
     },
     info() {
-        modal.info({
+        Modal.info({
             title: 'This is a notification message',
             content,
             onOk() {}
         });
     },
     success() {
-        modal.success({
+        Modal.success({
             title: 'This is a success message',
             content: 'some messages...some messages...'
         });
     },
     error() {
-        modal.error({
+        Modal.error({
             title: 'This is an error message',
             content: 'some messages...some messages...'
         });
     },
     warning() {
-        modal.warning({
+        Modal.warning({
             title: 'This is a warning message',
             content: 'some messages...some messages...'
         });

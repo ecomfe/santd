@@ -24,13 +24,11 @@
 </template>
 <script>
 import san from 'san';
-import comment from 'santd/comment';
-import icon from 'santd/icon';
-import avatar from 'santd/avatar';
-import moment from 'moment';
-import form from 'santd/form';
-import button from 'santd/button';
-import input from 'santd/input';
+import dayjs from 'dayjs';
+import {Comment, Icon, Avatar, Form, Button, Input} from 'santd';
+import relativeTime from 'dayjs/plugin/relativeTime';
+
+dayjs.extend(relativeTime);
 
 const pComment = san.defineComponent({
     template: `
@@ -45,25 +43,25 @@ const pComment = san.defineComponent({
         </template>
     `,
     components: {
-        's-comment': comment,
-        's-icon': icon,
-        's-avatar': avatar
+        's-comment': Comment,
+        's-icon': Icon,
+        's-avatar': Avatar
     },
     initData() {
         return {
-            datetime: moment().fromNow()
+            datetime: dayjs().fromNow()
         };
     }
 });
 
 export default {
     components: {
-        's-comment': comment,
-        's-avatar': avatar,
-        's-form': form,
-        's-form-item': form.FormItem,
-        's-button': button,
-        's-textarea': input.TextArea,
+        's-comment': Comment,
+        's-avatar': Avatar,
+        's-form': Form,
+        's-form-item': Form.FormItem,
+        's-button': Button,
+        's-textarea': Input.TextArea,
         's-pcomment': pComment
     },
     initData() {

@@ -19,10 +19,9 @@
     </div>
 </template>
 <script>
-import Upload from 'santd/upload';
-import Button from 'santd/button';
-import Icon from 'santd/icon';
-import Message from 'santd/message';
+import {Upload, Button, Icon} from 'santd';
+import message from 'santd/es/message';
+import 'santd/es/message/style';
 
 export default {
     components: {
@@ -35,10 +34,10 @@ export default {
             console.log(info.file, info.fileList);
         }
         if (info.file.status === 'done') {
-            Message.success(`${info.file.name} file uploaded successfully`);
+            message.success(`${info.file.name} file uploaded successfully`);
         }
         else if (info.file.status === 'error') {
-            Message.error(`${info.file.name} file upload failed.`);
+            message.error(`${info.file.name} file upload failed.`);
         }
     }
 }

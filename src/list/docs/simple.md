@@ -30,9 +30,7 @@
     </div>
 </template>
 <script>
-import List from 'santd/list';
-import Icon from 'santd/icon';
-import Typography from 'santd/typography';
+import {List, Icon, Typography} from 'santd';
 
 export default {
     components: {

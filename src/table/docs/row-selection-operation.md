@@ -29,8 +29,7 @@
 </template>
 <script>
 import san from 'san';
-import table from 'santd/table';
-import button from 'santd/button';
+import {Table, Button} from 'santd';
 
 const data = [];
 for (let i = 0; i < 46; i++) {
@@ -44,8 +43,8 @@ for (let i = 0; i < 46; i++) {
 
 export default {
     components: {
-        's-table': table,
-        's-button': button
+        's-table': Table,
+        's-button': Button
     },
     initData() {
         return {

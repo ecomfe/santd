@@ -1,5 +1,5 @@
 import CalendarLocale from '../../calendar/src/locale/sv_SE';
-import TimePickerLocale from '../../timepicker/locale/sv_SE';
+import TimePickerLocale from '../../time-picker/locale/sv_SE';
 
 export default {
     lang: {

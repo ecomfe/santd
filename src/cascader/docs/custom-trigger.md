@@ -15,7 +15,7 @@
     </div>
 </template>
 <script>
-import Cascader from 'santd/cascader';
+import {Cascader} from 'santd';
 
 const options = [{
     value: 'zhejiang',

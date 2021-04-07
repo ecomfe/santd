@@ -438,7 +438,7 @@ export default san.defineComponent({
             e.preventDefault();
 
             if (typeof callback === 'function') {
-                callback(activeItem);
+                callback(this.getActiveItem());
             }
         }
     },

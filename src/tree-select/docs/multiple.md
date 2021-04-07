@@ -32,7 +32,7 @@
 </template>
 <script>
 
-import TreeSelect from 'santd/tree-select';
+import {TreeSelect} from 'santd';
 
 export default {
     components: {

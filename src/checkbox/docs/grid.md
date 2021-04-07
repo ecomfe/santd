@@ -19,8 +19,7 @@ Checkbox.Group 内嵌 Checkbox 并与 Grid 组件一起使用，可以实现灵�
 </template>
 
 <script>
-import Checkbox from 'santd/checkbox';
-import Grid from 'santd/grid';
+import {Checkbox, Grid} from 'santd';
 
 export default {
     components:{

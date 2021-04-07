@@ -26,9 +26,9 @@
     </div>
 </template>
 <script>
-import Upload from 'santd/upload';
-import Icon from 'santd/icon';
-import Message from 'santd/message';
+import {Upload, Icon} from 'santd';
+import message from 'santd/es/message';
+import 'santd/es/message/style';
 
 function getBase64(img, callback) {
     const reader = new FileReader();
@@ -48,11 +48,11 @@ export default {
             beforeUpload(file) {
                 const isJPG = file.type === 'image/jpeg';
                 if (!isJPG) {
-                    Message.error('You can only upload JPG file!');
+                    message.error('You can only upload JPG file!');
                 }
                 const isLt2M = file.size / 1024 / 1024 < 2;
                 if (!isLt2M) {
-                    Message.error('Image must smaller than 2MB!');
+                    message.error('Image must smaller than 2MB!');
                 }
                 return isJPG && isLt2M;
             }

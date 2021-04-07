@@ -1,0 +1,96 @@
+@import "../../core/styles/themes/default";
+@margin-sm: 8px;
+@margin-md: 16px;
+@margin-lg: 24px;
+
+.@{ant-prefix}-space {
+	display: flex;
+	&-horizontal {
+		align-items: center;
+	}
+	&-vertical {
+		align-items: flex-start;
+		flex-direction: column;
+	}
+	&-horizontal&-small {
+		>:not(:last-child) {
+			margin-right: @margin-sm;
+		}
+	}
+	&-vertical&-small {
+		>:not(:last-child) {
+			margin-bottom: @margin-sm;
+		}
+	}
+	&-horizontal&-middle {
+		>:not(:last-child) {
+			margin-right: @margin-md;
+		}
+	}
+	&-vertical&-middle {
+		>:not(:last-child) {
+			margin-bottom: @margin-md;
+		}
+	}
+	&-horizontal&-large {
+		>:not(:last-child) {
+			margin-right: @margin-lg;
+		}
+	}
+	&-vertical&-large {
+		>:not(:last-child) {
+			margin-bottom: @margin-lg;
+		}
+	}
+	&-horizontal-small {
+		margin-right: -@margin-sm;
+		> * {
+			margin-right: @margin-sm;
+		}
+	}
+	&-horizontal-middle {
+		margin-right: -@margin-md;
+		> * {
+			margin-right: @margin-md;
+		}
+	}
+	&-horizontal-large {
+		margin-right: -@margin-lg;
+		> * {
+			margin-right: @margin-lg;
+		}
+	}
+	&-vertical-small {
+		margin-bottom: -@margin-sm;
+		> * {
+			margin-bottom: @margin-sm;
+		}
+	}
+	&-vertical-middle {
+		margin-bottom: -@margin-md;
+		> * {
+			margin-bottom: @margin-md;
+		}
+	}
+	&-vertical-large {
+		margin-bottom: -@margin-lg;
+		> * {
+			margin-bottom: @margin-lg;
+		}
+	}
+	&-center {
+		align-items: center;
+	}
+	&-start {
+		align-items: flex-start;
+	}
+	&-end {
+		align-items: flex-end;
+	}
+	&-baseline {
+		align-items: baseline;
+	}
+	&-wrap {
+		flex-wrap: wrap;
+	}
+}

@@ -58,12 +58,7 @@
   </div>
 </template>
 <script>
-import Form from 'santd/form';
-import Input from 'santd/input';
-import DatePicker from 'santd/date-picker';
-import Select from 'santd/select';
-import Cascader from 'santd/cascader';
-import InputNumber from 'santd/input-number';
+import {Form, Input, DatePicker, Select, Cascader, InputNumber} from 'santd';
 
 export default {
     components: {

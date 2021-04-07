@@ -18,8 +18,8 @@
     </div>
 </template>
 <script>
-import Popconfirm from 'santd/popconfirm';
-import Icon from 'santd/icon';
+import {Popconfirm, Icon} from 'santd';
+
 export default {
     components: {
         's-popconfirm': Popconfirm,

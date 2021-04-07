@@ -11,9 +11,8 @@
     </div>
 </template>
 <script>
-import Calendar from 'santd/calendar';
-import Alert from 'santd/alert';
-import moment from 'moment';
+import dayjs from 'dayjs';
+import {Calendar, Alert} from 'santd';
 
 export default {
     components: {
@@ -28,8 +27,8 @@ export default {
     },
     initData() {
         return {
-            value: moment('2017-01-25'),
-            selectedValue: moment('2017-01-25')
+            value: dayjs('2017-01-25'),
+            selectedValue: dayjs('2017-01-25')
         }
     },
     handleSelect(value) {
