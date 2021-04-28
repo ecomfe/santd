@@ -40,7 +40,7 @@ async function deploy() {
 
         spinner = ora('git clone santd');
         spinner.start();
-        await execa('cp', ['../site/theme/static/img/logo.svg', './site/favicon.png'], {cwd: `${output}`});
+        await execa('cp', ['../site/theme/static/img/logo.svg', './site/favicon.svg'], {cwd: `${output}`});
 
         // 3. 拷贝分支gh-pages代码到本地
         // await execa('git', ['clone', '-b', 'gh-pages', 'git@github.com:ecomfe/santd.git'], {cwd: `${output}`});
