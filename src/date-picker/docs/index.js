@@ -15,6 +15,7 @@ import Time from './time.md';
 import CustomDisabled from './customdisabled.md';
 import Range from './range.md';
 import Controlled from './controlled.md';
+import SelectInRange from './selectInRange.md';
 import Readme from '../README.md';
 
 export default san.defineComponent({
@@ -31,6 +32,7 @@ export default san.defineComponent({
         customdisabled: CustomDisabled,
         range: Range,
         controlled: Controlled,
+        selectinrange: SelectInRange,
         readme: Readme
     },
     template: `
@@ -45,6 +47,7 @@ export default san.defineComponent({
             <customcell/>
             <time/>
             <customdisabled/>
+            <selectinrange/>
             <range/>
             <controlled/>
             <readme/>
