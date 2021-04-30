@@ -222,6 +222,16 @@ export default inherits(san.defineComponent({
             this.fireHoverValueChange([]);
             this.fire('select', {selectedValue, cause});
         }
+
+        if (selectedValue[0]) {
+            this.fire('calendarChange', {
+                dates: [selectedValue[0], selectedValue[1] || null],
+                dateStrings: [selectedValue[0].toString(), selectedValue[1] ? selectedValue[1].toString() : ''],
+                info: {
+                    range: selectedValue[1] ? 'end' : 'start'
+                }
+            });
+        }
     },
     compare(v1, v2) {
         if (this.data.get('showTime')) {
