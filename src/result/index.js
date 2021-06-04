@@ -63,7 +63,7 @@ const Result = san.defineComponent({
             <s-icon theme="filled" type="{{iconMap[status]}}" s-else />
         </div>
         <div class="${prefixCls}-title">{{title}}</div>
-        <div class="${prefixCls}-subtitle" s-if="subTitle">"{{subTitle}}"</div>
+        <div class="${prefixCls}-subtitle" s-if="subTitle">{{subTitle}}</div>
         <div class="${prefixCls}-content" s-if="hasContent"><slot /></div>
         <div class="${prefixCls}-extra" s-if="hasExtra">
             <slot name="extra" />
