@@ -24,7 +24,6 @@
             columns="{{columns}}"
             data="{{data}}"
         ></s-table>
-        </div>
     </div>
 </template>
 <script>
