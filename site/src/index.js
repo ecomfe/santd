@@ -274,7 +274,7 @@ class Index extends Component {
             Array.prototype.forEach.call(code, function (item) {
                 Prism.highlightElement(item);
             });
-        }, 500);
+        }, 1000);
     }
     handleError(err) {
         Notification.error({
