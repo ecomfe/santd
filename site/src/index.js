@@ -270,10 +270,14 @@ class Index extends Component {
 
     hlCode() {
         setTimeout(() => {
-            let code = document.getElementsByTagName('code');
-            Array.prototype.forEach.call(code, function (item) {
-                Prism.highlightElement(item);
-            });
+            const code = document.getElementsByTagName('code');
+            if (code.length) {
+                Array.prototype.forEach.call(code, function (item) {
+                    Prism.highlightElement(item);
+                });
+            } else {
+                this.hlCode();
+            }
         }, 1000);
     }
     handleError(err) {
