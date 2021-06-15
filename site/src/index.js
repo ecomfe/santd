@@ -208,7 +208,6 @@ class Index extends Component {
                         that.handleError(e);
                     });
                 }
-                that.hlCode();
             }
 
             // 完成加载进度条
@@ -265,20 +264,12 @@ class Index extends Component {
             }
 
             document.title = `${title} - ${titleSuffix}`;
+            this.hlCode();
         });
     }
 
     hlCode() {
-        setTimeout(() => {
-            const code = document.getElementsByTagName('code');
-            if (code.length) {
-                Array.prototype.forEach.call(code, function (item) {
-                    Prism.highlightElement(item);
-                });
-            } else {
-                this.hlCode();
-            }
-        }, 1000);
+        Array.prototype.forEach.call(document.getElementsByTagName('code'), item => Prism.highlightElement(item));
     }
     handleError(err) {
         Notification.error({
