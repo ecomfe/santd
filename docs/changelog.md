@@ -9,6 +9,11 @@
 - 主版本号：含有破坏性更新和新特性，不在发布周期内
 
 ---
+## 1.0.8
+`2020-06-16`
+
+- Popconfirm
+    - fix: 解决popconfirm组件样式丢失问题[1c2f87a ](https://github.com/ecomfe/santd/commit/1c2f87a5bf3de3c415354816cd1a1dcde43e19e8)
 
 ## 1.0.7
 `2020-06-04`
