@@ -10,7 +10,7 @@ import uniqBy from 'lodash/uniqBy';
 import findIndex from 'lodash/findIndex';
 import {classCreator} from '../core/util';
 import {fileToObject, genPercentAdd, getFileItem, removeFileItem} from './utils';
-import localeReceiver from '../localeprovider/receiver';
+import localeReceiver from '../locale-provider/receiver';
 
 const prefixCls = classCreator('upload')();
 

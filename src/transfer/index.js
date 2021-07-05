@@ -8,7 +8,7 @@ import {classCreator} from '../core/util';
 import Empty from '../empty';
 import List from './List';
 import Operation from './Operation';
-import localeReceiver from '../localeprovider/receiver';
+import localeReceiver from '../locale-provider/receiver';
 
 const prefixCls = classCreator('transfer')();
 const emptyPrefixCls = classCreator('empty')();

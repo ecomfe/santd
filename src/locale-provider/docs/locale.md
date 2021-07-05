@@ -13,7 +13,7 @@
             <s-radiobutton key="cn" value="zhCN">中文</s-radiobutton>
         </s-radiogroup>
         </div>
-        <s-localeprovider locale="{{locale}}">
+        <s-locale-provider locale="{{locale}}">
             <div class="locale-components">
                 <div class="example">
                     <s-pagination defaultCurrent="{{1}}" total="{{50}}" showSizeChanger="{{true}}" />
@@ -42,7 +42,7 @@
                     <p>Locale Modal</p>
                 </s-modal>
             </div>
-        </s-localeprovider>
+        </s-locale-provider>
     </div>
 </template>
 <script>
@@ -60,8 +60,8 @@ import {
     Calendar,
     Table
 } from 'santd';
-import zhCN from 'santd/localeprovider/zh_CN';
-import enUS from 'santd/localeprovider/en_US';
+import zhCN from 'santd/locale-provider/zh_CN';
+import enUS from 'santd/locale-provider/en_US';
 
 export default {
     initData() {
@@ -81,7 +81,7 @@ export default {
         }
     },
     components: {
-        's-localeprovider': LocaleProvider,
+        's-locale-provider': LocaleProvider,
         's-pagination': Pagination,
         's-radiogroup': Radio.Group,
         's-radiobutton': Radio.Button,

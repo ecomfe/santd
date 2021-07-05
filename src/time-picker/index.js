@@ -11,7 +11,7 @@ import Placement from './placements';
 import dayjs from 'dayjs';
 import Panel from './Panel';
 import Icon from '../icon';
-import localeReceiver from '../localeprovider/receiver';
+import localeReceiver from '../locale-provider/receiver';
 
 const prefixCls = classCreator('time-picker')();
 const noop = function () {};

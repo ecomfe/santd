@@ -9,7 +9,7 @@ import {classCreator} from '../core/util';
 import Tooltip from '../tooltip';
 import Button from '../button';
 import Icon from '../icon';
-import localeReceiver from '../localeprovider/receiver';
+import localeReceiver from '../locale-provider/receiver';
 
 const prefixCls = classCreator('popover')();
 
