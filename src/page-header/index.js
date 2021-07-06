@@ -1,5 +1,5 @@
 /**
- * @file 组件 pageheader
+ * @file 组件 page-header
  * @author chenkai13 <chenkai13@baidu.com>
  */
 
