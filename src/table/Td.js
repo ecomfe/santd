@@ -10,13 +10,13 @@ const contentTemplate = `
     <!--配置展开图标-->
     <template s-if="isTree && columnIndex === 0">
         <span class="${prefixCls}-row-indent indent-level-{{item.level}}" style="padding-left: {{item.level * indentSize}}px;"></span>
-        <span on-click="handleTreeExpand(item)" s-if="hasExpandIcon && item.collapsed !== undefined">
+        <span on-click="stop:handleTreeExpand(item)" s-if="hasExpandIcon && item.collapsed !== undefined">
             <slot name="expandIcon" var-record="{{item}}"/>
         </span>
         <span
             s-else
             class="${prefixCls}-row-expand-icon ${prefixCls}-row-{{item.collapsed !== undefined ? item.collapsed ? 'collapsed' : 'expanded' : 'spaced'}}"
-            on-click="handleTreeExpand(item)"
+            on-click="stop:handleTreeExpand(item)"
         ></span>
     </template>
     <!--配置scoped slot-->
@@ -60,10 +60,10 @@ export default {
         <template s-for="column, columnIndex in getColumns(tdColumns, item, index)">
             <td s-if="hasExpandedRowRender && columnIndex === 0" class="${prefixCls}-row-expand-icon-cell">
                 <template s-if="rowExpandable(item, columnIndex)">
-                    <span on-click="handleExpandRow(item)" s-if="hasExpandIcon">
+                    <span on-click="stop:handleExpandRow(item)" s-if="hasExpandIcon">
                         <slot name="expandIcon" var-record="{{item}}"/>
                     </span>
-                    <span class="${prefixCls}-row-expand-icon ${prefixCls}-row-{{item.expanded ? 'expanded' : 'collapsed'}}" on-click="handleExpandRow(item)" s-else></span>
+                    <span class="${prefixCls}-row-expand-icon ${prefixCls}-row-{{item.expanded ? 'expanded' : 'collapsed'}}" on-click="stop:handleExpandRow(item)" s-else></span>
                 </template>
             </td>
             <td s-if="column.attrs.colSpan" colspan="{{column.attrs.colSpan}}" class="{{getThClass(column)}} {{column.ellipsis ? '${prefixCls}-cell-ellipsis' : ''}}" style="{{getThStyle(column)}}">${contentTemplate}</td>

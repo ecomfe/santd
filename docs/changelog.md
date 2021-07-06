@@ -10,17 +10,22 @@
 
 ---
 
+## 1.0.10
+`2021-07-06`
+- Table
+    - 🐞 修复开启 expandRowByClick 后无法通过展开按钮展开的问题 [#60](https://github.com/ecomfe/santd/pull/60)
+
 ## 1.0.9
 `2021-07-05`
 
 - PageHeader
-    - fix: 修改pageHeader、localeProvider组件目录为中线分隔（page-header、locale-provider），解决babel-plugin-import插件引入问题[a064242](https://github.com/ecomfe/santd/commit/a064242731ccc13108d42831cd598809b736200b)
+    - 🐞 修改 pageHeader、localeProvider 组件的目录名为短横线分隔（page-header、locale-provider），解决 babel-plugin-import 插件引入问题 [a064242](https://github.com/ecomfe/santd/commit/a064242731ccc13108d42831cd598809b736200b)
 
 ## 1.0.8
 `2021-06-16`
 
 - Popconfirm
-    - fix: 解决popconfirm组件样式丢失问题[1c2f87a](https://github.com/ecomfe/santd/commit/1c2f87a5bf3de3c415354816cd1a1dcde43e19e8)
+    - 🐞 解决 popconfirm 组件样式丢失问题 [1c2f87a](https://github.com/ecomfe/santd/commit/1c2f87a5bf3de3c415354816cd1a1dcde43e19e8)
 
 ## 1.0.7
 `2021-06-04`
