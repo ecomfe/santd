@@ -117,8 +117,8 @@ export default [
                     {
                         name: 'PageHeader',
                         text: '页头',
-                        path: 'pageheader',
-                        key: '/components/pageheader'
+                        path: 'page-header',
+                        key: '/components/page-header'
                     },
                     {
                         name: 'Steps',
