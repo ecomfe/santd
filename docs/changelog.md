@@ -9,44 +9,51 @@
 - 主版本号：含有破坏性更新和新特性，不在发布周期内
 
 ---
+
+## 1.0.9
+`2021-07-05`
+
+- PageHeader
+    - fix: 修改pageHeader、localeProvider组件目录为中线分隔（page-header、locale-provider），解决babel-plugin-import插件引入问题[a064242](https://github.com/ecomfe/santd/commit/a064242731ccc13108d42831cd598809b736200b)
+
 ## 1.0.8
-`2020-06-16`
+`2021-06-16`
 
 - Popconfirm
-    - fix: 解决popconfirm组件样式丢失问题[1c2f87a ](https://github.com/ecomfe/santd/commit/1c2f87a5bf3de3c415354816cd1a1dcde43e19e8)
+    - fix: 解决popconfirm组件样式丢失问题[1c2f87a](https://github.com/ecomfe/santd/commit/1c2f87a5bf3de3c415354816cd1a1dcde43e19e8)
 
 ## 1.0.7
-`2020-06-04`
+`2021-06-04`
 - Result
     - 💄 子标题去掉自带的引号 [#56](https://github.com/ecomfe/santd/pull/56)
 - 其它
     - 🛠 postcss 的版本从 v7 升级到 v8 [5032e8c](https://github.com/Lohoyo/santd/commit/5032e8c95982e28a54769250710b37956ded2164)
 
 ## 1.0.6
-`2020-05-01`
+`2021-05-01`
 - DatePicker
     - 🆕 RangePicker 新增 on-calendarChange 属性：待选日期发生变化的回调 [#55](https://github.com/ecomfe/santd/pull/55)
     
 ## 1.0.5
-`2020-03-31`
+`2021-03-31`
 - 🐞 修复部分时间日期相关的组件内部使用的 Day.js 的插件没有在内部引入而需要用户引入的问题 [#53](https://github.com/ecomfe/santd/pull/53)
 
 ## 1.0.4
-`2020-03-30`
+`2021-03-30`
 - Table
     - 🐞 修复某些情况下该组件的分页功能没有样式的问题 [#52](https://github.com/ecomfe/santd/pull/52)
 
 ## 1.0.3
-`2020-03-29`
+`2021-03-29`
 - TimePicker
     - 🐞 修复无法用首字母大写的形式引入该组件的问题 [#51](https://github.com/ecomfe/santd/pull/51)
 
 ## 1.0.2
-`2020-03-24`
+`2021-03-24`
 - 🐞 修复 1.0.0 版本把 Moment.js 换成 Day.js 后引起的和时间日期相关的组件的一系列 bug，涉及的组件包括 Calendar、DatePicker、LocaleProvider、TimePicker [#48](https://github.com/ecomfe/santd/pull/48)
 
 ## 1.0.1
-`2020-03-23`
+`2021-03-23`
 - Menu
     - 🐞 修复 MenuItem 溢出折叠时的可用空间的计算逻辑 [#47](https://github.com/ecomfe/santd/pull/47)
     - 🐞 修复 MenuItem 的 padding 没有正常生效的问题 [#47](https://github.com/ecomfe/santd/pull/47)
@@ -58,7 +65,7 @@
     - 🐞 修复发布 NPM 包的脚本因外部依赖 @octokit/rest 的 API 更改导致脚本运行失败的问题 [#44](https://github.com/ecomfe/santd/pull/44)
 
 ## 1.0.0
-`2020-03-15`
+`2021-03-15`
 - Affix
     - 🆕 新增 target 属性：设置 Affix 需要监听其滚动事件的元素 [#27](https://github.com/ecomfe/santd/pull/27)
 - AutoComplete
