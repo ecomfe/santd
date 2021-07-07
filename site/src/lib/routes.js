@@ -435,8 +435,8 @@ export default [
                     {
                         name: 'LocaleProvider',
                         text: '国际化',
-                        path: 'localeprovider',
-                        key: '/components/localeprovider'
+                        path: 'locale-provider',
+                        key: '/components/locale-provider'
                     },
                     {
                         name: 'Divider',
