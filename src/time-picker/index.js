@@ -221,7 +221,7 @@ export default san.defineComponent({
                 <input
                     class="${prefixCls}-input"
                     type="text"
-                    autoFocus="{{autoFocus}}"
+                    autofocus="{{autoFocus}}"
                     placeholder="{{placeholder || locale.placeholder}}"
                     name="{{name}}"
                     value="{{displayValue}}"
