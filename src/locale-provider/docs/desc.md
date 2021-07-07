@@ -5,26 +5,24 @@
 LocaleProvider只需在应用外围包裹一次即可全局生效。
 
 ```js
-import {LocaleProvider} from 'santd';
-import zh_CN from 'santd/locale-provider/zh_CN';
-import dayjs from 'dayjs';
-import 'dayjs/locale/zh-cn';
-
-dayjs.locale('zh-cn');
-
-return san.defineComponent({
-    initData() {
-        return {
-            locale: zh_CN
-        };
-    },
-    components: {
-        's-localprovider': LocaleProvider
-    },
-    template: '<div>
-        <s-locale-provider locale=\"{{locale}}\"><app /></s-locale-provider>
-    </div>'
-})
+import {LocaleProvider} from 'santd';\n
+import zh_CN from 'santd/locale-provider/zh_CN';\n
+import dayjs from 'dayjs';\n
+import 'dayjs/locale/zh-cn';\n
+\n
+dayjs.locale('zh-cn');\n
+\n
+return san.defineComponent({\n
+    \tinitData() {\n
+        \t\treturn {\n
+            \t\t\tlocale: zh_CN\n
+        \t\t};\n
+    \t},\n
+    \tcomponents: {\n
+        \t\t's-localprovider': LocaleProvider\n
+    \t},\n
+    \ttemplate: '<div><s-locale-provider locale=\"{{locale}}\"><app /></s-locale-provider></div>'\n
+});
 ```
 我们提供了英语，中文，俄语，法语，德语等多种语言支持，所有语言包可以在 [这里](https://github.com/ecomfe/santd/tree/master/src/locale-provider) 找到。
 
