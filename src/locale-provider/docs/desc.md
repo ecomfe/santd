@@ -21,10 +21,8 @@ return san.defineComponent({
     components: {
         's-localprovider': LocaleProvider
     },
-    template: '<div>
-        <s-locale-provider locale=\"{{locale}}\"><app /></s-locale-provider>
-    </div>'
-})
+    template: '<div><s-locale-provider locale=\"{{locale}}\"><app /></s-locale-provider></div>'
+});
 ```
 我们提供了英语，中文，俄语，法语，德语等多种语言支持，所有语言包可以在 [这里](https://github.com/ecomfe/santd/tree/master/src/locale-provider) 找到。
 
