@@ -89,8 +89,10 @@ const Descriptions = san.defineComponent({
         let childrenArray = [];
         let columnArray = [];
         slots.filter(slot => slot.tagName).forEach(slot => {
-            const labelIndex = slot.hotspot.props.label;
-            const spanIndex = slot.hotspot.props.span;
+            // san 从 3.10.6 开始，删除了 hotspot 属性，因此这里要做兼容
+            // 详见：https://github.com/baidu/san/commit/573c1b1b39129029af28478ff4e2a9087229647a
+            const {label: labelIndex, span: spanIndex} = slot.hotspot ? slot.hotspot.props : slot._pi;
+
             slot.label = slot.props[labelIndex] && slot.props[labelIndex].expr.value;
             slot.span = slot.props[spanIndex] && slot.props[spanIndex].expr.value || 1;
             columnArray.push(slot);

@@ -1,6 +1,6 @@
 <text lang="cn">
 #### tree-select基本
-树选择组件,最简单的用法
+树选择组件，最简单的用法
 </text>
 
 ```html
