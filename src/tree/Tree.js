@@ -352,7 +352,7 @@ export default san.defineComponent({
     // 自动展开父节点
     autoExpand() {
         let expandComponents = this.findExpandComponents();
-        let expandedKeys = this.data.get('expandedKeys');
+        let expandedKeys = this.data.get('expandedKeys') || [];
 
         while (expandComponents.length) {
             let expand = expandComponents.pop();
@@ -382,7 +382,7 @@ export default san.defineComponent({
     // 找所有展开的节点
     findExpandComponents() {
         let expandComponents = [];
-        const expandedKeys = this.data.get('expandedKeys');
+        const expandedKeys = this.data.get('expandedKeys') || [];
 
         traverseNodesKey(this.treeNodes, (key, node) => {
             if (expandedKeys.includes(key)) {
