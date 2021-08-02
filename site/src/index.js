@@ -183,10 +183,15 @@ class Index extends Component {
             else {
                 that.data.set('currentPath', e.path);
                 if (query.type === 'docs') {
-                    import(
+                    const di = query.id === 'changelog'
+                    ? import(
+                        /* webpackChunkName: "docs" */
+                        '/CHANGELOG.md?exportType=html'
+                    ) : import(
                         /* webpackChunkName: "docs" */
                         `@docs/${query.id}.md?exportType=html`
-                    ).then(({default: html}) => {
+                    );
+                    di.then(({default: html}) => {
                         this.docChange(() => {
                             that.data.set('content', html);
                         });

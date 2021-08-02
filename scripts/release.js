@@ -108,7 +108,7 @@ async function tag(version) {
 }
 
 async function githubRelease(version) {
-    const changelogFile = path.join(process.cwd(), 'docs/changelog.md');
+    const changelogFile = path.join(process.cwd(), 'CHANGELOG.md');
     if (!fs.existsSync(changelogFile)) {
         console.log('no changelog found, skip');
         return;
