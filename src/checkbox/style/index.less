@@ -192,9 +192,11 @@
       content: ' ';
     }
 
-    &.@{checkbox-prefix-cls}-disabled .@{inner-prefix-cls}::after {
-      background-color: @disabled-color;
-      border-color: @disabled-color;
+    .@{checkbox-prefix-cls}-disabled {
+      .@{inner-prefix-cls}::after {
+        background-color: @disabled-color;
+        border-color: @disabled-color;
+      }
     }
   }
 
