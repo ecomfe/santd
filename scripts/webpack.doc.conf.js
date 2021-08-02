@@ -6,9 +6,14 @@
 const merge = require('webpack-merge');
 const baseWebpackConfig = require('./webpack.base.conf');
 const config = require('./config');
-
 const {resolve} = require('./lib/utils');
+const fse = require('fs-extra');
+const path = require('path');
+
 const isProduction = process.env.NODE_ENV === 'production';
+const cwd = process.cwd();
+fse.copySync(path.join(cwd, 'CHANGELOG.md'), path.join(cwd, 'docs/changelog.md'));
+
 // TODO:
 // 1. 增加 splitChunks
 module.exports = merge(baseWebpackConfig, {
