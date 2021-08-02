@@ -108,11 +108,8 @@ async function tag(version) {
 }
 
 async function githubRelease(version) {
-    const changlogFiles = [
-        path.join(process.cwd(), 'CHANGELOG.en-US.md'),
-        path.join(process.cwd(), 'CHANGELOG.zh-CN.md')
-    ];
-    if (!changlogFiles.every(file => fs.existsSync(file))) {
+    const changelogFile = path.join(process.cwd(), 'docs/changelog.md');
+    if (!fs.existsSync(changelogFile)) {
         console.log('no changelog found, skip');
         return;
     }
@@ -122,15 +119,9 @@ async function githubRelease(version) {
         auth: process.env.GITHUB_TOKEN
     });
     const date = new Date();
-    const enChangeLog = getChangeLog(changlogFiles[0], version);
-    const cnChangeLog = getChangeLog(changlogFiles[1], version);
     const changeLog = [
         `\`${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}\``,
-        enChangeLog,
-        '\n',
-        '---',
-        '\n',
-        cnChangeLog
+        getChangeLog(changlogFile, version)
     ].join('\n');
 
     /* eslint-disable fecs-camelcase */
