@@ -56,7 +56,12 @@ export default san.defineComponent({
 
     inited() {
         this.radios = [];
-        this.data.set('value', this.data.get('value') || this.data.get('defaultValue') || '');
+        const {value, defaultValue} = this.data.get();
+        if (value !== undefined) {
+            this.data.set('value', value);
+        } else if (defaultValue !== undefined) {
+            this.data.set('value', defaultValue);
+        }
     },
 
     disposed() {
