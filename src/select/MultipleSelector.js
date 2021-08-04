@@ -45,14 +45,14 @@ export default san.defineComponent({
                 maxTagPlaceholder,
                 maxTagTextLength,
                 optionsInfo = {},
-                value = []
+                value
             } = this.data.get('context');
             const klass = [
                 `${prefixCls}-unselectable`,
                 `${prefixCls}-selection__choice`
             ];
             const klassDisabled = `${prefixCls}-selection__choice__disabled`;
-            let selectedValues = value;
+            let selectedValues = value || [];
             let maxTagPlaceholderItem;
 
             if (maxTagCount !== undefined && value.length > maxTagCount) {
