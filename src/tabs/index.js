@@ -152,12 +152,11 @@ const Tabs = san.defineComponent({
         });
     },
     setActiveKey(key) {
-        const {activeKey, __activeKey__} = this.data.get();
-        const latestKey = activeKey || key;
-        if (__activeKey__ !== latestKey) {
-            this.data.set('__activeKey__', latestKey);
+        const {__activeKey__} = this.data.get();
+        if (__activeKey__ !== key) {
+            this.data.set('__activeKey__', key);
             this.updateTab();
-            this.fire('change', latestKey);
+            this.fire('change', key);
         }
     },
     updateTab() {
