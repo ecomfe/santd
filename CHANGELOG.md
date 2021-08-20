@@ -10,6 +10,19 @@
 
 ---
 
+## 1.0.12
+`2021-08-20`
+- PageHeader
+    - 🐞 修复 PageHeader 组件的面包屑不能正常工作的问题 [#72](https://github.com/ecomfe/santd/pull/72)
+- Tabs
+    - 🐞 在某些情况下无法切换 tab 的问题 [#71](https://github.com/ecomfe/santd/pull/71)
+- Radio
+    - 🐞 修复 RadioGroup 组件的 value 属性的值不能为 0 的问题 [#70](https://github.com/ecomfe/santd/pull/70)
+- Select
+    - 🐞 修复 multiple 模式下清空输入后报错的问题 [#70](https://github.com/ecomfe/santd/pull/70)
+- Checkbox
+    - 🐞 修复部分选中状态的 disabled 效果不能正常生效的问题 [#66](https://github.com/ecomfe/santd/pull/66)
+
 ## 1.0.11
 `2021-07-30`
 - Descriptions

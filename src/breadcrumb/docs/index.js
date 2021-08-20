@@ -26,7 +26,6 @@ export default san.defineComponent({
             <separator/>
             <withroutes/>
             <readme/>
-
         </div>
     `
 });
