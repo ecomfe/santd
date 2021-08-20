@@ -45,7 +45,7 @@ export default {
         's-menu': Menu,
         's-menuitem': Menu.Item,
         's-breadcrumb': Breadcrumb,
-        's-brcrumbitem': Breadcrumb.BrcrumbItem
+        's-brcrumbitem': Breadcrumb.Item
     }
 }
 </script>

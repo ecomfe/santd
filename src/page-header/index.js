@@ -51,7 +51,7 @@ export default san.defineComponent({
         's-avatar': avatar,
         's-divider': divider,
         's-breadcrumb': breadcrumb,
-        's-brcrumbitem': breadcrumb.BrcrumbItem
+        's-brcrumbitem': breadcrumb.Item
     },
     showBread(breadcrumb) {
         return breadcrumb && breadcrumb.routes && breadcrumb.routes.length > 2;
