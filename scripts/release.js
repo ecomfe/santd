@@ -121,7 +121,7 @@ async function githubRelease(version) {
     const date = new Date();
     const changeLog = [
         `\`${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}\``,
-        getChangeLog(changlogFile, version)
+        getChangeLog(changelogFile, version)
     ].join('\n');
 
     /* eslint-disable fecs-camelcase */
