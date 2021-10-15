@@ -10,6 +10,13 @@
 
 ---
 
+
+## 1.0.14
+`2021-10-15`
+- MultipleSelector
+    - 🐞 修复远程搜索重置 data 不显示 title [#74](https://github.com/ecomfe/santd/pull/74)
+
+
 ## 1.0.13
 `2021-09-09`
 - AutoComplete
