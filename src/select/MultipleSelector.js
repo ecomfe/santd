@@ -38,6 +38,10 @@ export default san.defineComponent({
         </ul>
     `,
 
+    inited() {
+        this.cacheOptionsInfo = {};
+    },
+
     computed: {
         selectedItems() {
             const {
@@ -54,6 +58,10 @@ export default san.defineComponent({
             const klassDisabled = `${prefixCls}-selection__choice__disabled`;
             let selectedValues = value;
             let maxTagPlaceholderItem;
+
+            let cacheOptionsInfo = this.cacheOptionsInfo;
+            let optionsInfoAll = {...cacheOptionsInfo, ...optionsInfo};
+            this.cacheOptionsInfo = optionsInfoAll;
 
             if (maxTagCount !== undefined && value.length > maxTagCount) {
                 selectedValues = selectedValues.slice(0, maxTagCount);
@@ -75,7 +83,7 @@ export default san.defineComponent({
             }
 
             let selectedItems = selectedValues.map(val => {
-                let info = optionsInfo[getMapKey(val)] || {label: val};
+                let info = optionsInfoAll[getMapKey(val)] || {label: val};
                 let content = info.label;
                 const title = toTitle(info.title || content);
 
