@@ -8,7 +8,7 @@ import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
 import defaultEmptyImg from './empty.svg';
 import simpleEmptyImg from './simple.svg';
-import localeReceiver from '../localeprovider/receiver';
+import localeReceiver from '../locale-provider/receiver';
 
 const prefixCls = classCreator('empty')();
 

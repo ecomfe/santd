@@ -3,13 +3,13 @@
  * @author fuqiangqiang@baidu.com
  *   wangyongqing01@baidu.com
  */
-const path = require('path');
 const merge = require('webpack-merge');
 const baseWebpackConfig = require('./webpack.base.conf');
 const config = require('./config');
-
 const {resolve} = require('./lib/utils');
+
 const isProduction = process.env.NODE_ENV === 'production';
+
 // TODO:
 // 1. 增加 splitChunks
 module.exports = merge(baseWebpackConfig, {

@@ -91,4 +91,5 @@
 | showTime.defaultValue | 设置用户选择日期时默认的时分秒                                                                    | [dayjs](https://day.js.org)[]                      | [dayjs(), dayjs()] |
 | value                 | 日期                                                                                              | [dayjs](https://day.js.org)[]                      | -        |
 | on-change             | 时间发生变化的回调                                                                                | function({date: [dayjs, dayjs], dateString: [string, string]})       | -        |
+| on-calendarChange             | 待选日期发生变化的回调                                                                                | function({dates: [dayjs, dayjs], dateStrings: [string, string], info: {range: 'start' \| 'end'}})       | -        |
 | on-ok                 | 点击确定按钮的回调                                                                                | function(date: [dayjs](https://day.js.org)[])                                         | -        |

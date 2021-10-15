@@ -160,6 +160,9 @@ export default san.defineComponent({
     handlePanelChange(params) {
         this.fire('panelChange', params);
     },
+    handleCalendarChange(value) {
+        this.fire('calendarChange', value);
+    },
     components: {
         's-icon': Icon,
         's-trigger': Trigger,
@@ -208,6 +211,7 @@ export default san.defineComponent({
                     on-select="handleChange"
                     on-panelChange="handlePanelChange"
                     on-ok="handleOk"
+                    on-calendarChange="handleCalendarChange"
                 >
                     <slot name="renderExtraFooter" slot="renderExtraFooter" />
                     <slot name="dateRender" slot="dateRender" var-current="{{current}}" />

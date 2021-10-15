@@ -1,6 +1,6 @@
 {
     "name": "santd",
-    "version": "1.0.5",
+    "version": "1.0.13",
     "description": "san UI design",
     "scripts": {
         "start": "cross-env NODE_ENV=development node scripts/preview.js",
@@ -105,7 +105,7 @@
         "nprogress": "^0.2.0",
         "object-assign": "^4.1.1",
         "ora": "^3.4.0",
-        "postcss": "^7.0.16",
+        "postcss": "^8.2.2",
         "postcss-import": "^12.0.1",
         "postcss-loader": "^3.0.0",
         "postcss-url": "^8.0.0",

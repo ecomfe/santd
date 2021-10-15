@@ -1,5 +1,5 @@
 /**
- * @file 组件 pageheader
+ * @file 组件 page-header
  * @author chenkai13 <chenkai13@baidu.com>
  */
 
@@ -51,7 +51,7 @@ export default san.defineComponent({
         's-avatar': avatar,
         's-divider': divider,
         's-breadcrumb': breadcrumb,
-        's-brcrumbitem': breadcrumb.BrcrumbItem
+        's-brcrumbitem': breadcrumb.Item
     },
     showBread(breadcrumb) {
         return breadcrumb && breadcrumb.routes && breadcrumb.routes.length > 2;

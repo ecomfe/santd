@@ -6,14 +6,14 @@
 ```html
 <template>
     <div>
-        <s-localeprovider locale="{{locale}}">
+        <s-locale-provider locale="{{locale}}">
             <s-pagination defaultCurrent="{{1}}" total="{{50}}" showSizeChanger="{{true}}" />
-        </s-localeprovider>
+        </s-locale-provider>
     </div>
 </template>
 <script>
 import {Pagination, LocaleProvider} from 'santd';
-import zhCN from 'santd/localeprovider/zh_CN';
+import zhCN from 'santd/locale-provider/zh_CN';
 
 export default {
     initData() {
@@ -22,7 +22,7 @@ export default {
         }
     },
     components: {
-        's-localeprovider': LocaleProvider,
+        's-locale-provider': LocaleProvider,
         's-pagination': Pagination
     }
 }

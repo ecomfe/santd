@@ -9,7 +9,7 @@ import {classCreator} from '../core/util';
 import Dialog from './Dialog';
 import button from '../button';
 import icon from '../icon';
-import localeReceiver from '../localeprovider/receiver';
+import localeReceiver from '../locale-provider/receiver';
 
 const prefixCls = classCreator('modal')();
 

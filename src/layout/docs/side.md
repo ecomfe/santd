@@ -55,7 +55,7 @@ export default {
         's-menuitem': Menu.Item,
         's-submenu': Menu.Sub,
         's-breadcrumb': Breadcrumb,
-        's-brcrumbitem': Breadcrumb.BrcrumbItem,
+        's-brcrumbitem': Breadcrumb.Item,
         's-icon': Icon
     },
     initData() {

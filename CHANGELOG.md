@@ -10,26 +10,84 @@
 
 ---
 
+## 1.0.13
+`2021-09-09`
+- AutoComplete
+    - 🐞 修复使用该组件会导致编译报错的问题 [#73](https://github.com/ecomfe/santd/pull/73)
+
+## 1.0.12
+`2021-08-20`
+- PageHeader
+    - 🐞 修复 PageHeader 组件的面包屑不能正常工作的问题 [#72](https://github.com/ecomfe/santd/pull/72)
+- Tabs
+    - 🐞 在某些情况下无法切换 tab 的问题 [#71](https://github.com/ecomfe/santd/pull/71)
+- Radio
+    - 🐞 修复 RadioGroup 组件的 value 属性的值不能为 0 的问题 [#70](https://github.com/ecomfe/santd/pull/70)
+- Select
+    - 🐞 修复 multiple 模式下清空输入后报错的问题 [#70](https://github.com/ecomfe/santd/pull/70)
+- Checkbox
+    - 🐞 修复部分选中状态的 disabled 效果不能正常生效的问题 [#66](https://github.com/ecomfe/santd/pull/66)
+
+## 1.0.11
+`2021-07-30`
+- Descriptions
+    - 🐞 修复使用 3.10.6 或以上版本的 san 时该组件完全用不了的问题  [#65](https://github.com/ecomfe/santd/pull/65)
+- TreeSelect
+    - 🐞 修复默认不展开节点时控制台会报错的问题（不过不影响使用） [#65](https://github.com/ecomfe/santd/pull/65)
+- Tree
+    - 🐞 修复子节点的复选框默认全选时父节点的复选框的选中状态是部分选中的问题 [#65](https://github.com/ecomfe/santd/pull/65)
+- TimePicker
+    - 🐞 修复无论是否设置了 autoFocus 属性都会自动 focus 的问题 [#62](https://github.com/ecomfe/santd/pull/62)
+
+## 1.0.10
+`2021-07-06`
+- Table
+    - 🐞 修复开启 expandRowByClick 后无法通过展开按钮展开的问题 [#60](https://github.com/ecomfe/santd/pull/60)
+
+## 1.0.9
+`2021-07-05`
+
+- PageHeader
+    - 🐞 修改 pageHeader、localeProvider 组件的目录名为短横线分隔（page-header、locale-provider），解决 babel-plugin-import 插件引入问题 [a064242](https://github.com/ecomfe/santd/commit/a064242731ccc13108d42831cd598809b736200b)
+
+## 1.0.8
+`2021-06-16`
+
+- Popconfirm
+    - 🐞 解决 popconfirm 组件样式丢失问题 [1c2f87a](https://github.com/ecomfe/santd/commit/1c2f87a5bf3de3c415354816cd1a1dcde43e19e8)
+
+## 1.0.7
+`2021-06-04`
+- Result
+    - 💄 子标题去掉自带的引号 [#56](https://github.com/ecomfe/santd/pull/56)
+- 其它
+    - 🛠 postcss 的版本从 v7 升级到 v8 [5032e8c](https://github.com/Lohoyo/santd/commit/5032e8c95982e28a54769250710b37956ded2164)
+
+## 1.0.6
+`2021-05-01`
+- DatePicker
+    - 🆕 RangePicker 新增 on-calendarChange 属性：待选日期发生变化的回调 [#55](https://github.com/ecomfe/santd/pull/55)
+    
 ## 1.0.5
-`2020-3-31`
+`2021-03-31`
 - 🐞 修复部分时间日期相关的组件内部使用的 Day.js 的插件没有在内部引入而需要用户引入的问题 [#53](https://github.com/ecomfe/santd/pull/53)
 
 ## 1.0.4
-`2020-3-30`
+`2021-03-30`
 - Table
     - 🐞 修复某些情况下该组件的分页功能没有样式的问题 [#52](https://github.com/ecomfe/santd/pull/52)
 
 ## 1.0.3
-`2020-3-29`
+`2021-03-29`
 - TimePicker
     - 🐞 修复无法用首字母大写的形式引入该组件的问题 [#51](https://github.com/ecomfe/santd/pull/51)
 
 ## 1.0.2
-`2020-3-24`
+`2021-03-24`
 - 🐞 修复 1.0.0 版本把 Moment.js 换成 Day.js 后引起的和时间日期相关的组件的一系列 bug，涉及的组件包括 Calendar、DatePicker、LocaleProvider、TimePicker [#48](https://github.com/ecomfe/santd/pull/48)
 
 ## 1.0.1
-`2020-3-23`
+`2021-03-23`
 - Menu
     - 🐞 修复 MenuItem 溢出折叠时的可用空间的计算逻辑 [#47](https://github.com/ecomfe/santd/pull/47)
     - 🐞 修复 MenuItem 的 padding 没有正常生效的问题 [#47](https://github.com/ecomfe/santd/pull/47)
@@ -41,7 +99,7 @@
     - 🐞 修复发布 NPM 包的脚本因外部依赖 @octokit/rest 的 API 更改导致脚本运行失败的问题 [#44](https://github.com/ecomfe/santd/pull/44)
 
 ## 1.0.0
-`2020-3-15`
+`2021-03-15`
 - Affix
     - 🆕 新增 target 属性：设置 Affix 需要监听其滚动事件的元素 [#27](https://github.com/ecomfe/santd/pull/27)
 - AutoComplete
@@ -149,25 +207,25 @@
 
 ## 0.2.8
 
-`2020-6-30`
+`2020-06-30`
 
 - 🐞 修复 `Tree-select` 组件中可勾选功能删除无效问题
 
 ## 0.2.7
 
-`2020-5-21`
+`2020-05-21`
 
 - 🐞 修复 `Spin` 组件中 spin-text 丢失问题
 
 ## 0.2.6
 
-`2020-5-15`
+`2020-05-15`
 
 - 🐞 修复 `Table` 组件中 `scopedSlots` 在有 `render` 属性时不生效的问题
 
 ## 0.2.5
 
-`2020-4-30`
+`2020-04-30`
 
 - 🐞 修复 `Pagination` 组件中点击样式问题
 - 🐞 修复 `List` 组件中slot renderItem没有对外暴露index问题

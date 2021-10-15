@@ -183,10 +183,15 @@ class Index extends Component {
             else {
                 that.data.set('currentPath', e.path);
                 if (query.type === 'docs') {
-                    import(
+                    const di = query.id === 'changelog'
+                    ? import(
+                        /* webpackChunkName: "docs" */
+                        '/CHANGELOG.md?exportType=html'
+                    ) : import(
                         /* webpackChunkName: "docs" */
                         `@docs/${query.id}.md?exportType=html`
-                    ).then(({default: html}) => {
+                    );
+                    di.then(({default: html}) => {
                         this.docChange(() => {
                             that.data.set('content', html);
                         });
@@ -208,7 +213,6 @@ class Index extends Component {
                         that.handleError(e);
                     });
                 }
-                that.hlCode();
             }
 
             // 完成加载进度条
@@ -265,16 +269,12 @@ class Index extends Component {
             }
 
             document.title = `${title} - ${titleSuffix}`;
+            this.hlCode();
         });
     }
 
     hlCode() {
-        setTimeout(() => {
-            let code = document.getElementsByTagName('code');
-            Array.prototype.forEach.call(code, function (item) {
-                Prism.highlightElement(item);
-            });
-        }, 500);
+        Array.prototype.forEach.call(document.getElementsByTagName('code'), item => Prism.highlightElement(item));
     }
     handleError(err) {
         Notification.error({

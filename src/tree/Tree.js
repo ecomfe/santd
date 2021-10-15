@@ -247,10 +247,7 @@ export default san.defineComponent({
             if (!allKeys.checkedKeys.includes(checkedKey)) {
                 const treeNodeDataV = this.data.get('isVirtual')
                     && this.data.get('flatNodes').find(node => node.key === checkedKey);
-                let keys = this.getChangedCheckedKeys(checkedKey, true, [], [], checkStrictly, treeNodeDataV);
-                // 这里需要对数据进行去重
-                allKeys.checkedKeys = Array.from(new Set(allKeys.checkedKeys.concat(keys.checkedKeys)));
-                allKeys.halfCheckedKeys = Array.from(new Set(allKeys.halfCheckedKeys.concat(keys.halfCheckedKeys)));
+                allKeys = this.getChangedCheckedKeys(checkedKey, true, allKeys.checkedKeys, allKeys.halfCheckedKeys, checkStrictly, treeNodeDataV);
             }
         }
         return allKeys;
@@ -287,8 +284,7 @@ export default san.defineComponent({
                             && treeNodes.some(node => {
                                 const key = node.data.get('key');
                                 return checkedKeys.includes(key) || halfCheckedKeys.includes(key);
-                            }
-                            );
+                            });
                         // 如果子不是全选是半选，把父放到halfSelectedKeys里面
                         halfCheckedKeys = toggleArrayData(halfChecked, halfCheckedKeys, parentKey);
                         parent = parent.parentComponent;
@@ -356,7 +352,7 @@ export default san.defineComponent({
     // 自动展开父节点
     autoExpand() {
         let expandComponents = this.findExpandComponents();
-        let expandedKeys = this.data.get('expandedKeys');
+        let expandedKeys = this.data.get('expandedKeys') || [];
 
         while (expandComponents.length) {
             let expand = expandComponents.pop();
@@ -386,7 +382,7 @@ export default san.defineComponent({
     // 找所有展开的节点
     findExpandComponents() {
         let expandComponents = [];
-        const expandedKeys = this.data.get('expandedKeys');
+        const expandedKeys = this.data.get('expandedKeys') || [];
 
         traverseNodesKey(this.treeNodes, (key, node) => {
             if (expandedKeys.includes(key)) {

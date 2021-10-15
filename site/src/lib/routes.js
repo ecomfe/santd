@@ -117,8 +117,8 @@ export default [
                     {
                         name: 'PageHeader',
                         text: '页头',
-                        path: 'pageheader',
-                        key: '/components/pageheader'
+                        path: 'page-header',
+                        key: '/components/page-header'
                     },
                     {
                         name: 'Steps',
@@ -435,8 +435,8 @@ export default [
                     {
                         name: 'LocaleProvider',
                         text: '国际化',
-                        path: 'localeprovider',
-                        key: '/components/localeprovider'
+                        path: 'locale-provider',
+                        key: '/components/locale-provider'
                     },
                     {
                         name: 'Divider',

@@ -8,13 +8,12 @@ Santd致力于提供给程序员愉悦的开发体验。
 
 最简单的使用方式参照以下 CodeSandbox 演示。
 
-[![](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/adoring-sutherland-p4ol9)
-
+<a href="https://codesandbox.io/s/hungry-raman-8xmiz" target="_blank"><img src="https://codesandbox.io/static/img/play-codesandbox.svg"/></a>
 ### 1. 使用组件
 
 ```javascript
 import san from 'san';
-import {DatePicker, message} from 'santd';
+import {DatePicker, Message} from 'santd';
 import dayjs from 'dayjs';
 import 'dayjs/locale/zh-cn';
 import 'santd/dist/santd.css';
@@ -32,7 +31,7 @@ const App = san.defineComponent({
         's-datepicker': DatePicker
     },
     handleChange({date}) {
-        message.info(`您选择的日期是: ${date ? date.format('YYYY-MM-DD') : '未选择'}`);
+        Message.info(`您选择的日期是: ${date ? date.format('YYYY-MM-DD') : '未选择'}`);
         this.data.set('date', date);
     },
     getDate(date) {

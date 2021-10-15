@@ -9,7 +9,7 @@ import Radio from '../radio';
 import Select from '../select';
 import Calendar from './src/FullCalendar';
 import './style/index.less';
-import localeReceiver from '../localeprovider/receiver';
+import localeReceiver from '../locale-provider/receiver';
 import localeData from 'dayjs/plugin/localeData';
 
 dayjs.extend(localeData);
