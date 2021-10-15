@@ -6,10 +6,13 @@
 import san, {DataTypes} from 'san';
 import {
     getMapKey,
+    memoize,
     prefixCls,
     preventDefaultEvent,
     toTitle
 } from './util';
+
+const getOptionsInfoWithMemory = memoize();
 
 export default san.defineComponent({
     template: `
@@ -75,7 +78,7 @@ export default san.defineComponent({
             }
 
             let selectedItems = selectedValues.map(val => {
-                let info = optionsInfo[getMapKey(val)] || {label: val};
+                let info = getOptionsInfoWithMemory(optionsInfo)[getMapKey(val)] || {label: val};
                 let content = info.label;
                 const title = toTitle(info.title || content);
 

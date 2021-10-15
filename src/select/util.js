@@ -38,6 +38,14 @@ export function getMapKey(value) {
     return `${typeof value}-${value}`;
 }
 
+export function memoize() {
+    let cache = {};
+    return function (obj) {
+        cache = {...cache, ...obj};
+        return cache;
+    };
+}
+
 export function preventDefaultEvent(e) {
     e.preventDefault();
 }
