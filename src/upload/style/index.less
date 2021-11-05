@@ -27,6 +27,14 @@
     display: inline-block;
   }
 
+  &-disabled {
+    cursor: not-allowed;
+  }
+
+  &-disabled > .@{ant-prefix}-btn {
+    cursor: not-allowed;
+  }
+
   &&-select-picture-card {
     border: @border-width-base dashed @border-color-base;
     width: @upload-pictrue-card-size;

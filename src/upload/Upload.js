@@ -35,7 +35,7 @@ const uploadButtonTemplate = `
         multiple="{{multiple}}"
         name="{{name}}"
         method="{{method}}"
-        openFileDialogOnClick="{{openFileDialogOnClick}}"
+        openFileDialogOnClick="{{openFileDialogOnClick && !disabled}}"
         beforeUpload="{{beforeUploadFunc(beforeUpload, fileList)}}"
         s-ref="button"
         on-start="handleStart"
@@ -153,6 +153,17 @@ export default san.defineComponent({
         targetItem.status = 'uploading';
 
         const nextFileList = this.data.get('fileList').concat();
+        const maxCount = +this.data.get('maxCount');
+
+        // Cut to match count
+        if (maxCount === nextFileList.length) {
+            if (maxCount === 1) {
+                nextFileList.shift();
+            }
+            else {
+                return;
+            }
+        }
 
         const fileIndex = findIndex(nextFileList, ({uid}) => uid === targetItem.uid);
         if (fileIndex === -1) {
@@ -292,7 +303,7 @@ export default san.defineComponent({
                 headers="{{headers}}"
                 multiple="{{multiple}}"
                 name="{{name}}"
-                openFileDialogOnClick="{{openFileDialogOnClick}}"
+                openFileDialogOnClick="{{openFileDialogOnClick && !disabled}}"
                 beforeUpload="{{beforeUploadFunc(beforeUpload, fileList)}}"
                 s-ref="button"
                 class="${prefixCls}-btn"

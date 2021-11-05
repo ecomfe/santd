@@ -10,6 +10,7 @@ import DefaultFileList from './defaultFileList.md';
 import ControlledFileList from './controlledFileList.md';
 import Directory from './directory.md';
 import Avatar from './avatar.md';
+import MaxCount from './maxCount.md';
 import Picture from './picture.md';
 import Picturewall from './picturewall.md';
 import Manual from './manual.md';
@@ -25,6 +26,7 @@ export default san.defineComponent({
         controlledfilelist: ControlledFileList,
         directory: Directory,
         avatar: Avatar,
+        maxcount: MaxCount,
         picture: Picture,
         picturewall: Picturewall,
         manual: Manual,
@@ -40,6 +42,7 @@ export default san.defineComponent({
             <directory/>
             <picture/>
             <avatar/>
+            <maxcount/>
             <picturewall/>
             <dragger/>
             <manual/>
