@@ -111,7 +111,7 @@ export default class Header extends Component {
     }
     handleSearch(value) {
         const opts = this.data.get('opts');
-        let showOpts = value ? opts.filter(item => item.name.indexOf(value) > -1) : opts;
+        let showOpts = value ? opts.filter(item => item.name && item.name.toLowerCase().indexOf(value.toLowerCase()) > -1) : opts;
         this.data.set('showOpts', showOpts);
     }
     handleSelect(value) {

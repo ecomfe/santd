@@ -190,7 +190,7 @@ export default san.defineComponent({
     },
     inited() {
         this.rowSpanArr = {};
-        let data = this.data.get('data').concat() || [];
+        let data = this.data.get('data') ? this.data.get('data').concat() : [];
 
         this.data.set('expandedRowKeys', this.data.get('expandedRowKeys') || this.data.get('defaultExpandedRowKeys'));
         this.data.set('originalData', data);
