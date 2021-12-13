@@ -10,6 +10,11 @@
 
 ---
 
+## 1.0.15
+`2021-12-13`
+- Table
+    - 🐞 修复 table 数据 data 为 null 时报错 [#78](https://github.com/ecomfe/santd/pull/78)
+
 
 ## 1.0.14
 `2021-10-15`
