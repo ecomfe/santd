@@ -147,7 +147,7 @@ export default san.defineComponent({
             require(`dayjs/locale/${val}.js`);
             dayjs.locale(val);
             value = value.locale(val);
-            this.data.set('value', value, {force: true});
+            this.data.set('value', value);
         });
     },
     components: {
