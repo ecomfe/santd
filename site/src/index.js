@@ -66,15 +66,16 @@ class Index extends Component {
                                             <h2>帮助</h2>
                                             <div><a href="https://github.com/ecomfe/santd" target="_blank">GitHub</a></div>
                                             <div><a href="#/docs/changelog">更新日志</a></div>
-                                            <div><a href="https://ecomfe.github.com/santd/issue">报告 Bug</a></div>
+                                            <div><a href="https://ecomfe.github.com/santd/issue" target="_blank">报告 Bug</a></div>
                                         </div>
                                     </s-col>
-                                    <s-col xs="24" sm="24" md="6">
+                                    <s-col xs="24" sm="24" md="12">
                                         <div class="footer-center">
                                             <h2>更多</h2>
                                             <div><a href="https://github.com/baidu/san" rel="noopener noreferrer" target="_blank">San</a><span> - </span><span>一个快速、轻量、灵活的JavaScript组件框架</span></div>
                                             <div><a href="https://github.com/ecomfe/san-cli" target="_blank "><span>san-cli</span></a><span> - </span><span>可定制化的前端开发工具集</span></div>
                                             <div><a href="https://github.com/baidu/san-devtools" rel="noopener noreferrer" target="_blank">san-devtools</a><span> - </span><span>用于调试San.js应用程序的开发工具</span></div>
+                                            <div><a href="https://github.com/ecomfe/san-loader" rel="noopener noreferrer" target="_blank">san-loader</a><span> - </span><span>San文件 Loader</span></div>
                                         </div>
                                     </s-col>
                                 </s-row>
@@ -121,7 +122,7 @@ class Index extends Component {
 
             return rightNav;
         }
-    }
+    };
 
     initData() {
         return {
@@ -139,15 +140,18 @@ class Index extends Component {
             if (!item.list) {
                 flattenRouter.push(item);
             }
-            item.leaf && item.leaf.forEach(subItem => {
-                routerMap[item.key][subItem.path] = true;
-            });
-            item.list && item.list.forEach(listItem => {
-                listItem.leaf && listItem.leaf.forEach(subItem => {
-                    flattenRouter.push(subItem);
+            item.leaf &&
+                item.leaf.forEach(subItem => {
                     routerMap[item.key][subItem.path] = true;
                 });
-            });
+            item.list &&
+                item.list.forEach(listItem => {
+                    listItem.leaf &&
+                        listItem.leaf.forEach(subItem => {
+                            flattenRouter.push(subItem);
+                            routerMap[item.key][subItem.path] = true;
+                        });
+                });
         });
         this.data.set('routerMap', routerMap);
         this.data.set('flattenRouter', flattenRouter);
@@ -179,18 +183,19 @@ class Index extends Component {
             if (e.path === '/') {
                 that.handleRedirect({key: defaultPath});
                 that.data.set('currentPath', defaultPath);
-            }
-            else {
+            } else {
                 that.data.set('currentPath', e.path);
                 if (query.type === 'docs') {
-                    const di = query.id === 'changelog'
-                    ? import(
-                        /* webpackChunkName: "docs" */
-                        '/CHANGELOG.md?exportType=html'
-                    ) : import(
-                        /* webpackChunkName: "docs" */
-                        `@docs/${query.id}.md?exportType=html`
-                    );
+                    const di =
+                        query.id === 'changelog'
+                            ? import(
+                                  /* webpackChunkName: "docs" */
+                                  '/CHANGELOG.md?exportType=html'
+                              )
+                            : import(
+                                  /* webpackChunkName: "docs" */
+                                  `@docs/${query.id}.md?exportType=html`
+                              );
                     di.then(({default: html}) => {
                         this.docChange(() => {
                             that.data.set('content', html);
@@ -198,20 +203,21 @@ class Index extends Component {
                     }).catch(e => {
                         that.handleError(e);
                     });
-                }
-                else if (query.type === 'components') {
+                } else if (query.type === 'components') {
                     import(
                         /* webpackChunkName: "comp-doc" */
                         `santd/${query.id}/docs/index.js`
-                    ).then(({default: Doc}) => {
-                        this.docChange(() => {
-                            // 得到的是san component 对象
-                            const doc = new Doc();
-                            doc.attach(document.getElementById('content'));
+                    )
+                        .then(({default: Doc}) => {
+                            this.docChange(() => {
+                                // 得到的是san component 对象
+                                const doc = new Doc();
+                                doc.attach(document.getElementById('content'));
+                            });
+                        })
+                        .catch(e => {
+                            that.handleError(e);
                         });
-                    }).catch(e => {
-                        that.handleError(e);
-                    });
                 }
             }
 
@@ -246,7 +252,6 @@ class Index extends Component {
         // 执行自定义 change 执行事件
         changeFun && changeFun();
 
-
         // after
         // 恢复滚动高度
         if (window.document.documentElement.scrollTop > 110) {
@@ -262,8 +267,7 @@ class Index extends Component {
 
             if (titleResult.length === 2) {
                 title = `${titleResult[1]} ${titleResult[0]}`;
-            }
-            else {
+            } else {
                 // 兼容Ant Design of San
                 title = titleResult.join(' ');
             }

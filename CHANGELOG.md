@@ -10,6 +10,18 @@
 
 ---
 
+## 1.0.15
+`2021-12-13`
+- Table
+    - 🐞 修复 table 数据 data 为 null 时报错 [#78](https://github.com/ecomfe/santd/pull/78)
+
+
+## 1.0.14
+`2021-10-15`
+- MultipleSelector
+    - 🐞 修复远程搜索重置 data 不显示 title [#74](https://github.com/ecomfe/santd/pull/74)
+
+
 ## 1.0.13
 `2021-09-09`
 - AutoComplete
