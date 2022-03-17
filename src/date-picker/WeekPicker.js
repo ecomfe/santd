@@ -58,7 +58,7 @@ export default san.defineComponent({
         const value = data.value;
         const cause = data.cause || {};
         const format = this.data.get('format');
-        this.data.set('value', value, {force: true});
+        this.data.set('value', value);
         this.fire('change', {date: value, dateString: value && value.format(format)});
         if (cause.source === 'keyboard'
             || cause.source === 'dateInputSelect'

@@ -35,7 +35,7 @@ export default san.defineComponent({
     messages: {
         santd_menu_itemClick(payload) {
             if (!('visible' in this.data.get())) {
-                this.data.set('popupVisible', false, {force: true});
+                this.data.set('popupVisible', false);
             }
         }
     },
