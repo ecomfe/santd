@@ -132,7 +132,7 @@ export default san.defineComponent({
                 if (param === 'level') {
                     data++;
                 }
-                item.data.set(param, data, {force: true});
+                item.data.set(param, data);
             });
             if (this.data.get('itemFoldedFlags')) {
                 item.data.set('isFolded', !this.data.get('itemFoldedFlags')[index]);
