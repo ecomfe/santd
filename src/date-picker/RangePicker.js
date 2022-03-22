@@ -114,9 +114,14 @@ export default san.defineComponent({
 
         this.data.set('value', selectedValue);
         this.data.set('selectedValue', selectedValue);
-        this.data.set('showDate', getShowDateFromValue(selectedValue) || this.data.get('showDate'));
+
         const format = this.data.get('format');
         const [start, end] = selectedValue;
+
+        const showDate = getShowDateFromValue(selectedValue);
+        if (showDate) {
+            this.data.set('showDate', showDate);
+        }
 
         this.fire('change', {
             date: selectedValue,
