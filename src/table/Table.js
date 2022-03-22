@@ -433,7 +433,7 @@ export default san.defineComponent({
         else {
             delete selectedKeys[key];
         }
-        this.data.set('selectedKeys', selectedKeys, {force: true});
+        this.data.set('selectedKeys', {...selectedKeys});
     },
     // 执行onFilter方法，渲染过滤后的数据
     confirm() {
@@ -541,7 +541,7 @@ export default san.defineComponent({
         });
     },
     handleRowSelectionVisible(visible) {
-        this.data.set('rowSelection.visible', visible, {force: true});
+        this.data.set('rowSelection.visible', visible);
     },
     handleFilterVisibleChange(visible, column, index, thIndex) {
         this.data.set(`thColumns.${thIndex}.${index}.filterVisible`, visible);
@@ -638,13 +638,13 @@ export default san.defineComponent({
         if (column === sortColumn) {
             column.sortOrder = sortDirections[sortIndex + 1];
             this.data.set('sortColumn', column);
-            this.data.set(`thColumns.${thIndex}.${columnIndex}`, column, {force: true});
+            this.data.set(`thColumns.${thIndex}.${columnIndex}`, {...column});
         }
         else {
             column.sortOrder = sortDirections[sortIndex + 1];
             sortColumn && (sortColumn.sortOrder = undefined);
-            this.data.set(`thColumns.${thIndex}.${sortColumnIndex}`, sortColumn, {force: true});
-            this.data.set(`thColumns.${thIndex}.${columnIndex}`, column, {force: true});
+            this.data.set(`thColumns.${thIndex}.${sortColumnIndex}`, {...sortColumn});
+            this.data.set(`thColumns.${thIndex}.${columnIndex}`, {...column});
             this.data.set('sortColumn', column);
             this.data.set('sortColumnIndex', columnIndex);
         }
@@ -722,7 +722,7 @@ export default san.defineComponent({
         let selectedRows = checked ? activeRows : [];
         let selectedRowKeys = selectedRows.map(item => item.key);
 
-        this.data.set('selectedRowKeys', selectedRowKeys, {force: true});
+        this.data.set('selectedRowKeys', selectedRowKeys);
         this.data.set('selectedRows', selectedRows);
         if (typeof handleSelectAll === 'function') {
             handleSelectAll(selectedRows, checked);
@@ -802,7 +802,7 @@ export default san.defineComponent({
 
         this.handleSelectionChange(selectedRowKeys, selectedRows);
 
-        this.data.set('selectedRowKeys', selectedRowKeys, {force: true});
+        this.data.set('selectedRowKeys', [...selectedRowKeys]);
         this.data.set('selectedRows', selectedRows);
     },
     // 点击分页时候的操作

@@ -77,7 +77,7 @@ export default san.defineComponent({
         const value = this.data.get('value').year(year).month(this.data.get('value').month());
         this.fire('select', value);
         this.nextTick(() => {
-            this.data.set('refresh', Math.random(), {force: true});
+            this.data.set('refresh', Math.random());
         });
     },
     template: `

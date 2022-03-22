@@ -67,12 +67,12 @@ export default {
     },
     handleSelectChange(selectedRowKeys, selectedRows) {
         console.log('selectedRowKeys: changed: ', selectedRowKeys, selectedRows);
-        this.data.set('rowSelection.selectedRowKeys', selectedRowKeys, {force: true});
+        this.data.set('rowSelection.selectedRowKeys', [...selectedRowKeys]);
     },
     handleStart() {
         this.data.set('loading', true);
         window.setTimeout(() => {
-            this.data.set('rowSelection.selectedRowKeys', [], {force: true});
+            this.data.set('rowSelection.selectedRowKeys', []);
             this.data.set('loading', false);
         }, 1000);
     },

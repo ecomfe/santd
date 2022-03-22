@@ -93,7 +93,7 @@ export default function (options = {}, mixins = {}) {
                         .reduce((acc, name) => set(acc, name, this.fieldsStore.getField(name)), {});
                     onFieldsChange(this, changedFields, this.fieldsStore.getNestedAllFields());
                 }
-                this.data.set('form', this, {force: true});
+                this.data.set('form', this);
             },
 
             setFieldsValue(changedValues, callback) {
@@ -300,7 +300,7 @@ export default function (options = {}, mixins = {}) {
                     }, newCallback);
                 });
                 pending.catch(e => e);
-                this.data.set('form', this, {force: true});
+                this.data.set('form', this);
                 return pending;
             },
 
@@ -497,7 +497,7 @@ export default function (options = {}, mixins = {}) {
 
             updated() {
                 this.items.forEach(item => {
-                    item.data.set('form', this, {force: true});
+                    item.data.set('form', this);
                 });
             },
 

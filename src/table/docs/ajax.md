@@ -56,7 +56,7 @@ export default {
             }).then(res => {
                 this.data.set('loading', false);
                 this.data.set('data', res.data.results);
-                this.data.set('pagination.total', 200, {force: true});
+                this.data.set('pagination.total', 200);
             });
     },
     initData() {

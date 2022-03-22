@@ -140,14 +140,14 @@ class Index extends Component {
             if (!item.list) {
                 flattenRouter.push(item);
             }
-            item.leaf &&
-                item.leaf.forEach(subItem => {
+            item.leaf
+                && item.leaf.forEach(subItem => {
                     routerMap[item.key][subItem.path] = true;
                 });
-            item.list &&
-                item.list.forEach(listItem => {
-                    listItem.leaf &&
-                        listItem.leaf.forEach(subItem => {
+            item.list
+                && item.list.forEach(listItem => {
+                    listItem.leaf
+                        && listItem.leaf.forEach(subItem => {
                             flattenRouter.push(subItem);
                             routerMap[item.key][subItem.path] = true;
                         });
@@ -186,8 +186,8 @@ class Index extends Component {
             } else {
                 that.data.set('currentPath', e.path);
                 if (query.type === 'docs') {
-                    const di =
-                        query.id === 'changelog'
+                    const di
+                        = query.id === 'changelog'
                             ? import(
                                   /* webpackChunkName: "docs" */
                                   '/CHANGELOG.md?exportType=html'

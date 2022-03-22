@@ -98,7 +98,7 @@ export default san.defineComponent({
         let paramsArr = ['mode', 'level', 'selectedKeys', 'openKeys', 'rootPrefixCls', 'multiple'];
         this.items.forEach(item => {
             paramsArr.forEach(param => {
-                item.data.set(param, this.data.get(param), {force: true});
+                item.data.set(param, this.data.get(param));
             });
         });
     },
