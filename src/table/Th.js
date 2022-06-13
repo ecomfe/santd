@@ -8,7 +8,7 @@ const prefixCls = classCreator('table')();
 
 const titleTemplate = `
     <!--配置title slot-->
-    <slot s-if="column.slots.title" name="{{column.slots.title}}" />
+    <slot s-if="column.slots.title" name="{{column.slots.title}}" var-column="{{column}}" />
     <template s-else>{{column.title}}</template>
 `;
 
