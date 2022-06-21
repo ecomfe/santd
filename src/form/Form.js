@@ -66,7 +66,7 @@ let form = san.defineComponent({
     },
     updated() {
         this.items.forEach(item => {
-            item.data.set('form', this.form || this);
+            item.data.set('form', this.form || this, {force: true});
         });
     },
     attached() {
