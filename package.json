@@ -1,6 +1,6 @@
 {
     "name": "santd",
-    "version": "1.0.16",
+    "version": "1.0.17",
     "description": "san UI design",
     "scripts": {
         "start": "cross-env NODE_ENV=development node scripts/preview.js",
@@ -100,7 +100,7 @@
         "less-plugin-npm-import": "^2.1.0",
         "loader-utils": "^1.1.0",
         "map-stream": "^0.0.7",
-        "marked": "^0.7.0",
+        "marked": "^4.0.10",
         "mini-css-extract-plugin": "^0.8.0",
         "nprogress": "^0.2.0",
         "object-assign": "^4.1.1",
