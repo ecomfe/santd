@@ -45,7 +45,7 @@ export default san.defineComponent({
 
                 option.disabled = option.disabled != null ? option.disabled : disabled;
                 option.checked = value.indexOf(option.value) !== -1;
-                return option;
+                return {...option}; //if item instanceof Object need to return a new addressObject
             });
         }
     },
