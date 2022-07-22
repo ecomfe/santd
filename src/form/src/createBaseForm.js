@@ -547,7 +547,8 @@ export default function (options = {}, mixins = {}) {
                             }
                         });
                     }
-                }
+                },
+                ...wrappedComponent.messages
             }
         }, san.defineComponent(wrappedComponent));
     };
