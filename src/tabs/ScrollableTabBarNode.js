@@ -83,10 +83,10 @@ export default san.defineComponent({
         }, 200);
         this.resizeObserver = new ResizeObserver(this.debouncedResize);
 
-        window.setTimeout(() => {
+        this.nextTick(() => {
             const refs = this.data.get('refs');
             this.resizeObserver.observe(refs.container);
-        }, 0);
+        });
 
         this.watch('tabBarPosition', val => {
             this.scrollToActiveTab();
