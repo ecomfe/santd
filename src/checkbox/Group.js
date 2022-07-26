@@ -36,16 +36,20 @@ export default san.defineComponent({
             const disabled = this.data.get('disabled');
 
             return options.map(option => {
-                if (typeof option === 'string') {
-                    option = {
+                let checkBoxOption = typeof option === 'string'
+                    ? {
                         label: option,
                         value: option
+                    }
+                    : {
+                        label: option.label,
+                        value: option.value
                     };
-                }
 
-                option.disabled = option.disabled != null ? option.disabled : disabled;
-                option.checked = value.indexOf(option.value) !== -1;
-                return {...option}; //if item instanceof Object need to return a new addressObject
+
+                checkBoxOption.disabled = option.disabled != null ? option.disabled : disabled;
+                checkBoxOption.checked = value.indexOf(checkBoxOption.value) !== -1;
+                return checkBoxOption;
             });
         }
     },
