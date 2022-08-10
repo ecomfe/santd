@@ -103,6 +103,7 @@ export default san.defineComponent({
                 disabled="{{disabled}}"
                 on-showSizeChange="handleShowSizeChange"
                 on-change="handleChange"
+                pageSizeOptions="{{pageSizeOptions}}"
             >
                 <previcon slot="prevIcon" />
                 <nexticon slot="nextIcon" />
