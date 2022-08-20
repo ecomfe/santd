@@ -208,6 +208,7 @@ export default san.defineComponent({
     messages: {
         santd_menu_addItem(payload) {
             this.items.push(payload.value);
+            this.updateItems();
         },
         santd_menu_itemSelect(payload) {
             this.handleSelect(payload.value);
