@@ -56,14 +56,15 @@ export default san.defineComponent({
         this.fire('textareaBlur', e.target.value);
         this.dispatch('UI:form-item-interact', {fieldValue: e.target.value, type: 'change', e});
     },
-    template: `
+    template: /* html */ `
+        <!--TODO: 大版本统一maxLength-->
         <textarea
             class="${prefixCls} {{disabled ? '${prefixCls}-disabled': ''}}"
             style="{{styles}}"
             cols="{{cols}}"
             rows="{{rows}}"
             disabled="{{disabled}}"
-            maxlength="{{maxlength}}"
+            maxlength="{{maxLength || maxlength}}"
             name="{{name}}"
             readonly="{{readOnly}}"
             autofocus="{{autofocus}}"
