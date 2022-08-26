@@ -96,7 +96,7 @@ const tableInnerTemplate = `
         on-scroll="handleTableScroll"
         s-ref="tableBody"
     >
-        <table classs="{{scroll.x ? '${prefixCls}-fixed' : ''}}" style="width: {{scroll.x}}">
+        <table class="{{scroll.x ? '${prefixCls}-fixed' : ''}}" style="width: {{scroll.x}}">
             ${colgroupTemplate}
             <template s-if="!scroll.y">
                 ${Thead.template}
