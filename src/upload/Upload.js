@@ -292,6 +292,7 @@ export default san.defineComponent({
             on-dragLeave="handleFileDrop"
         >
             <s-upload
+                accept="{{accept}}"
                 prefixCls="${prefixCls}"
                 listType="{{listType}}"
                 action="{{action}}"
