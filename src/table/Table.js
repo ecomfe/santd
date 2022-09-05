@@ -141,7 +141,7 @@ export default san.defineComponent({
             expandedKeys: [],
             selectedRows: [],
             selectedRowKeys: [],
-            scrollPosition: 'left',
+            scrollPosition: '',
             defaultExpandAllRows: false,
             defaultExpandedRowKeys: [],
             expandRowByClick: false,
@@ -200,6 +200,16 @@ export default san.defineComponent({
         this.data.set('hasFooter', !!this.sourceSlots.named.footer || this.data.get('footer'));
         this.data.set('hasExpandedRowRender', !!this.sourceSlots.named.expandedRowRender);
         this.data.set('hasExpandIcon', !!this.sourceSlots.named.expandIcon);
+
+        this.nextTick(() => {
+            let tableBody = this.ref('tableBody');
+            if (tableBody.scrollWidth === tableBody.clientWidth && tableBody.scrollWidth !== 0) {
+                this.data.set('scrollPosition', '');
+            }
+            else {
+                this.data.set('scrollPosition', 'left');
+            }
+        });
 
         this.watch('columns', val => {
             this.processColumns(val);
@@ -509,10 +519,7 @@ export default san.defineComponent({
                 tableBody.scrollLeft = target.scrollLeft;
             }
 
-            if (tableBody.scrollWith === tableBody.clientWidth && tableBody.scrollWidth !== 0) {
-                scrollPosition = '';
-            }
-            else if (tableBody.scrollLeft === 0) {
+            if (tableBody.scrollLeft === 0) {
                 scrollPosition = 'left';
             }
             else if (tableBody.scrollWidth === target.scrollLeft + tableBody.clientWidth) {
