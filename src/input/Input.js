@@ -40,6 +40,12 @@ export default san.defineComponent({
 
     handleIconClear() {
         this.data.set('value', '');
+        this.focus();
+    },
+
+    handleMouseDown(e) {
+        // Do not trigger onBlur when clear input
+        e.preventDefault();
     },
 
     template: `
@@ -75,6 +81,7 @@ export default san.defineComponent({
                 class="${prefixCls}-suffix"
                 s-if="value && allowClear"
                 on-click="handleIconClear"
+                on-mousedown="handleMouseDown"
             >
                 <s-icon type="close-circle" />
             </span>
