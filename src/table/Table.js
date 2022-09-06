@@ -828,9 +828,8 @@ export default san.defineComponent({
             <template slot="content">
                 <s-pagination
                     s-if="{{paginationTop}}"
+                    s-bind="{{pagination}}"
                     class="${prefixCls}-pagination ${prefixCls}-{{paginationTop}}-pagination"
-                    current="{{pagination.current}}"
-                    pageSize="{{pagination.pageSize}}"
                     total="{{pagination.total || filteredData.length}}"
                     on-change="handlePaginationChange"
                 />
@@ -848,9 +847,8 @@ export default san.defineComponent({
                 </div>
                 <s-pagination
                     s-if="{{paginationBottom}}"
+                    s-bind="{{pagination}}"
                     class="${prefixCls}-pagination ${prefixCls}-{{paginationBottom}}-pagination"
-                    current="{{pagination.current}}"
-                    pageSize="{{pagination.pageSize}}"
                     total="{{pagination.total || filteredData.length}}"
                     on-change="handlePaginationChange"
                 />
