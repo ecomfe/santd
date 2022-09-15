@@ -106,7 +106,9 @@ export default san.defineComponent({
             this.updateInkBar();
         }, 0);
         this.watch('tabBarData', val => {
-            this.updateInkBar();
+            this.nextTick(() => {
+                this.updateInkBar();
+            });
         });
     },
     template: `
