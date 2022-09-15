@@ -58,6 +58,7 @@ export default san.defineComponent({
             type="{{type}}"
             tabindex="{{tabIndex}}"
             maxlength="{{maxLength}}"
+            autocomplete="{{autocomplete}}"
             s-ref="input"
         />
     `
