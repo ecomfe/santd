@@ -4,6 +4,7 @@
  **/
 
 import san, {DataTypes} from 'san';
+import debounce from 'lodash/debounce';
 import isEmpty from 'lodash/isEmpty';
 import Icon from '../icon';
 import Spin from '../spin';
@@ -201,14 +202,15 @@ export default san.defineComponent({
         this.data.set('hasExpandedRowRender', !!this.sourceSlots.named.expandedRowRender);
         this.data.set('hasExpandIcon', !!this.sourceSlots.named.expandIcon);
 
+        this.debouncedResize = debounce(() => {
+            const tableBody = this.ref('tableBody');
+            tableBody && this.handleTableScroll({target: tableBody, currentTarget: tableBody});
+        }, 200);
+        this.resizeObserver = new ResizeObserver(this.debouncedResize);
+
         this.nextTick(() => {
-            let tableBody = this.ref('tableBody');
-            if (tableBody.scrollWidth === tableBody.clientWidth && tableBody.scrollWidth !== 0) {
-                this.data.set('scrollPosition', '');
-            }
-            else {
-                this.data.set('scrollPosition', 'left');
-            }
+            const tableBody = this.ref('tableBody');
+            this.resizeObserver.observe(tableBody);
         });
 
         this.watch('columns', val => {
@@ -505,32 +507,36 @@ export default san.defineComponent({
         this.handleRowSelectionVisible(false);
     },
     // sticky的时候滚动数据时body和head的联动
-    handleTableScroll(e) {
-        if (e.currentTarget === e.target) {
-            let tableBody = this.ref('tableBody');
-            let tableHead = this.ref('tableHead');
-            let target = e.target;
-            let scrollPosition;
-
-            if (target === tableBody && tableHead) {
-                tableHead.scrollLeft = target.scrollLeft;
-            }
-            else if (target === tableHead && tableBody) {
-                tableBody.scrollLeft = target.scrollLeft;
-            }
-
-            if (tableBody.scrollLeft === 0) {
-                scrollPosition = 'left';
-            }
-            else if (tableBody.scrollWidth === target.scrollLeft + tableBody.clientWidth) {
-                scrollPosition = 'right';
-            }
-            else {
-                scrollPosition = 'middle';
-            }
-
-            this.data.set('scrollPosition', scrollPosition);
+    handleTableScroll({target, currentTarget}) {
+        if (target !== currentTarget) {
+            return;
         }
+
+        let tableBody = this.ref('tableBody');
+        let tableHead = this.ref('tableHead');
+        let scrollPosition;
+
+        if (target === tableBody && tableHead) {
+            tableHead.scrollLeft = target.scrollLeft;
+        }
+        else if (target === tableHead && tableBody) {
+            tableBody.scrollLeft = target.scrollLeft;
+        }
+
+        if (tableBody.scrollWidth === tableBody.clientWidth && tableBody.scrollWidth !== 0) {
+            scrollPosition = '';
+        }
+        else if (tableBody.scrollLeft === 0) {
+            scrollPosition = 'left';
+        }
+        else if (tableBody.scrollWidth === target.scrollLeft + tableBody.clientWidth) {
+            scrollPosition = 'right';
+        }
+        else {
+            scrollPosition = 'middle';
+        }
+
+        this.data.set('scrollPosition', scrollPosition);
     },
     // on-change的回调方法
     handleChange() {
