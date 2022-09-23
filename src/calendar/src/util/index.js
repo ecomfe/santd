@@ -28,7 +28,7 @@ export function getTodayTime(value) {
 }
 
 export function getTitleString(value) {
-    return value.format('LL');
+    return value.format('YYYY-MM-DD');
 }
 
 export function getTodayTimeStr(value) {
