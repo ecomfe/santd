@@ -19,24 +19,18 @@ export default san.defineComponent({
         };
     },
     inputChange(e) {
-        const inputValue = e.target.value;
-        this.data.set('value', inputValue);
-        this.fire('change', inputValue);
-        this.dispatch('UI:form-item-interact', {fieldValue: inputValue, type: 'change', e});
+        this.fire('change', e.target.value);
+        this.dispatch('UI:form-item-interact', {fieldValue: e.target.value, type: 'change', e});
     },
     keydownHander(e) {
         if (e.keyCode === keyCode.ENTER) {
-            const inputValue = e.target.value;
-            this.data.set('value', inputValue);
-            this.fire('pressEnter', inputValue);
-            this.dispatch('UI:form-item-interact', {fieldValue: inputValue, type: 'change', e});
+            this.fire('pressEnter', e.target.value);
+            this.dispatch('UI:form-item-interact', {fieldValue: e.target.value, type: 'change', e});
         }
     },
     inputOnBlur(e) {
-        const inputValue = e.target.value;
-        this.data.set('value', inputValue);
-        this.fire('blur', inputValue);
-        this.dispatch('UI:form-item-interact', {fieldValue: inputValue, type: 'blur', e});
+        this.fire('blur', e.target.value);
+        this.dispatch('UI:form-item-interact', {fieldValue: e.target.value, type: 'blur', e});
     },
     focus() {
         this.ref('input').focus();
@@ -51,7 +45,7 @@ export default san.defineComponent({
             on-input="inputChange($event)"
             on-keydown="keydownHander($event)"
             on-blur="inputOnBlur($event)"
-            value="{{value}}"
+            value="{=value=}"
             disabled="{{disabled}}"
             readonly="{{readOnly}}"
             id="{{id}}"
