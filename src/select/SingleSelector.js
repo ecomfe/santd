@@ -17,7 +17,7 @@ export default san.defineComponent({
             class="${prefixCls}-selection-selected-value"
             style="{{style}}"
         >
-            {{optionInfo.label}}
+            {{optionInfo.label | raw}}
         </div>
     `,
 
