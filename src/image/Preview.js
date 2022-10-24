@@ -24,6 +24,8 @@ export default san.defineComponent({
     template: `
         <div class="${prefixCls}">
             <std-modal
+                width="auto"
+                modalStyle="{{modalStyle}}"
                 transitionName="zoom"
                 maskTransitionName="fade"
                 wrapClassName="${prefixCls}-wrap {{wrapClassName}}"
@@ -120,6 +122,7 @@ export default san.defineComponent({
                 inset: 0,
                 overflow: 'hidden'
             },
+            modalStyle: 'height: 100%; potions: static; top: 0;',
             previewUrls: {},
             lastWheelZoomDirection: {wheelDirection: 0}
         };
