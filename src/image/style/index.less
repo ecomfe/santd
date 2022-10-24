@@ -1,0 +1,160 @@
+@import '../../core/styles/themes/default';
+@import '../../core/styles/mixins/index';
+
+@image-prefix-cls: ~'@{ant-prefix}-image';
+@image-preview-prefix-cls: ~'@{image-prefix-cls}-preview';
+
+.@{image-prefix-cls} {
+    position: relative;
+    display: inline-block;
+    &-mask {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: @text-color-inverse;
+        background: fade(@black, 50%);
+        cursor: pointer;
+        opacity: 0;
+        transition: opacity @animation-duration-slow;
+
+        &-info {
+            padding: 0 4px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            font-size: 14px;
+            color: #fff;
+            .@{iconfont-css-prefix} {
+                margin-inline-end: 4px;
+            }
+        }
+
+        &:hover {
+            opacity: 1;
+        }
+    }
+}
+
+.@{ant-prefix}-group {
+    font-size: 0;
+}
+
+.@{image-preview-prefix-cls} {
+    &-operations {
+        pointer-events: auto;
+        position: fixed;
+        display: flex;
+        top: 0;
+        right: 0;
+        width: 100%;
+        align-items: center;
+        flex-direction: row-reverse;
+        z-index: 1;
+        color: @image-preview-operation-color;
+        background: fade(@modal-mask-bg, 10%);
+        &-operation {
+            padding: @control-padding-horizontal;
+            margin-left: @control-padding-horizontal;
+            cursor: pointer;
+            &-disabled {
+                pointer-events: none;
+                color: @image-preview-operation-disabled-color;
+            }
+            &:last-of-type {
+                margin-left: 0;
+            }
+            &:first-of-type {
+                margin-right: 0;
+            }
+        }
+        &-icon {
+            font-size: @image-preview-operation-size;
+        }
+    }
+
+    &-progress {
+        z-index: 1;
+        position: absolute;
+        top: 12px;
+        left: 50%;
+        transform: translate(-50%);
+        color: @image-preview-operation-color;
+        font-size: 14px;
+    }
+
+    &-img {
+        cursor: grab;
+        transform: scaleZ(1);
+        transition: transform 0.3s cubic-bezier(0.215, 0.61, 0.355, 1) 0s;
+        user-select: none;
+        vertical-align: middle;
+        max-width: 100%;
+        max-height: 100%;
+        pointer-events: auto;
+        &-wrapper {
+            position: absolute;
+            inset: 0;
+            transition: transform 0.3s cubic-bezier(0.215, 0.61, 0.355, 1) 0s;
+            white-space: nowrap;
+            text-align: center;
+            font-size: 0;
+            &::before {
+                content: '';
+                display: inline-block;
+                height: 50%;
+                width: 1px;
+                margin-right: -1px;
+                user-select: none;
+            }
+        }
+    }
+
+    &-moving {
+        .@{image-prefix-cls}-preview-img {
+            cursor: grabbing;
+
+            &-wrapper {
+                transition-duration: 0s;
+            }
+        }
+    }
+
+    &-switch-left,
+    &-switch-right {
+        position: fixed;
+        cursor: pointer;
+        top: 50%;
+        width: 44px;
+        height: 44px;
+        margin-top: -22px;
+        color: @image-preview-operation-color;
+        background: fade(@modal-mask-bg, 10%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1;
+        pointer-events: auto;
+        &-disabled {
+            color: @image-preview-operation-disabled-color;
+            cursor: not-allowed;
+            > .@{iconfont-css-prefix} {
+                cursor: not-allowed;
+            }
+        }
+        > .@{iconfont-css-prefix} {
+            font-size: 18px;
+        }
+    }
+    &-switch-left {
+        left: 10px;
+    }
+    &-switch-right {
+        right: 10px;
+    }
+}

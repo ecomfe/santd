@@ -65,3 +65,4 @@ export {default as LocaleProvider} from './locale-provider';
 export {default as Result} from './result';
 export {default as Descriptions} from './descriptions';
 export {default as Typography} from './typography';
+export {default as Image} from './image';

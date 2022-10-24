@@ -295,6 +295,12 @@ export default [
                         key: '/components/empty'
                     },
                     {
+                        name: 'Image',
+                        text: '图片',
+                        path: 'image',
+                        key: '/components/image'
+                    },
+                    {
                         name: 'List',
                         text: '列表',
                         path: 'list',
