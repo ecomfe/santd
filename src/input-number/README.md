@@ -16,6 +16,8 @@
 | value            | 当前值                                                     | number                         | -               |
 | on-change        | 当input中的数值发生变化时触发                              | function(value: number \| string)         |   |
 | on-pressEnter    | 按下回车的回调                                           | function(e)         |   |
+| placeholder      | placeholder                                            | string                        | -          |
+| inputStyle       | input-number 自定义样式                                       | string                        | -           |
 
 ### 方法
 | 名称 | 描述 |

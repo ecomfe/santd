@@ -327,6 +327,8 @@ export default san.defineComponent({
                     on-input="onChange($event)"
                     autoComplete='off'
                     value="{{inputDisplayValue}}"
+                    placeholder="{{placeholder}}"
+                    style="{{inputStyle}}"
                 >
             </div>
         </div>

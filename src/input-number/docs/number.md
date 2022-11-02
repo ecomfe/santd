@@ -7,8 +7,16 @@
 
 ```html
 <template>
-  <div>
-    <s-input-number min="0" max="10" step="0.1" on-change="onChange"></s-input-number>
+  <div style="width: 150px">
+    <s-input-number
+      min="0"
+      max="1000"
+      step="0.1"
+      on-change="onChange"
+      style="width: 100%;"
+      placeholder="请输入数字"
+      inputStyle="text-align: center;"
+    ></s-input-number>
   </div>
 </template>
 <script>
