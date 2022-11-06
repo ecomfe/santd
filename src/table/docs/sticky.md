@@ -10,6 +10,7 @@
             columns="{{columns}}"
             data="{{data}}"
             scroll="{{ {x: '1150px', y: '300px'} }}"
+            sticky="true"
         >
             <a href="javascript:;" slot="action">Action</a>
         </s-table>
