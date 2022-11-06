@@ -19,6 +19,7 @@ import Colspan from './colspan-rowspan.md';
 import FixedHeader from './fixed-header.md';
 import FixedColumn from './fixed-column.md';
 import FixedHeaderColumn from './fixed-header-column.md';
+import StickyHeader from './sticky.md';
 import ColumnsChildren from './columns-children.md';
 import EditableCell from './editable-cell.md';
 import EditableRow from './editable-row.md';
@@ -47,6 +48,7 @@ export default san.defineComponent({
         fixedheader: FixedHeader,
         fixedcolumn: FixedColumn,
         fixedheadercolumn: FixedHeaderColumn,
+        stickyheader: StickyHeader,
         columnschildren: ColumnsChildren,
         editablecell: EditableCell,
         editablerow: EditableRow,
@@ -71,6 +73,7 @@ export default san.defineComponent({
             <fixedheadercolumn/>
             <fixedcolumn/>
             <fixedheader/>
+            <stickyheader/>
             <columnschildren/>
             <filtersort/>
             <expandedtable/>

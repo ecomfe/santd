@@ -5,7 +5,8 @@
 import './style/index.less';
 import san from 'san';
 
-import {Modal, Icon} from 'santd';
+import Icon from '../icon';
+import Modal from '../modal';
 import {getOffset} from './dom/css';
 import getFixScaleEleTransPosition from './getFixScaleEleTransPosition';
 import {classCreator} from '../core/util';

@@ -6,7 +6,7 @@
 import './style/index.less';
 import san from 'san';
 
-import {Icon} from 'santd';
+import Icon from '../icon';
 import Preview from './Preview';
 import {classCreator} from '../core/util';
 

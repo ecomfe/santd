@@ -84,8 +84,34 @@ const colgroupTemplate = `
     </colgroup>
 `;
 
+const stickyHeaderTemplate = `
+    <div
+        s-if="scroll.y"
+        s-ref="tableHead"
+        class="${prefixCls}-header ${prefixCls}-hide-scrollbar"
+        style="margin-right: 16px;"
+    >
+        <table class="{{scroll.x ? '${prefixCls}-fixed' : ''}}" style="min-width: {{scroll.x || '100%'}};">
+            ${colgroupTemplate}
+            ${Thead.template}
+        </table>
+    </div>
+    <div
+        s-else
+        s-ref="tableHead"
+        class="${prefixCls}-header ${prefixCls}-hide-scrollbar"
+    >
+        <table class="{{scroll.x ? '${prefixCls}-fixed' : ''}}" style="min-width: {{scroll.x  || '100%'}};">
+            <template s-if="!scroll.y">
+                ${colgroupTemplate}
+                ${Thead.template}
+            </template>
+        </table>
+    </div>
+`;
+
 const tableInnerTemplate = `
-    <div s-if="scroll.y" class="${prefixCls}-header ${prefixCls}-hide-scrollbar" s-ref="tableHead" on-scroll="handleTableScroll">
+    <div s-if="scroll.y && !sticky" class="${prefixCls}-header ${prefixCls}-hide-scrollbar" s-ref="tableHead" on-scroll="handleTableScroll">
         <table class="{{scroll.x ? '${prefixCls}-fixed' : ''}}" style="width: {{scroll.x || '100%'}}">
             ${colgroupTemplate}
             ${Thead.template}
@@ -97,9 +123,9 @@ const tableInnerTemplate = `
         on-scroll="handleTableScroll"
         s-ref="tableBody"
     >
-        <table class="{{scroll.x ? '${prefixCls}-fixed' : ''}}" style="width: {{scroll.x}}">
+        <table class="{{scroll.x ? '${prefixCls}-fixed' : ''}}" style="width: {{scroll.x || '100%'}}">
             ${colgroupTemplate}
-            <template s-if="!scroll.y">
+            <template s-if="!scroll.y && !sticky">
                 ${Thead.template}
             </template>
             ${Tbody.template}
@@ -151,7 +177,8 @@ export default san.defineComponent({
                 filterConfirm: '确定',
                 filterReset: '重置'
             },
-            ellipsis: false
+            ellipsis: false,
+            sticky: false
         };
     },
     computed: {
@@ -843,6 +870,12 @@ export default san.defineComponent({
                 <div class="${prefixCls}-title" s-if="hasTitle">
                     <slot name="title" s-if="!title" />
                     <template s-else>{{title}}</template>
+                </div>
+                <div
+                    s-if="!!sticky"
+                    class="${prefixCls}-sticky-holder"
+                >
+                    ${stickyHeaderTemplate}
                 </div>
                 <div class="${prefixCls}-content  {{ellipsis ? '${prefixCls}-layout-fixed' : ''}}">
                     <div class="${prefixCls}-scroll" s-if="scroll.x || scroll.y">

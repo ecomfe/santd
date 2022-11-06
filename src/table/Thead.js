@@ -36,7 +36,7 @@ export default {
                                 </s-menu-item>
                             </s-menu>
                             <s-icon type="down" />
-                         </s-dropdown>
+                        </s-dropdown>
                     </div>
                 </th>
                 <th s-if="hasExpandedRowRender" class="${prefixCls}-expand-icon-th"></th>
