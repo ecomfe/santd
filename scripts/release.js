@@ -162,7 +162,7 @@ async function main() {
 
     const workDir = process.cwd();
     console.log(`已经生成 Santd，在 ${path.relative(workDir, dest)} 文件夹`);
-    console.log('确定发包手动执行：npm publish --registry http://registry.npmjs.com');
+    console.log('确定发包手动执行：npm publish --registry https://registry.npmjs.org');
 }
 
 async function getPackageJson() {
@@ -171,7 +171,7 @@ async function getPackageJson() {
 
 async function getReleaseVersion(current = '0.1.0') {
     try {
-        current = execa.commandSync('npm view santd version --registry http://registry.npmjs.com').stdout.trim();
+        current = execa.commandSync('npm view santd version --registry https://registry.npmjs.org').stdout.trim();
     }
     catch (e) {
         if (!~e.toString().indexOf('404 no such package available')) {
