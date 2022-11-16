@@ -35,7 +35,6 @@ const FileIcon = san.defineComponent({
                 s-else-if="!file.thumbUrl && !file.url"
                 class="${prefixCls}-list-item-thumbnail"
                 type="picture"
-                theme="twoTone"
             />
             <a
                 s-else
@@ -139,11 +138,12 @@ export default san.defineComponent({
                 class="${prefixCls}-list-item ${prefixCls}-list-item-{{file.status}}"
             >
                 <div class="${prefixCls}-list-item-info">
-                    <s-tooltip title="{{file.message}}" s-if="file.status === 'error'">
+                    <s-tooltip title="{{file.message}}" s-if="file.status === 'error'" class="${prefixCls}-list-item-info-error">
                         <s-fileicon
                             prefixCls="${prefixCls}"
                             file="{{file}}"
                             listType="{{listType}}"
+                            locale="{{locale}}"
                             on-preview="handlePreview"
                         />
                         <a
@@ -161,7 +161,7 @@ export default san.defineComponent({
                             title="{{file.name}}"
                             on-click="handlePreview({file, e: $event})"
                         >
-                            {{file.name}}
+                            {{locale.errorText || file.name}}
                         </span>
                     </s-tooltip>
                     <span s-else>
@@ -169,6 +169,7 @@ export default san.defineComponent({
                             prefixCls="${prefixCls}"
                             file="{{file}}"
                             listType="{{listType}}"
+                            locale="{{locale}}"
                             on-preview="handlePreview"
                         />
                         <a

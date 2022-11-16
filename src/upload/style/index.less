@@ -155,6 +155,10 @@
       > span {
         display: block;
       }
+      &-error {
+        margin-top: 50%;
+        transform: translateY(-50%);
+      }
 
       .@{iconfont-css-prefix}-loading,
       .@{iconfont-css-prefix}-paper-clip {
@@ -193,6 +197,10 @@
     &-error &-name {
       color: @error-color;
     }
+    &-error .santd-icon {
+      color: @error-color;
+    }
+
 
     &-error .@{iconfont-css-prefix}-close {
       opacity: 1;
@@ -222,6 +230,13 @@
       }
       &-error {
         border-color: @error-color;
+        .@{upload-item}-thumbnail,
+        .@{iconfont-css-prefix}-picture,
+        .@{upload-item}-name {
+          display: block;
+          color: @error-color;
+        }
+
       }
     }
 
@@ -410,7 +425,7 @@
 
     .@{upload-item}-progress {
       padding-left: 0;
-      bottom: 32px;
+      bottom: 20px;
     }
   }
 
