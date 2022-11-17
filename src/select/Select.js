@@ -718,6 +718,8 @@ export default san.defineComponent({
             return;
         }
 
+        this.fire('clear');
+
         let {inputValue, value} = this.data.get();
         value = toArray(value);
         e.stopPropagation();

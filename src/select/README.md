@@ -42,6 +42,7 @@
 | --- | --- | --- |
 | on-blur | 失去焦点的时回调 | function |
 | on-change | 选中 option，或 input 的 value 变化（combobox 模式下）时，调用此函数 | function(value, option:Option) |
+| on-clear | 清除内容时回调 | function |
 | on-deselect | 取消选中时调用，参数为选中项的 value 值，仅在 multiple 或 tags 模式下生效 | function(string\|number) |
 | on-focus | 获得焦点时回调  | function |
 | on-input-keydown | 按键按下时回调 | function |
