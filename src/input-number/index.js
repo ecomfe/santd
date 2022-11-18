@@ -145,7 +145,7 @@ export default san.defineComponent({
             return num;
         }
         const precision = this.data.get('precision');
-        return Number(precision ? Number(num).toFixed(precision) : num);
+        return Number(precision || precision === 0 ? Number(num).toFixed(precision) : num);
     },
 
     getPrecision(value) {

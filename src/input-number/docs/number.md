@@ -15,7 +15,8 @@
       on-change="onChange"
       style="width: 100%;"
       placeholder="请输入数字"
-      inputStyle="text-align: center;"
+      precision="{{0}}"
+      inputStyle="text-align: left;"
     ></s-input-number>
   </div>
 </template>
