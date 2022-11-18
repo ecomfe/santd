@@ -497,7 +497,7 @@ export default function (options = {}, mixins = {}) {
 
             updated() {
                 this.items.forEach(item => {
-                    item.data.set('form', this, {force: true});
+                    item.data.set('form', {...this});
                 });
             },
 
