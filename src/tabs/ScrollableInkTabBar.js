@@ -117,6 +117,7 @@ export default san.defineComponent({
             <div
                 role="tablist"
                 class="{{classes}}"
+                style="{{tabBarStyle}}"
                 tabIndex="0"
                 on-keydown="handleKeyDown"
                 s-ref="root"
