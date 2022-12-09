@@ -39,6 +39,7 @@ export default san.defineComponent({
     },
 
     handleIconClear() {
+        this.fire('change', '');
         this.data.set('value', '');
         this.focus();
     },
