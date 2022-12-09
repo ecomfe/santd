@@ -9,13 +9,11 @@
 <template>
   <div style="width: 150px">
     <s-input-number
-      min="0"
-      max="1000"
-      step="0.1"
+      min="1"
+      max="10"
+      step="1"
       on-change="onChange"
       style="width: 100%;"
-      placeholder="请输入数字"
-      precision="{{0}}"
       inputStyle="text-align: left;"
     ></s-input-number>
   </div>

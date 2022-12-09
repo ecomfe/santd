@@ -113,8 +113,9 @@ export default san.defineComponent({
         }
         this.data.set('upDisabledConfirm', val >= max);
         this.data.set('downDisabledConfirm', val <= min);
-        val <= max && val >= min && this.fire(fireEvent, val);
+        // val <= max && val >= min && this.fire(fireEvent, val);
         val = val > max ? max : val < min ? min : val;
+        this.fire(fireEvent, val);
         this.data.set('inputDisplayValue', this.inputDisplayValueFormat(val));
     },
 
