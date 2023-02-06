@@ -35,7 +35,9 @@
         "lodash": "^4.17.15",
         "resize-observer-polyfill": "^1.5.1",
         "shallowequal": "^1.1.0",
-        "tinycolor2": "^1.4.1"
+        "tinycolor2": "^1.4.1",
+        "ts-loader": "^8.2.0",
+        "typescript": "^4.8.4"
     },
     "husky": {
         "hooks": {
@@ -125,7 +127,7 @@
         "rollup-plugin-svgo": "^1.1.0",
         "rollup-plugin-terser": "^5.1.2",
         "rucksack-css": "^1.0.2",
-        "san": "^3.10.1",
+        "san": "^3.12.2",
         "san-hot-reload-api": "^1.0.1",
         "san-loader": "^0.2.0",
         "san-router": "^1.2.0",

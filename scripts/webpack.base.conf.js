@@ -20,11 +20,11 @@ module.exports = {
         filename: '[name].js'
     },
     resolve: {
-        extensions: ['.js', '.san', '.less'],
+        extensions: ['.js', '.san', '.less', '.ts', '.tsx'],
         alias: {
-            san: isProduction ? 'san/dist/san.spa.min.js' : 'san/dist/san.spa.dev.js',
+            'san': isProduction ? 'san/dist/san.spa.min.js' : 'san/dist/san.spa.dev.js',
             'santd/es': resolve('./src'),
-            santd: resolve('./src')
+            'santd': resolve('./src')
         }
     },
     module: {
@@ -114,7 +114,12 @@ module.exports = {
                 use: {
                     loader: 'file-loader'
                 }
-            }
+            },
+            {
+                test: /\.tsx?$/,
+                use: 'ts-loader',
+                exclude: /node_modules/,
+            },
         ]
     },
     plugins: [

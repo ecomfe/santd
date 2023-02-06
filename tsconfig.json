@@ -1,0 +1,34 @@
+{
+    "compilerOptions": {
+        "strict": true,
+        "allowJs": true,
+        "target": "ES5",
+        "module": "ESNEXT",
+        "moduleResolution": "node",
+        "allowSyntheticDefaultImports": true,
+        "declaration": true,
+        "esModuleInterop": true,
+        "strictNullChecks": true,
+        "noUnusedParameters": true,
+        "noUnusedLocals": true,
+        "noImplicitAny": true,
+        "skipLibCheck": true,
+        "baseUrl": ".",
+        "outDir": "./dest/distTypes",
+        "lib": [
+            "DOM",
+            "ESNext"
+        ],
+        "paths": {
+            "santd/*": ["src/*"]
+        }
+    },
+    "include": [
+        "src/**/*.ts",
+        "typings/*.ts",
+    ],
+    "exclude": [
+        "node_modules",
+    ],
+    "compileOnSave": false
+}
