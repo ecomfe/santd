@@ -8,6 +8,13 @@ import type {ComponentNewOptions} from 'san';
 
 type GetReturnType<C> = {[K in keyof C]: C[K] extends (...args: any[]) => infer R ? R : never};
 
+interface SourceSlots {
+    named: {
+        [key: string]: JSONValue
+    };
+    noname: string[];
+};
+
 export default class Base<
     State = {},
     Props extends {} = {},
@@ -28,4 +35,6 @@ export default class Base<
     attached(): void {};
 
     initData?(): State extends {} ? State : {};
+
+    sourceSlots!: SourceSlots;
 };

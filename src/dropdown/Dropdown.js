@@ -3,18 +3,17 @@
 * @author mayihui@baidu.com
 */
 
-import san from 'san';
 import {classCreator} from '../core/util';
-import Tooltip from '../tooltip';
 import Placement from './placements';
 import './style/index';
+import ToolTip from '../tooltip';
 
 const prefixCls = classCreator('dropdown')();
 
-export default san.defineComponent({
+export default class Dropdown extends ToolTip {
     initData() {
         return {
-            ...Tooltip.prototype.initData(),
+            ...ToolTip.prototype.initData(),
             builtinPlacements: Placement,
             placement: 'bottomLeft',
             mouseEnterDelay: 0.15,
@@ -22,30 +21,30 @@ export default san.defineComponent({
             transitionName: '',
             useDomNodeForce: false
         };
-    },
+    }
 
-    computed: {
+    static computed = {
         getTransitionName() {
             const placement = this.data.get('placement');
             const transitionName = this.data.get('transitionName');
             return transitionName ? transitionName : placement.indexOf('top') >= 0 ? 'slide-down' : 'slide-up';
         }
-    },
+    };
 
-    messages: {
+    static messages = {
         santd_menu_itemClick(payload) {
             if (!('visible' in this.data.get())) {
                 this.data.set('popupVisible', false);
             }
         }
-    },
+    };
 
     getRootDomNode(rootDomNode) {
         const useDomNodeForce = this.data.get('useDomNodeForce');
         return rootDomNode || (!useDomNodeForce && this.el);
-    },
+    }
 
-    template: `<span class="${prefixCls}-trigger">
+    static template = `<span class="${prefixCls}-trigger">
         <s-trigger
             prefixCls="{{prefixCls ? prefixCls : '${prefixCls}'}}"
             builtinPlacements="{{builtinPlacements}}"
@@ -76,4 +75,4 @@ export default san.defineComponent({
             </template>
         </s-trigger>
     </span>`
-}, Tooltip);
+}

@@ -23,7 +23,7 @@ export default class BackTop extends Base<I.State, I.Props, I.Computed> {
         </div>
     `;
 
-    getCurrentScrollTop(): string | number {
+    getCurrentScrollTop(): number {
         let targetNode = this.data.get('target')();
         if (targetNode === window) {
             return window.pageYOffset
@@ -55,7 +55,6 @@ export default class BackTop extends Base<I.State, I.Props, I.Computed> {
     };
 
     _scroll!: null | (() => void);
-    sourceSlots!: Record<string, any>;
     
     inited(): void {
         if (this.sourceSlots.noname && this.sourceSlots.noname.length) {

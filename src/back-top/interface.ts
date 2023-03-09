@@ -1,6 +1,4 @@
-export interface Props {
-
-}
+export interface Props {}
 
 export interface State {
     /**
@@ -19,6 +17,4 @@ export interface State {
     visible: boolean;
 }
 
-export interface Computed {
-
-}
+export interface Computed {}
