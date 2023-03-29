@@ -26,6 +26,7 @@ const uploadButtonTemplate = `
         prefixCls="${prefixCls}"
         listType="{{listType}}"
         action="{{action}}"
+        withCredentials="{{withCredentials}}"
         directory="{{directory}}"
         beforeUpload="{{beforeUpload}}"
         customRequest="{{customRequest}}"
@@ -87,6 +88,7 @@ export default san.defineComponent({
             type: 'select',
             multiple: false,
             action: '',
+            withCredentials: false,
             data: {},
             accept: '',
             beforeUpload() {
@@ -296,6 +298,7 @@ export default san.defineComponent({
                 prefixCls="${prefixCls}"
                 listType="{{listType}}"
                 action="{{action}}"
+                withCredentials="{{withCredentials}}"
                 directory="{{directory}}"
                 beforeUpload="{{beforeUpload}}"
                 customRequest="{{customRequest}}"
