@@ -21,9 +21,17 @@ export default san.defineComponent({
             let defaultValue = this.data.get('defaultValue') || '';
             this.data.set('value', defaultValue);
         }
+
+        // textarea height changed reset
+        this.resizeObserver = new ResizeObserver(entries => {
+            for (let entry of entries) {
+                entry.contentRect && this.resizeTextarea();
+            }
+        });
+        this.resizeObserver.observe(this.el);
     },
-    updated() {
-        this.resizeTextarea();
+    detached() {
+        this.resizeObserver.disconnect();
     },
     resizeTextarea() {
         let autosize = this.data.get('autosize');
