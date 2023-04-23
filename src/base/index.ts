@@ -37,4 +37,11 @@ export default class Base<
     initData?(): State extends {} ? State : {};
 
     sourceSlots!: SourceSlots;
+
+    parent!: Base;
+
+    children!: Base;
+
+    owner!: Base;
+
 };

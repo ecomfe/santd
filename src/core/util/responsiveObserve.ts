@@ -2,10 +2,10 @@
  * @file Santd responsive observe file
  **/
 
-let enquire;
+let enquire: Enquire;
 
 if (typeof window !== 'undefined') {
-    const matchMediaPolyfill = mediaQuery => {
+    const matchMediaPolyfill = (mediaQuery: string) => {
         return {
             media: mediaQuery,
             matches: false,
@@ -26,14 +26,29 @@ export const responsiveMap = {
     lg: '(min-width: 992px)',
     xl: '(min-width: 1200px)',
     xxl: '(min-width: 1600px)'
-};
+} as const;
 
-let subscribers = [];
-let subUid = -1;
-let screens = {};
+type Token = string;
+
+type Func = (screens: Screens) => {};
+
+interface Subscriber {
+    token: Token;
+    func: Func;
+}
+
+type TScreen = keyof typeof responsiveMap;
+
+type Screens = {
+    [key in TScreen]?: string;
+}
+
+let subscribers: Array<Subscriber> = [];
+let subUid: number = -1;
+let screens: Screens = {};
 
 export default {
-    dispatch(pointMap) {
+    dispatch(pointMap: Screens) {
         screens = pointMap;
         if (subscribers.length < 1) {
             return false;
@@ -45,7 +60,7 @@ export default {
 
         return true;
     },
-    subscribe(func) {
+    subscribe(func: Func ) {
         if (subscribers.length === 0) {
             this.register();
         }
@@ -57,7 +72,7 @@ export default {
         func(screens);
         return token;
     },
-    unsubscribe(token) {
+    unsubscribe(token: Token) {
         subscribers = subscribers.filter(item => item.token !== token);
         if (subscribers.length === 0) {
             this.unregister();
@@ -65,12 +80,12 @@ export default {
     },
     unregister() {
         Object.keys(responsiveMap).map(screen =>
-            enquire.unregister(responsiveMap[screen]),
+            enquire?.unregister(responsiveMap[screen as TScreen]),
         );
     },
     register() {
         Object.keys(responsiveMap).map(screen =>
-            enquire.register(responsiveMap[screen], {
+            enquire?.register(responsiveMap[screen as TScreen], {
                 match: () => {
                     const pointMap = {
                         ...screens,

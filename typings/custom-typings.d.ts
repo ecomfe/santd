@@ -16,3 +16,17 @@ type Styles = JSONValue;
 
 // 方向
 type Direction = 'left' | 'top' | 'right' | 'bottom';
+
+
+// enquire.js 的简易实现
+type EnquireHandler = {
+    match?: () => void;
+    unmatch?: () => void;
+    setup?: () =>  void;
+    destroy?: () =>  void;
+    deferSetup?: boolean;
+}
+type Enquire = {
+    register: (type: string, fn: (() => void) | EnquireHandler) => void;
+    unregister: (type: string) => void;
+} | null;

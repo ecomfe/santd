@@ -2,15 +2,22 @@
  * @file 组件 Checkbox
  * @author jinzhan <jinzhan@baidu.com>
  */
-
-import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
+import Base from 'santd/base';
+import type {
+    CheckboxState as State,
+    CheckboxProps as Props,
+    CheckboxComputed as Computed,
+    CheckboxChangeEvent
+} from './interface';
+import type {TGroup} from './Group';
+
 import './style/index.less';
 
-const prefixCls = classCreator('radio')();
+const prefixCls = classCreator('checkbox')();
 
-export default san.defineComponent({
-    template: `
+export default class Checkbox extends Base<State, Props, Computed> {
+    static template = /* html */ `
         <label
             class="{{classes}}"
             on-mouseenter="handleMouseEnter"
@@ -20,10 +27,10 @@ export default san.defineComponent({
                 <input
                     name="{{name}}"
                     type="{{type}}"
-                    class="{{prefixCls}}-input"
                     readonly="{{readOnly}}"
                     disabled="{{disabled}}"
                     tabindex="{{tabIndex}}"
+                    class="${prefixCls}-input"
                     on-click="handleClick"
                     on-focus="handleFocus"
                     on-blur="handleBlur"
@@ -32,52 +39,48 @@ export default san.defineComponent({
                     s-ref="input"
                     value="{{value}}"
                 />
-                <span class="{{prefixCls}}-inner" />
+                <span class="${prefixCls}-inner" />
             </span>
             <span s-if="hasSlot"><slot /></span>
         </label>
-    `,
+    `
 
-    dataTypes: {
-        checked: DataTypes.bool,
-        disabled: DataTypes.bool
-    },
+    static Group: TGroup
 
-    initData() {
+    initData(): State {
         return {
-            // 这里写入prefixCls,因为groupbutton里需要重写该样式
-            prefixCls,
-            type: 'radio',
-            defaultChecked: false
+            type: 'checkbox',
+            defaultChecked: false,
+            indeterminate: false
         };
-    },
+    }
 
     inited() {
         this.data.set('checked', this.data.get('checked') || this.data.get('defaultChecked'));
-        this.data.set('hasSlot', !!this.sourceSlots.noname);
-    },
+        this.data.set('hasSlot', !!this.sourceSlots?.noname);
+    }
 
     attached() {
-        this.dispatch('santd_radio_add', this);
-    },
+        this.dispatch('santd_checkbox_add', this);
+    }
 
-    computed: {
-        classes() {
+    static computed: Computed = {
+        classes(this: Checkbox) {
             const checked = this.data.get('checked');
             const disabled = this.data.get('disabled');
-            const prefixCls = this.data.get('prefixCls');
+            const indeterminate = this.data.get('indeterminate');
 
             let classArr = [`${prefixCls}-wrapper`];
             checked && classArr.push(`${prefixCls}-wrapper-checked`);
             disabled && classArr.push(`${prefixCls}-wrapper-disabled`);
+            indeterminate && classArr.push(`${prefixCls}-indeterminate`);
 
             return classArr;
         },
 
-        inputWrapClasses() {
+        inputWrapClasses(this: Checkbox) {
             const checked = this.data.get('checked');
             const disabled = this.data.get('disabled');
-            const prefixCls = this.data.get('prefixCls');
             let classArr = [prefixCls];
 
             checked && classArr.push(`${prefixCls}-checked`);
@@ -85,46 +88,68 @@ export default san.defineComponent({
 
             return classArr;
         }
-    },
+    }
 
-    handleChange(e) {
+    handleChange(e: CheckboxChangeEvent) {
         if (this.data.get('disabled')) {
             return;
         }
 
-        this.data.set('checked', e.target.checked);
+        let checked = e.target.checked;
+        if (checked === this.data.get('checked')) {
+            checked = !checked;
+        }
+        this.data.set('checked', checked);
 
-        this.dispatch('santd_radio_toggleOption', {
-            value: this.data.get('value'),
-            event: e
+        this.fire('change', {
+            target: this.data.get(),
+            stopPropagation() {
+                e.stopPropagation();
+            },
+            preventDefault() {
+                e.preventDefault();
+            },
+            nativeEvent: e.nativeEvent
         });
-    },
 
-    handleClick(e) {
+        this.dispatch('santd_checkbox_toggleOption', {
+            value: this.data.get('value'),
+            e
+        });
+
+        // 提交数据给form表单使用
+        this.dispatch('UI:form-item-interact', {
+            fieldValue: checked,
+            type: 'change',
+            e
+        });
+    }
+
+    handleClick(e: MouseEvent) {
         this.fire('click', e);
-    },
+    }
 
-    handleBlur(e) {
+    handleBlur(e: FocusEvent) {
         this.fire('blur', e);
-    },
+    }
 
-    handleFocus(e) {
+    handleFocus(e: FocusEvent) {
         this.fire('focus', e);
-    },
+    }
 
-    handleMouseEnter(e) {
+    handleMouseEnter(e: MouseEvent) {
         this.fire('mouseenter', e);
-    },
+    }
 
-    handleMouseLeave(e) {
+    handleMouseLeave(e: MouseEvent) {
         this.fire('mouseleave', e);
-    },
+    }
 
     focus() {
-        this.ref('input').focus();
-    },
+        (this.ref('input') as unknown as HTMLInputElement).focus();
+    }
 
     blur() {
-        this.ref('input').blur();
+        (this.ref('input') as unknown as HTMLInputElement).blur();
     }
-});
+};

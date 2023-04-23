@@ -2,26 +2,44 @@
  * @file DOM相关基础库
  */
 
+interface StandardElement {
+    addEventListener: (...args: any) => void;
+    removeEventListener: (...args: any) => void;
+}
+
+interface IEElement {
+    attachEvent: (event: string, listener: EventListener) => void;
+    detachEvent: (event: string, listener: EventListener) => void;
+}
+
+interface BaseElement extends Partial<StandardElement>, Partial<IEElement> {
+}
+
+export type ListenerElement = StandardElement & IEElement;
 
 const isCompatMode = document.compatMode === 'BackCompat';
+
+function isWindow<T>(ele: Window | T): ele is Window {
+    return ele === window;
+}
 
 function getViewRoot() {
     return isCompatMode ? document.body : document.documentElement;
 }
 
-export function hasClass(elements, cls) {
+export function hasClass(elements: HTMLElement, cls: string) {
     return elements.className
         && typeof elements.className === 'string'
         && elements.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'));
 }
 
-export function addClass(ele, cls) {
+export function addClass(ele: HTMLElement, cls: string) {
     if (!hasClass(ele, cls)) {
         ele.className += ' ' + cls;
     }
 }
 
-export function removeClass(ele, cls) {
+export function removeClass(ele: HTMLElement, cls: string) {
     if (hasClass(ele, cls)) {
         const reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');
         ele.className = ele.className.replace(reg, ' ');
@@ -32,10 +50,10 @@ export function removeClass(ele, cls) {
  * 获取元素在页面中的位置和尺寸信息
  *
  * @param {HTMLElement} element 目标元素
- * @return {Object} 元素的尺寸和位置信息，
+ * @return 元素的尺寸和位置信息，
  * 包含`top`、`right`、`bottom`、`left`、`width`和`height`属性
  */
-export function getOffset(element) {
+export function getOffset<TElement extends Element = Element>(element?: TElement) {
     if (!element) {
         return {
             top: 0,
@@ -47,11 +65,11 @@ export function getOffset(element) {
         };
     }
 
-    let rect = element.getBoundingClientRect();
-    let clientTop = document.documentElement.clientTop || document.body.clientTop || 0;
-    let clientLeft = document.documentElement.clientLeft || document.body.clientLeft || 0;
-    let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    let scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+    const rect = element.getBoundingClientRect();
+    const clientTop = document.documentElement.clientTop || document.body.clientTop || 0;
+    const clientLeft = document.documentElement.clientLeft || document.body.clientLeft || 0;
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
 
     return {
         top: rect.top + scrollTop - clientTop,
@@ -66,10 +84,10 @@ export function getOffset(element) {
 /**
  * 获取页面宽度
  *
- * @return {number} 页面宽度
+ * @return 页面宽度
  */
 export function getPageWidth() {
-    let viewRoot = getViewRoot();
+    const viewRoot = getViewRoot();
 
     return Math.max(
         document.documentElement ? document.documentElement.scrollWidth : 0,
@@ -82,10 +100,10 @@ export function getPageWidth() {
 /**
  * 获取页面高度
  *
- * @return {number} 页面高度
+ * @return 页面高度
  */
 export function getPageHeight() {
-    let viewRoot = getViewRoot();
+    const viewRoot = getViewRoot();
 
     return Math.max(
         document.documentElement ? document.documentElement.scrollHeight : 0,
@@ -95,18 +113,21 @@ export function getPageHeight() {
     );
 }
 
-export function getScroll(target, top) {
+
+
+export function getScroll<TElement extends Element = HTMLElement>(target: Window | TElement, top?: boolean) {
     if (typeof window === 'undefined') {
         return 0;
     }
+    const a = document.createElement('div');
+    a.scrollTop = 30;
 
     const prop = top ? 'pageYOffset' : 'pageXOffset';
     const method = top ? 'scrollTop' : 'scrollLeft';
-    const isWindow = target === window;
 
-    let ret = isWindow ? target[prop] : target[method];
+    let ret = isWindow(target) ? target[prop] : target[method];
     // ie6,7,8 standard mode
-    if (isWindow && typeof ret !== 'number') {
+    if (isWindow(target) && typeof ret !== 'number') {
         ret = document.documentElement[method];
     }
 
@@ -116,27 +137,27 @@ export function getScroll(target, top) {
 /**
  * 获取页面视觉区域宽度
  *
- * @return {number} 页面视觉区域宽度
+ * @return 页面视觉区域宽度
  */
 export function getViewWidth() {
-    let viewRoot = getViewRoot();
+    const viewRoot = getViewRoot();
     return viewRoot ? viewRoot.clientWidth : 0;
 }
 
 /**
  * 获取页面视觉区域高度
  *
- * @return {number} 页面视觉区域高度
+ * @return 页面视觉区域高度
  */
 export function getViewHeight() {
-    let viewRoot = getViewRoot();
+    const viewRoot = getViewRoot();
     return viewRoot ? viewRoot.clientHeight : 0;
 }
 
 /**
  * 获取纵向滚动量
  *
- * @return {number} 纵向滚动量
+ * @return 纵向滚动量
  */
 export function getScrollTop() {
     return window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
@@ -145,7 +166,7 @@ export function getScrollTop() {
 /**
  * 获取横向滚动量
  *
- * @return {number} 横向滚动量
+ * @return 横向滚动量
  */
 export function getScrollLeft() {
     return window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft || 0;
@@ -154,7 +175,7 @@ export function getScrollLeft() {
 /**
  * 获取页面纵向坐标
  *
- * @return {number}
+ * @return 页面纵向坐标
  */
 export function getClientTop() {
     return document.documentElement.clientTop || document.body.clientTop || 0;
@@ -163,7 +184,7 @@ export function getClientTop() {
 /**
  * 获取页面横向坐标
  *
- * @return {number}
+ * @return 页面横向坐标
  */
 export function getClientLeft() {
     return document.documentElement.clientLeft || document.body.clientLeft || 0;
@@ -174,13 +195,16 @@ export function getClientLeft() {
  *
  * @return {function}
  */
-export let on = document.addEventListener
-    ? function (element, event, handler) {
+export const on = (document as BaseElement).addEventListener
+    ? function <TElement extends StandardElement>(
+        element: TElement,
+        event?: Parameters<TElement['addEventListener']>[0],
+        handler?: Parameters<TElement['addEventListener']>[1]) {
         if (element && event && handler) {
             element.addEventListener(event, handler, false);
         }
     }
-    : function (element, event, handler) {
+    : function (element: IEElement, event?: string, handler?: EventListener) {
         if (element && event && handler) {
             element.attachEvent('on' + event, handler);
         }
@@ -191,15 +215,17 @@ export let on = document.addEventListener
  *
  * @return {function}
  */
-
-export let off = document.removeEventListener
-    ? function (element, event, handler) {
-        if (element && event) {
+export let off = (document as BaseElement).removeEventListener
+    ? function <TElement extends StandardElement>(
+        element: TElement,
+        event?: Parameters<TElement['removeEventListener']>[0],
+        handler?: Parameters<TElement['removeEventListener']>[1]) {
+        if (element && event && handler) {
             element.removeEventListener(event, handler, false);
         }
     }
-    : function (element, event, handler) {
-        if (element && event) {
+    : function (element: IEElement, event?: string, handler?: EventListener) {
+        if (element && event && handler) {
             element.detachEvent('on' + event, handler);
         }
     };
@@ -209,10 +235,10 @@ export let off = document.removeEventListener
  * @param root 外层元素
  * @param n 被检测的元素
  *
- * @return {boolean}
+ * @return
  */
 
-export function contains(root, n) {
+export function contains(root: Node, n: Node | null) {
     let node = n;
     while (node) {
         if (node === root) {
@@ -223,9 +249,9 @@ export function contains(root, n) {
     return false;
 }
 
-let cached;
+let cached: number | undefined;
 
-export function getScrollBarSize(fresh) {
+export function getScrollBarSize(fresh?: boolean) {
     if (fresh || cached === undefined) {
         const inner = document.createElement('div');
         inner.style.width = '100%';
@@ -235,8 +261,8 @@ export function getScrollBarSize(fresh) {
         const outerStyle = outer.style;
 
         outerStyle.position = 'absolute';
-        outerStyle.top = 0;
-        outerStyle.left = 0;
+        outerStyle.top = '0px';
+        outerStyle.left = '0px';
         outerStyle.pointerEvents = 'none';
         outerStyle.visibility = 'hidden';
         outerStyle.width = '200px';
@@ -264,13 +290,12 @@ export function getScrollBarSize(fresh) {
 
 /**
  * 获取指定层级的父节点
- * @param {Object} node HTML节点
+ * @param {HTMLElement} node HTML节点
  * @param {number=} num 父节点层级（可选）
- * @return {Object} HTML节点
  */
-export function getParentNode(node, num) {
+export function getParentNode(node: ParentNode | null, num?: number): ParentNode | null {
     if (!node) {
-        return;
+        return null;
     }
     return num ? getParentNode(node.parentNode, num - 1) : node;
 }

@@ -2,41 +2,55 @@
  * @file 波纹效果，用在 button switch 等上面
  * @author wangyongqing01@baidu.com
  */
-import san from 'san';
-import TransitionEvents from './css-animation/Event';
+import TransitionEvents, {EventType} from './css-animation/Event';
 import {classCreator} from './index';
-const cc = classCreator('click-animating');
+import Base from 'santd/base';
 
-export default san.defineComponent({
-    template: `
+type ClickAnimatingClsFun = (name?: string) => string;
+type AnimationEventInstance = {cancel: () =>  void} | void | null;
+
+const cc = classCreator('click-animating') as unknown as ClickAnimatingClsFun;
+
+
+export default class Wave extends Base {
+    static template = /* html */ `
         <ins style="display:none;"></ins>
-    `,
-    attached() {
+    `;
+
+    extraNode: HTMLDivElement | null = null;
+    clickWaveTimeoutId: number | null = null;
+    styleForPesudo: HTMLStyleElement | null = null;
+    instance: AnimationEventInstance = null;
+
+    attached(): void {
         this.onTransitionEnd = this.onTransitionEnd.bind(this);
         this.nextTick(() => {
-            let el = this.el;
+            let el = this.el as HTMLElement;
             if (this.owner && this.owner.el) {
-                el = this.owner.ref('ownerWave') || this.owner.el;
+                el = (this.owner.ref('ownerWave') || this.owner.el) as unknown as HTMLElement;
             }
             this.instance = this.bindAnimationEvent(el);
         });
         // 清理掉无用的标签。。。好无语的写法。。
-        this.el.parentNode.removeChild(this.el);
-    },
-    disposed() {
+        this.el?.parentNode?.removeChild(this.el);
+    };
+
+    disposed(): void {
         if (this.instance) {
             this.instance.cancel();
         }
-    },
-    isNotGrey(color) {
+    };
+
+    isNotGrey(color: string): boolean {
         const match = (color || '').match(/rgba?\((\d*), (\d*), (\d*)(, [.\d]*)?\)/);
         if (match && match[1] && match[2] && match[3]) {
             return !(match[1] === match[2] && match[2] === match[3]);
         }
 
         return true;
-    },
-    onClick(node, waveColor) {
+    };
+
+    onClick(node: HTMLElement, waveColor: string) {
         if (node.className.indexOf('-leave') >= 0) {
             return;
         }
@@ -68,15 +82,15 @@ export default san.defineComponent({
             node.appendChild(extraNode);
         }
 
-    },
-    bindAnimationEvent(node) {
+    };
+    bindAnimationEvent(node: HTMLElement): AnimationEventInstance {
         if (!node || !node.getAttribute || node.getAttribute('disabled') || node.className.indexOf('disabled') >= 0) {
             return;
         }
 
-        const onClick = e => {
+        const onClick = (e: Event) => {
             // Fix radio button click twice
-            if (e.target.tagName === 'INPUT') {
+            if (e.target && (e.target as Element).tagName === 'INPUT') {
                 return;
             }
 
@@ -88,19 +102,21 @@ export default san.defineComponent({
                 || nodeStyle.getPropertyValue('background-color');
             this.clickWaveTimeoutId = window.setTimeout(() => this.onClick(node, waveColor), 0);
         };
+
         node.addEventListener('click', onClick, true);
         return {
             cancel: () => {
                 node.removeEventListener('click', onClick, true);
             }
         };
-    },
-    getAttributeName() {
+    };
+
+    getAttributeName(): string {
         const insertExtraNode = this.data.get('insertExtraNode');
         return insertExtraNode ? cc() : cc('without-extra-node');
-    },
+    };
 
-    resetEffect(node) {
+    resetEffect(node: HTMLElement): void {
         if (!node || node === this.extraNode) {
             return;
         }
@@ -114,19 +130,19 @@ export default san.defineComponent({
         }
 
         TransitionEvents.removeEndEventListener(node, this.onTransitionEnd);
-    },
+    };
 
-    onTransitionEnd(e) {
-        if (!e || e.animationName !== 'fadeEffect') {
+    onTransitionEnd(e: EventType): void {
+        if (!e || TransitionEvents.isAnimationEvent(e) && e.animationName !== 'fadeEffect') {
             return;
         }
+        this.resetEffect(e.target as HTMLElement);
+    };
 
-        this.resetEffect(e.target);
-    },
-    removeExtraStyleNode() {
+    removeExtraStyleNode(): void {
         if (this.styleForPesudo && document.body.contains(this.styleForPesudo)) {
             document.body.removeChild(this.styleForPesudo);
             this.styleForPesudo = null;
         }
     }
-});
+}

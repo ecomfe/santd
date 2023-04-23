@@ -25,11 +25,11 @@ type Partialble<T> = {
 }
 
 // Event
-// export type AnimationEventTarget = EventTarget & Element;
 type EventName = keyof typeof EVENT_NAME_MAP;
+type EventNameMap = Partialble<Mutable<typeof EVENT_NAME_MAP>>;
 export type EventType = GlobalEventHandlersEventMap[EventName];
 export type EventHandler = (this: HTMLElement, event: EventType) => void;
-type EventNameMap = Partialble<Mutable<typeof EVENT_NAME_MAP>>;
+// export type AnimationEventTarget = EventTarget & Element;
 
 function isTransitionendEvents(event: string): event is 'transitionend' {
     return event === 'transitionend';
@@ -124,5 +124,10 @@ export default {
         endEvents.forEach(endEvent => {
             removeEventListener(node, endEvent, eventListener);
         });
+    },
+
+    isAnimationEvent(e: EventType): e is AnimationEvent {
+        const animationendKeys = Object.keys(EVENT_NAME_MAP.animationend);
+        return animationendKeys.some(key => key.toLowerCase() === e.type.toLowerCase());
     }
 };

@@ -5,7 +5,7 @@
 
 import Base from 'santd/base';
 import './style/index.less';
-import {on, off} from '../core/util/dom';
+import {on, off, ListenerElement} from '../core/util/dom';
 import {classCreator} from '../core/util';
 import type * as I from './interface';
 
@@ -30,7 +30,7 @@ export default class BackTop extends Base<I.State, I.Props, I.Computed> {
                 || document.body.scrollTop
                 || document.documentElement.scrollTop;
         }
-        return targetNode.scrollTop;
+        return (targetNode as HTMLElement).scrollTop;
     };
 
     setScrollTop(value: number): void{
@@ -40,7 +40,7 @@ export default class BackTop extends Base<I.State, I.Props, I.Computed> {
             document.documentElement.scrollTop = value;
         }
         else {
-            targetNode.scrollTop = value;
+            (targetNode as HTMLElement).scrollTop = value;
         }
     };
 
@@ -55,7 +55,7 @@ export default class BackTop extends Base<I.State, I.Props, I.Computed> {
     };
 
     _scroll!: null | (() => void);
-    
+
     inited(): void {
         if (this.sourceSlots.noname && this.sourceSlots.noname.length) {
             this.data.set('hasSlot', true);
@@ -65,14 +65,14 @@ export default class BackTop extends Base<I.State, I.Props, I.Computed> {
     attached(): void {
         this._scroll = this.handleScroll.bind(this);
         let node = this.data.get('target')();
-        on(node, 'scroll', this._scroll);
+        on(node as unknown as ListenerElement, 'scroll', this._scroll);
 
         this.handleScroll();
     };
 
     disposed(): void {
         let node = this.data.get('target')();
-        off(node, 'scroll', this._scroll);
+        off(node as unknown as ListenerElement, 'scroll', this._scroll);
         this._scroll = null;
     };
 
