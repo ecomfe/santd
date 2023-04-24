@@ -4,16 +4,20 @@
  */
 
 import './style/index.less';
-import san from 'san';
 import {classCreator} from '../core/util';
 import Radio from './Radio';
+import {
+    RadioButtonState as State
+} from './interface';
+
 const prefixCls = classCreator('radio-button')();
 
-export default san.defineComponent({
-    initData() {
+export default class RadioButton extends Radio {
+    initData(): State {
         return {
             ...Radio.prototype.initData(),
             prefixCls
         };
     }
-}, Radio);
+};
+export type TRadioButton = typeof RadioButton;

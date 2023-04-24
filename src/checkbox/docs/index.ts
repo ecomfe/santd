@@ -2,7 +2,6 @@
  * @file Santd checkbox docs file
  **/
 
-import san from 'san';
 import Desc from './desc.md';
 import Basic from './basic.md';
 import Disabled from './disabled.md';
@@ -12,8 +11,10 @@ import CheckAll from './checkall.md';
 import Grid from './grid.md';
 import Readme from '../README.md';
 
-export default san.defineComponent({
-    components: {
+import Base from 'santd/base';
+
+export default class extends Base {
+    static components = {
         desc: Desc,
         basic: Basic,
         disabled: Disabled,
@@ -22,8 +23,9 @@ export default san.defineComponent({
         checkall: CheckAll,
         grid: Grid,
         readme: Readme
-    },
-    template: `
+    }
+
+    static template = /* html */ `
         <div>
             <desc/>
             <basic/>
@@ -35,4 +37,4 @@ export default san.defineComponent({
             <readme/>
         </div>
     `
-});
+};

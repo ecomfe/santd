@@ -1,7 +1,6 @@
 /**
  * @file Santd radio docs file
  **/
-import san from 'san';
 import Readme from '../README.md';
 import Desc from './desc.md';
 import Basic from './basic.md';
@@ -13,9 +12,10 @@ import GroupOptions from './group-options.md';
 import Button from './button.md';
 import ButtonSolid from './button-solid.md';
 import ButtonSize from './button-size.md';
+import Base from 'santd/base';
 
-export default san.defineComponent({
-    components: {
+export default class extends Base {
+    static components = {
         desc: Desc,
         basic: Basic,
         disabled: Disabled,
@@ -27,8 +27,9 @@ export default san.defineComponent({
         buttonsolid: ButtonSolid,
         buttonsize: ButtonSize,
         readme: Readme
-    },
-    template: `
+    }
+
+    static template = /* html */ `
         <div>
             <desc/>
             <basic/>
@@ -43,4 +44,4 @@ export default san.defineComponent({
             <readme/>
         </div>
     `
-});
+};

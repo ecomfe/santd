@@ -1,7 +1,6 @@
 /**
  * @file Santd Grid docs
  **/
-import san from 'san';
 import Desc from './desc.md';
 import Head from './head.md';
 import Demo from './demo';
@@ -15,11 +14,12 @@ import Sort from './sort.md';
 import Responsive from './responsive.md';
 import ResponsiveMore from './responsive-more.md';
 import GutterConfig from './config.md';
+import Base from 'santd/base';
 
 import Readme from '../README.md';
 
-export default san.defineComponent({
-    components: {
+export default class extends Base {
+    static components = {
         desc: Desc,
         head: Head,
         basic: Basic,
@@ -34,8 +34,9 @@ export default san.defineComponent({
         sort: Sort,
         gutterconfig: GutterConfig,
         readme: Readme
-    },
-    template: `
+    }
+
+    static template = /* html */ `
         <div>
             <head/>
             <demo/>
@@ -53,4 +54,4 @@ export default san.defineComponent({
             <readme/>
         </div>
     `
-});
+};

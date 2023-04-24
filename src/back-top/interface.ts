@@ -9,7 +9,7 @@ export interface State {
     /**
      * 返回window对象
      */
-    target: () => Record<string, any>;
+    target: () => HTMLElement | Window;
 
     /**
      * 是否可见

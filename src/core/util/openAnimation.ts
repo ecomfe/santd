@@ -2,12 +2,12 @@
  * @file Santd open animation file
  **/
 
-import cssAnimation from './css-animation/';
+import cssAnimation from './css-animation';
 import {requestAnimationTimeout, cancelAnimationTimeout} from './index';
 
-function animate(node, show, done = () => {}) {
-    let height;
-    let requestAnimationFrameId;
+function animate(node: HTMLElement, show: boolean, done = () => {}) {
+    let height: number;
+    let requestAnimationFrameId: {id: number};
     return cssAnimation(node, 'san-motion-collapse-legacy', {
         start() {
             if (!show) {
@@ -41,13 +41,13 @@ function animate(node, show, done = () => {}) {
 }
 
 export default {
-    enter(node, done = () => {}) {
+    enter(node: HTMLElement, done = () => {}) {
         return animate(node, true, done);
     },
-    leave(node, done = () => {}) {
+    leave(node: HTMLElement, done = () => {}) {
         return animate(node, false, done);
     },
-    appear(node, done = () => {}) {
+    appear(node: HTMLElement, done = () => {}) {
         return animate(node, true, done);
     }
 };

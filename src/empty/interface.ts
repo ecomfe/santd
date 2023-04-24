@@ -15,6 +15,10 @@ export interface State {
      * img svg
      */
     simpleEmptyImg: string;
+    /**
+     * Mentions组件使用
+     */
+    small?: boolean;
 };
 
 export interface Computed {};

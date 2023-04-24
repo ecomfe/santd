@@ -149,7 +149,7 @@ export default class Tabs extends Base<I.State, I.Props, I.Computed> {
     };
 
     tabPanes!: any[];
-    owner!: {data: Data};
+    // owner!: {data: Data};
     static TabPane: typeof TabPane;
     static TabBar: typeof ScrollableInkTabBar;
 
