@@ -1,7 +1,7 @@
 /**
  * @file Santd anchor docs file
  **/
-import san from 'san';
+import Base from 'santd/base';
 import Readme from '../README.md';
 import Head from './head.md';
 import Basic from './basic.md';
@@ -11,8 +11,8 @@ import Custom from './custom.md';
 import Change from './change.md';
 import TargetOffset from './targetOffset.md';
 
-export default san.defineComponent({
-    components: {
+export default class extends Base {
+    static components = {
         readme: Readme,
         head: Head,
         basic: Basic,
@@ -21,8 +21,8 @@ export default san.defineComponent({
         custom: Custom,
         change: Change,
         'target-offset': TargetOffset
-    },
-    template: `
+    };
+    static template = /* html */ `
         <div>
             <head/>
             <basic/>
@@ -33,5 +33,5 @@ export default san.defineComponent({
             <target-offset/>
             <readme/>
         </div>
-    `
-});
+    `;
+};

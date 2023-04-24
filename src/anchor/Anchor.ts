@@ -3,17 +3,20 @@
  * @author mayihui@baidu.com
  **/
 
-import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util/index';
-import {getScroll, on, off} from '../core/util/dom';
-import Affix from '../affix';
+import {getScroll, on, off, ListenerElement} from '../core/util/dom';
 import getRequestAnimationFrame from '../core/util/getRequestAnimationFrame';
+import type * as I from './interface';
+import {Component} from 'san/types';
+import Base from 'santd/base';
+import Affix from '../affix';
+import Link from './Link';
 import './style/index';
 
 const prefixCls = classCreator('anchor')();
-const sharpMatcherRegx = /#([^#]+)$/;
+const sharpMatcherRegx: RegExp = /#([^#]+)$/;
 
-const anchorContent = `
+const anchorContent = /* html */ `
     <div
         class="${prefixCls}-wrapper {{wrapperClass}}"
         style="max-height:{{offsetTop ? 'calc(100vh - ' + offsetTop + 'px)' : '100vh'}};{{style}}{{wrapperStyle}}"
@@ -27,7 +30,7 @@ const anchorContent = `
     </div>
 `;
 
-function getOffsetTop(element, container) {
+function getOffsetTop(element: HTMLElement, container: HTMLElement | (Window & typeof globalThis)): number {
     if (!element || !element.getClientRects().length) {
         return 0;
     }
@@ -38,21 +41,27 @@ function getOffsetTop(element, container) {
             container = element.ownerDocument.documentElement;
             return rect.top - container.clientTop;
         }
+        // @ts-ignore
         return rect.top - container.getBoundingClientRect().top;
     }
     return rect.top;
-}
+};
 
-function easeInOutCubic(t, b, c, d) {
+function easeInOutCubic(t: number, b: number, c: number, d: number): number {
     const cc = c - b;
     t /= d / 2;
     if (t < 1) {
         return (cc / 2) * t * t * t + b;
     }
     return (cc / 2) * ((t -= 2) * t * t + 2) + b;
-}
+};
 
-function scrollTo(href, offsetTop = 0, getContainer, callback) {
+function scrollTo(
+    href: string,
+    offsetTop = 0,
+    getContainer: (() => Window & typeof globalThis),
+    callback: () => void
+): void {
     const sharpLinkMatch = sharpMatcherRegx.exec(href);
     if (!sharpLinkMatch) {
         return;
@@ -77,6 +86,7 @@ function scrollTo(href, offsetTop = 0, getContainer, callback) {
             window.scrollTo(window.pageXOffset, nextScrollTop);
         }
         else {
+            // @ts-ignore
             container.scrollTop = nextScrollTop;
         }
         if (time < 450) {
@@ -87,27 +97,20 @@ function scrollTo(href, offsetTop = 0, getContainer, callback) {
         }
     };
     raf(frameFunc);
-}
+};
 
-function getContainer() {
+function getContainer(): Window & typeof globalThis {
     return window;
-}
+};
 
-export default san.defineComponent({
-    autoFillStyleAndId: false,
 
-    dataTypes: {
-        offsetTop: DataTypes.number,
-        bounds: DataTypes.number,
-        affix: DataTypes.bool,
-        showInkInFixed: DataTypes.bool,
-        wrapperClass: DataTypes.string,
-        wrapperStyle: DataTypes.oneOfType([DataTypes.string, DataTypes.object]),
-        getCurrentAnchor: DataTypes.func,
-        targetOffset: DataTypes.number
-    },
+export default class Anchor extends Base<I.State, I.Props, I.Computed> {
+    autoFillStyleAndId!: false;
+    linkChildren!: never[];
+    static Link: typeof Link;
+    private _handleScroll!: () => void;
 
-    initData() {
+    initData(): I.State {
         return {
             getContainer,
             affix: true,
@@ -115,64 +118,65 @@ export default san.defineComponent({
             activeLink: null,
             links: []
         };
-    },
+    };
 
-    inited() {
+    inited(): void {
         this.linkChildren = [];
-    },
+    };
 
-    updated() {
+    updated(): void {
         this.nextTick(() => {
             this.updateInk();
         });
-    },
+    };
 
-    attached() {
+    attached(): void {
         this._handleScroll = this.handleScroll.bind(this);
         if (this._handleScroll) {
-            on(this.data.get('getContainer')(), 'scroll', this._handleScroll);
+            on(this.data.get('getContainer')() as unknown as ListenerElement, 'scroll', this._handleScroll);
         }
         this.nextTick(() => this._handleScroll());
 
         this.watch('activeLink', value => {
             this.fire('change', value);
-            this.linkChildren.forEach(child => {
+            this.linkChildren && this.linkChildren.forEach((child: Component) => {
                 child.data.set('activeLink', value);
             });
         });
-    },
+    };
 
-    disposed() {
+    disposed(): void {
+        // @ts-ignore
         this.linkChildren = null;
 
         if (this._handleScroll) {
-            off(this.data.get('getContainer')(), 'scroll', this._handleScroll);
-            this._handleScroll = null;
+            off(this.data.get('getContainer')() as unknown as ListenerElement, 'scroll', this._handleScroll);
+            this._handleScroll = () => {};
         }
-    },
+    };
 
-    handleScroll() {
+    handleScroll(): void {
         if (this.data.get('animating')) {
             return;
         }
 
-        const {targetOffset, offsetTop, bounds} = this.data.get();
+        const {targetOffset, offsetTop, bounds} = this.data.get() as I.AnchorGetData;
         this.data.set('activeLink', this.getCurrentActiveLink(targetOffset || offsetTop, bounds));
-    },
+    };
 
-    updateInk() {
+    updateInk<T extends Component<{}> & HTMLElement>(): void {
         if (typeof document === 'undefined') {
             return;
         }
 
-        let anchorNode = this.el;
-        let linkNode = anchorNode.getElementsByClassName(`${prefixCls}-link-title-active`)[0];
+        let anchorNode = this.el as HTMLElement;
+        let linkNode = anchorNode.getElementsByClassName(`${prefixCls}-link-title-active`)[0] as HTMLElement;
         if (linkNode) {
-            this.ref('inkNode').style.top = `${linkNode.offsetTop + linkNode.clientHeight / 2 - 4.5}px`;
+            this.ref<T>('inkNode').style.top = `${linkNode.offsetTop + linkNode.clientHeight / 2 - 4.5}px`;
         }
-    },
+    };
 
-    getCurrentActiveLink(offsetTop = 0, bounds = 5) {
+    getCurrentActiveLink(offsetTop = 0, bounds = 5): string {
         const getCurrentAnchor = this.data.get('getCurrentAnchor');
         if (getCurrentAnchor) {
             return getCurrentAnchor();
@@ -183,7 +187,7 @@ export default san.defineComponent({
         if (document) {
             let container = this.data.get('getContainer')();
 
-            this.data.get('links').forEach(function (link) {
+            this.data.get('links').forEach(function (link: string) {
                 const sharpLinkMatch = sharpMatcherRegx.exec(link.toString());
                 if (!sharpLinkMatch) {
                     return;
@@ -199,9 +203,9 @@ export default san.defineComponent({
             });
         }
         return activeLink;
-    },
+    };
 
-    messages: {
+    static messages: I.Messages = {
         santd_link_addInstance(payload) {
             this.linkChildren.push(payload.value);
         },
@@ -226,7 +230,7 @@ export default san.defineComponent({
         },
 
         santd_link_scrollTo(payload) {
-            const {targetOffset, offsetTop, getContainer} = this.data.get();
+            const {targetOffset, offsetTop, getContainer} = this.data.get() as I.AnchorGetData;
             this.data.set('animating', true);
             this.data.set('activeLink', payload.value);
 
@@ -234,13 +238,13 @@ export default san.defineComponent({
                 this.data.set('animating', false);
             });
         }
-    },
+    };
 
-    components: {
+    static components = {
         's-affix': Affix
-    },
+    };
 
-    template: `
+    static template = /* html */ `
         <div>
             <s-affix s-if="affix" offsetTop="{{offsetTop}}">
                 ${anchorContent}
@@ -249,5 +253,5 @@ export default san.defineComponent({
                 ${anchorContent}
             </template>
         </div>
-    `
-});
+    `;
+};

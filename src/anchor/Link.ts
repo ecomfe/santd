@@ -3,57 +3,64 @@
  * @author mayihui@baidu.com
  **/
 
-import san, {DataTypes} from 'san';
+import Base from 'santd/base';
 import {classCreator} from '../core/util';
 
 const prefixCls = classCreator('anchor')();
 
-export default san.defineComponent({
-    dataTypes: {
-        prefixCls: DataTypes.string,
-        href: DataTypes.string
-    },
-    initData() {
+export interface LinkData {
+    href: '#' | string;
+};
+
+export interface LinkMessage {
+    santd_link_add: (this: Link, payload: {value: string}) => void;
+};
+
+export default class Link extends Base {
+    initData(): LinkData {
         return {
             href: '#'
         };
-    },
+    };
 
-    inited() {
+    inited(): void {
         this.dispatch('santd_link_addInstance', this);
-    },
+    };
 
-    updated() {
+    updated(): void {
         this.dispatch('santd_link_add', this.data.get('href'));
-    },
+    };
 
-    attached() {
+    attached(): void {
         this.dispatch('santd_link_add', this.data.get('href'));
-    },
+    };
 
-    detached() {
+    detached(): void {
         this.dispatch('santd_link_rm', this.data.get('href'));
-    },
+    };
 
-    handleClick(e) {
-        const {href, title} = this.data.get();
+    handleClick(e: Event): void {
+        const {href, title} = this.data.get() as {
+            href: string;
+            title: string;
+        };
         this.dispatch('santd_link_click', {
             e,
             link: {href, title}
         });
         this.dispatch('santd_link_scrollTo', href);
-    },
+    };
 
-    messages: {
-        santd_link_add(payload) {
+    static messages: LinkMessage = {
+        santd_link_add(this, payload) {
             // 修复子组件多层嵌套时dispatch顺序不正确的问题
             this.nextTick(() => {
                 this.dispatch('santd_link_add', payload.value);
             });
-        }
-    },
+        },
+    };
 
-    template: `
+    static template = /* html */ `
         <div class="${prefixCls}-link {{activeLink === href ? '${prefixCls}-link-active' : ''}}">
             <a
                 class="${prefixCls}-link-title {{activeLink === href ? '${prefixCls}-link-title-active' : ''}}"
@@ -66,5 +73,5 @@ export default san.defineComponent({
             </a>
             <slot />
         </div>
-    `
-});
+    `;
+};
