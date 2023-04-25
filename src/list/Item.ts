@@ -4,8 +4,10 @@
 */
 
 import san, {DataTypes} from 'san';
+import Base from 'santd/base';
 import {classCreator} from '../core/util';
 import Avatar from '../avatar';
+import type * as I from './interface';
 
 const prefixCls = classCreator('list')();
 
@@ -20,7 +22,7 @@ const Meta = san.defineComponent({
         's-avatar': Avatar
     },
 
-    inited() {
+    inited(): void {
         this.data.set('hasAvatar', !!(this.sourceSlots.named.avatar || this.data.get('avatar')));
         this.data.set('hasTitle', !!(this.sourceSlots.named.title || this.data.get('title')));
         this.data.set('hasDescription', !!(this.sourceSlots.named.description || this.data.get('description')));
@@ -56,17 +58,8 @@ const actionsTemplate = `
     </ul>
 `;
 
-const Item = san.defineComponent({
-    dataTypes: {
-        actions: DataTypes.array
-    },
-    inited() {
-        this.data.set('hasExtra', !!this.sourceSlots.named.extra);
-    },
-    attached() {
-        this.dispatch('santd_list_addItem', this);
-    },
-    template: `
+export default class Item extends Base<I.ItemState, I.ItemProps, I.ItemComputed> {
+    static template = /* html */ `
         <div class="${prefixCls}-item">
             <template s-if="itemLayout === 'vertical' && hasExtra">
                 <div class="${prefixCls}-item-main" key="content">${actionsTemplate}</div>
@@ -76,8 +69,20 @@ const Item = san.defineComponent({
                 ${actionsTemplate}
             </template>
         </div>
-    `
-});
+    `;
 
-Item.Meta = Meta;
-export default Item;
+    static Meta = Meta;
+
+    initData(): I.ItemState {
+        return {}
+    }
+
+    inited(): void {
+        this.data.set('hasExtra', !!this.sourceSlots.named.extra);
+    }
+
+    attached(): void {
+        this.dispatch('santd_list_addItem', this);
+    }
+
+}
