@@ -3,7 +3,7 @@
 * @author fuqiangqiang@baidu.com
 */
 
-import san from 'san';
+import Base from 'santd/base';
 import Readme from '../README.md';
 import Desc from './desc.md';
 import Simple from './simple.md';
@@ -13,18 +13,8 @@ import Grid from './grid.md';
 import Resposive from './resposive.md';
 import Loadmore from './loadmore.md';
 
-export default san.defineComponent({
-    components: {
-        readme: Readme,
-        desc: Desc,
-        simple: Simple,
-        basic: Basic,
-        vertical: Vertical,
-        grid: Grid,
-        resposive: Resposive,
-        loadmore: Loadmore
-    },
-    template: `
+export default class extends Base {
+    static template = /* html */`
         <div>
             <desc/>
             <simple/>
@@ -35,5 +25,16 @@ export default san.defineComponent({
             <resposive/>
             <readme/>
         </div>
-    `
-});
+    `;
+
+    static components = {
+        readme: Readme,
+        desc: Desc,
+        simple: Simple,
+        basic: Basic,
+        vertical: Vertical,
+        grid: Grid,
+        resposive: Resposive,
+        loadmore: Loadmore
+    }
+}
