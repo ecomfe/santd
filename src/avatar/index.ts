@@ -3,25 +3,21 @@
  * @author wangyongqing01 <wangyongqing01@baidu.com>
  */
 
+import Base from 'santd/base';
+import type * as I from './interface';
 import './style/index.less';
-import san, {DataTypes} from 'san';
 import Icon from '../icon';
 import {classCreator, guid} from '../core/util';
 
 const prefixCls = classCreator('avatar')();
 
-export default san.defineComponent({
-    dataTypes: {
-        shape: DataTypes.oneOf(['circle', 'square']),
-        size: DataTypes.oneOfType([DataTypes.string, DataTypes.number]),
-        gap: DataTypes.number
-    },
+export default class Avatar extends Base<I.Props, I.Computed, I.State> {
 
-    components: {
+    static components = {
         's-icon': Icon
-    },
+    };
 
-    initData() {
+    initData():I.State {
         return {
             prefixCls,
             shape: 'circle',
@@ -30,10 +26,10 @@ export default san.defineComponent({
             scaleId: guid(prefixCls),
             gap: 4
         };
-    },
+    };
 
-    computed: {
-        classes() {
+    static computed = {
+        classes(this: Avatar) {
             const isImgExist = this.data.get('isImgExist');
             const src = this.data.get('src');
             const size = this.data.get('size');
@@ -50,7 +46,7 @@ export default san.defineComponent({
             return classArr;
         },
 
-        styles() {
+        styles(this: Avatar): string {
             const size = +this.data.get('size');
             const icon = this.data.get('icon');
 
@@ -60,20 +56,20 @@ export default san.defineComponent({
 
             return `width: ${size}px;height:${size}px; line-height:${size}px; font-size: ${icon ? `${size / 2}px` : '18px'}`;
         }
-    },
+    }
 
-    handleImgLoadError() {
+    handleImgLoadError(): void {
         this.fire('error');
-    },
+    }
 
-    updated() {
-        let gap = this.data.get('gap');
+    updated(): void {
+        let gap: number = this.data.get('gap');
         const childrenNode = document.getElementById(this.data.get('scaleId'));
 
         // update scaleStyle
         if (childrenNode) {
             const childrenWidth = childrenNode.offsetWidth;
-            const avatarWidth = this.el.getBoundingClientRect().width;
+            const avatarWidth: number = this.el!.getBoundingClientRect().width;
             gap = gap * 2 < avatarWidth ? gap : 4;
             const scale = (avatarWidth - gap * 2 < childrenWidth) ? (avatarWidth - gap * 2) / childrenWidth : 1;
 
@@ -90,19 +86,19 @@ export default san.defineComponent({
             }
             this.data.set('scaleStyle', scaleStyle.join(';'));
         }
-    },
+    }
 
-    inited() {
+    inited(): void {
         if (this.sourceSlots.noname && this.sourceSlots.noname.length) {
             this.data.set('hasSlot', true);
         }
-    },
+    }
 
-    attached() {
+    attached(): void {
         this.updated();
-    },
+    }
 
-    template: `
+    static template = `
         <span class="{{classes}}" style="{{styles}}">
             <img s-if="src && isImgExist"
                 src="{{src}}"
@@ -118,5 +114,5 @@ export default san.defineComponent({
                 style="{{scaleStyle}}"
             ><slot/></span>
         </span>
-    `
-});
+    `;
+};
