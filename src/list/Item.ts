@@ -3,35 +3,26 @@
 * @author fuqiangqiang@baidu.com
 */
 
-import san, {DataTypes} from 'san';
 import Base from 'santd/base';
 import {classCreator} from '../core/util';
 import Avatar from '../avatar';
 import type * as I from './interface';
 
 const prefixCls = classCreator('list')();
-
-const Meta = san.defineComponent({
-    dataTypes: {
-        avatar: DataTypes.string,
-        title: DataTypes.string,
-        description: DataTypes.string
-    },
-
-    components: {
+export class Meta extends Base{
+    static components = {
         's-avatar': Avatar
-    },
+    }
 
     inited(): void {
         this.data.set('hasAvatar', !!(this.sourceSlots.named.avatar || this.data.get('avatar')));
         this.data.set('hasTitle', !!(this.sourceSlots.named.title || this.data.get('title')));
         this.data.set('hasDescription', !!(this.sourceSlots.named.description || this.data.get('description')));
-    },
+    }
 
-    template: `
+    static template =  `
         <div class="${prefixCls}-item-meta">
             <div class="${prefixCls}-item-meta-avatar" s-if="hasAvatar">
-                <s-avatar src="{{avatar}}" s-if="avatar" />
                 <slot name="avatar" s-else/>
             </div>
             <div class="${prefixCls}-item-meta-content" s-if="hasDescription || hasTitle">
@@ -46,7 +37,7 @@ const Meta = san.defineComponent({
             </div>
         </div>
     `
-});
+};
 
 const actionsTemplate = `
     <slot />
