@@ -60,4 +60,6 @@ export default {
     PageHeader: {
         back: '返回'
     }
+} as {
+    [key: string]: JSONValue
 };

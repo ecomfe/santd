@@ -3,20 +3,23 @@
  * @author mayihui@baidu.com
  **/
 
-import san from 'san';
-import defaultLocale from './zh_CN';
 import * as dayjs from 'dayjs';
+import Base from 'santd/base';
+import defaultLocale from './zh_CN';
+import {Component} from 'san/types';
+import {Messages, State} from './interface';
 
+export default class extends Base {
+    receivers!: never[];
 
-export default san.defineComponent({
-    initData() {
+    initData(): State {
         return {
             locale: defaultLocale,
             localeProvider: true
         };
-    },
+    };
 
-    inited() {
+    inited(): void {
         this.receivers = [];
 
         const locale = this.data.get('locale');
@@ -27,26 +30,22 @@ export default san.defineComponent({
         else {
             dayjs.locale('en');
         }
-    },
+    };
 
-    disposed() {
-        this.receivers = null;
-    },
-
-    updated() {
+    updated(): void {
         const locale = this.data.get('locale');
 
-        this.receivers.forEach(child => {
+        this.receivers.forEach((child: Component) => {
             child.data.set('localeContext', locale);
         });
-    },
+    };
 
-    messages: {
+    static messages: Messages = {
         santd_add_locale_receiver(payload) {
             this.receivers.push(payload.value);
             this.updated();
         }
-    },
+    };
 
-    template: '<div><slot /></div>'
-});
+    static template = '<div><slot /></div>';
+};
