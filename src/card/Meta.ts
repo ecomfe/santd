@@ -4,12 +4,12 @@
  */
 
 import './style/index.less';
-import san from 'san';
+import Base from 'santd/base';
 import {classCreator} from '../core/util';
 
 const prefixCls = classCreator('card')();
-export default san.defineComponent({
-    template: `
+export default class Meta extends Base {
+    static template = `
     	<div class="${prefixCls}-meta">
             <div s-if="isAvatar" class="${prefixCls}-meta-avatar">
                 <slot name="avatar" />
@@ -23,10 +23,10 @@ export default san.defineComponent({
                 </div>
             </div>
         </div>
-    `,
-    inited() {
+    `;
+    inited(): void {
         this.data.set('isAvatar', !!this.sourceSlots.named.avatar);
         this.data.set('isDes', !!this.sourceSlots.named.description);
         this.data.set('isTitle', !!this.sourceSlots.named.title);
     }
-});
+}

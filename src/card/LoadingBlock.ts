@@ -4,15 +4,13 @@
  */
 
 import './style/index.less';
-import san from 'san';
 import {classCreator} from '../core/util';
 import {Col, Row} from '../grid';
-
+import Base from 'santd/base';
 const prefix = classCreator('card')('loading');
-
-export default san.defineComponent({
-    template: `
-    	<div
+export default class extends Base {
+    static template = `
+        <div
             class="${prefix}-content"
         >
             <s-row gutter="8">
@@ -67,9 +65,10 @@ export default san.defineComponent({
                 </s-col>
             </s-row>
         </div>
-    `,
-    components: {
+    `;
+
+    static components = {
         's-row': Row,
         's-col': Col
-    }
-});
+    };
+}
