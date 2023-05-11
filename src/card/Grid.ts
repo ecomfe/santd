@@ -4,13 +4,13 @@
  */
 
 import './style/index.less';
-import san from 'san';
+import Base from 'santd/base';
 import {classCreator} from '../core/util';
 
 const prefixCls = classCreator('card')();
 
-export default san.defineComponent({
-    template: `
+export default class extends Base {
+    static template = `
         <div class="${prefixCls}-grid"><slot /></div>
-    `
-});
+    `;
+}
