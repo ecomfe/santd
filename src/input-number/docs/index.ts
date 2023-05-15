@@ -1,7 +1,7 @@
 /**
 * @file docs入口文件
 */
-import san from 'san';
+import Base from 'santd/base';
 import Readme from '../README.md';
 import Head from './head.md';
 import Basic from './basic.md';
@@ -10,17 +10,8 @@ import Size from './size.md';
 import Numbers from './number.md';
 import Format from './format.md';
 
-export default san.defineComponent({
-    components:{
-        readme: Readme,
-        head: Head,
-        basic: Basic,
-        disable: Disable,
-        size: Size,
-        number: Numbers,
-        format: Format
-    },
-    template: `
+export default class extends Base {
+    static template = `
         <div>
             <head/>
             <basic/>
@@ -31,4 +22,13 @@ export default san.defineComponent({
             <readme/>
         </div>
     `
-})
+    static components = {
+        readme: Readme,
+        head: Head,
+        basic: Basic,
+        disable: Disable,
+        size: Size,
+        number: Numbers,
+        format: Format
+    }
+}
