@@ -1,8 +1,17 @@
 /**
  * @file Santd cascader array tree filter file
  **/
+import {DefaultOptionType} from '../interface';
 
-export default (data, filterFn, options = {}) => {
+interface Options {
+    childrenKeyName?: string;
+}
+
+type ChildrenData = NonNullable<DefaultOptionType['children']>;
+
+type FilterFn = (item: DefaultOptionType, level: number) => void;
+
+export default (data: ChildrenData, filterFn: FilterFn, options: Options = {}) => {
     options.childrenKeyName = options.childrenKeyName || 'children';
     let children = data || [];
     let result = [];

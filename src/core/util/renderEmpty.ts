@@ -1,7 +1,6 @@
 /**
  * @file Santd render empty file
- **/
-
+ */
 import san from 'san';
 import Empty from '../../empty';
 

@@ -2,42 +2,38 @@
  * @file san-button按钮
  * @author fuqiangqiang@baidu.com
  */
-import san, {DataTypes} from 'san';
+import Base from 'santd/base';
 import Icon from '../icon';
 import Wave from '../core/util/wave';
 import {classCreator} from '../core/util';
 import './style/index';
+import type {
+    ButtonState as State,
+    ButtonProps as Props,
+    ButtonComputed as Computed
+} from './interface';
+import type {TButtonGroup} from './ButtonGroup'
 
 const PREFIX_CLASS = classCreator('btn')();
 
-export default san.defineComponent({
-    dataTypes: {
-        disabled: DataTypes.bool,
-        ghost: DataTypes.bool,
-        href: DataTypes.string,
-        htmlType: DataTypes.oneOf(['submit', 'button', 'reset']),
-        icon: DataTypes.string,
-        loading: DataTypes.oneOfType([DataTypes.bool, DataTypes.object]),
-        shape: DataTypes.oneOf(['circle', 'circle-outline', 'round']),
-        size: DataTypes.oneOf(['small', 'default', 'large']),
-        target: DataTypes.string,
-        type: DataTypes.oneOf(['default', 'primary', 'ghost', 'dashed', 'danger', 'link']),
-        block: DataTypes.bool,
-        noWave: DataTypes.bool
-    },
+function isLoadingObject(loading: Props['loading']): loading is {delay: number} {
+    return typeof loading !== 'boolean' && loading?.delay !== undefined;
+}
 
-    components: {
+export default class Button extends Base<State, Props, Computed> {
+
+    static components = {
         's-icon': Icon,
         's-wave': Wave
-    },
+    }
 
-    computed: {
-        classes() {
+    static computed = {
+        classes(this: Button) {
             // 处理class
-            let data = this.data;
-            let type = data.get('type');
-            let shape = data.get('shape');
-            let size = data.get('sizeMap')[data.get('size')];
+            const data = this.data;
+            const type = data.get('type');
+            const shape = data.get('shape');
+            const size = data.get('sizeMap')[data.get('size')];
 
 
             let clazz = [PREFIX_CLASS];
@@ -51,9 +47,13 @@ export default san.defineComponent({
 
             return clazz;
         }
-    },
+    }
 
-    initData() {
+    static Group: TButtonGroup
+
+    delayTimeout!: number
+
+    initData(): State {
         return {
             disabled: false,
             icons: null,
@@ -62,21 +62,22 @@ export default san.defineComponent({
                 large: 'lg',
                 small: 'sm'
             },
+            size: 'default',
             noWave: false
         };
-    },
+    }
 
     updated() {
         let loading = this.data.get('loading');
-        if (loading && loading.delay) {
+        if (isLoadingObject(loading)) {
             this.delayTimeout = window.setTimeout(
                 () => this.data.set('loading', true),
                 loading.delay
             );
         }
-    },
+    }
 
-    btnClick(e) {
+    btnClick(e: MouseEvent) {
         if (this.data.get('loading')) {
             return;
         }
@@ -92,21 +93,21 @@ export default san.defineComponent({
         }
 
         this.fire('click', e);
-    },
+    }
 
-    handleFocus(e) {
+    handleFocus(e: FocusEvent) {
         this.dispatch('santd_button_trigger', {
             action: 'handleFocus', e
         });
-    },
+    }
 
-    handleBlur(e) {
+    handleBlur(e: FocusEvent) {
         this.dispatch('santd_button_trigger', {
             action: 'handleBlur', e
         });
-    },
+    }
 
-    template: `
+    static template = /* html */ `
         <button
             autofocus="{{autofocus}}"
             autocomplete="{{autocomplete}}"
@@ -133,4 +134,4 @@ export default san.defineComponent({
             <s-wave s-if="!noWave && type !== 'link'" />
         </button>
     `
-});
+};

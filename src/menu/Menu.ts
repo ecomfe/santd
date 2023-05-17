@@ -3,40 +3,80 @@
 * @author fuqiangqiang@baidu.com
 */
 
-import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
 import './style/index.less';
-import {getOffset, on, off} from '../core/util/dom';
+import {getOffset, on, off, ListenerElement} from '../core/util/dom';
 import SubMenu from './SubMenu';
 import Icon from '../icon';
 import {MENU_FOLDED_ITEM_ID} from '../core/constants';
 import throttle from 'lodash/throttle';
 
+import Base from 'santd/base';
+
+import type {TSubMenu} from './SubMenu';
+import type {TMenuItem} from './MenuItem';
+import type {TMenuItemGroup} from './MenuItemGroup';
+import type {TDivider} from './Divider';
+
+import {
+    MenuState as State,
+    MenuProps as Props,
+    MenuComputed as Computed,
+    OpenChangeEvent,
+    SelectChangeEvent,
+    ItemType,
+    InnerItem
+} from './interface';
+
+
+type Message = {
+    santd_menu_addItem: (this: Menu, payload: {value: ItemType}) => void;
+    santd_menu_itemSelect: (this: Menu, payload: {value:  SelectChangeEvent}) => void,
+    santd_menu_itemDeselect: (this: Menu, payload: {value:  SelectChangeEvent}) => void,
+    santd_menu_itemClick: (this: Menu, payload: {value: ItemType}) => void;
+    santd_menu_openChange: (this: Menu, playload: {value: OpenChangeEvent<SubMenu>}) => void
+};
+
+type CommonWindow = Window & ListenerElement;
+
 const prefixCls = classCreator('menu')();
 const DEFAULT_FOLDED_ITEM_WIDTH = 14;
 const FOLDED_ITEM_PADDING = 40;
 
-export default san.defineComponent({
-    dataTypes: {
-        mode: DataTypes.oneOf(['vertical', 'horizontal', 'inline']),
-        theme: DataTypes.oneOf(['light', 'dark']),
-        defaultSelectedKeys: DataTypes.oneOfType([DataTypes.string, DataTypes.array]),
-        defaultOpenKeys: DataTypes.array,
-        inlineCollapsed: DataTypes.bool,
-        openKeys: DataTypes.array,
-        inlineIndent: DataTypes.number,
-        multiple: DataTypes.bool,
-        selectable: DataTypes.bool,
-        selectedKeys: DataTypes.oneOfType([DataTypes.string, DataTypes.array]),
-        subMenuCloseDelay: DataTypes.number,
-        subMenuOpenDelay: DataTypes.number,
-        forceSubMenuRender: DataTypes.bool
-    },
-    components: {
+export default class Menu extends Base<State, Props, Computed> {
+    // dataTypes: {
+    //     mode: DataTypes.oneOf(['vertical', 'horizontal', 'inline']),
+    //     theme: DataTypes.oneOf(['light', 'dark']),
+    //     defaultSelectedKeys: DataTypes.oneOfType([DataTypes.string, DataTypes.array]),
+    //     defaultOpenKeys: DataTypes.array,
+    //     inlineCollapsed: DataTypes.bool,
+    //     openKeys: DataTypes.array,
+    //     inlineIndent: DataTypes.number,
+    //     multiple: DataTypes.bool,
+    //     selectable: DataTypes.bool,
+    //     selectedKeys: DataTypes.oneOfType([DataTypes.string, DataTypes.array]),
+    //     subMenuCloseDelay: DataTypes.number,
+    //     subMenuOpenDelay: DataTypes.number,
+    //     forceSubMenuRender: DataTypes.bool
+    // },
+    static components = {
         's-sub-menu': SubMenu,
         's-icon': Icon
-    },
-    initData() {
+    }
+
+    static Sub: TSubMenu
+    static Item: TMenuItem
+    static MenuItemGroup: TMenuItemGroup
+    static MenuDivider: TDivider
+
+    items!: ItemType[]
+    itemWidths!: number[]
+    foldedItemWidth!: number
+    lastAvailableMenuWidth!: number
+    updateFoldedItemsBind!: () => void
+    subMenus!: unknown[]
+
+    initData(): State {
         return {
             mode: 'vertical',
             theme: 'light',
@@ -50,13 +90,13 @@ export default san.defineComponent({
             hasFoldedItem: false,
             itemFoldedFlags: []
         };
-    },
-    computed: {
-        rootPrefixCls() {
+    }
+    static computed: Computed = {
+        rootPrefixCls(this: Menu) {
             let rootPrefixCls = this.data.get('prefixCls');
             return rootPrefixCls ? rootPrefixCls + '-menu' : prefixCls;
         },
-        classes() {
+        classes(this: Menu) {
             const mode = this.data.get('mode');
             const theme = this.data.get('theme');
             const inlineCollapsed = this.data.get('inlineCollapsed');
@@ -69,13 +109,13 @@ export default san.defineComponent({
 
             return classArr;
         }
-    },
+    }
     inited() {
         this.items = [];
         this.subMenus = [];
         this.data.set('selectedKeys', this.getSelectedKeys(this.data.get('defaultSelectedKeys')));
         this.data.set('openKeys', this.data.get('openKeys') || this.data.get('defaultOpenKeys') || []);
-    },
+    }
     attached() {
         this.updateItems();
 
@@ -86,27 +126,27 @@ export default san.defineComponent({
         this.updateFoldedItems();
         // resize事件的触发频率较高，因此延迟66ms（意味着updateFoldedItems函数的执行频率变为15fps）
         this.updateFoldedItemsBind = throttle(this.updateFoldedItems, 66).bind(this);
-        on(window, 'resize', this.updateFoldedItemsBind);
-    },
+        on(window as unknown as CommonWindow, 'resize', this.updateFoldedItemsBind);
+    }
     updated() {
         this.updateItems();
-    },
+    }
     detached() {
-        this.updateFoldedItemsBind && off(window, 'resize', this.updateFoldedItemsBind);
-    },
+        this.updateFoldedItemsBind && off(window as unknown as CommonWindow, 'resize', this.updateFoldedItemsBind);
+    }
     updateItems() {
-        let paramsArr = ['mode', 'level', 'selectedKeys', 'openKeys', 'rootPrefixCls', 'multiple'];
+        const paramsArr = ['mode', 'level', 'selectedKeys', 'openKeys', 'rootPrefixCls', 'multiple'] as const;
         this.items.forEach(item => {
             paramsArr.forEach(param => {
-                item.data.set(param, this.data.get(param));
+                (item as InnerItem).data.set(param, this.data.get(param));
             });
         });
-    },
+    }
     getItemWidths() {
         this.itemWidths = [];
         this.items.forEach(item => this.itemWidths.push(getOffset(item.el).width));
         this.foldedItemWidth = DEFAULT_FOLDED_ITEM_WIDTH;
-    },
+    }
     updateFoldedItems() {
         let availableMenuWidth = getOffset(this.el).width;
         const itemFoldedFlags = this.data.get('itemFoldedFlags');
@@ -126,7 +166,7 @@ export default san.defineComponent({
 
             availableMenuWidth -= this.itemWidths[index];
             const isFolded = availableMenuWidth < 0;
-            item.data.set('isFolded', isFolded);
+            (item as InnerItem).data.set('isFolded', isFolded);
             this.data.set(`itemFoldedFlags[${index}]`, isFolded);
         });
         const hasFoldedItem = availableMenuWidth < 0;
@@ -136,22 +176,22 @@ export default san.defineComponent({
                 && this.foldedItemWidth === DEFAULT_FOLDED_ITEM_WIDTH
                 && hasFoldedItem) {
             this.nextTick(() => {
-                const foldedItemWidth = getOffset(this.ref(`${prefixCls}-fold-item`)).width;
+                const foldedItemWidth = getOffset(this.ref(`${prefixCls}-fold-item`) as unknown as Element).width;
                 if (foldedItemWidth !== DEFAULT_FOLDED_ITEM_WIDTH) {
                     this.foldedItemWidth = foldedItemWidth;
                     this.updateFoldedItems();
                 }
             });
         }
-    },
-    getSelectedKeys(defaultSelectedKeys) {
+    }
+    getSelectedKeys(defaultSelectedKeys?: Props['defaultSelectedKeys']) {
         let selectedKeys =  this.data.get('selectedKeys') || defaultSelectedKeys || [];
         if (typeof selectedKeys === 'string') {
             selectedKeys = [selectedKeys];
         }
         return selectedKeys;
-    },
-    handleSelect(selectInfo) {
+    }
+    handleSelect(selectInfo: SelectChangeEvent) {
         if (!this.data.get('selectable')) {
             return;
         }
@@ -164,8 +204,8 @@ export default san.defineComponent({
         this.data.set('selectedKeys', selectedKeys);
         this.updateItems();
         this.fire('select', {...selectInfo, selectedKeys});
-    },
-    handleDeselect(selectInfo) {
+    }
+    handleDeselect(selectInfo: SelectChangeEvent) {
         if (!this.data.get('selectable')) {
             return;
         }
@@ -180,32 +220,32 @@ export default san.defineComponent({
         this.data.set('selectedKeys', selectedKeys);
         this.updateItems();
         this.fire('deselect', {...selectInfo, selectedKeys});
-    },
-    handleOpenChange(event) {
-        const openKeys = this.data.get('openKeys').concat();
+    }
+    handleOpenChange(event: OpenChangeEvent<SubMenu>) {
+        const openKeys = this.data.get('openKeys')?.concat();
         let changed = false;
         if (event.open) {
-            if (!openKeys.includes(event.key)) {
-                openKeys.push(event.key);
+            if (!openKeys?.includes(event.key)) {
+                openKeys?.push(event.key);
                 changed = true;
             }
         }
         else {
-            const index = openKeys.indexOf(event.key);
-            if (index !== -1) {
-                openKeys.splice(index, 1);
+            const index = openKeys?.indexOf(event.key);
+            if (index !== undefined && index !== -1) {
+                openKeys?.splice(index, 1);
                 changed = true;
             }
         }
 
         if (changed) {
-            const prevOpenKeys = this.data.get('openKeys').concat();
+            const prevOpenKeys = this.data.get('openKeys')?.concat();
             this.data.set('openKeys', openKeys);
             this.updateItems();
             this.fire('openChange', {openKeys, prevOpenKeys});
         }
-    },
-    messages: {
+    }
+    static messages: Message = {
         santd_menu_addItem(payload) {
             this.items.push(payload.value);
             this.updateItems();
@@ -222,8 +262,8 @@ export default san.defineComponent({
         santd_menu_openChange(payload) {
             this.handleOpenChange(payload.value);
         }
-    },
-    template: `
+    }
+    static template = /* html */ `
         <ul class="{{classes}}" role="{{role || 'menu'}}">
             <slot></slot>
             <s-sub-menu
@@ -240,4 +280,4 @@ export default san.defineComponent({
             </s-sub-menu>
         </ul>
     `
-});
+};

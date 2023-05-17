@@ -3,20 +3,25 @@
 * @author fuqiangqiang@baidu.com
 */
 
-import san, {DataTypes} from 'san';
-import {classCreator} from '../core/util';
+import Base from 'santd/base';
+import {classCreator, isUndefined} from '../core/util';
+import type {
+    MenuItemComputed as Computed,
+    MenuItemProps as Props,
+    MenuItemState as State
+} from './interface';
 const prefixCls = classCreator('menu-item')();
 
-export default san.defineComponent({
-    dataTypes: {
-        disabled: DataTypes.bool,
-        key: DataTypes.oneOfType([DataTypes.string, DataTypes.number]),
-        title: DataTypes.string,
-        multiple: DataTypes.bool,
-        selectedKeys: DataTypes.oneOfType([DataTypes.string, DataTypes.array])
-    },
-    computed: {
-        classes() {
+export default class MenuItem extends Base<State, Props, Computed> {
+    // dataTypes: {
+    //     disabled: DataTypes.bool,
+    //     key: DataTypes.oneOfType([DataTypes.string, DataTypes.number]),
+    //     title: DataTypes.string,
+    //     multiple: DataTypes.bool,
+    //     selectedKeys: DataTypes.oneOfType([DataTypes.string, DataTypes.array])
+    // },
+    static computed: Computed = {
+        classes(this: MenuItem) {
             const disabled = this.data.get('disabled');
             const active = this.data.get('active');
             const isSelected = this.data.get('isSelected');
@@ -31,33 +36,35 @@ export default san.defineComponent({
 
             return classArr;
         },
-        isSelected() {
+        isSelected(this: MenuItem) {
             const key = this.data.get('key');
             let selectedKeys = this.data.get('selectedKeys') || [];
             if (typeof selectedKeys === 'string') {
                 selectedKeys = [selectedKeys];
             }
-            return selectedKeys.includes(key);
+            return selectedKeys.includes(key as string);
         },
-        active() {
+        active(this: MenuItem) {
             const key = this.data.get('key');
             const activeKey = this.data.get('activeKey') || {};
             const subMenuKey = this.data.get('subMenuKey');
 
             return activeKey[subMenuKey] === key;
         }
-    },
+    }
     inited() {
         this.dispatch('santd_menu_addItem', this);
-    },
-    getItemStyle(mode, level) {
+    }
+    getItemStyle(mode: Props['mode'], level: Props['level']) {
         const inlineIndent = this.data.get('inlineIndent');
 
         return mode === 'inline'
-            ? `padding-left: ${inlineIndent * level}px;`
+            ? (isUndefined(inlineIndent) || isUndefined(level))
+                ? ''
+                : `padding-left: ${inlineIndent * level}px;`
             : '';
-    },
-    handleClick(e) {
+    }
+    handleClick(e: MouseEvent) {
         if (this.data.get('disabled')) {
             return;
         }
@@ -83,16 +90,16 @@ export default san.defineComponent({
         else {
             this.dispatch('santd_menu_itemSelect', info);
         }
-    },
-    handleMouseEnter(e) {
+    }
+    handleMouseEnter(e: MouseEvent) {
         if (this.data.get('disabled')) {
             return;
         }
 
         const key = this.data.get('key');
         this.dispatch('santd_menu_itemMouseEnter', {key, e});
-    },
-    template: `
+    }
+    static template = /* html */ `
         <li
             class="{{classes}}"
             style="{{getItemStyle(mode, level)}}"
@@ -106,4 +113,6 @@ export default san.defineComponent({
             <slot />
         </li>
     `
-});
+};
+
+export type TMenuItem = typeof MenuItem;

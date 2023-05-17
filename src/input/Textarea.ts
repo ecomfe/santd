@@ -3,17 +3,17 @@
 * @author fuqiangqiang@baidu.com
 */
 
-import san, {DataTypes} from 'san';
+import Base from 'santd/base';
 import {classCreator} from '../core/util';
 import keyCode from '../core/util/keyCode';
 import calculateNodeHeight from './calculateNodeHeight';
+import type {
+    TextareaProps as Props
+} from './interface';
+
 const prefixCls = classCreator('input')();
 
-export default san.defineComponent({
-    dataTypes: {
-        defaultValue: DataTypes.string,
-        value: DataTypes.string
-    },
+export default class Textarea extends Base<{}, Props> {
     attached() {
         this.resizeTextarea();
         let value = this.data.get('value') || '';
@@ -21,10 +21,10 @@ export default san.defineComponent({
             let defaultValue = this.data.get('defaultValue') || '';
             this.data.set('value', defaultValue);
         }
-    },
+    }
     updated() {
         this.resizeTextarea();
-    },
+    }
     resizeTextarea() {
         let autosize = this.data.get('autosize');
         let textareaStyles;
@@ -33,30 +33,32 @@ export default san.defineComponent({
         }
         // 如果autosize里面传的是字符串对象，需要进行解析
         if (typeof autosize === 'boolean') {
-            textareaStyles = calculateNodeHeight(this.el, false, null, null);
+            textareaStyles = calculateNodeHeight(this.el as HTMLTextAreaElement, false);
         }
         else if (typeof autosize === 'object') {
-            textareaStyles = calculateNodeHeight(this.el, false, autosize.minRows, autosize.maxRows);
+            textareaStyles = calculateNodeHeight(this.el as HTMLTextAreaElement, false, autosize.minRows, autosize.maxRows);
         }
         this.data.set('styles', textareaStyles);
-    },
-    handleKeyDown(e) {
+    }
+    handleKeyDown(e: KeyboardEvent) {
         if (e.keyCode === keyCode.ENTER) {
-            this.fire('pressEnter', e.target.value);
+            this.fire('pressEnter', (e?.target as HTMLTextAreaElement).value);
         }
-    },
-    handleTextareaChange(e) {
+    }
+    handleTextareaChange(e: InputEvent) {
         this.nextTick(() => {
             this.resizeTextarea();
         });
-        this.fire('change', e.target.value);
-        this.dispatch('UI:form-item-interact', {fieldValue: e.target.value, type: 'change', e});
-    },
-    handleBlur(e) {
-        this.fire('textareaBlur', e.target.value);
-        this.dispatch('UI:form-item-interact', {fieldValue: e.target.value, type: 'change', e});
-    },
-    template: /* html */ `
+        const targetValue = (e?.target as HTMLTextAreaElement).value;
+        this.fire('change', targetValue);
+        this.dispatch('UI:form-item-interact', {fieldValue: targetValue, type: 'change', e});
+    }
+    handleBlur(e: FocusEvent) {
+        const targetValue = (e?.target as HTMLTextAreaElement).value;
+        this.fire('textareaBlur', targetValue);
+        this.dispatch('UI:form-item-interact', {fieldValue: targetValue, type: 'change', e});
+    }
+    static template = /* html */ `
         <!--TODO: 大版本统一maxLength-->
         <textarea
             class="${prefixCls} {{disabled ? '${prefixCls}-disabled': ''}}"
@@ -75,4 +77,6 @@ export default san.defineComponent({
             value="{=value=}"
         ></textarea>
     `
-});
+};
+
+export type TTextarea = typeof Textarea;

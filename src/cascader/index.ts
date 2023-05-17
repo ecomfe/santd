@@ -3,18 +3,34 @@
 * @author fuqiangqiang@baidu.com
 */
 
-import san from 'san';
+import Base from 'santd/base';
 import {classCreator} from '../core/util';
-import Cascader from './src/Cascader';
+import InnerCascader from './src/Cascader';
 import Input from '../input';
 import Icon from '../icon';
 import arrayTreeFilter from './src/arraytreefilter';
 import './style/index';
 
+import {
+    SingleCascaderState as State,
+    SingleCascaderProps as Props,
+    Computed,
+    ShowSearchType,
+    InputClickEvent,
+    FieldNames,
+    DefaultOptionType,
+    ValueType,
+    SingleValueType
+} from './interface';
+
 const prefixCls = classCreator('cascader')();
 const inputPrefixCls = classCreator('input')();
 
-function getFilledFieldNames(fieldNames = {}) {
+function isShowSearchObject(value: Props['showSearch']): value is ShowSearchType {
+    return value !== undefined && typeof value === 'object';
+}
+
+function getFilledFieldNames(fieldNames: FieldNames = {}) {
     const names = {
         children: fieldNames.children || 'children',
         label: fieldNames.label || 'label',
@@ -23,12 +39,16 @@ function getFilledFieldNames(fieldNames = {}) {
     return names;
 }
 
-function flattenTree(options = [], props, ancestor = []) {
+function flattenTree(
+    options: DefaultOptionType[] = [],
+    props: {changeOnSelect: boolean, fieldNames: FieldNames},
+    ancestor: DefaultOptionType[]  = []
+) {
     const names = getFilledFieldNames(props.fieldNames);
-    let flattenOptions = [];
+    let flattenOptions: DefaultOptionType[][] = [];
     const childrenName = names.children;
     options.forEach(option => {
-        const path = ancestor.concat(option);
+        const path = ancestor.concat(Array.isArray(option) ? option : [option]);
         if (props.changeOnSelect || !option[childrenName] || !option[childrenName].length) {
             flattenOptions.push(path);
         }
@@ -41,7 +61,7 @@ function flattenTree(options = [], props, ancestor = []) {
 
 const defaultLimit = 50;
 
-function highlightKeyword(str, keyword, prefixCls) {
+function highlightKeyword(str: string, keyword: string, prefixCls: string) {
     return str.split(keyword).map((node, index) =>
         index === 0
         ? node
@@ -49,13 +69,13 @@ function highlightKeyword(str, keyword, prefixCls) {
     );
 }
 
-function defaultFilterOption(inputValue, path, names) {
-    return path.some(option => option[names.label].indexOf(inputValue) > -1);
+function defaultFilterOption(inputValue: string, path: DefaultOptionType[], names: FieldNames) {
+    return path.some(option => option[names.label!].indexOf(inputValue) > -1);
 }
 
-function defaultRenderFilteredOption(inputValue, path, prefixCls, names) {
+function defaultRenderFilteredOption(inputValue: string, path: DefaultOptionType[], prefixCls: string, names: FieldNames) {
     return path.map((option, index) => {
-        const label = option[names.label];
+        const label = option[names.label as string];
         const node = label.indexOf(inputValue) > -1
             ? highlightKeyword(label, inputValue, prefixCls).join('')
             : label;
@@ -63,25 +83,26 @@ function defaultRenderFilteredOption(inputValue, path, prefixCls, names) {
     });
 }
 
-function defaultSortFilteredOption(a, b, inputValue, names) {
-    function callback(elem) {
-        return elem[names.label].indexOf(inputValue) > -1;
+function defaultSortFilteredOption(a: DefaultOptionType[], b: DefaultOptionType[], inputValue: string, names: FieldNames) {
+    function callback(elem: DefaultOptionType) {
+        return elem[names.label as string].indexOf(inputValue) > -1;
     }
 
     return a.findIndex(callback) - b.findIndex(callback);
 }
 
-function renderEmpty() {
-    return '<div style="text-align: center;">没有内容</div>';
+function renderEmpty(content?: string) {
+    content = '没有内容' || content;
+    return `<div style="text-align: center;">{{${content}}}</div>`;
 }
 
-export default san.defineComponent({
-    components: {
-        's-cascader': Cascader,
+export default class Cascader extends Base<State, Props, Computed> {
+    static components = {
+        's-cascader': InnerCascader,
         's-input': Input,
         's-icon': Icon
-    },
-    initData() {
+    }
+    initData(): State {
         return {
             prefixCls,
             allowClear: true,
@@ -92,9 +113,9 @@ export default san.defineComponent({
             transitionName: 'slide-up',
             dropdownMenuColumnStyle: {}
         };
-    },
-    computed: {
-        pickerClass() {
+    }
+    static computed: Computed = {
+        pickerClass(this: Cascader) {
             const inputValue = this.data.get('inputValue');
             const disabled = this.data.get('disabled');
             const size = this.data.get('size');
@@ -110,8 +131,12 @@ export default san.defineComponent({
 
             return classArr;
         },
-        filteredOptions() {
-            const showSearch = this.data.get('showSearch') || {};
+        filteredOptions(this: Cascader) {
+            const oriShowSearch = this.data.get('showSearch');
+
+            const showSearch = isShowSearchObject(oriShowSearch) ? oriShowSearch : {}
+
+
             const notFoundContent = this.data.get('notFoundContent');
 
             const names = getFilledFieldNames(this.data.get('fieldNames'));
@@ -126,11 +151,11 @@ export default san.defineComponent({
             const fieldNames = this.data.get('fieldNames') || {};
 
             const flattenOptions = showSearch && flattenTree(options, {changeOnSelect, fieldNames}) || [];
-            const inputValue = this.data.get('inputValue');
+            const inputValue = this.data.get('inputValue') || '';
 
             // Limit the filter if needed
-            let filtered;
-            if (limit > 0) {
+            let filtered: DefaultOptionType[][];
+            if (+limit > 0) {
                 filtered = [];
                 let matchCount = 0;
 
@@ -141,7 +166,7 @@ export default san.defineComponent({
                         filtered.push(path);
                         matchCount += 1;
                     }
-                    return matchCount >= limit;
+                    return matchCount >= +limit;
                 });
             }
             else {
@@ -167,7 +192,7 @@ export default san.defineComponent({
                 disabled: true
             }];
         },
-        selectedOptions() {
+        selectedOptions(this: Cascader) {
             const options = this.data.get('options');
             const names = getFilledFieldNames(this.data.get('fieldNames') || {});
             const value = this.data.get('value') || [];
@@ -179,12 +204,12 @@ export default san.defineComponent({
                 {childrenKeyName: names.children}
             );
         },
-        label() {
+        label(this: Cascader) {
             const selectedOptions = this.data.get('selectedOptions');
             const names = getFilledFieldNames(this.data.get('fieldNames') || {});
             return selectedOptions.map(o => o[names.label]);
         }
-    },
+    }
     inited() {
         const value = this.data.get('value');
         const defaultValue = this.data.get('defaultValue');
@@ -198,38 +223,38 @@ export default san.defineComponent({
 
         this.watch('inputValue', val => {
             const showSearch = this.data.get('showSearch');
-            this.data.set('dropdownMenuColumnStyle.width', val && showSearch && showSearch.mathInputWidth === true
-                ? this.ref('input').el.offsetWidth
+            this.data.set('dropdownMenuColumnStyle.width', val &&  isShowSearchObject(showSearch) && showSearch.matchInputWidth === true
+                ? (this.ref('input').el as HTMLElement).offsetWidth
                 : 'auto'
             );
         });
-    },
-    defaultDisplayRender(label) {
+    }
+    defaultDisplayRender(label: string[]) {
         return label.join(' / ');
-    },
-    handleChange({value, selectedOptions}) {
+    }
+    handleChange({value, selectedOptions}: {value: SingleValueType[], selectedOptions: DefaultOptionType[]}) {
         this.data.set('inputValue', '');
         if (selectedOptions[0].__IS_FILTERED_OPTION) {
-            const unwrappedValue = value[0];
+            const unwrappedValue: SingleValueType = value[0];
             const unwrappedSelectedOptions = selectedOptions[0].path;
 
             this.setValue(unwrappedValue, unwrappedSelectedOptions);
             return;
         }
         this.setValue(value, selectedOptions);
-    },
-    handlePopupVisibleChange(visible) {
+    }
+    handlePopupVisibleChange(visible: boolean) {
         this.data.set('popupVisible', visible);
         this.data.set('inputFocused', visible);
         this.data.set('inputValue', visible ? this.data.get('inputValue') : '');
 
         this.fire('popupVisibleChange', visible);
-    },
-    setValue(value, selectedOptions = []) {
+    }
+    setValue(value: ValueType, selectedOptions: DefaultOptionType[] = []) {
         this.data.set('value', value);
         this.fire('change', {value, selectedOptions});
-    },
-    handleClearSelection(e) {
+    }
+    handleClearSelection(e: MouseEvent) {
         e.preventDefault();
         e.stopPropagation();
         if (!this.data.get('inputValue')) {
@@ -239,12 +264,12 @@ export default san.defineComponent({
         else {
             this.data.set('inputValue', '');
         }
-    },
-    handleInputChange(value) {
+    }
+    handleInputChange(value: string) {
         this.fire('search', value);
         this.data.set('inputValue', value);
-    },
-    handleInputClick(e) {
+    }
+    handleInputClick(e: InputClickEvent) {
         const {inputFocused, popupVisible} = this.data.get();
         // Prevent `Trigger` behaviour.
         if (inputFocused || popupVisible) {
@@ -253,17 +278,17 @@ export default san.defineComponent({
                 e.nativeEvent.stopImmediatePropagation();
             }
         }
-    },
+    }
     handleInputBlur() {
         this.data.set('inputFocused', false);
-    },
+    }
     blur() {
-        this.ref('input').blur();
-    },
+        (this.ref('input') as Input).blur();
+    }
     focus() {
-        this.ref('input').focus();
-    },
-    template: `<div>
+        (this.ref('input') as Input).focus();
+    }
+    static template = /* html */ `<div>
         <s-cascader
             rootPrefixCls="{{prefixCls}}"
             getPopupContainer="{{getPopupContainer}}"
@@ -324,4 +349,4 @@ export default san.defineComponent({
             </span>
         </s-cascader>
     </div>`
-});
+};
