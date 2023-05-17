@@ -44,21 +44,6 @@ const DEFAULT_FOLDED_ITEM_WIDTH = 14;
 const FOLDED_ITEM_PADDING = 40;
 
 export default class Menu extends Base<State, Props, Computed> {
-    // dataTypes: {
-    //     mode: DataTypes.oneOf(['vertical', 'horizontal', 'inline']),
-    //     theme: DataTypes.oneOf(['light', 'dark']),
-    //     defaultSelectedKeys: DataTypes.oneOfType([DataTypes.string, DataTypes.array]),
-    //     defaultOpenKeys: DataTypes.array,
-    //     inlineCollapsed: DataTypes.bool,
-    //     openKeys: DataTypes.array,
-    //     inlineIndent: DataTypes.number,
-    //     multiple: DataTypes.bool,
-    //     selectable: DataTypes.bool,
-    //     selectedKeys: DataTypes.oneOfType([DataTypes.string, DataTypes.array]),
-    //     subMenuCloseDelay: DataTypes.number,
-    //     subMenuOpenDelay: DataTypes.number,
-    //     forceSubMenuRender: DataTypes.bool
-    // },
     static components = {
         's-sub-menu': SubMenu,
         's-icon': Icon

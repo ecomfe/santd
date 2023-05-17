@@ -13,13 +13,6 @@ import type {
 const prefixCls = classCreator('menu-item')();
 
 export default class MenuItem extends Base<State, Props, Computed> {
-    // dataTypes: {
-    //     disabled: DataTypes.bool,
-    //     key: DataTypes.oneOfType([DataTypes.string, DataTypes.number]),
-    //     title: DataTypes.string,
-    //     multiple: DataTypes.bool,
-    //     selectedKeys: DataTypes.oneOfType([DataTypes.string, DataTypes.array])
-    // },
     static computed: Computed = {
         classes(this: MenuItem) {
             const disabled = this.data.get('disabled');
