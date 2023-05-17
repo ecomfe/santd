@@ -2,24 +2,26 @@
 * @file inputGroup 输入框组件
 * @author fuqiangqiang@baidu.com
 */
-
-import san, {DataTypes} from 'san';
+import Base from 'santd/base';
 import {classCreator} from '../core/util';
+import type {
+    GroupInputState as State,
+    GroupInputProps as Props
+} from './interface';
+
 const prefixCls = classCreator('input-group')();
 
-export default san.defineComponent({
-    dataTypes: {
-        size: DataTypes.string,
-        compact: DataTypes.bool
-    },
-    initData() {
+export default class Group extends Base<State, Props> {
+    initData(): State {
         return {
             size: 'default'
         };
-    },
-    template: `
+    }
+    static template = /* html */ `
         <div class="${prefixCls} ${prefixCls}-{{size}} {{compact ? '${prefixCls}-compact' : ''}}">
             <slot />
         </div>
     `
-});
+};
+
+export type TGroup = typeof Group;

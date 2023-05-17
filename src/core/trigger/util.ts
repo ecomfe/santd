@@ -3,20 +3,20 @@
  * @author mayihui@baidu.com
  **/
 
-export function contains(root, n) {
+export function contains(root: Element, n: Element | null) {
     let node = n;
     while (node) {
         if (node === root) {
             return true;
         }
-        node = node.parentNode;
+        node = node.parentNode as Element;
     }
 
     return false;
 }
 
-export function buffer(fn, ms) {
-    let timer;
+export function buffer(fn: () => void, ms: number) {
+    let timer: NodeJS.Timer | null;
 
     function clear() {
         if (timer) {
@@ -35,7 +35,8 @@ export function buffer(fn, ms) {
     return bufferFn;
 }
 
-export function isSamePoint(prev, next) {
+// 说明：若声明next 为 MouseEvent，则clientX的判断逻辑不执行，且 next类型会强制变为 never
+export function isSamePoint(prev: MouseEvent, next: any) {
     if (prev === next) {
         return true;
     }
@@ -54,19 +55,19 @@ export function isSamePoint(prev, next) {
     return false;
 }
 
-export function isWindow(obj) {
+export function isWindow(obj: Record<string, any>) {
     return obj && typeof obj === 'object' && obj.window === obj;
 }
 
-export function isSimilarValue(val1, val2) {
+export function isSimilarValue(val1: number, val2: number) {
     const int1 = Math.floor(val1);
     const int2 = Math.floor(val2);
     return Math.abs(int1 - int2) <= 1;
 }
 
-export function restoreFocus(activeElement, container) {
+export function restoreFocus(activeElement: HTMLElement | null, container: Element) {
     // Focus back if is in the container
     if (activeElement !== document.activeElement && contains(container, activeElement)) {
-        activeElement.focus();
+        activeElement?.focus();
     }
 }

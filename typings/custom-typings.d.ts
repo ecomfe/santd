@@ -7,6 +7,7 @@ declare module "*.md" {
     export default value;
 };
 declare module 'lodash/debounce';
+declare module 'lodash/throttle';
 declare module 'lodash/isEmpty';
 
 // 常见 JSON 类型数据
@@ -16,6 +17,9 @@ type Styles = JSONValue;
 
 // 方向
 type Direction = 'left' | 'top' | 'right' | 'bottom';
+
+// 大小
+type SizeType = 'small' | 'middle' | 'large' | 'default';
 
 
 // enquire.js 的简易实现

@@ -3,65 +3,78 @@
 * @author fuqiangqiang@baidu.com
 */
 
-import san, {DataTypes} from 'san';
-import {classCreator} from '../core/util';
+import Base from 'santd/base';
+import {classCreator, isUndefined} from '../core/util';
+import MenuItem from './MenuItem';
+import {
+    MenuItemGroupProps as Props,
+    MenuItemGroupState as State,
+    MenuItemGroupComputed as Computed
+} from './interface';
 const prefixCls = classCreator('menu')();
 
-export default san.defineComponent({
-    dataTypes: {
-        title: DataTypes.any
-    },
+type Message = {
+    santd_menu_addItem: (this: MenuItemGroup, payload: {value: MenuItem}) => void
+};
 
-    computed: {
+export default class MenuItemGroup extends Base<State, Props, Computed> {
+    static computed: Computed =  {
         // 因为menu有其他组件调用传入prefixCls，所以这里需要重新设置menu prefixCls
-        groupPrefixCls() {
+        groupPrefixCls(this: MenuItemGroup) {
             const rootPrefixCls = this.data.get('prefixCls');
 
             return (rootPrefixCls ? rootPrefixCls : prefixCls) + '-item-group';
         }
-    },
+    }
+
+    items!: Base[]
 
     initData() {
         return {
             inlineIndent: 24
         };
-    },
+    }
 
     inited() {
         this.items = [];
-    },
+    }
 
-    itemGroupClick(e) {
+    itemGroupClick(e: MouseEvent) {
         e.stopPropagation();
-    },
+    }
 
-    getTitleStyle(mode, level) {
+    getTitleStyle(mode: Props['mode'], level: Props['level']) {
         const inlineIndent = this.data.get('inlineIndent');
 
         return mode === 'inline'
-            ? `padding-left: ${inlineIndent * level}px;`
+            ? !isUndefined(level)
+                ? `padding-left: ${inlineIndent * level}px;`
+                : ''
             : '';
-    },
+    }
 
     updated() {
         const level = this.data.get('level');
+        if (isUndefined(level)) {
+            return;
+        }
         this.items.forEach(item => {
             item.data.set('level', level + 1);
         });
-    },
+    }
 
-    messages: {
+    static messages: Message =  {
         santd_menu_addItem(payload) {
             this.items.push(payload.value);
             this.dispatch('santd_menu_addItem', payload.value);
         }
-    },
+    }
 
     attached() {
         this.dispatch('santd_menu_addItem', this);
-    },
+    }
 
-    template: `
+    static template = /* html */ `
         <li class="{{groupPrefixCls}}" on-click="itemGroupClick($event)">
             <div
                 class="{{groupPrefixCls}}-title"
@@ -75,4 +88,6 @@ export default san.defineComponent({
             </ul>
         </li>
     `
-});
+};
+
+export type TMenuItemGroup = typeof MenuItemGroup;

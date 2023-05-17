@@ -1,9 +1,9 @@
 /**
 * @file docs入口文件
 */
-import san from 'san';
-import Head from './head.md';
+import Base from 'santd/input/Base';
 import Readme from '../README.md';
+import Head from './head.md';
 import Basic from './basic.md';
 import Disabled from './disabled.md';
 import Size from './size.md';
@@ -17,8 +17,8 @@ import CustomRender from './custom-render.md';
 import FieldName from './field-name.md';
 import './style/index.less';
 
-export default san.defineComponent({
-    components: {
+export default class extends Base {
+    static components = {
         readme: Readme,
         head: Head,
         basic: Basic,
@@ -32,8 +32,8 @@ export default san.defineComponent({
         customtrigger: CustomTrigger,
         customrender: CustomRender,
         fieldname: FieldName
-    },
-    template: `
+    };
+    static template = /* html */ `
         <div>
             <head/>
             <basic/>
@@ -49,5 +49,5 @@ export default san.defineComponent({
             <search/>
             <readme/>
         </div>
-    `
-});
+    `;
+}

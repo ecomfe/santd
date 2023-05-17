@@ -1,7 +1,6 @@
 /**
 * @file Santd input docs file
 */
-import san from 'san';
 import Readme from '../README.md';
 import Head from './head.md';
 import Basic from './basic.md';
@@ -16,9 +15,10 @@ import Group from './group.md';
 import Allow from './allow-clear.md';
 import Password from './password.md';
 import Loading from './loading.md';
+import Base from 'santd/base';
 
-export default san.defineComponent({
-    components: {
+export default class extends Base {
+    static components = {
         readme: Readme,
         head: Head,
         basic: Basic,
@@ -33,8 +33,9 @@ export default san.defineComponent({
         allow: Allow,
         password: Password,
         loading :Loading
-    },
-    template: `
+    }
+
+    static template = /* html */ `
         <div>
             <head/>
             <basic/>
@@ -52,4 +53,4 @@ export default san.defineComponent({
             <readme/>
         </div>
     `
-});
+};

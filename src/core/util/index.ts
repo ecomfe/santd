@@ -145,3 +145,7 @@ export const requestAnimationTimeout = (callback: () => void, delay: number) => 
     frame.id = raf(timeout);
     return frame as {id: number};
 };
+
+export function isUndefined<T>(value: T | undefined): value is undefined {
+    return typeof value === 'undefined';
+}

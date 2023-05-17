@@ -4,6 +4,12 @@
  * @file calculateNodeHeight(uiTextNode, useCache = false)
  * @author fuqiangqiang edited this file
  */
+type NodeInfo = {
+    sizingStyle: string;
+    paddingSize: number;
+    borderSize: number;
+    boxSizing: string;
+}
 
 const HIDDEN_TEXTAREA_STYLE = `
 min-height:0 !important;
@@ -33,19 +39,19 @@ const SIZING_STYLE = [
     'padding-right',
     'border-width',
     'box-sizing'
-];
+] as const;
 
-const computedStyleCache = {};
-let hiddenTextarea;
+const computedStyleCache: {[key: string]: NodeInfo} = {};
+let hiddenTextarea: HTMLTextAreaElement | undefined;
 
-function calculateNodeStyling(node, useCache = false) {
+function calculateNodeStyling(node: HTMLTextAreaElement, useCache = false) {
     const nodeRef = (
         node.getAttribute('id')
         || node.getAttribute('data-reactid')
         || node.getAttribute('name')
     );
 
-    if (useCache && computedStyleCache[nodeRef]) {
+    if (useCache && nodeRef && computedStyleCache[nodeRef]) {
         return computedStyleCache[nodeRef];
     }
 
@@ -86,10 +92,10 @@ function calculateNodeStyling(node, useCache = false) {
 }
 
 export default function calculateNodeHeight(
-    uiTextNode,
+    uiTextNode: HTMLTextAreaElement,
     useCache = false,
-    minRows = null,
-    maxRows = null) {
+    minRows?: number,
+    maxRows?: number) {
     if (!hiddenTextarea) {
         hiddenTextarea = document.createElement('textarea');
         document.body.appendChild(hiddenTextarea);
@@ -97,8 +103,9 @@ export default function calculateNodeHeight(
 
     // Fix wrap="off" issue
     // https://github.com/ant-design/ant-design/issues/6577
-    if (uiTextNode.getAttribute('wrap')) {
-        hiddenTextarea.setAttribute('wrap', uiTextNode.getAttribute('wrap'));
+    const attributeWrap = uiTextNode.getAttribute('wrap');
+    if (attributeWrap) {
+        hiddenTextarea.setAttribute('wrap', attributeWrap);
     }
     else {
         hiddenTextarea.removeAttribute('wrap');
@@ -122,7 +129,7 @@ export default function calculateNodeHeight(
     let minHeight = -Infinity;
     let maxHeight = Infinity;
     let height = hiddenTextarea.scrollHeight;
-    let overflowY;
+    let overflowY: string | undefined;
 
     if (boxSizing === 'border-box') {
         // border-box: add border, since height = content + padding + border
@@ -133,18 +140,18 @@ export default function calculateNodeHeight(
         height = height - paddingSize;
     }
 
-    if (minRows !== null || maxRows !== null) {
+    if (minRows !== undefined || maxRows !== undefined) {
         // measure height of a textarea with a single row
         hiddenTextarea.value = '';
         const singleRowHeight = hiddenTextarea.scrollHeight - paddingSize;
-        if (minRows !== null) {
+        if (minRows !== undefined) {
             minHeight = singleRowHeight * minRows;
             if (boxSizing === 'border-box') {
                 minHeight = minHeight + paddingSize + borderSize;
             }
             height = Math.max(minHeight, height);
         }
-        if (maxRows !== null) {
+        if (maxRows !== undefined) {
             maxHeight = singleRowHeight * maxRows;
             if (boxSizing === 'border-box') {
                 maxHeight = maxHeight + paddingSize + borderSize;

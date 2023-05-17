@@ -2,20 +2,28 @@
  * @file Santd trigger popup file
  * @author mayihui@baidu.com
  **/
-
-import san, {DataTypes} from 'san';
-import Animate from '../../core/util/animate';
+import Base from 'santd/base';
+import Animate from '../util/animate';
 import PopupInner from './popupInner';
 
-export default san.defineComponent({
-    dataTypes: {
-        visible: DataTypes.bool,
-        getClassNameFromAlign: DataTypes.func,
-        align: DataTypes.object,
-        destroyPopupOnHide: DataTypes.bool,
-        prefixCls: DataTypes.string,
-        point: DataTypes.object
-    },
+interface Props {
+    visible?: boolean;
+    getClassNameFromAlign?: (align: any) => string;
+    getRootDomNode?: HTMLElement;
+    align?: Record<string, any>;
+    destroyPopupOnHide?: boolean;
+    prefixCls?: string;
+    point: {};
+}
+
+interface Computed {
+    classes: () => string[];
+    getPopupStyle: () => Record<string, any>;
+}
+
+
+
+export default class Popup extends Base<{}, Props, Computed> {
     inited() {
         const destroyPopupOnHide = this.data.get('destroyPopupOnHide');
         this.data.set('destroy', true);
@@ -36,24 +44,24 @@ export default san.defineComponent({
                 }
             }
         });
-    },
-    computed: {
-        classes() {
+    }
+    static computed: Computed = {
+        classes(this: Popup) {
             const prefixCls = this.data.get('prefixCls');
             const currentAlignClassName = this.data.get('currentAlignClassName');
             const align = this.data.get('align');
-            const getClassNameFromAlign = this.data.get('getClassNameFromAlign');
+            const getClassNameFromAlign = this.data.get('getClassNameFromAlign') as NonNullable<Props['getClassNameFromAlign']>;
 
             let classArr = [prefixCls, currentAlignClassName || getClassNameFromAlign(align)];
 
             return classArr;
         },
-        getPopupStyle() {
+        getPopupStyle(this: Popup) {
             const targetWidth = this.data.get('targetWidth');
             const targetHeight = this.data.get('targetHeight');
             const stretch = this.data.get('stretch') || '';
             let popupStyle = this.data.get('popupStyle');
-            let sizeStyle = {};
+            let sizeStyle: Record<string, string> = {};
 
             if (stretch.indexOf('height') !== -1) {
                 sizeStyle.height = `${targetHeight}px`;
@@ -73,40 +81,40 @@ export default san.defineComponent({
                 ...popupStyle
             };
         }
-    },
+    }
     getPopupDomNode() {
         const popupDomNode = this.ref('popupInstance');
-        return popupDomNode && popupDomNode.el.querySelector('div');
-    },
-    handleAlign({source, result}) {
-        const getClassNameFromAlign = this.data.get('getClassNameFromAlign');
+        return popupDomNode && popupDomNode.el?.querySelector('div');
+    }
+    handleAlign({source, result}: {source: HTMLElement, result: any}) {
+        const getClassNameFromAlign = this.data.get('getClassNameFromAlign') as NonNullable<Props['getClassNameFromAlign']>;
         const currentAlignClassName = getClassNameFromAlign(result);
         const prevCurrentAlignClassName = this.data.get('currentAlignClassName');
         if (prevCurrentAlignClassName !== currentAlignClassName) {
             this.data.set('currentAlignClassName', currentAlignClassName);
         }
         this.fire('align', {source, result});
-    },
+    }
     attached() {
         this.dispatch('santd_popup_save', this);
-    },
-    handlePopupMouseEnter(e) {
+    }
+    handlePopupMouseEnter(e: MouseEvent) {
         this.dispatch('santd_popup_mouseEnter', e);
-    },
-    handlePopupMouseLeave(e) {
+    }
+    handlePopupMouseLeave(e: MouseEvent) {
         this.dispatch('santd_popup_mouseLeave', e);
-    },
-    handlePopupMouseDown(e) {
+    }
+    handlePopupMouseDown(e: MouseEvent) {
         this.dispatch('santd_popup_mouseDown', e);
-    },
+    }
     refresh() {
-        this.ref('popupinner').forceAlign();
-    },
-    components: {
+        (this.ref('popupinner') as PopupInner).forceAlign();
+    }
+    static components = {
         's-animate': Animate,
         's-popupinner': PopupInner
-    },
-    template: `
+    }
+    static template = /* html */ `
         <div
             on-mouseenter="handlePopupMouseEnter"
             on-mouseleave="handlePopupMouseLeave"
@@ -132,4 +140,4 @@ export default san.defineComponent({
             </s-popupinner>
         </div>
     `
-});
+};

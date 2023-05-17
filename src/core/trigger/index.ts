@@ -3,19 +3,99 @@
  * @author mayihui@baidu.com
  **/
 
-import san, {DataTypes} from 'san';
+import Base from 'santd/base';
+import {TransitionName} from '../util/animate';
 import Popup from './popup';
 import {contains} from './util';
 import './style/index';
 
-function isPointsEq(a1, a2, isAlignPoint) {
+interface Props {
+    action?: string | string[];
+    showAction?: string[];
+    hideAction?: string[];
+    getPopupClassNameFromAlign?: (align: any) => string;
+    popupStyle?: string | Record<string, any>;
+    prefixCls?: string;
+    popupClassName?: string;
+    // todo
+    popupPlacement?: string;
+    // todo
+    builtinPlacements: Record<string, any>;
+    popupTransitionName: TransitionName;
+    popupAnimation?: Record<string, any>;
+    mouseEnterDelay?: number;
+    mouseLeaveDelay?: number;
+    focusDelay?: number;
+    blurDelay?: number;
+    zIndex?: number;
+    getPopupContainer?: (el?: HTMLElement) => HTMLElement;
+    // todo
+    getDocument?: () => Document;
+    destroyPopupOnHide?: boolean;
+    mask?: boolean;
+    maskClosable?: boolean;
+    // todo
+    popupAlign?: Record<string, any>;
+    popupVisible?: boolean;
+    defaultPopupVisible?: boolean;
+    maskTransitionName?: TransitionName;
+    maskAnimation?: string;
+    alignPoint?: boolean;
+    stretch?: string;
+    useDomNodeForce?: boolean;
+}
+
+interface State {
+    prefixCls: string;
+    getPopupClassNameFromAlign: () => string;
+    getDocument: () => Document;
+    popupClassName: string;
+    mouseEnterDelay: number;
+    mouseLeaveDelay: number;
+    focusDelay: number;
+    blurDelay: number;
+    popupStyle: string | Record<string, any>;
+    destroyPopupOnHide: boolean;
+    popupAlign: Record<string, any>;
+    defaultPopupVisible: boolean;
+    mask: boolean;
+    maskClosable: boolean;
+    action: string[];
+    showAction: string[];
+    hideAction: string[];
+    show: boolean;
+    state: Record<string, any>;
+    useDomNodeForce: boolean;
+}
+
+interface Computed {
+    getPopupAlign: () => Record<string, any>;
+    getClassNameFromAlign: () => (align: any) => string;
+}
+
+interface Message {
+    /* eslint-disable camelcase, @typescript-eslint/naming-convention */
+    santd_popup_save: (this: Trigger, payload: {value: Base}) => void;
+    santd_button_trigger: (this: Trigger, payload: {value: {e: any, action: 'handleFocus' | 'handleBlur'}}) => void;
+    santd_popup_mouseEnter: (this: Trigger, payload: {value: MouseEvent}) => void;
+    santd_popup_mouseLeave: (this: Trigger, payload: {value: MouseEvent}) => void;
+    santd_popup_mouseDown: (this: Trigger, payload: {value: MouseEvent}) => void;
+    /* eslint-enable camelcase, @typescript-eslint/naming-convention */
+}
+
+
+
+function isPointsEq(a1: string[], a2: string[], isAlignPoint?: boolean) {
     if (isAlignPoint) {
         return a1[0] === a2[0];
     }
     return a1[0] === a2[0] && a1[1] === a2[1];
 }
 
-function getAlignFromPlacement(builtinPlacements, placementStr, align) {
+function getAlignFromPlacement(
+    builtinPlacements: Record<string, any>,
+    placementStr: string, align: Record<string, any>
+) {
     const baseAlign = builtinPlacements[placementStr] || {};
     return {
         ...baseAlign,
@@ -23,7 +103,11 @@ function getAlignFromPlacement(builtinPlacements, placementStr, align) {
     };
 }
 
-function getAlignPopupClassName(builtinPlacements, prefixCls, align, isAlignPoint) {
+function getAlignPopupClassName(
+    builtinPlacements: Record<string, any>,
+    prefixCls: string, align: any,
+    isAlignPoint?: boolean
+) {
     const points = align.points;
     for (const placement in builtinPlacements) {
         if (builtinPlacements.hasOwnProperty(placement)) {
@@ -35,41 +119,96 @@ function getAlignPopupClassName(builtinPlacements, prefixCls, align, isAlignPoin
     return '';
 }
 
-let documentEventListener = null;
+let documentEventListener: void | null = null;
 
-export default san.defineComponent({
-    dataTypes: {
-        action: DataTypes.oneOfType([DataTypes.string, DataTypes.array]),
-        showAction: DataTypes.array,
-        hideAction: DataTypes.array,
-        getPopupClassNameFromAlign: DataTypes.func,
-        popupStyle: DataTypes.oneOfType([DataTypes.string, DataTypes.object]),
-        prefixCls: DataTypes.string,
-        popupClassName: DataTypes.string,
-        popupPlacement: DataTypes.string,
-        builtinPlacements: DataTypes.object,
-        popupTransitionName: DataTypes.oneOfType([DataTypes.string, DataTypes.object]),
-        popupAnimation: DataTypes.object,
-        mouseEnterDelay: DataTypes.number,
-        mouseLeaveDelay: DataTypes.number,
-        zIndex: DataTypes.number,
-        focusDelay: DataTypes.number,
-        blurDelay: DataTypes.number,
-        getPopupContainer: DataTypes.func,
-        getDocument: DataTypes.func,
-        destroyPopupOnHide: DataTypes.bool,
-        mask: DataTypes.bool,
-        maskClosable: DataTypes.bool,
-        popupAlign: DataTypes.object,
-        popupVisible: DataTypes.bool,
-        defaultPopupVisible: DataTypes.bool,
-        maskTransitionName: DataTypes.oneOfType([DataTypes.string, DataTypes.object]),
-        maskAnimation: DataTypes.string,
-        alignPoint: DataTypes.bool,
-        stretch: DataTypes.string,
-        useDomNodeForce: DataTypes.bool
-    },
-    initData() {
+export default class Trigger extends Base<State, Props, Computed> {
+    static computed: Computed = {
+        getPopupAlign(this: Trigger) {
+            const popupPlacement = this.data.get('popupPlacement');
+            const popupAlign = this.data.get('popupAlign');
+            const builtinPlacements = this.data.get('builtinPlacements');
+
+            if (popupPlacement && builtinPlacements) {
+                return getAlignFromPlacement(builtinPlacements, popupPlacement, popupAlign);
+            }
+            return popupAlign;
+        },
+        getClassNameFromAlign(this: Trigger) {
+            const alignFun = (align: any) => {
+                const className = [];
+                const popupPlacement = this.data.get('popupPlacement');
+                const builtinPlacements = this.data.get('builtinPlacements');
+                const prefixCls = this.data.get('prefixCls');
+                const alignPoint = this.data.get('alignPoint');
+                const getPopupClassNameFromAlign = this.data.get('getPopupClassNameFromAlign');
+
+                if (popupPlacement && builtinPlacements) {
+                    className.push(getAlignPopupClassName(builtinPlacements, prefixCls, align, alignPoint));
+                }
+                if (getPopupClassNameFromAlign) {
+                    className.push(getPopupClassNameFromAlign(align));
+                }
+                return className.join(' ');
+            };
+            return alignFun;
+        }
+    };
+
+    static components = {
+        's-popup': Popup
+    };
+
+    static messages: Message = {
+        /* eslint-disable camelcase, @typescript-eslint/naming-convention */
+        santd_popup_save(payload) {
+            this.data.set('popupComponent', payload.value);
+        },
+        santd_button_trigger(payload) {
+            const action = payload.value.action;
+            const e = payload.value.e;
+            if (this[action]) {
+                this[action](e, true);
+            }
+        },
+        santd_popup_mouseEnter() {
+            // const e = payload.value;
+            if (this.isMouseEnterToShow()) {
+                this.handlePopupMouseEnter();
+            }
+        },
+        santd_popup_mouseLeave(payload) {
+            const e = payload.value;
+            if (this.isMouseLeaveToHide()) {
+                this.handlePopupMouseLeave(e);
+            }
+        },
+        santd_popup_mouseDown() {
+            this.handlePopupMouseDown();
+        }
+        /* eslint-enable camelcase, @typescript-eslint/naming-convention */
+    };
+
+    static template = /* html */ `<span
+        on-click="handleClick"
+        on-mousedown="handleMouseDown"
+        on-touchstart="handleTouchStart"
+        on-mouseenter="handleMouseEnter"
+        on-mousemove="handleMouseMove"
+        on-mouseleave="handleMouseLeave"
+        on-contextmenu="handleContextMenu"
+    >
+        <slot />
+    </span>`;
+
+    delayTimer!: NodeJS.Timer | null;
+
+    _container!: HTMLElement | null;
+
+    _popup!: Popup | null;
+
+    mouseDownTimeout!: NodeJS.Timer;
+
+    initData(): State {
         return {
             prefixCls: 'trigger-popup',
             getPopupClassNameFromAlign() {
@@ -96,38 +235,8 @@ export default san.defineComponent({
             state: {},
             useDomNodeForce: false
         };
-    },
-    computed: {
-        getPopupAlign() {
-            const popupPlacement = this.data.get('popupPlacement');
-            const popupAlign = this.data.get('popupAlign');
-            const builtinPlacements = this.data.get('builtinPlacements');
+    }
 
-            if (popupPlacement && builtinPlacements) {
-                return getAlignFromPlacement(builtinPlacements, popupPlacement, popupAlign);
-            }
-            return popupAlign;
-        },
-        getClassNameFromAlign() {
-            const that = this;
-            return function (align) {
-                const className = [];
-                const popupPlacement = that.data.get('popupPlacement');
-                const builtinPlacements = that.data.get('builtinPlacements');
-                const prefixCls = that.data.get('prefixCls');
-                const alignPoint = that.data.get('alignPoint');
-                const getPopupClassNameFromAlign = that.data.get('getPopupClassNameFromAlign');
-
-                if (popupPlacement && builtinPlacements) {
-                    className.push(getAlignPopupClassName(builtinPlacements, prefixCls, align, alignPoint));
-                }
-                if (getPopupClassNameFromAlign) {
-                    className.push(getPopupClassNameFromAlign(align));
-                }
-                return className.join(' ');
-            };
-        }
-    },
     inited() {
         const popupVisible = this.data.get('visible') || this.data.get('defaultPopupVisible');
         this.data.set('popupVisible', popupVisible);
@@ -138,64 +247,68 @@ export default san.defineComponent({
         }
 
         this.watch('popupVisible', val => {
+            /* eslint-disable no-underscore-dangle */
             if (!this._container) {
                 this.attachPopup();
             }
             this.nextTick(() => {
-                this._popup.data.set('visible', val);
+                this._popup?.data.set('visible', val);
             });
+            /* eslint-enable no-underscore-dangle */
         });
 
         this.watch('visible', val => {
             this.data.set('popupVisible', val);
         });
-    },
+    }
     attached() {
         if (this.data.get('popupVisible')) {
             this.attachPopup();
-            this._popup.data.set('visible', true);
+            /* eslint-disable no-underscore-dangle */
+            this._popup?.data.set('visible', true);
+            /* eslint-enable no-underscore-dangle */
         }
-    },
+    }
     detached() {
         this.clearDelayTimer();
         this.removeContainer();
-    },
+    }
     isClickToShow() {
         const action = this.data.get('action');
         const showAction = this.data.get('showAction');
         return action.indexOf('click') !== -1 || showAction.indexOf('click') !== -1;
-    },
+    }
     isClickToHide() {
         const action = this.data.get('action');
         const hideAction = this.data.get('hideAction');
         return action.indexOf('click') !== -1 || hideAction.indexOf('click') !== -1;
-    },
+    }
     isMouseEnterToShow() {
         const action = this.data.get('action');
         const hideAction = this.data.get('hideAction');
         return action.indexOf('hover') !== -1 || hideAction.indexOf('mouseEnter') !== -1;
-    },
+    }
     isMouseLeaveToHide() {
         const action = this.data.get('action');
         const hideAction = this.data.get('hideAction');
         return action.indexOf('hover') !== -1 || hideAction.indexOf('mouseLeave') !== -1;
-    },
+    }
     isFocusToShow() {
         const action = this.data.get('action');
         const hideAction = this.data.get('hideAction');
         return action.indexOf('focus') !== -1 || hideAction.indexOf('focus') !== -1;
-    },
+    }
     isBlurToHide() {
         const action = this.data.get('action');
         const hideAction = this.data.get('hideAction');
         return action.indexOf('focus') !== -1 || hideAction.indexOf('blur') !== -1;
-    },
+    }
     isContextMenuToShow() {
         const action = this.data.get('action');
         const hideAction = this.data.get('hideAction');
         return action.indexOf('contextMenu') !== -1 || hideAction.indexOf('contextMenu') !== -1;
-    },
-    setPopupVisible(visible, e) {
+    }
+    setPopupVisible(visible: boolean, e?: MouseEvent | null) {
         const alignPoint = this.data.get('alignPoint');
 
         this.clearDelayTimer();
@@ -208,10 +321,10 @@ export default san.defineComponent({
             this.fire('visibleChange', visible);
         }
         if (alignPoint && e) {
-            this.setpoint(e);
+            this.setPoint(e);
         }
-    },
-    setPoint(e) {
+    }
+    setPoint(e: MouseEvent) {
         const alignPoint = this.data.get('alignPoint');
 
         if (!e || !alignPoint) {
@@ -222,14 +335,14 @@ export default san.defineComponent({
             pageX: e.pageX,
             pageY: e.pageY
         });
-    },
+    }
     clearDelayTimer() {
         if (this.delayTimer) {
             clearTimeout(this.delayTimer);
             this.delayTimer = null;
         }
-    },
-    handleClick(e, forceTrigger) {
+    }
+    handleClick(e: MouseEvent, forceTrigger: boolean) {
         if (this.isClickToShow() || this.isClickToHide() || forceTrigger) {
             if (e && e.preventDefault) {
                 e.preventDefault();
@@ -240,72 +353,75 @@ export default san.defineComponent({
                 this.setPopupVisible(nextVisible, e);
             }
         }
-    },
-    handleMouseDown(e) {
+    }
+    handleMouseDown(e: MouseEvent) {
         this.fire('mouseDown', e);
         this.data.set('preClickTime', Date.now());
-    },
-    handleTouchStart(e) {
+    }
+    handleTouchStart(e: TouchEvent) {
         this.fire('touchStart', e);
         this.data.set('preTouchTime', Date.now());
-    },
-    handleMouseEnter(e, forceTrigger) {
+    }
+    handleMouseEnter(e: MouseEvent, forceTrigger: boolean) {
         if (this.isMouseEnterToShow() || forceTrigger) {
             const mouseEnterDelay = this.data.get('mouseEnterDelay');
             this.fire('mouseEnter', e);
-            mouseEnterDelay
-                ? this.delaySetPopupVisible(true, mouseEnterDelay, mouseEnterDelay ? null : e)
-                : this.setPopupVisible(true);
+            if (mouseEnterDelay) {
+                this.delaySetPopupVisible(true, mouseEnterDelay, mouseEnterDelay ? null : e);
+            }
+            else {
+                this.setPopupVisible(true);
+            }
         }
-    },
-    handleMouseMove(e, forceTrigger) {
+    }
+    handleMouseMove(e: MouseEvent, forceTrigger: boolean) {
         const alignPoint = this.data.get('alignPoint');
 
         if ((this.isMouseEnterToShow() || forceTrigger) && alignPoint) {
             this.fire('mouseMove', e);
             this.setPoint(e);
         }
-    },
-    handleMouseLeave(e) {
+    }
+    handleMouseLeave(e: MouseEvent) {
         if (this.isMouseLeaveToHide()) {
             this.fire('mouseLeave', e);
             const mouseLeaveDelay = this.data.get('mouseLeaveDelay');
             this.delaySetPopupVisible(false, mouseLeaveDelay);
         }
-    },
-    handleFocus(e, forceTrigger) {
+    }
+    handleFocus(e: MouseEvent, forceTrigger: boolean) {
         if (this.isFocusToShow() || (forceTrigger && !this.isClickToShow())) {
             this.fire('focus', e);
             this.clearDelayTimer();
             this.data.set('focusTime', Date.now());
             this.delaySetPopupVisible(true, this.data.get('focusDelay'));
         }
-    },
-    handleBlur(e, forceTrigger) {
+    }
+    handleBlur(e: MouseEvent, forceTrigger: boolean) {
         if (this.isBlurToHide() || (forceTrigger && !this.isClickToHide())) {
             this.fire('blur', e);
             this.clearDelayTimer();
             this.delaySetPopupVisible(false, this.data.get('blurDelay'));
         }
-    },
-    handleContextMenu(e) {
+    }
+    handleContextMenu(e: MouseEvent) {
         if (this.isContextMenuToShow()) {
             e.preventDefault();
             this.fire('contextMenu', e);
             this.setPopupVisible(true, e);
         }
-    },
+    }
     handlePopupMouseEnter() {
         this.fire('popupMouseEnter');
         this.clearDelayTimer();
-    },
-    handlePopupMouseLeave(e) {
-        if (e.relatedTarget && contains(this.el, e.relatedTarget)) {
+    }
+    handlePopupMouseLeave(e: MouseEvent) {
+        if (e.relatedTarget && contains(this.el as Element, e.relatedTarget as Element)) {
             return;
         }
         this.fire('popupMouseLeave');
         this.delaySetPopupVisible(false, this.data.get('mouseLeaveDelay'));
-    },
+    }
     handlePopupMouseDown() {
         this.data.set('hasPopupMouseDown', true);
 
@@ -313,39 +429,39 @@ export default san.defineComponent({
         this.mouseDownTimeout = setTimeout(() => {
             this.data.set('hasPopupMouseDown', false);
         }, 0);
-    },
-    handleDocumentClick(e) {
-        const target = e.target;
-        const root = this.el;
+    }
+    handleDocumentClick(e: MouseEvent) {
+        const target = e.target as Element;
+        const root = this.el as Element;
         const hasPopupMouseDown = this.data.get('hasPopupMouseDown');
         if (!contains(root, target) && !hasPopupMouseDown) {
             this.close(e);
         }
-    },
-    delaySetPopupVisible(visible, delayS, e) {
+    }
+    delaySetPopupVisible(visible: boolean, delayS: number, e?: MouseEvent | null) {
         const delay = delayS * 1000;
         this.clearDelayTimer();
         if (delay) {
             const point = e ? {pageX: e.pageX, pageY: e.pageY} : null;
             this.delayTimer = setTimeout(() => {
-                this.setPopupVisible(visible, point);
+                this.setPopupVisible(visible, point as MouseEvent);
                 this.clearDelayTimer();
             }, delay);
         }
         else {
-            this.setPopupVisible(visible, event);
+            this.setPopupVisible(visible, e);
         }
-    },
-    close(e) {
+    }
+    close(e?: MouseEvent | null) {
         this.setPopupVisible(false, e);
-    },
+    }
     getPopupDomNode() {
         const popupComponent = this.data.get('popupComponent');
         if (popupComponent) {
             return popupComponent.getPopupDomNode();
         }
         return null;
-    },
+    }
     getContainer() {
         const getPopupContainer = this.data.get('getPopupContainer');
         const getDocument = this.data.get('getDocument');
@@ -356,49 +472,19 @@ export default san.defineComponent({
         popupContainer.style.left = '0';
         popupContainer.style.width = '100%';
 
-        const mountNode = getPopupContainer ? getPopupContainer(this.el) : getDocument().body;
+        const mountNode = getPopupContainer ? getPopupContainer(this.el as HTMLElement) : getDocument().body;
         mountNode.appendChild(popupContainer);
 
         return popupContainer;
-    },
-    components: {
-        's-popup': Popup
-    },
-    messages: {
-        santd_popup_save(payload) {
-            this.data.set('popupComponent', payload.value);
-        },
-        santd_button_trigger(payload) {
-            const action = payload.value.action;
-            const e = payload.value.e;
-            if (this[action]) {
-                this[action](e, true);
-            }
-        },
-        santd_popup_mouseEnter(payload) {
-            const e = payload.value;
-            if (this.isMouseEnterToShow()) {
-                this.handlePopupMouseEnter(e);
-            }
-        },
-        santd_popup_mouseLeave(payload) {
-            const e = payload.value;
-            if (this.isMouseLeaveToHide()) {
-                this.handlePopupMouseLeave(e);
-            }
-        },
-        santd_popup_mouseDown(payload) {
-            const e = payload.value;
-            this.handlePopupMouseDown(e);
-        }
-    },
-    getRootDomNode(rootDomNode) {
+    }
+    getRootDomNode(rootDomNode?: HTMLElement) {
         const useDomNodeForce = this.data.get('useDomNodeForce');
         return rootDomNode || (!useDomNodeForce && this.el);
-    },
+    }
+    /* eslint-disable no-underscore-dangle */
     attachPopup() {
-        this._container = this.getContainer();
 
+        this._container = this.getContainer();
         this._popup = new Popup({
             owner: this,
             source: `
@@ -419,26 +505,19 @@ export default san.defineComponent({
         });
 
         this._popup.attach(this._container);
-    },
+    }
     removeContainer() {
         if (this._container) {
-            this._container.parentNode.removeChild(this._container);
+            /* eslint-disable no-unused-expressions */
+            this._container.parentNode?.removeChild(this._container);
+            /* eslint-enable no-unused-expressions */
             this._container = null;
-            this.popup = null;
+            this._popup = null;
         }
-    },
+
+    }
     refresh() {
         this._popup && this._popup.refresh();
-    },
-    template: `<span
-        on-click="handleClick"
-        on-mousedown="handleMouseDown"
-        on-touchstart="handleTouchStart"
-        on-mouseenter="handleMouseEnter"
-        on-mousemove="handleMouseMove"
-        on-mouseleave="handleMouseLeave"
-        on-contextmenu="handleContextMenu"
-    >
-        <slot />
-    </span>`
-});
+    }
+    /* eslint-enable no-underscore-dangle */
+}
