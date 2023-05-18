@@ -6,7 +6,7 @@
 import './style/index.less';
 import Base from 'santd/base';
 import {classCreator} from '../core/util';
-import ResponsiveObserve, {responsiveArray} from '../core/util/responsiveObserve';
+import ResponsiveObserve, {responsiveArray, Screens} from '../core/util/responsiveObserve';
 const prefixCls = classCreator('descriptions')();
 import * as I from './interface';
 const defaultColumnMap = {
@@ -68,7 +68,7 @@ export default class Descriptions  extends Base<I.State> {
                 for (let i = 0; i < responsiveArray.length; i++) {
                     const breakpoint = responsiveArray[i];
                     if (screens[breakpoint] && column[breakpoint] !== undefined) {
-                        return column[breakpoint] || defaultColumnMap[breakpoint as keyof I.Screens];
+                        return column[breakpoint] || defaultColumnMap[breakpoint as keyof Screens];
                     }
                 }
             }

@@ -39,7 +39,7 @@ interface Subscriber {
 
 type TScreen = keyof typeof responsiveMap;
 
-type Screens = {
+export type Screens = {
     [key in TScreen]?: string;
 }
 
