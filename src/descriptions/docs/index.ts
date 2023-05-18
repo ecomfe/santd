@@ -2,7 +2,7 @@
  * @file Santd descriptions docs file
  **/
 
-import san from 'san';
+import Base from 'santd/base';
 import Readme from '../README.md';
 import Desc from './desc.md';
 import Basic from './basic.md';
@@ -11,9 +11,8 @@ import Size from './size.md';
 import Responsive from './responsive.md';
 import Vertical from './vertical.md';
 import VerticalBordered from './verticalBordered.md';
-
-export default san.defineComponent({
-    components: {
+export default class  extends Base {
+    static components = {
         desc: Desc,
         readme: Readme,
         basic: Basic,
@@ -22,8 +21,8 @@ export default san.defineComponent({
         responsive: Responsive,
         vertical: Vertical,
         verticalbordered: VerticalBordered
-    },
-    template: `
+    };
+    static template = `
         <div>
             <desc/>
             <basic/>
@@ -34,5 +33,6 @@ export default san.defineComponent({
             <verticalbordered/>
             <readme/>
         </div>
-    `
-});
+    `;
+
+};

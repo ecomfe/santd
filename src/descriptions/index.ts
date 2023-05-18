@@ -4,11 +4,11 @@
  */
 
 import './style/index.less';
-import san, {DataTypes} from 'san';
+import Base from 'santd/base';
 import {classCreator} from '../core/util';
 import ResponsiveObserve, {responsiveArray} from '../core/util/responsiveObserve';
 const prefixCls = classCreator('descriptions')();
-
+import * as I from './interface';
 const defaultColumnMap = {
     xxl: 3,
     xl: 3,
@@ -18,20 +18,14 @@ const defaultColumnMap = {
     xs: 1
 };
 
-const Item = san.defineComponent({
-    template: '<template></template>'
-});
+class Item extends Base {
+    static template = '<template></template>';
+}
 
-const Descriptions = san.defineComponent({
-    dataTypes: {
-        bordered: DataTypes.bool,
-        size: DataTypes.string,
-        title: DataTypes.string,
-        column: DataTypes.oneOfType([DataTypes.number, DataTypes.object]),
-        layout: DataTypes.string
-    },
+export default class Descriptions  extends Base<I.State> {
+    public token!: string;
 
-    initData() {
+    initData(): I.State {
         return {
             size: 'default',
             bordered: false,
@@ -39,7 +33,7 @@ const Descriptions = san.defineComponent({
             column: defaultColumnMap,
             screens: {}
         };
-    },
+    }
 
     attached() {
         const column = this.data.get('column');
@@ -49,14 +43,14 @@ const Descriptions = san.defineComponent({
             }
             this.data.set('screens', screens);
         });
-    },
+    }
 
     disposed() {
         ResponsiveObserve.unsubscribe(this.token);
-    },
+    }
 
-    computed: {
-        classes() {
+    static computed = {
+        classes(this: Descriptions) {
             const size = this.data.get('size');
             const bordered = this.data.get('bordered');
             let classArr = [prefixCls];
@@ -66,29 +60,29 @@ const Descriptions = san.defineComponent({
 
             return classArr;
         },
-        getColumn() {
-            const column = this.data.get('column');
-            const screens = this.data.get('screens');
+        getColumn(this: Descriptions) {
+            const column: any = this.data.get('column');
+            const screens: any = this.data.get('screens');
 
             if (typeof column === 'object') {
                 for (let i = 0; i < responsiveArray.length; i++) {
                     const breakpoint = responsiveArray[i];
                     if (screens[breakpoint] && column[breakpoint] !== undefined) {
-                        return column[breakpoint] || defaultColumnMap[breakpoint];
+                        return column[breakpoint] || defaultColumnMap[breakpoint as keyof I.Screens];
                     }
                 }
             }
             return typeof column === 'number' ? column : 3;
         }
-    },
+    }
 
-    inited() {
+    inited(): void {
         const column = this.data.get('getColumn');
-        let slots = this.sourceSlots.noname || [];
+        let slots: any[] = this.sourceSlots.noname || [];
         let totalRowSpan = 0;
         let childrenArray = [];
-        let columnArray = [];
-        slots.filter(slot => slot.tagName).forEach(slot => {
+        let columnArray: any[] = [];
+        slots.filter(slot  => slot.tagName).forEach(slot => {
             // san 从 3.10.6 开始，删除了 hotspot 属性，因此这里要做兼容
             // 详见：https://github.com/baidu/san/commit/573c1b1b39129029af28478ff4e2a9087229647a
             const {label: labelIndex, span: spanIndex} = slot.hotspot ? slot.hotspot.props : slot._pi;
@@ -116,9 +110,9 @@ const Descriptions = san.defineComponent({
                 this.sourceSlots.named[`slot_${i}_${j}`] = child.children;
             });
         });
-    },
+    }
 
-    getColSpan(i, j, child) {
+    getColSpan(i: number, j: number, child: any) {
         const childrenArray = this.data.get('childrenArray');
         const column = this.data.get('getColumn');
         const span = child.span;
@@ -128,9 +122,9 @@ const Descriptions = san.defineComponent({
             return lastSpan;
         }
         return span || 1;
-    },
+    }
 
-    template: `<div class="{{classes}}">
+    static template = `<div class="{{classes}}">
         <div class="${prefixCls}-title" s-if="title">{{title}}</div>
         <div class="${prefixCls}-view">
             <table>
@@ -192,9 +186,7 @@ const Descriptions = san.defineComponent({
                 </tbody>
             </table>
         </div>
-    <div>`
-});
+    <div>`;
 
-Descriptions.Item = Item;
-
-export default Descriptions;
+    static Item = Item;
+};

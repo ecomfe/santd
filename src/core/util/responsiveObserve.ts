@@ -30,7 +30,7 @@ export const responsiveMap = {
 
 type Token = string;
 
-type Func = (screens: Screens) => {};
+type Func = (screens: Screens) => void;
 
 interface Subscriber {
     token: Token;
