@@ -2,36 +2,33 @@
 * @file DropdownButton button按钮控制dropdown
 * @author fuqiangqiang@baidu.com
 */
-import san, {DataTypes} from 'san';
+import Base from 'santd/base';
 import Dropdown from './Dropdown';
 import {classCreator} from '../core/util';
 import Icon from '../icon';
 import Button from '../button';
+import {DropdownButtonProps as Props} from './interface';
+
 const prefixCls = classCreator('dropdown-button')();
 
-export default san.defineComponent({
-    dataTypes: {
-        type: DataTypes.string,
-        htmlType: DataTypes.string,
-        disabled: DataTypes.bool,
-        icon: DataTypes.string,
-        href: DataTypes.string
-    },
-    components: {
+export default class DropdownButton extends Base<{}, Props, {}> {
+    static components = {
         's-dropdown': Dropdown,
         's-icon': Icon,
         's-button': Button,
         's-button-group': Button.Group
-    },
-    handleLeftButton(e) {
+    }
+
+    handleLeftButton(e: MouseEvent) {
         e.stopPropagation();
         this.fire('click', e);
-    },
-    handleVisibleChange(value) {
-        this.fire('visibleChange', value);
-    },
+    }
 
-    template: `
+    handleVisibleChange(value: boolean) {
+        this.fire('visibleChange', value);
+    }
+
+    static template = /* html */ `
         <span>
             <s-button-group class="${prefixCls}" size="{{size}}">
                 <s-button
@@ -55,4 +52,6 @@ export default san.defineComponent({
             </s-button-group>
         </span>
     `
-});
+};
+
+export type TDropdownButton = typeof DropdownButton;

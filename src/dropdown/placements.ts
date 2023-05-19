@@ -1,6 +1,7 @@
 /**
 * @file 定义placement的方向
 */
+import {PlacementMap} from 'santd/tooltip/interface';
 
 const autoAdjustOverflow = {
     adjustX: 1,
@@ -9,7 +10,7 @@ const autoAdjustOverflow = {
 
 const targetOffset = [0, 0];
 
-export default {
+export const placements: PlacementMap = {
     topLeft: {
         points: ['bl', 'tl'],
         overflow: autoAdjustOverflow,

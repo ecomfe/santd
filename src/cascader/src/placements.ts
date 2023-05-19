@@ -2,8 +2,9 @@
  * @file Santd cascader placements file
  * @author mayihui@baidu.com
  **/
+import {PlacementMap} from 'santd/tooltip/interface';
 
-export default {
+export const placements: PlacementMap = {
     bottomLeft: {
         points: ['tl', 'bl'],
         offset: [0, 4],

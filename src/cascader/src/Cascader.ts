@@ -6,7 +6,7 @@
 
 import Base from 'santd/base';
 import Trigger from '../../core/trigger/index';
-import placements from './placements';
+import {placements} from './placements';
 import Menus from './Menus';
 import {classCreator} from '../../core/util';
 import arrayTreeFilter from './arraytreefilter';

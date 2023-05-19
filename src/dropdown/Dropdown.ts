@@ -4,17 +4,27 @@
 */
 
 import {classCreator} from '../core/util';
-import Placement from './placements';
+import {placements} from './placements';
 import './style/index';
 import ToolTip from '../tooltip';
+import {
+    DropdownState,
+    DropdownComputed as Computed
+} from './interface';
+import {TDropdownButton} from './DropdownButton';
+import {ItemType} from '../menu/interface';
+
+type Message = {
+    santd_menu_itemClick: (this: Dropdown, payload: {value: ItemType}) => void;
+};
 
 const prefixCls = classCreator('dropdown')();
 
 export default class Dropdown extends ToolTip {
-    initData() {
+    initData(): DropdownState {
         return {
             ...ToolTip.prototype.initData(),
-            builtinPlacements: Placement,
+            builtinPlacements: placements,
             placement: 'bottomLeft',
             mouseEnterDelay: 0.15,
             mouseLeaveDelay: 0.1,
@@ -23,23 +33,35 @@ export default class Dropdown extends ToolTip {
         };
     }
 
-    static computed = {
-        getTransitionName() {
+    static Button: TDropdownButton
+
+    static computed: Computed = {
+        // 必须扩展Tooltip.computed的已有属性（colorStyle、builtinPlacements、arrowColorStyle）否则报class扩展错误
+        colorStyle() {
+            return '';
+        },
+        arrowColorStyle() {
+            return '';
+        },
+        builtinPlacements(this: Dropdown) {
+            return this.data.get('builtinPlacements');
+        },
+        getTransitionName(this: Dropdown) {
             const placement = this.data.get('placement');
             const transitionName = this.data.get('transitionName');
             return transitionName ? transitionName : placement.indexOf('top') >= 0 ? 'slide-down' : 'slide-up';
         }
     };
 
-    static messages = {
-        santd_menu_itemClick(payload) {
+    static messages: Message = {
+        santd_menu_itemClick(_payload) {
             if (!('visible' in this.data.get())) {
                 this.data.set('popupVisible', false);
             }
         }
     };
 
-    getRootDomNode(rootDomNode) {
+    getRootDomNode(rootDomNode: boolean) {
         const useDomNodeForce = this.data.get('useDomNodeForce');
         return rootDomNode || (!useDomNodeForce && this.el);
     }
