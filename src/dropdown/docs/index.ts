@@ -1,7 +1,6 @@
 /**
 * @file docs入口文件
 */
-import san from 'san';
 import Readme from '../README.md';
 import Head from './head.md';
 import Basic from './basic.md';
@@ -13,9 +12,10 @@ import Event from './event.md';
 import Placement from './placement.md';
 import Visible from './overlay-visible.md';
 import Contextmenu from './context-menu.md';
+import Base from 'santd/base';
 
-export default san.defineComponent({
-    components: {
+export default class extends Base {
+    static components = {
         readme: Readme,
         head: Head,
         basic: Basic,
@@ -27,8 +27,8 @@ export default san.defineComponent({
         event: Event,
         placement: Placement,
         visible: Visible
-    },
-    template: `
+    }
+    static template = /* html */ `
         <div>
             <head/>
             <basic/>
@@ -43,4 +43,4 @@ export default san.defineComponent({
             <readme/>
         </div>
     `
-});
+};

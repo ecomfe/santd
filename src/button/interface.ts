@@ -6,7 +6,7 @@ const BUTTON_SHAPES = ['circle', 'circle-outline', 'round'] as const;
 type ButtonShape = typeof BUTTON_SHAPES[number];
 
 const BUTTON_HTMLTYPES = ['submit', 'button', 'reset'] as const;
-type ButtonHTMLType = typeof BUTTON_HTMLTYPES[number];
+export type ButtonHTMLType = typeof BUTTON_HTMLTYPES[number];
 
 interface BaseButtonProps {
     type?: ButtonType;
