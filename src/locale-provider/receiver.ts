@@ -3,10 +3,11 @@
  **/
 
 import defaultLocaleData from './zh_CN';
+import Base from 'santd/base';
 
 export default {
     computed: {
-        locale() {
+        locale<TBase extends Base>(this: TBase) {
             const componentName = this.data.get('componentName') || 'global';
             const defaultLocale = this.data.get('defaultLocale');
             const locale = defaultLocale || defaultLocaleData[componentName];
@@ -20,7 +21,7 @@ export default {
             };
             return result;
         },
-        localeCode() {
+        localeCode<TBase extends Base>(this: TBase) {
             const sanLocale = this.data.get('localeContext') || defaultLocaleData;
             const localeCode = sanLocale && sanLocale.locale;
             if (sanLocale && sanLocale.exist && !localeCode) {
@@ -30,7 +31,7 @@ export default {
         }
     },
 
-    inited() {
+    inited<TBase extends Base>(this: TBase) {
         this.dispatch('santd_add_locale_receiver', this);
     }
 };

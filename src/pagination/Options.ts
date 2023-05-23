@@ -1,35 +1,42 @@
 /**
  * @file Santd pagination options file
  **/
-
-import san from 'san';
+import Base from 'santd/base';
 import Select from '../select';
 import KEYCODE from '../core/util/keyCode';
+import {
+    OptionsState as State,
+    OptionsProps as Props
+} from './interface';
 
-export default san.defineComponent({
-    components: {
+function isValueNotNaN(value: any): value is number {
+    return !isNaN(value);
+}
+
+export default class Options extends Base<State, Props> {
+    static components = {
         's-select': Select,
+        // @ts-ignore TODO：Select ts化后，将删除
         's-option': Select.Option
-    },
-    handleChangeSize(value) {
+    }
+    handleChangeSize(value: string) {
         this.fire('changeSize', Number(value));
-    },
-    handleChange(e) {
-        this.data.set('goInputText', e.target.value);
-    },
-    handleGo(e) {
-        let val = this.data.get('goInputText');
+    }
+    handleChange(e: InputEvent) {
+        this.data.set('goInputText', (e.target as HTMLInputElement).value);
+    }
+    handleGo(e: any) {
+        const val = this.data.get('goInputText');
         if (val === '') {
             return;
         }
-
-        val = isNaN(val) ? this.data.get('current') : Number(val);
+        let newVal = isValueNotNaN(val) ? Number(val) : this.data.get('current');
         if (e.keyCode === KEYCODE.ENTER || e.type === 'click') {
             this.data.set('goInputText', '');
-            this.fire('quickGo', val);
+            this.fire('quickGo', newVal);
         }
-    },
-    template: `
+    }
+    static template = `
         <li class="{{rootPrefixCls}}-options">
             <s-select
                 s-if="{{showSizeChanger}}"
@@ -59,4 +66,6 @@ export default san.defineComponent({
             </div>
         </li>
     `
-});
+};
+
+export type TOptions = typeof Options;

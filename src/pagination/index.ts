@@ -4,10 +4,28 @@
 */
 import './style/index';
 import san from 'san';
+import Base from 'santd/base';
 import Icon from '../icon';
 import {classCreator} from '../core/util';
 import pagination from './Pagination';
 import localeReceiver from '../locale-provider/receiver';
+import {
+    PaginationData,
+    TItemRender,
+    TShowTotal
+} from './interface';
+
+interface State {
+    componentName: string;
+}
+
+export interface Props extends Partial<PaginationData> {
+    /**
+     * 用于自定义页码的结构
+     */
+    itemRender?: TItemRender | boolean;
+    showTotal?: TShowTotal;
+}
 
 const prefixCls = classCreator('pagination')();
 
@@ -53,37 +71,37 @@ const jumpNextIcon = san.defineComponent({
       </a>`
 });
 
-export default san.defineComponent({
-    components: {
+export default class extends Base<State, Props> {
+    static components = {
         pagination,
         previcon: prevIcon,
         nexticon: nextIcon,
         jumpprevicon: jumpPrevIcon,
         jumpnexticon: jumpNextIcon
-    },
+    }
 
-    handleShowSizeChange(payload) {
+    handleShowSizeChange(payload: {current: number, pageSize: number}) {
         this.fire('showSizeChange', payload);
-    },
+    }
 
-    handleChange(payload) {
+    handleChange(payload: {page: number, pageSize: number}) {
         this.fire('change', payload);
-    },
+    }
 
     inited() {
         this.data.set('itemRender', !!this.sourceSlots.named.itemRender);
         localeReceiver.inited.call(this);
-    },
+    }
 
     initData() {
         return {
             componentName: 'Pagination'
         };
-    },
+    }
 
-    computed: localeReceiver.computed,
+    static computed = localeReceiver.computed
 
-    template: `
+    static template = `
         <div>
             <pagination
                 defaultCurrent="{{defaultCurrent}}"
@@ -113,4 +131,4 @@ export default san.defineComponent({
             </pagination>
         </div>
     `
-});
+};
