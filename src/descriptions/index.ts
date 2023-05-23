@@ -112,7 +112,7 @@ export default class Descriptions  extends Base<I.State> {
         });
     }
 
-    getColSpan(i: number, j: number, child: any) {
+    getColSpan(i: number, j: number, child: {span: number | string}) {
         const childrenArray = this.data.get('childrenArray');
         const column = this.data.get('getColumn');
         const span = child.span;
