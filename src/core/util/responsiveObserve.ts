@@ -30,7 +30,7 @@ export const responsiveMap = {
 
 type Token = string;
 
-type Func = (screens: Screens) => {};
+type Func = (screens: Screens) => void;
 
 interface Subscriber {
     token: Token;
@@ -39,7 +39,7 @@ interface Subscriber {
 
 type TScreen = keyof typeof responsiveMap;
 
-type Screens = {
+export type Screens = {
     [key in TScreen]?: string;
 }
 
