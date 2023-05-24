@@ -4,7 +4,7 @@
 import Base from 'santd/base';
 import {
     PagerProps as Props,
-    PagerComputed as Computed,
+    PagerComputed as Computed
 } from './interface';
 
 export default class Pager extends Base <{}, Props, Computed> {
@@ -24,13 +24,13 @@ export default class Pager extends Base <{}, Props, Computed> {
         this.fire('click', this.data.get('page'));
     }
     handleKeyPress(e: KeyboardEvent) {
-        // 疑问：fire只接受一个参数，this.data.get('page')传参无效，怀疑错误仿造了ant的写法，故先ts-ignore处理
+        // 疑问：this.fire只接受一个参数，this.data.get('page')传参无效，怀疑错误仿造了ant的写法
         // @ts-ignore
         this.fire('keyPress', e, this.data.get('page'));
     }
     static template = `<li
         title="{{showTitle ? page : ''}}"
-        class="{{classes}} mmm-sssss"
+        class="{{classes}}"
         on-click="handleClick"
         on-keyPress="handleKeyPress"
         tabIndex="0"
@@ -39,5 +39,3 @@ export default class Pager extends Base <{}, Props, Computed> {
         <a s-else>{{page}}</a>
     </li>`
 };
-
-export type TPager = typeof Pager;

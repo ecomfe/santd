@@ -121,8 +121,8 @@ export interface PaginationData {
     locale: PaginationLocale;
 }
 
-export type PageItem_1 = {type: 'page', page: number, className?: string};
-export type PageItem_2 = {type: 'jumpPrev' | 'jumpNext'};
+export type TPageItem = {type: 'page', page: number, className?: string};
+export type TPageItemJump = {type: 'jumpPrev' | 'jumpNext'};
 export type TShowTotal = (total: number, range: [number, number]) => boolean;
 
 export interface PaginationProps extends Partial<PaginationData> {
@@ -159,7 +159,7 @@ export interface PaginationComputed {
     hasPrev: () => boolean;
     hasNext: () => boolean;
     allPages: () => number;
-    pageList: () => Array<PageItem_1 | PageItem_2>
+    pageList: () => Array<TPageItem | TPageItemJump>
     totalText: () => boolean;
 }
 

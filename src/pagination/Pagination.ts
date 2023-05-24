@@ -12,7 +12,7 @@ import {
     PaginationComputed as Computed,
     PaginationStateAppend as StateAppend,
     JumpFun,
-    PageItem_1
+    TPageItem
 } from './interface';
 
 const prevTemplate = `
@@ -82,7 +82,6 @@ export default class Pagination extends Base<State, Props & StateAppend, Compute
     next!: JumpFun;
     jumpPrev!: JumpFun;
     jumpNext!: JumpFun;
-
 
     initData(): State {
         return {
@@ -178,14 +177,14 @@ export default class Pagination extends Base<State, Props & StateAppend, Compute
                 }
 
                 if (current - 1 >= pageBufferSize * 2 && current !== 1 + 2) {
-                    pageList.length && ((pageList[0] as PageItem_1).className = prefixCls + '-item-after-jump-prev');
+                    pageList.length && ((pageList[0] as TPageItem).className = prefixCls + '-item-after-jump-prev');
                     pageList.unshift({
                         type: 'jumpPrev'
                     });
                 }
 
                 if (allPages - current >= pageBufferSize * 2 && current !== allPages - 2) {
-                    pageList.length && ((pageList[pageList.length - 1] as PageItem_1).className = prefixCls + '-item-before-jump-next');
+                    pageList.length && ((pageList[pageList.length - 1] as TPageItem).className = prefixCls + '-item-before-jump-next');
 
                     pageList.push({
                         type: 'jumpNext'
@@ -274,12 +273,18 @@ export default class Pagination extends Base<State, Props & StateAppend, Compute
             this.handleChange(value + 1);
         }
     }
+
+    // TODO 待确认：restParams参数不起作用，原因：
+    // 1. 调用该方法时都未传入除event和callback外的第三个参数
+    // 2. 对Pager的onKeyPress事件监听，该事件只抛出了一个event，无其他参数
+    // 3. 怀疑错误仿照ant中的写法
     runIfEnter(event: KeyboardEvent, callback: JumpFun, ...restParams: any[]) {
         if (event.key === 'Enter' || event.charCode === 13) {
             callback(...restParams);
         }
     }
     runIfEnterPrev(e: KeyboardEvent) {
+        // TODO 待确认：文件中没有发现this.prev、this.next、this.jumpPrev、this.jumpNext方法的实现逻辑（ant中是有的）
         this.runIfEnter(e, this.prev);
     }
     runIfEnterNext(e: KeyboardEvent) {
