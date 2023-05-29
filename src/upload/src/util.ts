@@ -5,16 +5,16 @@
 const now = +(new Date());
 let index = 0;
 
-function endsWith(str, suffix) {
+function endsWith(str: string, suffix: string) {
     return str.indexOf(suffix, str.length - suffix.length) !== -1;
 }
 
-function loopFiles(item, callback) {
+function loopFiles(item: any, callback: (fileList: any[]) => any) {
     const dirReader = item.createReader();
-    let fileList = [];
+    let fileList: any[] = [];
 
     function sequence() {
-        dirReader.readEntries(entries => {
+        dirReader.readEntries((entries: any) => {
             const entryList = Array.prototype.slice.apply(entries);
             fileList = [...fileList, ...entryList];
 
@@ -37,7 +37,7 @@ export function getUid() {
     return `upload-${now}-${++index}`;
 }
 
-export function attrAccept(file, acceptedFiles) {
+export function attrAccept(file: any, acceptedFiles: any[] | string) {
     if (file && acceptedFiles) {
         const acceptedFilesArray = Array.isArray(acceptedFiles)
             ? acceptedFiles
@@ -61,10 +61,10 @@ export function attrAccept(file, acceptedFiles) {
     return true;
 }
 
-export function traverseFileTree(files, callback, isAccepted) {
-    const innerTraverseFileTree = (item, path = '') => {
+export function traverseFileTree(files: any[], callback: (file: any, e?: any) => any, isAccepted: (file: any) => boolean){
+    const innerTraverseFileTree = (item: any, path = '') => {
         if (item.isFile) {
-            item.file(file => {
+            item.file((file: any) => {
                 if (isAccepted(file)) {
                     // https://github.com/ant-design/ant-design/issues/16426
                     if (item.fullPath && !file.webkitRelativePath) {

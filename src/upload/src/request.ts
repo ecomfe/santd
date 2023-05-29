@@ -2,16 +2,16 @@
  * @file Santd upload request file
  */
 
-function getError(option, xhr) {
+function getError(option: any, xhr: any) {
     const msg = `cannot post ${option.action} ${xhr.status}'`;
-    const err = new Error(msg);
+    const err: any = new Error(msg);
     err.status = xhr.status;
     err.method = 'post';
     err.url = option.action;
     return err;
 }
 
-function getBody(xhr) {
+function getBody(xhr: {responseText?: string, response?: string}) {
     const text = xhr.responseText || xhr.response;
     if (!text) {
         return text;
@@ -36,11 +36,11 @@ function getBody(xhr) {
 //  action: String,
 //  headers: Object,
 // }
-export default function upload(option) {
+export default function upload(option: any) {
     const xhr = new XMLHttpRequest();
 
     if (option.onProgress && xhr.upload) {
-        xhr.upload.onprogress = function progress(e) {
+        xhr.upload.onprogress = function progress(e: any) {
             if (e.total > 0) {
                 e.percent = e.loaded / e.total * 100;
             }

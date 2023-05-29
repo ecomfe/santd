@@ -3,29 +3,25 @@
  * @author chenkai13 <chenkai13@baidu.com>
  */
 
-import san, {DataTypes} from 'san';
 import {previewImage, isImageUrl} from './utils';
 import Progress from '../progress';
 import Icon from '../icon';
 import Tooltip from '../tooltip';
 import {classCreator} from '../core/util';
+import Base from 'santd/base';
+import type {
+    FileIconProps,
+    FileIconState,
+    FileIconComputed,
+    UploadListProps,
+    UploadListState,
+    UploadListComputed
+} from './interface';
 
 const prefixCls = classCreator('upload')();
 
-const FileIcon = san.defineComponent({
-    computed: {
-        isImage() {
-            const file = this.data.get('file');
-            return isImageUrl(file);
-        }
-    },
-    components: {
-        's-icon': Icon
-    },
-    handlePreview(file, e) {
-        this.fire('preview', {file, e});
-    },
-    template: `<span>
+class FileIcon extends Base<FileIconState, FileIconProps, FileIconComputed> {
+    static template = `<span>
         <template s-if="listType === 'picture' || listType === 'picture-card'">
             <div
                 s-if="listType === 'picture-card' && file.status === 'uploading'"
@@ -50,22 +46,31 @@ const FileIcon = san.defineComponent({
         </template>
         <s-icon s-else type="{{file.status === 'uploading' ? 'loading' : 'paper-clip'}}" />
     </span>`
-});
 
-export default san.defineComponent({
-    dataTypes: {
-        listType: DataTypes.string,
-        progressAttr: DataTypes.object,
-        showRemoveIcon: DataTypes.bool,
-        showPreviewIcon: DataTypes.bool,
-        previewFile: DataTypes.func
-    },
-    computed: {
-        items() {
+    static computed = {
+        isImage(this: FileIcon) {
+            const file = this.data.get('file');
+            return isImageUrl(file);
+        }
+    }
+
+    static components = {
+        's-icon': Icon
+    }
+
+    handlePreview(file: any, e: Event) {
+        this.fire('preview', {file, e});
+    }
+};
+
+export default class UploadList extends Base<UploadListState, UploadListProps, UploadListComputed>{
+
+    static computed = {
+        items(this:UploadList) {
             const fileList = this.data.get('fileList');
             const locale = this.data.get('locale');
 
-            return fileList.map(file => {
+            return fileList.map((file: any) => {
                 file.message = file.response && file.response === 'string'
                     ? file.response
                     : (file.error && file.error.statusText) || locale.uploadError;
@@ -74,7 +79,10 @@ export default san.defineComponent({
                 };
             });
         }
-    },
+    }
+
+    parentComponent: any = null;
+    
     initData() {
         return {
             listType: 'text',
@@ -84,9 +92,11 @@ export default san.defineComponent({
             },
             showRemoveIcon: true,
             showPreviewIcon: true,
-            previewFile: previewImage
+            previewFile: previewImage,
+            fileList: []
         };
-    },
+    }
+
     updated() {
         const {
             listType,
@@ -98,7 +108,7 @@ export default san.defineComponent({
             return;
         }
 
-        fileList.forEach((file, index) => {
+        fileList!.forEach((file, index) => {
             if (
                 typeof document === 'undefined' || typeof window === 'undefined'
                 || !window.FileReader || !window.File
@@ -114,24 +124,24 @@ export default san.defineComponent({
                 });
             }
         });
-    },
-    handleClose(file) {
+    }
+    handleClose(file: any) {
         this.fire('remove', file);
-    },
-    handlePreview({file, e}) {
-        if (!this.parentComponent.listeners.preview) {
+    }
+    handlePreview({file, e}: {file: any, e: Event}) {
+        if (!this?.parentComponent?.listeners?.preview) {
             return;
         }
         e.preventDefault();
         this.fire('preview', file);
-    },
-    components: {
+    }
+    static components = {
         's-tooltip': Tooltip,
         's-fileicon': FileIcon,
         's-progress': Progress,
         's-icon': Icon
-    },
-    template: `
+    }
+    static template = `
         <div class="${prefixCls}-list ${prefixCls}-list-{{listType}}">
             <div
                 s-for="file in items trackBy file.uid"
@@ -215,4 +225,4 @@ export default san.defineComponent({
             </div>
         </div>
     `
-});
+};

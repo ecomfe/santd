@@ -8,6 +8,8 @@ declare module "*.md" {
 };
 declare module 'lodash/debounce';
 declare module 'lodash/isEmpty';
+declare module 'lodash/uniqBy';
+declare module 'lodash/findIndex';
 
 // 常见 JSON 类型数据
 type JSONValue = string | number | boolean | null | JSONValue[] | {[key: string]: JSONValue};

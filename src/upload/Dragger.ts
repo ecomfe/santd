@@ -3,14 +3,13 @@
  * @author chenkai13 <chenkai13@baidu.com>
  */
 
-import san from 'san';
 import Upload from './Upload';
 
-export default san.defineComponent({
+export default class Danger extends Upload {
     initData() {
         let data = Upload.prototype.initData();
         data.type = 'drag';
 
         return data;
     }
-}, Upload);
+};
