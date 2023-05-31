@@ -67,37 +67,4 @@ export default function (options: CustomIconOption = {}) {
     }
     return CumstomIcon;
 
-    // return san.defineComponent({
-    //     components: {
-    //         's-icon': icon
-    //     },
-    //     initData() {
-    //         return {
-    //             extraCommonProps
-    //         };
-    //     },
-    //     attached() {
-    //         const type = this.data.get('type');
-    //         let useNode = this.el?.querySelector('use');
-    //         useNode?.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '#' + type);
-    //     },
-    //     handleClick(e: MouseEvent) {
-    //         this.fire('click', e);
-    //     },
-    //     template: `
-    //         <span on-click="handleClick">
-    //             <s-icon
-    //                 theme="{{theme}}"
-    //                 spin="{{spin}}"
-    //                 rotate="{{rotate}}"
-    //                 bodyStyle="{{bodyStyle}}"
-    //                 twoToneColor="{{twoToneColor}}"
-    //                 viewBox="0 0 1024 1024"
-    //                 s-bind="{{extraCommonProps}}"
-    //             >
-    //                 <use></use>
-    //             </s-icon>
-    //         </span>
-    //     `
-    // });
 }

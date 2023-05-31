@@ -4,7 +4,7 @@
  */
 import Base from 'santd/base';
 import {classCreator} from '../core/util';
-import { DefaultValueType, RawValueType } from './interface';
+import {DefaultValueType, RawValueType} from './interface';
 
 export const prefixCls = classCreator('select')();
 export const emptyPrefixCls = classCreator('empty')();

@@ -274,7 +274,7 @@ export interface SelectComputed {
     renderArrow: () => boolean;
     hideAction: () => string[];
     popupClassName: () => string;
-    popupStyle: () => Record<string, string>;
+    popupStyle: () => Record<string, any>;
     realOpen: () => boolean | undefined;
 }
 

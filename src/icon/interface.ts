@@ -32,10 +32,6 @@ export interface InternalIconProps extends Partial<BaseIconProps> {
     secondaryColor?: string;
 }
 
-export interface InternalIconState {
-
-}
-
 export interface InternalIconComputed {
     target: () => any;
 }

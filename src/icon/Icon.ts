@@ -6,7 +6,6 @@ import Base from 'santd/base';
 import {getSecondaryColor, isIconDefinition, MiniMap, withSuffix} from './utils';
 import {
     InternalIconProps as Props,
-    InternalIconState as State,
     InternalIconComputed as Computed,
     DoubleColorIcon
 } from './interface';
@@ -17,7 +16,7 @@ let twoToneColorPalette = {
     secondaryColor: '#E6E6E6'
 };
 
-export default class Icon extends Base<State, Props, Computed> {
+export default class Icon extends Base<{}, Props, Computed> {
     static computed: Computed = {
         target(this: Icon) {
             let target;
