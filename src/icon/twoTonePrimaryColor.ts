@@ -5,7 +5,7 @@
 
 import icon from './Icon';
 
-export function setTwoToneColor(primaryColor) {
+export function setTwoToneColor(primaryColor: string) {
     return icon.setTwoToneColors({
         primaryColor
     });

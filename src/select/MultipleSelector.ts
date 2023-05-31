@@ -3,19 +3,28 @@
  * @author
  */
 
-import san, {DataTypes} from 'san';
+import Base from 'santd/base';
 import {
     getMapKey,
     memoize,
     prefixCls,
-    preventDefaultEvent,
-    toTitle
+    preventDefaultEvent as preventDefault,
+    toTitle,
+    isValueArray
 } from './util';
+import {
+    MultipleSelectorState as State,
+    MultipleSelectorProps as Props,
+    MultipleSelectorComputed as Computed,
+    TSelectItem,
+    TDeSelectEventItem,
+    RawValueType
+} from './interface';
 
 const getOptionsInfoWithMemory = memoize();
 
-export default san.defineComponent({
-    template: `
+export default class MultipleSelector extends Base<State, Props, Computed> {
+    static template = `
         <ul>
             <li s-for="item in selectedItems"
                 class="{{item.klass}}"
@@ -39,10 +48,10 @@ export default san.defineComponent({
                 <slot name="input"/>
             </li>
         </ul>
-    `,
+    `
 
-    computed: {
-        selectedItems() {
+    static computed: Computed = {
+        selectedItems(this: MultipleSelector) {
             const {
                 maxTagCount,
                 maxTagPlaceholder,
@@ -58,14 +67,16 @@ export default san.defineComponent({
             let selectedValues = value || [];
             let maxTagPlaceholderItem;
 
-            if (maxTagCount !== undefined && value.length > maxTagCount) {
-                selectedValues = selectedValues.slice(0, maxTagCount);
-                const omittedValues = value.slice(maxTagCount, value.length);
-                let content = `+ ${value.length - maxTagCount} ...`;
+            if (maxTagCount !== undefined && (isValueArray(value) && value.length > maxTagCount)) {
+                if (isValueArray(selectedValues)) {
+                    selectedValues = selectedValues.slice(0, maxTagCount);
+                }
+                const omittedValues = value?.slice(maxTagCount, value.length);
+                let content = `+ ${value?.length - maxTagCount} ...`;
 
                 if (maxTagPlaceholder) {
                     content = typeof maxTagPlaceholder === 'function'
-                        ? maxTagPlaceholder(omittedValues)
+                        ? maxTagPlaceholder(omittedValues as RawValueType[])
                         : maxTagPlaceholder;
                 }
                 maxTagPlaceholderItem = {
@@ -77,41 +88,41 @@ export default san.defineComponent({
                 };
             }
 
-            let selectedItems = selectedValues.map(val => {
-                let info = getOptionsInfoWithMemory(optionsInfo)[getMapKey(val)] || {label: val};
-                let content = info.label;
-                const title = toTitle(info.title || content);
+            let selectedItems: TSelectItem[] = [];
 
-                if (maxTagTextLength && typeof content === 'string' && content.length > maxTagTextLength) {
-                    content = `${content.slice(0, maxTagTextLength)}...`;
-                }
+            if (isValueArray(selectedValues)) {
+                selectedItems = selectedValues.map(val => {
+                    let info = getOptionsInfoWithMemory(optionsInfo)[getMapKey(val)] || {label: val};
+                    let content = info.label;
+                    const title = toTitle(info.title || content);
 
-                return {
-                    klass: info.disabled ? klass.concat(klassDisabled) : klass,
-                    content,
-                    title,
-                    value: val,
-                    disabled: info.disabled
-                };
-            });
+                    if (maxTagTextLength && typeof content === 'string' && content.length > maxTagTextLength) {
+                        content = `${content.slice(0, maxTagTextLength)}...`;
+                    }
+
+                    return {
+                        klass: info.disabled ? klass.concat(klassDisabled) : klass,
+                        content,
+                        title,
+                        value: val,
+                        disabled: info.disabled
+                    };
+                });
+            }
 
             maxTagPlaceholderItem && selectedItems.push(maxTagPlaceholderItem);
 
             return selectedItems;
         }
-    },
+    }
 
-    dataTypes: {
-        context: DataTypes.object
-    },
-
-    initData() {
+    initData(): State {
         return {
             context: {}
         };
-    },
+    }
 
-    handleRemoveSelected(e, item) {
+    handleRemoveSelected(e: MouseEvent, item: TSelectItem) {
         const props = this.data.get('context');
 
         if (props.disabled || item.disabled) {
@@ -125,10 +136,13 @@ export default san.defineComponent({
 
         let selectedKey = item.value;
         const {value: oldValue, modeConfig} = props;
-        const value = oldValue.filter(singleValue => singleValue !== selectedKey);
+        let value: RawValueType[] = [];
+        if (isValueArray(oldValue)) {
+            value = oldValue?.filter(singleValue => singleValue !== selectedKey);
+        }
 
-        if (modeConfig.multiple || modeConfig.tags) {
-            let event = selectedKey;
+        if (modeConfig?.multiple || modeConfig?.tags) {
+            let event: TDeSelectEventItem = selectedKey;
             if (props.labelInValue) {
                 event = {
                     key: selectedKey,
@@ -139,7 +153,7 @@ export default san.defineComponent({
             this.fire('deselect', event);
         }
         this.fire('change', value);
-    },
+    }
 
-    preventDefaultEvent
-});
+    preventDefaultEvent = preventDefault
+};

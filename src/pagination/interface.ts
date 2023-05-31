@@ -147,7 +147,7 @@ export interface PaginationState extends Omit<PaginationData,
     onShowSizeChange: () => void;
 }
 
-export interface PaginationStateAppend {
+export interface PaginationPrivateProps {
     current: PaginationData['current'];
     currentInputValue:  PaginationData['current'];
     pageSize: PaginationData['pageSize'];

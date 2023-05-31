@@ -3,7 +3,6 @@
 * @author fuqiangqiang@baidu.com
 */
 import './style/index';
-import san from 'san';
 import Base from 'santd/base';
 import Icon from '../icon';
 import {classCreator} from '../core/util';
@@ -29,55 +28,57 @@ export interface Props extends Partial<PaginationData> {
 
 const prefixCls = classCreator('pagination')();
 
-const prevIcon = san.defineComponent({
-    components: {
+
+
+class PrevIcon extends Base {
+    static components = {
         's-icon': Icon
-    },
-    template: `<a class="${prefixCls}-item-link">
+    }
+    static template = `<a class="${prefixCls}-item-link">
         <s-icon type="left" />
       </a>`
-});
+};
 
-const nextIcon = san.defineComponent({
-    components: {
+class NextIcon extends Base {
+    static components = {
         's-icon': Icon
-    },
-    template: `<a class="${prefixCls}-item-link">
+    }
+    static template = `<a class="${prefixCls}-item-link">
         <s-icon type="right" />
       </a>`
-});
+};
 
-const jumpPrevIcon = san.defineComponent({
-    components: {
+class JumpPrevIcon extends Base {
+    static components = {
         's-icon': Icon
-    },
-    template: `<a class="${prefixCls}-item-link">
+    }
+    static template = `<a class="${prefixCls}-item-link">
         <div class="${prefixCls}-item-container">
             <s-icon class="${prefixCls}-item-link-icon" type="double-left" />
             <span class="${prefixCls}-item-ellipsis">•••</span>
         </div>
       </a>`
-});
+};
 
-const jumpNextIcon = san.defineComponent({
-    components: {
+class JumpNextIcon extends Base {
+    static components = {
         's-icon': Icon
-    },
-    template: `<a class="${prefixCls}-item-link">
+    }
+    static template = `<a class="${prefixCls}-item-link">
         <div class="${prefixCls}-item-container">
             <s-icon class="${prefixCls}-item-link-icon" type="double-right" />
             <span class="${prefixCls}-item-ellipsis">•••</span>
         </div>
       </a>`
-});
+};
 
 export default class extends Base<State, Props> {
     static components = {
         pagination,
-        previcon: prevIcon,
-        nexticon: nextIcon,
-        jumpprevicon: jumpPrevIcon,
-        jumpnexticon: jumpNextIcon
+        previcon: PrevIcon,
+        nexticon: NextIcon,
+        jumpprevicon: JumpPrevIcon,
+        jumpnexticon: JumpNextIcon
     }
 
     handleShowSizeChange(payload: {current: number, pageSize: number}) {

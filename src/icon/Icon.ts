@@ -2,9 +2,14 @@
  * @file Santd icon file
  * @author mayihui@baidu.com
  **/
-
-import san from 'san';
+import Base from 'santd/base';
 import {getSecondaryColor, isIconDefinition, MiniMap, withSuffix} from './utils';
+import {
+    InternalIconProps as Props,
+    InternalIconState as State,
+    InternalIconComputed as Computed,
+    DoubleColorIcon
+} from './interface';
 
 let definitions = new MiniMap();
 let twoToneColorPalette = {
@@ -12,14 +17,14 @@ let twoToneColorPalette = {
     secondaryColor: '#E6E6E6'
 };
 
-const icon = san.defineComponent({
-    computed: {
-        target() {
+export default class Icon extends Base<State, Props, Computed> {
+    static computed: Computed = {
+        target(this: Icon) {
             let target;
             const primaryColor = this.data.get('primaryColor');
             const secondaryColor = this.data.get('secondaryColor');
             const type = this.data.get('type');
-            let colors = twoToneColorPalette;
+            let colors: DoubleColorIcon = twoToneColorPalette;
             if (primaryColor) {
                 colors = {
                     primaryColor,
@@ -31,7 +36,7 @@ const icon = san.defineComponent({
                 target = type;
             }
             else if (typeof type === 'string') {
-                target = icon.get(type, colors);
+                target = Icon.get(type, colors);
                 if (!target) {
                     return null;
                 }
@@ -47,8 +52,9 @@ const icon = san.defineComponent({
             }
             return target;
         }
-    },
-    template: `
+    }
+
+    static template = `
         <svg
             key="svg-{{target.name}}"
             data-icon="{{target.name}}"
@@ -68,41 +74,39 @@ const icon = san.defineComponent({
             </path>
         </svg>
     `
-});
 
-icon.add = function (icons) {
-    icons.forEach(icon => {
-        definitions.set(withSuffix(icon.name, icon.theme), icon);
-    });
-};
-
-icon.clear = function () {
-    definitions.clear();
-};
-
-icon.get = function (key, colors) {
-    if (key) {
-        let target = definitions.get(key);
-        if (target && typeof target.icon === 'function') {
-            target = {
-                ...target,
-                icon: target.icon(colors.primaryColor, colors.secondaryColor)
-            };
-        }
-        return target;
+    static add(icons: Array<{name: string, theme: string}>) {
+        icons.forEach(icon => {
+            definitions.set(withSuffix(icon.name, icon.theme), icon);
+        });
     }
-};
 
-icon.setTwoToneColors = function (twoToneColorPaletteSetter) {
-    twoToneColorPalette.primaryColor = twoToneColorPaletteSetter.primaryColor;
-    twoToneColorPalette.secondaryColor = twoToneColorPaletteSetter.secondaryColor
-        || getSecondaryColor(twoToneColorPaletteSetter.primaryColor);
-};
+    static clear() {
+        definitions.clear();
+    }
 
-icon.getTwoToneColors = function () {
-    return {
-        ...twoToneColorPalette
-    };
-};
+    static get(key: string, colors: DoubleColorIcon) {
+        if (key) {
+            let target = definitions.get(key);
+            if (target && typeof target.icon === 'function') {
+                target = {
+                    ...target,
+                    icon: target.icon(colors.primaryColor, colors.secondaryColor)
+                };
+            }
+            return target;
+        }
+    }
 
-export default icon;
+    static setTwoToneColors(twoToneColorPaletteSetter: DoubleColorIcon) {
+        twoToneColorPalette.primaryColor = twoToneColorPaletteSetter.primaryColor;
+        twoToneColorPalette.secondaryColor = twoToneColorPaletteSetter.secondaryColor
+            || getSecondaryColor(twoToneColorPaletteSetter.primaryColor);
+    }
+
+    static getTwoToneColors() {
+        return {
+            ...twoToneColorPalette
+        };
+    }
+}

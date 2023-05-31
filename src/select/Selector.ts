@@ -1,17 +1,30 @@
-/**
- * @file select/Selector
- * @author
- */
+// /**
+//  * @file select/Selector
+//  * @author
 
-import san, {DataTypes} from 'san';
+import Base from 'santd/base';
+
 import Icon from '../icon';
-import Input from './Input';
-import MultipleSelector from './MultipleSelector';
-import SingleSelector from './SingleSelector';
-import {prefixCls, preventDefaultEvent} from './util';
 
-export default san.defineComponent({
-    template: `
+import Input from './Input';
+
+import MultipleSelector from './MultipleSelector';
+
+import SingleSelector from './SingleSelector';
+
+import {prefixCls, preventDefaultEvent, isValueArray, isValueString} from './util';
+import Button from '../button';
+import Select from './Select';
+import {
+    SelectorState as State,
+    SelectorProps as Props,
+    SelectorComputed as Computed,
+    TDeSelectEventItem,
+    RawValueType
+} from './interface';
+
+export default class Selector extends Base<State, Props, Computed> {
+    static template = `
         <div class="${prefixCls}-selection__rendered">
             <div
                 s-if="context.placeholder"
@@ -50,55 +63,54 @@ export default san.defineComponent({
                 </s-multiple-selector>
             </template>
         </div>
-    `,
+    `
 
-    components: {
+    static components = {
         's-icon': Icon,
         's-input': Input,
         's-single-selector': SingleSelector,
-        's-multiple-selector': MultipleSelector
-    },
+        's-multiple-selector': MultipleSelector,
+        's-button': Button
+    }
 
-    dataTypes: {
-        context: DataTypes.object,
-        inputValue: DataTypes.string
-    },
+    static computed: Computed = {
+        hidePlaceholder(this: Selector) {
 
-    computed: {
-        hidePlaceholder() {
             let hidden = false;
             const inputValue = this.data.get('inputValue');
             const {value = '', modeConfig} = this.data.get('context');
 
-            if (inputValue || value.length) {
-                hidden = true;
-            }
-            if (modeConfig.combobox && value.length === 1 && (value && !value[0])) {
-                hidden = false;
+            if (isValueArray(value) || isValueString(value)) {
+                if (inputValue || value.length) {
+                    hidden = true;
+                }
+                if (modeConfig?.combobox && value.length === 1 && (value && !value[0])) {
+                    hidden = false;
+                }
             }
 
             return hidden;
         }
-    },
+    }
 
-    initData() {
+    initData(): State {
         return {
             context: {},
             inputValue: ''
         };
-    },
+    }
 
-    handleChange(value) {
-        this.owner.fireChange(value);
-    },
+    handleChange(value: RawValueType[]) {
+        (this.owner as Select).fireChange(value);
+    }
 
-    handleDeselect(value) {
+    handleDeselect(value: TDeSelectEventItem) {
         this.owner.fire('deselect', value);
-    },
+    }
 
-    handlePlaceholderClick(e) {
-        this.owner.handlePlaceholderClick(e);
-    },
+    handlePlaceholderClick() {
+        (this.owner as Select).handlePlaceholderClick();
+    }
 
-    preventDefaultEvent
-});
+    preventDefaultEvent = preventDefaultEvent
+}

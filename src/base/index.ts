@@ -84,7 +84,7 @@ export default class Base<
 
     parent!: Base;
 
-    children!: Base;
+    children!: Base[];
 
     owner!: Base;
 

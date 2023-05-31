@@ -3,7 +3,7 @@
  * @author
  */
 
-import san from 'san';
+import Base from 'santd/base';
 import Head from './head.md';
 import Readme from '../README.md';
 
@@ -23,8 +23,8 @@ import Size from './size.md';
 import Suffix from './suffix.md';
 import Tags from './tags.md';
 
-export default san.defineComponent({
-    components: {
+export default class extends Base {
+    static components = {
         head: Head,
         readme: Readme,
         automatic: Automatic,
@@ -42,8 +42,8 @@ export default san.defineComponent({
         size: Size,
         suffix: Suffix,
         tags: Tags
-    },
-    template: `
+    }
+    static template = `
         <div>
             <head/>
             <basic/>
@@ -64,4 +64,4 @@ export default san.defineComponent({
             <readme/>
         </div>
     `
-});
+};

@@ -33,7 +33,7 @@ type Message = {
     santd_menu_addItem: (this: Menu, payload: {value: ItemType}) => void;
     santd_menu_itemSelect: (this: Menu, payload: {value:  SelectChangeEvent}) => void,
     santd_menu_itemDeselect: (this: Menu, payload: {value:  SelectChangeEvent}) => void,
-    santd_menu_itemClick: (this: Menu, payload: {value: ItemType}) => void;
+    santd_menu_itemClick: (this: Menu, payload: {value: SelectChangeEvent}) => void;
     santd_menu_openChange: (this: Menu, playload: {value: OpenChangeEvent<SubMenu>}) => void
 };
 

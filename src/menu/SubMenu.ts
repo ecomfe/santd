@@ -15,12 +15,13 @@ import {
     SubMenuComputed as Computed,
     ItemType,
     TriggerChangeAction,
-    InnerItem
+    InnerItem,
+    SelectChangeEvent
 } from './interface';
 
 type Message = {
     santd_menu_addItem: (this: SubMenu, payload: {value: ItemType}) => void,
-    santd_menu_itemClick: (this: SubMenu, payload: {value: ItemType}) => void,
+    santd_menu_itemClick: (this: SubMenu, payload: {value: SelectChangeEvent}) => void,
 };
 
 const prefixCls = classCreator('menu')();
