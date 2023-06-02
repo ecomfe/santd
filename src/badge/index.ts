@@ -4,12 +4,13 @@
  */
 
 import './style/index.less';
-import san, {DataTypes} from 'san';
+import san from 'san';
 import {classCreator} from '../core/util';
 const prefixCls = classCreator('badge')();
 const scrollNumberPrefixCls = classCreator('scroll-number')();
-
-const presetColorTypes = {
+import Base from 'santd/base';
+import {IBadageProps, IPresetColorTypes, SlotNode} from './interface';
+const presetColorTypes: IPresetColorTypes = {
     pink: 1,
     red: 1,
     yellow: 1,
@@ -25,18 +26,12 @@ const presetColorTypes = {
     lime: 1
 };
 
-let scrollNumberList = [];
+let scrollNumberList: number[] = [];
 for (let i = 0; i < 30; i++) {
     scrollNumberList.push(i % 10);
 }
-
-const ScrollNumber = san.defineComponent({
-    dataTypes: {
-        count: DataTypes.oneOfType([DataTypes.string, DataTypes.number]),
-        title: DataTypes.oneOfType([DataTypes.string, DataTypes.object, DataTypes.number])
-    },
-
-    template: `
+class ScrollNumber extends Base {
+    static template = `
         <sup class="${scrollNumberPrefixCls}" title="{{title || ''}}" style="{{offsetStyle}}">
             <template s-if="isOverflow">
                 {{count}}
@@ -50,15 +45,14 @@ const ScrollNumber = san.defineComponent({
                 <p s-for="item in scrollNumberList">{{item}}</p>
             </span>
         </sup>
-    `,
+    `;
 
-    computed: {
-        isOverflow() {
+    static computed = {
+        isOverflow(this: ScrollNumber) {
             let count = +this.data.get('count');
             return !count;
         },
-
-        numberStyles() {
+        numberStyles(this: ScrollNumber) {
             let results = [];
 
             // 简单点，就不依赖 isOverflow 了
@@ -74,9 +68,8 @@ const ScrollNumber = san.defineComponent({
 
             return results;
         }
-    },
-
-    getStyleArr() {
+    }
+    getStyleArr(this: ScrollNumber) {
         let numberArray = this.data.get('numberArray');
         let styleArr = [];
 
@@ -88,60 +81,49 @@ const ScrollNumber = san.defineComponent({
         }
 
         return styleArr;
-    },
+    }
 
     initData() {
         return {
             scrollNumberList
         };
     }
-});
+}
 
+export default class Badge extends Base<IBadageProps> {
+    autoFillStyleAndId!:false;
+    _hasChild?: boolean | undefined;
 
-export default san.defineComponent({
-    autoFillStyleAndId: false,
-
-    dataTypes: {
-        count: DataTypes.oneOfType([DataTypes.string, DataTypes.number]),
-        showZero: DataTypes.bool,
-        overflowCount: DataTypes.number,
-        dot: DataTypes.bool,
-        status: DataTypes.string,
-        color: DataTypes.string,
-        offset: DataTypes.array,
-        title: DataTypes.string
-    },
-
-    components: {
+    static components = {
         's-scrollnumber': ScrollNumber
-    },
+    }
 
-    initData() {
+    initData(): IBadageProps {
         return {
             showZero: false,
             dot: false,
             overflowCount: 99,
-            hasChild: this._hasChild
+            hasChild: this._hasChild,
         };
-    },
+    }
 
 
     attached() {
-        this.slot('count')[0].children.forEach(children => {
+        (this.slot('count')as SlotNode[])[0].children.forEach(children => {
             if (children instanceof san.Component) {
                 children.data.set('class', scrollNumberPrefixCls + '-custom-component');
             }
         });
-    },
+    }
 
     compiled() {
         if (this.sourceSlots.noname || this.sourceSlots.named.count) {
             this._hasChild = true;
         }
-    },
+    }
 
-    computed: {
-        classes() {
+    static computed = {
+        classes(this: Badge) {
             let classArr = [];
 
             this.data.get('hasStatus') && classArr.push(`${prefixCls}-status`);
@@ -149,8 +131,8 @@ export default san.defineComponent({
             return classArr;
         },
 
-        mainStyles() {
-            let offset = this.data.get('offset');
+        mainStyles(this: Badge) {
+            let offset = this.data.get('offset');            
             let style = this.data.get('style');
             let hasChild = this.data.get('hasChild');
             let hasStatus = this.data.get('hasStatus');
@@ -168,13 +150,13 @@ export default san.defineComponent({
             return '';
         },
 
-        hasStatus() {
+        hasStatus(this: Badge) {
             return this.data.get('status') || this.data.get('color');
         },
 
-        statusClass() {
+        statusClass(this: Badge) {
             const status = this.data.get('status');
-            const color = this.data.get('color');
+            const color = this.data.get('color') as keyof IPresetColorTypes;
             let classArr = [];
 
             (status || color) && classArr.push(`${prefixCls}-status-dot`);
@@ -183,20 +165,20 @@ export default san.defineComponent({
             return classArr;
         },
 
-        displayCount() {
-            const count = this.data.get('count');
+        displayCount(this: Badge) {
+            const count = +(this.data.get('count') as string | number);
             const overflowCount = this.data.get('overflowCount');
 
             return count > overflowCount ? overflowCount + '+' : count;
         },
 
-        isZero() {
-            const count = +this.data.get('count');
+        isZero(this: Badge) {
+            const count = +(this.data.get('count') as string | number);
             return count === 0;
         }
-    },
+    }
 
-    template: `
+    static template = `
         <span class="${prefixCls} {{classes}}" style="{{mainStyles}}">
             <slot />
             <span s-if="!hasChild && hasStatus" class="{{statusClass}}" style="{{color ? 'background:' + color : ''}}">
@@ -216,4 +198,4 @@ export default san.defineComponent({
             <slot name="count" />
         </span>
     `
-});
+};
