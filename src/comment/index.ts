@@ -4,17 +4,17 @@
  */
 
 import './style/index.less';
-import san from 'san';
+import Base from 'santd/base';
 import {classCreator} from '../core/util';
 
 const prefixCls = classCreator('comment')();
+class Action extends Base {
+    static template = '<li><slot /></li>';
 
-const Action = san.defineComponent({
-    template: '<li><slot /></li>'
-});
-
-const Comment = san.defineComponent({
-    template: `
+}
+class Comment extends Base {
+    public Action = Action;
+    static template = `
         <div class="${prefixCls}">
             <div class="${prefixCls}-inner">
                 <div class="${prefixCls}-avatar"><slot name="avatar" /></div>
@@ -39,7 +39,7 @@ const Comment = san.defineComponent({
                 <slot name="nested" />
             </div>
         </div>
-    `,
+    `;
 
     inited() {
         let {author, datetime, actions, nested} = this.sourceSlots.named;
@@ -47,8 +47,7 @@ const Comment = san.defineComponent({
         this.data.set('hasActions', !!actions);
         this.data.set('hasNested', !!nested);
     }
-});
 
-Comment.Action = Action;
+}
 
 export default Comment;
