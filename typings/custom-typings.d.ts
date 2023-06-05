@@ -9,6 +9,8 @@ declare module "*.md" {
 declare module 'lodash/debounce';
 declare module 'lodash/throttle';
 declare module 'lodash/isEmpty';
+declare module 'lodash/uniqBy';
+declare module 'lodash/findIndex';
 declare module 'tinycolor2';
 declare module '@ant-design/icons-svg';
 
