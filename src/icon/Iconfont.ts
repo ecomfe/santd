@@ -2,9 +2,13 @@
  * @file Santd icon iconfont file
  * @author mayihui@baidu.com
  **/
-import san from 'san';
+import Base from 'santd/base';
 import icon from './index';
-import {CustomIconOption} from './interface';
+import {
+    CustomIconOption,
+    IconfontProps as Props,
+    IconfontState as State
+} from './interface';
 
 const customCache = new Set();
 
@@ -29,7 +33,7 @@ export default function (options: CustomIconOption = {}) {
         document.body.appendChild(script);
     }
 
-    class CumstomIcon extends san.Component {
+    class CumstomIcon extends Base<State, Props> {
         static components = {
             's-icon': icon
         }

@@ -66,6 +66,15 @@ export interface IconComputed {
     innerSvgProps: () => InnerSvgProps;
 }
 
+export interface IconfontProps extends Partial<BaseIconProps> {
+}
+
+export interface IconfontState {
+    extraCommonProps: {
+        [key: string]: any;
+    }
+}
+
 
 
 

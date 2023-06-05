@@ -2,7 +2,6 @@
  * @file 原生js处理
  * @author fuqiangqiang@baidu.com
  */
-import Base from 'santd/base';
 import {CLASSNAME_PREFIX} from '../constants';
 
 import getRequestAnimationFrame, {cancelRequestAnimationFrame as caf} from './getRequestAnimationFrame';
@@ -101,14 +100,14 @@ export const deepCopy = (target: any) => {
  * @param  {number} dep 递归深度
  * @return component children
  */
-export const getComponentChildren = (
-    list: Base[],
-    conditionFn: (item: Base, step: number) => boolean,
+export const getComponentChildren = <T>(
+    list: any[],
+    conditionFn: (item: any, step: number) => boolean,
     dep: number = 100
 ) => {
-    const itemlist: Base[] = [];
+    const itemlist: T[] = [];
     let step = 0;
-    const loopCMPT = (list: Base[]) => {
+    const loopCMPT = (list?: any[]) => {
         step++;
         if (step > dep) {
             return;
@@ -118,7 +117,7 @@ export const getComponentChildren = (
                 if (conditionFn(item, step)) {
                     itemlist.push(item);
                 }
-                loopCMPT(item.children as unknown as Base[]);
+                loopCMPT(item.children);
             }
         }
         step--;

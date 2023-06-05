@@ -4,16 +4,23 @@
  */
 
 import './style/index.less';
-import san, {NodeType} from 'san';
+import BaseComp, {TextNode} from 'santd/base';
+import {NodeType} from 'san';
 import icon from '../icon';
 import tooltip from '../tooltip';
 import copy from 'copy-to-clipboard';
 import {classCreator, getComponentChildren} from '../core/util';
 import localeReceiver from '../locale-provider/receiver';
+import {
+    TypographyType,
+    InternalProps,
+    InternalState,
+    InternalComputed
+} from './interface';
 
 const prefixCls = classCreator('typography')();
 
-const isStyleSupport = function (styleName) {
+const isStyleSupport = function (styleName: string) {
     if (typeof window !== 'undefined' && window.document && window.document.documentElement) {
         const styleNameList = Array.isArray(styleName) ? styleName : [styleName];
         const documentElement = window.document.documentElement;
@@ -23,8 +30,7 @@ const isStyleSupport = function (styleName) {
     return false;
 };
 
-
-const create = function (tag) {
+const create = function (tag?: TypographyType) {
     const content = `
         <strong s-if="strong"><slot /></strong>
         <u s-elif="underline"><slot /></u>
@@ -43,7 +49,7 @@ const create = function (tag) {
         </s-tooltip>
     `;
 
-    let template;
+    let template: string;
     if (!tag || tag === 'paragraph') {
         template = `<div class="{{classes}}">${content}</div>`;
     }
@@ -54,25 +60,13 @@ const create = function (tag) {
         template = `<span>${content}</span>`;
     }
 
-    return san.defineComponent({
-        template,
-        initData() {
-            return {
-                componentName: 'Text',
-                clientRendered: false
-            };
-        },
+    class InternalComponent extends BaseComp<InternalState, InternalProps, InternalComputed> {
+        static template = template;
 
-        attached() {
-            this.data.set('clientRendered', true);
-        },
-
-        inited: localeReceiver.inited,
-
-        computed: {
+        static computed = {
             ...localeReceiver.computed,
 
-            getEllipsis() {
+            getEllipsis(this: InternalComponent) {
                 const ellipsis = this.data.get('ellipsis');
                 return !ellipsis ? {} : {
                     rows: 1,
@@ -81,7 +75,7 @@ const create = function (tag) {
                 };
             },
 
-            canUseCSSEllipsis() {
+            canUseCSSEllipsis(this: InternalComponent) {
                 const clientRendered = this.data.get('clientRendered');
                 const copyable = this.data.get('copyable');
                 const getEllipsis = this.data.get('getEllipsis');
@@ -98,7 +92,7 @@ const create = function (tag) {
                 return isStyleSupport('webkitLineClamp');
             },
 
-            classes() {
+            classes(this: InternalComponent) {
                 let type = this.data.get('type');
                 let disabled = this.data.get('disabled');
                 const rows = this.data.get('getEllipsis').rows;
@@ -117,12 +111,31 @@ const create = function (tag) {
 
                 return classArr;
             }
-        },
+        }
 
-        components: {
+        static components = {
             's-icon': icon,
             's-tooltip': tooltip
-        },
+        }
+
+        static create: (tag?: TypographyType) => typeof InternalComponent
+
+        copyId!: number
+
+        children!: any[]
+
+        inited = localeReceiver.inited
+
+        initData(): InternalState {
+            return {
+                componentName: 'Text',
+                clientRendered: false
+            };
+        }
+
+        attached() {
+            this.data.set('clientRendered', true);
+        }
 
         handleCopy() {
             let copyable = this.data.get('copyable');
@@ -131,7 +144,7 @@ const create = function (tag) {
             };
 
             if (copyConfig.text == null) {
-                let textnode = getComponentChildren(this.children, item => item.nodeType === NodeType.TEXT);
+                let textnode = getComponentChildren<TextNode>(this.children, item => item.nodeType === NodeType.TEXT);
                 copyConfig.text = textnode.reduce((total, cur) => !/^\n\s*$/g.test(cur.content) ? (total + cur.content) : total, '');
             }
             copy(copyConfig.text || '');
@@ -144,7 +157,9 @@ const create = function (tag) {
                 this.data.set('copied', false);
             }, 3000);
         }
-    });
+    };
+
+    return InternalComponent;
 };
 
 const base = create();
