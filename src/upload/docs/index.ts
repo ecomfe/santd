@@ -2,7 +2,6 @@
  * @file Santd upload docs file
  **/
 
-import san from 'san';
 import Readme from '../README.md';
 import Desc from './desc.md';
 import Basic from './basic.md';
@@ -16,9 +15,10 @@ import Picturewall from './picturewall.md';
 import Manual from './manual.md';
 import Preview from './preview.md';
 import Dragger from './dragger.md';
+import Base from 'santd/base';
 
-export default san.defineComponent({
-    components: {
+export default class Upload extends Base {
+    static components = {
         readme: Readme,
         desc: Desc,
         basic: Basic,
@@ -32,8 +32,8 @@ export default san.defineComponent({
         manual: Manual,
         preview: Preview,
         dragger: Dragger
-    },
-    template: `
+    }
+    static template = `
         <div>
             <desc/>
             <basic/>
@@ -50,4 +50,4 @@ export default san.defineComponent({
             <readme/>
         </div>
     `
-});
+};

@@ -1,8 +1,7 @@
 /**
  * @file Santd badge docs file
  **/
-
-import san from 'san';
+import Base from 'santd/base';
 import Readme from '../README.md';
 import Desc from './desc.md';
 import Basic from './basic.md';
@@ -16,8 +15,8 @@ import Colors from './colors.md';
 
 import './style.css';
 
-export default san.defineComponent({
-    components: {
+export default class extends Base {
+    static components = {
         readme: Readme,
         desc: Desc,
         basic: Basic,
@@ -28,8 +27,8 @@ export default san.defineComponent({
         dot: Dot,
         dynamic: Dynamic,
         colors: Colors
-    },
-    template: `
+    };
+    static template = `
         <div>
             <desc/>
             <basic/>
@@ -44,4 +43,4 @@ export default san.defineComponent({
             <readme/>
         </div>
     `
-});
+};

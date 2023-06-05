@@ -4,7 +4,7 @@
 
 // Fix IE file.status problem
 // via coping a new Object
-export function fileToObject(file) {
+export function fileToObject(file: any) {
     return {
         ...file,
         lastModified: file.lastModified,
@@ -22,7 +22,7 @@ export function genPercentAdd() {
     let k = 0.1;
     const i = 0.01;
     const end = 0.98;
-    return function (s) {
+    return function (s: number) {
         let start = s;
         if (start >= end) {
             return start;
@@ -37,14 +37,14 @@ export function genPercentAdd() {
     };
 }
 
-export function getFileItem(file, fileList) {
-    const matchKey = file.uid !== undefined ? 'uid' : 'name';
+export function getFileItem(file: any, fileList: any[]) {
+    const matchKey = file?.uid !== undefined ? 'uid' : 'name';
     return fileList.filter(item => item[matchKey] === file[matchKey])[0];
 }
 
-export function removeFileItem(file, fileList) {
+export function removeFileItem(file: any, fileList: any[]) {
     const matchKey = file.uid !== undefined ? 'uid' : 'name';
-    const removed = fileList.filter(item => item[matchKey] !== file[matchKey]);
+    const removed = fileList.filter((item: any) => item[matchKey] !== file[matchKey]);
     if (removed.length === fileList.length) {
         return null;
     }
@@ -52,7 +52,7 @@ export function removeFileItem(file, fileList) {
 }
 
 // ==================== Default Image Preview ====================
-const extname = url => {
+const extname = (url: string) => {
     if (!url) {
         return '';
     }
@@ -61,9 +61,9 @@ const extname = url => {
     const filenameWithoutSuffix = filename.split(/#|\?/)[0];
     return (/\.[^./\\]*$/.exec(filenameWithoutSuffix) || [''])[0];
 };
-const isImageFileType = type => !!type && type.indexOf('image/') === 0;
+const isImageFileType = (type: string) => !!type && type.indexOf('image/') === 0;
 
-export const isImageUrl = file => {
+export const isImageUrl = (file: any) => {
     if (isImageFileType(file.type)) {
         return true;
     }
@@ -84,7 +84,7 @@ export const isImageUrl = file => {
 };
 
 const MEASURE_SIZE = 200;
-export function previewImage(file) {
+export function previewImage(file: any) {
     return new Promise(resolve => {
         if (!isImageFileType(file.type)) {
             resolve('');
@@ -123,7 +123,7 @@ export function previewImage(file) {
                 offsetX = -(drawWidth - drawHeight) / 2;
             }
 
-            ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+            ctx?.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
             const dataURL = canvas.toDataURL();
             document.body.removeChild(canvas);
 
