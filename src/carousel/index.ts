@@ -4,14 +4,15 @@
  */
 
 import './style/index.less';
-import san from 'san';
+import Base from 'santd/base';
 import {classCreator} from '../core/util';
 import Track from './Track';
-
+import {ICarouselProps, ITrackProps} from './interface';
 const prefixCls = classCreator('carousel')();
 
-export default san.defineComponent({
-    template: `
+export default class Carousel extends Base<ICarouselProps> {
+    autoplayTimer: undefined | NodeJS.Timer | null;
+    static template = `
         <div class="${prefixCls} {{vertical ? '${prefixCls}-vertical' : ''}}">
             <div class="slick-slider slick-initialized {{vertical ? 'slick-vertical' : ''}}" style="opacity:{{showCompo ? '1' : '0'}}">
                 <div class="slick-list"
@@ -35,8 +36,8 @@ export default san.defineComponent({
                 </ul>
             </div>
         </div>
-    `,
-    initData() {
+    `;
+    initData(): ICarouselProps {
         return {
             clientWidth: 0,
             clientHeight: 0,
@@ -53,44 +54,48 @@ export default san.defineComponent({
             autoplaySpeed: 3000,
             speed: 500
         };
-    },
-    components: {
+    }
+    static components = {
         's-track': Track
-    },
-    computed: {
-        vertical() {
+    };
+    static computed = {
+        vertical(this: Carousel) {
             const dotPosition = this.data.get('dotPosition');
             return dotPosition === 'left' || dotPosition === 'right';
         }
-    },
+    }
 
     next() {
-        let {curIndex, slickDots} = this.data.get();
-        this.handleChange((curIndex + 1) % slickDots.length);
-    },
+        let {curIndex = 0, slickDots = []} = this.data.get();
+        if (slickDots?.length) {
+            this.handleChange((curIndex + 1) % slickDots.length);
+        }
+    }
 
     prev() {
-        let {curIndex, slickDots} = this.data.get();
+        let {curIndex = 0, slickDots = []} = this.data.get();
         curIndex--;
-        this.handleChange(curIndex > -1 ? curIndex : slickDots.length - 1);
-    },
+        if (slickDots?.length) {
+            this.handleChange(curIndex > -1 ? curIndex : slickDots.length - 1);
+        }
+    }
 
     goTo(slideNumber = 0) {
-        const len = this.data.get('slickDots').length;
+        const len = this.data.get('slickDots')?.length ?? 0;
         const index = Math.min(Math.max(0, slideNumber), len - 1);
         this.handleChange(index);
-    },
+    }
 
-    handleInit(e) {
+    handleInit(e: ITrackProps) {
         this.data.set('slickDots', e.slickDots);
         setTimeout(() => {
             this.data.set('clientHeight', e.clientHeight);
             this.data.set('showCompo', true);
         }, 0);
-    },
+    }
 
     attached() {
-        let clientWidth = this.el.clientWidth;
+        let clientWidth = this.el!.clientWidth;
         this.data.set('clientWidth', clientWidth);
 
         const autoplay = this.data.get('autoplay');
@@ -100,16 +105,16 @@ export default san.defineComponent({
                 this.handleChange(this.data.get('curIndex') + 1);
             }, autoplaySpeed);
         }
-    },
+    }
     detached() {
         if (this.autoplayTimer) {
             clearInterval(this.autoplayTimer);
             this.autoplayTimer = null;
         }
-    },
+    }
 
-    handleChange(index) {
-        let len = this.data.get('slickDots').length;
+    handleChange(index: number) {
+        let len = this.data.get('slickDots')?.length ?? 0;
         let curIndex = this.data.get('curIndex');
         let slickIndex = index + 1;
 
@@ -127,9 +132,9 @@ export default san.defineComponent({
         this.data.set('animating', true);
 
         this.fire('afterChange', index);
-    },
+    }
 
     animationEnd() {
         this.data.set('animating', false);
     }
-});
+}

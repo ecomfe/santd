@@ -3,36 +3,38 @@
  * @author zhangtingting12 <zhangtingting12@baidu.com>
  */
 
-import san from 'san';
-
-export default san.defineComponent({
-    template: `
+import Base from 'santd/base';
+import {CNode, ITrackProps} from './interface'
+export default class Track extends Base<ITrackProps> {
+    slickTracks: Node[] | null | undefined;
+    slickDots: number[] | null | undefined;
+    static template = `
         <div class="slick-track"
             style="opacity: 1;{{trackStyle}}"
             on-transitionend="animationEnd"
         >
             <slot/>
         </div>
-    `,
+    `;
 
     initData() {
         return {
             clientHeight: 0
         };
-    },
+    }
 
     inited() {
         this.slickTracks = [];
         this.slickDots = [];
-    },
+    }
 
     disposed() {
         this.slickTracks = null;
         this.slickDots = null;
-    },
+    }
 
-    computed: {
-        trackStyle() {
+    static computed = {
+        trackStyle(this: Track) {
             const vertical = this.data.get('vertical');
             const count = this.data.get('tracksCount');
             const easing = this.data.get('easing');
@@ -62,12 +64,12 @@ export default san.defineComponent({
 
             return style;
         }
-    },
+    }
 
     attached() {
         let clientHeight = this.data.get('clientHeight');
 
-        let children = this.el.children;
+        let children = this.el!.children;
         let len = children.length;
 
         let postNode;
@@ -81,13 +83,13 @@ export default san.defineComponent({
             wrapper.style.outline = 'none';
             wrapper.tabIndex = -1;
 
-            let cNode = node.cloneNode(true);
+            let cNode = node.cloneNode(true) as CNode;
             cNode.style = 'width: 100%; display: inline-block;';
             wrapper.appendChild(cNode);
 
-            this.el.replaceChild(wrapper, node);
-            this.slickTracks.push(wrapper);
-            this.slickDots.push(i);
+            this.el!.replaceChild(wrapper, node);
+            this.slickTracks && this.slickTracks.push(wrapper);
+            this.slickDots && this.slickDots.push(i);
 
 
             if (!i) {
@@ -96,10 +98,12 @@ export default san.defineComponent({
 
             if (i === children.length - 1) {
                 preNode = wrapper.cloneNode(true);
-                this.el.insertBefore(preNode, this.slickTracks[0]);
-                this.el.appendChild(postNode);
-                this.slickTracks.unshift(preNode);
-                this.slickTracks.push(postNode);
+                if (this.slickTracks) {
+                    this.el!.insertBefore(preNode, this.slickTracks[0]);
+                    this.el!.appendChild(postNode as CNode);
+                    this.slickTracks.unshift(preNode);
+                    this.slickTracks.push(postNode as CNode);
+                }
             }
 
             clientHeight = clientHeight || wrapper.clientHeight;
@@ -109,8 +113,8 @@ export default san.defineComponent({
         this.data.set('tracksCount', len + 2);
 
         this.watch('clientWidth', value => {
-            this.slickTracks.forEach(trackEl => {
-                trackEl.style.width = value + 'px';
+            this.slickTracks && this.slickTracks.forEach(trackEl => {
+                (trackEl as HTMLElement).style.width = value + 'px';
             });
         });
 
@@ -119,9 +123,9 @@ export default san.defineComponent({
             slickTracks: this.slickTracks,
             clientHeight
         });
-    },
+    }
 
     animationEnd() {
         this.fire('transitionend');
     }
-});
+}
