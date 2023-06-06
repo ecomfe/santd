@@ -2,7 +2,7 @@
  * @file Santd typography doc file
  **/
 
-import san from 'san';
+import Base from 'santd/base';
 import Readme from '../README.md';
 import Basic from './basic.md';
 import Head from './head.md';
@@ -11,8 +11,8 @@ import Title from './title.md';
 import Editable from './editable.md';
 import Ellipsis from './ellipsis.md';
 
-export default san.defineComponent({
-    components: {
+export default class extends Base {
+    static components = {
         readme: Readme,
         basic: Basic,
         title: Title,
@@ -20,8 +20,8 @@ export default san.defineComponent({
         head: Head,
         editable: Editable,
         ellipsis: Ellipsis
-    },
-    template: `
+    }
+    static template = `
         <div>
             <head/>
             <basic/>
@@ -32,4 +32,4 @@ export default san.defineComponent({
             <readme/>
         </div>
     `
-});
+};

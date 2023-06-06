@@ -13,7 +13,13 @@ const brightnessStep2 = 15; // 亮度阶梯，深色部分
 const lightColorCount = 5; // 浅色数量，主色上
 const darkColorCount = 4; // 深色数量，主色下
 
-const getHue = (hsv, i, light) => {
+type THsv = {
+    h: number;
+    s: number;
+    v: number;
+}
+
+const getHue = (hsv: THsv, i: number, light?: boolean) => {
     let hue;
     // 根据色相不同，色相转向不同
     if (Math.round(hsv.h) >= 60 && Math.round(hsv.h) <= 240) {
@@ -32,7 +38,7 @@ const getHue = (hsv, i, light) => {
     return hue;
 };
 
-const getSaturation = (hsv, i, light) => {
+const getSaturation = (hsv: THsv, i: number, light?: boolean) => {
     if (hsv.h === 0 && hsv.s === 0) {
         return hsv.s;
     }
@@ -64,7 +70,7 @@ const getSaturation = (hsv, i, light) => {
     return saturation;
 };
 
-const getValue = (hsv, i, light) => {
+const getValue = (hsv: THsv, i: number, light?: boolean) => {
     if (light) {
         return Math.round(hsv.v * 100) + (brightnessStep1 * i);
     }
@@ -72,8 +78,8 @@ const getValue = (hsv, i, light) => {
     return Math.round(hsv.v * 100) - (brightnessStep2 * i);
 };
 
-export default function generate(color) {
-    const patterns = [];
+export default function generate(color: string) {
+    const patterns: string[] = [];
     const pColor = tinyColor(color);
     for (let i = lightColorCount; i > 0; i -= 1) {
         const hsv = pColor.toHsv();

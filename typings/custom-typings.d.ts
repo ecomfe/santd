@@ -11,6 +11,8 @@ declare module 'lodash/throttle';
 declare module 'lodash/isEmpty';
 declare module 'lodash/uniqBy';
 declare module 'lodash/findIndex';
+declare module 'tinycolor2';
+declare module '@ant-design/icons-svg';
 
 // 常见 JSON 类型数据
 type JSONValue = string | number | boolean | null | JSONValue[] | {[key: string]: JSONValue};

@@ -2,13 +2,16 @@
  * @file select/Input
  * @author
  */
-
-import san, {DataTypes} from 'san';
+import Base from 'santd/base';
 import {prefixCls} from './util';
 import KeyCode from '../core/util/keyCode';
+import {
+    InputProps as Props,
+    InputState as State
+} from './interface';
 
-export default san.defineComponent({
-    template: `
+export default class Input extends Base<State, Props> {
+    static template = `
         <div class="${prefixCls}-search__field__wrap">
             <input
                 s-ref="input"
@@ -26,26 +29,21 @@ export default san.defineComponent({
                 class="${prefixCls}-search__field__mirror"
             >{{inputValue}}{{'&nbsp;'|raw}}</span>
         </div>
-    `,
+    `
 
-    dataTypes: {
-        context: DataTypes.object,
-        inputValue: DataTypes.string
-    },
-
-    initData() {
+    initData(): State {
         return {
             context: {},
             inputValue: ''
         };
-    },
+    }
 
     attached() {
-        const $input = this.ref('input');
-        const $inputMirror = this.ref('inputMirror');
+        const $input = this.ref('input') as unknown as HTMLInputElement;
+        const $inputMirror = this.ref('inputMirror') as unknown as HTMLSpanElement;
         const modeConfig = this.data.get('context.modeConfig');
 
-        if (modeConfig.multiple || modeConfig.tags) {
+        if (modeConfig?.multiple || modeConfig?.tags) {
             this.watch('inputValue', value => {
                 this.nextTick(() => {
                     if (value && $input && $inputMirror) {
@@ -59,20 +57,20 @@ export default san.defineComponent({
         }
 
         this.dispatch('select:setInputElement', $input);
-    },
+    }
 
-    handleInputChange(e) {
+    handleInputChange(e: InputEvent) {
         this.dispatch('select:inputChange', e);
-    },
+    }
 
-    handleInputKeyDown(e) {
+    handleInputKeyDown(e: KeyboardEvent) {
         const {modeConfig, realOpen} = this.data.get('context');
 
         if (e.keyCode === KeyCode.ENTER) {
-            if (modeConfig.single && realOpen || !modeConfig.single && !realOpen) {
+            if (modeConfig?.single && realOpen || !modeConfig?.single && !realOpen) {
                 e.stopPropagation();
             }
         }
         this.dispatch('select:inputKeyDown', e);
     }
-});
+};

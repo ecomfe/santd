@@ -2,7 +2,7 @@
 * @file icon图标
 * @author fuqiangqiang@baidu.com
 */
-import san, {DataTypes} from 'san';
+import Base from 'santd/base';
 import './style/index.less';
 import * as allIcons from '@ant-design/icons-svg';
 import {classCreator} from '../core/util';
@@ -10,28 +10,31 @@ import sanicon from './Icon';
 import iconFont from './Iconfont';
 import {svgBaseProps, withThemeSuffix, removeTypeTheme, alias} from './utils';
 import {getTwoToneColor, setTwoToneColor} from './twoTonePrimaryColor';
+import  {
+    IconProps as Props,
+    IconComputed as Computed,
+    InnerSvgProps
+} from './interface';
 
 const prefixCls = classCreator('icon')();
 
 sanicon.add(Object.keys(allIcons).map(key => allIcons[key]));
 setTwoToneColor('#1890ff');
 
-const icon = san.defineComponent({
-    components: {
+export default class Icon extends Base<{}, Props, Computed> {
+    static components = {
         's-icon': sanicon
-    },
-    dataTypes: {
-        tabIndex: DataTypes.number
-    },
-    computed: {
-        classes() {
+    };
+
+    static computed: Computed = {
+        classes(this: Icon) {
             const type = this.data.get('type');
             let classArr = [prefixCls];
 
             Boolean(type) && classArr.push(`${prefixCls}-${type}`);
             return classArr;
         },
-        innerSvgProps() {
+        innerSvgProps(this: Icon) {
             const spin = this.data.get('spin');
             const type = this.data.get('type');
             const rotate = this.data.get('rotate');
@@ -44,7 +47,7 @@ const icon = san.defineComponent({
                     transform: `rotate(${rotate}deg)`
                 }
                 : undefined;
-            let innerSvgProps = {
+            let innerSvgProps: InnerSvgProps = {
                 ...svgBaseProps,
                 class: (!!spin || type === 'loading') ? `${prefixCls}-spin` : '',
                 style: svgStyle,
@@ -64,7 +67,38 @@ const icon = san.defineComponent({
             }
             return innerSvgProps;
         }
-    },
+    };
+    static template = `
+        <i
+            aria-label="{{type && '图标: ' + type}}"
+            tabindex="{{iconTabIndex}}"
+            on-click="handleClick"
+            class="{{classes}}"
+        >
+            <slot name="component" s-if="{{hasComponent}}" />
+            <s-icon
+                s-else
+                style="{{innerSvgProps.style}}"
+                class="{{innerSvgProps.class}}"
+                type="{{innerSvgProps.computedType}}"
+                primaryColor="{{twoToneColor}}"
+                theme="{{theme}}"
+                spin="{{spin}}"
+                rotate="{{rotate}}"
+            >
+                <slot />
+            </s-icon>
+        </i>
+    `;
+
+    static createFromIconfontCN = iconFont;
+
+    static getTwoToneColor = getTwoToneColor;
+
+    static setTwoToneColor = setTwoToneColor;
+
+    listeners!: any;
+
     inited() {
         this.data.set('hasComponent', !!this.sourceSlots.named.component);
 
@@ -72,34 +106,8 @@ const icon = san.defineComponent({
         if (iconTabIndex === undefined && this.listeners.click) {
             this.data.set('iconTabIndex', -1);
         }
-    },
-    handleClick(e) {
+    };
+    handleClick(e: MouseEvent) {
         this.fire('click', e);
-    },
-    template: `<i
-        aria-label="{{type && '图标: ' + type}}"
-        tabindex="{{iconTabIndex}}"
-        on-click="handleClick"
-        class="{{classes}}"
-    >
-        <slot name="component" s-if="{{hasComponent}}" />
-        <s-icon
-            s-else
-            style="{{innerSvgProps.style}}"
-            class="{{innerSvgProps.class}}"
-            type="{{innerSvgProps.computedType}}"
-            primaryColor="{{twoToneColor}}"
-            theme="{{theme}}"
-            spin="{{spin}}"
-            rotate="{{rotate}}"
-        >
-            <slot />
-        </s-icon>
-    </i>`
-});
-
-icon.createFromIconfontCN = iconFont;
-icon.getTwoToneColor = getTwoToneColor;
-icon.setTwoToneColor = setTwoToneColor;
-
-export default icon;
+    };
+}

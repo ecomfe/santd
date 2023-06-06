@@ -10,7 +10,7 @@ import {
     PaginationState as State,
     PaginationProps as Props,
     PaginationComputed as Computed,
-    PaginationStateAppend as StateAppend,
+    PaginationPrivateProps as PrivateProps,
     JumpFun,
     TPageItem
 } from './interface';
@@ -77,7 +77,7 @@ const simpleTemplate = `
 
 `;
 
-export default class Pagination extends Base<State, Props & StateAppend, Computed> {
+export default class Pagination extends Base<State, Props & PrivateProps, Computed> {
     prev!: JumpFun;
     next!: JumpFun;
     jumpPrev!: JumpFun;

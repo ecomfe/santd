@@ -2,27 +2,32 @@
  * @file select/SingleSelector
  * @author
  */
-
-import san, {DataTypes} from 'san';
+import Base from 'santd/base';
 import {
     getMapKey,
     prefixCls,
     toArray,
     toTitle
 } from './util';
+import {
+    SingleSelectorState as State,
+    SingleSelectorProps as Props,
+    SingleSelectorComputed as Computed
+} from './interface';
 
-export default san.defineComponent({
-    template: `
+
+export default class SingleSelector extends Base<State, Props, Computed> {
+    static template = `
         <div title="{{optionInfo.title}}"
             class="${prefixCls}-selection-selected-value"
             style="{{style}}"
         >
             {{optionInfo.label | raw}}
         </div>
-    `,
+    `
 
-    computed: {
-        optionInfo() {
+    static computed: Computed = {
+        optionInfo(this: SingleSelector) {
             const {optionsInfo = {}, value} = this.data.get('context');
             let singleValue = toArray(value)[0];
             let info = optionsInfo[getMapKey(singleValue)];
@@ -36,7 +41,7 @@ export default san.defineComponent({
             };
         },
 
-        style() {
+        style(this: SingleSelector) {
             let showSelectedValue = false;
             let opacity = 1;
             const inputValue = this.data.get('inputValue');
@@ -60,17 +65,12 @@ export default san.defineComponent({
                 opacity
             };
         }
-    },
+    }
 
-    dataTypes: {
-        context: DataTypes.object,
-        inputValue: DataTypes.string
-    },
-
-    initData() {
+    initData(): State {
         return {
             context: {},
             inputValue: ''
         };
     }
-});
+};

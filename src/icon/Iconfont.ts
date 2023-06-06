@@ -2,12 +2,18 @@
  * @file Santd icon iconfont file
  * @author mayihui@baidu.com
  **/
-
-import san from 'san';
+import Base from 'santd/base';
 import icon from './index';
+import {
+    CustomIconOption,
+    IconfontProps as Props,
+    IconfontState as State
+} from './interface';
 
 const customCache = new Set();
-export default function (options = {}) {
+
+
+export default function (options: CustomIconOption = {}) {
     const {
         scriptUrl,
         extraCommonProps = {}
@@ -27,24 +33,11 @@ export default function (options = {}) {
         document.body.appendChild(script);
     }
 
-    return san.defineComponent({
-        components: {
+    class CumstomIcon extends Base<State, Props> {
+        static components = {
             's-icon': icon
-        },
-        initData() {
-            return {
-                extraCommonProps
-            };
-        },
-        attached() {
-            const type = this.data.get('type');
-            let useNode = this.el.querySelector('use');
-            useNode.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '#' + type);
-        },
-        handleClick(e) {
-            this.fire('click', e);
-        },
-        template: `
+        }
+        static template = `
             <span on-click="handleClick">
                 <s-icon
                     theme="{{theme}}"
@@ -59,5 +52,23 @@ export default function (options = {}) {
                 </s-icon>
             </span>
         `
-    });
+        initData() {
+            return {
+                extraCommonProps
+            };
+        }
+        attached() {
+            const type = this.data.get('type');
+            let useNode = this.el?.querySelector('use');
+            useNode?.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '#' + type);
+        }
+
+        handleClick(e: MouseEvent) {
+            this.fire('click', e);
+        }
+
+
+    }
+    return CumstomIcon;
+
 }

@@ -9,8 +9,9 @@ import type {ComponentNewOptions} from 'san';
 type GetReturnType<C> = {[K in keyof C]: C[K] extends (...args: any[]) => infer R ? R : never};
 
 // 暂时简单定义各种node的类型，之后可完善
-interface TextNode {
+export interface TextNode {
     nodeType: NodeType.TEXT;
+    content: string;
 }
 
 interface IFNode {
@@ -35,7 +36,7 @@ interface ISNode {
 }
 
 
-interface SourceSlots {
+export interface SourceSlots {
     named: {
         [key: string]: JSONValue
     };
@@ -53,7 +54,7 @@ export type NodeChild =
     | LOADERNode
     | ISNode;
 
-interface SlotChild {
+export interface SlotChild {
     children: Array<NodeChild>;
 }
 
@@ -84,7 +85,7 @@ export default class Base<
 
     parent!: Base;
 
-    children!: Base;
+    children!: any[];
 
     owner!: Base;
 

@@ -4,7 +4,7 @@
  **/
 import generate from './generate';
 
-export function isIconDefinition(target) {
+export function isIconDefinition(target: any) {
     return (
         typeof target === 'object'
             && typeof target.name === 'string'
@@ -13,8 +13,8 @@ export function isIconDefinition(target) {
     );
 }
 
-export function normalizeAttrs(attrs = {}) {
-    return Object.keys(attrs).reduce((acc, key) => {
+export function normalizeAttrs(attrs: Record<string, any> = {}) {
+    return Object.keys(attrs).reduce((acc: Record<string, any>, key) => {
         const val = attrs[key];
         switch (key) {
             case 'class':
@@ -29,6 +29,8 @@ export function normalizeAttrs(attrs = {}) {
 }
 
 export class MiniMap {
+    collection: Record<string, any>
+
     constructor() {
         this.collection = {};
     }
@@ -38,27 +40,27 @@ export class MiniMap {
     clear() {
         this.collection = {};
     }
-    delete(key) {
+    delete(key: string) {
         return delete this.collection[key];
     }
-    get(key) {
+    get(key: string) {
         return this.collection[key];
     }
-    has(key) {
+    has(key: string) {
         return Boolean(this.collection[key]);
     }
-    set(key, value) {
+    set(key: string, value: any) {
         this.collection[key] = value;
         return this;
     }
 }
 
-export function getSecondaryColor(primaryColor) {
+export function getSecondaryColor(primaryColor: string) {
     // choose the second color
     return generate(primaryColor)[0];
 }
 
-export function withSuffix(name, theme) {
+export function withSuffix(name: string, theme: string) {
     switch (theme) {
         case 'filled':
             return `${name}-fill`;
@@ -83,7 +85,7 @@ const fillTester = /-fill$/;
 const outlineTester = /-o$/;
 const twoToneTester = /-twotone$/;
 
-export function getThemeFromTypeName(type) {
+export function getThemeFromTypeName(type: string) {
     let result = null;
     if (fillTester.test(type)) {
         result = 'filled';
@@ -97,14 +99,14 @@ export function getThemeFromTypeName(type) {
     return result;
 }
 
-export function removeTypeTheme(type) {
+export function removeTypeTheme(type: string) {
     return type
         .replace(fillTester, '')
         .replace(outlineTester, '')
         .replace(twoToneTester, '');
 }
 
-export function withThemeSuffix(type, theme) {
+export function withThemeSuffix(type: string, theme: string) {
     let result = type;
     if (theme === 'filled') {
         result += '-fill';
@@ -122,7 +124,7 @@ export function withThemeSuffix(type, theme) {
 }
 
 // For alias or compatibility
-export function alias(type) {
+export function alias(type: string) {
     switch (type) {
         case 'cross':
             return 'close';

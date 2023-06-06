@@ -2,8 +2,6 @@
  * @file Santd tabs scrollable tab bar node file
  * @author mayihui@baidu.com
  **/
-
-import san from 'san';
 import Base from 'santd/base';
 import debounce from 'lodash/debounce';
 import ResizeObserver from 'resize-observer-polyfill';
@@ -12,39 +10,51 @@ import Icon from '../icon';
 import {classCreator} from '../core/util';
 const prefixCls = classCreator('tabs')();
 
-const prevIcon = san.defineComponent({
-    computed: {
-        prevIconType() {
+interface IconProps {
+    tabPosition: string;
+    prefixCls: string;
+}
+interface PrievIconComputed {
+    prevIconType: () => 'up' | 'left';
+}
+interface NextIconComputed {
+    nextIconType: () => 'down' | 'right';
+}
+
+
+class PrevIcon extends Base<{}, IconProps, PrievIconComputed> {
+    static computed: PrievIconComputed = {
+        prevIconType(this: PrevIcon) {
             const tabPosition = this.data.get('tabPosition');
             const isVertical = tabPosition === 'left' || tabPosition === 'right';
 
             return isVertical ? 'up' : 'left';
         }
-    },
-    components: {
+    }
+    static components = {
         's-icon': Icon
-    },
-    template: `<span class="${prefixCls}-tab-prev-icon">
+    }
+    static template = `<span class="${prefixCls}-tab-prev-icon">
         <s-icon type="{{prevIconType}}" class="${prefixCls}-tab-prev-icon-target"/>
     </span>`
-});
+}
 
-const nextIcon = san.defineComponent({
-    computed: {
-        nextIconType() {
+class NextIcon extends Base<{}, IconProps, NextIconComputed> {
+    static computed: NextIconComputed = {
+        nextIconType(this: NextIcon) {
             const tabPosition = this.data.get('tabPosition');
             const isVertical = tabPosition === 'left' || tabPosition === 'right';
 
             return isVertical ? 'down' : 'right';
         }
-    },
-    components: {
+    }
+    static components = {
         's-icon': Icon
-    },
-    template: `<span class="${prefixCls}-tab-next-icon">
+    }
+    static template = `<span class="${prefixCls}-tab-next-icon">
         <s-icon type="{{nextIconType}}" class="${prefixCls}-tab-next-icon-target"/>
     </span>`
-});
+};
 export default class ScrollableTabBarNode extends Base {
     static template = /* html */ `
         <div
@@ -79,8 +89,8 @@ export default class ScrollableTabBarNode extends Base {
 
     static components = {
         's-icon': Icon,
-        's-previcon': prevIcon,
-        's-nexticon': nextIcon
+        's-previcon': PrevIcon,
+        's-nexticon': NextIcon
     };
 
     lastNextPrevShown!: boolean;

@@ -16,7 +16,6 @@ function isValueNotNaN(value: any): value is number {
 export default class Options extends Base<State, Props> {
     static components = {
         's-select': Select,
-        // @ts-ignore TODO：Select ts化后，将删除
         's-option': Select.Option
     }
     handleChangeSize(value: string) {

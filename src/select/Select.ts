@@ -2,14 +2,14 @@
  * @file select/Select
  * @author
  */
-
-import san, {DataTypes} from 'san';
+import Base from 'santd/base';
 import Empty from '../empty';
 import Icon from '../icon';
 import Trigger from '../core/trigger';
+import KeyCode from '../core/util/keyCode';
+import {PlacementMap} from '../tooltip/interface';
 import DropdownMenu from './DropdownMenu';
 import Selector from './Selector';
-import KeyCode from '../core/util/keyCode';
 import {
     dropdownPrefixCls,
     emptyPrefixCls,
@@ -19,15 +19,48 @@ import {
     prefixCls,
     preventDefaultEvent,
     splitBySeparators,
-    toArray
+    toArray,
+    isValueArray,
+    isValueString
 } from './util';
 
+import {
+    SelectProps as Props,
+    SelectState as State,
+    SelectComputed as Computed,
+    RawValueType,
+    TOption,
+    TOptions,
+    TOptGroup,
+    TOptionGroups,
+    TOptionsInfo,
+    SelInstanceProps,
+    TDeSelectEventItem,
+    TMenuItem
+} from './interface';
+import {TOption as ComponentOption} from './Option';
+import {TOptGroup as ComponentOptGroup} from './OptGroup';
+
+
+interface SizeMap {
+    large: 'lg';
+    small: 'sm';
+    default?: string;
+}
+
+interface Messages {
+    'select:updateOptions': (this: Select) => void;
+    'select:setInputElement': (this: Select, payload: {value: Props['inputElement']}) => void;
+    'select:inputChange': (this: Select, paylod: {value: InputEvent}) => void;
+    'select:inputKeyDown': (this: Select, paylod: {value: KeyboardEvent}) => void;
+}
+
 const SECRET_COMBOBOX_MODE_DO_NOT_USE = 'SECRET_COMBOBOX_MODE_DO_NOT_USE';
-const sizeMap = {
+const sizeMap: SizeMap = {
     large: 'lg',
     small: 'sm'
 };
-const BUILT_IN_PLACEMENTS = {
+const BUILT_IN_PLACEMENTS: PlacementMap = {
     bottomLeft: {
         points: ['tl', 'bl'],
         offset: [0, 4],
@@ -45,15 +78,9 @@ const BUILT_IN_PLACEMENTS = {
         }
     }
 };
-const valueType = DataTypes.oneOfType([
-    DataTypes.string,
-    DataTypes.arrayOf(DataTypes.string),
-    DataTypes.number,
-    DataTypes.arrayOf(DataTypes.number)
-]);
 
-export default san.defineComponent({
-    template: `
+export default class Select extends Base<State, Props, Computed> {
+    static template = `
         <div class="{{wrapClass}}"
             on-mouseenter="fireEvent($event, 'mouseenter')"
             on-mouseleave="fireEvent($event, 'mouseleave')"
@@ -132,65 +159,18 @@ export default san.defineComponent({
                 <div style="display: none;"><slot/></div>
             </s-trigger>
         </div>
-    `,
+    `;
 
-    components: {
+    static components = {
         's-empty': Empty,
         's-icon': Icon,
         's-trigger': Trigger,
         's-dropdown-render': DropdownMenu,
         's-selector': Selector
-    },
+    };
 
-    dataTypes: {
-        allowClear: DataTypes.bool,
-        autoClearSearchValue: DataTypes.bool,
-        autoFocus: DataTypes.bool,
-        defaultActiveFirstOption: DataTypes.bool,
-        defaultValue: valueType,
-        disabled: DataTypes.bool,
-        dropdownClassName: DataTypes.string,
-        dropdownMatchSelectWidth: DataTypes.bool,
-        dropdownRender: DataTypes.func,
-        dropdownStyle: DataTypes.object,
-        dropdownMenuStyle: DataTypes.string,
-        filterOption: DataTypes.oneOfType([
-            DataTypes.bool,
-            DataTypes.func
-        ]),
-        firstActiveValue: DataTypes.bool,
-        getPopupContainer: DataTypes.func,
-        labelInValue: DataTypes.bool,
-        maxTagCount: DataTypes.number,
-        maxTagTextLength: DataTypes.number,
-        maxTagPlaceholder: DataTypes.func,
-        mode: DataTypes.oneOf([
-            'default',
-            'multiple',
-            'tags',
-            'combobox',
-            SECRET_COMBOBOX_MODE_DO_NOT_USE
-        ]),
-        notFoundContent: DataTypes.string,
-        optionFilterProp: DataTypes.string,
-        optionLabelProp: DataTypes.string,
-        placeholder: DataTypes.string,
-        showArrow: DataTypes.bool,
-        showSearch: DataTypes.bool,
-        size: DataTypes.oneOf([
-            'default',
-            'large',
-            'small'
-        ]),
-        tokenSeparators: DataTypes.arrayOf(DataTypes.string),
-        value: valueType,
-        defaultOpen: DataTypes.bool,
-        open: DataTypes.bool,
-        loading: DataTypes.bool
-    },
-
-    computed: {
-        modeConfig() {
+    static computed: Computed = {
+        modeConfig(this: Select) {
             const mode = this.data.get('mode');
             const multiple = mode === 'multiple';
             const tags = mode === 'tags';
@@ -204,7 +184,9 @@ export default san.defineComponent({
             };
         },
 
-        wrapClass() {
+        /* eslint-disable complexity */
+        wrapClass(this: Select) {
+        /* eslint-enable complexity */
             const data = this.data;
             const allowClear = data.get('allowClear');
             const disabled = data.get('disabled');
@@ -228,7 +210,7 @@ export default san.defineComponent({
             ].filter(name => name);
         },
 
-        selectionClass() {
+        selectionClass(this: Select) {
             const mode = this.data.get('mode');
 
             return [
@@ -237,7 +219,7 @@ export default san.defineComponent({
             ];
         },
 
-        selectionAttrs() {
+        selectionAttrs(this: Select) {
             const data = this.data;
             const modeConfig = data.get('modeConfig');
             return {
@@ -246,20 +228,21 @@ export default san.defineComponent({
                 'aria-haspopup': true,
                 'aria-controls': data.get('context.ariaId'),
                 'aria-expanded': !!data.get('realOpen'),
-                [modeConfig.single && 'tabindex']: data.get('disabled') ? -1 : 0
+                [(modeConfig.single && 'tabindex') as 'tabindex']: data.get('disabled') ? -1 : 0
             };
         },
 
-        renderClear() {
+        renderClear(this: Select) {
             const allowClear = this.data.get('allowClear');
             const value = this.data.get('value');
-            if (allowClear && value && value.length) {
+            // if (allowClear && value && value.length)
+            if (allowClear && (isValueArray(value) || isValueString(value)) && value.length) {
                 return true;
             }
             return false;
         },
 
-        renderArrow() {
+        renderArrow(this: Select) {
             // showArrow : Set to true if not multiple by default but keep set value.
             const data = this.data;
             const loading = data.get('loading');
@@ -275,7 +258,7 @@ export default san.defineComponent({
             return true;
         },
 
-        hideAction() {
+        hideAction(this: Select) {
             const data = this.data;
             const disabled = data.get('disabled');
             if (disabled) {
@@ -287,7 +270,7 @@ export default san.defineComponent({
             return !showSearch && modeConfig.single ? ['click'] : ['blur'];
         },
 
-        popupClassName() {
+        popupClassName(this: Select) {
             const data = this.data;
             const dropdownClassName = data.get('dropdownClassName');
             const empty = false;
@@ -299,20 +282,20 @@ export default san.defineComponent({
             ].filter(name => name).join(' ');
         },
 
-        popupStyle() {
+        popupStyle(this: Select) {
             const data = this.data;
             const dropdownMatchSelectWidth = data.get('dropdownMatchSelectWidth');
             const dropdownStyle = data.get('dropdownStyle') || {};
             const dropdownWidth = data.get('dropdownWidth');
             const widthProp = dropdownMatchSelectWidth ? 'width' : 'minWidth';
-            let popupStyle = {...dropdownStyle};
+            const popupStyle = {...dropdownStyle};
             if (dropdownWidth) {
                 popupStyle[widthProp] = `${dropdownWidth}px`;
             }
             return popupStyle;
         },
 
-        realOpen() {
+        realOpen(this: Select) {
             const data = this.data;
             let open = data.get('open');
             const modeConfig = data.get('modeConfig');
@@ -325,9 +308,9 @@ export default san.defineComponent({
             }
             return open;
         }
-    },
+    };
 
-    messages: {
+    static messages: Messages = {
         'select:updateOptions'() {
             this.updateOptions();
         },
@@ -343,9 +326,18 @@ export default san.defineComponent({
         'select:inputKeyDown'({value: event}) {
             this.handleInputKeyDown(event);
         }
-    },
+    };
 
-    initData() {
+    /* eslint-disable @typescript-eslint/naming-convention */
+    static Option: ComponentOption;
+    static OptGroup: ComponentOptGroup;
+    /* eslint-enable @typescript-eslint/naming-convention */
+
+    preventDefaultEvent = preventDefaultEvent;
+    props!: SelInstanceProps;
+
+
+    initData(): State {
         return {
             // ----- data ----- //
             allowClear: false,
@@ -373,16 +365,17 @@ export default san.defineComponent({
             optionsInfo: {},
             showAction: ['click']
         };
-    },
+    }
 
     inited() {
         this.watch('value', value => {
             this.setState({value});
         });
-    },
+    }
 
     created() {
-        const props = this.props = this.data.get();
+        this.props = this.data.get('');
+        const props = this.props;
 
         this.setState({
             value: this.getValueFromProps(true),
@@ -392,7 +385,7 @@ export default san.defineComponent({
         });
 
         this.setDropdownWidth();
-    },
+    }
 
     attached() {
         this.setState({
@@ -404,18 +397,18 @@ export default san.defineComponent({
         if (props.autoFocus || props.open) {
             this.focus();
         }
-    },
+    }
 
     updated() {
         this.setDropdownWidth();
         this.forcePopupAlign();
-    },
+    }
 
     detached() {
         this.clearFocusTime();
         this.clearBlurTime();
         this.clearComboboxTime();
-    },
+    }
 
     updateOptions() {
         const {options, optionGroups} = this.getOptionsFromChildren(this.children);
@@ -426,7 +419,7 @@ export default san.defineComponent({
             optionGroups,
             optionsInfo
         });
-    },
+    }
 
     findFirstMenuItem() {
         const items = this.ref('dropdown').data.get('menuItems');
@@ -434,20 +427,28 @@ export default san.defineComponent({
             return items[0];
         }
         return null;
-    },
+    }
 
-    getOptionsFromChildren(children = [], options = [], optionGroups = [], currGroup = [], hasGroup = false) {
+    getOptionsFromChildren(
+        children: any[] = [],
+        options: TOptions = [],
+        optionGroups: TOptionGroups = [],
+        currGroup: TOptions = [],
+        hasGroup: boolean = false
+    ) {
         children.forEach(child => {
             if (child) {
                 if (child.isSelectOption) {
                     options.push(child);
-                    hasGroup && currGroup.push(child);
+                    hasGroup && currGroup.push(child as TOption);
                 }
                 else if (child.isSelectOptionGroup) {
+                    /* eslint-disable no-param-reassign */
                     currGroup = [];
+                    /* eslint-enable no-param-reassign */
                     this.getOptionsFromChildren(child.children || [], options, optionGroups, currGroup, true);
                     optionGroups.push({
-                        group: child,
+                        group: child as TOptGroup,
                         options: currGroup
                     });
                 }
@@ -457,9 +458,9 @@ export default san.defineComponent({
             }
         });
         return {options, optionGroups};
-    },
+    }
 
-    getInputValueForCombobox(props, optionsInfo, useDefaultValue) {
+    getInputValueForCombobox(props: any, optionsInfo: TOptionsInfo, useDefaultValue?: boolean) {
         let value = [];
         if ('value' in props && !useDefaultValue) {
             value = toArray(props.value);
@@ -484,17 +485,17 @@ export default san.defineComponent({
             label = '';
         }
         return label;
-    },
+    }
 
-    getLabelFromOption(option) {
+    getLabelFromOption(option: TOption) {
         const optionLabelProp = this.getOptionLabelProp(this.props);
         if (optionLabelProp === 'children') {
-            return option.el ? option.el.textContent.trim() : '';
+            return option.el ? (option.el.textContent as string).trim() : '';
         }
         return option.data.get(optionLabelProp);
-    },
+    }
 
-    getOptionInfo(option) {
+    getOptionInfo(option: TOption) {
         const {value, title, disabled} = option.data.get();
         const label = this.getLabelFromOption(option);
         return {
@@ -504,38 +505,38 @@ export default san.defineComponent({
             title,
             value
         };
-    },
+    }
 
-    getOptionsInfo(options = []) {
-        const optionsInfo = {};
+    getOptionsInfo(options: TOptions = []) {
+        const optionsInfo: TOptionsInfo = {};
         options.forEach(option => {
-            const key = getMapKey(option.data.get('value'));
+            const key = getMapKey(option.data.get('value') as RawValueType);
             optionsInfo[key] = this.getOptionInfo(option);
         });
         return optionsInfo;
-    },
+    }
 
-    getOptionLabelProp(props) {
+    getOptionLabelProp(props: Partial<SelInstanceProps>) {
         const {optionLabelProp, modeConfig} = props;
-        return optionLabelProp || (modeConfig.combobox ? 'value' : 'children');
-    },
+        return optionLabelProp || (modeConfig?.combobox ? 'value' : 'children');
+    }
 
-    getValueByInput(str) {
-        const {tokenSeparators} = this.data.get();
+    getValueByInput(str: string) {
+        const {tokenSeparators = []} = this.data.get();
         let nextValue = this.data.get('value');
         let hasNewValue = false;
         splitBySeparators(str, tokenSeparators).forEach(label => {
-            if (nextValue.indexOf(label) === -1) {
+            if (isValueArray(nextValue) && !nextValue.includes(label)) {
                 nextValue = [...nextValue, label];
                 hasNewValue = true;
                 this.fireSelect(label);
             }
         });
         return hasNewValue ? nextValue : undefined;
-    },
+    }
 
-    getValueFromProps(useDefaultValue) {
-        let value = [];
+    getValueFromProps(useDefaultValue?: boolean) {
+        let value: any[] = [];
         const props = this.props;
         if ('defaultValue' in props && useDefaultValue) {
             value = toArray(props.defaultValue);
@@ -546,25 +547,25 @@ export default san.defineComponent({
         if (props.labelInValue) {
             value = value.map(v => v.key);
         }
-        return value;
-    },
+        return value as RawValueType[];
+    }
 
     setDropdownWidth() {
-        const width = this.el.offsetWidth;
+        const width = (this.el as HTMLElement).offsetWidth;
         if (width !== this.data.get('dropdownWidth')) {
             this.setState({dropdownWidth: width});
         }
-    },
+    }
 
-    setInputValue(inputValue, fireSearch = true) {
+    setInputValue(inputValue: string, fireSearch: boolean = true) {
         const preInputValue = this.data.get('inputValue');
         if (inputValue !== preInputValue) {
             this.setState({inputValue});
             fireSearch && this.fire('search', inputValue);
         }
-    },
+    }
 
-    setOpenState(open, config = {}) {
+    setOpenState(open: boolean, config: {needFocus?: boolean, fireSearch?: boolean} = {}) {
         const {needFocus, fireSearch} = config;
         const isAutoComplete = this.data.get('isAutoComplete');
         const props = this.data.get();
@@ -582,14 +583,13 @@ export default san.defineComponent({
         };
 
         // clear search input value when open is false in singleMode.
-        if (!open && props.modeConfig.single && props.showSearch && !isAutoComplete) {
+        if (!open && props.modeConfig?.single && props.showSearch && !isAutoComplete) {
             this.setInputValue('', fireSearch);
         }
         if (!open) {
             this.maybeFocus(open, !!needFocus);
         }
         this.setState({
-            open,
             ...nextState
         });
         this.nextTick(() => {
@@ -597,9 +597,9 @@ export default san.defineComponent({
                 this.maybeFocus(open, !!needFocus);
             }
         });
-    },
+    }
 
-    setState(props, config) {
+    setState(props: Record<string, any>, config?: {silent?: boolean, force?: boolean}) {
         if ('context' in props) {
             console.log('context is forbidden to setState'); // eslint-disable-line
             return;
@@ -610,22 +610,22 @@ export default san.defineComponent({
             this.props[key] = val;
         });
         this.data.set('context', Object.assign({}, this.props, props), config);
-    },
+    }
 
     forcePopupAlign() {
         if (!this.data.get('open')) {
             return;
         }
         this.nextTick(() => {
-            const trigger = this.ref('trigger');
+            const trigger = this.ref('trigger') as Trigger;
             trigger && trigger.refresh();
         });
-    },
+    }
 
-    maybeFocus(open, needFocus) {
+    maybeFocus(open: boolean, needFocus: boolean) {
         if (needFocus || open) {
             const $input = this.data.get('inputElement');
-            const $selection = this.ref('selection');
+            const $selection = this.ref('selection') as unknown as HTMLDivElement;
             const $activeElement = document.activeElement;
             const modeConfig = this.data.get('modeConfig');
             if ($input && (open || !modeConfig.single)) {
@@ -639,7 +639,7 @@ export default san.defineComponent({
                 this.data.set('_focused', true);
             }
         }
-    },
+    }
 
     openIfHasChildren() {
         const props = this.props;
@@ -647,9 +647,9 @@ export default san.defineComponent({
         if (props.options.length || props.modeConfig.single) {
             this.setOpenState(true);
         }
-    },
+    }
 
-    removeSelected(selectedKey, e) {
+    removeSelected(selectedKey: RawValueType, e?: Event) {
         // Do not trigger Trigger popup
         if (e && e.stopPropagation) {
             e.stopPropagation();
@@ -657,10 +657,14 @@ export default san.defineComponent({
 
         const {value: oldValue, modeConfig, labelInValue} = this.data.get();
 
-        const value = oldValue.filter(singleValue => singleValue !== selectedKey);
+        let value: RawValueType[] = [];
 
-        if (modeConfig.multiple || modeConfig.tags) {
-            let event = selectedKey;
+        if (isValueArray(oldValue)) {
+            value = oldValue.filter(singleValue => singleValue !== selectedKey);
+        }
+
+        if (modeConfig?.multiple || modeConfig?.tags) {
+            let event: TDeSelectEventItem = selectedKey;
             if (labelInValue) {
                 event = {
                     key: selectedKey,
@@ -670,38 +674,38 @@ export default san.defineComponent({
             this.fire('deselect', event);
         }
         this.fireChange(value);
-    },
+    }
 
-    fireChange(value) {
+    fireChange(value: Props['value']) {
         this.setState({value});
         this.fire('change', value);
         this.dispatch('UI:form-item-interact', {fieldValue: value, type: 'change'});
-    },
+    }
 
-    fireSelect(value) {
+    fireSelect(value: string) {
         this.fire('select', value);
-    },
+    }
 
-    fireEvent(e, type) {
+    fireEvent(e: MouseEvent, type: 'mouseenter' | 'mouseleave') {
         this.fire(type, e);
-    },
+    }
 
-    handleArrowClick(e) {
+    handleArrowClick(e: MouseEvent) {
         e.stopPropagation();
         e.preventDefault();
         const {disabled, open} = this.data.get();
         if (!disabled) {
             this.setOpenState(!open, {needFocus: !open});
         }
-    },
+    }
 
-    handleBackfill(item) {
+    handleBackfill(item: TMenuItem | null) {
         const {modeConfig, backfill} = this.props;
         if (!backfill || !(modeConfig.single || modeConfig.combobox)) {
             return;
         }
 
-        const key = item.value;
+        const key = item?.value as string;
 
         if (modeConfig.combobox || modeConfig.single) {
             this.setInputValue(key, false);
@@ -711,17 +715,18 @@ export default san.defineComponent({
             value: [key],
             backfillValue: key
         });
-    },
+    }
 
-    handleClearSelection(e) {
+    handleClearSelection(e: MouseEvent) {
         if (this.data.get('disabled')) {
             return;
         }
 
         this.fire('clear');
 
-        let {inputValue, value} = this.data.get();
-        value = toArray(value);
+        const inputValue = this.data.get('inputValue');
+        let value = this.data.get('value');
+        value = toArray(value) as RawValueType[];
         e.stopPropagation();
 
         if (inputValue || value.length) {
@@ -733,14 +738,14 @@ export default san.defineComponent({
                 this.setInputValue('');
             }
         }
-    },
+    }
 
-    handleInputChange(e) {
+    handleInputChange(e: InputEvent) {
         const {modeConfig, tokenSeparators, inputElement: $input} = this.data.get();
-        const val = e.target.value;
+        const val = (e.target as HTMLInputElement).value;
         if (
-            (modeConfig.multiple || modeConfig.tags)
-            && tokenSeparators.length
+            (modeConfig?.multiple || modeConfig?.tags)
+            && tokenSeparators?.length
             && includesSeparators(val, tokenSeparators)
         ) {
             const nextValue = this.getValueByInput(val);
@@ -749,7 +754,7 @@ export default san.defineComponent({
             }
             this.setOpenState(false, {needFocus: true});
 
-            $input.value = '';
+            $input && ($input.value = '');
             this.nextTick(() => {
                 this.setState({inputValue: ''});
             });
@@ -757,12 +762,14 @@ export default san.defineComponent({
         }
         this.setInputValue(val);
         this.setState({open: true});
-        if (modeConfig.combobox || this.data.get('isAutoComplete')) {
+        if (modeConfig?.combobox || this.data.get('isAutoComplete')) {
             this.fireChange([val]);
         }
-    },
+    }
 
-    handleInputKeyDown(e) {
+    /* eslint-disable complexity,max-statements */
+    handleInputKeyDown(e: KeyboardEvent) {
+    /* eslint-enable complexity,max-statements */
         const {
             disabled,
             modeConfig,
@@ -778,9 +785,11 @@ export default san.defineComponent({
         this.fire('input-keydown', e);
         // magic code
         const keyCode = e.keyCode;
-        if ((modeConfig.multiple || modeConfig.tags) && !e.target.value && keyCode === KeyCode.BACKSPACE) {
+        if ((modeConfig?.multiple || modeConfig?.tags)
+            && !(e.target as HTMLInputElement).value && keyCode === KeyCode.BACKSPACE
+        ) {
             e.preventDefault();
-            const val = toArray(value);
+            const val = toArray(value) as RawValueType[];
             if (val.length) {
                 this.removeSelected(val[val.length - 1]);
             }
@@ -796,13 +805,13 @@ export default san.defineComponent({
         }
         else if (keyCode === KeyCode.ENTER && open) {
             // Aviod trigger form submit when select item
-            if (realOpen || !modeConfig.combobox) {
+            if (realOpen || !modeConfig?.combobox) {
                 e.preventDefault();
             }
 
             // Hard close popup to avoid lock of non option in combobox mode
-            if (realOpen && modeConfig.combobox && defaultActiveFirstOption === false) {
-                const comboboxTimer = setTimeout(() => {
+            if (realOpen && modeConfig?.combobox && defaultActiveFirstOption === false) {
+                const comboboxTimer = window.setTimeout(() => {
                     this.setOpenState(false);
                 });
                 this.data.set('comboboxTimer', comboboxTimer);
@@ -818,14 +827,14 @@ export default san.defineComponent({
         }
 
         if (realOpen && this.ref('dropdown')) {
-            const $dropdown = this.ref('dropdown');
+            const $dropdown = this.ref('dropdown') as DropdownMenu;
             if ($dropdown && $dropdown.handleKeyDown) {
                 $dropdown.handleKeyDown(e, this.handleBackfill.bind(this));
             }
         }
-    },
+    }
 
-    handleKeyDown(e) {
+    handleKeyDown(e: KeyboardEvent) {
         const {open, disabled, inputElement: $input} = this.data.get();
         if (disabled) {
             return;
@@ -847,14 +856,16 @@ export default san.defineComponent({
                 e.preventDefault();
             }
         }
-    },
+    }
 
-    handleOuterBlur(e) {
+    handleOuterBlur(e: Event) {
         if (this.data.get('disabled')) {
             e.preventDefault();
             return;
         }
+        /* eslint-disable complexity */
         const blurTimer = window.setTimeout(() => {
+        /* eslint-enable complexity */
             this.data.set('_focused', false);
             const props = this.data.get();
             const {
@@ -867,13 +878,13 @@ export default san.defineComponent({
             } = props;
             let value = props.value;
 
-            if (modeConfig.single && showSearch && inputValue && defaultActiveFirstOption) {
+            if (modeConfig?.single && showSearch && inputValue && defaultActiveFirstOption) {
                 const firstOption = this.findFirstMenuItem();
                 if (firstOption) {
                     this.fireChange(firstOption.value);
                 }
             }
-            else if ((modeConfig.multiple || modeConfig.tags) && inputValue) {
+            else if ((modeConfig?.multiple || modeConfig?.tags) && inputValue) {
                 if (_mouseDown) {
                     // need update dropmenu when not blur
                     this.setInputValue('');
@@ -893,7 +904,7 @@ export default san.defineComponent({
             }
 
             // if click the rest space of Select in multiple mode
-            if ((modeConfig.multiple || modeConfig.tags) && _mouseDown) {
+            if ((modeConfig?.multiple || modeConfig?.tags) && _mouseDown) {
                 this.maybeFocus(true, true);
                 this.data.set('_mouseDown', false);
                 return;
@@ -902,9 +913,9 @@ export default san.defineComponent({
             this.fire('blur', value);
         }, 10);
         this.data.set('blurTimer', blurTimer);
-    },
+    }
 
-    handleOuterFocus(e) {
+    handleOuterFocus(e: Event) {
         if (this.data.get('disabled')) {
             e.preventDefault();
             return;
@@ -912,11 +923,11 @@ export default san.defineComponent({
         this.clearBlurTime();
         const {inputElement: $input, modeConfig, _focused, _mouseDown} = this.data.get(); // eslint-disable-line
 
-        if ($input && e.target === this.ref('selection')) {
+        if ($input && (e.target as HTMLElement) === this.ref('selection') as unknown as HTMLElement) {
             return;
         }
 
-        if (modeConfig.single && e.target === $input) {
+        if (modeConfig?.single && e.target === $input) {
             return;
         }
         if (_focused) {
@@ -925,37 +936,35 @@ export default san.defineComponent({
         this.data.set('_focused', true);
 
         // only effect multiple or tag mode
-        if (!(modeConfig.multiple || modeConfig.tags) || !_mouseDown) {
+        if (!(modeConfig?.multiple || modeConfig?.tags) || !_mouseDown) {
             this.timeoutFocus();
         }
-    },
+    }
 
     handlePlaceholderClick() {
         const $input = this.data.get('inputElement');
         if ($input) {
             $input.focus();
         }
-    },
+    }
 
     handlePopupFocus() {
         // fix ie scrollbar, focus element again
         this.maybeFocus(true, true);
-    },
+    }
 
-    handleVisibleChange(open) {
+    handleVisibleChange(open: boolean) {
         if (open && !this.data.get('_focused')) {
             this.clearBlurTime();
             this.timeoutFocus();
             this.data.set('_focused', true);
         }
         this.setOpenState(open);
-    },
-
-    preventDefaultEvent,
+    }
 
     focus() {
         const modeConfig = this.data.get('modeConfig');
-        const $selection = this.ref('selection');
+        const $selection = this.ref('selection') as unknown as HTMLElement;
         if (modeConfig.single && $selection) {
             $selection.focus();
         }
@@ -963,11 +972,11 @@ export default san.defineComponent({
             const $input = this.data.get('inputElement');
             $input && $input.focus();
         }
-    },
+    }
 
     blur() {
         const modeConfig = this.data.get('modeConfig');
-        const $selection = this.ref('selection');
+        const $selection = this.ref('selection') as unknown as HTMLElement;
         if (modeConfig.single && $selection) {
             $selection.blur();
         }
@@ -975,7 +984,7 @@ export default san.defineComponent({
             const $input = this.data.get('inputElement');
             $input && $input.blur();
         }
-    },
+    }
 
     clearBlurTime() {
         const blurTimer = this.data.get('blurTimer');
@@ -983,7 +992,7 @@ export default san.defineComponent({
             clearTimeout(blurTimer);
             this.data.set('blurTimer', null);
         }
-    },
+    }
 
     clearFocusTime() {
         const focusTimer = this.data.get('focusTimer');
@@ -991,7 +1000,7 @@ export default san.defineComponent({
             clearTimeout(focusTimer);
             this.data.set('focusTimer', null);
         }
-    },
+    }
 
     clearComboboxTime() {
         const comboboxTimer = this.data.get('comboboxTimer');
@@ -999,7 +1008,7 @@ export default san.defineComponent({
             clearTimeout(comboboxTimer);
             this.data.set('comboboxTimer', null);
         }
-    },
+    }
 
     timeoutFocus() {
         const focusTimer = this.data.get('focusTimer');
@@ -1009,13 +1018,13 @@ export default san.defineComponent({
         this.data.set('focusTimer', window.setTimeout(() => {
             this.fire('focus');
         }, 10));
-    },
+    }
 
     markMouseDown() {
         this.data.set('_mouseDown', true);
-    },
+    }
 
     markMouseLeave() {
         this.data.set('_mouseDown', false);
     }
-});
+}
