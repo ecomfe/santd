@@ -3,21 +3,15 @@
  * @author mayihui@baidu.com
  **/
 
-import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
 import Icon from '../icon';
 
 const prefixCls = classCreator('collapse')();
+import Base from 'santd/base';
+import {IPanelProps} from './interface';
 
-const PanelContent = san.defineComponent({
-    dataTypes: {
-        isActive: DataTypes.bool,
-        destroyInactivePanel: DataTypes.bool,
-        forceRender: DataTypes.bool,
-        role: DataTypes.string
-    },
-
-    template: `
+class PanelContent extends Base {
+    static template = `
         <div class="${prefixCls}-content ${prefixCls}-content-{{isActive ? 'active' : 'inactive'}}" role="{{role}}">
             <div
                 s-if="forceRender || isActive || !destroyInactivePanel"
@@ -26,24 +20,12 @@ const PanelContent = san.defineComponent({
                 <slot />
             </div>
         </div>
-    `
-});
+    `;
+};
 
-export default san.defineComponent({
-    dataTypes: {
-        prefixCls: DataTypes.string,
-        header: DataTypes.string,
-        headerClass: DataTypes.string,
-        showArrow: DataTypes.bool,
-        isActive: DataTypes.bool,
-        destroyInactivePanel: DataTypes.bool,
-        disabled: DataTypes.bool,
-        accordion: DataTypes.bool,
-        forceRender: DataTypes.bool,
-        panelKey: DataTypes.oneOfType([DataTypes.string, DataTypes.number])
-    },
+export default class Panel extends Base<IPanelProps> {
 
-    initData() {
+    initData(): IPanelProps {
         return {
             showArrow: true,
             isActive: false,
@@ -51,10 +33,10 @@ export default san.defineComponent({
             headerClass: '',
             forceRender: false
         };
-    },
+    }
 
-    computed: {
-        classes() {
+    static computed = {
+        classes(this: Panel) {
             let classArr = [];
 
             this.data.get('isActive') && classArr.push(`${prefixCls}-item-active`);
@@ -63,35 +45,36 @@ export default san.defineComponent({
 
             return classArr;
         }
-    },
+    }
 
     inited() {
         this.data.set('hasExpandIcon', !!this.sourceSlots.named[this.data.get('expandIcon')]);
-    },
+    }
 
     attached() {
         this.dispatch('santd_panel_add', this);
-    },
+    }
 
-    components: {
+    static components = {
         's-panelcontent': PanelContent,
         's-icon': Icon
-    },
+    }
 
     handleItemClick() {
         if (this.data.get('disabled')) {
             return;
         }
         this.dispatch('santd_panel_click', this.data.get('panelKey'));
-    },
+        
+    }
 
-    handleKeyPress(e) {
+    handleKeyPress(e: KeyboardEvent) {
         if (e.key === 'Enter' || e.keyCode === 13 || e.which === 13) {
             this.handleItemClick();
         }
-    },
+    }
 
-    template: `
+    static template = `
         <div class="${prefixCls}-item {{classes}}">
             <div
                 class="${prefixCls}-header {{headerClass}}"
@@ -124,5 +107,5 @@ export default san.defineComponent({
                 <slot />
             </s-panelcontent>
         </div>
-    `
-});
+    `;
+}
