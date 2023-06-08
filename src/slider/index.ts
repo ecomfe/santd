@@ -4,19 +4,20 @@
  */
 
 import './style/index.less';
-import san from 'san';
 import Handle from './src/Handle';
 import Steps from './src/Steps';
 import Marks from './src/Marks';
 import {classCreator} from '../core/util';
+import Base from 'santd/base';
+import {Messages, Mark, State, Props} from './interface'
 
 const prefixCls = classCreator('slider')();
 
-function tipFormatter(value) {
+function tipFormatter(value: any) {
     return String(value);
 }
 
-function ensureValueInRange(val, min, max) {
+function ensureValueInRange(val: number, min: number, max: number) {
     if (val < min) {
         return min;
     }
@@ -29,7 +30,7 @@ function ensureValueInRange(val, min, max) {
 }
 
 
-function ensureValuePrecision(val, step, marks, min, max) {
+function ensureValuePrecision(val: number, step: number, marks: Mark, min: number, max: number) {
     const points = Object.keys(marks).map(parseFloat);
 
     if (step !== null) {
@@ -45,10 +46,10 @@ function ensureValuePrecision(val, step, marks, min, max) {
         closestPoint = 0;
     }
 
-    return step === null ? closestPoint : closestPoint.toFixed(getPrecision(step)) - 0;
+    return step === null ? closestPoint : +closestPoint.toFixed(getPrecision(step)) - 0;
 }
 
-function getPrecision(step) {
+function getPrecision(step: number) {
     let stepString = String(step);
     let precision = 0;
     let dotIndex = stepString.indexOf('.');
@@ -60,7 +61,7 @@ function getPrecision(step) {
     return precision;
 }
 
-function isEventFromHandle(eventTarget, handles) {
+function isEventFromHandle(eventTarget: any, handles: any) {
     for (let key in handles) {
         if (!handles.hasOwnProperty[key]) {
             let handle = handles[key];
@@ -73,15 +74,19 @@ function isEventFromHandle(eventTarget, handles) {
     return false;
 }
 
-function getHandleCenterPosition(vertical, eventTarget) {
+function getHandleCenterPosition(vertical: boolean, eventTarget: any) {
     const coords = eventTarget.getBoundingClientRect();
     return vertical
         ? coords.top + (coords.height * 0.5)
         : window.pageXOffset + coords.left + (coords.width * 0.5);
 }
 
-export default san.defineComponent({
-    template: `<div
+export default class Slider extends Base<State, Props> {
+    handlesRefs!: any;
+    dragOffset!: number;
+    _mouseMoveHandler!: ((e: any) => void) | null;
+    _endHandler!: (() => void) | null;
+    static template = `<div
         style="{{vertical ? 'height: 100%;' : ''}}"
         class="${prefixCls} {{classes}}"
         on-mousedown="rootMouseDown"
@@ -134,25 +139,25 @@ export default san.defineComponent({
             max="{{max}}"
             min="{{min}}"
         />
-    </div>`,
+    </div>`
 
-    components: {
+    static components = {
         's-steps': Steps,
         's-marks': Marks,
         's-handle': Handle
-    },
+    }
 
-    messages: {
-        santd_slider_handle_save(payload) {
+    static messages: Messages = {
+        santd_slider_handle_save(this, payload) {
             const component = payload.value;
             const index = component.data.get('index') || 0;
 
             this.handlesRefs[index] = component;
         }
-    },
+    }
 
-    computed: {
-        classes() {
+    static computed = {
+        classes(this: Slider) {
             const disabled = this.data.get('disabled');
             const vertical = this.data.get('vertical');
             const marks = this.data.get('marks');
@@ -163,14 +168,14 @@ export default san.defineComponent({
             vertical && classArr.push(`${prefixCls}-vertical`);
             return classArr;
         },
-        direction() {
+        direction(this: Slider) {
             // 反向坐标轴
             const reverse = this.data.get('reverse');
             // 垂直方向
             const vertical = this.data.get('vertical');
             return vertical ? reverse ? 'top' : 'bottom' : reverse ? 'right' : 'left';
         },
-        track() {
+        track(this: Slider) {
             let range = this.data.get('range');
             let value = this.data.get('value');
             let min = this.data.get('min');
@@ -190,11 +195,11 @@ export default san.defineComponent({
             }
         },
 
-        handles() {
+        handles(this: Slider) {
             let value = this.data.get('value');
             return this.data.get('range') ? value : [value];
         }
-    },
+    }
 
     initData() {
         return {
@@ -213,7 +218,7 @@ export default san.defineComponent({
             activeDotStyle: {},
             tipFormatter
         };
-    },
+    }
 
     inited() {
         this.handlesRefs = {};
@@ -229,15 +234,15 @@ export default san.defineComponent({
             value = this.data.get('defaultValue') || (range ? [min, min] : min);
         }
         else if (range) {
-            value = value.map(v => this.correctValue(v));
+            value = value.map((v: any) => this.correctValue(v));
         }
         else {
             value = this.correctValue(value);
         }
         this.data.set('value', value);
-    },
+    }
 
-    correctValue(value) {
+    correctValue(value: any) {
         let {
             min,
             max,
@@ -245,17 +250,17 @@ export default san.defineComponent({
             marks
         } = this.data.get();
 
-        return ensureValuePrecision(ensureValueInRange(value, min, max), step, marks, min, max);
-    },
+        return ensureValuePrecision(ensureValueInRange(value, min!, max!), step!, marks!, min!, max!);
+    }
 
-    rootBlur(e) {
+    rootBlur(e: any) {
         if (!this.data.get('disabled')) {
             this.handleEnd();
             this.fire('blur', e);
         }
-    },
+    }
 
-    rootFocus(e) {
+    rootFocus(e: any) {
         const disabled = this.data.get('disabled');
 
         if (!disabled && isEventFromHandle(e.target, this.handlesRefs)) {
@@ -270,9 +275,9 @@ export default san.defineComponent({
 
             this.fire('focus', e);
         }
-    },
+    }
 
-    rootMouseDown(e) {
+    rootMouseDown(e: any) {
         if (!this.data.get('disabled')) {
             if (e.button !== 0) {
                 return;
@@ -292,9 +297,9 @@ export default san.defineComponent({
             this.handleStart(position);
             this.addDocMouseListeners();
         }
-    },
+    }
 
-    handleStart(position) {
+    handleStart(position: number) {
         if (this.data.get('range')) {
             let values = this.data.get('value');
             this.fire('beforeChange', values);
@@ -323,13 +328,13 @@ export default san.defineComponent({
             this.data.set('value', value);
             this.fire('change', value);
         }
-    },
+    }
 
-    updateActiveHandleIndex(index, visible) {
+    updateActiveHandleIndex(index: number, visible: boolean) {
         this.data.set('activeHandleIndex', visible ? index : null);
-    },
+    }
 
-    handleMouseMove(e) {
+    handleMouseMove(e: any) {
         if (!this.el) {
             this.handleEnd();
             return;
@@ -337,9 +342,9 @@ export default san.defineComponent({
 
         const position = this.data.get('vertical') ? e.clientY : e.pageX;
         this.handleMove(e, position - this.dragOffset);
-    },
+    }
 
-    handleMove(e, position) {
+    handleMove(e: any, position: number) {
         e.stopPropagation();
         e.preventDefault();
         let value = this.calcValueByPos(position);
@@ -365,7 +370,7 @@ export default san.defineComponent({
                 this.fire('change', value);
             }
         }
-    },
+    }
 
     handleEnd() {
         this.removeDocMouseListeners();
@@ -374,10 +379,10 @@ export default san.defineComponent({
         if (this.data.get('handleIndex') != null) {
             this.data.set('handleIndex', null);
 
-            this.ref('handle-' + handleIndex).clickFocus();
+            (this.ref('handle-' + handleIndex) as unknown as Handle).clickFocus();
             this.fire('afterChange', this.data.get('value'));
         }
-    },
+    }
 
     addDocMouseListeners() {
         if (this.el) {
@@ -386,22 +391,23 @@ export default san.defineComponent({
             this.el.ownerDocument.addEventListener('mousemove', this._mouseMoveHandler);
             this.el.ownerDocument.addEventListener('mouseup', this._endHandler);
         }
-    },
+    }
 
     removeDocMouseListeners() {
         if (this.el && this._endHandler) {
-            this.el.ownerDocument.removeEventListener('mousemove', this._mouseMoveHandler);
+            this._mouseMoveHandler && this.el.ownerDocument.removeEventListener('mousemove', this._mouseMoveHandler);
             this.el.ownerDocument.removeEventListener('mouseup', this._endHandler);
 
-            this._endHandler = this._mouseMoveHandler = null;
+            this._endHandler = null;
+            this._mouseMoveHandler = null;
         }
-    },
+    }
 
     getSliderStart() {
-        const rect = this.el.getBoundingClientRect();
+        const rect = (this.el as any).getBoundingClientRect();
 
         return this.data.get('vertical') ? rect.top : (rect.left + window.pageXOffset);
-    },
+    }
 
     getSliderLength() {
         const slider = this.el;
@@ -411,9 +417,9 @@ export default san.defineComponent({
 
         const coords = slider.getBoundingClientRect();
         return this.data.get('vertical') ? coords.height : coords.width;
-    },
+    }
 
-    calcValueByPos(position) {
+    calcValueByPos(position: number) {
         let {
             vertical,
             min,
@@ -421,10 +427,10 @@ export default san.defineComponent({
         } = this.data.get();
 
         const ratio = Math.abs(Math.max(position - this.getSliderStart(), 0) / this.getSliderLength());
-        let value = vertical ? (1 - ratio) * (max - min) + min : ratio * (max - min) + min;
+        let value = vertical ? (1 - ratio) * (max! - min!) + min! : ratio * (max! - min!) + min!;
         if (this.data.get('reverse')) {
-            value = max - value;
+            value = max! - value;
         }
         return this.correctValue(value);
     }
-});
+};

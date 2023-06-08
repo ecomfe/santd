@@ -3,30 +3,34 @@
  * @author mayihui@baidu.com
  **/
 
-import san, {DataTypes} from 'san';
 import {classCreator} from '../../core/util';
+import Base from 'santd/base';
+import {MarkItem} from '../interface';
 
 const prefixCls = classCreator('slider-mark')();
 
-export default san.defineComponent({
-    dataTypes: {
-        vertical: DataTypes.bool,
-        marks: DataTypes.object,
-        included: DataTypes.bool,
-        max: DataTypes.number,
-        min: DataTypes.number
-    },
+export default class Marks extends Base {
 
-    computed: {
-        marksArr() {
+    static template = `<div class="${prefixCls}">
+        <span
+            s-for="mark in marksArr trackBy mark.point"
+            class="${prefixCls}-text{{markClass(mark.point, included, max, min)}}"
+            style="{{mark.style}}{{markStyle(mark.point, {vertical, reverse, direction, max, min})}}"
+            on-mousedown="handleClickLabel($event, point)"
+            on-touchstart="handleClickLabel($event, point)"
+        >{{mark.label}}</span>
+    </div>`
+
+    static computed = {
+        marksArr(this: Marks) {
             let result = [];
             let marks = this.data.get('marks') || {};
-            let markPoints = Object.keys(marks).sort((a, b) => a - b);
+            let markPoints = Object.keys(marks).sort((a, b) => (+a) - (+b));
 
             for (let i = 0; i < markPoints.length; i++) {
                 let point = markPoints[i];
                 let mark = marks[point];
-                let item = {point};
+                let item: MarkItem = {point};
                 if (typeof mark === 'object') {
                     item.label = mark.label;
                     item.style && (item.style = mark.style);
@@ -42,16 +46,16 @@ export default san.defineComponent({
 
             return result;
         }
-    },
+    }
 
-    markClass(point, included, max, min) {
+    markClass(point: number, included: boolean, max: number, min: number) {
         if ((!included && point === max)
             || (included && point <= max && point >= min)) {
             return ` ${prefixCls}-text-active`;
         }
 
         return '';
-    },
+    }
 
     /**
      * 设置刻度标记值样式
@@ -65,27 +69,23 @@ export default san.defineComponent({
      * @param  {Number} min 最小值
      * @return {String} 刻度标记值样式
      */
-    markStyle(point, options = {}) {
-        let {vertical, reverse, direction, max, min} = options;
+    markStyle(point: number, options: {
+        vertical: boolean;
+        reverse: boolean;
+        direction: string;
+        max: number;
+        min: number;
+    }) {
+        let {vertical, reverse, direction, max, min} = options || {};
         const offset = (point - min) / (max - min) * 100;
         const distance = reverse ? '50%' : '-50%';
         if (vertical) {
             return `margin-${direction}:-50%;${direction}:${offset}%;`;
         }
         return `${direction}: ${offset}%;transform:translateX(${distance});-ms-transform:translateX(${distance})`;
-    },
+    }
 
-    handleClickLabel(e, point) {
+    handleClickLabel(e: any, point: number) {
         this.fire('clickLabel', {e, point});
-    },
-
-    template: `<div class="${prefixCls}">
-        <span
-            s-for="mark in marksArr trackBy mark.point"
-            class="${prefixCls}-text{{markClass(mark.point, included, max, min)}}"
-            style="{{mark.style}}{{markStyle(mark.point, {vertical, reverse, direction, max, min})}}"
-            on-mousedown="handleClickLabel($event, point)"
-            on-touchstart="handleClickLabel($event, point)"
-        >{{mark.label}}</span>
-    </div>`
-});
+    }
+};
