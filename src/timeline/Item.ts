@@ -4,35 +4,32 @@
  */
 
 import './style/index.less';
-import san, {DataTypes} from 'san';
+import Base from 'santd/base';
 import {classCreator} from '../core/util';
+import {IItemProps} from './interface';
 
 const prefixCls = classCreator('timeline')();
 
-export default san.defineComponent({
-    dataTypes: {
-        color: DataTypes.string,
-        pending: DataTypes.bool
-    },
-    initData() {
+export default class Item extends Base<IItemProps> {
+    initData(): IItemProps {
         return {
             color: 'blue',
             pending: false,
             label: ''
         };
-    },
-    inited() {
+    }
+    inited(): void {
         this.data.set('hasDot', !!this.sourceSlots.named.dot);
         this.dispatch('santd_timeline_addItem', this);
-    },
-    getDotStyle(color) {
+    }
+    getDotStyle(color: string) {
         if (!/blue|red|green|gray/.test(color)) {
             return {
                 'border-color': color
             };
         }
-    },
-    template: `
+    }
+    static template = `
         <li class="${prefixCls}-item {{pending ? '${prefixCls}-item-pending' : ''}}">
             <div class="${prefixCls}-item-tail" />
             <div
@@ -44,5 +41,5 @@ export default san.defineComponent({
             <div class="${prefixCls}-item-label">{{label}}</div>
             <div class="${prefixCls}-item-content"><slot /></div>
         </li>
-    `
-});
+    `;
+};

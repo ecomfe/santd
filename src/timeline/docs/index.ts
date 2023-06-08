@@ -1,7 +1,7 @@
 /**
  * @file Santd timeline docs file
  **/
-import san from 'san';
+import Base from 'santd/base';
 import Readme from '../README.md';
 import Desc from './desc.md';
 import Basic from './basic.md';
@@ -12,8 +12,8 @@ import Dot from './dot.md';
 import Pending from './pending.md';
 import Label from './label.md';
 
-export default san.defineComponent({
-    components: {
+export default class extends Base {
+    static components = {
         readme: Readme,
         basic: Basic,
         desc: Desc,
@@ -23,8 +23,8 @@ export default san.defineComponent({
         dot: Dot,
         pending: Pending,
         label: Label
-    },
-    template: `
+    };
+    static template = `
         <div>
             <desc/>
             <basic/>
@@ -36,5 +36,5 @@ export default san.defineComponent({
             <label/>
             <readme/>
         </div>
-    `
-});
+    `;
+};
