@@ -3,7 +3,7 @@
  * @author liulu36
  */
 import './style/index.less';
-import san from 'san';
+import Base from 'santd/base';
 
 import Icon from '../icon';
 import Modal from '../modal';
@@ -20,9 +20,30 @@ const initialPosition = {
     x: 0,
     y: 0
 };
+import {
+    IPreviewProps,
+    OriginType,
+    Positon
+} from './interface';
+interface PreviewComputed {
+    previewGroupCount: ((this: Preview) => number) | number;
+    showLeftOrRightSwitches: (this: Preview) => (boolean | undefined);
+    previewUrlsKeys: ((this: Preview) => string[]) | string[];
+    currentPreviewIndex: ((this: Preview) => number) | number;
+    combinationSrc: (this: Preview) => string;
+    disabledZoomOut: (this: Preview) => boolean;
+    wrapClassName: (this: Preview) => string;
+}
 
-export default san.defineComponent({
-    template: `
+export default class Preview extends Base<IPreviewProps, PreviewComputed> {
+    removeListeners?: () => void;
+    originPosition?: OriginType;
+    frame?: number | null;
+    latestState?: Positon;
+    onMouseMove?: (e: MouseEvent) => any;
+    onMouseUp?: (e: MouseEvent) => any;
+    onWheelMove?: (e: WheelEvent) => any;
+    static template = `
         <div class="${prefixCls}">
             <std-modal
                 width="auto"
@@ -102,16 +123,16 @@ export default san.defineComponent({
                 </div>
             </std-modal>
         </div>
-    `,
+    `;
 
-    components: {
+    static components = {
         'std-modal': Modal,
         's-icon': Icon
-    },
-    messages: {
+    };
+    static messages = {
 
-    },
-    initData() {
+    };
+    initData():IPreviewProps {
         const position = {...initialPosition};
         return {
             scale: 1,
@@ -127,15 +148,15 @@ export default san.defineComponent({
             previewUrls: {},
             lastWheelZoomDirection: {wheelDirection: 0}
         };
-    },
-    computed: {
+    }
+    static computed: PreviewComputed = {
         previewGroupCount() {
             const previewUrls = this.data.get('previewUrls');
             return Object.keys(previewUrls).length;
         },
         showLeftOrRightSwitches() {
             const isPreviewGroup = this.data.get('isPreviewGroup');
-            const previewGroupCount = this.data.get('previewGroupCount');
+            const previewGroupCount = this.data.get('previewGroupCount') as number;
             return isPreviewGroup && previewGroupCount > 1;
         },
         previewUrlsKeys() {
@@ -143,9 +164,9 @@ export default san.defineComponent({
             return Object.keys(previewUrls);
         },
         currentPreviewIndex() {
-            const previewUrlsKeys = this.data.get('previewUrlsKeys');
+            const previewUrlsKeys = this.data.get('previewUrlsKeys') as string[];
             const current = this.data.get('current');
-            return previewUrlsKeys.indexOf(String(current));
+            return previewUrlsKeys?.indexOf(String(current));
         },
         combinationSrc() {
             const isPreviewGroup = this.data.get('isPreviewGroup');
@@ -161,9 +182,9 @@ export default san.defineComponent({
             const isMoving = this.data.get('isMoving');
             return isMoving ? `${prefixCls}-moving` : '';
         }
-    },
+    };
     inited() {
-        this.removeListeners = () => { };
+        this.removeListeners = () => {};
         this.originPosition = {
             originX: 0,
             originY: 0,
@@ -171,11 +192,11 @@ export default san.defineComponent({
             deltaY: 0
         };
         this.onMouseUp = () => {
-            const {visible, isMoving, scale, rotate} = this.data.get();
+            const {visible, isMoving, scale = 0, rotate = 0} = this.data.get();
             if (visible && isMoving) {
-                const imgRef = this.ref('imgRef');
-                const width = imgRef.offsetWidth * scale;
-                const height = imgRef.offsetHeight * scale;
+                const imgRef: unknown = this.ref('imgRef');
+                const width = (imgRef as HTMLElement).offsetWidth * scale;
+                const height = (imgRef as HTMLElement).offsetHeight * scale;
                 const {left, top} = getOffset(imgRef);
                 const isRotate = rotate % 180 !== 0;
 
@@ -187,7 +208,7 @@ export default san.defineComponent({
                     isRotate ? width : height,
                     left,
                     top,
-                );
+                ) as Positon;
                 if (fixState) {
                     this.setFramePosition(fixState);
                 }
@@ -195,11 +216,11 @@ export default san.defineComponent({
         };
         this.onMouseMove = event => {
             const {visible, isMoving} = this.data.get();
-            if (visible && isMoving) {
+            if (visible && isMoving && this.originPosition) {
                 this.setFramePosition({
                     x: event.pageX - this.originPosition.deltaX,
                     y: event.pageY - this.originPosition.deltaY
-                }, event);
+                });
             }
         };
         this.onWheelMove = event => {
@@ -211,9 +232,9 @@ export default san.defineComponent({
             const wheelDirection = event.deltaY;
             this.data.set('lastWheelZoomDirection', {wheelDirection});
         };
-    },
+    }
     attached() {
-        this.frame & caf(this.frame);
+        this.frame && caf(this.frame);
         this.onMovingEvent();
         this.watch('isMoving', () => {
             this.onMovingEvent();
@@ -229,8 +250,8 @@ export default san.defineComponent({
                 this.zoomIn();
             }
         });
-    },
-    setFramePosition(newState) {
+    }
+    setFramePosition(newState: Positon) {
         // 帧动画优化
         if (!this.frame) {
             this.frame = raf(() => {
@@ -238,42 +259,42 @@ export default san.defineComponent({
                 const memoState = {...position, ...this.latestState};
                 this.data.merge('position', memoState);
                 this.frame = null;
-            });
+            }) as number;
         }
         this.latestState = newState;
-    },
+    }
     detached() {
-        this.removeListeners();
-    },
-    onMaskClick(e) {
+        this.removeListeners && this.removeListeners();
+    }
+    onMaskClick(e: Event) {
         if (e.target === e.currentTarget) {
             this.fire('close');
         }
-    },
+    }
     onClose() {
         this.fire('close');
-    },
+    }
     zoomIn() {
         const scale = this.data.get('scale');
         this.data.set('scale', scale + 1);
         this.setFramePosition(initialPosition);
-    },
+    }
     zoomOut() {
         const scale = this.data.get('scale');
         if (scale > 1) {
             this.data.set('scale', scale - 1);
         }
         this.setFramePosition(initialPosition);
-    },
+    }
     rotateRight() {
         const rotate = this.data.get('rotate');
         this.data.set('rotate', rotate + 90);
-    },
+    }
     rotateLeft() {
         const rotate = this.data.get('rotate');
         this.data.set('rotate', rotate - 90);
-    },
-    onMouseDown(event) {
+    }
+    onMouseDown(event: MouseEvent) {
         // Only allow main button
         if (event.button !== 0) {
             return;
@@ -281,55 +302,60 @@ export default san.defineComponent({
         event.preventDefault();
         // Without this mask close will abnormal
         event.stopPropagation();
-        const {position} = this.data.get();
-        this.originPosition.deltaX = event.pageX - position.x;
-        this.originPosition.deltaY = event.pageY - position.y;
-        this.originPosition.originX = position.x;
-        this.originPosition.originY = position.y;
+        const {position = {
+            x: 0,
+            y: 0,
+        }} = this.data.get();
+        if (this.originPosition) {
+            this.originPosition.deltaX = event.pageX - position!.x;
+            this.originPosition.deltaY = event.pageY - position!.y;
+            this.originPosition.originX = position!.x as number;
+            this.originPosition.originY = position!.y as number;
+        }
 
         this.data.set('isMoving', true);
-    },
+    }
     onMovingEvent() {
-        this.removeListeners();
+        this.removeListeners && this.removeListeners();
 
-        window.addEventListener('mouseup', this.onMouseUp, false);
-        window.addEventListener('mousemove', this.onMouseMove, false);
-        window.addEventListener('wheel', this.onWheelMove, {
+        window.addEventListener('mouseup', this.onMouseUp as (e: MouseEvent) => any, false);
+        window.addEventListener('mousemove', this.onMouseMove as (e: MouseEvent) => any, false);
+        window.addEventListener('wheel', this.onWheelMove as (e: MouseEvent) => any, {
             passive: false
         });
 
         this.removeListeners = () => {
-            window.removeEventListener('mouseup', this.onMouseUp);
-            window.removeEventListener('mousemove', this.onMouseUp);
-            window.removeEventListener('wheel', this.onWheelMove);
+            window.removeEventListener('mouseup', this.onMouseUp as (e: MouseEvent) => any);
+            window.removeEventListener('mousemove', this.onMouseMove as (e: MouseEvent) => any);
+            window.removeEventListener('wheel', this.onWheelMove as (e: MouseEvent) => any);
         };
-    },
+    }
     onAfterClose() {
         this.data.assign({
             scale: 1,
             rotate: 0
         });
         this.setFramePosition(initialPosition);
-    },
-    onSwitchLeft(event) {
+    }
+    onSwitchLeft(event: Event) {
         event.preventDefault();
         // Without this mask close will abnormal
         event.stopPropagation();
-        const currentPreviewIndex = this.data.get('currentPreviewIndex');
-        const previewUrlsKeys = this.data.get('previewUrlsKeys');
+        const currentPreviewIndex = this.data.get('currentPreviewIndex') as number;
+        const previewUrlsKeys = this.data.get('previewUrlsKeys') as string[];
         if (currentPreviewIndex > 0) {
-            this.dispatch('santd_image_preview_set_current', previewUrlsKeys[String(currentPreviewIndex - 1)]);
-        }
-    },
-    onSwitchRight(event) {
-        event.preventDefault();
-        // Without this mask close will abnormal
-        event.stopPropagation();
-        const currentPreviewIndex = this.data.get('currentPreviewIndex');
-        const previewUrlsKeys = this.data.get('previewUrlsKeys');
-        const previewGroupCount = this.data.get('previewGroupCount');
-        if (currentPreviewIndex < previewGroupCount - 1) {
-            this.dispatch('santd_image_preview_set_current', previewUrlsKeys[String(currentPreviewIndex + 1)]);
+            this.dispatch('santd_image_preview_set_current', previewUrlsKeys[currentPreviewIndex - 1]);
         }
     }
-});
+    onSwitchRight(event: Event) {
+        event.preventDefault();
+        // Without this mask close will abnormal
+        event.stopPropagation();
+        const currentPreviewIndex = this.data.get('currentPreviewIndex') as number;
+        const previewUrlsKeys = this.data.get('previewUrlsKeys') as string[];
+        const previewGroupCount = this.data.get('previewGroupCount') as number;
+        if (currentPreviewIndex < previewGroupCount - 1) {
+            this.dispatch('santd_image_preview_set_current', previewUrlsKeys[currentPreviewIndex + 1]);
+        }
+    }
+};
