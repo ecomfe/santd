@@ -47,5 +47,5 @@ export interface IPreviewProps {
     lastWheelZoomDirection: {
         wheelDirection: number;
     };
-    visible?: any;
+    visible?: boolean;
 }
