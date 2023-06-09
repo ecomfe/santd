@@ -9,7 +9,7 @@ import Popup from './popup';
 import {contains} from './util';
 import './style/index';
 
-interface Props {
+export interface Props {
     action?: string | string[];
     showAction?: string[];
     hideAction?: string[];

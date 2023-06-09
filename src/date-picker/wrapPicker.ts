@@ -2,14 +2,20 @@
  * @file Santd date picker wrappicker file
  * @author mayihui@baidu.com
  **/
-
-import san from 'san';
+import Base from 'santd/base';
 import {classCreator} from '../core/util/index';
 import localeReceiver from '../locale-provider/receiver';
 import dayjs from 'dayjs';
 import weekYear from 'dayjs/plugin/weekYear';
 import weekOfYear from 'dayjs/plugin/weekOfYear';
 import advancedFormat from 'dayjs/plugin/advancedFormat';
+
+import {
+    WeekPickerComputed,
+    RangerPickerComputed,
+    InnerCompComputed,
+    LocaleType
+} from './interface';
 
 dayjs.extend(weekYear);
 dayjs.extend(weekOfYear);
@@ -23,10 +29,39 @@ const DEFAULT_FORMAT = {
     dateTime: 'YYYY-MM-DD HH:mm:ss',
     week: 'gggg-wo',
     month: 'YYYY-MM'
-};
+} as const;
 
-export default function (Picker, pickerType) {
-    return san.defineComponent({
+type PickerType = 'date' | 'week' | 'month';
+type MergedPickerKey = keyof typeof DEFAULT_FORMAT;
+
+interface BaseComputed {
+    customLocale: () => LocaleType;
+    customLocaleCode: () => any;
+    format: () => string;
+    pickerClass: () => string;
+    pickerInputClass: () => string;
+}
+
+export interface WeekComputed extends BaseComputed, WeekPickerComputed {}
+
+export interface RangeComputed extends BaseComputed, RangerPickerComputed {}
+
+export interface CalendarComputed extends BaseComputed, InnerCompComputed {}
+
+interface DatePicker {
+    new (): Base;
+    computed: any;
+}
+
+type GetComputed<T extends string> = T extends 'week'
+    ? WeekComputed
+    : T extends 'range'
+        ? RangeComputed
+        : CalendarComputed;
+
+
+export default function <T extends string>(Picker: DatePicker, pickerType: PickerType) {
+    class BasePicker extends Picker {
         initData() {
             return {
                 ...Picker.prototype.initData(),
@@ -35,38 +70,33 @@ export default function (Picker, pickerType) {
                 transitionName: 'slide-up',
                 timeFormat: 'HH:mm:ss'
             };
-        },
+        }
 
-        inited() {
-            localeReceiver.inited.bind(this)();
-            Picker.prototype.inited.bind(this)();
-        },
-
-        computed: {
-            ...Picker.prototype.computed,
-            customLocale() {
+        static computed: GetComputed<T>  = {
+            ...Picker.computed,
+            customLocale(this: BasePicker) {
                 let locale = this.data.get('locale') || {};
                 return {...localeReceiver.computed.locale.bind(this)(), ...locale};
             },
-            customLocaleCode() {
+            customLocaleCode(this: BasePicker) {
                 return localeReceiver.computed.localeCode.bind(this)();
             },
-            format() {
+            format(this: BasePicker) {
                 const format = this.data.get('format');
                 const showTime = this.data.get('showTime');
                 const mergedPickerType = showTime ? `${pickerType}Time` : pickerType;
 
-                return format || DEFAULT_FORMAT[mergedPickerType];
+                return format || DEFAULT_FORMAT[mergedPickerType as MergedPickerKey];
             },
 
-            pickerClass() {
+            pickerClass(this: BasePicker) {
                 const size = this.data.get('size');
                 let classArr = [`${prefixCls}-picker`];
                 size && classArr.push(`${prefixCls}-picker-${size}`);
                 return classArr.join(' ');
             },
 
-            pickerInputClass() {
+            pickerInputClass(this: BasePicker) {
                 const prefixCls = this.data.get('prefixCls');
                 const size = this.data.get('size');
                 const disabled = this.data.get('disabled');
@@ -76,15 +106,20 @@ export default function (Picker, pickerType) {
                 disabled && classArr.push(`${inputPrefixCls}-disabled`);
                 return classArr.join(' ');
             }
-        },
+        }
+
+        inited() {
+            localeReceiver.inited.bind(this)();
+            Picker.prototype.inited.bind(this)();
+        }
 
         focus() {
-            this.ref('input').focus();
-        },
+            (this.ref('input') as unknown as HTMLInputElement).focus();
+        }
 
         blur() {
-            this.ref('input').blur();
-        },
+            (this.ref('input') as unknown as HTMLInputElement).blur();
+        }
 
         attached() {
             const autoFocus = this.data.get('autoFocus');
@@ -93,5 +128,6 @@ export default function (Picker, pickerType) {
                 this.focus();
             }
         }
-    }, Picker);
+    };
+    return BasePicker;
 }

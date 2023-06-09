@@ -2,7 +2,7 @@
  * @file Santd datepicker docs file
  **/
 
-import san from 'san';
+import Base from 'santd/base';
 import Desc from './desc.md';
 import Basic from './basic.md';
 import Size from './size.md';
@@ -18,8 +18,8 @@ import Controlled from './controlled.md';
 import SelectInRange from './selectInRange.md';
 import Readme from '../README.md';
 
-export default san.defineComponent({
-    components: {
+export default class extends Base {
+    static components = {
         desc: Desc,
         basic: Basic,
         size: Size,
@@ -34,8 +34,8 @@ export default san.defineComponent({
         controlled: Controlled,
         selectinrange: SelectInRange,
         readme: Readme
-    },
-    template: `
+    }
+    static template = `
         <div>
             <desc/>
             <basic/>
@@ -53,4 +53,4 @@ export default san.defineComponent({
             <readme/>
         </div>
     `
-});
+};
