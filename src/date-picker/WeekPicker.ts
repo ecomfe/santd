@@ -2,25 +2,32 @@
  * @file Santd week picker createpicker file
  * @author mayihui@baidu.com
  **/
-import san from 'san';
+import Base from 'santd/base';
 import Calendar from '../calendar/src/Calendar';
 import dayjs from 'dayjs';
 import {classCreator} from '../core/util';
 import Icon from '../icon';
 import Trigger from '../core/trigger';
 import Placements from '../calendar/src/placements';
+import {
+    WeekPickerProps as Props,
+    WeekPickerState as State,
+    WeekPickerComputed as Computed,
+    ChangeEvent,
+    PanelChangeEvent
+} from './interface';
 
 const prefixCls = classCreator('calendar')();
 
-export default san.defineComponent({
-    computed: {
-        displayValue() {
+export default class WeekPicker extends Base<State, Props, Computed> {
+    static computed: Computed = {
+        displayValue(this: WeekPicker) {
             const value = this.data.get('value');
             const format = this.data.get('format');
             return value && value.format(format);
         }
-    },
-    initData() {
+    }
+    initData(): State {
         return {
             allowClear: true,
             format: 'gggg-wo',
@@ -28,7 +35,7 @@ export default san.defineComponent({
             trigger: 'click',
             popupPlacement: 'bottomLeft'
         };
-    },
+    }
     inited() {
         let align = this.data.get('align');
         let placements = this.data.get('placements');
@@ -39,22 +46,22 @@ export default san.defineComponent({
         this.data.set('defaultValue', this.data.get('defaultPickerValue') || dayjs());
         this.data.set('hasExtraFooter', !!this.sourceSlots.named.renderExtraFooter);
         this.data.set('hasSuffixIcon', !!this.sourceSlots.named.suffixIcon);
-    },
-    handleCalendarChange(data) {
+    }
+    handleCalendarChange(data: PanelChangeEvent) {
         this.data.set('value', data.value);
-    },
-    handleOpenChange(open) {
+    }
+    handleOpenChange(open: boolean) {
         this.data.set('open', open);
         this.fire('openChange', open);
-    },
-    handleClearSelection(e) {
+    }
+    handleClearSelection(e: Event) {
         e.preventDefault();
         e.stopPropagation();
 
         this.data.set('value', null);
         this.fire('change', {date: null, dateString: null});
-    },
-    handleChange(data) {
+    }
+    handleChange(data: ChangeEvent) {
         const value = data.value;
         const cause = data.cause || {};
         const format = this.data.get('format');
@@ -67,13 +74,13 @@ export default san.defineComponent({
         ) {
             this.handleOpenChange(false);
         }
-    },
-    components: {
+    }
+    static components = {
         's-icon': Icon,
         's-trigger': Trigger,
         's-calendar': Calendar
-    },
-    template: `<span
+    }
+    static template = `<span
             id="{{id}}"
             class="{{pickerClass}}"
         >
@@ -132,4 +139,6 @@ export default san.defineComponent({
             </s-trigger>
         </span>
     `
-});
+};
+
+export type TWeekPicker = typeof WeekPicker;
