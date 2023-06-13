@@ -3,12 +3,13 @@
  * @author mayihui@baidu.com
  **/
 
-import san, {DataTypes} from 'san';
+import Base from 'santd/base';
 import getRequestAnimationFrame from '../core/util/getRequestAnimationFrame';
+import type {SelectProps, SelectState, SelectComputed} from './interface';
 
 const raf = getRequestAnimationFrame();
 
-const scrollTo = (element, to, duration) => {
+const scrollTo = (element: Element, to: number, duration: number) => {
     // jump to target if duration zero
     if (duration <= 0) {
         raf(() => {
@@ -28,25 +29,19 @@ const scrollTo = (element, to, duration) => {
     });
 };
 
-export default san.defineComponent({
-    dataTypes: {
-        prefixCls: DataTypes.string,
-        options: DataTypes.array,
-        selectedIndex: DataTypes.number,
-        type: DataTypes.string
-    },
+export default class Select extends Base<SelectProps, SelectState, SelectComputed> {
     initData() {
         return {
             active: false
         };
-    },
-    computed: {
-        renderOptions() {
+    };
+    static computed = {
+        renderOptions(this: Select) {
             const options = this.data.get('options');
             const prefixCls = this.data.get('prefixCls');
             const selectedIndex = this.data.get('selectedIndex');
 
-            return options.map((option, index) => {
+            return options.map((option: {disabled: boolean; className: string}, index: number) => {
                 let classArr = [];
                 selectedIndex === index && classArr.push(`${prefixCls}-select-option-selected`);
                 option.disabled && classArr.push(`${prefixCls}-select-option-disabled`);
@@ -54,19 +49,19 @@ export default san.defineComponent({
                 return option;
             });
         }
-    },
+    };
     attached() {
-        this.watch('selectedIndex', val => {
+        this.watch('selectedIndex', () => {
             this.scrollToSelected(120);
         });
         window.setTimeout(() => {
             this.scrollToSelected(0);
         }, 0);
-    },
-    scrollToSelected(duration) {
+    };
+    scrollToSelected(duration: number) {
         const selectedIndex = this.data.get('selectedIndex');
         const select = this.el;
-        const list = this.ref('list');
+        const list = this.ref('list') as any;
         if (!list) {
             return;
         }
@@ -76,21 +71,21 @@ export default san.defineComponent({
         }
         const topOption = list.children[index];
         const to = topOption.offsetTop;
-        scrollTo(select, to, duration);
-    },
-    handleMouseEnter(e) {
+        scrollTo(select!, to, duration);
+    }
+    handleMouseEnter(e: any) {
         this.data.set('active', true);
         this.fire('mouseenter', e);
-    },
-    handleMouseLeave(e) {
+    };
+    handleMouseLeave(e: any) {
         this.data.set('active', false);
         this.fire('mouseleave', e);
-    },
-    handleClick(itemValue) {
+    };
+    handleClick(itemValue: any) {
         const type = this.data.get('type');
         this.fire('select', {type, itemValue});
-    },
-    template: `<div class="{{prefixCls}}-select {{active ? prefixCls + '-select-active' : ''}}"
+    };
+    static template = `<div class="{{prefixCls}}-select {{active ? prefixCls + '-select-active' : ''}}"
         on-mouseenter="handleMouseEnter"
         on-mouseleave="handleMouseLeave">
         <ul s-ref="list">
@@ -105,4 +100,4 @@ export default san.defineComponent({
             </li>
         </ul>
     </div>`
-});
+};

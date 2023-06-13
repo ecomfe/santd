@@ -3,10 +3,11 @@
  * @author mayihui@baidu.com
  **/
 
-import san, {DataTypes} from 'san';
+import Base from 'santd/base';
 import Select from './Select';
+import {ComboboxState, ComboboxProps} from './interface';
 
-const formatOption = (option, disabledOptions) => {
+const formatOption = (option: number, disabledOptions: number[]) => {
     let value = `${option}`;
     if (option < 10) {
         value = `0${option}`;
@@ -23,31 +24,15 @@ const formatOption = (option, disabledOptions) => {
     };
 };
 
-export default san.defineComponent({
-    dataTypes: {
-        format: DataTypes.string,
-        prefixCls: DataTypes.string,
-        placeholder: DataTypes.string,
-        value: DataTypes.object,
-        inputReadOnly: DataTypes.bool,
-        hourOptions: DataTypes.array,
-        minuteOptions: DataTypes.array,
-        secondOptions: DataTypes.array,
-        disabledHours: DataTypes.func,
-        disabledMinutes: DataTypes.func,
-        disabledSeconds: DataTypes.func,
-        defaultOpenValue: DataTypes.object,
-        use12Hours: DataTypes.bool,
-        isAM: DataTypes.bool
-    },
+export default class Combobox extends Base<ComboboxState, ComboboxProps> {
     initData() {
         return {
             invalid: false,
             inputReadOnly: false
         };
-    },
-    computed: {
-        hourData() {
+    }
+    static computed = {
+        hourData(this: Combobox) {
             const value = this.data.get('value') || this.data.get('defaultOpenValue');
             const hour = value.hour();
             const hourOptions = this.data.get('hourOptions');
@@ -64,7 +49,7 @@ export default san.defineComponent({
             let hourAdj;
 
             if (use12Hours) {
-                hourOptionsAdj = [12].concat(hourOptions.filter(h => h < 12 && h > 0));
+                hourOptionsAdj = [12].concat(hourOptions.filter((h: number) => h < 12 && h > 0));
                 hourAdj = hour % 12 || 12;
             }
             else {
@@ -73,11 +58,11 @@ export default san.defineComponent({
             }
 
             return {
-                options: hourOptionsAdj.map(option => formatOption(option, disabledOptions)),
+                options: hourOptionsAdj.map((option: number) => formatOption(option, disabledOptions)),
                 selectedIndex: hourOptions.indexOf(hourAdj)
             };
         },
-        minuteData() {
+        minuteData(this: Combobox) {
             const value = this.data.get('value') || this.data.get('defaultOpenValue');
             const minute = value.minute();
             const minuteOptions = this.data.get('minuteOptions');
@@ -91,11 +76,11 @@ export default san.defineComponent({
             const disabledOptions = disabledMinutes(value.hour());
 
             return {
-                options: minuteOptions.map(option => formatOption(option, disabledOptions)),
+                options: minuteOptions.map((option: number) => formatOption(option, disabledOptions)),
                 selectedIndex: minuteOptions.indexOf(minute)
             };
         },
-        secondData() {
+        secondData(this: Combobox) {
             const value = this.data.get('value') || this.data.get('defaultOpenValue');
             const second = value.second();
             const secondOptions = this.data.get('secondOptions');
@@ -109,11 +94,11 @@ export default san.defineComponent({
             const disabledOptions = disabledSeconds(value.hour(), value.minute());
 
             return {
-                options: secondOptions.map(option => formatOption(option, disabledOptions)),
+                options: secondOptions.map((option: number) => formatOption(option, disabledOptions)),
                 selectedIndex: secondOptions.indexOf(second)
             };
         },
-        ampmData() {
+        ampmData(this: Combobox) {
             const use12Hours = this.data.get('use12Hours');
             const format = this.data.get('format');
             const isAM = this.data.get('isAM');
@@ -133,11 +118,11 @@ export default san.defineComponent({
                 selectedIndex
             };
         }
-    },
-    components: {
+    }
+    static components = {
         's-select': Select
-    },
-    handleItemChange({type, itemValue}) {
+    }
+    handleItemChange({type, itemValue}: any) {
         const {
             defaultOpenValue,
             use12Hours,
@@ -149,43 +134,43 @@ export default san.defineComponent({
         if (type === 'hour') {
             if (use12Hours) {
                 if (isAM) {
-                    value = value.hour(+itemValue % 12);
+                    value = value!.hour(+itemValue % 12);
                 }
                 else {
-                    value = value.hour((+itemValue % 12) + 12);
+                    value = value!.hour((+itemValue % 12) + 12);
                 }
             }
             else {
-                value = value.hour(+itemValue);
+                value = value!.hour(+itemValue);
             }
         }
         else if (type === 'minute') {
-            value = value.minute(+itemValue);
+            value = value!.minute(+itemValue);
         }
         else if (type === 'ampm') {
             const ampm = itemValue.toUpperCase();
             if (use12Hours) {
-                if (ampm === 'PM' && value.hour() < 12) {
-                    value = value.hour((value.hour() % 12) + 12);
+                if (ampm === 'PM' && value!.hour() < 12) {
+                    value = value!.hour((value!.hour() % 12) + 12);
                 }
 
                 if (ampm === 'AM') {
-                    if (value.hour() >= 12) {
-                        value = value.hour(value.hour() - 12);
+                    if (value!.hour() >= 12) {
+                        value = value!.hour(value!.hour() - 12);
                     }
                 }
             }
             this.fire('ampmChange', ampm);
         }
         else {
-            value = value.second(+itemValue);
+            value = value!.second(+itemValue);
         }
         this.fire('change', value);
-    },
-    handleEnterSelectPanel(range) {
+    }
+    handleEnterSelectPanel(range: any) {
         this.fire('currentSelectPanelChange', range);
-    },
-    template: `<div class="{{prefixCls}}-combobox">
+    }
+    static template = `<div class="{{prefixCls}}-combobox">
         <s-select
             s-if="hourData"
             prefixCls="{{prefixCls}}"
@@ -223,4 +208,4 @@ export default san.defineComponent({
             on-mouseenter="handleEnterSelectPanel('ampm')"
         />
     </div>`
-});
+};

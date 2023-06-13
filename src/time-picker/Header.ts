@@ -3,56 +3,42 @@
  * @author mayihui@baidu.com
  **/
 
-import san, {DataTypes} from 'san';
+import Base from 'santd/base';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
+import {HeaderState, HeaderProps} from './interface';
 
 dayjs.extend(customParseFormat);
 
-export default san.defineComponent({
-    dataTypes: {
-        format: DataTypes.string,
-        prefixCls: DataTypes.string,
-        placeholder: DataTypes.string,
-        value: DataTypes.object,
-        inputReadOnly: DataTypes.bool,
-        hourOptions: DataTypes.array,
-        minuteOptions: DataTypes.array,
-        secondOptions: DataTypes.array,
-        disabledHours: DataTypes.func,
-        disabledMinutes: DataTypes.func,
-        disabledSeconds: DataTypes.func,
-        defaultOpenValue: DataTypes.object,
-        focusOnOpen: DataTypes.bool
-    },
+export default class Header extends Base<HeaderState, HeaderProps> {
     initData() {
         return {
             invalid: false,
             inputReadOnly: false
         };
-    },
-    computed: {
-        showTime() {
+    }
+    static computed = {
+        showTime(this: Header) {
             const value = this.data.get('value');
             const format = this.data.get('format');
 
             return value && value.format(format);
         }
-    },
+    }
     attached() {
         const focusOnOpen = this.data.get('focusOnOpen');
         if (focusOnOpen) {
-            this.ref('input').focus();
-            this.ref('input').select();
+            (this.ref('input') as unknown as HTMLInputElement).focus();
+            (this.ref('input') as unknown as HTMLInputElement).select();
         }
-    },
-    handleKeyDown(e) {
+    }
+    handleKeyDown(e: {keyCode: number}) {
         if (e.keyCode === 27) {
             this.fire('esc', e);
         }
         this.fire('keydown', e);
-    },
-    handleChange(e) {
+    }
+    handleChange(e: {target: {value: any}}) {
         const inputValue = e.target.value;
         const {
             format,
@@ -79,18 +65,18 @@ export default san.defineComponent({
 
             // if time value not allowed, response warning.
             if (
-                hourOptions.indexOf(value.hour()) < 0
-                || minuteOptions.indexOf(value.minute()) < 0
-                || secondOptions.indexOf(value.second()) < 0
+                hourOptions!.indexOf(value.hour()) < 0
+                || minuteOptions!.indexOf(value.minute()) < 0
+                || secondOptions!.indexOf(value.second()) < 0
             ) {
                 this.data.set('invalid', true);
                 return;
             }
 
             // if time value is disabled, response warning.
-            const disabledHourOptions = disabledHours();
-            const disabledMinuteOptions = disabledMinutes(value.hour());
-            const disabledSecondOptions = disabledSeconds(value.hour(), value.minute());
+            const disabledHourOptions = disabledHours!();
+            const disabledMinuteOptions = disabledMinutes!(value.hour());
+            const disabledSecondOptions = disabledSeconds!(value.hour(), value.minute());
             if (
                 (disabledHourOptions && disabledHourOptions.indexOf(value.hour()) >= 0)
                 || (disabledMinuteOptions && disabledMinuteOptions.indexOf(value.minute()) >= 0)
@@ -122,8 +108,8 @@ export default san.defineComponent({
         }
 
         this.data.set('invalid', false);
-    },
-    template: `<div class="{{prefixCls}}-input-wrap">
+    }
+    static template = `<div class="{{prefixCls}}-input-wrap">
         <input
             class="{{prefixCls}}-input {{invalid ? prefixCls + '-input-invalid' : ''}}"
             value="{{showTime}}"
@@ -134,4 +120,4 @@ export default san.defineComponent({
             s-ref="input"
         />
     </div>`
-});
+};
