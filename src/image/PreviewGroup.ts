@@ -3,14 +3,33 @@
  * @author liulu36
  */
 
-import san from 'san';
+import Base from 'santd/base';
 import Preview from './Preview';
 import {classCreator} from '../core/util';
+import {IPreviewGroupProps} from './interface';
+interface PreviewGroupMessage {
+    santd_image_add?: (this: PreviewGroup, payload: {
+        value: any;
+        target: any;
+    }) => void;
+
+    santd_image_remove?: (this: PreviewGroup, payload: {
+        value: any;
+    }) => void;
+
+    santd_image_click?: (this: PreviewGroup, payload: {
+        value: any;
+    }) => void;
+
+    santd_image_preview_set_current?: (this: PreviewGroup, payload: {
+        value: any;
+    }) => void;
+}
 
 const prefixCls = classCreator('image-group')();
 
-export default san.defineComponent({
-    template: `
+export default class PreviewGroup extends Base<IPreviewGroupProps, PreviewGroupMessage> {
+    static template = `
         <div
             class="${prefixCls}">
             <slot />
@@ -22,12 +41,12 @@ export default san.defineComponent({
                 on-close="onPreviewClose"
             />
         </div>
-     `,
+     `;
 
-    components: {
+     static components = {
         's-preview': Preview
-    },
-    messages: {
+    };
+    static messages: PreviewGroupMessage = {
         santd_image_add(payload) {
             payload.target.data.set('isPreviewGroup', true);
             this.data.merge('previewUrls', {
@@ -49,16 +68,16 @@ export default san.defineComponent({
         santd_image_preview_set_current(payload) {
             this.data.set('current', +payload?.value);
         }
-    },
-    initData() {
+    };
+    initData(): IPreviewGroupProps {
         return {
             imageList: [],
             current: 0,
             isShowPreview: false,
             previewUrls: {}
         };
-    },
+    }
     onPreviewClose() {
         this.data.set('isShowPreview', false);
     }
-});
+};

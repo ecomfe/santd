@@ -1,7 +1,7 @@
 /**
 * @file Santd tag docs file
 */
-import san from 'san';
+import Base from 'santd/base';
 import Readme from '../README.md';
 import Desc from './desc.md';
 import Basic from './basic.md';
@@ -12,8 +12,8 @@ import Color from './colorful.md';
 import Controlled from './controlled.md';
 import Icon from './icon.md';
 
-export default san.defineComponent({
-    components: {
+export default class extends Base {
+    static components = {
         readme: Readme,
         desc: Desc,
         basic: Basic,
@@ -23,8 +23,8 @@ export default san.defineComponent({
         color: Color,
         controlled: Controlled,
         icon: Icon
-    },
-    template: `
+    };
+    static template = `
         <div>
             <desc/>
             <basic/>
@@ -36,5 +36,5 @@ export default san.defineComponent({
             <icon/>
             <readme/>
         </div>
-    `
-});
+    `;
+};

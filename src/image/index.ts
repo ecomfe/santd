@@ -3,7 +3,5 @@
  */
 
 import Image from './Image';
-import PreviewGroup from './PreviewGroup';
-Image.PreviewGroup = PreviewGroup;
 
 export default Image;

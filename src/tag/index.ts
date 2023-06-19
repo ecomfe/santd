@@ -3,13 +3,17 @@
  * @author fuqiangqiang@baidu.com
  */
 
-import san, {DataTypes} from 'san';
+import Base from 'santd/base';
 import CheckableTag from './CheckableTag';
 import {classCreator} from '../core/util';
 import Wave from '../core/util/wave';
 import Icon from '../icon';
 import './style/index';
-
+import {ITagProps} from './interface';
+export interface ITagCopmuted {
+    classes: ((this: Tag) => string[]) | string[];
+    isPresetColor: ((this: Tag) => boolean) | boolean;
+}
 const prefixCls = classCreator('tag')();
 const presetColorTypes = [
     'pink',
@@ -28,18 +32,14 @@ const presetColorTypes = [
 ];
 const presetColorRegex = new RegExp(`^(${presetColorTypes.join('|')})(-inverse)?$`);
 
-const Tag = san.defineComponent({
-    dataTypes: {
-        color: DataTypes.string,
-        closable: DataTypes.bool,
-        visible: DataTypes.bool
-    },
+export default class Tag extends Base<ITagProps, ITagCopmuted> {
+    static CheckableTag = CheckableTag;
 
-    computed: {
+    static computed: ITagCopmuted =  {
         classes() {
             const visible = this.data.get('visible');
             const color = this.data.get('color');
-            const isPresetColor = this.data.get('isPresetColor');
+            const isPresetColor = this.data.get('isPresetColor') as boolean;
 
             let classArr = [prefixCls];
             isPresetColor && classArr.push(`${prefixCls}-${color}`);
@@ -52,45 +52,45 @@ const Tag = san.defineComponent({
             const color = this.data.get('color');
             return color ? presetColorRegex.test(color) : false;
         }
-    },
+    };
 
-    initData() {
+    initData(): ITagProps {
         return {
             closable: false,
             visible: true,
             icon: ''
         };
-    },
+    }
 
     inited() {
         let nonameSlots = this.sourceSlots.noname;
         if (nonameSlots && nonameSlots[0].tagName === 'a') {
             this.data.set('isNeedWave', true);
         }
-    },
+    }
 
-    setVisible(visible, e) {
+    setVisible(visible: boolean, e: Event) {
         this.fire('close', e);
         if (e.defaultPrevented) {
             return;
         }
         this.data.set('visible', visible);
-    },
+    }
 
-    handleIconClick(e) {
+    handleIconClick(e: Event) {
         this.setVisible(false, e);
-    },
+    }
 
-    handleClick(e) {
+    handleClick(e: Event) {
         this.fire('click', e);
-    },
+    }
 
-    components: {
+    static components = {
         's-wave': Wave,
         's-icon': Icon
-    },
+    };
 
-    template: `
+    static template = `
         <div class="{{classes}}" style="{{color && !isPresetColor ? 'background-color:' + color : ''}}" on-click="handleClick">
             <s-icon type="{{icon}}" s-if="icon"/>
             <slot />
@@ -101,8 +101,5 @@ const Tag = san.defineComponent({
             </span>
             <s-wave s-if="isNeedWave" />
         </div>
-    `
-});
-
-Tag.CheckableTag = CheckableTag;
-export default Tag;
+    `;
+};

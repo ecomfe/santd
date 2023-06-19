@@ -7,7 +7,7 @@ import {getClientSize} from './dom/css';
 /**
  * 获取元素 x 或 y 方向自身大小和容器大小比较后的偏移量
  */
-function fixPoint(key, start, width, clientWidth) {
+function fixPoint(key: string, start: number, width: number, clientWidth: number): {[key: string]: number} {
     const startAddWidth = start + width;
     const offsetStart = (width - clientWidth) / 2;
     if (width > clientWidth) {
@@ -41,7 +41,7 @@ function fixPoint(key, start, width, clientWidth) {
  *
  * Regardless of other
  */
-export default function getFixScaleEleTransPosition(width, height, left, top) {
+export default function getFixScaleEleTransPosition(width: number, height: number, left: number, top: number) {
     const {width: clientWidth, height: clientHeight} = getClientSize();
 
     let fixPos = null;
