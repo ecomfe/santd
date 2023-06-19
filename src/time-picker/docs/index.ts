@@ -1,7 +1,6 @@
 /**
  * @file Santd timepicker docs file
  **/
-import san from 'san';
 import Readme from '../README.md';
 import Basic from './basic.md';
 import Addon from './addon.md';
@@ -12,9 +11,10 @@ import Change from './onchange.md';
 import Size from './size.md';
 import Step from './step.md';
 import Use12Hours from './use12hours.md';
+import Base from 'santd/base';
 
-export default san.defineComponent({
-    components: {
+export default class TimePicker extends Base {
+    static components = {
         readme: Readme,
         basic: Basic,
         size: Size,
@@ -25,8 +25,8 @@ export default san.defineComponent({
         step: Step,
         use12hours: Use12Hours,
         head: Head
-    },
-    template: `
+    }
+    static template = `
         <div>
             <head/>
             <basic/>
@@ -40,4 +40,4 @@ export default san.defineComponent({
             <readme/>
         </div>
     `
-});
+};

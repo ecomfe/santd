@@ -4,7 +4,6 @@
  */
 
 import './style/index.less';
-import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
 import Trigger from '../core/trigger';
 import Placement from './placements';
@@ -12,47 +11,13 @@ import dayjs from 'dayjs';
 import Panel from './Panel';
 import Icon from '../icon';
 import localeReceiver from '../locale-provider/receiver';
+import type {Props, State, Computed} from './interface';
+import Base from 'santd/base';
 
 const prefixCls = classCreator('time-picker')();
 const noop = function () {};
-
-export default san.defineComponent({
-    dataTypes: {
-        clearText: DataTypes.string,
-        value: DataTypes.object,
-        defaultOpenValue: DataTypes.object,
-        inputReadOnly: DataTypes.bool,
-        disabled: DataTypes.bool,
-        allowClear: DataTypes.bool,
-        defaultValue: DataTypes.object,
-        open: DataTypes.bool,
-        defaultOpen: DataTypes.bool,
-        align: DataTypes.object,
-        popupPlacement: DataTypes.string,
-        transitionName: DataTypes.string,
-        getPopupContainer: DataTypes.func,
-        timePlaceholder: DataTypes.string,
-        format: DataTypes.string,
-        showHour: DataTypes.bool,
-        showMinute: DataTypes.bool,
-        showSecond: DataTypes.bool,
-        popupClassName: DataTypes.string,
-        popupStyle: DataTypes.object,
-        disabledHours: DataTypes.func,
-        disabledMinutes: DataTypes.func,
-        disabledSeconds: DataTypes.func,
-        hideDisabledOptions: DataTypes.bool,
-        name: DataTypes.string,
-        autoComplete: DataTypes.string,
-        use12Hours: DataTypes.bool,
-        hourStep: DataTypes.number,
-        minuteStep: DataTypes.number,
-        secondStep: DataTypes.number,
-        focusOnOpen: DataTypes.bool,
-        autoFocus: DataTypes.bool,
-        id: DataTypes.string
-    },
-    initData() {
+export default class TimePicker extends Base<Props, State, Computed> {
+    initData(){
         return {
             clearText: 'clear',
             defaultOpen: false,
@@ -78,10 +43,10 @@ export default san.defineComponent({
             transitionName: 'slide-up',
             componentName: 'TimePicker'
         };
-    },
-    computed: {
+    }
+    static computed: Computed = {
         ...localeReceiver.computed,
-        getFormat() {
+        getFormat(this: TimePicker) {
             const format = this.data.get('format');
             const showHour = this.data.get('showHour');
             const showMinute = this.data.get('showMinute');
@@ -103,12 +68,12 @@ export default san.defineComponent({
                 .filter(item => !!item)
                 .join(':');
         },
-        displayValue() {
+        displayValue(this: TimePicker) {
             const value = this.data.get('value');
             const getFormat = this.data.get('getFormat');
             return value && value.format(getFormat);
         },
-        getPopupClassName() {
+        getPopupClassName(this: TimePicker) {
             const showHour = this.data.get('showHour');
             const showMinute = this.data.get('showMinute');
             const showSecond = this.data.get('showSecond');
@@ -125,7 +90,7 @@ export default san.defineComponent({
             (!showHour || !showMinute || !showSecond) && !use12Hours && classArr.push(`${prefixCls}-panel-narrow`);
             return classArr.join(' ');
         },
-        defaultFormat() {
+        defaultFormat(this: TimePicker) {
             const format = this.data.get('format');
             const use12Hours = this.data.get('use12Hours');
             if (format) {
@@ -136,19 +101,19 @@ export default san.defineComponent({
             }
             return 'HH:mm:ss';
         },
-        showHour() {
+        showHour(this: TimePicker) {
             const format = this.data.get('defaultFormat');
             return format.indexOf('H') > -1 || format.indexOf('h') > -1 || format.indexOf('k') > -1;
         },
-        showMinute() {
+        showMinute(this: TimePicker) {
             const format = this.data.get('defaultFormat');
             return format.indexOf('m') > -1;
         },
-        showSecond() {
+        showSecond(this: TimePicker) {
             const format = this.data.get('defaultFormat');
             return format.indexOf('s') > -1;
         }
-    },
+    }
     inited() {
         const open = this.data.get('open');
         const defaultOpen = this.data.get('defaultOpen');
@@ -162,48 +127,49 @@ export default san.defineComponent({
         this.data.set('hasSuffixIcon', !!this.sourceSlots.named.suffixIcon);
         this.data.set('hasClearIcon', !!this.sourceSlots.named.clearIcon);
         this.data.set('hasAddon', !!this.sourceSlots.named.addon);
-    },
-    components: {
+    }
+    static components = {
         's-trigger': Trigger,
         's-icon': Icon,
         's-panel': Panel
-    },
-    setValue(value) {
+    }
+    setValue(value: dayjs.Dayjs | null) {
         this.data.set('value', value);
         if (value) {
             this.handleChange(value);
         }
-    },
-    handleVisibleChange(visible) {
+    }
+    handleVisibleChange(visible: boolean) {
         this.data.set('open', visible);
         this.fire('openChange', visible);
-    },
-    handleKeyDown(e) {
+    }
+    handleKeyDown(e: { keyCode: number; preventDefault: () => void; }) {
         if (e.keyCode === 40) {
             this.handleVisibleChange(true);
         }
-    },
-    handleClear(e) {
+    }
+    handleClear(e: Event) {
         e.stopPropagation();
         this.fire('click');
         this.setValue(null);
         this.handleVisibleChange(false);
         this.dispatch('UI:form-item-interact', {fieldValue: '', type: 'change', e});
-    },
-    handleChange(value) {
+    }
+    handleChange(value: dayjs.Dayjs) {
         this.data.set('value', value);
         const format = this.data.get('format') || 'HH:mm:ss';
 
-        this.fire('change', {time: value, timeString: value && value.format(format) || ''});
+        this.fire('change', {time: value, timeString: value && (value.format(format)) || ''});
         this.dispatch('UI:form-item-interact', {fieldValue: value, type: 'change'});
-    },
+    }
     focus() {
-        this.ref('picker').focus();
-    },
+        (this.ref('picker') as unknown as HTMLInputElement).focus();
+    }
     blur() {
-        this.ref('picker').blur();
-    },
-    template: `<span>
+        (this.ref('picker') as unknown as HTMLInputElement).blur();
+    }
+    static template = `
+    <span>
         <s-trigger
             popupClassName="{{getPopupClassName}}"
             popupStyle="{{popupStyle}}"
@@ -269,4 +235,4 @@ export default san.defineComponent({
             </s-panel>
         </s-trigger>
     </span>`
-});
+}

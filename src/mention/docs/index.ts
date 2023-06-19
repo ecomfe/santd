@@ -2,7 +2,6 @@
  * @file Santd mention docs file
  **/
 
-import san from 'san';
 import Readme from '../README.md';
 import Head from './head.md';
 import Basic from './basic.md';
@@ -14,9 +13,11 @@ import MultipleTrigger from './multiple-trigger.md';
 import Custom from './custom.md';
 import Avatar from './avatar.md';
 import Form from './form.md';
+import Base from 'santd/base';
 
-export default san.defineComponent({
-    components: {
+
+export default class Mention extends Base {
+    static components = {
         head: Head,
         basic: Basic,
         placement: Placement,
@@ -28,8 +29,8 @@ export default san.defineComponent({
         custom: Custom,
         avatar: Avatar,
         form: Form
-    },
-    template: `
+    }
+    static template = `
         <div>
             <head/>
             <basic/>
@@ -44,4 +45,4 @@ export default san.defineComponent({
             <readme/>
         </div>
     `
-});
+};

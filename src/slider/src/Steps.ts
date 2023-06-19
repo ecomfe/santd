@@ -3,12 +3,13 @@
  * @author mayihui@baidu.com
  **/
 
-import san, {DataTypes} from 'san';
 import {classCreator} from '../../core/util';
+import Base from 'santd/base';;
+import {Mark} from '../interface';
 
 const prefixCls = classCreator('slider-step')();
 
-const calcPoints = (marks, dots, step, min, max) => {
+const calcPoints = (marks: Mark, dots: boolean, step: number, min: number, max: number) => {
     const points = Object.keys(marks).map(parseFloat).sort((a, b) => a - b);
     if (dots && step) {
         for (let i = min; i <= max; i += step) {
@@ -20,20 +21,16 @@ const calcPoints = (marks, dots, step, min, max) => {
     return points;
 };
 
-export default san.defineComponent({
-    dataTypes: {
-        activeDotStyle: DataTypes.object,
-        dotStyle: DataTypes.object,
-        min: DataTypes.number,
-        max: DataTypes.number,
-        included: DataTypes.bool,
-        dots: DataTypes.bool,
-        step: DataTypes.number,
-        marks: DataTypes.object,
-        vertical: DataTypes.bool
-    },
-    computed: {
-        points() {
+export default class Step extends Base {
+    static template = `<div class="${prefixCls}">
+        <span
+            s-for="point in points"
+            class="{{pointClass(point)}}"
+            style="{{pointStyle(point)}}"
+        />
+    </div>`
+    static computed = {
+        points(this: Step) {
             const marks = this.data.get('marks');
             const dots = this.data.get('dots');
             const step = this.data.get('step');
@@ -41,8 +38,8 @@ export default san.defineComponent({
             const max = this.data.get('max');
             return calcPoints(marks, dots, step, min, max);
         }
-    },
-    pointClass(point) {
+    }
+    pointClass(point: number) {
         const included = this.data.get('included');
         const max = this.data.get('max');
         const min = this.data.get('min');
@@ -53,8 +50,8 @@ export default san.defineComponent({
         let classArr = [`${prefixCls}-dot`];
         isActive && classArr.push(`${prefixCls}-dot-active`);
         return classArr;
-    },
-    pointStyle(point) {
+    }
+    pointStyle(point: number) {
         const included = this.data.get('included');
         const vertical = this.data.get('vertical');
         const dotStyle = this.data.get('dotStyle') || {};
@@ -72,12 +69,5 @@ export default san.defineComponent({
             style = {...style, ...activeDotStyle};
         }
         return style;
-    },
-    template: `<div class="${prefixCls}">
-        <span
-            s-for="point in points"
-            class="{{pointClass(point)}}"
-            style="{{pointStyle(point)}}"
-        />
-    </div>`
-});
+    }
+};

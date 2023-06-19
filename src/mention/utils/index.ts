@@ -9,7 +9,7 @@
  * @param  {string} split 分隔符
  * @return {[RegExp]}  以匹配符开头的正则表达式
  */
-export const getRegExp = (prefix, split) => {
+export const getRegExp = (prefix: string[], split: string) => {
     // 对分隔符中的特殊字符进行转义
     const splitRegExp = split.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
     const prefixArray = Array.isArray(prefix) ? prefix : [prefix];
@@ -33,7 +33,7 @@ export const getRegExp = (prefix, split) => {
  * @param  {string} split  分隔符
  * @return {[type]}        返回结果
  */
-export const insertString = (str, start, end, newStr, split) => (
+export const insertString = (str: string, start: number, end: number, newStr: string, split: string) => (
     str.slice(0, start) + newStr + split + str.slice(end)
 );
 
@@ -43,7 +43,7 @@ export const insertString = (str, start, end, newStr, split) => (
  * @param {string} selector dom元素
  * @param  {number} pos 要移动位置
  */
-export const setCursorPosition = (selector, pos) => {
+export const setCursorPosition = (selector: any, pos: number) => {
     let range;
     if (document.createRange) { // Firefox, Chrome, Opera, Safari, IE 9+
         range = document.createRange(); // 创建一个选中区域
@@ -53,11 +53,11 @@ export const setCursorPosition = (selector, pos) => {
         }
         range.collapse(true); // 设置选中区域为一个点
         let selection = window.getSelection();// 获取当前选中区域
-        selection.removeAllRanges(); // 移出所有的选中范围
-        selection.addRange(range); // 添加新建的范围
+        selection!.removeAllRanges(); // 移出所有的选中范围
+        selection!.addRange(range); // 添加新建的范围
     }
-    else if (document.selection) { // IE 8 and lower
-        range = document.body.createTextRange();
+    else if ((document as any).selection) { // IE 8 and lower
+        range = (document.body as any).createTextRange();
         range.moveToElementText(selector);
         range.collapse(false);
         range.select();
@@ -70,8 +70,8 @@ export const setCursorPosition = (selector, pos) => {
  * @param {string} el dom元素
  * @return  {Object} 位置
  */
-export const getSearchWordPos = el => {
-    let range = window.getSelection().getRangeAt(0).cloneRange();
+export const getSearchWordPos = (el: any) => {
+    let range = (window.getSelection() as any).getRangeAt(0).cloneRange();
     let rects = range.getClientRects();
     if (!rects[0]) {
         return {};

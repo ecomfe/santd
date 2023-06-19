@@ -3,12 +3,12 @@
  * @author zhangtingting12 <zhangtingting12@baidu.com>
  */
 import './style/index.less';
-import san from 'san';
+import Base from 'santd/base';
 
-export default san.defineComponent({
-    template: `
+export default class PlaceHolder extends Base {
+    static template = `
         <div class="public-DraftEditorPlaceholder-root">
             <div class="public-DraftEditorPlaceholder-inner"><slot /></div>
         </div>
     `
-});
+};
