@@ -4,26 +4,27 @@
  */
 
 import ConfirmDialog from './ConfirmDialog';
+import * as I from './interface';
 
-export default function confirm(config) {
+export default function confirm(config: I.ConfirmConfigType): I.confirmType {
     let currentConfig = {...config, close, visible: true};
-    let dialog = new ConfirmDialog({
+    let dialog: ConfirmDialog | null = new ConfirmDialog({
         data: currentConfig
     });
 
     dialog.attach(document.body);
 
-    function close(...args) {
+    function close(...args: any[]) {
         currentConfig = {
             ...currentConfig,
             visible: false,
-            afterClose: destroy.bind(this, ...args)
+            afterClose: destroy.bind(ConfirmDialog, ...args)
         };
 
         update(currentConfig);
     }
 
-    function destroy(...args) {
+    function destroy(...args: any[]) {
         if (!dialog) {
             return;
         }
@@ -37,7 +38,7 @@ export default function confirm(config) {
         }
     }
 
-    function update(newConfig) {
+    function update(newConfig: I.ConfirmConfigType) {
         if (!dialog) {
             return;
         }
@@ -48,7 +49,7 @@ export default function confirm(config) {
         };
 
         Object.keys(currentConfig).forEach(key => {
-            dialog.data.set(key, currentConfig[key]);
+            dialog?.data.set(key, (currentConfig as I.ConfirmConfigType)[key]);
         });
     }
 

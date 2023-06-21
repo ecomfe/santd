@@ -5,7 +5,7 @@
  * @todo 对话框显示隐藏动效
  */
 
-import san from 'san';
+import Base from 'santd/base';
 import Head from './head.md';
 import Basic from './basic.md';
 import Async from './async.md';
@@ -19,8 +19,8 @@ import Position from './position.md';
 import ButtonProps from './button-props.md';
 import Readme from '../README.md';
 
-export default san.defineComponent({
-    template: `
+export default class extends Base {
+    static template = /* html */ `
         <div>
             <head/>
             <basic/>
@@ -35,8 +35,9 @@ export default san.defineComponent({
             <button/>
             <readme/>
         </div>
-    `,
-    components: {
+    `;
+
+    static components = {
         head: Head,
         basic: Basic,
         async: Async,
@@ -50,4 +51,4 @@ export default san.defineComponent({
         button: ButtonProps,
         readme: Readme
     }
-});
+};

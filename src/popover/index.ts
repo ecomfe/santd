@@ -4,28 +4,29 @@
  */
 
 import './style/index';
-import san from 'san';
+import * as I from './interface';
 import {classCreator} from '../core/util';
 import Tooltip from '../tooltip';
 
 const prefixCls = classCreator('popover')();
 
-export default san.defineComponent({
-    initData() {
+export default class Popover extends Tooltip {
+    static initData(): I.State {
         return {
             ...Tooltip.prototype.initData(),
-            transitionName: 'zoom-big'
+            transitionName: 'zoom-big',
+            prefixCls,
         };
-    },
+    }
 
-    inited() {
+    inited(): void {
         this.data.set('hasTitle', this.data.get('title') || !!this.sourceSlots.named.title);
         this.data.set('hasContent', this.data.get('content') || !!this.sourceSlots.named.content);
-    },
+    }
 
-    template: `<span>
+    static template: `<span>
         <s-trigger
-            prefixCls="${prefixCls}"
+            prefixCls="{{prefixCls}}"
             action="{{action}}"
             builtinPlacements="{{builtinPlacements}}"
             popupPlacement="{{placement}}"
@@ -45,13 +46,13 @@ export default san.defineComponent({
         >
             <slot />
             <template slot="popup">
-                <div class="${prefixCls}-arrow"></div>
-                <div class="${prefixCls}-inner" id="{{id}}" role="popover">
-                    <div class="${prefixCls}-title" s-if="hasTitle">
+                <div class="{{prefixCls}}-arrow"></div>
+                <div class="{{prefixCls}}-inner" id="{{id}}" role="popover">
+                    <div class="{{prefixCls}}-title" s-if="hasTitle">
                         <slot name="title" s-if="!title" />
                         <template s-else>{{title}}</template>
                     </div>
-                    <div class="${prefixCls}-inner-content" s-if="hasContent">
+                    <div class="{{prefixCls}}-inner-content" s-if="hasContent">
                         <slot name="content" s-if="!content" />
                         <template s-else>{{content}}</template>
                     </div>
@@ -59,4 +60,4 @@ export default san.defineComponent({
             </template>
         </s-trigger>
     </span>`
-}, Tooltip);
+};

@@ -5,13 +5,15 @@
  */
 
 import './style/index.less';
-import san, {DataTypes} from 'san';
+import * as I from './interface';
+import Base from 'santd/base';
+import san from 'san';
 import {classCreator} from '../core/util';
 import Icon from '../icon';
 
 const prefixCls = classCreator('progress')();
 
-const validProgress = progress => {
+const validProgress = (progress: number) => {
     if (!progress || progress < 0) {
         return 0;
     }
@@ -27,9 +29,6 @@ const statusColorMap = {
     success: '#87d068'
 };
 
-export const ProgressType = DataTypes.oneOf(['line', 'circle', 'dashboard']);
-export const ProgressSize = DataTypes.oneOf(['default', 'small']);
-
 const ProgressInfo = san.defineComponent({
     template: `
         <span class="${prefixCls}-text" title="{{text}}">
@@ -38,12 +37,12 @@ const ProgressInfo = san.defineComponent({
         </span>
     `,
     components: {
-        's-icon': Icon
+        's-icon': Icon as unknown as Element
     }
 });
 
-const ProgressCirle = san.defineComponent({
-    template: `
+class ProgressCirle extends Base<I.ProgressCirleState, I.ProgressCirleProps, I.ProgressCirleComputed> {
+    static template = /* html */ `
         <svg
             class="${prefixCls}-circle"
             viewBox="0 0 100 100"
@@ -68,14 +67,16 @@ const ProgressCirle = san.defineComponent({
             >
             </path>
         </svg>
-    `,
-    initData() {
+    `;
+
+    initData(): I.ProgressCirleState {
         return {
             gapPosition: 'top'
         };
-    },
-    computed: {
-        pathStyles() {
+    }
+
+    static computed: I.ProgressCirleComputed = {
+        pathStyles(this: ProgressCirle) {
             const data = this.data;
             const percent = validProgress(data.get('percent'));
             const strokeWidth = data.get('strokeWidth');
@@ -137,20 +138,20 @@ const ProgressCirle = san.defineComponent({
                 strokePathStyle
             };
         },
-        pathString() {
+        pathString(this: ProgressCirle) {
             return this.data.get('pathStyles.pathString');
         },
-        trailPathStyle() {
+        trailPathStyle(this: ProgressCirle) {
             return this.data.get('pathStyles.trailPathStyle');
         },
-        strokePathStyle() {
+        strokePathStyle(this: ProgressCirle) {
             return this.data.get('pathStyles.strokePathStyle');
         }
     }
-});
+};
 
-export default san.defineComponent({
-    template: `
+export default class Progress extends Base<I.State, I.Props, I.Computed> {
+    static template = /* html */ `
         <div class="{{classes}}">
             <template s-if="type === 'line'">
                 <div class="${prefixCls}-outer">
@@ -191,29 +192,15 @@ export default san.defineComponent({
                 </div>
             </template>
         </div>
-    `,
-    dataTypes: {
-        format: DataTypes.func,
-        gapDegree: DataTypes.number,
-        gapPosition: DataTypes.oneOf(['top', 'bottom', 'left', 'right']),
-        percent: DataTypes.number,
-        showInfo: DataTypes.bool,
-        size: ProgressSize,
-        status: DataTypes.oneOf(['success', 'active', 'exception']),
-        strokeWidth: DataTypes.number,
-        strokeLinecap: DataTypes.oneOf(['round', 'square']),
-        strokeColor: DataTypes.string,
-        successPercent: DataTypes.number,
-        trailColor: DataTypes.string, // mark
-        type: ProgressType,
-        width: DataTypes.number
-    },
-    components: {
+    `;
+
+    static components = {
         's-info': ProgressInfo,
         's-circle': ProgressCirle
-    },
-    computed: {
-        classes() {
+    };
+
+    static computed = {
+        classes(this: Progress) {
             const data = this.data;
             const size = data.get('size');
             const showInfo = data.get('showInfo');
@@ -224,7 +211,7 @@ export default san.defineComponent({
             size && classArr.push(`${prefixCls}-${size}`);
             return classArr;
         },
-        percentStyle() {
+        percentStyle(this: Progress) {
             const data = this.data;
             const lineWidth = data.get('lineWidth');
             const lineHeight = data.get('lineHeight');
@@ -233,7 +220,7 @@ export default san.defineComponent({
 
             return `width: ${lineWidth}; height: ${lineHeight}; border-radius: ${borderRadius}px;`;
         },
-        successPercentStyle() {
+        successPercentStyle(this: Progress) {
             const data = this.data;
             const successPercent = data.get('successPercent');
             const lineHeight = data.get('lineHeight');
@@ -242,17 +229,17 @@ export default san.defineComponent({
 
             return `width: ${validProgress(successPercent)}%; height: ${lineHeight}; border-radius: ${borderRadius}px;`;
         },
-        lineWidth() {
+        lineWidth(this: Progress) {
             return validProgress(this.data.get('percent')) + '%';
         },
-        lineHeight() {
+        lineHeight(this: Progress) {
             const data = this.data;
             const size = data.get('size');
             const strokeWidth = data.get('strokeWidth');
 
             return `${strokeWidth || size === 'small' ? 6 : 8}px`;
         },
-        progressStatus() {
+        progressStatus(this: Progress) {
             const data = this.data;
             const status = data.get('status');
             const percent = data.get('percent');
@@ -261,13 +248,13 @@ export default san.defineComponent({
             return parseInt((successPercent ? successPercent.toString() : percent.toString()), 10) >= 100
                 && !status ? 'success' : (status || 'normal');
         },
-        progressText() {
+        progressText(this: Progress) {
             const data = this.data;
             const format = data.get('format');
             const percent = data.get('percent');
             const successPercent = data.get('successPercent');
             const progressStatus = data.get('progressStatus');
-            const textFormatter = format || (percentNumber => `${percentNumber}%`);
+            const textFormatter = format || ((percentNumber: number) => `${percentNumber}%`);
             let text = '';
 
             if (format || (progressStatus !== 'exception' && progressStatus !== 'success')) {
@@ -276,7 +263,7 @@ export default san.defineComponent({
 
             return text;
         },
-        progressIcon() {
+        progressIcon(this: Progress) {
             const data = this.data;
             const showInfo = data.get('showInfo');
             const type = data.get('type');
@@ -286,38 +273,38 @@ export default san.defineComponent({
                 exception: 'close',
                 success: 'check'
             };
-            const progressIcon = `${prefix[progressStatus]}${iconType}`;
+            const progressIcon = `${(prefix as any)[progressStatus]}${iconType}`;
 
             return showInfo && progressIcon;
         },
-        showIcon() {
+        showIcon(this: Progress) {
             const data = this.data;
             const progressText = data.get('progressText');
             const progressStatus = data.get('progressStatus');
 
             return !progressText && !!~['exception', 'success'].indexOf(progressStatus);
         },
-        circleStyle() {
+        circleStyle(this: Progress) {
             const data = this.data;
             const circleSize = data.get('width') || 120;
             const fontSize = circleSize * 0.15 + 6;
 
             return `width: ${circleSize}px; height: ${circleSize}px; font-size: ${fontSize}px;`;
         },
-        gapPos() {
+        gapPos(this: Progress) {
             const gapPosition = this.data.get('gapPosition');
             const type = this.data.get('type');
 
             return gapPosition || (type === 'dashboard' && 'bottom') || 'top';
         },
-        gapDeg() {
+        gapDeg(this: Progress) {
             const gapDegree = this.data.get('gapDegree');
             const type = this.data.get('type');
 
             return gapDegree || (type === 'dashboard' && 75);
         }
-    },
-    initData() {
+    }
+    initData(): I.State {
         return {
             percent: 0,
             showInfo: true,
@@ -330,4 +317,4 @@ export default san.defineComponent({
             statusColorMap
         };
     }
-});
+};

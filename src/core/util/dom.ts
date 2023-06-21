@@ -12,7 +12,7 @@ interface IEElement {
     detachEvent: (event: string, listener: EventListener) => void;
 }
 
-interface BaseElement extends Partial<StandardElement>, Partial<IEElement> {
+export interface BaseElement extends Partial<StandardElement>, Partial<IEElement> {
 }
 
 export type ListenerElement = StandardElement & IEElement;

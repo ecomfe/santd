@@ -3,14 +3,15 @@
 * @author fuqiangqiang@baidu.com
 */
 
-import san, {DataTypes} from 'san';
+import * as I from './interface';
+import Base from 'santd/base';
 import Tree, {traverseNodesKey} from './Tree';
 import Icon from '../icon';
 import './style/index';
 
-const calcRangeKeys = function (root, expandedKeys = [], startKey, endKey) {
-    let keys = [];
-    let record;
+const calcRangeKeys = function (root: I.TBase[], expandedKeys: I.keysArray = [], startKey: string, endKey: string) {
+    let keys: string[] = [];
+    let record: undefined | boolean;
 
     if (!startKey || !endKey) {
         return keys;
@@ -19,7 +20,7 @@ const calcRangeKeys = function (root, expandedKeys = [], startKey, endKey) {
         return [startKey];
     }
 
-    traverseNodesKey(root, key => {
+    traverseNodesKey(root, (key: string) => {
         if (record === false) {
             return false;
         }
@@ -47,48 +48,28 @@ const calcRangeKeys = function (root, expandedKeys = [], startKey, endKey) {
     return keys;
 };
 
-export default san.defineComponent({
-    dataTypes: {
-        expandAction: DataTypes.oneOfType([DataTypes.string, DataTypes.bool]),
-        autoExpandParent: DataTypes.bool,
-        blockNode: DataTypes.bool,
-        checkable: DataTypes.bool,
-        checkedKeys: DataTypes.array,
-        checkStrictly: DataTypes.bool,
-        defaultCheckedKeys: DataTypes.array,
-        defaultExpandAll: DataTypes.bool,
-        defaultExpandedKeys: DataTypes.array,
-        defaultSelectedKeys: DataTypes.array,
-        disabled: DataTypes.bool,
-        draggable: DataTypes.bool,
-        expandedKeys: DataTypes.array,
-        loadData: DataTypes.func,
-        loadedKeys: DataTypes.array,
-        multiple: DataTypes.bool,
-        selectedKeys: DataTypes.array,
-        showIcon: DataTypes.bool,
-        switcherIcon: DataTypes.func,
-        showLine: DataTypes.bool
-    },
-
-    components: {
+export default class DirectoryTree extends Base<I.DirectoryTreeState, I.DirectoryTreeProps, I.DirectoryTreeComputed> {
+    static components = {
         's-tree': Tree,
         's-icon': Icon
-    },
+    };
 
-    initData() {
+    initData(): I.DirectoryTreeState {
         return {
             expandAction: 'click',
             showIcon: true
         };
-    },
+    };
 
-    handleNodeSelect(selectedKeys, info) {
+    lastSelectedKey: string = '';
+    cachedSelectedKeys: null | I.keysArray = null;
+
+    handleNodeSelect(selectedKeys: I.keysArray, info: I.infoType): void {
         const {multiple, expandedKeys} = this.data.get();
         const nativeEvent = info.nativeEvent;
         const ctrlPick = nativeEvent.ctrlKey || nativeEvent.metaKey;
         const shiftPick = nativeEvent.shiftKey;
-        const eventKey = info.node.data.get('key');
+        const eventKey: string = info.node.data.get('key');
 
         let newSelectedKeys = [];
         if (multiple && ctrlPick) {
@@ -100,7 +81,7 @@ export default san.defineComponent({
             newSelectedKeys = Array.from(
                 new Set([
                     ...(this.cachedSelectedKeys || []),
-                    ...calcRangeKeys(this.ref('tree').treeNodes, expandedKeys, eventKey, this.lastSelectedKey)
+                    ...calcRangeKeys((this.ref('tree') as I.TBase).treeNodes, expandedKeys, eventKey, this.lastSelectedKey)
                 ])
             );
         }
@@ -118,22 +99,22 @@ export default san.defineComponent({
                 nativeEvent: info.nativeEvent
             }
         });
-    },
+    };
 
     // 点击具体item
-    handleNodeClick({selectedKeys, info}) {
+    handleNodeClick({selectedKeys, info}: {selectedKeys: I.keysArray, info: I.infoType}): void {
         this.handleNodeSelect(selectedKeys, info);
         if (info.node.data.get('hasChild')) {
-            this.handleDebounceExpand(selectedKeys, info);
+            this.handleDebounceExpand(info);
         }
-    },
+    }
 
-    handleNodeExpand({expandedKeys, info}) {
+    handleNodeExpand({expandedKeys}: {expandedKeys: I.keysArray}): void {
         this.data.set('expandedKeys', expandedKeys);
-    },
+    }
 
     // 处理展开
-    handleDebounceExpand(selectedKeys, info) {
+    handleDebounceExpand(info: I.infoType): void {
         const expandAction = this.data.get('expandAction');
         if (expandAction === 'click') {
             this.expandFolderNode(info);
@@ -142,33 +123,33 @@ export default san.defineComponent({
             expandedKeys: this.data.get('expandedKeys'),
             info
         });
-    },
+    }
 
     // 处理多选
-    handleNodeCheck(payload) {
+    handleNodeCheck(payload: I.nodeCheckPayloadType): void{
         this.fire('check', payload);
-    },
+    }
 
     // 处理数据加载完毕
-    handleNodeLoaded(payload) {
+    handleNodeLoaded(payload: I.nodeCheckPayloadType): void {
         this.fire('load', payload);
-    },
+    }
 
-    handleExpandAll(expandedKeys) {
+    handleExpandAll(expandedKeys: I.keysArray): void{
         this.data.set('expandedKeys', expandedKeys);
-    },
+    }
 
-    expandFolderNode(info) {
+    expandFolderNode(info: I.infoType) {
         const isLeaf = !info.node.data.get('hasChild');
         const nativeEvent = info.nativeEvent;
         if (isLeaf || nativeEvent.shiftKey || nativeEvent.metaKey || nativeEvent.ctrlKey) {
             // 说明不是要展开，而是要选中某项
             return false;
         }
-        info.node.handleNodeExpand(event);
-    },
+        info.node.handleNodeExpand();
+    }
 
-    template: `
+    static template = /* html */ `
         <div>
             <s-tree
                 autoExpandParent="{{autoExpandParent}}"
@@ -199,4 +180,4 @@ export default san.defineComponent({
             </s-tree>
         </div>
     `
-});
+};

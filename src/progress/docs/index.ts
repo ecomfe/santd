@@ -3,7 +3,7 @@
  * @author baozhixin <baozhixin@baidu.com>
  */
 
-import san from 'san';
+import Base from 'santd/base';
 import Head from './head.md';
 import Line from './line.md';
 import Circle from './circle.md';
@@ -17,8 +17,8 @@ import Segment from './segment.md';
 import Linecap from './linecap.md';
 import Readme from '../README.md';
 
-export default san.defineComponent({
-    template: `
+export default class extends Base {
+    static template = /* html */ `
         <div>
             <head/>
             <line/>
@@ -33,8 +33,8 @@ export default san.defineComponent({
             <linecap/>
             <readme/>
         </div>
-    `,
-    components: {
+    `;
+    static components = {
         head: Head,
         line: Line,
         circle: Circle,
@@ -48,4 +48,4 @@ export default san.defineComponent({
         linecap: Linecap,
         readme: Readme
     }
-});
+};

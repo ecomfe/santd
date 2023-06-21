@@ -2,9 +2,9 @@
  * @file Santd result noFound svg file
  **/
 
-import san from 'san';
+import Base from 'santd/base';
 
-const SVG = `
+const SVG = /* html */`
   <svg width="252" height="294">
     <defs>
       <path d="M0 .387h251.772v251.772H0z" />
@@ -286,7 +286,6 @@ const SVG = `
     </g>
   </svg>
 `;
-
-export default san.defineComponent({
-    template: SVG
-});
+export default class NoFound extends Base {
+    static template = SVG;
+};

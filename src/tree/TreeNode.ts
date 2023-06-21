@@ -3,15 +3,17 @@
 * @author fuqiangqiang@baidu.com
 */
 
-import san, {DataTypes} from 'san';
+import * as I from './interface';
+import Base from 'santd/base';
 import {classCreator} from '../core/util';
 import Icon from '../icon';
 import Checkbox from '../checkbox';
+import {CheckboxChangeEvent} from '../checkbox/interface';
 import {LINE_UNIT_OFFEST_V} from './commonConst';
 
 const prefixCls = classCreator('tree')();
 const prefixClsV = prefixCls + '-virtual-list';
-const getComputedKeys = (targetKeys = [], key) => {
+const getComputedKeys = (targetKeys = [], key: string) => {
     let keysFlag = false;
     targetKeys.forEach(defKey => {
         if (defKey === key) {
@@ -40,24 +42,14 @@ let paramArr = [
     'showIcon'
 ];
 
-export default san.defineComponent({
-    components: {
+export default class TreeNode extends Base<I.TreeNodeState, I.TreeNodeProps, I.TreeNodeComputed> {
+    static components = {
         's-icon': Icon,
         's-checkbox': Checkbox,
         's-tree-node': 'self'
-    },
+    };
 
-    dataTypes: {
-        disableCheckbox: DataTypes.bool,
-        disabled: DataTypes.bool,
-        icon: DataTypes.any,
-        isLeaf: DataTypes.bool,
-        key: DataTypes.string,
-        selectable: DataTypes.bool,
-        title: DataTypes.any
-    },
-
-    initData() {
+    initData(): I.TreeNodeState {
         return {
             selectable: true,
             disabled: false,
@@ -67,34 +59,34 @@ export default san.defineComponent({
             // 展开收起按钮是否被用户点击了
             isSwitcherActive: false
         };
-    },
+    };
 
-    computed: {
-        selected() {
+    static computed: I.TreeNodeComputed = {
+        selected(this: TreeNode) {
             return getComputedKeys(this.data.get('selectedKeys'), this.data.get('key'));
         },
 
-        checked() {
+        checked(this: TreeNode) {
             return getComputedKeys(this.data.get('allCheckedKeys'), this.data.get('key'));
         },
 
-        filtered() {
+        filtered(this: TreeNode) {
             return getComputedKeys(this.data.get('filteredKeys'), this.data.get('key'));
         },
 
-        hidden() {
+        hidden(this: TreeNode) {
             return getComputedKeys(this.data.get('hiddenKeys'), this.data.get('key'));
         },
 
-        actived() {
+        actived(this: TreeNode) {
             return this.data.get('activeKey') === this.data.get('key');
         },
 
-        indeterminate() {
+        indeterminate(this: TreeNode) {
             return getComputedKeys(this.data.get('allHalfCheckedKeys'), this.data.get('key'));
         },
 
-        classes() {
+        classes(this: TreeNode) {
             const expanded = this.data.get('expanded');
             const disabled = this.data.get('rootDisabled') || this.data.get('disabled');
             const checked = this.data.get('checked');
@@ -114,7 +106,7 @@ export default san.defineComponent({
             return classArr;
         },
 
-        checkboxClass() {
+        checkboxClass(this: TreeNode) {
             const checked = this.data.get('checked');
             const disabled = this.data.get('rootDisabled') || this.data.get('disabled');
 
@@ -124,7 +116,7 @@ export default san.defineComponent({
             return classArr;
         },
 
-        titleClass() {
+        titleClass(this: TreeNode) {
             const disabled = this.data.get('rootDisabled') || this.data.get('disabled');
             const hasChild = this.data.get('hasChild');
             const selected = this.data.get('selected');
@@ -142,15 +134,17 @@ export default san.defineComponent({
             return classArr;
         },
 
-        showExpandIcon() {
+        showExpandIcon(this: TreeNode) {
             return this.data.get('hasChild')
                 || !this.data.get('isLeaf')
                 && this.data.get('loadData')
                 && !this.data.get('loading');
         }
-    },
+    };
 
-    inited() {
+    treeNodes: Array<Base> = [];
+
+    inited(): void {
         this.treeNodes = [];
 
         this.data.set('hasTitle', !!this.sourceSlots.named.title && this.data.get('hasTitle'));
@@ -158,9 +152,9 @@ export default san.defineComponent({
         const treeData = this.data.get('treeData') || [];
         this.data.set('hasChild', !!treeData.length || !!this.data.get('treeNodeDataV.children.length'));
 
-        paramArr.forEach(param => this.data.set(param, this.parentComponent.data.get(param)));
+        paramArr.forEach(param => this.data.set(param, this.parentComponent!.data.get(param)));
 
-        const switcherIcon = this.parentComponent.data.get('switcherIcon');
+        const switcherIcon = this.parentComponent!.data.get('switcherIcon');
         if (switcherIcon) {
             this.sourceSlots.named.switcherIcon = switcherIcon;
             this.data.set('hasSwitcherIcon', true);
@@ -173,9 +167,9 @@ export default san.defineComponent({
             this.data.set('loading', false);
             this.dispatch('santd_tree_dataLoaded', {loadedKeys: val, node: this});
         });
-    },
+    };
 
-    updated() {
+    updated(): void {
         // 更新 hasChild
         this.data.get('treeNodeDataV')
             && this.data.set('hasChild', !!this.data.get('treeNodeDataV.children.length'));
@@ -192,20 +186,20 @@ export default san.defineComponent({
                 node.data.set(param, this.data.get(param));
             });
         });
-    },
+    };
 
-    messages: {
-        santd_tree_addTreeNode(payload) {
+    static messages = {
+        santd_tree_addTreeNode(this: TreeNode, payload: I.addTreeNodePayloadType) {
             // 每个节点单独管理自己的子节点并dispatch自己到父节点上
             this.treeNodes.push(payload.value);
             if (this.treeNodes.length) {
                 this.data.set('hasChild', true);
             }
         }
-    },
+    };
 
     // 点击节点时候的事件
-    handleNodeClick(e) {
+    handleNodeClick(e: MouseEvent): void {
         const disabled = this.data.get('rootDisabled') || this.data.get('disabled');
         const selectable = this.data.get('rootSelectable') || this.data.get('selectable');
 
@@ -220,10 +214,10 @@ export default san.defineComponent({
             selected: this.data.get('selected'),
             key: this.data.get('key')
         });
-    },
+    };
 
     // 点击复选框时候的事件
-    handleNodeCheck(e) {
+    handleNodeCheck(e: CheckboxChangeEvent): void {
         this.dispatch('santd_tree_checkTreeNode', {
             event: 'check',
             checked: e.target.checked,
@@ -231,10 +225,10 @@ export default san.defineComponent({
             node: this,
             treeNodeDataV: this.data.get('treeNodeDataV')
         });
-    },
+    };
 
     // 点击收起按钮时候的事件
-    handleNodeExpand(e) {
+    handleNodeExpand(e: MouseEvent): void {
         const isLeaf = this.data.get('isLeaf');
         const key = this.data.get('key');
         const loadData = this.data.get('loadData');
@@ -261,15 +255,15 @@ export default san.defineComponent({
         setTimeout(() => {
             this.data.set('isSwitcherActive', false);
         }, SWITCH_STATUS_DELAY_V);
-    },
+    };
 
-    attached() {
+    attached(): void {
         if (this.data.get('defaultExpandAll') && this.data.get('hasChild')) {
             this.dispatch('santd_tree_expandAll', this.data.get('key'));
         }
-    },
+    };
 
-    template: `
+    static template = /* html */ `
         <li
             class="{{classes}}"
             style="{{'margin-left: ' + (treeNodeDataV.isEnd.length - 1) * LINE_UNIT_OFFEST_V + 'px'}}">
@@ -352,4 +346,4 @@ export default san.defineComponent({
             </ul>
         </li>
     `
-});
+};

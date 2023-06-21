@@ -1,7 +1,7 @@
 /**
  * @file Santd popover docs
  **/
-import san from 'san';
+import Base from 'santd/base';
 import Readme from '../README.md';
 import Desc from './desc.md';
 import Basic from './basic.md';
@@ -11,8 +11,8 @@ import Arrow from './arrow.md';
 import Visible from './visible.md';
 import Hover from './hover.md';
 
-export default san.defineComponent({
-    components: {
+export default class extends Base {
+    static components = {
         readme: Readme,
         desc: Desc,
         basic: Basic,
@@ -21,8 +21,8 @@ export default san.defineComponent({
         arrow: Arrow,
         position: Position,
         hover: Hover
-    },
-    template: `
+    }
+    static template = /* html */ `
         <div>
             <desc/>
             <basic/>
@@ -34,4 +34,4 @@ export default san.defineComponent({
             <readme/>
         </div>
     `
-});
+};
