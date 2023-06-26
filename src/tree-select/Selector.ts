@@ -3,29 +3,25 @@
  * @author
  */
 
-import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
 import Input from './Input';
 import SingleSelector from './SingleSelector';
 import MultipleSelector from './MultipleSelector';
+import {TreeNode} from './interface';
 const prefixCls = classCreator('select')();
+import Base from 'santd/base';
 
-export default san.defineComponent({
-    dataTypes: {
-        placeholder: DataTypes.string,
-        inputValue: DataTypes.string,
-        searchValue: DataTypes.string,
-        selectedValue: DataTypes.oneOfType([DataTypes.string, DataTypes.array]),
-        showSearch: DataTypes.bool,
-        multiple: DataTypes.bool,
-        treeCheckable: DataTypes.bool,
-        popupVisible: DataTypes.bool,
-        maxTagCount: DataTypes.number,
-        maxTagPlaceholder: DataTypes.any,
-        treeNodeLabelProp: DataTypes.string
-    },
-
-    template: `
+interface State {
+    placeholder: string,
+    inputValue: string,
+    searchValue: string,
+    selectedValue: TreeNode[],
+    multiple: boolean,
+    treeCheckable: boolean,
+    popupVisible: boolean
+}
+export default class Selector extends Base<State> {
+    static template = `
         <div class="${prefixCls}-selection__rendered">
             <div
                 class="${prefixCls}-selection__placeholder ${prefixCls}-unselectable"
@@ -67,13 +63,13 @@ export default san.defineComponent({
                 />
             </div>
         </div>
-    `,
+    `
 
-    components: {
+    static components = {
         's-input': Input,
         's-single-selector': SingleSelector,
         's-multiple-selector': MultipleSelector
-    },
+    }
 
     initData() {
         return {
@@ -85,13 +81,13 @@ export default san.defineComponent({
             treeCheckable: false,
             popupVisible: false
         };
-    },
+    }
 
-    computed: {
-        handledInputValue() {
+    static computed = {
+        handledInputValue(this: Selector) {
             return this.data.get('searchValue') || this.data.get('inputValue');
         },
-        placeholderText() {
+        placeholderText(this: Selector) {
             const inputValue = this.data.get('handledInputValue');
             const selectedValue = this.data.get('selectedValue');
             const placeholder = this.data.get('placeholder');
@@ -100,27 +96,27 @@ export default san.defineComponent({
             }
             return '';
         }
-    },
+    }
 
     updated() {
         const {selectedValue, multiple} = this.data.get();
         if (multiple) {
-            this.ref('multipleSelector') && this.ref('multipleSelector')._repaintChildren();
+            this.ref('multipleSelector') && (this.ref('multipleSelector') as any)._repaintChildren();
         }
         else if (selectedValue && selectedValue[0]) {
             const item = selectedValue[0];
             if (!item.title && item.node.sourceSlots.named.title) {
                 this.sourceSlots.named[`title_${item.key}`] = item.node.sourceSlots.named.title;
-                this.ref('singleSelector') && this.ref('singleSelector')._repaintChildren();
+                this.ref('singleSelector') && (this.ref('singleSelector') as any)._repaintChildren();
             }
         }
-    },
+    }
 
-    handleRemoveValue(index) {
+    handleRemoveValue(index: number) {
         this.fire('removeValue', index);
-    },
+    }
 
     handleClick() {
         this.fire('inputFocus');
     }
-});
+};

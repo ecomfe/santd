@@ -2,8 +2,6 @@
  * @file tree-select 树选中组件
  * @author fuqiangqiang <fuqiangqiang@baidu.com>
  */
-
-import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
 import Icon from '../icon';
 import Tree from '../tree';
@@ -12,11 +10,16 @@ import Dropdown from '../dropdown';
 import Empty from '../empty';
 import './style/index';
 import KeyCode from '../core/util/keyCode';
+import Base from 'santd/base';
+import { State, Props, Messages, TreeNode} from './interface';
+import {clickTreeNodePayloadValueType, checkTreeNodePayloadValueType} from '../tree/interface';
+import TreeN from '../tree/TreeNode';
+import {SHOW_ALL, SHOW_PARENT, SHOW_CHILD} from './treeStrategies';
 
 const prefixCls = classCreator('select')();
 const emptyPrefixCls = classCreator('empty')();
 
-const getParentKey = (key, tree) => {
+const getParentKey = (key: string, tree: TreeNode[]): string | undefined => {
     let parentKey;
     for (let i = 0; i < tree.length; i++) {
         const node = tree[i];
@@ -32,7 +35,7 @@ const getParentKey = (key, tree) => {
     return parentKey;
 };
 
-const getExpandedKeys = (expandedKeys = [], nodeArr = [], hiddenKeys = []) => {
+const getExpandedKeys = (expandedKeys: string[] = [], nodeArr: TreeNode[] = [], hiddenKeys: (string | null)[] = []) => {
     for (const node of nodeArr) {
         if (node.children.length) {
             expandedKeys.push(node.key);
@@ -90,51 +93,32 @@ const filterData = (searchValue, treeData, {filterOption, optionFilterProp}) => 
     return loop(treeData.concat());
 };*/
 
-const sizeMap = {
+interface SizeMap {
+    [key: string]: string;
+}
+const sizeMap: SizeMap = {
     small: 'sm',
     large: 'lg'
 };
 
-export default san.defineComponent({
-    dataTypes: {
-        allowClear: DataTypes.bool,
-        treeData: DataTypes.array,
-        autoClearSearchValue: DataTypes.bool,
-        defaultValue: DataTypes.oneOfType([DataTypes.string, DataTypes.array]),
-        disabled: DataTypes.bool,
-        dropdownClassName: DataTypes.string,
-        dropdownMatchSelectWidth: DataTypes.bool,
-        dropdownStyle: DataTypes.object,
-        filterTreeNode: DataTypes.func,
-        labelInValue: DataTypes.bool,
-        maxTagCount: DataTypes.number,
-        maxTagPlaceholder: DataTypes.any,
-        multiple: DataTypes.bool,
-        placeholder: DataTypes.string,
-        searchPlaceholder: DataTypes.string,
-        searchValue: DataTypes.string,
-        treeIcon: DataTypes.bool,
-        showSearch: DataTypes.bool,
-        size: DataTypes.oneOf(['default', 'small', 'large']),
-        showCheckedStrategy: DataTypes.string,
-        treeCheckable: DataTypes.bool,
-        treeCheckStrictly: DataTypes.bool,
-        treeDefaultExpandAll: DataTypes.bool,
-        treeDefaultExpandedKeys: DataTypes.array,
-        treeExpandedKeys: DataTypes.array,
-        value: DataTypes.oneOfType([DataTypes.string, DataTypes.array]),
-        replaceFields: DataTypes.object,
-        treeNodeLabelProp: DataTypes.string
-    },
-    components: {
+export default class TreeSelect extends Base<State, Props> {
+    $input!: HTMLInputElement
+    dataList!: TreeNode[]
+    treeData!: TreeNode[]
+    timer?:  NodeJS.Timeout
+    static TreeNode = TreeN;
+    static SHOW_ALL = SHOW_ALL;
+    static SHOW_PARENT = SHOW_PARENT;
+    static SHOW_CHILD = SHOW_CHILD;
+    static components = {
         's-icon': Icon,
         's-tree': Tree,
         's-tree-node': Tree.TreeNode,
         's-selector': Selector,
         's-dropdown': Dropdown,
         's-empty': Empty
-    },
-    initData() {
+    }
+    initData(): State {
         return {
             multiple: false,
             allowClear: false,
@@ -158,7 +142,7 @@ export default san.defineComponent({
             treeNodeLabelProp: 'title',
             replaceFields: {children: 'children', title: 'title', key: 'key', value: 'value', label: 'label'}
         };
-    },
+    }
     inited() {
         const {defaultValue, treeCheckable} = this.data.get();
         let value = this.data.get('value') || defaultValue || [];
@@ -167,9 +151,9 @@ export default san.defineComponent({
         if (treeCheckable) {
             this.data.set('multiple', true);
         }
-    },
-    computed: {
-        wrapClass() {
+    }
+    static computed = {
+        wrapClass(this: TreeSelect) {
             const data = this.data;
             const allowClear = data.get('allowClear');
             const disabled = data.get('disabled');
@@ -190,24 +174,24 @@ export default san.defineComponent({
                 (visible || focused) && `${prefixCls}-focused`
             ].filter(name => name);
         },
-        showInput() {
+        showInput(this: TreeSelect) {
             const showSearch = this.data.get('showSearch');
             const multiple = this.data.get('multiple');
             return showSearch !== undefined ? showSearch : multiple;
         },
-        showEmpty() {
+        showEmpty(this: TreeSelect) {
             return this.data.get('inputValue') && !this.data.get('filteredKeys.length');
         },
-        showAction() {
+        showAction(this: TreeSelect) {
             return this.data.get('disabled') ? [''] : ['click'];
         },
-        hideAction() {
+        hideAction(this: TreeSelect) {
             const showInput = this.data.get('showInput');
             const mutiple = this.data.get('mutiple');
             return !showInput && !mutiple ? ['click'] : ['blur'];
         }
-    },
-    messages: {
+    }
+    static messages: Messages = {
         santd_treeselect_setInputElement({value: inputElement}) {
             this.$input = inputElement;
         },
@@ -223,7 +207,7 @@ export default san.defineComponent({
         santd_treeselect_inputSearch({value}) {
             this.fire('search', value);
         }
-    },
+    }
     getDefaultExpanedKeys() {
         const {
             treeDefaultExpandAll,
@@ -239,14 +223,14 @@ export default san.defineComponent({
             return getExpandedKeys([], this.dataList);
         }
         return treeDefaultexpandedKeys;
-    },
-    handleInputChange(value, visible = true) {
+    }
+    handleInputChange(value: string, visible: boolean = true) {
         this.data.set('inputValue', value);
         this.data.set('showValue', value);
 
         const filteredKeys = [];
-        let hiddenKeys = [];
-        let expandedKeys = [];
+        let hiddenKeys: (string | null)[] = [];
+        let expandedKeys: string[] | undefined = [];
 
         if (value) {
             hiddenKeys = this.dataList.map(item => {
@@ -283,8 +267,8 @@ export default san.defineComponent({
         this.data.set('hiddenKeys', hiddenKeys);
         this.data.set('filteredKeys', filteredKeys);
         this.data.set('expandedKeys', expandedKeys);
-    },
-    handleKeyDown(e) {
+    }
+    handleKeyDown(e: KeyboardEvent) {
         e.stopPropagation();
 
         const keyCode = e.keyCode;
@@ -297,12 +281,12 @@ export default san.defineComponent({
             selectedKeys,
             selectedValue
         } = this.data.get();
-        const $tree = this.ref('tree');
+        const $tree = (this.ref('tree') as unknown as Tree);
 
         // 删除
         if (!inputValue && multiple && keyCode === KeyCode.BACKSPACE) {
-            if (selectedValue.length) {
-                this.handleRemoveValue(selectedValue.length - 1);
+            if (selectedValue!.length) {
+                this.handleRemoveValue(selectedValue!.length - 1);
             }
             return;
         }
@@ -332,8 +316,8 @@ export default san.defineComponent({
                 if (activeKey) {
                     key = activeKey;
                 }
-                else if (!inputValue && !multiple && selectedKeys[0]) {
-                    key = selectedKeys[0];
+                else if (!inputValue && !multiple && selectedKeys![0]) {
+                    key = selectedKeys![0];
                 }
 
                 if (key) {
@@ -342,9 +326,9 @@ export default san.defineComponent({
                         event: 'select',
                         nativeEvent: e,
                         node,
-                        selected: node.data.get('selected'),
+                        selected: node!.data.get('selected'),
                         key
-                    };
+                    } as unknown as clickTreeNodePayloadValueType;
                     $tree && $tree.handleSelect(key, info);
                 }
             }
@@ -357,11 +341,11 @@ export default san.defineComponent({
             this.data.set('visible', true);
             e.preventDefault();
         }
-    },
+    }
     // direction: -1 UP, 1 DOWN
     updateActiveKey(activeKey = '', direction = 0) {
         const expandedKeys = this.data.get('expandedKeys') || [];
-        const hiddenKeys = this.data.get('hiddenKeys').filter(key => !expandedKeys.includes(key));
+        const hiddenKeys = this.data.get('hiddenKeys').filter(key => !expandedKeys.includes(key!));
         const list = this.dataList
             .filter(item => !item.disabled && hiddenKeys.indexOf(item.key) === -1);
 
@@ -389,20 +373,20 @@ export default san.defineComponent({
             }
             this.data.set('activeKey', activeKey);
         }
-    },
-    handleBlur(e) {
+    }
+    handleBlur(e: MouseEvent) {
         if (this.data.get('disabled')) {
             e.preventDefault();
             return;
         }
         this.data.set('_focused', false);
-    },
+    }
     getRootDomNode() {
         return this.el;
-    },
-    getData(treeNodes = [], dataList = [], treeData = []) {
-        treeNodes.forEach((node, index) => {
-            const {key, title, value, disabled} = node.data.get();
+    }
+    getData(treeNodes: TreeNode[], dataList: TreeNode[] = [], treeData: TreeNode[] = []) {
+        treeNodes.forEach((node: TreeNode, index: number) => {
+            const {key, title, value, disabled} = (node as any).data.get();
             let params = {
                 key,
                 title,
@@ -410,7 +394,7 @@ export default san.defineComponent({
                 value,
                 node,
                 disabled
-            };
+            } as unknown as TreeNode;
             dataList.push(params);
             treeData[index] = params;
             treeData[index].children = [];
@@ -423,28 +407,31 @@ export default san.defineComponent({
             dataList,
             treeData
         };
-    },
-    repaint(multiple) {
-        this.nextTick(() => this.ref('dropdown').refresh());
+    }
+    repaint(multiple: boolean) {
+        this.nextTick(() => (this.ref('dropdown') as Dropdown).refresh());
         !multiple
             ? this.handleVisibleChange(false)
             : this.data.get('inputValue') && this.handleInputChange('');
 
-    },
-    handleTreeCheck({checkedKeys, info = {}}, inited) {
-        let checkedData = this.getIncludeData(checkedKeys);
-        let selectedValue = [];
-        let removedKeys = [];
+    }
+    handleTreeCheck({checkedKeys, info}: {checkedKeys: string[], info?: checkTreeNodePayloadValueType}, inited: boolean) {
+        if (!info) {
+            info = {} as checkTreeNodePayloadValueType;
+        }
+        let checkedData = this.getIncludeData(checkedKeys) as unknown as TreeNode[];
+        let selectedValue = [] as TreeNode[];
+        let removedKeys: string[] = [];
         const showCheckedStrategy = this.data.get('showCheckedStrategy');
         while (checkedData.length) {
             let data = checkedData.shift();
-            let node = data.node;
-            const key = data.key;
+            let node = data!.node;
+            const key = data!.key;
             if (node.treeNodes.length) {
                 const allChecked = node.treeNodes.every(item => checkedKeys.includes(item.data.get('key')));
                 if (allChecked) {
                     if (showCheckedStrategy === 'SHOW_CHILD') {
-                        removedKeys.push(data.key);
+                        removedKeys.push(data!.key);
                     }
                     else if (showCheckedStrategy === 'SHOW_PARENT') {
                         removedKeys = removedKeys.concat(node.treeNodes.map(item => item.data.get('key')));
@@ -452,7 +439,7 @@ export default san.defineComponent({
                 }
             }
             if (!removedKeys.includes(key)) {
-                selectedValue.push(data);
+                selectedValue.push(data!);
             }
         }
 
@@ -466,9 +453,9 @@ export default san.defineComponent({
         }
         !inited && this.fire('change', {value: selectedValue.map(data => data.key), node: info.node, info});
 
-        this.$input ? this.$input.focus() : this.el.focus();
-    },
-    handleTreeSelect({selectedKeys, info}) {
+        this.$input ? this.$input.focus() : (this.el as HTMLInputElement).focus();
+    }
+    handleTreeSelect({selectedKeys, info}: {selectedKeys: string[], info: any}) {
         const {treeCheckable, multiple} = this.data.get();
         if (treeCheckable) {
             info.node.ref('checkbox').el.click();
@@ -477,22 +464,22 @@ export default san.defineComponent({
         const selectedValue = this.getIncludeData(selectedKeys);
         this.data.set('selectedValue', selectedValue);
         this.data.set('selectedKeys', selectedValue.map(item => item.key));
-        this.repaint(multiple);
+        this.repaint(multiple!);
 
         if (info.selected) {
             this.fire('select', {info});
         }
         this.fire('change', {value: selectedKeys, node: info.node, info});
         this.nextTick(() => {
-            this.$input ? this.$input.focus() : this.el.focus();
+            this.$input ? this.$input.focus() : (this.el as HTMLInputElement).focus();
         });
         this.data.set('_focused', true);
-    },
-    handleTreeExpand({expandedKeys, info}) {
+    }
+    handleTreeExpand({expandedKeys}: {expandedKeys: string[]}) {
         this.data.set('treeExpandedKeys', expandedKeys);
         this.fire('expand', expandedKeys);
-    },
-    handleVisibleChange(visible) {
+    }
+    handleVisibleChange(visible: boolean) {
         const {inputValue, searchValue} = this.data.get();
         this.data.set('visible', visible);
 
@@ -507,7 +494,7 @@ export default san.defineComponent({
                 this.$input.focus();
             }
             else if (this.el && $activeElement !== this.el) {
-                this.el.focus();
+                (this.el as HTMLInputElement).focus();
             }
         }
         else if (!searchValue) {
@@ -517,39 +504,39 @@ export default san.defineComponent({
                 this.handleInputChange('');
             }, 300);
         }
-    },
-    handleClearSelection(e) {
+    }
+    handleClearSelection(e: MouseEvent) {
         e.stopPropagation();
         this.data.set('selectedValue', []);
         this.data.set('checkedKeys.checked', []);
         this.data.set('selectedKeys', []);
         this.handleVisibleChange(false);
-        this.$input ? this.$input.focus() : this.el.focus();
+        this.$input ? this.$input.focus() : (this.el as HTMLInputElement).focus();
         this.data.set('_focused', true);
         this.fire('change', {info: {event: 'removeAll'}, value: []});
-    },
+    }
     handleTreeDataLoad() {
         const {showInput, searchValue} = this.data.get();
         this.nextTick(() => {
-            let data = this.getData(this.ref('tree').treeNodes);
+            let data = this.getData((this.ref('tree') as any).treeNodes);
             this.dataList = data.dataList;
             this.treeData = data.treeData;
             if (showInput && searchValue) {
                 this.handleInputChange(searchValue, false);
             }
         });
-    },
-    handleRemoveValue(index) {
+    }
+    handleRemoveValue(index: number) {
         const treeCheckable = this.data.get('treeCheckable');
         this.data.removeAt('selectedValue', index);
         let selectedValue = this.data.get('selectedValue');
         this.data.set(treeCheckable ? 'checkedKeys.checked' : 'selectedKeys', selectedValue.map(item => item.key));
         this.fire('change', {info: {event: 'remove'}, value: this.data.get(treeCheckable ? 'checkedKeys.checked' : 'selectedKeys')});
-    },
-    getIncludeData(data = []) {
+    }
+    getIncludeData(data: string[] = []) {
         return this.dataList.filter(item => data.includes(item.key));
-    },
-    updateTreeData(treeData) {
+    }
+    updateTreeData(treeData: TreeNode[]) {
         const replaceFields = this.data.get('replaceFields');
         treeData.map((item, i) => {
             treeData[i].label = item[replaceFields.label];
@@ -561,24 +548,24 @@ export default san.defineComponent({
                 this.updateTreeData(treeData[i].children);
             }
         });
-    },
-    handleArrowClick(e) {
+    }
+    handleArrowClick(e: MouseEvent) {
         e.stopPropagation();
         e.preventDefault();
         const {disabled, visible} = this.data.get();
         if (!disabled) {
             this.handleVisibleChange(!visible);
         }
-    },
+    }
     handleMouseOver() {
         this.resetActiveKey();
-    },
+    }
     handleInputFocus() {
         this.$input && this.$input.focus();
-    },
+    }
     resetActiveKey() {
         this.data.set('activeKey', '');
-    },
+    }
     attached() {
         this.data.set('popupVisible', null);
         const {showInput, searchValue, treeData} = this.data.get();
@@ -587,18 +574,19 @@ export default san.defineComponent({
         }
         this.nextTick(() => {
             this.data.set('checkedKeys.checked', this.data.get('value'));
-            let data = this.getData(this.ref('tree').treeNodes);
+            let data = this.getData((this.ref('tree') as any).treeNodes);
             this.dataList = data.dataList;
             this.treeData = data.treeData;
-            this.handleTreeCheck({checkedKeys: this.data.get('value')}, true);
+            const payload = {checkedKeys: this.data.get('value')}
+            this.handleTreeCheck(payload, true);
             if (showInput && searchValue) {
                 this.handleInputChange(searchValue, false);
             }
         });
 
         this.watch('searchValue', val => this.handleInputChange(val));
-    },
-    template: `<div
+    }
+    static template = `<div
         class="{{wrapClass}}"
         tabindex="0"
         on-keydown="handleKeyDown"
@@ -693,4 +681,4 @@ export default san.defineComponent({
             </div>
         </s-dropdown>
     </div>`
-});
+};

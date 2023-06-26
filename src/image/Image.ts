@@ -127,7 +127,7 @@ export default class Image extends Base<IImageProps> {
         this.data.set('status', 'error');
         this.fire('error');
     }
-    clickWrap(e: any) {
+    clickWrap(e: Event) {
         const canPreview = this.data.get('canPreview');
         const isPreviewGroup = this.data.get('isPreviewGroup');
         if (canPreview) {

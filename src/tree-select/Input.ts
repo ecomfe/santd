@@ -3,19 +3,25 @@
  * @author
  */
 
-import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
 const prefixCls = classCreator('select')();
+import Base from 'santd/base';
 
-export default san.defineComponent({
-    dataTypes: {
-        inputValue: DataTypes.string,
-        searchValue: DataTypes.string,
-        multiple: DataTypes.bool,
-        popupVisible: DataTypes.bool
-    },
+interface State {
+    inputValue: string,
+    searchValue: string,
+    multiple: boolean,
+    popupVisible: boolean
+}
 
-    template: `
+interface headerInput {
+    target: {
+        value: string
+    };
+    [key: string]: any;
+}
+export default class Input extends Base<State> {
+    static template = `
         <div class="${prefixCls}-search__field__wrap">
             <input
                 s-ref="input"
@@ -31,22 +37,22 @@ export default san.defineComponent({
                 class="${prefixCls}-search__field__mirror"
             >{{value}}{{'&nbsp;'|raw}}</span>
         </div>
-    `,
+    `
 
-    initData() {
+    initData(): State {
         return {
             inputValue: '',
             searchValue: '',
             multiple: false,
             popupVisible: false
         };
-    },
+    }
 
-    computed: {
-        value() {
+    static computed = {
+        value(this: Input) {
             return this.data.get('searchValue') || this.data.get('inputValue');
         }
-    },
+    }
 
     attached() {
         const {multiple, searchValue} = this.data.get();
@@ -61,20 +67,20 @@ export default san.defineComponent({
         }
 
         this.dispatch('santd_treeselect_setInputElement', $input);
-    },
+    }
 
     setInputWidth() {
-        const $input = this.ref('input');
-        const $inputMirror = this.ref('inputMirror');
+        const $input = this.ref('input') as unknown as HTMLInputElement;
+        const $inputMirror = this.ref('inputMirror') as unknown as HTMLInputElement;
         if ($input && $inputMirror) {
             $input.style.width = `${$inputMirror.clientWidth + 16}px`;
         }
         else if ($input) {
             $input.style.width = '';
         }
-    },
+    }
 
-    handleInputChange(e) {
+    handleInputChange(e: headerInput) {
         const searchValue = this.data.get('searchValue');
         const value = e.target.value;
         if (searchValue && value !== searchValue) {
@@ -85,13 +91,13 @@ export default san.defineComponent({
             return;
         }
         this.dispatch('santd_treeselect_inputChange', value);
-    },
+    }
 
-    handleInputKeyDown(e) {
+    handleInputKeyDown(e: KeyboardEvent) {
         this.dispatch('santd_treeselect_inputKeyDown', e);
-    },
+    }
 
-    handleInpurBlur(e) {
+    handleInpurBlur(e: MouseEvent) {
         this.dispatch('santd_treeselect_inputBlur', e);
     }
-});
+};
