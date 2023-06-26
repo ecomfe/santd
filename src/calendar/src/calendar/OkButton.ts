@@ -3,20 +3,16 @@
  * @author mayihui@baidu.com
  **/
 
-import san, {DataTypes} from 'san';
+import Base from 'santd/base';
+import * as I from './interface';
 
-export default san.defineComponent({
-    dataTypes: {
-        prefixCls: DataTypes.string,
-        disabled: DataTypes.bool,
-        locale: DataTypes.object
-    },
+export default class OkButton extends Base<I.OkButtonState, I.OkButtonProps, I.OkButtonComputed> {
     handleClick() {
         if (!this.data.get('disabled')) {
             this.fire('ok');
         }
-    },
-    template: `
+    };
+    static template = /* html */ `
         <a
             class="{{prefixCls}}-ok-btn {{disabled ? prefixCls + '-ok-btn-disabled' : ''}}"
             role="button"
@@ -25,4 +21,4 @@ export default san.defineComponent({
             {{locale.ok}}
         </a>
     `
-});
+};

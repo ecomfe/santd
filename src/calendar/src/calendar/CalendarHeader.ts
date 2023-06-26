@@ -3,39 +3,31 @@
  * @author mayihui@baidu.com
  **/
 
-import san, {DataTypes} from 'san';
+import Base from 'santd/base';
 import MonthPanel from '../month/MonthPanel';
 import YearPanel from '../year/YearPanel';
 import DecadePanel from '../decade/DecadePanel';
 import dayjs from 'dayjs';
 import localeData from 'dayjs/plugin/localeData';
+import * as I from './interface';
 
 dayjs.extend(localeData);
 
-export default san.defineComponent({
-    dataTypes: {
-        prefixCls: DataTypes.string,
-        value: DataTypes.object,
-        showTimePicker: DataTypes.bool,
-        locale: DataTypes.object,
-        enablePrev: DataTypes.any,
-        enableNext: DataTypes.any,
-        disabledMonth: DataTypes.func
-    },
-    initData() {
+export default class CalendarHeader extends Base<I.CalendarHeaderState, I.CalendarHeaderProps, I.CalendarHeaderComputed> {
+    initData(): I.CalendarHeaderState {
         return {
             enablePrev: 1,
             enableNext: 1
         };
-    },
-    computed: {
-        displayYear() {
+    }
+    static computed: I.CalendarHeaderComputed = {
+        displayYear(this: CalendarHeader) {
             const value = this.data.get('value');
             const locale = this.data.get('locale');
 
             return value && value.format(locale.yearFormat);
         },
-        displayMonth() {
+        displayMonth(this: CalendarHeader) {
             const value = this.data.get('value');
             const locale = this.data.get('locale');
             const localeData = value && value.localeData();
@@ -44,64 +36,64 @@ export default san.defineComponent({
                 ? value && value.format(locale.monthFormat)
                 : localeData && localeData.monthsShort(value);
         },
-        displayDay() {
+        displayDay(this: CalendarHeader) {
             const value = this.data.get('value');
             const locale = this.data.get('locale');
 
             return value && value.format(locale.dayFormat);
         }
-    },
-    handlePreviousYear() {
+    }
+    handlePreviousYear(): void {
         const previous = this.data.get('value').add(-1, 'years');
         this.fire('valueChange', previous);
-    },
-    handleNextYear() {
+    }
+    handleNextYear(): void {
         const next = this.data.get('value').add(1, 'years');
         this.fire('valueChange', next);
-    },
-    handlePreviousMonth() {
+    }
+    handlePreviousMonth(): void {
         const previous = this.data.get('value').add(-1, 'month');
         this.fire('valueChange', previous);
-    },
-    handleNextMonth() {
+    }
+    handleNextMonth(): void {
         const next = this.data.get('value').add(1, 'month');
         this.fire('valueChange', next);
-    },
-    handleDecadeSelect(value) {
+    }
+    handleDecadeSelect(value: dayjs.Dayjs) {
         this.fire('panelChange', {value: value, mode: 'year'});
         this.fire('valueChange', value);
-    },
-    showYearPanel(referer) {
+    }
+    showYearPanel(referer: 'date' | 'month') {
         this.data.set('yearPanelReferer', referer);
         this.fire('panelChange', {value: null, mode: 'year'});
-    },
-    showMonthPanel() {
+    }
+    showMonthPanel(): void {
         this.fire('panelChange', {value: null, mode: 'month'});
-    },
-    showDecadePanel() {
+    }
+    showDecadePanel(): void {
         this.fire('panelChange', {value: null, mode: 'decade'});
-    },
-    handleMonthSelect(value) {
+    }
+    handleMonthSelect(value: dayjs.Dayjs) {
         this.fire('panelChange', {value, mode: 'date'});
         this.fire('monthSelect', value);
         this.fire('valueChange', value);
-    },
-    goYear(direction) {
+    }
+    goYear(direction: number) {
         const next = this.data.get('value').add(direction, 'years');
         this.fire('valueChange', next);
-    },
-    handleYearSelect(value) {
+    }
+    handleYearSelect(value: dayjs.Dayjs) {
         const referer = this.data.get('yearPanelReferer');
         this.data.set('yearPanelReferer', '');
         this.fire('panelChange', {value, mode: referer});
         this.fire('valueChange', value);
-    },
-    components: {
+    }
+    static components = {
         's-monthpanel': MonthPanel,
         's-yearpanel': YearPanel,
         's-decadepanel': DecadePanel
-    },
-    template: `
+    }
+    static template = /* html */ `
         <div class="{{prefixCls}}-header">
             <div style="position: relative;">
                 <a
@@ -196,4 +188,4 @@ export default san.defineComponent({
             </s-decadepanel>
         </div>
     `
-});
+};

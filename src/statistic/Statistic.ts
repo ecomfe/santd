@@ -4,12 +4,14 @@
  */
 
 import './style/index.less';
-import san, {DataTypes} from 'san';
+import * as I from './interface';
+import Base from 'santd/base';
 import {classCreator} from '../core/util';
+import {TCountdown} from './countdown';
 
 const prefixCls = classCreator('statistic')();
 
-function padEnd(string, length, chars) {
+function padEnd(string: string, length: number, chars: string) {
     let strLength = length ? string.length : 0;
     let l = length - strLength;
     let padding = '';
@@ -23,18 +25,9 @@ function padEnd(string, length, chars) {
         : string;
 }
 
-export default san.defineComponent({
-    dataTypes: {
-        decimalSeparator: DataTypes.string,
-        formatter: DataTypes.func,
-        groupSeparator: DataTypes.string,
-        precision: DataTypes.number,
-        prefix: DataTypes.string,
-        suffix: DataTypes.string,
-        title: DataTypes.string,
-        value: DataTypes.oneOfType([DataTypes.string, DataTypes.number])
-    },
-    template: `
+
+export default class Statistic extends Base<I.State, I.Props, I.Computed> {
+    static template = /* html */ `
         <div class="${prefixCls}">
             <div class="${prefixCls}-title" s-if="title">{{title}}</div>
             <div class="${prefixCls}-content" style="{{valueStyle}}">
@@ -52,23 +45,25 @@ export default san.defineComponent({
                 </span>
             </div>
         </div>
-    `,
+    `;
 
-    initData() {
+    initData(): I.State {
         return {
             groupSeparator: ',',
             value: 0,
-            decimalSeparator: '.'
+            decimalSeparator: '.',
         };
-    },
+    }
 
-    inited() {
+    inited(): void {
         this.data.set('hasPrefix', this.data.get('prefix') || !!this.sourceSlots.named.prefix);
         this.data.set('hasSuffix', this.data.get('suffix') || !!this.sourceSlots.named.suffix);
-    },
+    }
 
-    computed: {
-        showValue() {
+    static Countdown: TCountdown;
+
+    static computed: I.Computed = {
+        showValue(this: Statistic) {
             let value = this.data.get('value');
             let formatter = this.data.get('formatter');
             let groupSeparator = this.data.get('groupSeparator');
@@ -106,4 +101,4 @@ export default san.defineComponent({
             };
         }
     }
-});
+};

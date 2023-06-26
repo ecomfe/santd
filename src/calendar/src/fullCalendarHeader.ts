@@ -3,36 +3,26 @@
  * @author mayihui@baidu.com
  **/
 
-import san, {DataTypes} from 'san';
+import Base from 'santd/base';
+import * as I from './interface';
 import {getMonthName} from './util/index';
 import Select from '../../select';
 
-export default san.defineComponent({
-    dataTypes: {
-        value: DataTypes.object,
-        locale: DataTypes.object,
-        yearSelectOffset: DataTypes.number,
-        yearSelectTotal: DataTypes.number,
-        Select: DataTypes.func,
-        prefixCls: DataTypes.string,
-        type: DataTypes.string,
-        showTypeSwitch: DataTypes.bool,
-        headerComponents: DataTypes.array
-    },
-    initData() {
+export default class FullCalendarHeader extends Base<I.FullCalendarHeaderState, I.FullCalendarHeaderProps, I.FullCalendarHeaderComputed>{
+    initData(): I.FullCalendarHeaderState {
         return {
             yearSelectOffset: 10,
-            yearSelectTotal: 20
+            yearSelectTotal: 20,
         };
-    },
-    computed: {
-        month() {
+    }
+    static computed: I.FullCalendarHeaderComputed = {
+        month(this: FullCalendarHeader) {
             return String(this.data.get('value').month());
         },
-        year() {
+        year(this: FullCalendarHeader) {
             return String(this.data.get('value').year());
         },
-        months() {
+        months(this: FullCalendarHeader) {
             const result = [];
 
             for (let i = 0; i < 12; i++) {
@@ -40,7 +30,7 @@ export default san.defineComponent({
             }
             return result;
         },
-        years() {
+        years(this: FullCalendarHeader) {
             const yearSelectOffset = this.data.get('yearSelectOffset');
             const yearSelectTotal = this.data.get('yearSelectTotal');
             const year = this.data.get('year');
@@ -53,24 +43,24 @@ export default san.defineComponent({
             }
             return result;
         }
-    },
-    components: {
+    };
+    static components = {
         's-select': Select,
         's-option': Select.Option
-    },
-    handleChangeTypeToDate() {
+    };
+    handleChangeTypeToDate(): void {
         this.fire('typeChange', 'date');
-    },
-    handleChangeTypeToMonth() {
+    };
+    handleChangeTypeToMonth(): void {
         this.fire('typeChange', 'month');
-    },
-    handleChangeMonth(month) {
+    };
+    handleChangeMonth(month: string): void {
         this.fire('valueChange', this.data.get('value').month(parseInt(month, 10)));
-    },
-    handleChangeYear(year) {
+    };
+    handleChangeYear(year: string): void {
         this.fire('valueChange', this.data.get('value').year(parseInt(year, 10)));
-    },
-    template: `
+    };
+    static template = /* html */ `
         <div class="{{prefixCls}}-header">
             <span class="{{prefixCls}}-header-switcher" s-if="showTypeSwitch">
                 <span class="{{prefixCls}}-header-switcher-focus" s-if="type === 'date'">{{locale.month}}</span>
@@ -104,4 +94,4 @@ export default san.defineComponent({
             </s-select>
         </div>
     `
-});
+};

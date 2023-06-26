@@ -3,50 +3,49 @@
  * @author mayihui@baidu.com
  **/
 
-import san, {DataTypes} from 'san';
 import YearTable from './YearTable';
+import Base from 'santd/base';
+import * as I from './interface';
+import {dayjsType} from '../../interface';
 
-export default san.defineComponent({
-    dataTypes: {
-        prefixCls: DataTypes.string,
-        value: DataTypes.object,
-        defaultValue: DataTypes.object
-    },
-    inited() {
+
+export default class YearPanel extends Base<I.YearPanelState, I.YearPanelProps, I.YearPanelComputed>{
+    inited():void {
         this.data.set('value', this.data.get('value') || this.data.get('defaultValue'));
-    },
-    computed: {
-        startYear() {
+    };
+    static computed: I.YearPanelComputed = {
+        startYear(this: YearPanel) {
             const value = this.data.get('value');
             const currentYear = value.year();
-            return parseInt(currentYear / 10, 10) * 10;
+            return parseInt(currentYear / 10 + '', 10) * 10;
         },
-        endYear() {
+        endYear(this: YearPanel) {
             const startYear = this.data.get('startYear');
             return startYear + 9;
         }
-    },
-    handlePreviousDecade() {
+    };
+    handlePreviousDecade(): void {
         this.goYear(-10);
-    },
-    handleDecadePanelShow() {
+    };
+    handleDecadePanelShow(): void {
         this.fire('decadePanelShow');
-    },
-    handleNextDecade() {
+    };
+    handleNextDecade(): void {
         this.goYear(10);
-    },
-    setAndSelectValue(value) {
+    };
+    setAndSelectValue(value: dayjsType): void {
         this.data.set('value', value);
         this.fire('select', value);
-    },
-    goYear(year) {
+    };
+    goYear(year: number) {
         const value = this.data.get('value').add(year, 'year');
         this.data.set('value', value);
-    },
-    components: {
+    };
+    static components = {
         's-yeartable': YearTable
-    },
-    template: `<div class="{{prefixCls}}-year-panel">
+    };
+    static template = /* html */ `
+    <div class="{{prefixCls}}-year-panel">
         <div>
             <div class="{{prefixCls}}-year-panel-header">
                 <a
@@ -89,5 +88,6 @@ export default san.defineComponent({
                 <slot name="renderExtraFooter" />
             </div>
         </div>
-    </div>`
-});
+    </div>
+    `
+};
