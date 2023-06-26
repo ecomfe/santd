@@ -4,46 +4,37 @@
  * @borrows https://ant.design/components/modal-cn/
  */
 
-import san, {DataTypes} from 'san';
+import * as I from './interface';
+import Base from 'santd/base';
 import {classCreator} from '../core/util';
 import Dialog from './Dialog';
 import button from '../button';
 import icon from '../icon';
 import localeReceiver from '../locale-provider/receiver';
+import {Component} from 'san';
 
 const prefixCls = classCreator('modal')();
 
 
-export default san.defineComponent({
-    dataTypes: {
-        okText: DataTypes.string,
-        cancelText: DataTypes.string,
-        centered: DataTypes.bool,
-        width: DataTypes.oneOfType([DataTypes.number, DataTypes.string]),
-        confirmLoading: DataTypes.bool,
-        visible: DataTypes.bool,
-        closable: DataTypes.bool,
-        getContainer: DataTypes.func
-    },
-
-    components: {
+export default class Modal extends Base<I.State, I.Props, I.Computed> {
+    static components = {
         's-button': button,
         's-icon': icon
-    },
+    }
 
-    computed: {
+    static computed: I.Computed = {
         ...localeReceiver.computed,
 
-        wrapClass() {
+        wrapClass(this: Modal) {
             const centered = this.data.get('centered');
             const wrapClassName = this.data.get('wrapClassName');
             let classArr = [wrapClassName];
             !!centered && classArr.push(`${prefixCls}-centered`);
             return classArr.join(' ');
         }
-    },
+    }
 
-    initData() {
+    initData(): I.State {
         return {
             componentName: 'Modal',
             width: 520,
@@ -53,9 +44,13 @@ export default san.defineComponent({
             visible: false,
             okType: 'primary'
         };
-    },
+    }
 
-    inited: localeReceiver.inited,
+    inited<TBase extends Base>(this: TBase) {
+        this.dispatch('santd_add_locale_receiver', this);
+    }
+
+    dialog: Component<{}> | null = null;
 
     attached() {
         if (!this.dialog) {
@@ -63,7 +58,7 @@ export default san.defineComponent({
             this.data.set('_PROPS_', props);
             this.dialog = new Dialog({
                 owner: this,
-                source: `
+                source: /* html */ `
                     <s-dialog s-bind="{{_PROPS_}}"
                         title="{=title=}"
                         visible="{=visible=}"
@@ -94,19 +89,19 @@ export default san.defineComponent({
             const container = getContainer ? getContainer() : document.body;
             this.dialog.attach(container);
         }
-    },
+    }
 
-    handleCancel(e) {
+    handleCancel(e: MouseEvent): void {
         this.fire('cancel', e);
-    },
+    }
 
-    handleOk(e) {
+    handleOk(e: MouseEvent): void {
         this.fire('ok', e);
-    },
+    }
 
-    afterClose() {
+    afterClose(): void {
         this.fire('afterClose');
-    },
+    }
 
-    template: '<div />'
-});
+    static template =  '<div />';
+};

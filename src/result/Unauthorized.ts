@@ -2,9 +2,9 @@
  * @file Santd result unauthorized svg file
  **/
 
-import san from 'san';
+import Base from 'santd/base';
 
-const SVG = `
+const SVG = /* html */`
   <svg width="251" height="294">
     <g fill="none" fillRule="evenodd">
       <path
@@ -281,6 +281,6 @@ const SVG = `
   </svg>
 `;
 
-export default san.defineComponent({
-    template: SVG
-});
+export default class Unauthorized extends Base {
+    static template = SVG;
+};

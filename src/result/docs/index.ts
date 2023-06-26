@@ -2,7 +2,7 @@
  * @file Santd result docs file
  **/
 
-import san from 'san';
+import Base from 'santd/base';
 import Readme from '../README.md';
 import Desc from './desc.md';
 import Success from './Success.md';
@@ -14,8 +14,8 @@ import Wrong from './500.md';
 import Custom from './custom.md';
 import Icon from './icon.md';
 
-export default san.defineComponent({
-    components: {
+export default class extends Base {
+    static components = {
         desc: Desc,
         success: Success,
         warning: Warning,
@@ -26,8 +26,8 @@ export default san.defineComponent({
         wrong: Wrong,
         icon: Icon,
         custom: Custom
-    },
-    template: `
+    }
+    static template = /* html */ `
         <div>
             <desc/>
             <success/>
@@ -41,4 +41,4 @@ export default san.defineComponent({
             <readme/>
         </div>
     `
-});
+};

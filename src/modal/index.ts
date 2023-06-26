@@ -6,6 +6,7 @@
 
 import Modal from './Modal';
 import confirm from './confirm';
+import * as I from './interface';
 
 const iconMaps = {
     info: 'info-circle',
@@ -15,8 +16,8 @@ const iconMaps = {
 };
 
 ['success', 'info', 'warning', 'error'].forEach(type => {
-    Modal[type] = props => {
-        const iconType = iconMaps[type];
+    (Modal as any)[type] = (props: any[]) => {
+        const iconType = (iconMaps as any)[type];
         const config = {
             type,
             iconType,
@@ -28,9 +29,9 @@ const iconMaps = {
     };
 });
 
-Modal.warn = Modal.warning;
+(Modal as unknown as I.ModalType).warn = (Modal as unknown as I.ModalType).warning;
 
-Modal.confirm = props => {
+(Modal as unknown as I.ModalType).confirm = (props: any[]) => {
     const config = {
         type: 'confirm',
         okCancel: true,

@@ -6,6 +6,7 @@
 
 import './style/index.less';
 import Notification from './Notification';
+import * as I from './interface';
 
 let notificationInstance = {};
 let defaultDuration = 4.5;
@@ -21,7 +22,7 @@ const typeToIcon = {
     warning: 'exclamation-circle'
 };
 
-function setNotificationConfig(options) {
+function setNotificationConfig(options: I.NotificationConfigType) {
     const {duration, placement, bottom, top, getContainer} = options;
     if (duration !== undefined) {
         defaultDuration = duration;
@@ -40,8 +41,8 @@ function setNotificationConfig(options) {
     }
 }
 
-function getPlacementStyle(placement) {
-    let style;
+function getPlacementStyle(placement: string) {
+    let style: I.PlacementStyle;
     switch (placement) {
         case 'topLeft':
             style = {
@@ -75,20 +76,20 @@ function getPlacementStyle(placement) {
 
     // 需要加单位px
     Object.keys(style).forEach(k => {
-        if (!isNaN(style[k]) && style[k] !== 0) {
-            style[k] += 'px';
+        if (!isNaN((style as any)[k]) && (style as any)[k] !== 0) {
+            (style as any)[k] += 'px';
         }
     });
 
     return style;
 }
 
-function getNotificationInstance(prefixCls, closeIcon, placement, callback) {
+function getNotificationInstance(prefixCls: string, closeIcon: Element, placement: string, callback: I.callbackType) {
     const cacheKey = `${prefixCls}-${placement}`;
     let closeIconNode = `<s-icon slot="close-icon" class="${prefixCls}-close-icon" type="close"/>`;
 
-    if (notificationInstance[cacheKey]) {
-        callback(notificationInstance[cacheKey]);
+    if ((notificationInstance as any)[cacheKey]) {
+        callback((notificationInstance as any)[cacheKey]);
         return;
     }
     // 自定义关闭按钮
@@ -96,19 +97,19 @@ function getNotificationInstance(prefixCls, closeIcon, placement, callback) {
         closeIconNode = `<span slot="close-icon">${closeIcon}</span>`;
     }
 
-    Notification.newInstance({
+    (Notification as unknown as I.NotificationType).newInstance({
         prefixCls,
         className: `${prefixCls}-${placement}`,
         style: getPlacementStyle(placement),
         getContainer: defaultGetContainer,
         closeIcon: closeIconNode
     }, notification => {
-        notificationInstance[cacheKey] = notification;
+        (notificationInstance as any)[cacheKey] = notification;
         callback(notification);
     });
 }
 
-function notice(args) {
+function notice(args: I.NotificationConfigType) {
     const {
         btn,
         className,
@@ -134,7 +135,7 @@ function notice(args) {
     }
 
     else if (type) {
-        const iconType = typeToIcon[type];
+        const iconType = (typeToIcon as any)[type];
         iconNode = `<s-icon class="${prefixCls}-icon ${prefixCls}-icon-${type}" type="${iconType}"/>`; // mark
     }
 
@@ -174,19 +175,21 @@ function notice(args) {
 const NotificationApi = {
     config: setNotificationConfig,
     open: notice,
-    close(key) {
-        Object.keys(notificationInstance).forEach(cacheKey => notificationInstance[cacheKey].removeNotice(key));
+    close(key: string) {
+        Object.keys(notificationInstance).forEach(cacheKey => (notificationInstance as any)[cacheKey].removeNotice(key));
     },
     destroy() {
         Object.keys(notificationInstance).forEach(cacheKey => {
-            notificationInstance[cacheKey].destroy();
-            delete notificationInstance[cacheKey];
+            (notificationInstance as any)[cacheKey].destroy();
+            delete (notificationInstance as any)[cacheKey];
         });
-    }
+    },
+    warn: null,
+    warning: null,
 };
 
 ['success', 'info', 'warning', 'error'].forEach(type => {
-    NotificationApi[type] = args => NotificationApi.open({
+    (NotificationApi as any)[type] = (args: I.NotificationConfigType) => NotificationApi.open({
         ...args,
         type
     });

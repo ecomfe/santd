@@ -8,19 +8,19 @@
  */
 
 import './style/index.less';
-import san, {DataTypes} from 'san';
+import * as I from './interface';
+import Base from 'santd/base';
 import {classCreator} from '../core/util';
 import KeyCode from '../core/util/keyCode';
 import isNumber from 'lodash/isNumber';
 import Icon from '../icon';
 import filters from '../modal/Dialog';
 
-const prefixCls = classCreator('drawer')();
-const placementType = DataTypes.oneOf(['top', 'right', 'bottom', 'left']);
-const styleType = DataTypes.oneOfType([DataTypes.string, DataTypes.object]);
 
-export default san.defineComponent({
-    template: `
+const prefixCls = classCreator('drawer')();
+
+export default class Drawer extends Base<I.State, I.Props, I.Computed> {
+    static template = /* html */ `
         <div
             class="${prefixCls} ${prefixCls}-{{placement}} {{visible ? '${prefixCls}-open' : ''}} {{className}}"
             style="z-index:{{zIndex}};"
@@ -55,38 +55,14 @@ export default san.defineComponent({
                 </div>
             </div>
         </div>
-    `,
+    `;
 
-    dataTypes: {
-        bodyStyle: styleType, // 原来的参数是style，但是san会把样式添加到根节点，所以改为了bodyStyle
-        closable: DataTypes.bool,
-        destroyOnClose: DataTypes.bool,
-        getContainer: DataTypes.string,
-        mask: DataTypes.bool,
-        maskClosable: DataTypes.bool,
-        maskStyle: styleType,
-        width: DataTypes.number,
-        height: DataTypes.number,
-        placement: placementType,
-        title: DataTypes.string,
-        visible: DataTypes.bool,
-        zIndex: DataTypes.number,
-        keyboard: DataTypes.bool,
-        closeIcon: DataTypes.any,
-        footer: DataTypes.any,
-        footerStyle: styleType,
-        drawerStyle: styleType,
-        headerStyle: styleType,
-        afterVisibleChange: DataTypes.func,
-        className: DataTypes.string
-    },
-
-    components: {
+    static components =  {
         's-icon': Icon
-    },
+    }
 
-    computed: {
-        wrapStyle() {
+    static computed: I.Computed = {
+        wrapStyle(this: Drawer) {
             const placement = this.data.get('placement');
             const isHorizontal = placement === 'left' || placement === 'right';
             const placementName = `translate${isHorizontal ? 'X' : 'Y'}`;
@@ -103,11 +79,11 @@ export default san.defineComponent({
                 height: isNumber(height) ? `${height}px` : height
             };
         }
-    },
+    }
 
-    filters,
+    filter = filters;
 
-    initData() {
+    initData(): I.State {
         return {
             closable: true,
             destroyOnClose: false,
@@ -121,15 +97,15 @@ export default san.defineComponent({
             keyboard: true,
             showCloseBtn: false
         };
-    },
+    }
 
-    inited() {
+    inited(): void {
         this.watch('visible', val => {
             if (val) {
                 this.nextTick(() => {
                     // wrapper内的元素聚焦之后，wrapper才能生效keydown事件监听
-                    const sentinel = this.ref('sentinel');
-                    !(this.slot('closeIcon')[0] && this.slot('closeIcon')[0].children.length)
+                    const sentinel = this.ref('sentinel') as unknown as HTMLElement;
+                    !(this.slot('closeIcon')[0] && (this.slot('closeIcon')[0] as unknown as HTMLElement).children.length)
                         && this.data.set('showCloseBtn', true);
                     sentinel && sentinel.focus();
                 });
@@ -140,26 +116,26 @@ export default san.defineComponent({
                 this.fire('afterVisibleChange', val);
             }, 300);
         });
-    },
+    }
 
-    onMaskClick(e) {
+    onMaskClick(e: MouseEvent): void {
         if (!this.data.get('maskClosable')) {
             return;
         }
         this.close(e);
-    },
+    }
 
-    close(e) {
+    close(e: KeyboardEvent | MouseEvent): void {
         if (this.data.get('visible') !== undefined) {
             this.fire('close', e);
         }
         this.data.set('visible', false);
-    },
+    }
 
-    onKeyDown(e) {
+    onKeyDown(e: KeyboardEvent): void {
         if (this.data.get('keyboard') && e.keyCode === KeyCode.ESC) {
             e.stopPropagation();
             this.close(e);
         }
     }
-});
+};

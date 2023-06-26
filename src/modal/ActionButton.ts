@@ -4,11 +4,16 @@
  * @borrows https://ant.design/components/modal-cn/
  */
 
-import san, {DataTypes} from 'san';
+import * as I from './interface';
+import Base from 'santd/base';
 import button from '../button';
 
-export default san.defineComponent({
-    template: `
+interface buttonNodeType extends Element {
+    focus: () => void;
+}
+
+export default class ActionButton extends Base<I.ActionButtonState, I.ActionButtonProps, I.ActionButtonComputed> {
+    static template = /* html */ `
         <template>
             <s-button s-ref="button"
                 s-bind="{{buttonProps}}"
@@ -17,36 +22,35 @@ export default san.defineComponent({
                 on-click="onClick"
             ><slot/></s-button>
         </template>
-    `,
-    dataTypes: {
-        actionFn: DataTypes.any,
-        autoFocus: DataTypes.bool,
-        buttonProps: DataTypes.object,
-        closeModal: DataTypes.func,
-        loading: DataTypes.bool,
-        type: DataTypes.string
-    },
-    components: {
+    `;
+
+    static components = {
         's-button': button
-    },
-    initData() {
+    }
+
+    initData(): I.ActionButtonState {
         return {
             loading: false
         };
-    },
-    attached() {
-        const buttonNode = this.ref('button').el;
-        const parentNode = this.el.parentNode;
-        parentNode.replaceChild(buttonNode, this.el);
+    }
+
+    timeoutId!: NodeJS.Timer;
+
+    attached(): void {
+        const buttonNode = this.ref('button').el as buttonNodeType;
+        const parentNode = (this.el as Element).parentNode;
+        parentNode?.replaceChild(buttonNode, (this.el as Element));
 
         if (this.data.get('autoFocus')) {
             this.timeoutId = setTimeout(() => buttonNode.focus());
         }
-    },
-    detached() {
+    }
+
+    detached(): void {
         clearTimeout(this.timeoutId);
-    },
-    onClick() {
+    }
+
+    onClick(): void {
         const data = this.data;
         const actionFn = data.get('actionFn');
         const closeModal = data.get('closeModal');
@@ -64,7 +68,7 @@ export default san.defineComponent({
             }
             if (ret && ret.then) {
                 data.set('loading', true);
-                ret.then((...args) => {
+                ret.then((...args: any[]) => {
                     // It's unnecessary to set loading=false, for the Modal will be unmounted after close.
                     // data.set('loading', false);
                     closeModal(...args);
@@ -78,4 +82,4 @@ export default san.defineComponent({
             closeModal();
         }
     }
-});
+};

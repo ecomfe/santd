@@ -3,7 +3,7 @@
  * @author baozhixin <baozhixin@baidu.com>
  */
 
-import san from 'san';
+import Base from 'santd/base';
 import Head from './head.md';
 import Basic from './basic.md';
 import Duration from './duration.md';
@@ -16,8 +16,8 @@ import Update from './update.md';
 import Close from './custom-close.md';
 import Readme from '../README.md';
 
-export default san.defineComponent({
-    template: `
+export default class extends Base {
+    static template = /* html */`
         <div>
             <head/>
             <basic/>
@@ -31,8 +31,8 @@ export default san.defineComponent({
             <close/>
             <readme/>
         </div>
-    `,
-    components: {
+    `;
+    static components = {
         head: Head,
         basic: Basic,
         duration: Duration,
@@ -45,4 +45,4 @@ export default san.defineComponent({
         close: Close,
         readme: Readme
     }
-});
+};

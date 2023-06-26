@@ -3,11 +3,12 @@
  * @author baozhixin <baozhixin@baidu.com>
  */
 
-import san, {DataTypes} from 'san';
 import filters from '../modal/Dialog';
+import * as I from './interface';
+import Base from 'santd/base';
 
-export default san.defineComponent({
-    template: `
+export default class Notice extends Base<I.NoticeState, I.NoticeProps, I.NoticeComputed> {
+    static template = /* html */ `
         <div class="{{noticeClass}}"
             style="{{style | css}}"
             on-click="handleClick"
@@ -21,15 +22,9 @@ export default san.defineComponent({
                 </slot>
             </a>
         </div>
-    `,
-    dataTypes: {
-        duration: DataTypes.number,
-        closable: DataTypes.bool,
-        prefixCls: DataTypes.string,
-        update: DataTypes.bool
-    },
-    computed: {
-        noticeClass() {
+    `;
+    static computed = {
+        noticeClass(this: Notice) {
             const data = this.data;
             const closable = data.get('closable');
             const componentClass = data.get('prefixCls') + '-notice';
@@ -37,43 +32,44 @@ export default san.defineComponent({
             closable && classArr.push(`${componentClass}-closable`);
             return classArr;
         }
-    },
-    filters,
-    initData() {
+    };
+    filters = filters;
+    initData(): I.NoticeState {
         return {
             duration: 1.5,
             style: {
                 right: '50%'
             }
         };
-    },
-    attached() {
+    };
+    attached(): void {
         this.startCloseTimer();
-        this.watch('duration', duration => {
+        this.watch('duration', () => {
             this.startCloseTimer();
         });
-    },
-    updated() {
+    };
+    updated(): void  {
         if (this.data.get('update')) {
             this.startCloseTimer();
         }
-    },
-    handleClick(e) {
-        e.preventDefault();
+    };
+    handleClick(e?: MouseEvent): void  {
+        e!.preventDefault();
         this.fire('click', e);
-    },
-    handleClose(e) {
+    };
+    handleClose(e?: MouseEvent): void  {
         e && (e.preventDefault(), e.stopPropagation());
         this.clearCloseTimer();
         this.fire('close', e);
-    },
-    clearCloseTimer() {
+    };
+    clearCloseTimer(): void  {
         if (this.closeTimer) {
             clearTimeout(this.closeTimer);
             this.closeTimer = null;
         }
-    },
-    startCloseTimer() {
+    };
+    closeTimer: null | NodeJS.Timeout = null;
+    startCloseTimer(): void  {
         const duration = this.data.get('duration');
         this.clearCloseTimer();
         if (duration) {
@@ -81,5 +77,5 @@ export default san.defineComponent({
                 this.handleClose();
             }, duration * 1e3);
         }
-    }
-});
+    };
+};

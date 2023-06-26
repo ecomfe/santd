@@ -3,33 +3,41 @@
  * @author baozhixin <baozhixin@baidu.com>
  */
 
-import san from 'san';
+import * as I from './interface';
+import Base from 'santd/base';
 import {classCreator} from '../core/util';
 import icon from '../icon';
 import Dialog from './Dialog';
 import ActionButton from './ActionButton';
 import localeReceiver from '../locale-provider/receiver';
+import san, {Component} from 'san';
 
 
 const prefixCls = classCreator('modal')();
 const contentPrefixCls = `${prefixCls}-confirm`;
+interface contentType extends Component {
+    prototype: object;
+}
 
 // 判断是否SanComponent, 可能会随着san的版本迭代变更，参考依据如下：
 // https://github.com/baidu/san/blob/36085399ab3d84df3ff8b741bb2f57c483b59acb/src/view/node-type.js
 // https://github.com/baidu/san/blob/9a7cd2e74ecd4f307afd1733aa5b745707edc0c9/src/view/component.js#L278
 // 改成使用传统方式判断 by erik at 2019-10-03
-function isValidComponent(content) {
+function isValidComponent(content: contentType): boolean {
     return content && content.prototype instanceof san.Component;
 }
 
 // 动态加载content组件
-let contentFun;
+let contentFun: {
+    resolve: any;
+    reject: any;
+};
 const contentLoader = san.createComponentLoader(() => new Promise((resolve, reject) => {
     contentFun = {resolve, reject};
 }));
 
-export default san.defineComponent({
-    template: `<template>
+export default class ConfirmDialog extends Base<I.ConfirmDialogState, I.ConfirmDialogProps, I.ConfirmDialogComputed> {
+    static template = /* html */ `<template>
         <s-dialog
             prefixCls="{{prefixCls}}"
             className="${contentPrefixCls} ${contentPrefixCls}-{{type}} {{className}}"
@@ -81,29 +89,30 @@ export default san.defineComponent({
                 </div>
             </div>
         </s-dialog>
-    </template>`,
+    </template>`;
 
-    components: {
+    static components =  {
         'content-loader': contentLoader,
         's-button': ActionButton,
         's-dialog': Dialog,
         's-icon': icon
-    },
-    afterClose() {
+    }
+
+    afterClose(): void {
         const afterCloseFn = this.data.get('afterClose');
         'function' === typeof afterCloseFn && afterCloseFn();
-    },
+    }
 
-    computed: {
+    static computed: I.ConfirmDialogComputed = {
         ...localeReceiver.computed,
 
-        contentIsComponent() {
+        contentIsComponent(this: ConfirmDialog) {
             const content = this.data.get('content');
             return isValidComponent(content);
         }
-    },
+    }
 
-    initData() {
+    initData(): I.ConfirmDialogState {
         return {
             componentName: 'Modal',
             autoFocusButton: 'ok',
@@ -113,13 +122,15 @@ export default san.defineComponent({
             okType: 'primary',
             width: 416
         };
-    },
+    }
 
-    inited: localeReceiver.inited,
+    inited<TBase extends Base>(this: TBase) {
+        this.dispatch('santd_add_locale_receiver', this);
+    }
 
     attached() {
         // 处理content是san组件的情况
         const content = this.data.get('content');
         this.data.get('contentIsComponent') && contentFun.resolve(content);
     }
-});
+};

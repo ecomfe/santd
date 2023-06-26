@@ -62,6 +62,7 @@
         "@babel/traverse": "^7.4.4",
         "@babel/types": "^7.4.4",
         "@octokit/rest": "^16.35.2",
+        "@types/lodash": "^4.14.195",
         "autoprefixer": "^9.5.1",
         "babel-cli": "^6.26.0",
         "babel-eslint": "^10.0.3",

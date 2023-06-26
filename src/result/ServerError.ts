@@ -2,9 +2,9 @@
  * @file Santd result serverError svg file
  **/
 
-import san from 'san';
+import Base from 'santd/base';
 
-const SVG = `
+const SVG = /* html */`
   <svg width="254" height="294">
     <defs>
       <path d="M0 .335h253.49v253.49H0z" />
@@ -332,6 +332,6 @@ const SVG = `
   </svg>
 `;
 
-export default san.defineComponent({
-    template: SVG
-});
+export default class ServerError extends Base {
+    static template = SVG;
+};

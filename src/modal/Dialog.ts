@@ -5,15 +5,22 @@
  */
 
 import './style/index.less';
-import san, {DataTypes} from 'san';
+import * as I from './interface';
+import Base from 'santd/base';
+import san from 'san';
 import {classCreator} from '../core/util';
 import KeyCode from '../core/util/keyCode';
-import {on, addClass, removeClass, getScrollBarSize} from '../core/util/dom';
+import {getScrollBarSize, on, addClass, removeClass} from '../core/util/dom';
 import TransitionEvents from '../core/util/css-animation/Event';
 import button from '../button';
 
+interface TElement extends HTMLElement {
+    focus: () => void;
+    el?: TElement;
+};
+
 export const filters = {
-    css(style) {
+    css(style: I.styleType | string): string | I.styleType {
         if (!style) {
             return '';
         }
@@ -32,7 +39,7 @@ export const filters = {
         });
         return style;
     },
-    mergeStyle(style, zIndex) {
+    mergeStyle(style: string, zIndex: number): string {
         const zIndexStyle = zIndex ? `z-index:${zIndex};` : '';
 
         if (zIndexStyle) {
@@ -55,41 +62,45 @@ const locale = {
     justOkText: '知道了'
 };
 
-let uuid = 0;
-let openCount = 0;
-let mousePosition = null;
-let mousePositionEventBinded = false;
-let bodyIsOverflowing;
-let scrollbarWidth;
+let uuid: number = 0;
+let openCount: number = 0;
+let mousePosition: null | {x: number; y: number} = null;
+let mousePositionEventBinded: boolean = false;
+let bodyIsOverflowing: boolean;
+let scrollbarWidth: number;
 
-function getScroll(w, top) {
+function getScroll(w: Window, top?: boolean) {
     let ret = w[`page${top ? 'Y' : 'X'}Offset`];
     const method = `scroll${top ? 'Top' : 'Left'}`;
     if (typeof ret !== 'number') {
         const d = w.document;
-        ret = d.documentElement[method];
+        const doc = d.documentElement;
+        // 如果as Document，会报错元素隐式具有 "any" 类型，因为类型为 "string" 的表达式不能用于索引类型 "Document"。
+        ret = (doc as any)[method];
         if (typeof ret !== 'number') {
-            ret = d.body[method];
+            const bo = d.body;
+            // 同理
+            ret = (bo as any)[method];
         }
     }
     return ret;
 }
 
-function setTransformOrigin(node, value) {
+function setTransformOrigin(node: HTMLElement, value: string) {
     const style = node.style;
     ['Webkit', 'Moz', 'Ms', 'ms'].forEach(prefix => {
-        style[`${prefix}TransformOrigin`] = value;
+        (style as any)[`${prefix}TransformOrigin`] = value;
     });
     style.transformOrigin = value;
 }
 
-function offset(el) {
+function offset(el: HTMLElement) {
     const rect = el.getBoundingClientRect();
-    const doc = el.ownerDocument;
+    const doc: I.TDocument = el.ownerDocument;
     const w = doc.defaultView || doc.parentWindow;
     const pos = {
-        left: rect.left + getScroll(w),
-        top: rect.top + getScroll(w, true)
+        left: rect.left + getScroll(w!)!,
+        top: rect.top + getScroll(w!, true)!,
     };
     return pos;
 }
@@ -100,8 +111,8 @@ const sentinel = san.defineComponent({
     `
 });
 
-export default san.defineComponent({
-    template: `
+export default class Dialog extends Base<I.DialogState, I.DialogProps, I.DialogComputed> {
+    static template = /* html */ `
         <template>
             <div s-if="{{mask && visible}}"
                 s-transition="modalTrans(maskTransitionName)"
@@ -145,21 +156,22 @@ export default san.defineComponent({
                 </div>
             </div>
         </template>
-    `,
-    dataTypes: {
-        test: DataTypes.any
-    },
-    components: {
+    `;
+
+    static components = {
         'sentinel': sentinel,
         's-button': button
-    },
-    filters: {
+    }
+
+    static filters = {
         ...filters
-    },
-    dialogStyle(width, modalStyle) {
+    }
+
+    dialogStyle(width: number, modalStyle: I.styleType | string) {
         return `width: ${width}px; ${filters.css(modalStyle)}`;
-    },
-    modalTrans(transitionName, needCallback) {
+    }
+
+    modalTrans(transitionName: string, needCallback: boolean) {
         if (!transitionName) {
             return;
         }
@@ -171,7 +183,7 @@ export default san.defineComponent({
         };
 
         return {
-            enter(el, done) {
+            enter(el: HTMLElement, done: () => void) {
                 const cls = [`${transitionName}-enter`, `${transitionName}-enter-active`].join(' ');
                 const end = () => {
                     TransitionEvents.removeEndEventListener(el, end);
@@ -181,7 +193,7 @@ export default san.defineComponent({
                 TransitionEvents.addEndEventListener(el, end);
                 addClass(el, cls);
             },
-            leave(el, done) {
+            leave(el: HTMLElement, done: () => void) {
                 const cls = [`${transitionName}-leave`, `${transitionName}-leave-active`].join(' ');
                 const end = () => {
                     TransitionEvents.removeEndEventListener(el, end);
@@ -193,8 +205,9 @@ export default san.defineComponent({
                 addClass(el, cls);
             }
         };
-    },
-    initData() {
+    }
+
+    initData(): I.DialogState {
         return {
             bodyStyle: {},
             maskStyle: {},
@@ -212,7 +225,8 @@ export default san.defineComponent({
             titleId: `santdDialogTitle${uuid++}`,
             locale
         };
-    },
+    }
+
     inited() {
         this.watch('visible', val => {
             if (val) {
@@ -225,11 +239,12 @@ export default san.defineComponent({
                 this.data.set('inTransition', true);
             }
         });
-    },
+    }
+
     attached() {
         if (!mousePositionEventBinded) {
             // 只有点击事件支持从鼠标位置动画展开
-            on(document.documentElement, 'click', e => {
+            on((document as unknown as I.TListenerElement).documentElement, 'click', (e: MouseEvent) => {
                 mousePosition = {
                     x: e.pageX,
                     y: e.pageY
@@ -249,19 +264,22 @@ export default san.defineComponent({
                 this.afterMouseEvent();
             }
         });
-    },
+    }
+
     disposed() {
         this.removeScrollingEffect();
-    },
-    onMaskClick(e) {
+    }
+
+    onMaskClick(e: MouseEvent) {
         if (!this.data.get('maskClosable')) {
             return;
         }
         if (e.target === e.currentTarget) {
             this.close(e);
         }
-    },
-    onKeydown(e) {
+    }
+
+    onKeydown(e: KeyboardEvent) {
         if (this.data.get('keyboard') && e.keyCode === KeyCode.ESC) {
             e.stopPropagation();
             this.close(e);
@@ -271,8 +289,8 @@ export default san.defineComponent({
         if (this.data.get('visible')) {
             if (e.keyCode === KeyCode.TAB) {
                 const activeElement = document.activeElement;
-                const sentinelStart = this.ref('sentinelStart');
-                const sentinelEnd = this.ref('sentinelEnd');
+                const sentinelStart = this.ref('sentinelStart') as unknown as TElement;
+                const sentinelEnd = this.ref('sentinelEnd') as unknown as TElement;
                 if (e.shiftKey) {
                     if (activeElement === sentinelStart) {
                         sentinelEnd.focus();
@@ -283,14 +301,16 @@ export default san.defineComponent({
                 }
             }
         }
-    },
-    close(e) {
+    }
+
+    close(e: MouseEvent | KeyboardEvent) {
         const data = this.data;
         if (data.get('visible') !== undefined) {
             this.fire('close', e);
         }
         data.set('visible', false);
-    },
+    }
+
     addScrollingEffect() {
         openCount++;
         if (openCount !== 1) {
@@ -299,7 +319,8 @@ export default san.defineComponent({
         this.checkScrollbar();
         this.setScrollbar();
         document.body.style.overflow = 'hidden';
-    },
+    }
+
     removeScrollingEffect() {
         openCount--;
         if (openCount !== 0) {
@@ -307,7 +328,8 @@ export default san.defineComponent({
         }
         document.body.style.overflow = '';
         this.resetScrollbar();
-    },
+    }
+
     checkScrollbar() {
         let fullWindowWidth = window.innerWidth;
         if (!fullWindowWidth) { // workaround for missing window.innerWidth in IE8
@@ -318,23 +340,27 @@ export default san.defineComponent({
         if (bodyIsOverflowing) {
             scrollbarWidth = getScrollBarSize();
         }
-    },
+    }
+
     setScrollbar() {
         if (bodyIsOverflowing && scrollbarWidth !== undefined) {
             document.body.style.paddingRight = `${scrollbarWidth}px`;
         }
-    },
+    }
+
     resetScrollbar() {
         document.body.style.paddingRight = '';
-    },
+    }
+
     tryFocus() {
         // wrap内的元素聚焦之后，wrap才能生效keydown事件监听
-        const sentinelStart = this.ref('sentinelStart');
+        const sentinelStart = this.ref('sentinelStart') as unknown as TElement;
         sentinelStart.el && sentinelStart.el.focus();
-    },
+    }
+
     afterMouseEvent() {
         this.tryFocus();
-        const dialogNode = this.ref('dialog');
+        const dialogNode = this.ref('dialog') as unknown as HTMLElement;
         if (mousePosition) {
             const elOffset = offset(dialogNode);
             const value = `${mousePosition.x - elOffset.left}px ${mousePosition.y - elOffset.top}px`;
@@ -344,4 +370,4 @@ export default san.defineComponent({
             setTransformOrigin(dialogNode, '');
         }
     }
-});
+};

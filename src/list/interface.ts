@@ -48,8 +48,8 @@ export interface Props {
 export interface paginationType extends Object {
     defaultCurrent?: number;
     defaultPageSize?: number;
-    onShowSizeChange?: Function;
-    onChange?: Function;
+    onShowSizeChange?: (args0: number, args1: number) => void;
+    onChange?: (args0: number, args1: number) => void;
 }
 
 export type defaultPaginationPropsType = {
