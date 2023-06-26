@@ -2,28 +2,31 @@
  * @file Santd full calendar source file
  * @author mayihui@baidu.com
  **/
-
-import san from 'san';
-import Base from './Base';
+import Base from 'santd/base';
 import DateTable from './date/DateTable';
 import MonthTable from './month/MonthTable';
-import inherits from '../../core/util/inherits';
 import dayjs from 'dayjs';
+import * as I from './interface';
+import {dayjsType} from '../interface';
 
-export default inherits(san.defineComponent({
-    components: {
+
+export default class FullCalendar extends Base {
+    static components = {
         's-datetable': DateTable,
-        's-monthtable': MonthTable
-    },
-    initData() {
+        's-monthtable': MonthTable,
+    };
+    static initData(): I.FullCalendarState {
         return {
             defaultType: 'date',
             fullscreen: false,
             showTypeSwitch: true,
-            showHeader: true
+            showHeader: true,
         };
-    },
-    inited() {
+    };
+    attached(): void {
+        console.log('fullcalendar: ', this.data.get())
+    }
+    inited(): void {
         const type = this.data.get('type');
         const defaultType = this.data.get('defaultType');
         const value = this.data.get('value');
@@ -36,20 +39,20 @@ export default inherits(san.defineComponent({
         this.data.set('selectedValue', selectedValue || defaultSelectedValue);
         this.data.set('hasMonthCellRender', !!this.sourceSlots.named.customMonthCellRender);
         this.data.set('hasDateCellRender', !!this.sourceSlots.named.customDateCellRender);
-    },
-    handleSelect(value) {
+    };
+    handleSelect(value: dayjsType): void {
         this.data.set('value', value);
         this.fire('select', value);
-    },
-    handleMonthSelect(value) {
+    };
+    handleMonthSelect(value: dayjsType): void {
         this.data.set('value', value);
         this.fire('select', value);
-    },
-    setType(type) {
+    };
+    setType(type: string): void {
         this.data.set('type', type);
         this.fire('typeChange', type);
-    },
-    template: `
+    };
+    static template = /* html */ `
         <div
             class="{{prefixCls}} {{prefixCls}}-full {{fullscreen ? prefixCls + '-fullscreen': ''}}"
             tabIndex="0"
@@ -107,4 +110,4 @@ export default inherits(san.defineComponent({
             </div>
         </div>
     `
-}), Base);
+};

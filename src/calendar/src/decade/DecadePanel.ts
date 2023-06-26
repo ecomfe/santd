@@ -3,50 +3,48 @@
  * @author mayihui@baidu.com
  **/
 
-import san, {DataTypes} from 'san';
+import Base from 'santd/base';
+import * as I from './interface';
 import DecadeTable from './DecadeTable';
+import {dayjsType} from '../../interface';
 
-export default san.defineComponent({
-    dataTypes: {
-        prefixCls: DataTypes.string,
-        value: DataTypes.object,
-        defaultValue: DataTypes.object
-    },
-    inited() {
+
+export default class DecadePanel extends Base<I.DecadePanelState, I.DecadePanelProps, I.DecadePanelComputed> {
+    inited(): void {
         this.data.set('value', this.data.get('value') || this.data.get('defaultValue'));
-    },
-    computed: {
-        startYear() {
+    };
+    static computed: I.DecadePanelComputed = {
+        startYear(this: DecadePanel) {
             const value = this.data.get('value');
             const currentYear = value.year();
-            return parseInt(currentYear / 100, 10) * 100;
+            return parseInt(currentYear / 100 + '', 10) * 100;
         },
-        endYear() {
+        endYear(this: DecadePanel) {
             const startYear = this.data.get('startYear');
             return startYear + 99;
         }
-    },
-    handlePreviousCentury() {
+    };
+    handlePreviousCentury(): void {
         this.goYear(-100);
-    },
-    handleDecadePanelShow() {
+    };
+    handleDecadePanelShow(): void {
         this.fire('decaePanelShow');
-    },
-    handleNextCentury() {
+    };
+    handleNextCentury(): void {
         this.goYear(100);
-    },
-    setAndSelectValue(value) {
+    };
+    setAndSelectValue(value: dayjsType): void {
         this.data.set('value', value);
         this.fire('select', value);
-    },
-    goYear(year) {
+    };
+    goYear(year: number): void {
         const value = this.data.get('value').add(year, 'year');
         this.data.set('value', value);
-    },
-    components: {
+    };
+    static components = {
         's-centurytable': DecadeTable
-    },
-    template: `
+    };
+    static template = /* html */ `
         <div class="{{prefixCls}}-decade-panel">
             <div class="{{prefixCls}}-decade-panel-header">
                 <a
@@ -82,4 +80,4 @@ export default san.defineComponent({
             </div>
         </div>
     `
-});
+};

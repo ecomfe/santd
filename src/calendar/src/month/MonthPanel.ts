@@ -3,42 +3,39 @@
  * @author mayihui@baidu.com
  **/
 
-import san, {DataTypes} from 'san';
+import Base from 'santd/base';
+import * as I from './interface';
+import {dayjsType} from '../../interface';
 import MonthTable from './MonthTable';
 
-export default san.defineComponent({
-    dataTypes: {
-        disabledDate: DataTypes.func,
-        prefixCls: DataTypes.string,
-        value: DataTypes.object,
-        defaultValue: DataTypes.object
-    },
-    computed: {
-        year() {
+export default class MonthPanel extends Base<I.MonthPanelState, I.MonthPanelProps, I.MonthPanelComputed> {
+    static computed: I.MonthPanelComputed = {
+        year(this: MonthPanel) {
             const value = this.data.get('value');
             return value && value.year();
         }
-    },
-    inited() {
+    };
+    inited(): void {
         this.data.set('value', this.data.get('value') || this.data.get('defaultValue'));
-    },
+    };
     handlePreviousYear() {
         this.fire('changeYear', -1);
-    },
+    };
     handleYearPanelShow() {
         this.fire('yearPanelShow');
-    },
+    };
     handleNextYear() {
         this.fire('changeYear', 1);
-    },
-    setAndSelectValue(value) {
+    };
+    setAndSelectValue(value: dayjsType) {
         this.data.set('value', value);
         this.fire('select', value);
-    },
-    components: {
+    };
+    static components = {
         's-monthtable': MonthTable
-    },
-    template: `<div class="{{prefixCls}}-month-panel">
+    };
+    static template = /* html */ `
+    <div class="{{prefixCls}}-month-panel">
         <div>
             <div class="{{prefixCls}}-month-panel-header">
                 <a
@@ -84,5 +81,6 @@ export default san.defineComponent({
                 <slot name="renderExtraFooter" />
             </div>
         </div>
-    </div>`
-});
+    </div>
+    `;
+};

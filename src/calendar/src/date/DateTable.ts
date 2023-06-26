@@ -3,7 +3,9 @@
  * @author mayihui@baidu.com
  **/
 
-import san, {DataTypes} from 'san';
+import Base from 'santd/base';
+import * as I from './interface';
+import {dayjsType} from '../../interface';
 import dayjs from 'dayjs';
 import {getTitleString, getTodayTime} from '../util/index';
 import weekOfYear from 'dayjs/plugin/weekOfYear';
@@ -15,37 +17,28 @@ dayjs.extend(localeData);
 const ROW = 6;
 const COL = 7;
 
-function isSameDay(one, two) {
+function isSameDay(one: dayjsType, two: dayjsType): boolean {
     return one && two && one.isSame(two, 'day');
 }
 
-function beforeCurrentMonthYear(current, today) {
+function beforeCurrentMonthYear(current: dayjsType, today: dayjsType): boolean {
     if (current.year() < today.year()) {
-        return 1;
+        return true;
     }
     return current.year() === today.year() && current.month() < today.month();
 }
 
-function afterCurrentMonthYear(current, today) {
+function afterCurrentMonthYear(current: dayjsType, today: dayjsType): boolean {
     if (current.year() > today.year()) {
-        return 1;
+        return true;
     }
     return current.year() === today.year() && current.month() > today.month();
 }
 
-export default san.defineComponent({
-    dataTypes: {
-        disabledDate: DataTypes.func,
-        renderFooter: DataTypes.func,
-        rootPrefixCls: DataTypes.string,
-        value: DataTypes.object,
-        defaultValue: DataTypes.object
-    },
-    computed: {
-        dates() {
-            /* eslint-disable no-unused-vars */
+export default class DateTable extends Base<I.DateTableState, I.DateTableProps, I.DateTableComputed> {
+    static computed = {
+        dates(this: DateTable) {
             const prefixCls = this.data.get('prefixCls');
-            const locale = this.data.get('locale');
             const value = this.data.get('value') || dayjs();
             const today = getTodayTime(value);
             const selectedValue = this.data.get('selectedValue');
@@ -62,15 +55,15 @@ export default san.defineComponent({
             for (let i = 0; i < ROW; i++) {
                 dataTable[i] = {
                     isCurrentWeek: false,
-                    isActiveWeek: false
-                };
+                    isActiveWeek: false,
+                } as I.dataTableItemType;
                 dataTable[i].current = [];
                 for (let j = 0; j < COL; j++) {
                     current = lastMonth;
                     if (passed) {
                         current = current.add(passed, 'days');
                     }
-                    dataTable[i].current.push({data: current});
+                    dataTable[i].current!.push({data: current});
                     dataTable[i].week = current.week();
 
                     // 开始处理各种样式
@@ -149,8 +142,7 @@ export default san.defineComponent({
             }
             return dataTable;
         },
-        weeks() {
-            const locale = this.data.get('locale');
+        weeks(this: DateTable) {
             const value = this.data.get('value') || dayjs();
             const localeData = value.localeData();
             const firstDayOfWeek = localeData.firstDayOfWeek();
@@ -169,45 +161,48 @@ export default san.defineComponent({
                 weekDays
             };
         }
-    },
-    inited() {
+    }
+    attached(): void {
+        console.log('DateTable: ', this.data.get())
+    }
+    inited(): void {
         this.data.set('value', this.data.get('value') || this.data.get('defaultValue'));
-    },
-    handlePreviousYear() {
+    }
+    handlePreviousYear(): void {
         this.fire('changeYear', -1);
-    },
-    handleYearPanelShow() {
+    }
+    handleYearPanelShow(): void {
         this.fire('yearPanelShow');
-    },
-    handleNextYear() {
+    }
+    handleNextYear(): void {
         this.fire('changeYear', 1);
-    },
-    setAndSelectValue(value) {
+    }
+    setAndSelectValue(value: dayjsType): void {
         this.data.set('value', value);
         this.fire('select', value);
-    },
-    getTrClassName(date) {
+    }
+    getTrClassName(date: I.dataTableItemType): string[] {
         const prefixCls = this.data.get('prefixCls');
         let classArr = [];
         date.isCurrentWeek && classArr.push(`${prefixCls}-current-week`);
         date.isActiveWeek && classArr.push(`${prefixCls}-active-week`);
         return classArr;
-    },
-    getTitleString(current) {
+    }
+    getTitleString(current: I.dataTableItemDataType): string {
         return getTitleString(current.data);
-    },
-    handleClick(disabled, value) {
+    }
+    handleClick(disabled: boolean, value: dayjsType): void {
         if (!disabled) {
             this.fire('select', value);
         }
-    },
-    handleMouseEnter(disabled, value) {
+    }
+    handleMouseEnter(value: dayjsType): void {
         this.fire('dayHover', value);
-    },
-    getDate(value) {
+    }
+    getDate(value: dayjsType): number {
         return value.date();
-    },
-    template: `
+    }
+    static template = /* html */ `
         <table class="{{prefixCls}}-table" cellspacing="0" role="grid">
             <thead>
                 <tr role="row">
@@ -249,7 +244,7 @@ export default san.defineComponent({
                         title="{{getTitleString(current)}}"
                         class="{{current.className}}"
                         on-click="handleClick(current.disabled, current.data)"
-                        on-mouseenter="handleMouseEnter(current.disabled, current.data)"
+                        on-mouseenter="handleMouseEnter(current.data)"
                     >
                         <slot
                             s-if="hasDateRender"
@@ -264,4 +259,4 @@ export default san.defineComponent({
             </tbody>
         </table>
     `
-});
+};

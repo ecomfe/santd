@@ -3,19 +3,19 @@
  * @author mayihui@baidu.com
  **/
 
-import san from 'san';
 import Base from './Base';
 import CalendarHeader from './calendar/CalendarHeader';
-import inherits from '../../core/util/inherits';
 import dayjs from 'dayjs';
+import * as I from './interface';
+import {dayjsType} from '../interface';
 
-export default inherits(san.defineComponent({
-    initData() {
+export default class MonthCalendar extends Base {
+    static initData(): I.MonthCalendarState {
         return {
-            mode: 'month'
+            mode: 'month',
         };
-    },
-    inited() {
+    };
+    inited(): void {
         let value = this.data.get('value') || this.data.get('defaultValue') || dayjs();
         let selectedValue = this.data.get('selectedValue') || this.data.get('defaultSelectedValue');
         const localeCode = this.data.get('localeCode');
@@ -35,20 +35,20 @@ export default inherits(san.defineComponent({
             }
             this.data.set('value', val);
         });
-    },
-    handleMonthSelect(value) {
+    };
+    handleMonthSelect(value: dayjsType): void {
         this.fire('select', {value});
-    },
-    handlePanelChange({value, mode}) {
+    };
+    handlePanelChange({value, mode}: {value: dayjsType, mode: string}): void {
         if (mode && mode !== 'date') {
             this.data.set('mode', mode);
         }
         this.fire('panelChange', {value: value || this.data.get('value'), mode});
-    },
-    components: {
+    };
+    static components = {
         's-calendarheader': CalendarHeader
-    },
-    template: `
+    };
+    static template = /* html */ `
         <div
             class="{{classes}} {{prefixCls}}-month-calendar"
             tabIndex="0"
@@ -74,4 +74,4 @@ export default inherits(san.defineComponent({
             </div>
         </div>
     `
-}), Base);
+};

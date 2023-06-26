@@ -3,23 +3,19 @@
  * @author mayihui@baidu.com
  **/
 
-import san, {DataTypes} from 'san';
+import Base from 'santd/base';
+import * as I from './interface';
 import {getTodayTime, getMonthName} from '../util/index';
 
 const ROW = 4;
 const COL = 3;
 
-export default san.defineComponent({
-    dataTypes: {
-        disabledDate: DataTypes.func,
-        value: DataTypes.object,
-        defaultValue: DataTypes.object
-    },
-    computed: {
-        months() {
+export default class MonthTable extends Base<I.MonthTableState, I.MonthTableProps, I.MonthTableComputed> {
+    static computed: I.MonthTableComputed = {
+        months(this: MonthTable) {
             const value = this.data.get('value');
 
-            const months = [];
+            const months: I.MonthTableItemType[][] = [];
             let index = 0;
 
             for (let rowIndex = 0; rowIndex < ROW; rowIndex++) {
@@ -38,8 +34,8 @@ export default san.defineComponent({
             }
             return months;
         }
-    },
-    getContentClass(monthData) {
+    };
+    getContentClass(monthData: I.MonthTableItemType) {
         const value = this.data.get('value');
         const today = getTodayTime(value);
         const disabledDate = this.data.get('disabledDate');
@@ -58,8 +54,8 @@ export default san.defineComponent({
         monthData.value === currentMonth && classArr.push(`${prefixCls}-selected-cell`);
         isEqu && classArr.push(`${prefixCls}-current-cell`);
         return classArr;
-    },
-    handleChooseMonth(monthData) {
+    };
+    handleChooseMonth(monthData: I.MonthTableItemType) {
         const value = this.data.get('value');
         const disabledDate = this.data.get('disabledDate');
         let disabled = false;
@@ -72,11 +68,11 @@ export default san.defineComponent({
             const next = value.month(monthData.value);
             this.fire('select', next);
         }
-    },
-    getMonth(monthData) {
+    };
+    getMonth(monthData: I.MonthTableItemType) {
         return getMonthName(monthData.current);
-    },
-    template: `
+    };
+    static template = /* html */ `
         <table class="{{prefixCls}}-table" cellSpacing="0" role="grid">
             <tbody class="{{prefixCls}}-tbody">
                 <tr
@@ -103,4 +99,4 @@ export default san.defineComponent({
             </tbody>
         </table>
     `
-});
+};

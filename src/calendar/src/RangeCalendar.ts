@@ -3,22 +3,22 @@
  * @author mayihui@baidu.com
  **/
 
-import san from 'san';
 import Base from './Base';
 import RangePanel from './range/RangePanel';
 import TodayButton from './calendar/TodayButton';
 import OkButton from './calendar/OkButton';
 import TimePickerButton from './calendar/TimepickerButton';
 import Tag from '../../tag';
-import inherits from '../../core/util/inherits';
 import dayjs from 'dayjs';
 import {syncTime, getTodayTime, isAllowedDate, getTimeConfig} from './util';
+import {dayjsType, disabledTimeConfigType} from '../interface';
+import * as I from './interface';
 
-function isEmptyArray(arr) {
+function isEmptyArray(arr: dayjsType[]) {
     return Array.isArray(arr) && (arr.length === 0 || arr.every(i => !i));
 }
 
-function getValueFromSelectedValue(selectedValue) {
+function getValueFromSelectedValue(selectedValue: dayjsType[]) {
     let [start, end] = selectedValue;
     if (end && (start === undefined || start === null)) {
         start = end.subtract(1, 'month');
@@ -30,7 +30,7 @@ function getValueFromSelectedValue(selectedValue) {
     return [start, end];
 }
 
-function normalizeAnchor(data, init) {
+function normalizeAnchor(data: RangeCalendar['data'], init: boolean): dayjsType[] | boolean {
     const selectedValue = data.get('selectedValue') || init && data.get('defaultSelectedValue');
     const value = data.get('value') || init && data.get('defaultValue');
     const normalizedValue = value
@@ -39,8 +39,8 @@ function normalizeAnchor(data, init) {
     return !isEmptyArray(normalizedValue) ? normalizedValue : init && [dayjs(), dayjs().add(1, 'months')];
 }
 
-export default inherits(san.defineComponent({
-    initData() {
+export default class RangeCalendar extends Base {
+    static initData(): I.RangeCalendarState {
         return {
             prefixCls: 'santd-calendar',
             type: 'both',
@@ -54,9 +54,9 @@ export default inherits(san.defineComponent({
             disabledTime() {},
             mode: ['date', 'date']
         };
-    },
-    computed: {
-        classes() {
+    };
+    static computed: I.RangeCalendarComputed = {
+        classes(this: RangeCalendar) {
             const prefixCls = this.data.get('prefixCls');
             const showTimePicker = this.data.get('showTimePicker');
             const showWeekNumber = this.data.get('showWeekNumber');
@@ -66,11 +66,11 @@ export default inherits(san.defineComponent({
             showWeekNumber && classArr.push(`${prefixCls}-week-number`);
             return classArr;
         },
-        hasSelectedValue() {
+        hasSelectedValue(this: RangeCalendar) {
             const selectedValue = this.data.get('selectedValue') || [];
             return !!selectedValue[1] && !!selectedValue[0];
         },
-        isAllowedDateAndTime() {
+        isAllowedDateAndTime(this: RangeCalendar) {
             const selectedValue = this.data.get('selectedValue') || [];
             const disabledDate = this.data.get('disabledDate');
             const disabledStartTime = this.data.get('disabledStartTime');
@@ -78,38 +78,38 @@ export default inherits(san.defineComponent({
             return isAllowedDate(selectedValue[0], disabledDate, disabledStartTime)
                 && isAllowedDate(selectedValue[1], disabledDate, disabledEndTime);
         },
-        isClosestMonths() {
+        isClosestMonths(this: RangeCalendar) {
             const startValue = this.data.get('getStartValue');
             const endValue = this.data.get('getEndValue');
             const nextMonthOfStart = startValue.add(1, 'months');
 
             return nextMonthOfStart.year() === endValue.year() && nextMonthOfStart.month() === endValue.month();
         },
-        disabledStartTime() {
+        disabledStartTime(this: RangeCalendar) {
             const disabledTime = this.data.get('disabledTime');
-            return function (time) {
+            return function (time: dayjsType): disabledTimeConfigType {
                 return disabledTime(time, 'start');
             };
         },
-        disabledEndTime() {
+        disabledEndTime(this: RangeCalendar) {
             const disabledTime = this.data.get('disabledTime');
-            return function (time) {
+            return function (time: dayjsType): disabledTimeConfigType {
                 return disabledTime(time, 'end');
             };
         },
-        disabledStartMonth() {
+        disabledStartMonth(this: RangeCalendar) {
             const value = this.data.get('value');
-            return function (month) {
+            return function (month: dayjsType): boolean {
                 return month.isAfter(value[1], 'month');
             };
         },
-        disabledEndMonth() {
+        disabledEndMonth(this: RangeCalendar) {
             const value = this.data.get('value');
             return function (month) {
                 return month.isBefore(value[0], 'month');
             };
         },
-        getStartValue() {
+        getStartValue(this: RangeCalendar) {
             const selectedValue = this.data.get('selectedValue') || [];
             const showTimePicker = this.data.get('showTimePicker');
             const value = this.data.get('value');
@@ -135,7 +135,7 @@ export default inherits(san.defineComponent({
 
             return startValue;
         },
-        getEndValue() {
+        getEndValue(this: RangeCalendar) {
             const selectedValue = this.data.get('selectedValue') || [];
             const showTimePicker = this.data.get('showTimePicker');
             const value = this.data.get('value');
@@ -161,7 +161,7 @@ export default inherits(san.defineComponent({
 
             return endValue;
         },
-        isTodayInView() {
+        isTodayInView(this: RangeCalendar) {
             const startValue = this.data.get('getStartValue');
             const endValue = this.data.get('getEndValue');
             if (!startValue) {
@@ -174,11 +174,11 @@ export default inherits(san.defineComponent({
             return startValue.year() === thisYear && startValue.month() === thisMonth
                 || endValue.year() === thisYear && endValue.month() === thisMonth;
         },
-        rangesName() {
+        rangesName(this: RangeCalendar) {
             return Object.keys(this.data.get('ranges') || {});
         }
-    },
-    inited() {
+    };
+    inited(): void {
         const selectedValue = this.data.get('selectedValue') || this.data.get('defaultSelectedValue');
         const value = normalizeAnchor(this.data, true);
         const localeCode = this.data.get('localeCode');
@@ -190,17 +190,15 @@ export default inherits(san.defineComponent({
         if (localeCode) {
             require(`dayjs/locale/${localeCode}.js`);
             dayjs.locale(localeCode);
-            value[0] = value[0].locale(localeCode);
-            value[1] = value[1].locale(localeCode);
+            (value as dayjsType[])[0] = (value as dayjsType[])[0].locale(localeCode);
+            (value as dayjsType[])[1] = (value as dayjsType[])[1].locale(localeCode);
         }
 
         this.data.set('value', value);
-    },
-    fireSelectValueChange(selectedValue, direct, cause) {
-        const {
-            showTime,
-            prevSelectedValue
-        } = this.data.get();
+    };
+    fireSelectValueChange(selectedValue: dayjsType[], direct?: boolean | null, cause?: {source: string}): void {
+        const showTime = this.data.get('showTime');
+        const prevSelectedValue = this.data.get('prevSelectedValue');
 
         if (showTime && showTime.defaultValue) {
             const timePickerDefaultValue = showTime.defaultValue;
@@ -232,29 +230,27 @@ export default inherits(san.defineComponent({
                 }
             });
         }
-    },
-    compare(v1, v2) {
+    }
+    compare(v1: dayjsType, v2: dayjsType): number {
         if (this.data.get('showTime')) {
             return v1.diff(v2);
         }
         return v1.diff(v2, 'days');
-    },
-    isMonthYearPanelShow(mode) {
+    };
+    isMonthYearPanelShow(mode: string): boolean {
         return ['month', 'year', 'decade'].indexOf(mode) > -1;
-    },
-    fireHoverValueChange(hoverValue) {
+    };
+    fireHoverValueChange(hoverValue: I.selectedValueType): void {
         this.data.set('hoverValue', hoverValue);
         this.fire('hoverChange', hoverValue);
-    },
-    handleClear() {
+    };
+    handleClear(): void {
         this.fireSelectValueChange([], true);
         this.fire('clear');
-    },
-    handleRangeSelect(value) {
-        let {
-            prevSelectedValue,
-            firstSelectedValue
-        } = this.data.get();
+    };
+    handleRangeSelect(value: dayjsType): void {
+        const prevSelectedValue = this.data.get('prevSelectedValue');
+        let firstSelectedValue = this.data.get('firstSelectedValue');
 
         let nextSelectedValue;
         if (!firstSelectedValue) {
@@ -272,15 +268,13 @@ export default inherits(san.defineComponent({
         }
 
         this.fireSelectValueChange(nextSelectedValue);
-    },
-    handleDayHover(value) {
+    };
+    handleDayHover(value: dayjsType): void {
         if (!this.data.get('hoverValue').length) {
             return;
         }
 
-        const {
-            firstSelectedValue
-        } = this.data.get();
+        const firstSelectedValue = this.data.get('firstSelectedValue');
 
 
         if (!firstSelectedValue) {
@@ -294,31 +288,31 @@ export default inherits(san.defineComponent({
                 : [firstSelectedValue, value];
             this.fireHoverValueChange(hoverValue);
         }
-    },
-    handleToday() {
+    };
+    handleToday(): void {
         const startValue = getTodayTime(this.data.get('value')[0]);
         const endValue = startValue.add(1, 'months');
         this.data.set('value', [startValue, endValue]);
-    },
-    handleTimePicker(visible) {
+    };
+    handleTimePicker(visible: boolean) {
         this.data.set('showTimePicker', visible);
-    },
-    handleOk() {
+    }
+    handleOk(): void {
         const selectedValue = this.data.get('selectedValue');
         const isAllowedDateAndTime = this.data.get('isAllowedDateAndTime');
         if (isAllowedDateAndTime) {
             this.fire('ok', selectedValue);
         }
-    },
-    handleStartValueChange(leftValue) {
+    };
+    handleStartValueChange(leftValue: dayjsType): void {
         this.data.set('value[0]', leftValue);
         this.fire('valueChange', this.data.get('value'));
-    },
-    handleEndValueChange(rightValue) {
+    };
+    handleEndValueChange(rightValue: dayjsType): void {
         this.data.set('value[1]', rightValue);
         this.fire('valueChange', this.data.get('value'));
-    },
-    handleStartPanelChange({value, mode}) {
+    };
+    handleStartPanelChange({value, mode}: {value: dayjsType, mode: string}): void {
         const newMode = [mode, this.data.get('mode')[1]];
         const prevValue = this.data.get('value');
         if (!this.data.get('propMode')) {
@@ -327,8 +321,8 @@ export default inherits(san.defineComponent({
         this.data.set('panelTriggerSource', 'start');
         const newValue = [value || prevValue[0], prevValue[1]];
         this.fire('panelChange', {value: newValue, mode: newMode});
-    },
-    handleEndPanelChange({value, mode}) {
+    };
+    handleEndPanelChange({value, mode}: {value: dayjsType, mode: string}): void {
         const newMode = [this.data.get('mode')[0], mode];
         const prevValue = this.data.get('value');
         if (!this.data.get('propMode')) {
@@ -337,8 +331,8 @@ export default inherits(san.defineComponent({
         this.data.set('panelTriggerSource', 'end');
         const newValue = [prevValue[0], value || prevValue[1]];
         this.fire('panelChange', {value: newValue, mode: newMode});
-    },
-    handleInputSelect(direction, value, cause) {
+    };
+    handleInputSelect(direction: string, value: dayjsType, cause?: {source: string}): void {
         if (!value) {
             return;
         }
@@ -352,37 +346,37 @@ export default inherits(san.defineComponent({
         }
         this.fire('inputSelect', selectedValue);
         this.fireSelectValueChange(selectedValue, null, cause || {source: 'dateInput'});
-    },
+    };
 
-    handleStartInputChange(value) {
+    handleStartInputChange(value: dayjsType) {
         this.handleInputSelect('left', value);
-    },
+    };
 
-    handleEndInputChange(value) {
+    handleEndInputChange(value: dayjsType) {
         this.handleInputSelect('right', value);
-    },
+    };
 
-    getTimeConfig(selectedValue, disabledTime, mode) {
+    getTimeConfig(selectedValue: dayjsType, disabledTime: (arg0: dayjsType) => disabledTimeConfigType, mode: string) {
         const showTimePicker = this.data.get('showTimePicker');
         if (showTimePicker && disabledTime) {
             const config = getTimeConfig(selectedValue, disabledTime);
-            return config[mode];
+            return (config as any)[mode];
         }
-    },
+    };
 
-    updated() {
+    updated(this: RangeCalendar): void {
         this.data.set('prevSelectedValue', this.data.get('selectedValue'));
-    },
+    };
 
-    components: {
+    static components = {
         's-rangepanel': RangePanel,
         's-todaybutton': TodayButton,
         's-timepickerbutton': TimePickerButton,
         's-okbutton': OkButton,
-        's-tag': Tag
-    },
+        's-tag': Tag,
+    };
 
-    template: `
+    static template = /* html */ `
         <div class="{{classes}}" tabIndex="0">
             <div class="{{prefixCls}}-panel">
                 <a
@@ -531,4 +525,4 @@ export default inherits(san.defineComponent({
             </div>
         </div>
     `
-}), Base);
+};

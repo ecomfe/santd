@@ -1,42 +1,33 @@
 /**
  * @file Santd calendar footer file
- * @author mayihui@baidu.com
+ * @author mayihui@baidu.com wufuguo@baidu.com
  **/
 
-import san, {DataTypes} from 'san';
+import Base from 'santd/base';
+import * as I from './interface';
 import TodayButton from './TodayButton';
 import OkButton from './OkButton';
 import TimepickerButton from './TimepickerButton';
 
-export default san.defineComponent({
-    dataTypes: {
-        prefixCls: DataTypes.string,
-        showDateInput: DataTypes.bool,
-        disabledDate: DataTypes.func,
-        disabledTime: DataTypes.func,
-        selectedValue: DataTypes.object,
-        value: DataTypes.object,
-        mode: DataTypes.string,
-        defaultValue: DataTypes.object
-    },
-    components: {
+export default class CalendarFooter extends Base<I.CalendarFooterState, I.CalendarFooterProps, I.CalendarFooterComputed> {
+    static components = {
         's-todaybutton': TodayButton,
         's-okbutton': OkButton,
         's-timepickerbutton': TimepickerButton
-    },
-    handleOk() {
+    }
+    handleOk(): void {
         this.fire('ok');
-    },
-    handleToday() {
+    }
+    handleToday(): void  {
         this.fire('today');
-    },
-    handleCloseTimePicker() {
+    }
+    handleCloseTimePicker(): void  {
         this.fire('closeTimePicker');
-    },
-    handleOpenTimePicker() {
+    }
+    handleOpenTimePicker(): void  {
         this.fire('openTimePicker');
-    },
-    template: `
+    }
+    static template = /* html */ `
         <div class="{{prefixCls}}-footer {{showTime ? prefixCls + '-footer-show-ok' : ''}}">
             <span
                 s-if="showToday || showTime || hasExtraFooter"
@@ -72,4 +63,4 @@ export default san.defineComponent({
             </span>
         </div>
     `
-});
+};

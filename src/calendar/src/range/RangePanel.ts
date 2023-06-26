@@ -3,20 +3,22 @@
  * @author mayihui@baidu.com
  **/
 
-import san from 'san';
+import Base from 'santd/base';
+import * as I from './interface';
 import CalendarHeader from '../calendar/CalendarHeader';
 import DateTable from '../date/DateTable';
 import DateInput from '../date/DateInput';
 import {getTimeConfig} from '../util/index';
 import dayjs from 'dayjs';
+import {dayjsType, disabledTimeFunctionType} from '../../interface';
 
-export default san.defineComponent({
-    components: {
+export default class RangePanel extends Base<I.RangePanelState, I.RangePanelProps, I.RangePanelComputed> {
+    static components = {
         's-calendarheader': CalendarHeader,
         's-datetable': DateTable,
         's-dateinput': DateInput
-    },
-    initData() {
+    };
+    initData(): I.RangePanelState {
         return {
             visible: true,
             prefixCls: 'santd-calendar',
@@ -24,8 +26,8 @@ export default san.defineComponent({
             showDateInput: true,
             focusablePanel: true
         };
-    },
-    inited() {
+    };
+    inited(): void {
         const mode = this.data.get('mode');
         const value = this.data.get('value');
         const defaultValue = this.data.get('defaultValue');
@@ -35,41 +37,41 @@ export default san.defineComponent({
         this.data.set('mode', mode || 'date');
         this.data.set('value', value || defaultValue || dayjs());
         this.data.set('selectedValue', selectedValue || defaultSelectedValue);
-    },
-    handleDateTableSelect(value) {
+    };
+    handleDateTableSelect(value: dayjsType): void {
         this.fire('select', value);
-    },
-    handleDateInputChange(value) {
+    };
+    handleDateInputChange(value: dayjsType): void {
         this.fire('inputChange', value);
-    },
-    handlePanelChange({value, mode}) {
+    };
+    handlePanelChange({value, mode} : {value: dayjsType, mode: string}): void {
         this.fire('panelChange', {value, mode});
-    },
-    handleValueChange(value) {
+    };
+    handleValueChange(value: dayjsType): void {
         this.fire('valueChange', value);
-    },
-    handleDayHover(value) {
+    };
+    handleDayHover(value: dayjsType): void {
         this.fire('dayHover', value);
-    },
-    handleInputChange(value) {
+    };
+    handleInputChange(value: dayjsType): void {
         this.fire('inputChange', value);
-    },
-    handleDateInputClear() {
+    };
+    handleDateInputClear(): void {
         this.fire('clear');
-    },
-    dateInputValue(selectedValue = []) {
+    };
+    dateInputValue(selectedValue: dayjsType[] = []): dayjsType {
         const direction = this.data.get('direction');
         const value = selectedValue[direction === 'left' ? 0 : 1];
         return value;
-    },
-    getTimeConfig(selectedValue, disabledTime, mode) {
+    };
+    getTimeConfig(selectedValue: dayjsType, disabledTime: disabledTimeFunctionType, mode: string) {
         const showTimePicker = this.data.get('showTimePicker');
         if (showTimePicker && disabledTime) {
             const config = getTimeConfig(selectedValue, disabledTime);
-            return config[mode];
+            return (config as any)[mode];
         }
-    },
-    template: `
+    };
+    static template = /* html */ `
         <div class="{{prefixCls}}-range-part {{prefixCls}}-range-{{direction}}">
             <div class="{{prefixCls}}-panel" key="panel">
                 <s-dateinput
@@ -126,4 +128,4 @@ export default san.defineComponent({
             </div>
         </div>
     `
-});
+};

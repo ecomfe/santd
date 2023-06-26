@@ -1,22 +1,23 @@
 /**
  * @file 组件 calendar
- * @author chenkai13 <chenkai13@baidu.com>
+ * @author chenkai13 <chenkai13@baidu.com> wufuguo@baidu.com
  */
-import san from 'san';
 import dayjs from 'dayjs';
 import {classCreator} from '../core/util';
 import Radio from '../radio';
 import Select from '../select';
-import Calendar from './src/FullCalendar';
+import FullCalendar from './src/FullCalendar';
 import './style/index.less';
 import localeReceiver from '../locale-provider/receiver';
 import localeData from 'dayjs/plugin/localeData';
+import * as I from './interface';
+import Base from 'santd/base';
 
 dayjs.extend(localeData);
 
 const prefixCls = classCreator('fullcalendar')();
 
-function getMonthsLocale(value) {
+function getMonthsLocale(value: I.dayjsType) {
     const localeData = value.localeData();
     const months = [];
     for (let i = 0; i < 12; i++) {
@@ -25,8 +26,8 @@ function getMonthsLocale(value) {
     return months;
 }
 
-export default san.defineComponent({
-    initData() {
+export default class Calendar extends Base<I.State, I.Props, I.Computed> {
+    initData(): I.State {
         return {
             prefixCls,
             fullscreen: true,
@@ -35,22 +36,22 @@ export default san.defineComponent({
             yearSelectTotal: 20,
             componentName: 'Calendar'
         };
-    },
-    computed: {
+    }
+    static computed: I.Computed = {
         ...localeReceiver.computed,
 
-        classes() {
+        classes(this: Calendar) {
             const fullscreen = this.data.get('fullscreen');
 
             let classArr = [prefixCls];
             fullscreen && classArr.push(`${prefixCls}-fullscreen`);
             return classArr;
         },
-        month() {
+        month(this: Calendar) {
             const value = this.data.get('value');
             return value && String(value.month());
         },
-        months() {
+        months(this: Calendar) {
             const value = this.data.get('value');
             const validRange = this.data.get('validRange');
             const options = [];
@@ -75,18 +76,18 @@ export default san.defineComponent({
 
             return options;
         },
-        year() {
+        year(this: Calendar) {
             const value = this.data.get('value');
             return value && String(value.year());
         },
-        years() {
+        years(this: Calendar) {
             const year = this.data.get('year');
             const yearSelectTotal = this.data.get('yearSelectTotal');
             const yearSelectOffset = this.data.get('yearSelectOffset');
             const validRange = this.data.get('validRange');
             const locale = this.data.get('locale').lang;
 
-            let start = year - yearSelectOffset;
+            let start = +year - yearSelectOffset;
             let end = start + yearSelectTotal;
             if (validRange) {
                 start = validRange[0].get('year');
@@ -96,12 +97,12 @@ export default san.defineComponent({
             const options = [];
 
             for (let index = start; index < end; index++) {
-                options.push({label: index + (locale.year === '年' ? '年' : ''), value: String(index)});
+                options.push({label: index + (locale && locale.year === '年' ? '年' : ''), value: String(index)});
             }
             return options;
         }
-    },
-    setValue(value, way) {
+    }
+    setValue(value: I.dayjsType, way: 'select' | 'changePanel') {
         const prevValue = this.data.get('value');
         const mode = this.data.get('mode');
 
@@ -115,19 +116,20 @@ export default san.defineComponent({
         else if (way === 'changePanel') {
             this.handlePanelChange(value, mode);
         }
-    },
-    handleMonthChange(month) {
-        this.setValue(this.data.get('value').month(month), 'changePanel');
-    },
-    handleYearChange(year) {
-        this.setValue(this.data.get('value').year(year), 'changePanel');
-    },
-    handlePanelChange(value, mode) {
+    }
+    handleMonthChange(month: string[]) {
+        // 不知道为什么这个函数的传值确实是string[]，但dayjs的month是number
+        this.setValue(this.data.get('value').month(month as unknown as number), 'changePanel');
+    }
+    handleYearChange(year: string[]) {
+        this.setValue(this.data.get('value').year(year as unknown as number), 'changePanel');
+    }
+    handlePanelChange(value: I.dayjsType, mode: string) {
         this.fire('panelChange', {value, mode});
         if (value !== this.data.get('value')) {
             this.fire('change', value);
         }
-    },
+    }
     inited() {
         localeReceiver.inited.call(this);
 
@@ -149,29 +151,32 @@ export default san.defineComponent({
             value = value.locale(val);
             this.data.set('value', value);
         });
-    },
-    components: {
-        's-calendar': Calendar,
+    }
+    attached(): void {
+        console.log(this.data.get())
+    }
+    static components = {
+        's-calendar': FullCalendar,
         's-radio': Radio,
         's-radiogroup': Radio.Group,
         's-radiobutton': Radio.Button,
         's-select': Select,
         's-selectoption': Select.Option
-    },
-    handleHeaderTypeChange(e) {
+    }
+    handleHeaderTypeChange(e: I.headerTypeChangeType) {
         const mode = e.target.value;
         this.data.set('mode', mode);
         this.handlePanelChange(this.data.get('value'), mode);
-    },
-    handleSelect(value) {
+    }
+    handleSelect(value: I.dayjsType) {
         this.setValue(value.selectedValue || value, 'select');
-    },
-    getDateRange(validRange, disabledDate) {
+    }
+    getDateRange(validRange: [I.dayjsType, I.dayjsType], disabledDate: (args0: I.dayjsType) => boolean) {
         if (!validRange) {
             return disabledDate;
         }
 
-        return function (current) {
+        return function (current: I.disabledDateType) {
             if (!current) {
                 return false;
             }
@@ -183,8 +188,8 @@ export default san.defineComponent({
             }
             return inRange;
         };
-    },
-    template: `
+    }
+    static template = /* html */ `
         <div class="{{classes}}">
             <slot
                 s-if="hasHeaderRender"
@@ -242,19 +247,19 @@ export default san.defineComponent({
                 fullscreen="{{fullscreen}}"
                 on-select="handleSelect"
             >
-            <div class="{{prefixCls}}-date" slot="customDateCellRender">
-                <div class="{{prefixCls}}-value">{{date}}</div>
-                <div class="{{prefixCls}}-content">
-                    <slot name="dateCellRender" var-value="{{value}}" />
+                <div class="{{prefixCls}}-date" slot="customDateCellRender">
+                    <div class="{{prefixCls}}-value">{{date}}</div>
+                    <div class="{{prefixCls}}-content">
+                        <slot name="dateCellRender" var-value="{{value}}" />
+                    </div>
                 </div>
-            </div>
-            <div class="{{rootPrefixCls}}-month" slot="customMonthCellRender">
-                <div class="{{rootPrefixCls}}-value">{{month}}</div>
-                <div class="{{rootPrefixCls}}-content">
-                    <slot name="monthCellRender" var-value="{{value}}"/>
+                <div class="{{rootPrefixCls}}-month" slot="customMonthCellRender">
+                    <div class="{{rootPrefixCls}}-value">{{month}}</div>
+                    <div class="{{rootPrefixCls}}-content">
+                        <slot name="monthCellRender" var-value="{{value}}"/>
+                    </div>
                 </div>
-            </div>
             </s-calendar>
         </div>
     `
-});
+};

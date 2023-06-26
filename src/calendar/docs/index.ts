@@ -1,7 +1,7 @@
 /**
  * @file Santd calendar docs file
  **/
-import san from 'san';
+import Base from 'santd/base';
 import Readme from '../README.md';
 import Basic from './basic.md';
 import CustomRender from './customRender.md';
@@ -10,8 +10,8 @@ import Desc from './desc.md';
 import Select from './select.md';
 import CustomHeader from './customHeader.md';
 
-export default san.defineComponent({
-    components: {
+export default class extends Base {
+    static components = {
         readme: Readme,
         desc: Desc,
         basic: Basic,
@@ -19,8 +19,8 @@ export default san.defineComponent({
         small: Small,
         select: Select,
         customheader: CustomHeader
-    },
-    template: `
+    };
+    static template = /* html */ `
         <div>
             <desc/>
             <basic/>
@@ -31,4 +31,4 @@ export default san.defineComponent({
             <readme/>
         </div>
     `
-});
+};

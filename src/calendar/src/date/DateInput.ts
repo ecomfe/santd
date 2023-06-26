@@ -3,7 +3,8 @@
  * @author mayihui@baidu.com
  **/
 
-import san, {DataTypes} from 'san';
+import Base from 'santd/base';
+import * as I from './interface';
 import dayjs from 'dayjs';
 import {formatDate} from '../util/index';
 import KeyCode from '../../../core/util/keyCode';
@@ -11,51 +12,39 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 
 dayjs.extend(customParseFormat);
 
-export default san.defineComponent({
-    dataTypes: {
-        prefixCls: DataTypes.string,
-        value: DataTypes.object,
-        disabledTime: DataTypes.func,
-        format: DataTypes.oneOfType([DataTypes.string, DataTypes.arrayOf(DataTypes.string)]),
-        locale: DataTypes.object,
-        disabledDate: DataTypes.func,
-        placeholder: DataTypes.string,
-        selectedValue: DataTypes.object,
-        inputMode: DataTypes.string,
-        inputReadOnly: DataTypes.bool
-    },
+export default class DateInput extends Base<I.DateInputState, I.DateInputProps, I.DateInputComputed> {
 
-    initData() {
+    initData(): I.DateInputState {
         return {
             showDate: '',
             invalid: false,
             hasFocus: true
         };
-    },
+    }
 
-    inited() {
+    inited(): void {
         const format = this.data.get('format');
         this.data.set('showDate', formatDate(this.data.get('selectedValue'), format));
         this.watch('selectedValue', val => {
             this.data.set('showDate', formatDate(val, format));
         });
-    },
+    }
 
-    attached() {
+    attached(): void {
         if (this.data.get('hasFocus')) {
             this.nextTick(() => {
-                this.ref('input').focus();
+                (this.ref('input') as unknown as HTMLElement).focus();
             });
         }
-    },
+    }
 
-    handleClear() {
+    handleClear(): void {
         this.data.set('showDate', '');
         this.fire('clear');
-    },
+    }
 
-    handleChange(e) {
-        const showDate = e.target.value;
+    handleChange(e: I.inputChangeType): void {
+        const showDate = e.target!.value;
         const {
             disabledDate,
             format,
@@ -98,9 +87,9 @@ export default san.defineComponent({
             this.data.set('showDate', showDate);
             this.fire('change', value);
         }
-    },
+    }
 
-    handleKeyDown(e) {
+    handleKeyDown(e: KeyboardEvent): void {
         const disabledDate = this.data.get('disabledDate');
         const value = this.data.get('value');
         if (e.keyCode === KeyCode.ENTER) {
@@ -109,9 +98,9 @@ export default san.defineComponent({
                 this.fire('select', value);
             }
         }
-    },
+    }
 
-    template: `
+    static template = /* html */ `
         <div class="{{prefixCls}}-input-wrap">
             <div class="{{prefixCls}}-date-input-wrap">
                 <input
@@ -129,4 +118,4 @@ export default san.defineComponent({
             </div>
         </div>
     `
-});
+};

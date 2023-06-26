@@ -3,22 +3,18 @@
  * @author mayihui@baidu.com
  **/
 
-import san, {DataTypes} from 'san';
+import Base from 'santd/base';
+import * as I from './interface';
 
 const ROW = 4;
 const COL = 3;
 
-export default san.defineComponent({
-    dataTypes: {
-        disabledDate: DataTypes.func,
-        value: DataTypes.object,
-        defaultValue: DataTypes.object
-    },
-    computed: {
-        years() {
+export default class YearTable extends Base<I.YearTableState, I.YearTableProps, I.YearTableComputed>{
+    static computed: I.YearTableComputed = {
+        years(this: YearTable) {
             const startYear = this.data.get('startYear');
             const previousYear = startYear - 1;
-            const years = [];
+            const years: I.YearTableItemType[][] = [];
             let index = 0;
             for (let rowIndex = 0; rowIndex < ROW; rowIndex++) {
                 years[rowIndex] = [];
@@ -35,8 +31,8 @@ export default san.defineComponent({
             }
             return years;
         }
-    },
-    getContentClass(yearData) {
+    };
+    getContentClass(yearData: I.YearTableItemType): string[] {
         const value = this.data.get('value');
         const currentYear = value.year();
         const startYear = this.data.get('startYear');
@@ -48,8 +44,8 @@ export default san.defineComponent({
         yearData.year < startYear && classArr.push(`${prefixCls}-last-decade-cell`);
         yearData.year > endYear && classArr.push(`${prefixCls}-next-decade-cell`);
         return classArr;
-    },
-    handleChooseYear(yearData) {
+    }
+    handleChooseYear(yearData: I.YearTableItemType): void {
         const startYear = this.data.get('startYear');
         const endYear = this.data.get('endYear');
 
@@ -62,19 +58,19 @@ export default san.defineComponent({
         else {
             this.chooseYear(yearData.year);
         }
-    },
-    goYear(year) {
+    };
+    goYear(year: number): void {
         const value = this.data.get('value').add(year, 'year');
         this.data.set('value', value);
-    },
-    chooseYear(year) {
+    };
+    chooseYear(year: number): void {
         const value = this.data.get('value').year(year).month(this.data.get('value').month());
         this.fire('select', value);
         this.nextTick(() => {
             this.data.set('refresh', Math.random());
         });
-    },
-    template: `
+    };
+    static template = /* html */ `
         <table class="{{prefixCls}}-table" cellSpacing="0" role="grid">
             <tbody class="{{prefixCls}}-tbody">
                 <tr
@@ -96,4 +92,4 @@ export default san.defineComponent({
             </tbody>
         </table>
     `
-});
+};
