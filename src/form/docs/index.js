@@ -21,6 +21,7 @@ import Layout from './layout.md';
 import DynamicRule from './dynamic-rule.md';
 import Validate from './validate.md';
 
+
 export default san.defineComponent({
     components: {
         desc: Desc,
