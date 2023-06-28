@@ -2,16 +2,22 @@
  * @file Santd form util
  * @author mayihui@baidu.com
  */
+import {ValidateFieldsCallback, ValidateFieldsOptions, ValidateRule} from '../interface';
 
-export function identity(obj) {
+type TreeType = any;
+type IsLeafNodeFun = (path: string, tree: TreeType[]) => boolean;
+type CallbackFun = (path: string, tree: TreeType[]) => void;
+
+
+export function identity(obj: any) {
     return obj;
 }
 
-export function flattenArray(arr) {
+export function flattenArray<T = any>(arr: T[]) {
     return Array.prototype.concat.apply([], arr);
 }
 
-export function treeTraverse(path = '', tree, isLeafNode, errorMessage, callback) {
+export function treeTraverse(path = '', tree: TreeType, isLeafNode: IsLeafNodeFun, errorMessage: string, callback: CallbackFun) {
     if (isLeafNode(path, tree)) {
         callback(path, tree);
     }
@@ -40,16 +46,16 @@ export function treeTraverse(path = '', tree, isLeafNode, errorMessage, callback
         });
     }
 }
-
-export function flattenFields(maybeNestedFields, isLeafNode, errorMessage) {
-    const fields = {};
+// 待确定类型
+export function flattenFields(maybeNestedFields: unknown, isLeafNode: IsLeafNodeFun, errorMessage: string) {
+    const fields: Record<string, any> = {};
     treeTraverse(undefined, maybeNestedFields, isLeafNode, errorMessage, (path, node) => {
         fields[path] = node;
     });
     return fields;
 }
 
-export function normalizeValidateRules(validate, rules, validateTrigger) {
+export function normalizeValidateRules(validate: ValidateRule[], rules?: RuleItem[], validateTrigger?: string | string[]) {
     const validateRules = validate.map(item => {
         const newItem = {
             ...item,
@@ -62,30 +68,30 @@ export function normalizeValidateRules(validate, rules, validateTrigger) {
     });
     if (rules) {
         validateRules.push({
-            trigger: validateTrigger ? [].concat(validateTrigger) : [],
+            trigger: validateTrigger ? ([] as string[]).concat(validateTrigger) : [],
             rules
         });
     }
     return validateRules;
 }
 
-export function getValidateTriggers(validateRules) {
-    return validateRules
+export function getValidateTriggers(validateRules: ValidateRule[]) {
+    return (validateRules
         .filter(item => !!item.rules && item.rules.length)
-        .map(item => item.trigger)
-        .reduce((pre, curr) => pre.concat(curr), []);
+        .map(item => item.trigger) as Array<string | string[]>)
+        .reduce((pre: string[], curr) => pre?.concat(curr), []);
 }
 
-export function getValueFromEvent(e) {
+export function getValueFromEvent(e: Event) {
     // To support custom element
     if (!e || !e.target) {
         return e;
     }
-    const target = e.target;
+    const target = e.target as HTMLFormElement;
     return target.type === 'checkbox' ? target.checked : target.value;
 }
 
-export function getErrorStrs(errors) {
+export function getErrorStrs(errors: ValidateError[]) {
     if (errors) {
         return errors.map(e => {
             if (e && e.message) {
@@ -97,19 +103,23 @@ export function getErrorStrs(errors) {
     return errors;
 }
 
-export function getParams(ns, opt, cb) {
+export function getParams(
+    ns?: string[] | ValidateFieldsOptions | ValidateFieldsCallback,
+    opt?: ValidateFieldsOptions | ValidateFieldsCallback,
+    cb?: ValidateFieldsCallback
+) {
     let names = ns;
     let options = opt;
-    let callback = cb;
+    let callback: ValidateFieldsCallback | undefined = cb;
     if (cb === undefined) {
         if (typeof names === 'function') {
-            callback = names;
+            callback = names as ValidateFieldsCallback;
             options = {};
             names = undefined;
         }
         else if (Array.isArray(names)) {
             if (typeof options === 'function') {
-                callback = options;
+                callback = options as ValidateFieldsCallback;
                 options = {};
             }
             else {
@@ -117,45 +127,51 @@ export function getParams(ns, opt, cb) {
             }
         }
         else {
-            callback = options;
+            callback = options as ValidateFieldsCallback;
             options = names || {};
             names = undefined;
         }
     }
+
     return {
         names,
         options,
         callback
+    } as {
+        names: string[] | undefined;
+        options: ValidateFieldsOptions | undefined;
+        callback: ValidateFieldsCallback | undefined
     };
 }
 
-export function isEmptyObject(obj) {
+export function isEmptyObject(obj: Record<string, any>) {
     return Object.keys(obj).length === 0;
 }
 
-export function hasRules(validate) {
+export function hasRules(validate?: ValidateRule[]) {
     if (validate) {
         return validate.some(item => item.rules && item.rules.length);
     }
     return false;
 }
 
-export function startsWith(str, prefix) {
+export function startsWith(str: string, prefix: string) {
     return str.lastIndexOf(prefix, 0) === 0;
 }
 
-export function getComputedStyle(el, prop) {
+export function getComputedStyle<T extends Element>(el: T, prop: string) {
     const getComputedStyle = window.getComputedStyle;
     const style = getComputedStyle
         ? getComputedStyle(el)
+        // @ts-ignore
         : el.currentStyle;
     if (style) {
-        return style[prop.replace(/-(\w)/gi, (word, letter) => letter.toUpperCase())];
+        return style[prop.replace(/-(\w)/gi, (_word, letter) => letter.toUpperCase())];
     }
     return undefined;
 }
 
-export function getScrollableContainer(node) {
+export function getScrollableContainer(node: Element) {
     let currentNode = node;
     let nodeName;
     while ((nodeName = currentNode.nodeName.toLowerCase()) !== 'body') {
@@ -165,7 +181,7 @@ export function getScrollableContainer(node) {
             && currentNode.scrollHeight > currentNode.clientHeight) {
             return currentNode;
         }
-        currentNode = currentNode.parentNode;
+        currentNode = currentNode.parentNode as Element;
     }
     return nodeName === 'body' ? currentNode.ownerDocument : currentNode;
 }
