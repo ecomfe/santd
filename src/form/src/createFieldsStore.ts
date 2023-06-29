@@ -157,7 +157,7 @@ export class FieldsStore {
 
     getFieldValuePropValue(fieldMeta: {
         name: string;
-        getValueProps?: (fieldValue: string) => Record<string, unknown>;
+        getValueProps?: (fieldValue: unknown) => Record<string, unknown>;
         valuePropName: string;
         initialValue?: unknown;
     }) {
@@ -197,8 +197,8 @@ export class FieldsStore {
             );
     }
 
-    getFieldMember(name: string, member: keyof Field) {
-        return this.getField(name)[member];
+    getFieldMember<T = unknown>(name: string, member: keyof Field) {
+        return this.getField(name)[member] as T;
     }
 
     getNestedFields(names: string[] | undefined, getter: (name: string) => any): Record<string, unknown> {
@@ -248,7 +248,7 @@ export class FieldsStore {
     }
 
     isFieldValidating(name: string): boolean {
-        return this.getFieldMember(name, 'validating');
+        return this.getFieldMember<boolean>(name, 'validating');
     }
 
     isFieldsValidating(ns: string[] | undefined) {
@@ -257,7 +257,7 @@ export class FieldsStore {
     }
 
     isFieldTouched(name: string): boolean {
-        return this.getFieldMember(name, 'touched');
+        return this.getFieldMember<boolean>(name, 'touched');
     }
 
     isFieldsTouched(ns: string[] | undefined) {

@@ -300,11 +300,11 @@ export default function <DataT extends {} = {}, OptionsT extends {} = {}>(option
                                 return false;
                             });
 
-                            const field = get(errorsGroup, fieldName);
+                            const field = get(errorsGroup, fieldName as string);
                             if (typeof field !== 'object' || Array.isArray(field)) {
-                                set(errorsGroup, fieldName, {errors: []});
+                                set(errorsGroup, fieldName as string, {errors: []});
                             }
-                            const fieldErrors = get(errorsGroup, fieldName?.concat('.errors'));
+                            const fieldErrors = get(errorsGroup, fieldName?.concat('.errors') as `${string}.errors}`) as unknown as ValidateError[];
                             fieldErrors.push(e);
                         }
                     }

@@ -131,7 +131,7 @@ class Form extends Base<State, Props, Computed> {
         }, mixins);
     };
     // 待补充
-    form!: unknown;
+    form!: Form;
     items!: FormItem[];
 
     initData(): State {
@@ -187,7 +187,7 @@ class Form extends Base<State, Props, Computed> {
             }
             component = component.parentComponent;
         }
-        return form;
+        return form as unknown as Form;
     }
 }
 

@@ -3,7 +3,7 @@
 * @author fuqiangqiang@baidu.com
 */
 
-import Base, { SlotChild } from 'santd/base';
+import Base, {SlotChild} from 'santd/base';
 import {classCreator} from '../core/util';
 import Row from '../row';
 import Col from '../col';

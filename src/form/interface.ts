@@ -116,7 +116,7 @@ export interface DecoratorOptions {
 
 // =========== Fields ========
 
-export interface Field<TValue = any> {
+export interface Field<TValue = unknown> {
     name: string;
     value: TValue;
     errors: ValidateError[];
@@ -136,7 +136,7 @@ export interface FieldMeta extends DecoratorOptions {
     originalProps?: {
         [key: string]: unknown;
     };
-    getValueProps?: (fieldValue: string) => Record<string, unknown>;
+    getValueProps?: (fieldValue: unknown) => Record<string, unknown>;
 }
 
 export type FieldActionFun = (...args: unknown[]) => void;
@@ -203,9 +203,7 @@ export interface FormCreateOptions extends InternalFormCreateOptions {
      */
     onFieldsChange?: (
         form: unknown,
-        // todo
         changedFields: Record<string, unknown>,
-        // todo
         allFields: Record<string, unknown>
     ) => void;
     /**
@@ -213,9 +211,7 @@ export interface FormCreateOptions extends InternalFormCreateOptions {
      */
     onValuesChange?: (
         form: unknown,
-        // todo
         changedValues: Record<string, unknown>,
-        // todo
         allValues: Record<string, unknown>,
     ) => void;
 
@@ -280,5 +276,5 @@ export interface FormItemChange {
     name: string;
     value: unknown;
     action: string;
-    e: unknown
+    e: unknown;
 }

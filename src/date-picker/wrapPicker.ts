@@ -64,7 +64,7 @@ export default function <T extends string>(Picker: DatePicker, pickerType: Picke
     class BasePicker extends Picker {
         initData() {
             return {
-                ...Picker.prototype.initData(),
+                ...super.initData?.(),
                 componentName: 'DatePicker',
                 prefixCls,
                 transitionName: 'slide-up',
