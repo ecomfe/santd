@@ -2,7 +2,7 @@
  * @file Santd form demo file
  **/
 
-import san from 'san';
+import Base from 'santd/base';
 import Desc from './desc.md';
 import Readme from '../README.md';
 import Basic from './basic.md';
@@ -21,9 +21,8 @@ import Layout from './layout.md';
 import DynamicRule from './dynamic-rule.md';
 import Validate from './validate.md';
 
-
-export default san.defineComponent({
-    components: {
+export default class extends Base {
+    static components = {
         desc: Desc,
         readme: Readme,
         basic: Basic,
@@ -41,8 +40,8 @@ export default san.defineComponent({
         layout: Layout,
         dynamicrule: DynamicRule,
         validate: Validate
-    },
-    template: `
+    }
+    static template = `
         <div>
             <desc/>
             <basic/>
@@ -63,4 +62,4 @@ export default san.defineComponent({
             <readme/>
         </div>
     `
-});
+};

@@ -6,7 +6,7 @@
 import {Component, NodeType, TemplateComponent} from 'san';
 import type {ComponentNewOptions} from 'san';
 
-type GetReturnType<C> = {[K in keyof C]: C[K] extends (...args: any[]) => infer R ? R : never};
+export type GetReturnType<C> = {[K in keyof C]: C[K] extends (...args: any[]) => infer R ? R : never};
 
 // 暂时简单定义各种node的类型，之后可完善
 export interface TextNode {
@@ -56,6 +56,7 @@ export type NodeChild =
 
 export interface SlotChild {
     children: Array<NodeChild>;
+    nodeType: NodeType;
 }
 
 export default class Base<
