@@ -3,7 +3,10 @@
  * @author mayihui@baidu.com
  **/
 
-import Base from './Base';
+import locale from './locale/en_US';
+import TimePickerPanel from '../../time-picker/Panel';
+import Base from 'santd/base';
+import * as I from './interface';
 import RangePanel from './range/RangePanel';
 import TodayButton from './calendar/TodayButton';
 import OkButton from './calendar/OkButton';
@@ -12,7 +15,6 @@ import Tag from '../../tag';
 import dayjs from 'dayjs';
 import {syncTime, getTodayTime, isAllowedDate, getTimeConfig} from './util';
 import {dayjsType, disabledTimeConfigType} from '../interface';
-import * as I from './interface';
 
 function isEmptyArray(arr: dayjsType[]) {
     return Array.isArray(arr) && (arr.length === 0 || arr.every(i => !i));
@@ -40,7 +42,7 @@ function normalizeAnchor(data: RangeCalendar['data'], init: boolean): dayjsType[
 }
 
 export default class RangeCalendar extends Base {
-    static initData(): I.RangeCalendarState {
+    initData(): I.RangeCalendarState {
         return {
             prefixCls: 'santd-calendar',
             type: 'both',
@@ -52,7 +54,9 @@ export default class RangeCalendar extends Base {
             hoverValue: [],
             selectedValue: [],
             disabledTime() {},
-            mode: ['date', 'date']
+            mode: ['date', 'date'],
+            locale: locale,
+            timeFormat: 'HH:mm:ss',
         };
     };
     static computed: I.RangeCalendarComputed = {
@@ -176,6 +180,33 @@ export default class RangeCalendar extends Base {
         },
         rangesName(this: RangeCalendar) {
             return Object.keys(this.data.get('ranges') || {});
+        },
+        showHour(this: RangeCalendar) {
+            const showTime = this.data.get('showTime') || {};
+            const format = showTime.format || this.data.get('timeFormat');
+            return format.indexOf('H') > -1 || format.indexOf('h') > -1 || format.indexOf('k') > -1;
+        },
+        showMinute(this: RangeCalendar) {
+            const showTime = this.data.get('showTime') || {};
+            const format = showTime.format || this.data.get('timeFormat');
+            return format.indexOf('m') > -1;
+        },
+        showSecond(this: RangeCalendar) {
+            const showTime = this.data.get('showTime') || {};
+            const format = showTime.format || this.data.get('timeFormat');
+            return format.indexOf('s') > -1;
+        },
+        columns(this: RangeCalendar) {
+            const showHour = this.data.get('showHour');
+            const showMinute = this.data.get('showMinute');
+            const showSecond = this.data.get('showSecond');
+            const use12Hours = this.data.get('use12Hours');
+            let column = 0;
+            showHour && ++column;
+            showMinute && ++column;
+            showSecond && ++column;
+            use12Hours && ++column;
+            return column;
         }
     };
     inited(): void {
@@ -367,6 +398,55 @@ export default class RangeCalendar extends Base {
     updated(this: RangeCalendar): void {
         this.data.set('prevSelectedValue', this.data.get('selectedValue'));
     };
+    getFormat() {
+        const {locale, showTime, format} = this.data.get('');
+
+        if (format) {
+            return format;
+        }
+
+        if (showTime) {
+            return locale.dateTimeFormat;
+        }
+
+        return locale.dateFormat;
+    };
+
+    focus(): void {
+        if (this.ref('focusEl')) {
+            (this.ref('focusEl') as unknown as HTMLElement).focus();
+        }
+        else if (this.el) {
+            (this.el as unknown as HTMLElement).focus();
+        }
+    };
+
+    handleSelect(value: dayjsType, cause: dayjsType): void  {
+        if (value) {
+            this.setValue(value);
+        }
+        this.setSelectedValue(value, cause);
+    };
+
+    setSelectedValue(selectedValue: dayjsType, cause: dayjsType): void  {
+        this.data.set('selectedValue', selectedValue);
+        this.fire('select', {selectedValue, cause});
+    };
+
+    setValue(value: dayjsType): void  {
+        const originalValue = this.data.get('value');
+
+        this.data.set('value', value);
+        if (originalValue && value && !originalValue.isSame(value) || originalValue || value) {
+            this.fire('change', value);
+        }
+    };
+
+    isAllowedDate(value: dayjsType): boolean {
+        const disabledDate = this.data.get('disabledDate');
+        const disabledTime = this.data.get('disabledTime');
+        return isAllowedDate(value, disabledDate, disabledTime);
+    };
 
     static components = {
         's-rangepanel': RangePanel,
@@ -374,6 +454,7 @@ export default class RangeCalendar extends Base {
         's-timepickerbutton': TimePickerButton,
         's-okbutton': OkButton,
         's-tag': Tag,
+        's-timepicker': TimePickerPanel,
     };
 
     static template = /* html */ `

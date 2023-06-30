@@ -28,6 +28,8 @@ export interface CalendarComponentState {
     showToday: boolean;
     showDateInput: boolean;
     focusablePanel: boolean;
+    timeFormat: string;
+    locale: localeType;
 }
 
 export interface CalendarComponentProps {
@@ -83,6 +85,8 @@ export interface FullCalendarHeaderComputed {
 
 export interface MonthCalendarState {
     mode: string;
+    locale: localeType;
+    timeFormat: string;
 }
 
 export interface MonthCalendarProps {
@@ -109,6 +113,8 @@ export interface RangeCalendarState {
     mode: string[];
     showTime?: dayjsType;
     prevSelectedValue?: selectedValueType;
+    locale: localeType;
+    timeFormat: string;
 }
 
 export interface RangeCalendarProps {
@@ -128,4 +134,8 @@ export interface RangeCalendarComputed {
     getEndValue: () => dayjsType;
     isTodayInView: () => boolean | undefined;
     rangesName: () => string[];
+    showHour: () => boolean;
+    showMinute: () => boolean;
+    showSecond: () => boolean;
+    columns: () => number;
 }
