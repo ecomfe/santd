@@ -3,22 +3,22 @@
  * @author mayihui@baidu.com
  **/
 
+import san from 'san';
 import Base from './Base';
 import RangePanel from './range/RangePanel';
 import TodayButton from './calendar/TodayButton';
 import OkButton from './calendar/OkButton';
 import TimePickerButton from './calendar/TimepickerButton';
 import Tag from '../../tag';
+import inherits from '../../core/util/inherits';
 import dayjs from 'dayjs';
 import {syncTime, getTodayTime, isAllowedDate, getTimeConfig} from './util';
-import {dayjsType, disabledTimeConfigType} from '../interface';
-import * as I from './interface';
 
-function isEmptyArray(arr: dayjsType[]) {
+function isEmptyArray(arr) {
     return Array.isArray(arr) && (arr.length === 0 || arr.every(i => !i));
 }
 
-function getValueFromSelectedValue(selectedValue: dayjsType[]) {
+function getValueFromSelectedValue(selectedValue) {
     let [start, end] = selectedValue;
     if (end && (start === undefined || start === null)) {
         start = end.subtract(1, 'month');
@@ -30,7 +30,7 @@ function getValueFromSelectedValue(selectedValue: dayjsType[]) {
     return [start, end];
 }
 
-function normalizeAnchor(data: RangeCalendar['data'], init: boolean): dayjsType[] | boolean {
+function normalizeAnchor(data, init) {
     const selectedValue = data.get('selectedValue') || init && data.get('defaultSelectedValue');
     const value = data.get('value') || init && data.get('defaultValue');
     const normalizedValue = value
@@ -39,8 +39,8 @@ function normalizeAnchor(data: RangeCalendar['data'], init: boolean): dayjsType[
     return !isEmptyArray(normalizedValue) ? normalizedValue : init && [dayjs(), dayjs().add(1, 'months')];
 }
 
-export default class RangeCalendar extends Base {
-    static initData(): I.RangeCalendarState {
+export default inherits(san.defineComponent({
+    initData() {
         return {
             prefixCls: 'santd-calendar',
             type: 'both',
@@ -54,9 +54,9 @@ export default class RangeCalendar extends Base {
             disabledTime() {},
             mode: ['date', 'date']
         };
-    };
-    static computed: I.RangeCalendarComputed = {
-        classes(this: RangeCalendar) {
+    },
+    computed: {
+        classes() {
             const prefixCls = this.data.get('prefixCls');
             const showTimePicker = this.data.get('showTimePicker');
             const showWeekNumber = this.data.get('showWeekNumber');
@@ -66,11 +66,11 @@ export default class RangeCalendar extends Base {
             showWeekNumber && classArr.push(`${prefixCls}-week-number`);
             return classArr;
         },
-        hasSelectedValue(this: RangeCalendar) {
+        hasSelectedValue() {
             const selectedValue = this.data.get('selectedValue') || [];
             return !!selectedValue[1] && !!selectedValue[0];
         },
-        isAllowedDateAndTime(this: RangeCalendar) {
+        isAllowedDateAndTime() {
             const selectedValue = this.data.get('selectedValue') || [];
             const disabledDate = this.data.get('disabledDate');
             const disabledStartTime = this.data.get('disabledStartTime');
@@ -78,38 +78,38 @@ export default class RangeCalendar extends Base {
             return isAllowedDate(selectedValue[0], disabledDate, disabledStartTime)
                 && isAllowedDate(selectedValue[1], disabledDate, disabledEndTime);
         },
-        isClosestMonths(this: RangeCalendar) {
+        isClosestMonths() {
             const startValue = this.data.get('getStartValue');
             const endValue = this.data.get('getEndValue');
             const nextMonthOfStart = startValue.add(1, 'months');
 
             return nextMonthOfStart.year() === endValue.year() && nextMonthOfStart.month() === endValue.month();
         },
-        disabledStartTime(this: RangeCalendar) {
+        disabledStartTime() {
             const disabledTime = this.data.get('disabledTime');
-            return function (time: dayjsType): disabledTimeConfigType {
+            return function (time) {
                 return disabledTime(time, 'start');
             };
         },
-        disabledEndTime(this: RangeCalendar) {
+        disabledEndTime() {
             const disabledTime = this.data.get('disabledTime');
-            return function (time: dayjsType): disabledTimeConfigType {
+            return function (time) {
                 return disabledTime(time, 'end');
             };
         },
-        disabledStartMonth(this: RangeCalendar) {
+        disabledStartMonth() {
             const value = this.data.get('value');
-            return function (month: dayjsType): boolean {
+            return function (month) {
                 return month.isAfter(value[1], 'month');
             };
         },
-        disabledEndMonth(this: RangeCalendar) {
+        disabledEndMonth() {
             const value = this.data.get('value');
             return function (month) {
                 return month.isBefore(value[0], 'month');
             };
         },
-        getStartValue(this: RangeCalendar) {
+        getStartValue() {
             const selectedValue = this.data.get('selectedValue') || [];
             const showTimePicker = this.data.get('showTimePicker');
             const value = this.data.get('value');
@@ -135,7 +135,7 @@ export default class RangeCalendar extends Base {
 
             return startValue;
         },
-        getEndValue(this: RangeCalendar) {
+        getEndValue() {
             const selectedValue = this.data.get('selectedValue') || [];
             const showTimePicker = this.data.get('showTimePicker');
             const value = this.data.get('value');
@@ -161,7 +161,7 @@ export default class RangeCalendar extends Base {
 
             return endValue;
         },
-        isTodayInView(this: RangeCalendar) {
+        isTodayInView() {
             const startValue = this.data.get('getStartValue');
             const endValue = this.data.get('getEndValue');
             if (!startValue) {
@@ -174,11 +174,11 @@ export default class RangeCalendar extends Base {
             return startValue.year() === thisYear && startValue.month() === thisMonth
                 || endValue.year() === thisYear && endValue.month() === thisMonth;
         },
-        rangesName(this: RangeCalendar) {
+        rangesName() {
             return Object.keys(this.data.get('ranges') || {});
         }
-    };
-    inited(): void {
+    },
+    inited() {
         const selectedValue = this.data.get('selectedValue') || this.data.get('defaultSelectedValue');
         const value = normalizeAnchor(this.data, true);
         const localeCode = this.data.get('localeCode');
@@ -190,15 +190,17 @@ export default class RangeCalendar extends Base {
         if (localeCode) {
             require(`dayjs/locale/${localeCode}.js`);
             dayjs.locale(localeCode);
-            (value as dayjsType[])[0] = (value as dayjsType[])[0].locale(localeCode);
-            (value as dayjsType[])[1] = (value as dayjsType[])[1].locale(localeCode);
+            value[0] = value[0].locale(localeCode);
+            value[1] = value[1].locale(localeCode);
         }
 
         this.data.set('value', value);
-    };
-    fireSelectValueChange(selectedValue: dayjsType[], direct?: boolean | null, cause?: {source: string}): void {
-        const showTime = this.data.get('showTime');
-        const prevSelectedValue = this.data.get('prevSelectedValue');
+    },
+    fireSelectValueChange(selectedValue, direct, cause) {
+        const {
+            showTime,
+            prevSelectedValue
+        } = this.data.get();
 
         if (showTime && showTime.defaultValue) {
             const timePickerDefaultValue = showTime.defaultValue;
@@ -230,27 +232,29 @@ export default class RangeCalendar extends Base {
                 }
             });
         }
-    }
-    compare(v1: dayjsType, v2: dayjsType): number {
+    },
+    compare(v1, v2) {
         if (this.data.get('showTime')) {
             return v1.diff(v2);
         }
         return v1.diff(v2, 'days');
-    };
-    isMonthYearPanelShow(mode: string): boolean {
+    },
+    isMonthYearPanelShow(mode) {
         return ['month', 'year', 'decade'].indexOf(mode) > -1;
-    };
-    fireHoverValueChange(hoverValue: I.selectedValueType): void {
+    },
+    fireHoverValueChange(hoverValue) {
         this.data.set('hoverValue', hoverValue);
         this.fire('hoverChange', hoverValue);
-    };
-    handleClear(): void {
+    },
+    handleClear() {
         this.fireSelectValueChange([], true);
         this.fire('clear');
-    };
-    handleRangeSelect(value: dayjsType): void {
-        const prevSelectedValue = this.data.get('prevSelectedValue');
-        let firstSelectedValue = this.data.get('firstSelectedValue');
+    },
+    handleRangeSelect(value) {
+        let {
+            prevSelectedValue,
+            firstSelectedValue
+        } = this.data.get();
 
         let nextSelectedValue;
         if (!firstSelectedValue) {
@@ -268,13 +272,15 @@ export default class RangeCalendar extends Base {
         }
 
         this.fireSelectValueChange(nextSelectedValue);
-    };
-    handleDayHover(value: dayjsType): void {
+    },
+    handleDayHover(value) {
         if (!this.data.get('hoverValue').length) {
             return;
         }
 
-        const firstSelectedValue = this.data.get('firstSelectedValue');
+        const {
+            firstSelectedValue
+        } = this.data.get();
 
 
         if (!firstSelectedValue) {
@@ -288,31 +294,31 @@ export default class RangeCalendar extends Base {
                 : [firstSelectedValue, value];
             this.fireHoverValueChange(hoverValue);
         }
-    };
-    handleToday(): void {
+    },
+    handleToday() {
         const startValue = getTodayTime(this.data.get('value')[0]);
         const endValue = startValue.add(1, 'months');
         this.data.set('value', [startValue, endValue]);
-    };
-    handleTimePicker(visible: boolean) {
+    },
+    handleTimePicker(visible) {
         this.data.set('showTimePicker', visible);
-    }
-    handleOk(): void {
+    },
+    handleOk() {
         const selectedValue = this.data.get('selectedValue');
         const isAllowedDateAndTime = this.data.get('isAllowedDateAndTime');
         if (isAllowedDateAndTime) {
             this.fire('ok', selectedValue);
         }
-    };
-    handleStartValueChange(leftValue: dayjsType): void {
+    },
+    handleStartValueChange(leftValue) {
         this.data.set('value[0]', leftValue);
         this.fire('valueChange', this.data.get('value'));
-    };
-    handleEndValueChange(rightValue: dayjsType): void {
+    },
+    handleEndValueChange(rightValue) {
         this.data.set('value[1]', rightValue);
         this.fire('valueChange', this.data.get('value'));
-    };
-    handleStartPanelChange({value, mode}: {value: dayjsType, mode: string}): void {
+    },
+    handleStartPanelChange({value, mode}) {
         const newMode = [mode, this.data.get('mode')[1]];
         const prevValue = this.data.get('value');
         if (!this.data.get('propMode')) {
@@ -321,8 +327,8 @@ export default class RangeCalendar extends Base {
         this.data.set('panelTriggerSource', 'start');
         const newValue = [value || prevValue[0], prevValue[1]];
         this.fire('panelChange', {value: newValue, mode: newMode});
-    };
-    handleEndPanelChange({value, mode}: {value: dayjsType, mode: string}): void {
+    },
+    handleEndPanelChange({value, mode}) {
         const newMode = [this.data.get('mode')[0], mode];
         const prevValue = this.data.get('value');
         if (!this.data.get('propMode')) {
@@ -331,8 +337,8 @@ export default class RangeCalendar extends Base {
         this.data.set('panelTriggerSource', 'end');
         const newValue = [prevValue[0], value || prevValue[1]];
         this.fire('panelChange', {value: newValue, mode: newMode});
-    };
-    handleInputSelect(direction: string, value: dayjsType, cause?: {source: string}): void {
+    },
+    handleInputSelect(direction, value, cause) {
         if (!value) {
             return;
         }
@@ -346,37 +352,37 @@ export default class RangeCalendar extends Base {
         }
         this.fire('inputSelect', selectedValue);
         this.fireSelectValueChange(selectedValue, null, cause || {source: 'dateInput'});
-    };
+    },
 
-    handleStartInputChange(value: dayjsType) {
+    handleStartInputChange(value) {
         this.handleInputSelect('left', value);
-    };
+    },
 
-    handleEndInputChange(value: dayjsType) {
+    handleEndInputChange(value) {
         this.handleInputSelect('right', value);
-    };
+    },
 
-    getTimeConfig(selectedValue: dayjsType, disabledTime: (arg0: dayjsType) => disabledTimeConfigType, mode: string) {
+    getTimeConfig(selectedValue, disabledTime, mode) {
         const showTimePicker = this.data.get('showTimePicker');
         if (showTimePicker && disabledTime) {
             const config = getTimeConfig(selectedValue, disabledTime);
-            return (config as any)[mode];
+            return config[mode];
         }
-    };
+    },
 
-    updated(this: RangeCalendar): void {
+    updated() {
         this.data.set('prevSelectedValue', this.data.get('selectedValue'));
-    };
+    },
 
-    static components = {
+    components: {
         's-rangepanel': RangePanel,
         's-todaybutton': TodayButton,
         's-timepickerbutton': TimePickerButton,
         's-okbutton': OkButton,
-        's-tag': Tag,
-    };
+        's-tag': Tag
+    },
 
-    static template = /* html */ `
+    template: `
         <div class="{{classes}}" tabIndex="0">
             <div class="{{prefixCls}}-panel">
                 <a
@@ -525,4 +531,4 @@ export default class RangeCalendar extends Base {
             </div>
         </div>
     `
-};
+}), Base);
