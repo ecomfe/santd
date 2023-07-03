@@ -2,28 +2,29 @@
  * @file Santd transfer render list body file
  * @author mayihui@baidu.com
  **/
-import san from 'san';
 import Checkbox from '../checkbox';
 import {classCreator} from '../core/util';
+import Base from 'santd/base';
+import { TransferItem } from './interface';
 
 const prefixCls = classCreator('transfer')('list');
 
-export default san.defineComponent({
-    handleItemSelect(item) {
+export default class RenderListBody extends Base {
+    handleItemSelect(item: TransferItem) {
         if (this.data.get('disabled') || item.disabled) {
             return;
         }
         const selectedKeys = this.data.get('selectedKeys');
         const checked = selectedKeys.indexOf(item.key) >= 0;
         this.fire('itemSelect', {selectedKey: item.key, checked: !checked});
-    },
-    handleScroll(e) {
+    }
+    handleScroll(e: Event) {
         this.fire('scroll', e);
-    },
-    components: {
+    }
+    static components = {
         's-checkbox': Checkbox
-    },
-    template: `
+    }
+    static template = `
             <ul class="${prefixCls}-content" on-scroll="handleScroll">
                 <li
                     s-for="item in filteredItems"
@@ -37,4 +38,4 @@ export default san.defineComponent({
                 </li>
             </ul>
         `
-});
+};

@@ -2,28 +2,28 @@
  * @file Santd transfer render list body file
  * @author mayihui@baidu.com
  **/
-import san from 'san';
 import {classCreator} from '../core/util';
 import Icon from '../icon';
+import Base from 'santd/base';
 
 const prefixCls = classCreator('transfer')('list');
 const inputPrefixCls = classCreator('input')();
 
-export default san.defineComponent({
-    handleChange(e) {
+export default class Search extends Base {
+    handleChange(e: {target: {value: any}}) {
         this.fire('change', e.target.value);
-    },
-    handleClear(e) {
+    }
+    handleClear(e: Event) {
         e.preventDefault();
         const disabled = this.data.get('disabled');
         if (!disabled) {
             this.fire('clear', e);
         }
-    },
-    components: {
+    }
+    static components = {
         's-icon': Icon
-    },
-    template: `
+    }
+    static template = `
         <div>
             <input
                 placeholder="{{placeholder}}"
@@ -45,4 +45,4 @@ export default san.defineComponent({
             </span>
         </div>
     `
-});
+};

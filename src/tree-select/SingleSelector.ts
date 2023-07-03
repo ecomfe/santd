@@ -3,19 +3,12 @@
 * @author fuqiangqiang@baidu.com
 */
 
-import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
 const prefixCls = classCreator('select')();
+import Base from 'santd/base';
 
-export default san.defineComponent({
-    dataTypes: {
-        value: DataTypes.array,
-        inputValue: DataTypes.string,
-        showSearch: DataTypes.bool,
-        popupVisible: DataTypes.bool,
-        treeNodeLabelProp: DataTypes.string
-    },
-    template: `
+export default class SingleSelector extends Base {
+    static template = `
         <div
             class="${prefixCls}-selection-selected-value"
             style="opacity: {{popupVisible && showSearch ? '0.4' : '1'}}"
@@ -28,4 +21,4 @@ export default san.defineComponent({
             </template>
         </div>
     `
-});
+};

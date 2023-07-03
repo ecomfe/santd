@@ -2,7 +2,6 @@
  * @file Santd tree select docs file
  **/
 
-import san from 'san';
 import Readme from '../README.md';
 import Basic from './basic.md';
 import Desc from './desc.md';
@@ -12,9 +11,10 @@ import TreeData from './treeData.md';
 import LoadData from './loadData.md';
 import Showicon from './showicon.md';
 import ReplaceFields from './replaceFields.md';
+import Base from 'santd/base';
 
-export default san.defineComponent({
-    components: {
+export default class extends Base {
+    static components = {
         readme: Readme,
         desc: Desc,
         basic: Basic,
@@ -25,8 +25,8 @@ export default san.defineComponent({
         showicon: Showicon,
         replacefields: ReplaceFields
 
-    },
-    template: `
+    }
+    static template = `
         <div>
             <desc/>
             <basic/>
@@ -39,4 +39,4 @@ export default san.defineComponent({
             <readme/>
         </div>
     `
-});
+};

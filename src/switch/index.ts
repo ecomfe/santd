@@ -120,7 +120,7 @@ export default class Switch extends Base<State, Props, Computed> {
         (this.el as unknown as HTMLInputElement).blur();
     }
 
-    handleMouseUp(e: any) {
+    handleMouseUp(e: MouseEvent) {
         (this.el as unknown as HTMLInputElement).blur();
         this.fire('mouseup', e);
     }

@@ -2,55 +2,43 @@
  * @file Santd transfer list file
  * @author mayihui@baidu.com
  */
-import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
 import Checkbox from '../checkbox';
 import defaultRenderList from './RenderListBody';
 import Search from './Search';
+import Base from 'santd/base';
+import {TransferItem, ListState,  ListProps, ListMessages} from './interface';
 
 const prefixCls = classCreator('transfer')('list');
 
-const matchFilter = function (item, filterValue, filterOption) {
+const matchFilter = function (item: TransferItem, filterValue: string, filterOption: (filterValue: string, item: TransferItem) => boolean) {
     if (filterOption) {
         return filterOption(filterValue, item);
     }
     return item.title.indexOf(filterValue) >= 0;
 };
 
-export default san.defineComponent({
-    dataTypes: {
-        titleText: DataTypes.string,
-        dataSource: DataTypes.array,
-        filterOption: DataTypes.func,
-        checkedKeys: DataTypes.array,
-        showSearch: DataTypes.bool,
-        searchPlaceholder: DataTypes.string,
-        itemUnit: DataTypes.string,
-        itemsUnit: DataTypes.string,
-        disabled: DataTypes.bool,
-        direction: DataTypes.string,
-        showSelectAll: DataTypes.bool
-    },
+export default class List extends Base<ListState, ListProps> {
     initData() {
         return {
             filterValue: '',
             checkedKeys: []
         };
-    },
-    computed: {
-        getFilteredItems() {
+    }
+    static computed = {
+        getFilteredItems(this: List) {
             const dataSource = this.data.get('dataSource');
             const filterValue = this.data.get('filterValue') || '';
             const filterOption = this.data.get('filterOption');
             const selectedKeys = this.data.get('checkedKeys') || [];
 
-            return dataSource.filter(item => matchFilter(item, filterValue.trim(), filterOption))
-                .map(item => {
+            return dataSource.filter((item: TransferItem) => matchFilter(item, filterValue.trim(), filterOption))
+                .map((item: TransferItem) => {
                     item.checked = selectedKeys.includes(item.key);
                     return {...item};
                 });
         },
-        getCheckStatus() {
+        getCheckStatus(this: List) {
             const filteredItems = this.data.get('getFilteredItems');
             const checkedKeys = this.data.get('checkedKeys');
             if (checkedKeys.length === 0) {
@@ -61,34 +49,34 @@ export default san.defineComponent({
             }
             return 'part';
         }
-    },
+    }
     handleItemSelectAll() {
         const filteredItems = this.data.get('getFilteredItems');
         const getCheckStatus = this.data.get('getCheckStatus');
         const selectedKeys = filteredItems.filter(item => !item.disabled).map(({key}) => key);
 
         this.fire('itemSelectAll', {selectedKeys, checkAll: !(getCheckStatus === 'all')});
-    },
-    handleItemSelect(prop) {
+    }
+    handleItemSelect(prop: any) {
         this.fire('itemSelect', prop);
-    },
-    handleScroll(e) {
+    }
+    handleScroll(e: Event) {
         this.fire('scroll', e);
-    },
-    handleFilter(value) {
+    }
+    handleFilter(value: string) {
         this.data.set('filterValue', value);
         this.fire('filter', value);
-    },
+    }
     handleClear() {
         this.data.set('filterValue', '');
         this.fire('clear');
-    },
-    components: {
+    }
+    static components = {
         's-checkbox': Checkbox,
         's-search': Search,
         's-renderlist': defaultRenderList
-    },
-    messages: {
+    }
+    static messages: ListMessages = {
         santd_transfer_itemSelect(payload) {
             this.fire('itemSelect', payload.value);
         },
@@ -98,8 +86,8 @@ export default san.defineComponent({
                 checkAll: payload.value.checkAll
             });
         }
-    },
-    template: `<div class="${prefixCls} {{hasFooter ? '${prefixCls}-with-footer' : ''}}">
+    }
+    static template = `<div class="${prefixCls} {{hasFooter ? '${prefixCls}-with-footer' : ''}}">
         <div class="${prefixCls}-header">
             <s-checkbox
                 s-if="showSelectAll !== false"
@@ -156,4 +144,4 @@ export default san.defineComponent({
         </div>
         <div class="${prefixCls}-footer" s-if="hasFooter"><slot name="footer" /></div>
     </div>`
-});
+};

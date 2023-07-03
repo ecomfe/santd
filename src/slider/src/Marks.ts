@@ -85,7 +85,7 @@ export default class Marks extends Base {
         return `${direction}: ${offset}%;transform:translateX(${distance});-ms-transform:translateX(${distance})`;
     }
 
-    handleClickLabel(e: any, point: number) {
+    handleClickLabel(e: MouseEvent, point: number) {
         this.fire('clickLabel', {e, point});
     }
 };

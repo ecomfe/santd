@@ -84,7 +84,7 @@ function getHandleCenterPosition(vertical: boolean, eventTarget: any) {
 export default class Slider extends Base<State, Props> {
     handlesRefs!: any;
     dragOffset!: number;
-    _mouseMoveHandler!: ((e: any) => void) | null;
+    _mouseMoveHandler!: ((e: MouseEvent) => void) | null;
     _endHandler!: (() => void) | null;
     static template = `<div
         style="{{vertical ? 'height: 100%;' : ''}}"
@@ -253,14 +253,14 @@ export default class Slider extends Base<State, Props> {
         return ensureValuePrecision(ensureValueInRange(value, min!, max!), step!, marks!, min!, max!);
     }
 
-    rootBlur(e: any) {
+    rootBlur(e: MouseEvent) {
         if (!this.data.get('disabled')) {
             this.handleEnd();
             this.fire('blur', e);
         }
     }
 
-    rootFocus(e: any) {
+    rootFocus(e: MouseEvent) {
         const disabled = this.data.get('disabled');
 
         if (!disabled && isEventFromHandle(e.target, this.handlesRefs)) {
@@ -277,7 +277,7 @@ export default class Slider extends Base<State, Props> {
         }
     }
 
-    rootMouseDown(e: any) {
+    rootMouseDown(e: MouseEvent) {
         if (!this.data.get('disabled')) {
             if (e.button !== 0) {
                 return;
@@ -334,7 +334,7 @@ export default class Slider extends Base<State, Props> {
         this.data.set('activeHandleIndex', visible ? index : null);
     }
 
-    handleMouseMove(e: any) {
+    handleMouseMove(e: MouseEvent) {
         if (!this.el) {
             this.handleEnd();
             return;
@@ -344,7 +344,7 @@ export default class Slider extends Base<State, Props> {
         this.handleMove(e, position - this.dragOffset);
     }
 
-    handleMove(e: any, position: number) {
+    handleMove(e: MouseEvent, position: number) {
         e.stopPropagation();
         e.preventDefault();
         let value = this.calcValueByPos(position);

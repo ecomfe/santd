@@ -2,20 +2,20 @@
  * @file Santd transfer operation file
  * @author mayihui@baidu.com
  **/
-import san from 'san';
 import Button from '../button';
+import Base from 'santd/base';
 
-export default san.defineComponent({
+export default class Operation extends Base {
     handleMoveToRight() {
         this.fire('moveToRight');
-    },
+    }
     handleMoveToLeft() {
         this.fire('moveToLeft');
-    },
-    components: {
+    }
+    static components = {
         's-button': Button
-    },
-    template: `
+    }
+    static template = `
         <div>
             <s-button
                 type="primary"
@@ -37,4 +37,4 @@ export default san.defineComponent({
             </s-button>
         </div>
     `
-});
+};

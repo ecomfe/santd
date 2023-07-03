@@ -105,10 +105,10 @@ export default class Panel extends Base{
     handleCurrentSelectPanelChange(panel: any) {
         this.data.set('currentSelectPanel', panel);
     }
-    handleEsc(e: any) {
+    handleEsc(e: KeyboardEvent) {
         this.fire('esc', e);
     }
-    handleKeyDown(e: any) {
+    handleKeyDown(e: KeyboardEvent) {
         this.fire('keydown', e);
     }
     static template = `<div class="{{prefixCls}}-inner">

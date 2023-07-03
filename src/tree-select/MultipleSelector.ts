@@ -3,29 +3,23 @@
 * @author fuqiangqiang@baidu.com
 */
 
-import san, {DataTypes} from 'san';
 import {classCreator} from '../core/util';
 import Icon from '../icon';
 const prefixCls = classCreator('select')();
+import Base from 'santd/base';
 
-export default san.defineComponent({
-    dataTypes: {
-        disabled: DataTypes.bool,
-        maxTagCount: DataTypes.number,
-        maxTagPlaceholder: DataTypes.any,
-        treeNodeLabelProp: DataTypes.string
-    },
-    components: {
+export default class MultipleSeperator extends Base {
+    static components = {
         's-icon': Icon
-    },
-    computed: {
-        mulClasses() {
+    }
+    static computed = {
+        mulClasses(this: MultipleSeperator) {
             const disabled = this.data.get('disabled');
             let classArr = [`${prefixCls}-selection__choice__content`];
             disabled && classArr.push(`${prefixCls}-selection__choice__disabled`);
             return classArr;
         },
-        multipleValue() {
+        multipleValue(this: MultipleSeperator) {
             let value = this.data.get('value').concat();
             let result;
             const maxTagCount = this.data.get('maxTagCount') || Number.MAX_VALUE;
@@ -33,7 +27,7 @@ export default san.defineComponent({
             const treeNodeLabelProp = this.data.get('treeNodeLabelProp');
             const diff = value.length - maxTagCount;
 
-            result = value.filter((item, index) => index < maxTagCount);
+            result = value.filter((index: number) => index < maxTagCount);
 
             if (diff > 0) {
                 const obj = {
@@ -44,17 +38,17 @@ export default san.defineComponent({
 
             return result;
         }
-    },
+    }
     initData() {
         return {
             maxTagCount: 50,
             disabled: false
         };
-    },
-    removeValue(e, index) {
+    }
+    removeValue(e: MouseEvent, index: number) {
         e.stopPropagation();
         this.fire('removeValue', index);
-    },
+    }
     updated() {
         const list = this.data.get('multipleValue');
         if (list && list.length) {
@@ -64,8 +58,8 @@ export default san.defineComponent({
                 }
             }
         }
-    },
-    template: `
+    }
+    static template = `
             <ul>
                 <li
                     s-for="value, index in multipleValue"
@@ -89,4 +83,4 @@ export default san.defineComponent({
                 </li>
             </ul>
     `
-});
+};

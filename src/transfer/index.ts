@@ -3,24 +3,25 @@
  * @author chenkai13 <chenkai13@baidu.com>
  */
 import './style/index.less';
-import san from 'san';
 import {classCreator} from '../core/util';
 import Empty from '../empty';
 import List from './List';
 import Operation from './Operation';
 import localeReceiver from '../locale-provider/receiver';
+import Base from 'santd/base';
+import {TransferItem, State} from './interface'
 
 const prefixCls = classCreator('transfer')();
 const emptyPrefixCls = classCreator('empty')();
 
 
-export default san.defineComponent({
-    computed: {
-        customLocale() {
+export default class Transfer extends Base<State> {
+    static computed = {
+        customLocale(this: Transfer) {
             let locale = this.data.get('locale') || {};
             return {...localeReceiver.computed.locale.bind(this)(), ...locale};
         },
-        classes() {
+        classes(this: Transfer) {
             const disabled = this.data.get('disabled');
             const hasRenderList = this.data.get('hasLeftRenderList') || this.data.get('hsaRightRenderList');
             let classArr = [prefixCls];
@@ -29,15 +30,14 @@ export default san.defineComponent({
             !!hasRenderList && classArr.push(`${prefixCls}-customize-list`);
             return classArr;
         },
-
-        separateDataSource() {
+        separateDataSource(this: Transfer) {
             const dataSource = this.data.get('dataSource');
             const rowKey = this.data.get('rowKey');
             const targetKeys = this.data.get('targetKeys') || [];
-            const leftDataSource = [];
+            const leftDataSource: TransferItem[] = [];
             const rightDataSource = new Array(targetKeys.length);
 
-            dataSource.forEach(record => {
+            dataSource.forEach((record: TransferItem) => {
                 if (rowKey) {
                     record.key = rowKey(record);
                 }
@@ -56,9 +56,9 @@ export default san.defineComponent({
                 rightDataSource
             };
         }
-    },
+    }
 
-    initData() {
+    initData(): State {
         return {
             componentName: 'Transfer',
             showSelectAll: true,
@@ -66,7 +66,7 @@ export default san.defineComponent({
             targetSelectedKeys: [],
             operations: []
         };
-    },
+    }
 
     inited() {
         localeReceiver.inited.call(this);
@@ -74,22 +74,22 @@ export default san.defineComponent({
         this.data.set('hasRender', !!this.sourceSlots.named.render);
         this.data.set('hasLeftRenderList', !!this.sourceSlots.named.leftRenderList);
         this.data.set('hasRightRenderList', !!this.sourceSlots.named.rightRenderList);
-    },
+    }
 
-    getSelectedKeysName(direction) {
+    getSelectedKeysName(direction: string) {
         return direction === 'left' ? 'sourceSelectedKeys' : 'targetSelectedKeys';
-    },
+    }
 
-    handleSelectChange(direction, holder) {
+    handleSelectChange(direction: string, holder: string[]) {
         const sourceSelectedKeys = this.data.get('sourceSelectedKeys');
         const targetSelectedKeys = this.data.get('targetSelectedKeys');
         this.fire('selectChange', direction === 'left'
             ? {sourceSelectedKeys: holder, targetSelectedKeys}
             : {targetSelectedKeys: holder, sourceSelectedKeys}
         );
-    },
+    }
 
-    handleItemSelect(direction, selectedKey, checked) {
+    handleItemSelect(direction: string, selectedKey: string, checked: boolean) {
         const sourceSelectedKeys = this.data.get('sourceSelectedKeys');
         const targetSelectedKeys = this.data.get('targetSelectedKeys');
 
@@ -104,17 +104,17 @@ export default san.defineComponent({
         this.handleSelectChange(direction, holder);
 
         this.data.set(this.getSelectedKeysName(direction), holder);
-    },
+    }
 
-    handleLeftItemSelectAll(params) {
+    handleLeftItemSelectAll(params: {selectedKeys: string[], checkAll: boolean}) {
         this.handleItemSelectAll('left', params.selectedKeys, params.checkAll);
-    },
+    }
 
-    handleRightItemSelectAll(params) {
+    handleRightItemSelectAll(params: {selectedKeys: string[], checkAll: boolean}) {
         this.handleItemSelectAll('right', params.selectedKeys, params.checkAll);
-    },
+    }
 
-    handleItemSelectAll(direction, selectedKeys, checkAll) {
+    handleItemSelectAll(direction: string, selectedKeys: string[], checkAll: boolean) {
         const originalSelectedKeys = this.data.get(this.getSelectedKeysName(direction)) || [];
 
         let mergedCheckedKeys = [];
@@ -132,17 +132,17 @@ export default san.defineComponent({
         this.handleSelectChange(direction, mergedCheckedKeys);
 
         this.data.set(this.getSelectedKeysName(direction), mergedCheckedKeys);
-    },
+    }
 
-    handleLeftItemSelect({selectedKey, checked}) {
+    handleLeftItemSelect({selectedKey, checked}: {selectedKey: string, checked: boolean}) {
         this.handleItemSelect('left', selectedKey, checked);
-    },
+    }
 
-    handleRightItemSelect({selectedKey, checked}) {
+    handleRightItemSelect({selectedKey, checked}: {selectedKey: string, checked: boolean}) {
         this.handleItemSelect('right', selectedKey, checked);
-    },
+    }
 
-    handleMoveTo(direction) {
+    handleMoveTo(direction: string) {
         const targetKeys = this.data.get('targetKeys') || [];
         const dataSource = this.data.get('dataSource') || [];
         const sourceSelectedKeys = this.data.get('sourceSelectedKeys');
@@ -150,12 +150,12 @@ export default san.defineComponent({
         const moveKeys = direction === 'right' ? sourceSelectedKeys : targetSelectedKeys;
         // filter the disabled options
         const newMoveKeys = moveKeys.filter(
-            key => !dataSource.some(data => !!(key === data.key && data.disabled))
+            key => !dataSource.some((data: TransferItem) => !!(key === data.key && data.disabled))
         );
         // move items to target box
         const newTargetKeys = direction === 'right'
             ? newMoveKeys.concat(targetKeys)
-            : targetKeys.filter(targetKey => newMoveKeys.indexOf(targetKey) === -1);
+            : targetKeys.filter((targetKey: string) => newMoveKeys.indexOf(targetKey) === -1);
 
         // empty checked keys
         const oppositeDirection = direction === 'right' ? 'left' : 'right';
@@ -163,43 +163,43 @@ export default san.defineComponent({
 
         this.handleSelectChange(oppositeDirection, []);
         this.fire('change', {targetKeys: newTargetKeys, direction, moveKeys: newMoveKeys});
-    },
+    }
 
-    handleScroll(direction, e) {
+    handleScroll(direction: string, e: Event) {
         this.fire('scroll', {direction, e});
-    },
+    }
 
-    handleLeftFilter(value) {
+    handleLeftFilter(value: any) {
         this.handleFilter('left', value);
-    },
-    handleRightFilter(value) {
+    }
+    handleRightFilter(value: any) {
         this.handleFilter('left', value);
-    },
-    handleFilter(direction, value) {
+    }
+    handleFilter(direction: string, value: any) {
         this.fire('searchChange', {direction, value});
         this.fire('search', {direction, value});
-    },
+    }
     handleLeftClear() {
         this.handleClear('left');
-    },
+    }
     handleRightClear() {
         this.handleClear('right');
-    },
-    handleClear(direction) {
+    }
+    handleClear(direction: string) {
         this.fire('search', {direction, value: ''});
-    },
+    }
 
-    getTitles(titles, index) {
+    getTitles(titles: string[], index: number) {
         const locale = this.data.get('locale') || {};
         return (titles || (locale && locale.titles) || [])[index] || '';
-    },
+    }
 
-    components: {
+    static components = {
         's-list': List,
         's-operation': Operation,
         's-empty': Empty
-    },
-    template: `<div class="{{classes}}">
+    }
+    static template = `<div class="{{classes}}">
         <s-list
             titleText="{{getTitles(titles, 0)}}"
             dataSource="{{separateDataSource.leftDataSource}}"
@@ -286,4 +286,4 @@ export default san.defineComponent({
             <s-empty slot="notfoundcontent" image="${Empty.PRESENTED_IMAGE_SIMPLE}" class="${emptyPrefixCls}-small"/>
         </s-list>
     </div>`
-});
+};

@@ -13,6 +13,11 @@ import {Messages, State, Props} from './interface';
 
 const prefixCls = classCreator('mention')();
 
+interface HandleInputEvent {
+    target: {
+        textContent: string;
+    }
+}
 export default class Mention extends Base<State, Props> {
     static Nav: any
     multilDown!: boolean
@@ -106,10 +111,10 @@ export default class Mention extends Base<State, Props> {
         this.data.set('value', val);
         (this.ref('mention-editor') as unknown as HTMLDivElement).innerText = val;
     }
-    onFocus(e: any) {
+    onFocus(e: MouseEvent) {
         this.fire('focus', e);
     }
-    onBlur(e: any) {
+    onBlur(e: HandleInputEvent) {
         let $this = this;
         // 为了解决输入框blur事件和下拉框选择点击事件冲突，blur事件设置了延迟
         setTimeout(function () {
@@ -118,7 +123,7 @@ export default class Mention extends Base<State, Props> {
         this.dispatch('UI:form-item-interact', {fieldValue: e.target.textContent, type: 'blur', e});
         this.fire('blur', e);
     }
-    onInput(e: any) {
+    onInput(e: HandleInputEvent) {
         // 如果只是回车
         if (this.multilDown) {
             return null;
@@ -127,7 +132,7 @@ export default class Mention extends Base<State, Props> {
         this.fire('change', e.target.textContent);
         this.dispatch('UI:form-item-interact', {fieldValue: e.target.textContent, type: 'change', e});
     }
-    onKeydown(e: any) {
+    onKeydown(e: KeyboardEvent) {
         const keyCode = e.keyCode;
         const multiLines = this.data.get('multiLines');
         if (keyCode === 13 && multiLines) {
@@ -140,7 +145,7 @@ export default class Mention extends Base<State, Props> {
             this.multilDown = false;
         }
     }
-    showList(e: any) {
+    showList(e: HandleInputEvent) {
         this.data.set('value', e.target.textContent);
         if (!e.target.textContent) {
             return this.hideSug();

@@ -2,7 +2,6 @@
  * @file Santd transfer docs file
  **/
 
-import san from 'san';
 import Readme from '../README.md';
 import Basic from './basic.md';
 import Search from './search.md';
@@ -11,9 +10,10 @@ import Render from './render.md';
 import Table from './table.md';
 import Tree from './tree.md';
 import Head from './head.md';
+import Base from 'santd/base';
 
-export default san.defineComponent({
-    components: {
+export default class extends Base{
+    static components = {
         readme: Readme,
         basic: Basic,
         search: Search,
@@ -22,8 +22,8 @@ export default san.defineComponent({
         table: Table,
         tree: Tree,
         head: Head
-    },
-    template: `
+    }
+    static template =  `
         <div>
             <head/>
             <basic/>
@@ -35,4 +35,4 @@ export default san.defineComponent({
             <readme/>
         </div>
     `
-});
+};

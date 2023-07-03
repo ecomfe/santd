@@ -47,11 +47,11 @@ export default class Star extends Base {
             disabled: false
         };
     }
-    onHover(e: any) {
+    onHover(e: {starIndex: number}) {
         e.starIndex = this.data.get('index');
         this.fire('hover', e);
     }
-    onClick(e: any) {
+    onClick(e: {starIndex: number}) {
         e.starIndex = this.data.get('index');
         this.fire('click', e);
         this.data.set('focused', !this.data.get('focused'));

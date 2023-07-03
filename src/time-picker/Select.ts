@@ -73,15 +73,15 @@ export default class Select extends Base<SelectProps, SelectState, SelectCompute
         const to = topOption.offsetTop;
         scrollTo(select!, to, duration);
     }
-    handleMouseEnter(e: any) {
+    handleMouseEnter(e: MouseEvent) {
         this.data.set('active', true);
         this.fire('mouseenter', e);
     };
-    handleMouseLeave(e: any) {
+    handleMouseLeave(e: MouseEvent) {
         this.data.set('active', false);
         this.fire('mouseleave', e);
     };
-    handleClick(itemValue: any) {
+    handleClick(itemValue: MouseEvent) {
         const type = this.data.get('type');
         this.fire('select', {type, itemValue});
     };
