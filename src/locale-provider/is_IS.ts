@@ -1,4 +1,4 @@
-import Pagination from '../pagination/lib/locale/is_IS';
+import Pagination from '../pagination/locale/is_IS';
 import DatePicker from '../date-picker/locale/is_IS';
 import TimePicker from '../time-picker/locale/is_IS';
 import Calendar from '../calendar/locale/is_IS';
