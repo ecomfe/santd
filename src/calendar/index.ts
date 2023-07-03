@@ -152,9 +152,6 @@ export default class Calendar extends Base<I.State, I.Props, I.Computed> {
             this.data.set('value', value);
         });
     }
-    attached(): void {
-        console.log(this.data.get())
-    }
     static components = {
         's-calendar': FullCalendar,
         's-radio': Radio,

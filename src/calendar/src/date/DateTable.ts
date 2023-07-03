@@ -162,9 +162,6 @@ export default class DateTable extends Base<I.DateTableState, I.DateTableProps, 
             };
         }
     }
-    attached(): void {
-        console.log('DateTable: ', this.data.get())
-    }
     inited(): void {
         this.data.set('value', this.data.get('value') || this.data.get('defaultValue'));
     }

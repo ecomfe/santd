@@ -23,9 +23,6 @@ export default class FullCalendar extends Base {
             showHeader: true,
         };
     };
-    attached(): void {
-        console.log('fullcalendar: ', this.data.get())
-    }
     inited(): void {
         const type = this.data.get('type');
         const defaultType = this.data.get('defaultType');

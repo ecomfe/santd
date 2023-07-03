@@ -3,33 +3,79 @@
  * @author mayihui@baidu.com
  **/
 
-import san from 'san';
-import Base from './Base';
+import Base from 'santd/base';
 import CalendarHeader from './calendar/CalendarHeader';
 import CalendarFooter from './calendar/CalendarFooter';
 import DateTable from './date/DateTable';
 import DateInput from './date/DateInput';
-import inherits from '../../core/util/inherits';
 import dayjs from 'dayjs';
+import * as I from './interface';
 import {getTimeConfig, getTodayTime, syncTime} from './util';
+import {dayjsType, disabledTimeFunctionType} from '../interface';
+import locale from './locale/en_US';
+import {isAllowedDate} from './util/index';
+import TimePickerPanel from '../../time-picker/Panel';
 
-export default inherits(san.defineComponent({
-    components: {
+export default class CalendarComponent extends Base {
+    static components =  {
         's-calendarheader': CalendarHeader,
         's-calendarfooter': CalendarFooter,
         's-datetable': DateTable,
-        's-dateinput': DateInput
-    },
-    initData() {
+        's-dateinput': DateInput,
+        's-timepicker': TimePickerPanel,
+    };
+    initData(): I.CalendarComponentState {
         return {
             visible: true,
             prefixCls: 'santd-calendar',
             showToday: true,
             showDateInput: true,
-            focusablePanel: true
+            focusablePanel: true,
+            timeFormat: 'HH:mm:ss',
+            locale: locale,
         };
-    },
-    inited() {
+    };
+    static computed: I.CalendarBaseComputed = {
+        classes(this: CalendarComponent) {
+            const prefixCls = this.data.get('prefixCls');
+            const customClassName = this.data.get('customClassName');
+            const visible = this.data.get('visible');
+            const showWeekNumber = this.data.get('showWeekNumber');
+
+            let classArr = [prefixCls, customClassName];
+            !visible && classArr.push(`${prefixCls}-hidden`);
+            showWeekNumber && classArr.push(`${prefixCls}-week-number`);
+            return classArr;
+        },
+        showHour(this: CalendarComponent) {
+            const showTime = this.data.get('showTime') || {};
+            const format = showTime.format || this.data.get('timeFormat');
+            return format.indexOf('H') > -1 || format.indexOf('h') > -1 || format.indexOf('k') > -1;
+        },
+        showMinute(this: CalendarComponent) {
+            const showTime = this.data.get('showTime') || {};
+            const format = showTime.format || this.data.get('timeFormat');
+            return format.indexOf('m') > -1;
+        },
+        showSecond(this: CalendarComponent) {
+            const showTime = this.data.get('showTime') || {};
+            const format = showTime.format || this.data.get('timeFormat');
+            return format.indexOf('s') > -1;
+        },
+        columns(this: CalendarComponent) {
+            const showHour = this.data.get('showHour');
+            const showMinute = this.data.get('showMinute');
+            const showSecond = this.data.get('showSecond');
+            const use12Hours = this.data.get('use12Hours');
+            let column = 0;
+            showHour && ++column;
+            showMinute && ++column;
+            showSecond && ++column;
+            use12Hours && ++column;
+            return column;
+        }
+    };
+    inited(): void {
         const mode = this.data.get('mode');
         let value = this.data.get('value') || this.data.get('defaultValue') || dayjs();
         let selectedValue = this.data.get('selectedValue') || this.data.get('defaultSelectedValue');
@@ -47,10 +93,59 @@ export default inherits(san.defineComponent({
         this.data.set('mode', mode || 'date');
         this.data.set('value', value);
         this.data.set('selectedValue', selectedValue);
-    },
+    };
+
+    getFormat() {
+        const {locale, showTime, format} = this.data.get('');
+
+        if (format) {
+            return format;
+        }
+
+        if (showTime) {
+            return locale.dateTimeFormat;
+        }
+
+        return locale.dateFormat;
+    };
+
+    focus(): void {
+        if (this.ref('focusEl')) {
+            (this.ref('focusEl') as unknown as HTMLElement).focus();
+        }
+        else if (this.el) {
+            (this.el as unknown as HTMLElement).focus();
+        }
+    };
+
+    handleSelect(value: dayjsType, cause: dayjsType): void  {
+        if (value) {
+            this.setValue(value);
+        }
+        this.setSelectedValue(value, cause);
+    };
+    setSelectedValue(selectedValue: dayjsType, cause: dayjsType): void  {
+        this.data.set('selectedValue', selectedValue);
+        this.fire('select', {selectedValue, cause});
+    };
+
+    setValue(value: dayjsType): void  {
+        const originalValue = this.data.get('value');
+
+        this.data.set('value', value);
+        if (originalValue && value && !originalValue.isSame(value) || originalValue || value) {
+            this.fire('change', value);
+        }
+    };
+
+    isAllowedDate(value: dayjsType): boolean {
+        const disabledDate = this.data.get('disabledDate');
+        const disabledTime = this.data.get('disabledTime');
+        return isAllowedDate(value, disabledDate, disabledTime);
+    };
 
     // 处理日期点击事件
-    handleDateTableSelect(value) {
+    handleDateTableSelect(value: dayjsType): void {
         const selectedValue = this.data.get('selectedValue');
         const showTime = this.data.get('showTime');
         if (!selectedValue && showTime) {
@@ -60,55 +155,53 @@ export default inherits(san.defineComponent({
             }
         }
         this.fire('select', {value});
-    },
+    };
 
     // 处理弹出层中的输入框输入事件
-    handleDateInputChange(value) {
+    handleDateInputChange(value: dayjsType): void {
         if (value) {
             this.fire('select', {value, cause: {source: 'dateInput'}});
         }
-    },
-    handlePanelChange({value, mode}) {
+    };
+    // onPanelChange: (arg0: dayjsType, mode: string) => {} | null = null;
+    handlePanelChange({value, mode}: {value: dayjsType | null, mode: string}): void {
         this.data.set('mode', mode);
         if (value) {
             this.data.set('value', value);
         }
         this.fire('panelChange', {value: value || this.data.get('value'), mode});
         this.dispatch('santd_calendar_panelChange', {value: value || this.data.get('value'), mode});
-        if (this.onPanelChange) {
-            this.onPanelChange(value || this.data.get('value'), mode);
-        }
-    },
-    handleToday() {
+    };
+    handleToday(): void {
         const value = this.data.get('value');
         const now = getTodayTime(value);
         this.fire('select', {value: now, cause: {source: 'todayButton'}});
         this.dispatch('santd_calendar_select', {value: now, cause: {source: 'todayButton'}});
-    },
-    handleOk() {
+    };
+    handleOk(): void {
         const selectedValue = this.data.get('selectedValue');
         if (this.isAllowedDate(selectedValue)) {
             this.fire('ok', selectedValue);
             this.dispatch('santd_calendar_ok', selectedValue);
         }
-    },
-    handleOpenTimePicker() {
+    };
+    handleOpenTimePicker(): void {
         this.handlePanelChange({value: null, mode: 'time'});
-    },
-    handleCloseTimePicker() {
+    };
+    handleCloseTimePicker(): void {
         this.handlePanelChange({value: null, mode: 'date'});
-    },
-    handleDateInputClear() {
+    };
+    handleDateInputClear(): void {
         this.fire('clear');
-    },
-    getTimeConfig(selectedValue, disabledTime, mode) {
+    };
+    getTimeConfig(selectedValue: dayjsType, disabledTime: disabledTimeFunctionType, mode: string): void {
         const showTimePicker = this.data.get('mode') === 'time';
         if (showTimePicker && disabledTime) {
             const config = getTimeConfig(selectedValue, disabledTime);
-            return config[mode];
+            return (config as any)[mode];
         }
-    },
-    template: `
+    };
+    static template = /* html */ `
         <div
             class="{{classes}}"
             tabIndex="0"
@@ -202,4 +295,4 @@ export default inherits(san.defineComponent({
             </div>
         </div>
     `
-}), Base);
+};
