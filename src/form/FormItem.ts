@@ -3,64 +3,60 @@
 * @author fuqiangqiang@baidu.com
 */
 
-import san, {DataTypes} from 'san';
+import Base, {SlotChild} from 'santd/base';
 import {classCreator} from '../core/util';
 import Row from '../row';
 import Col from '../col';
 import Icon from '../icon';
+import {
+    FormItemProps as Props,
+    FormItemState as State,
+    FormItemComputed as Computed,
+    TIcon,
+    FieldMeta
+} from './interface';
+
+type Messages = {
+    'UI:form-item-interact': (
+        this: FormItem,
+        payload: {
+            target: unknown,
+            value: {fieldValue: any, type: string, e?: unknown}
+        }
+    ) => void;
+}
+
+export type TFormItem = typeof FormItem;
+
+function isComponent(item: SlotChild): item is Base {
+    return  item.nodeType === 5;
+}
+
+
 const prefixCls = classCreator('form')();
 
 // 遍历子找到含有decorator的组件，拿到decorator的数据
-function findDecoratorComponent(data, result = []) {
+function findDecoratorComponent(data: SlotChild[], result: FormItem[] = []) {
     data.forEach(item => {
-        if (item.nodeType === 5 && item.data.get('decorator')) {
-            result.push(item);
+        if (isComponent(item) && item.data.get('decorator')) {
+            result.push(item as FormItem);
         }
         if (item.children && item.children.length) {
-            findDecoratorComponent(item.children, result);
+            findDecoratorComponent(item.children as SlotChild[], result);
         }
     });
     return result;
 }
 
-export default san.defineComponent({
-    dataTypes: {
-        id: DataTypes.string,
-        label: DataTypes.string,
-        labelAlign: DataTypes.oneOf(['left', 'right']),
-        labelCol: DataTypes.object,
-        wrapperCol: DataTypes.object,
-        help: DataTypes.oneOfType([DataTypes.string, DataTypes.array]),
-        extra: DataTypes.string,
-        validateStatus: DataTypes.oneOf(['success', 'warning', 'error', 'validating', '']),
-        hasFeedback: DataTypes.bool,
-        required: DataTypes.bool,
-        colon: DataTypes.bool,
-        prop: DataTypes.string,
-        decorator: DataTypes.object,
-        htmlFor: DataTypes.string
-    },
-    initData() {
-        return {
-            validateState: false,
-            showMessage: true,
-            fieldData: '',
-            labelCol: {},
-            wrapperCol: {}
-        };
-    },
-    inited() {
-        this.data.set('hasLabel', !!this.sourceSlots.named.label || this.data.get('label'));
-        this.data.set('hasExtra', !!this.sourceSlots.named.extra || this.data.get('extra'));
-        this.data.set('hasHelpSlot', !!this.sourceSlots.named.help);
-    },
-    components: {
+export default class FormItem extends Base<State, Props<FormItem>, Computed> {
+    static components = {
         's-row': Row,
         's-col': Col,
         's-icon': Icon
-    },
-    computed: {
-        isRequired() {
+    }
+
+    static computed: Computed = {
+        isRequired(this: FormItem) {
             const required = this.data.get('required');
             if (required !== undefined) {
                 return required;
@@ -68,15 +64,15 @@ export default san.defineComponent({
             const name = this.data.get('name');
             const form = this.data.get('form');
             if (name && form) {
-                const fieldMeta = form.fieldsStore.getFieldMeta(name) || {};
+                const fieldMeta: FieldMeta = form.fieldsStore.getFieldMeta(name) || {};
                 const validate = fieldMeta.validate || [];
                 return validate
                     .filter(item => !!item.rules)
-                    .some(item => item.rules.some(rule => rule.required));
+                    .some(item => item.rules?.some(rule => rule.required));
             }
             return false;
         },
-        labelClassName() {
+        labelClassName(this: FormItem) {
             const required = this.data.get('isRequired');
             const colon = this.data.get('colon');
             let classArr = [];
@@ -84,7 +80,7 @@ export default san.defineComponent({
             !colon && classArr.push(`${prefixCls}-item-no-colon`);
             return classArr;
         },
-        getValidateStatus() {
+        getValidateStatus(this: FormItem) {
             const name = this.data.get('name');
             const form = this.data.get('form');
             if (name && form) {
@@ -103,28 +99,28 @@ export default san.defineComponent({
             }
             return '';
         },
-        getHelpMessage() {
+        getHelpMessage(this: FormItem) {
             const name = this.data.get('name');
             const form = this.data.get('form');
             const help = this.data.get('help');
             if (help === undefined && name && form) {
-                const field = form.fieldsStore.getField(name) || {};
+                const field: {[key: string]: any; errors?: Required<ValidateError>[]} = form.fieldsStore.getField(name) || {};
 
                 const errors = field.errors;
                 if (errors) {
                     return errors.map(e => e.message)
-                        .reduce((current, item) => [...current, ' ', item], []).slice(1);
+                        .reduce((current: string[], item: string) => [...current, ' ', item], []).slice(1);
                 }
                 return '';
             }
-            return help;
+            return help as string;
         },
-        iconType() {
+        iconType(this: FormItem) {
             const propsValidateStatus = this.data.get('validateStatus');
             const validateStatus = propsValidateStatus === undefined
                 ? this.data.get('getValidateStatus')
                 : propsValidateStatus;
-            let iconType = '';
+            let iconType: TIcon  = '';
 
             switch (validateStatus) {
                 case 'success':
@@ -146,7 +142,7 @@ export default san.defineComponent({
 
             return iconType;
         },
-        validateWrapperClassName() {
+        validateWrapperClassName(this: FormItem) {
             const propsValidateStatus = this.data.get('validateStatus');
             const validateStatus = propsValidateStatus === undefined
                 ? this.data.get('getValidateStatus')
@@ -165,22 +161,9 @@ export default san.defineComponent({
             }
             return classes;
         }
-    },
-    attached() {
-        let children = this.slotChildren;
-        let decoratorComponents = findDecoratorComponent(children);
+    }
 
-        this.data.set('decoratorComponents', decoratorComponents);
-        // decorators有可能有多个，这里只写入第一个的name，否则没有办法做样式上的处理
-        decoratorComponents[0] && this.data.set('name', decoratorComponents[0].data.get('decorator.name'));
-
-        // 把当前的formitem给form去做处理
-        this.dispatch('santd_formitem_add', this);
-    },
-    detached() {
-        this.dispatch('santd_formitem_remove', this);
-    },
-    messages: {
+    static messages: Messages = {
         'UI:form-item-interact'(item) {
             let decoratorComponents = this.data.get('decoratorComponents') || [];
             decoratorComponents.forEach(decoratorComponent => {
@@ -194,8 +177,9 @@ export default san.defineComponent({
                 }
             });
         }
-    },
-    template: `
+    }
+
+    static template = `
         <div key="row" class="${prefixCls}-item {{getHelpMessage || hasHelpSlot ? '${prefixCls}-item-with-help' : ''}}">
             <s-row>
                 <s-col
@@ -229,4 +213,36 @@ export default san.defineComponent({
             </s-row>
         </div>
     `
-});
+
+    initData(): State {
+        return {
+            validateState: false,
+            showMessage: true,
+            fieldData: '',
+            labelCol: {},
+            wrapperCol: {}
+        };
+    }
+
+    inited() {
+        this.data.set('hasLabel', !!this.sourceSlots.named.label || this.data.get('label'));
+        this.data.set('hasExtra', !!this.sourceSlots.named.extra || this.data.get('extra'));
+        this.data.set('hasHelpSlot', !!this.sourceSlots.named.help);
+    }
+
+    attached() {
+        let children = this.slotChildren;
+        let decoratorComponents = findDecoratorComponent(children);
+
+        this.data.set('decoratorComponents', decoratorComponents);
+        // decorators有可能有多个，这里只写入第一个的name，否则没有办法做样式上的处理
+        decoratorComponents[0] && this.data.set('name', decoratorComponents[0].data.get('decorator.name') as string);
+
+        // 把当前的formitem给form去做处理
+        this.dispatch('santd_formitem_add', this);
+    }
+
+    detached() {
+        this.dispatch('santd_formitem_remove', this);
+    }
+};
