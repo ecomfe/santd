@@ -1,6 +1,6 @@
 {
     "name": "santd",
-    "version": "1.1.0",
+    "version": "2.0.0-alpha.0",
     "description": "san UI design",
     "scripts": {
         "start": "cross-env NODE_ENV=development node scripts/preview.js",
@@ -13,14 +13,18 @@
         "dev:issue": "cross-env NODE_ENV=development node scripts/issue.js",
         "build:issue": "cross-env NODE_ENV=production webpack --config scripts/webpack.issue.conf.js",
         "lint:script": "fecs --type=js",
-        "lint:style": "stylelint \"{site, src}/**/*.less\" --syntax less"
+        "lint:style": "stylelint \"{site, src}/**/*.less\" --syntax less",
+        "build:cjs": "tsc -p tsconfig.json",
+        "build:esm": "tsc -p tsconfig.esm.json",
+        "build:ts": "sh scripts/build.sh"
     },
-    "main": "lib/index.js",
-    "module": "es/index.js",
+    "main": "dist/cjs/index.js",
+    "module": "dist/esm/index.js",
+    "types": "types",
     "files": [
-        "lib",
-        "es",
-        "dist"
+        "dist",
+        "types",
+        "src"
     ],
     "dependencies": {
         "@ant-design/icons": "^4.0.0-alpha.19",
@@ -34,6 +38,7 @@
         "enquire.js": "^2.1.6",
         "lodash": "^4.17.15",
         "resize-observer-polyfill": "^1.5.1",
+        "rollup-plugin-ts": "^3.2.0",
         "shallowequal": "^1.1.0",
         "tinycolor2": "^1.4.1",
         "ts-loader": "^8.2.0",
@@ -118,8 +123,8 @@
         "querystring": "^0.2.0",
         "rd": "^2.0.1",
         "rimraf": "^2.6.3",
-        "rollup": "^1.27.0",
-        "rollup-plugin-babel": "^4.3.3",
+        "rollup": "^2.60.0",
+        "rollup-plugin-babel": "^4.4.0",
         "rollup-plugin-banner": "^0.2.1",
         "rollup-plugin-commonjs": "^10.1.0",
         "rollup-plugin-node-resolve": "^5.2.0",
@@ -127,6 +132,7 @@
         "rollup-plugin-postcss": "^2.0.3",
         "rollup-plugin-svgo": "^1.1.0",
         "rollup-plugin-terser": "^5.1.2",
+        "rollup-plugin-typescript2": "^0.35.0",
         "rucksack-css": "^1.0.2",
         "san": "^3.12.2",
         "san-hot-reload-api": "^1.0.1",

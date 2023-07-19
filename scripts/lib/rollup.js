@@ -14,6 +14,7 @@ const commonjs = require('rollup-plugin-commonjs');
 const {terser} = require('rollup-plugin-terser');
 const svgo = require('rollup-plugin-svgo');
 const cssnano = require('cssnano');
+const rpt = require('rollup-plugin-ts');
 
 module.exports = async (dest, src) => {
     const inputOptions = {
@@ -25,16 +26,26 @@ module.exports = async (dest, src) => {
                 extract: true,
                 use: [['less', {javascriptEnabled: true}]]
             }),
+            svgo(),
+            rpt(),
             resolve(),
             commonjs(),
-            svgo(),
             babel({
                 presets: ['@babel/preset-env'],
                 plugins: [
                     'babel-plugin-transform-object-assign'
                 ]
             })
-        ]
+        ],
+        onwarn: function(warning, handler) {
+            // Skip certain warnings
+        
+            // should intercept ... but doesn't in some rollup versions
+            if ( warning.code === 'THIS_IS_UNDEFINED' ) { return; }
+        
+            // console.warn everything else
+            handler( warning );
+        }
     };
     
     const outputMin = {
@@ -50,7 +61,8 @@ module.exports = async (dest, src) => {
         file: path.join(dest, 'santd.js'),
         name: 'santd',
         exports: 'named',
-        format: 'umd'
+        format: 'umd',
+        // sourcemap: true,
     };
     const bundle = await rollup(inputOptions);
     await bundle.write(outputMin);

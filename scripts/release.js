@@ -274,7 +274,7 @@ async function genFiles(dest, src, version, pkg) {
     }
 
     console.log('starting package all in one file...');
-    await rollup(path.join(dest, 'dist'), path.join(src, 'index.js'));
+    await rollup(path.join(dest, 'dist'), path.join(src, 'index.ts'));
 }
 
 main();

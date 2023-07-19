@@ -2,8 +2,8 @@
     "compilerOptions": {
         "strict": true,
         "allowJs": true,
-        "target": "ES5",
-        "module": "CommonJS",
+        "target": "ES2015",
+        "module": "ESNEXT",
         "moduleResolution": "node",
         "allowSyntheticDefaultImports": true,
         "declaration": true,
@@ -15,7 +15,7 @@
         "noImplicitAny": true,
         "skipLibCheck": true,
         "baseUrl": ".",
-        "outDir": "dist/cjs",
+        "outDir": "dist/esm",
         "lib": [
             "DOM",
             "ESNext"
