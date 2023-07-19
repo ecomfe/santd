@@ -7,8 +7,8 @@ import Base from 'santd/base';
 import Icon from '../icon';
 import {classCreator} from '../core/util';
 const prefixCls = classCreator('steps')();
-
-export default class Step extends Base {
+import {StepProps} from './interface';
+export default class Step extends Base<StepProps> {
     parentComponent!:any;
     inited() {
         // 把父节点的progressDot slot添加到自己身上

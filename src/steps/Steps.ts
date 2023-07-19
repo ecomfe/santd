@@ -7,7 +7,7 @@ import Base from 'santd/base';
 import {classCreator} from '../core/util';
 import './style/index.less';
 import {TStep} from './Step';
-import {StepsComputed, StepsProps} from './interface';
+import {StepsComputed, StepsState, StepsProps} from './interface';
 
 const prefixCls = classCreator('steps')();
 
@@ -16,26 +16,16 @@ type Messages = {
     santd_steps_clickStep: (this: Steps, payload: {value: any}) =>void,
 }
 
-export default class Steps extends Base<StepsProps> {
-    // dataTypes: {
-    //     direction: DataTypes.string,
-    //     labelPlacement: DataTypes.string,
-    //     current: DataTypes.number,
-    //     progressDot: DataTypes.bool,
-    //     size: DataTypes.string,
-    //     status: DataTypes.string,
-    //     type: DataTypes.string,
-    //     initial: DataTypes.number
-    // },
+export default class Steps extends Base<StepsState, StepsProps> {
     items: Array<any> = [];
     listeners!: any;
-    initData() {
+    initData():StepsState {
         return {
             direction: 'horizontal',
             labelPlacement: 'horizontal',
             current: 0,
             status: 'process',
-            size: '',
+            size: 'default',
             progressDot: false,
             flexSupported: true,
             type: '',
