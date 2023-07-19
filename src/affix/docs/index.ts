@@ -2,22 +2,22 @@
  * @file docs入口文件
  */
 
-import san from 'san';
+import Base from 'santd/base';
 import Head from './head.md';
 import Readme from '../README.md';
 import Basic from './basic.md';
 import OffsetTop from './offsetTop.md';
 import Target from './target.md';
 
-export default san.defineComponent({
-    components: {
+export default class extends Base {
+    static components = {
         head: Head,
         basic: Basic,
         readme: Readme,
         offset: OffsetTop,
         target: Target
-    },
-    template: `
+    }
+    static template = `
         <div>
             <head/>
             <basic/>
@@ -26,4 +26,4 @@ export default san.defineComponent({
             <readme/>
         </div>
     `
-});
+};

@@ -3,12 +3,13 @@
 * @author fuqiangqiang@baidu.com
 */
 
-import san from 'san';
+import Base from 'santd/base';
 import Icon from '../icon';
 import {classCreator} from '../core/util';
 const prefixCls = classCreator('steps')();
 
-export default san.defineComponent({
+export default class Step extends Base {
+    parentComponent!:any;
     inited() {
         // 把父节点的progressDot slot添加到自己身上
         this.sourceSlots.named.progressDot = this.parentComponent.sourceSlots.named.progressDot;
@@ -27,19 +28,19 @@ export default san.defineComponent({
         this.watch('hasChange', val => {
             val && this.data.set('accessibilityProps', {role: 'button', tabIndex: 0});
         });
-    },
+    }
     attached() {
         this.dispatch('santd_steps_addStep', this);
-    },
-    components: {
+    }
+    static components = {
         's-icon': Icon
-    },
+    }
     handleClick() {
         const disabled = this.data.get('disabled');
         const stepIndex = this.data.get('stepIndex');
         this.dispatch('santd_steps_clickStep', {stepIndex, disabled});
-    },
-    template: `<div
+    }
+    static template = `<div
         class="${prefixCls}-item ${prefixCls}-item-{{status}} {{hasIcon ? '${prefixCls}-item-custom': ''}}"
         on-click="handleClick"
         role="{{accessibilityProps.role}}"
@@ -88,4 +89,6 @@ export default san.defineComponent({
             </div>
         </div>
     </div>`
-});
+};
+
+export type TStep = typeof Step;

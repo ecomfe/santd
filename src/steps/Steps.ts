@@ -3,23 +3,32 @@
 * @author fuqiangqiang@baidu.com
 */
 
-import san, {DataTypes} from 'san';
+import Base from 'santd/base';
 import {classCreator} from '../core/util';
 import './style/index.less';
+import {TStep} from './Step';
+import {StepsComputed, StepsProps} from './interface';
 
 const prefixCls = classCreator('steps')();
 
-export default san.defineComponent({
-    dataTypes: {
-        direction: DataTypes.string,
-        labelPlacement: DataTypes.string,
-        current: DataTypes.number,
-        progressDot: DataTypes.bool,
-        size: DataTypes.string,
-        status: DataTypes.string,
-        type: DataTypes.string,
-        initial: DataTypes.number
-    },
+type Messages = {
+    santd_steps_addStep: (this: Steps,  payload: {value: any}) =>void;
+    santd_steps_clickStep: (this: Steps, payload: {value: any}) =>void,
+}
+
+export default class Steps extends Base<StepsProps> {
+    // dataTypes: {
+    //     direction: DataTypes.string,
+    //     labelPlacement: DataTypes.string,
+    //     current: DataTypes.number,
+    //     progressDot: DataTypes.bool,
+    //     size: DataTypes.string,
+    //     status: DataTypes.string,
+    //     type: DataTypes.string,
+    //     initial: DataTypes.number
+    // },
+    items: Array<any> = [];
+    listeners!: any;
     initData() {
         return {
             direction: 'horizontal',
@@ -32,9 +41,10 @@ export default san.defineComponent({
             type: '',
             initial: 0
         };
-    },
-    computed: {
-        classes() {
+    }
+    static Step:TStep;
+    static computed: StepsComputed= {
+        classes(this: Steps) {
             const direction = this.data.get('direction');
             const size = this.data.get('size');
             const type = this.data.get('type');
@@ -52,11 +62,11 @@ export default san.defineComponent({
 
             return classArr;
         }
-    },
+    }
     inited() {
         this.items = [];
         this.data.set('hasDot', this.data.get('progressDot') || !!this.sourceSlots.named.progressDot);
-    },
+    }
     updated() {
         const status = this.data.get('status');
         const current = this.data.get('current');
@@ -77,11 +87,11 @@ export default san.defineComponent({
             }
             item.data.set('hasChange', hasChange);
         });
-    },
+    }
     attached() {
         this.updated();
-    },
-    messages: {
+    }
+    static messages: Messages = {
         santd_steps_addStep(payload) {
             this.items.push(payload.value);
         },
@@ -93,8 +103,8 @@ export default san.defineComponent({
                 this.fire('change', stepIndex);
             }
         }
-    },
-    template: `<div class="{{classes}}">
+    }
+    static template = `<div class="{{classes}}">
         <slot />
     </div>`
-});
+};
