@@ -3,7 +3,7 @@
 * @author fuqiangqiang@baidu.com
 */
 
-import san from 'san';
+import Base from 'santd/base';
 import Readme from '../README.md';
 import Basic from './basic.md';
 import CustomTrigger from './custom-trigger.md';
@@ -17,8 +17,8 @@ import Fixed from './fixed.md';
 
 import './style.less';
 
-export default san.defineComponent({
-    components: {
+export default class extends Base {
+    static components = {
         readme: Readme,
         basic: Basic,
         custom: CustomTrigger,
@@ -29,8 +29,8 @@ export default san.defineComponent({
         desc: Desc,
         side: Side,
         fixed: Fixed
-    },
-    template: `
+    };
+    static template = /* html */ `
         <div>
             <desc/>
             <basic/>
@@ -42,4 +42,4 @@ export default san.defineComponent({
             <readme/>
         </div>
     `
-});
+};

@@ -3,72 +3,69 @@
 */
 
 
-import san, {DataTypes} from 'san';
+import Base from 'santd/base';
 import {classCreator} from '../core/util';
-import BreadcrumbItem from './Item';
+import BreadcrumbItem, {TItem} from './Item';
+import {Route, Params, BreadcrumbState, BreadcrumbProps} from './interface';
 import './style/index';
 const prefixCls = classCreator('breadcrumb')();
 
-function getPath(path, params = {}) {
+function getPath(path: string, params: {[key: string]: string} = {}) {
     path = (path || '').replace(/^\//, '');
     Object.keys(params).forEach(key => {
         path = path.replace(`:${key}`, params[key]);
     });
     return path;
 }
-
-const Breadcrumb = san.defineComponent({
-    components: {
+type Message = {
+    santd_breadcrumb_add: (this: Breadcrumb, payload: {value: any}) => void;
+};
+class Breadcrumb extends Base<BreadcrumbState, BreadcrumbProps> {
+    static components = {
         's-breadcrumb-item': BreadcrumbItem
-    },
+    }
 
-    dataTypes: {
-        separator: DataTypes.string,
-        routes: DataTypes.array
-    },
-
-    initData() {
+    initData(): BreadcrumbState {
         return {
             separator: '/',
             paths: []
         };
-    },
+    }
 
-
-    getPaths(path, params) {
+    getPaths(path: string, params: Params): string[] {
         let paths = this.data.get('paths');
         const result = getPath(path, params);
 
         result && (paths.push(result));
         return paths;
-    },
+    }
 
-    getHref(paths) {
+    getHref(paths: string[]): string {
         return `#/${paths.join('/')}`;
-    },
+    }
 
-    getBreadcrumbName(route, params = {}) {
+    getBreadcrumbName(route: Route, params: Params = {}): string | null {
         if (!route.breadcrumbName) {
             return null;
         }
         const paramsKeys = Object.keys(params).join('|');
         const name = route.breadcrumbName.replace(
             new RegExp(`:(${paramsKeys})`, 'g'),
-            (replacement, key) => params[key] || replacement,
+            (replacement: string, key: string) => params[key] || replacement,
         );
         return name;
-    },
-
-    messages: {
+    }
+    static Item: TItem;
+    static messages: Message = {
         santd_breadcrumb_add(payload) {
             const separator = this.data.get('separator');
             if (separator) {
                 payload.value.data.set('separator', separator);
             }
         }
-    },
+    }
 
-    template: `
+    static template =`
         <div class="${prefixCls}">
             <slot name="item" 
                 s-if="routes && routes.length"
@@ -86,8 +83,10 @@ const Breadcrumb = san.defineComponent({
             <slot s-else />
         </div>
     `
-});
+};
 
 Breadcrumb.Item = BreadcrumbItem;
 
 export default Breadcrumb;
+
+export type TBreadcrumb = typeof Breadcrumb;

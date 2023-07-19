@@ -3,9 +3,16 @@
 * @author fuqiangqiang@baidu.com
 */
 
-import san, {DataTypes} from 'san';
+import Base from 'santd/base';
 import {classCreator} from '../core/util';
 import Icon from '../icon';
+import  {
+    SiderState as State,
+    SiderProps as Props,
+    SiderComputed as Computed,
+    MediaQueryList,
+    SlotNode
+} from './interface';
 const prefixCls = classCreator('layout-sider')();
 
 const dimensionMap = {
@@ -17,7 +24,7 @@ const dimensionMap = {
     xxl: '1600px'
 };
 if (typeof window !== 'undefined') {
-    const matchMediaPolyfill = mediaQuery => {
+    const matchMediaPolyfill = (mediaQuery: MediaQueryList) => {
         return {
             media: mediaQuery,
             matches: false,
@@ -28,39 +35,31 @@ if (typeof window !== 'undefined') {
     window.matchMedia = window.matchMedia || matchMediaPolyfill;
 }
 
-export default san.defineComponent({
-    dataTypes: {
-        collapsedWidth: DataTypes.oneOfType([DataTypes.string, DataTypes.number]),
-        collapsible: DataTypes.bool,
-        theme: DataTypes.oneOf(['light', 'dark']),
-        width: DataTypes.oneOfType([DataTypes.string, DataTypes.number]),
-        breakpoint: DataTypes.oneOf(['xs', 'sm', 'md', 'lg', 'xl', 'xxl']),
-        collapsed: DataTypes.bool,
-        zeroWidthTriggerStyle: DataTypes.oneOfType([DataTypes.string, DataTypes.object])
-    },
-
-    components: {
+export default class Sider extends Base<State, Props> {
+    mql: MediaQueryList | undefined;
+    static components = {
         's-icon': Icon
-    },
-
-    computed: {
-        classes() {
+    }
+    static computed: Computed = {
+        classes(this: Sider) {
             // 是否可折叠,如果能折叠，说明需要动态的改变宽度
             const collapsed = this.data.get('collapsed');
             const siderWidth = this.data.get('siderWidth');
             const theme = this.data.get('theme') || 'dark';
             const collapsible = this.data.get('collapsible');
             const trigger = this.data.get('trigger');
-            let classArr = [prefixCls, `${prefixCls}-${theme}`];
+            let classArr: string[] = [prefixCls, `${prefixCls}-${theme}`];
 
             collapsed && classArr.push(`${prefixCls}-collapsed`);
             collapsible && trigger !== null && classArr.push(`${prefixCls}-has-trigger`);
             +siderWidth === 0 && classArr.push(`${prefixCls}-zero-width`);
             return classArr;
         },
-        styles() {
-            const siderWidth = this.data.get('siderWidth') + 'px';
-            const style = this.data.get('style') || {};
+        styles(this: Sider) {
+            const siderWidth: string = this.data.get('siderWidth') + 'px';
+            const style: {
+                [key: string]: string;
+            } = this.data.get('style') || {};
 
             return {
                 ...style,
@@ -70,15 +69,14 @@ export default san.defineComponent({
                 'width': siderWidth
             };
         },
-        siderWidth() {
+        siderWidth(this: Sider) {
             // 确定sider宽度
             return this.data.get('collapsed') || this.data.get('defaultCollapsed')
                 ? +this.data.get('collapsedWidth')
                 : +this.data.get('width');
         }
-    },
-
-    initData() {
+    }
+    initData(): State {
         return {
             // componentPropName: 'a-layout-sider',
             // 是否可折叠
@@ -88,11 +86,10 @@ export default san.defineComponent({
             mediaChange: false,
             collapsed: false
         };
-    },
+    }
 
     attached() {
         this.dispatch('santd_layout_addSider', this.id);
-
         const collapsed = this.data.get('collapsed') || this.data.get('defaultCollapsed');
         const collapsedWidth = +this.data.get('collapsedWidth');
         let matchMedia = window && window.matchMedia;
@@ -102,41 +99,43 @@ export default san.defineComponent({
         collapsed && this.handleMenuCollapsed(true);
         if (matchMedia && breakpoint && breakpoint in dimensionMap) {
             this.mql = matchMedia(`(max-width: ${dimensionMap[breakpoint]})`);
-            this.mql.addListener(this.responsiveHandler.bind(this));
+            this.mql && this.mql.addListener &&this.mql.addListener(this.responsiveHandler.bind(this));
             this.responsiveHandler(this.mql);
         }
-    },
+    }
 
-    responsiveHandler(mql) {
+    responsiveHandler(mql: MediaQueryList) {
         this.data.set('mediaChange', !!mql.matches);
         this.data.set('collapsed', !!mql.matches);
         this.fire('breakpoint', mql);
-    },
+    }
 
     detached() {
         this.dispatch('santd_layout_removeSider', this.id);
-        this.mql && this.mql.removeListener(this.responsiveHandler.bind(this));
-    },
+        this.mql && this.mql.removeListener && this.mql.removeListener(this.responsiveHandler.bind(this));
+    }
 
     handleMenuCollapsed(singal = false) {
-        const slot = this.slot()[0];
+        const slot: SlotNode = this.slot()[0];
         if (slot && slot.isInserted && slot.children) {
             slot.children.forEach(child => {
+                // @ts-ignore
                 if (child.data && child.data.get('componentPropName') === 'a-menu') {
+                    // @ts-ignore
                     child.data.set('inlineCollapsed', singal);
                 }
             });
         }
-    },
+    }
 
     toggle() {
         // 点击进行左侧sider显示和隐藏
         this.data.set('collapsed', !this.data.get('collapsed'));
         this.fire('collapse', this.data.get('collapsed'));
         this.handleMenuCollapsed(false);
-    },
+    }
 
-    template: `
+    static template = `
         <sider class="{{classes}}" style="{{styles}}">
             <div class="${prefixCls}-children">
                 <slot />
@@ -151,4 +150,6 @@ export default san.defineComponent({
             </span>
         </sider>
     `
-});
+};
+
+export  type TSider = typeof Sider;

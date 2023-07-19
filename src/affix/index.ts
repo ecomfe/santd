@@ -3,63 +3,59 @@
  * @author fuqiangqiang <fuqiangqiang@baidu.com>
  */
 
-import san, {DataTypes} from 'san';
+import Base from 'santd/base';
 import {classCreator} from '../core/util';
 import {on, off, getScrollTop, getOffset} from '../core/util/dom';
 import './style/index';
+import {State, Props, ObjectDetail, Scroller}  from './interface'
 
 const outerCls = classCreator('affix-outer')();
 const innerCls = classCreator('affix')();
 
-export default san.defineComponent({
-    dataTypes: {
-        offsetTop: DataTypes.oneOfType([DataTypes.string, DataTypes.number]),
-        offsetBottom: DataTypes.oneOfType([DataTypes.string, DataTypes.number]),
-        target: DataTypes.func
-    },
-
-    initData() {
+export default class Affix extends Base<State, Props> {
+    _scroller: Scroller;
+    initData(): State {
         return {
             affix: false,
             styles: {},
             offsetTop: 0,
+            offsetBottom: 0,
             outerStyles: {}
         };
-    },
+    }
     attached() {
         if (!this._scroller) {
             this._scroller = this.handleScroll.bind(this);
 
-            const target = this.data.get('target');
+            const target: any = this.data.get('target');
             const element = target ? target() : window;
             on(element, 'scroll', this._scroller);
             on(element, 'resize', this._scroller);
         }
-    },
+    }
 
-    disposed() {
+    disposed(): void {
         if (this._scroller) {
             const target = this.data.get('target');
-            const element = target ? target() : window;
+            const element: any = target ? target() : window;
             off(element, 'scroll', this._scroller);
             off(element, 'resize', this._scroller);
-            this._scroller = null;
+            this._scroller = null as unknown as Scroller;
         }
-    },
+    }
 
     handleScroll() {
-        const target = this.data.get('target');
+        const target: any = this.data.get('target');
         const targetOffset = target && getOffset(target());
         const elOffset = getOffset(this.el);
         const scrollTop = getScrollTop();
-        const innerEl = this.ref('inner');
-
-        let offsetTop = +this.data.get('offsetTop');
-        let offsetBottom = +this.data.get('offsetBottom');
+        const innerEl: any = this.ref('inner');
+        let offsetTop = this.data.get('offsetTop') || 0;
+        let offsetBottom = this.data.get('offsetBottom') || 0;
         let isAffixBottom = offsetBottom >= 0;
 
         let affixTo = null;
-        let styles = {};
+        let styles: ObjectDetail = {};
         let outerStyles = {};
 
         if (isAffixBottom) {
@@ -106,13 +102,13 @@ export default san.defineComponent({
             this.data.set('affix', affixTo);
             this.fire('change', affixTo);
         }
-    },
+    }
 
-    template: `
+    static template = `
         <div class="${outerCls}" style="{{outerStyles}}">
             <div class="{{affix ? '${innerCls}' : ''}}" style="{{styles}}" s-ref="inner">
                 <slot></slot>
             </div>
         </div>
     `
-});
+};

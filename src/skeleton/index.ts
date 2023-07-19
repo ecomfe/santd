@@ -5,14 +5,15 @@
  */
 
 import './style/index.less';
-import san, {DataTypes} from 'san';
+import Base from 'santd/base';
 import {classCreator} from '../core/util';
+import {State, Props, Computed} from './interface';
 
 const prefixCls = classCreator('skeleton')();
-const widthUnit = DataTypes.oneOfType([DataTypes.number, DataTypes.string]);
+// const widthUnit = DataTypes.oneOfType([DataTypes.number, DataTypes.string]);
 
-export default san.defineComponent({
-    template: `
+export default class Skeleton extends Base<State, Props> {
+    static template = `
         <div style="display: table; width: 100%;">
             <slot s-if="!(loading || undefined === loading)" />
             <div s-if="loading || undefined === loading" class="{{classes}}">
@@ -27,30 +28,8 @@ export default san.defineComponent({
                 </div>
             </div>
         </div>
-    `,
-    dataTypes: {
-        active: DataTypes.bool,
-        avatar: DataTypes.oneOfType([
-            DataTypes.bool,
-            DataTypes.shape({
-                size: DataTypes.oneOf(['large', 'small', 'default']),
-                shape: DataTypes.oneOf(['circle', 'square'])
-            })
-        ]),
-        loading: DataTypes.bool,
-        paragraph: DataTypes.oneOfType([
-            DataTypes.bool,
-            DataTypes.shape({
-                rows: DataTypes.number,
-                width: DataTypes.oneOfType([widthUnit, DataTypes.arrayOf(widthUnit)])
-            })
-        ]),
-        title: DataTypes.oneOfType([
-            DataTypes.bool,
-            DataTypes.shape({width: widthUnit})
-        ])
-    },
-    getAvatarClasses(shape, size) {
+    `;
+    getAvatarClasses(shape: string, size: string) {
         const avatarPrefixCls = `${prefixCls}-avatar`;
         let classArr = [avatarPrefixCls];
 
@@ -58,8 +37,8 @@ export default san.defineComponent({
         size && classArr.push(`${avatarPrefixCls}-${size}`);
 
         return classArr;
-    },
-    getParagraphStyle(index) {
+    }
+    getParagraphStyle(index: number) {
         const {width, rows = 2} = this.data.get('paragraph');
         if (Array.isArray(width)) {
             return `width: ${width[index]};`;
@@ -69,9 +48,9 @@ export default san.defineComponent({
             return `width: ${width};`;
         }
         return undefined;
-    },
-    computed: {
-        classes() {
+    };
+    static computed: Computed = {
+        classes(this: Skeleton) {
             const loading = this.data.get('loading');
 
             if (loading || undefined === loading) {
@@ -83,7 +62,7 @@ export default san.defineComponent({
                 return classArr;
             }
         },
-        rowList() {
+        rowList(this: Skeleton) {
             const paragraph = this.data.get('paragraph') || {};
             const avatar = this.data.get('avatar');
             const title = this.data.get('title');
@@ -91,12 +70,12 @@ export default san.defineComponent({
             const rows = paragraph.rows || (!avatar && title ? 3 : 2);
             return new Array(rows);
         }
-    },
-    initData() {
+    }
+    initData():State {
         return {
             avatar: false,
             paragraph: true,
             title: true
         };
     }
-});
+};

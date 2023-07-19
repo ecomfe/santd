@@ -2,29 +2,22 @@
  * @file Space 组件
  * @author Lohoyo
 */
-
+import Base, {NodeChild} from 'santd/base';
 import './style/index.less';
-import san, {DataTypes} from 'san';
+import {State, Props, Computed, Size, Direction} from './interface'
 import {classCreator} from '../core/util/index';
 const prefixCls = classCreator('space')();
 
-export default san.defineComponent({
-    dataTypes: {
-        direction: DataTypes.oneOf(['horizontal', 'vertical']),
-        size: DataTypes.oneOfType([DataTypes.number, DataTypes.string, DataTypes.array]),
-        align: DataTypes.oneOf(['start', 'end', 'center', 'baseline']),
-        wrap: DataTypes.bool
-    },
-
-    initData() {
+export default class Space extends Base<State, Props> {
+    initData(): State {
         return {
             direction: 'horizontal',
             size: 'small'
         };
-    },
+    }
 
-    computed: {
-        classes() {
+    static computed: Computed = {
+        classes(this: Space) {
             const direction = this.data.get('direction');
             const size = this.data.get('size');
             const align = this.data.get('align');
@@ -46,7 +39,7 @@ export default san.defineComponent({
             return classArr;
         },
 
-        styles() {
+        styles(this: Space) {
             const slotChildren = this.data.get('slotChildren');
             if (!slotChildren) {
                 return '';
@@ -76,38 +69,41 @@ export default san.defineComponent({
             }
             return styles;
         }
-    },
+    }
 
     attached() {
         // nodeType 的各个值的含义见：https://github.com/baidu/san/blob/d296d8e7c575da41bb6334c2864d61f0e543df2f/types/index.d.ts#L226
         this.data.set('slotChildren', this.slotChildren[0].children.filter(child => [2, 3, 4, 5].includes(child.nodeType)));
-    },
+    }
 
-    template: `
+    static template = `
         <div class="{{classes}}" style="{{styles}}">
             <slot></slot>
         </div>
     `
-});
+};
 
-function setNumberSize(htmlNodes, direction, numberSize) {
+function setNumberSize(htmlNodes: NodeChild[], direction: Direction, numberSize: Size) {
     htmlNodes.forEach(htmlNode => {
         if (htmlNode.nodeType === 2 || htmlNode.nodeType === 3) {
+            // @ts-ignore
             setNumberSize(htmlNode.children, direction, numberSize);
         } else {
             if (direction === 'horizontal') {
+                 // @ts-ignore
                 htmlNode.el.style.marginRight = numberSize + 'px';
             } else {
+                 // @ts-ignore
                 htmlNode.el.style.marginBottom = numberSize + 'px';
             }
         }
     });
 }
 
-function isNum(value) {
-    return /^[0-9]+\.?[0-9]*$/.test(value);
+function isNum(value: Size) {
+    return /^[0-9]+\.?[0-9]*$/.test(value + '');
 }
 
-function computeContainerMargin(direction, size) {
+function computeContainerMargin(direction: Direction, size: Size) {
     return direction === 'horizontal' ? ('margin-right: -' + size + 'px; ') : ('margin-bottom: -' + size + 'px; ');
 }

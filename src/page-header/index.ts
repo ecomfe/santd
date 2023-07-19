@@ -3,18 +3,20 @@
  * @author chenkai13 <chenkai13@baidu.com>
  */
 
+import Base from 'santd/base';
 import './style/index.less';
-import san from 'san';
 import {classCreator} from '../core/util';
 import icon from '../icon';
 import divider from '../divider';
 import breadcrumb from '../breadcrumb';
 import avatar from '../avatar';
+import {Props} from './interface';
+import {TBreadcrumb} from '../breadcrumb';
 
 const prefixCls = classCreator('page-header')();
 
-export default san.defineComponent({
-    template: `
+export default class PageHeader extends Base<Props> {
+    static template = `
     	<div class="${prefixCls}">
             <s-breadcrumb separator="/" s-if="{{showBread(breadcrumb)}}" s-bind="{{breadcrumb}}" />
             <div class="${prefixCls}-header-view">
@@ -45,21 +47,22 @@ export default san.defineComponent({
                 <slot name="footer" />
             </div>
         </div>
-    `,
-    components: {
+    `;
+    static components = {
         's-icon': icon,
         's-avatar': avatar,
         's-divider': divider,
         's-breadcrumb': breadcrumb,
         's-brcrumbitem': breadcrumb.Item
-    },
-    showBread(breadcrumb) {
+    }
+    showBread(breadcrumb: TBreadcrumb): boolean {
+        // @ts-ignore
         return breadcrumb && breadcrumb.routes && breadcrumb.routes.length > 2;
-    },
-    showBackIcon(breadcrumb, backIcon) {
+    }
+    showBackIcon(breadcrumb: TBreadcrumb, backIcon: boolean): boolean {
         return backIcon !== false && !this.showBread(breadcrumb);
-    },
-    handleBack() {
+    }
+    handleBack():void {
         let onBack = this.data.get('onBack');
         if (onBack && typeof onBack === 'function') {
             onBack();
@@ -67,9 +70,9 @@ export default san.defineComponent({
         else {
             history.back();
         }
-    },
-    inited() {
+    }
+    inited(): void {
         this.data.set('hasContent', !!this.sourceSlots.noname);
         this.data.set('hasFooter', !!this.sourceSlots.named.footer);
     }
-});
+};

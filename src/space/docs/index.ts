@@ -3,7 +3,7 @@
 * @author Lohoyo
 */
 
-import san from 'san';
+import Base from 'santd/base';
 import Desc from './desc.md';
 import Basic from './basic.md';
 import Vertical from './vertical.md';
@@ -13,8 +13,8 @@ import Customize from './customize.md';
 import Wrap from './wrap.md';
 import Readme from '../README.md';
 
-export default san.defineComponent({
-    components: {
+export default class extends Base {
+    static components = {
         desc: Desc,
         basic: Basic,
         vertical: Vertical,
@@ -23,8 +23,8 @@ export default san.defineComponent({
         customize: Customize,
         wrap: Wrap,
         readme: Readme
-    },
-    template: `
+    }
+    static template =`
         <div>
             <desc/>
             <basic/>
@@ -36,4 +36,4 @@ export default san.defineComponent({
             <readme/>
         </div>
     `
-});
+};
