@@ -7,7 +7,7 @@
 import './style/index.less';
 import Base from 'santd/base';
 import {classCreator} from '../core/util';
-import {State, Props, Computed} from './interface';
+import {State, Props, Computed, SkeletonParagraphProps} from './interface';
 
 const prefixCls = classCreator('skeleton')();
 // const widthUnit = DataTypes.oneOfType([DataTypes.number, DataTypes.string]);
@@ -39,7 +39,7 @@ export default class Skeleton extends Base<State, Props> {
         return classArr;
     }
     getParagraphStyle(index: number) {
-        const {width, rows = 2} = this.data.get('paragraph');
+        const {width, rows = 2} = this.data.get('paragraph') as SkeletonParagraphProps;
         if (Array.isArray(width)) {
             return `width: ${width[index]};`;
         }
@@ -63,7 +63,7 @@ export default class Skeleton extends Base<State, Props> {
             }
         },
         rowList(this: Skeleton) {
-            const paragraph = this.data.get('paragraph') || {};
+            const paragraph = this.data.get('paragraph') as SkeletonParagraphProps || {};
             const avatar = this.data.get('avatar');
             const title = this.data.get('title');
 
