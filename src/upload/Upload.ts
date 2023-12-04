@@ -27,6 +27,7 @@ const uploadButtonTemplate = `
         prefixCls="${prefixCls}"
         listType="{{listType}}"
         action="{{action}}"
+        withCredentials="{{withCredentials}}"
         directory="{{directory}}"
         beforeUpload="{{beforeUpload}}"
         customRequest="{{customRequest}}"
@@ -75,6 +76,7 @@ export default class Upload extends Base<UploadState, UploadProps, UploadCompute
                 prefixCls="${prefixCls}"
                 listType="{{listType}}"
                 action="{{action}}"
+                withCredentials="{{withCredentials}}"
                 directory="{{directory}}"
                 beforeUpload="{{beforeUpload}}"
                 customRequest="{{customRequest}}"
@@ -133,6 +135,7 @@ export default class Upload extends Base<UploadState, UploadProps, UploadCompute
             type: 'select',
             multiple: false,
             action: '',
+            withCredentials: false,
             data: {},
             accept: '',
             beforeUpload() {
@@ -325,4 +328,4 @@ export default class Upload extends Base<UploadState, UploadProps, UploadCompute
     handleFileDrop(e: {type: string}) {
         this.data.set('dragState', e.type);
     }
-};
+}

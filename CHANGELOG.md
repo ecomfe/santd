@@ -9,6 +9,26 @@
 - 主版本号：含有破坏性更新和新特性，不在发布周期内
 
 ---
+## 1.1.3
+`2023-04-07`
+- 🐞 修复 input textarea 自适应高度时循环 update [#129](https://github.com/ecomfe/santd/issues/129)
+
+## 1.1.1
+`2023-03-29`
+- 🐞 修复 upload 组件 withCredentials 不生效的问题 [#128](https://github.com/ecomfe/santd/pull/128)
+
+## 1.1.0
+`2022-12-09`
+- 🐞 Input Number 修复 fire change 事件时机
+- 🐞 Tab 组件修复设置 tabBarStyle 不生效的问题 [#123](https://github.com/ecomfe/santd/pull/123)
+- 🆕 Input 组件清除内容后支持触发 change 事件 [#122](https://github.com/ecomfe/santd/pull/122)
+
+## 1.0.30
+`2022-11-18`
+  - 🐞 Input Number precision 属性为 0 时问题修复 [#118](https://github.com/ecomfe/santd/pull/118)
+  - 🐞 Upload 组件上传失败错误文案展示和样式  [#119](https://github.com/ecomfe/santd/pull/119)
+  - 🐞 Form 组件调用 validateFields 后不能触发错误 [#121](https://github.com/ecomfe/santd/pull/121)
+  - 🆕 Select 组件支持 on-clear 回调 [#120](https://github.com/ecomfe/santd/pull/120)
 
 ## 1.0.29
 `2022-11-07`

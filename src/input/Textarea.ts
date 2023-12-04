@@ -14,6 +14,7 @@ import type {
 const prefixCls = classCreator('input')();
 
 export default class Textarea extends Base<{}, Props> {
+    resizeObserver: ResizeObserver | any;
     attached() {
         this.resizeTextarea();
         let value = this.data.get('value') || '';
@@ -21,9 +22,17 @@ export default class Textarea extends Base<{}, Props> {
             let defaultValue = this.data.get('defaultValue') || '';
             this.data.set('value', defaultValue);
         }
+
+        // textarea height changed reset
+        this.resizeObserver = new ResizeObserver(entries => {
+            for (let entry of entries) {
+                entry.contentRect && this.resizeTextarea();
+            }
+        });
+        this.resizeObserver.observe(this.el);
     }
-    updated() {
-        this.resizeTextarea();
+    detached() {
+        this.resizeObserver.disconnect();
     }
     resizeTextarea() {
         let autosize = this.data.get('autosize');
