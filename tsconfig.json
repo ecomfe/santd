@@ -1,0 +1,35 @@
+{
+    "compilerOptions": {
+        "strict": true,
+        "allowJs": true,
+        "target": "ES5",
+        "module": "CommonJS",
+        "moduleResolution": "node",
+        "allowSyntheticDefaultImports": true,
+        "declaration": true,
+        "declarationDir": "types",
+        "esModuleInterop": true,
+        "strictNullChecks": true,
+        "noUnusedParameters": true,
+        "noUnusedLocals": true,
+        "noImplicitAny": true,
+        "skipLibCheck": true,
+        "baseUrl": ".",
+        "outDir": "dist/cjs",
+        "lib": [
+            "DOM",
+            "ESNext"
+        ],
+        "paths": {
+            "santd/*": ["src/*"]
+        }
+    },
+    "include": [
+        "src/**/*.ts",
+        "typings/*.ts",
+    ],
+    "exclude": [
+        "node_modules",
+    ],
+    "compileOnSave": false
+}

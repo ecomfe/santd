@@ -25,7 +25,7 @@ export default {
         };
     },
     handleChange({time, timeString}) {
-        console.log(time, timeString);
+        console.log('docs', time, timeString);
     }
 }
 </script>

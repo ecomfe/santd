@@ -1,0 +1,35 @@
+{
+    "compilerOptions": {
+        "strict": true,
+        "allowJs": true,
+        "target": "ES2015",
+        "module": "ESNEXT",
+        "moduleResolution": "node",
+        "allowSyntheticDefaultImports": true,
+        "declaration": true,
+        "declarationDir": "types",
+        "esModuleInterop": true,
+        "strictNullChecks": true,
+        "noUnusedParameters": true,
+        "noUnusedLocals": true,
+        "noImplicitAny": true,
+        "skipLibCheck": true,
+        "baseUrl": ".",
+        "outDir": "dist/esm",
+        "lib": [
+            "DOM",
+            "ESNext"
+        ],
+        "paths": {
+            "santd/*": ["src/*"]
+        }
+    },
+    "include": [
+        "src/**/*.ts",
+        "typings/*.ts",
+    ],
+    "exclude": [
+        "node_modules",
+    ],
+    "compileOnSave": false
+}

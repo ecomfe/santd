@@ -2,7 +2,6 @@
  * @file Santd slider docs file
  **/
 
-import san from 'san';
 import Readme from '../README.md';
 import Desc from './desc.md';
 import Basic from './basic.md';
@@ -15,9 +14,10 @@ import Input from './input.md';
 import Tooltip from './tooltip.md';
 import Placement from './placement.md';
 import Reverse from './reverse.md';
+import Base from 'santd/base'
 
-export default san.defineComponent({
-    components: {
+export default class Slider extends Base {
+    static components = {
         desc: Desc,
         readme: Readme,
         basic: Basic,
@@ -30,8 +30,8 @@ export default san.defineComponent({
         tooltip: Tooltip,
         placement: Placement,
         reverse: Reverse
-    },
-    template: `
+    }
+    static template = `
         <div>
             <desc/>
             <basic/>
@@ -47,4 +47,4 @@ export default san.defineComponent({
             <readme/>
         </div>
     `
-});
+};

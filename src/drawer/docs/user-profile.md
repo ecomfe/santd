@@ -131,9 +131,6 @@ export default {
         's-list-item': List.Item,
         's-list-item-meta': List.Item.Meta
     },
-    filters:  {
-        css: Drawer.prototype.filters.css
-    },
     initData() {
         return {
             visible: false,

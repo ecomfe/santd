@@ -55,7 +55,7 @@ if (componentName && fs.pathExistsSync(resolve(`./src/${componentName}`))) {
 
 function start(componentName) {
     return new Promise((resolve, reject) => {
-        const entry = `src/${componentName}/docs/index.js`;
+        const entry = `src/${componentName}/docs/index`;
         let config = merge(webpackConfig, {
             resolve: {
                 alias: {

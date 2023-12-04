@@ -6,6 +6,8 @@ output/
 node_modules/
 **/node_modules/
 dest/
+dist/
+types/
 build/
 npm-debug.log
 package-lock.json
