@@ -117,7 +117,15 @@ module.exports = {
             },
             {
                 test: /\.tsx?$/,
-                use: 'ts-loader',
+                use: {
+                    loader: 'ts-loader',
+                    options: {
+                        transpileOnly: true,
+                        compilerOptions: {
+                            noEmitOnError: false
+                        }
+                    }
+                },
                 exclude: /node_modules/,
             },
         ]

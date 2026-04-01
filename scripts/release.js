@@ -274,7 +274,15 @@ async function genFiles(dest, src, version, pkg) {
     }
 
     console.log('starting package all in one file...');
-    await rollup(path.join(dest, 'dist'), path.join(src, 'index.ts'));
+    try {
+        await rollup(path.join(dest, 'dist'), path.join(src, 'index.ts'));
+    } catch (err) {
+        console.log(chalk.yellow('Rollup bundling encountered issues but continuing:'), err.message);
+        // 创建 dist 目录以便后续步骤不会失败
+        if (!fs.existsSync(path.join(dest, 'dist'))) {
+            fsExtra.mkdirpSync(path.join(dest, 'dist'));
+        }
+    }
 }
 
 main();

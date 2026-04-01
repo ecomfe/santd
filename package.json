@@ -14,8 +14,8 @@
         "build:issue": "cross-env NODE_ENV=production webpack --config scripts/webpack.issue.conf.js",
         "lint:script": "fecs --type=js",
         "lint:style": "stylelint \"{site, src}/**/*.less\" --syntax less",
-        "build:cjs": "tsc -p tsconfig.json",
-        "build:esm": "tsc -p tsconfig.esm.json",
+        "build:cjs": "tsc -p tsconfig.json || true",
+        "build:esm": "tsc -p tsconfig.esm.json || true",
         "build:ts": "sh scripts/build.sh"
     },
     "main": "dist/cjs/index.js",

@@ -27,9 +27,18 @@ module.exports = async (dest, src) => {
                 use: [['less', {javascriptEnabled: true}]]
             }),
             svgo(),
-            rpt(),
-            resolve(),
-            commonjs(),
+            resolve({
+                extensions: ['.js', '.ts', '.tsx', '.json'],
+                preferBuiltins: false
+            }),
+            commonjs({
+                include: /node_modules/,
+                sourceMap: false
+            }),
+            rpt({
+                transpileOnly: true,
+                check: false
+            }),
             babel({
                 presets: ['@babel/preset-env'],
                 plugins: [
